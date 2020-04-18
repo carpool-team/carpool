@@ -17,9 +17,12 @@ const Home = () => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
-      <MapboxGL.MapView style={{flex: 1}} onPress={event => console.log(event)}>
+      <MapboxGL.MapView
+        style={{flex: 1}}
+        onPress={event => console.log(event)}
+        styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft">
         <MapboxGL.Camera
-          zoomLevel={14}
+          zoomLevel={16}
           animationMode="flyTo"
           animationDuration={0}
           followUserLocation
