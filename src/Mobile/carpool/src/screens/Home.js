@@ -1,20 +1,31 @@
 import React, {useState} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, Text, View} from 'react-native';
+import colors from '../constants/colors';
 
 const Home = () => {
-  const [coordinates, setCoordinates] = useState([[16.9057, 52.4167]]);
+  const [coordinates, setCoordinates] = useState([
+    [16.87939183014879, 52.445182084892735],
+  ]);
+
+  const _onLocateUser = e => {
+    const {
+      coords: {latitude, longitude},
+    } = e;
+    setCoordinates([[longitude, latitude]]);
+  };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
       <MapboxGL.MapView style={{flex: 1}} onPress={event => console.log(event)}>
         <MapboxGL.Camera
           zoomLevel={14}
-          centerCoordinate={coordinates[0]}
           animationMode="flyTo"
           animationDuration={0}
+          followUserLocation
+          followUserMode={'normal'}
         />
-        <MapboxGL.PointAnnotation id="point" coordinate={coordinates[0]} />
+        <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
       </MapboxGL.MapView>
     </SafeAreaView>
   );
