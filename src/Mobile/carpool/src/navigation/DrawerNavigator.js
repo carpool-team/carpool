@@ -5,11 +5,12 @@ import Rides from '../screens/drawer/Rides';
 import Preferences from '../screens/drawer/Preferences';
 import Settings from '../screens/drawer/Settings';
 import {Text} from 'react-native';
+import CustomDrawer from '../components/navigation/CustomDrawer';
 
 const Drawer = createDrawerNavigator();
 
 export default DrawerNavigator = () => (
-  <Drawer.Navigator>
+  <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
     <Drawer.Screen name="Home" component={Home} />
     <Drawer.Screen name="Rides" component={Rides} />
     <Drawer.Screen name="Preferences" component={Preferences} />
