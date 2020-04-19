@@ -1,9 +1,15 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { Hello } from "./components/Hello/Hello";
-
-ReactDOM.render(
-  <Hello message={"Testing TS with React"} />,
-  document.getElementById("example")
-);
+new Promise((resolve, reject) => {
+  resolve();
+}).then(() => {
+  import("./App").then(App => {
+    const Root: () => JSX.Element = () => (
+      <App.default/>
+    );
+    ReactDOM.render(<Root/>, document.getElementById("root"));
+  })
+}).catch(err => {
+  throw new Error("Błąd aplikacji: " + err);
+})

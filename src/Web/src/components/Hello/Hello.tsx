@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 /** Props of Hello component */
 export interface HelloProps {
