@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 8,
+    elevation: 5,
   },
   container: {
     flex: 1,
@@ -48,6 +49,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 6,
     backgroundColor: colors.background,
+    elevation: 5,
   },
 });
 
