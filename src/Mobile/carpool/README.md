@@ -26,4 +26,14 @@ npx react-native run-ios
 
 ### Android
 
-# TODO
+In **/Mobile/carpool** directory of the project run:
+
+```bash
+npm install
+```
+
+Installation is done now you can run the app (**/Mobile/carpool** directory)
+
+```bash
+npx react-native run-android
+```
