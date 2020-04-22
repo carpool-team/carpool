@@ -6,7 +6,7 @@ import Preferences from '../screens/drawer/Preferences';
 import Settings from '../screens/drawer/Settings';
 import Help from '../screens/drawer/Help';
 import CustomDrawer from '../components/navigation/CustomDrawer';
-import {vw} from '../utils/constants';
+import {vh} from '../utils/constants';
 import sheet from '../styles/sheet';
 import colors from '../styles/colors';
 
@@ -17,7 +17,7 @@ export default DrawerNavigator = () => (
     drawerContent={props => <CustomDrawer {...props} />}
     drawerContentOptions={{
       labelStyle: {
-        fontSize: 5 * vw,
+        fontSize: 2.25 * vh,
         ...sheet.textBold,
       },
       activeBackgroundColor: colors.background,

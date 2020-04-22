@@ -84,13 +84,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   username: {
-    fontSize: 5 * vw,
+    fontSize: 2.5 * vh,
     color: colors.blue,
     ...sheet.textSemiBold,
   },
   rating: {
     color: colors.grayDark,
-    fontSize: 5 * vw,
+    fontSize: 2.5 * vh,
     ...sheet.textSemiBold,
   },
   rideInfoContainer: {
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.1 * vh,
   },
   upcomingRide: {
-    fontSize: 4.5 * vw,
+    fontSize: 2 * vh,
     color: colors.green,
     ...sheet.textMedium,
     marginBottom: 2 * vh,
@@ -117,12 +117,12 @@ const styles = StyleSheet.create({
   },
   driversName: {
     ...sheet.textBold,
-    fontSize: 4 * vw,
+    fontSize: 1.8 * vh,
     color: colors.grayDark,
   },
   leaving: {
     ...sheet.textBold,
-    fontSize: 4 * vw,
+    fontSize: 1.8 * vh,
     color: colors.red,
   },
   bottomContainer: {
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   logout: {
     color: colors.red,
-    fontSize: 4.5 * vw,
+    fontSize: 2.25 * vh,
     ...sheet.textBold,
   },
 });
