@@ -12,10 +12,12 @@ const Home = () => {
   ]);
 
   const _onLocateUser = e => {
-    const {
-      coords: {latitude, longitude},
-    } = e;
-    setCoordinates([[longitude, latitude]]);
+    if (e) {
+      const {
+        coords: {latitude, longitude},
+      } = e;
+      setCoordinates([[longitude, latitude]]);
+    }
   };
 
   return (
