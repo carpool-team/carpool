@@ -2,6 +2,7 @@ import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Preferences from '../screens/drawer/PreferencesStack/Preferences';
 import SearchLocation from '../screens/drawer/PreferencesStack/SearchLocation';
+import ShowSelected from '../screens/drawer/PreferencesStack/ShowSelected';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,13 @@ export default PreferencesStack = () => {
       <Stack.Screen
         name="SearchLocation"
         component={SearchLocation}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name="ShowSelected"
+        component={ShowSelected}
         options={{
           header: () => null,
         }}

@@ -4,8 +4,11 @@ import {vw, vh} from '../utils/constants';
 import LocationsListItem from './LocationsListItem';
 import colors from '../styles/colors';
 import sheet from '../styles/sheet';
+import {useNavigation} from '@react-navigation/core';
 
 const LocationsFlatList = ({data, loading, isEmpty}) => {
+  const navigation = useNavigation();
+
   return (
     <FlatList
       style={{
@@ -17,7 +20,12 @@ const LocationsFlatList = ({data, loading, isEmpty}) => {
       }}
       data={data}
       keyExtractor={item => item.id}
-      renderItem={({item}) => <LocationsListItem item={item} />}
+      renderItem={({item}) => (
+        <LocationsListItem
+          item={item}
+          onPress={() => navigation.navigate('ShowSelected', {selected: item})}
+        />
+      )}
       refreshControl={
         <RefreshControl
           colors={colors.green}
