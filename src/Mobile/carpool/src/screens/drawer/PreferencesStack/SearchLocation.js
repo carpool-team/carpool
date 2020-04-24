@@ -29,8 +29,15 @@ const SearchLocation = () => {
   const [place, setPlace] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    isEmpty && setIsEmpty(false);
+
+    results.length && setResults([]);
+  }, [place]);
 
   const _OnSubmit = async () => {
     if (place.length) {
@@ -47,7 +54,12 @@ const SearchLocation = () => {
 
         if (response.statusCode === 200) {
           const {features} = response.body;
-          console.log(features);
+
+          if (features.length === 0) {
+            setIsEmpty(true);
+          } else {
+            setIsEmpty(false);
+          }
           setResults(features);
         }
       } catch (err) {
@@ -80,7 +92,7 @@ const SearchLocation = () => {
         </View>
       </View>
       <View style={styles.resultsContainer}>
-        <LocationsFlatList data={results} loading={loading} />
+        <LocationsFlatList data={results} loading={loading} isEmpty={isEmpty} />
       </View>
     </SafeAreaView>
   );
