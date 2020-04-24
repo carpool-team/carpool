@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -13,6 +13,7 @@ import {useNavigation} from '@react-navigation/core';
 import BlueMarker from '../../../components/common/BlueMarker';
 import sheet from '../../../styles/sheet';
 import LocationsFlatList from '../../../components/LocationsFlatList';
+import {geocodingClient} from '../../../maps/mapbox';
 
 let examplePlaces = [];
 
@@ -27,11 +28,34 @@ for (i = 0; i < 20; i++) {
 const SearchLocation = () => {
   const [place, setPlace] = useState('');
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
 
-  const _OnSubmit = () => {
-    setResults([...examplePlaces]);
+  const _OnSubmit = async () => {
+    if (place.length) {
+      try {
+        setLoading(true);
+
+        const response = await geocodingClient
+          .forwardGeocode({
+            query: place,
+            autocomplete: false,
+            types: ['address'],
+          })
+          .send();
+
+        if (response.statusCode === 200) {
+          const {features} = response.body;
+          console.log(features);
+          setResults(features);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -50,11 +74,13 @@ const SearchLocation = () => {
             style={styles.input}
             onSubmitEditing={_OnSubmit}
             autoFocus
+            placeholder="Address"
+            returnKeyType="search"
           />
         </View>
       </View>
       <View style={styles.resultsContainer}>
-        <LocationsFlatList data={results} />
+        <LocationsFlatList data={results} loading={loading} />
       </View>
     </SafeAreaView>
   );
@@ -85,7 +111,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   inputWrapper: {
-    width: '80%',
+    width: '100%',
+    paddingHorizontal: 8 * vw,
     alignItems: 'center',
     paddingBottom: 2 * vh,
     ...sheet.rowCenter,
