@@ -6,6 +6,7 @@ export const NavBar = () => {
     <>
       <div id="container" className="navBarContainer">
         <div className="logoContainer">
+          @ts-ignore
           <img
             src={require("../../assets/logo_small.png")}
             alt="logo"
