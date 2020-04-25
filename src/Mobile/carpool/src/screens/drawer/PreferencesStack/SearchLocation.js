@@ -14,18 +14,10 @@ import BlueMarker from '../../../components/common/BlueMarker';
 import sheet from '../../../styles/sheet';
 import LocationsFlatList from '../../../components/LocationsFlatList';
 import {geocodingClient} from '../../../maps/mapbox';
-
-let examplePlaces = [];
-
-for (i = 0; i < 20; i++) {
-  examplePlaces.push({
-    id: Math.random().toString(),
-    name: 'Sofoklesa 29',
-    city: 'Poznań',
-  });
-}
+import Geolocation from '@react-native-community/geolocation';
 
 const SearchLocation = () => {
+  const [currentPosition, setCurrentPosition] = useState([]);
   const [place, setPlace] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,8 +26,14 @@ const SearchLocation = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
+    Geolocation.getCurrentPosition(info => {
+      const {longitude, latitude} = info.coords;
+      setCurrentPosition([longitude, latitude]);
+    });
+  }, []);
+
+  useEffect(() => {
     isEmpty && setIsEmpty(false);
-    // results.length && setResults([]);
 
     if (place.length > 3) {
       _OnSubmit();
@@ -54,6 +52,7 @@ const SearchLocation = () => {
             query: place,
             autocomplete: false,
             countries: ['pl'],
+            proximity: currentPosition,
           })
           .send();
 

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@mapbox/mapbox-sdk": "^0.10.0",
+    "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.9",
     "@react-native-mapbox-gl/maps": "^8.0.0",
     "@react-navigation/drawer": "^5.5.0",
