@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carpool.RestAPI", "Carpool.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpool.Core", "Carpool.Core\Carpool.Core.csproj", "{3391B4A1-DA24-4604-A61A-4CC62E9FEFAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpool.DAL", "Carpool.DAL\Carpool.DAL.csproj", "{FDF23B63-AFE5-4CF1-A46A-6071D6181AAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3391B4A1-DA24-4604-A61A-4CC62E9FEFAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3391B4A1-DA24-4604-A61A-4CC62E9FEFAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3391B4A1-DA24-4604-A61A-4CC62E9FEFAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDF23B63-AFE5-4CF1-A46A-6071D6181AAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDF23B63-AFE5-4CF1-A46A-6071D6181AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDF23B63-AFE5-4CF1-A46A-6071D6181AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDF23B63-AFE5-4CF1-A46A-6071D6181AAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
