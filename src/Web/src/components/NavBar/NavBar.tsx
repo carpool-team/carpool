@@ -1,16 +1,13 @@
 import React from "react";
 import "./NavBar.scss";
+import logo from "../../assets/logo_small.png";
 
 export const NavBar = () => {
   return (
     <>
       <div id="container" className="navBarContainer">
         <div className="logoContainer">
-          <img
-            src={require("../../assets/logo_small.png")}
-            alt="logo"
-            className="logo"
-          />
+          <img src={logo} alt="logo" className="logo" />
         </div>
         <nav className="navPlain">
           <a className="navButtonPlain " href="/">

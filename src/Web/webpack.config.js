@@ -29,11 +29,11 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-          "file-loader?hash=sha512&digest=hex&name=[hash].[ext]",
-          "image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false",
-        ],
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: "file-loader",
+        options: {
+          name: "[path][name].[ext]",
+        },
       },
       {
         test: /\.s[ac]ss$/i,
