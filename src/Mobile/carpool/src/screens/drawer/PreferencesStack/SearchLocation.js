@@ -76,6 +76,27 @@ const SearchLocation = () => {
     }
   };
 
+  const onCurrentClick = async () => {
+    if (currentPosition.length) {
+      try {
+        setLoading(true);
+
+        const response = await geocodingClient
+          .reverseGeocode({
+            query: currentPosition,
+          })
+          .send();
+
+        const result = response.body.features[0];
+        setResults([result]);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.topPanel}>
@@ -98,7 +119,12 @@ const SearchLocation = () => {
         </View>
       </View>
       <View style={styles.resultsContainer}>
-        <LocationsFlatList data={results} loading={loading} isEmpty={isEmpty} />
+        <LocationsFlatList
+          data={results}
+          loading={loading}
+          isEmpty={isEmpty}
+          _onCurrentClick={onCurrentClick}
+        />
       </View>
     </SafeAreaView>
   );

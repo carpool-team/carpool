@@ -5,8 +5,9 @@ import LocationsListItem from './LocationsListItem';
 import colors from '../styles/colors';
 import sheet from '../styles/sheet';
 import {useNavigation} from '@react-navigation/core';
+import CurrentLocationListItem from './CurrentLocationListItem';
 
-const LocationsFlatList = ({data, loading, isEmpty}) => {
+const LocationsFlatList = ({data, loading, isEmpty, _onCurrentClick}) => {
   const navigation = useNavigation();
 
   return (
@@ -32,6 +33,11 @@ const LocationsFlatList = ({data, loading, isEmpty}) => {
           tintColor={colors.green}
           refreshing={loading}
         />
+      }
+      ListHeaderComponent={
+        !data.length &&
+        !isEmpty &&
+        !loading && <CurrentLocationListItem onPress={_onCurrentClick} />
       }
       ListEmptyComponent={
         isEmpty ? (
