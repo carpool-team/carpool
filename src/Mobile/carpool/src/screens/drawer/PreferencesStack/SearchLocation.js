@@ -35,8 +35,13 @@ const SearchLocation = () => {
 
   useEffect(() => {
     isEmpty && setIsEmpty(false);
+    // results.length && setResults([]);
 
-    results.length && setResults([]);
+    if (place.length > 3) {
+      _OnSubmit();
+    } else {
+      results.length && setResults([]);
+    }
   }, [place]);
 
   const _OnSubmit = async () => {
@@ -48,12 +53,14 @@ const SearchLocation = () => {
           .forwardGeocode({
             query: place,
             autocomplete: false,
-            types: ['address'],
+            countries: ['pl'],
           })
           .send();
 
         if (response.statusCode === 200) {
           const {features} = response.body;
+
+          console.log(features);
 
           if (features.length === 0) {
             setIsEmpty(true);
