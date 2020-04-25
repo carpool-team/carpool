@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-new Promise((resolve, _) => {
+new Promise((resolve, _reject) => {
 	resolve();
 }).then(() => {
 	import("./App").then(App => {

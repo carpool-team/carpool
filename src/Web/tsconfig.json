@@ -4,7 +4,7 @@
     "outDir": "./dist/",
     "strictNullChecks": true,
     "moduleResolution": "node",
-    "allowJs": true,
+    "allowJs": false,
     "noEmit": true,
     "strict": true,
     "esModuleInterop": true,
@@ -28,6 +28,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "pretty": true
   }
 }
