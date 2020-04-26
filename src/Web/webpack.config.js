@@ -12,6 +12,12 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
   },
 
+  devServer: {
+    host: "0.0.0.0",
+    port: 8080,
+    disableHostCheck: true,
+  },
+
   module: {
     rules: [
       // we use babel-loader to load our jsx and tsx files
