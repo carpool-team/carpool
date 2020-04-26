@@ -15,15 +15,23 @@ import sheet from '../../../styles/sheet';
 import LocationsFlatList from '../../../components/LocationsFlatList';
 import {geocodingClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
+import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
 
 const SearchLocation = () => {
   const [currentPosition, setCurrentPosition] = useState([]);
   const [place, setPlace] = useState('');
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [isEmpty, setIsEmpty] = useState(false);
 
   const navigation = useNavigation();
+
+  const [features, loading, error, onSearch] = useForwardGeocoding(
+    place,
+    {
+      autocomplete: false,
+      countries: ['pl'],
+    },
+    true,
+  );
 
   useEffect(() => {
     Geolocation.getCurrentPosition(info => {
@@ -33,54 +41,12 @@ const SearchLocation = () => {
   }, []);
 
   useEffect(() => {
-    isEmpty && setIsEmpty(false);
-
-    if (place.length > 3) {
-      _OnSubmit();
-    } else {
-      results.length && setResults([]);
-    }
-  }, [place]);
-
-  const _OnSubmit = async () => {
-    if (place.length) {
-      try {
-        setLoading(true);
-
-        const response = await geocodingClient
-          .forwardGeocode({
-            query: place,
-            autocomplete: false,
-            countries: ['pl'],
-            proximity: currentPosition,
-          })
-          .send();
-
-        if (response.statusCode === 200) {
-          const {features} = response.body;
-
-          console.log(features);
-
-          if (features.length === 0) {
-            setIsEmpty(true);
-          } else {
-            setIsEmpty(false);
-          }
-          setResults(features);
-        }
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
+    setResults(features);
+  }, [features]);
 
   const onCurrentClick = async () => {
     if (currentPosition.length) {
       try {
-        setLoading(true);
-
         const response = await geocodingClient
           .reverseGeocode({
             query: currentPosition,
@@ -91,8 +57,6 @@ const SearchLocation = () => {
         setResults([result]);
       } catch (err) {
         console.log(err);
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -111,7 +75,7 @@ const SearchLocation = () => {
             value={place}
             onChangeText={setPlace}
             style={styles.input}
-            onSubmitEditing={_OnSubmit}
+            onSubmitEditing={onSearch}
             autoFocus
             placeholder="Address"
             returnKeyType="search"
@@ -122,7 +86,6 @@ const SearchLocation = () => {
         <LocationsFlatList
           data={results}
           loading={loading}
-          isEmpty={isEmpty}
           _onCurrentClick={onCurrentClick}
         />
       </View>
