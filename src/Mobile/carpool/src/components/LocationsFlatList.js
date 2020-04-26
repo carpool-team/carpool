@@ -3,11 +3,10 @@ import {FlatList, RefreshControl, Text, View} from 'react-native';
 import {vw, vh} from '../utils/constants';
 import LocationsListItem from './LocationsListItem';
 import colors from '../styles/colors';
-import sheet from '../styles/sheet';
 import {useNavigation} from '@react-navigation/core';
 import CurrentLocationListItem from './CurrentLocationListItem';
 
-const LocationsFlatList = ({data, loading, isEmpty, _onCurrentClick}) => {
+const LocationsFlatList = ({data, loading, _onCurrentClick}) => {
   const navigation = useNavigation();
 
   return (
@@ -36,28 +35,7 @@ const LocationsFlatList = ({data, loading, isEmpty, _onCurrentClick}) => {
       }
       ListHeaderComponent={
         !data.length &&
-        !isEmpty &&
         !loading && <CurrentLocationListItem onPress={_onCurrentClick} />
-      }
-      ListEmptyComponent={
-        isEmpty ? (
-          <View
-            style={{
-              width: '100%',
-              height: 12 * vh,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                ...sheet.textSemiBold,
-                fontSize: 5 * vw,
-                color: colors.blue,
-              }}>
-              No places found
-            </Text>
-          </View>
-        ) : null
       }
     />
   );
