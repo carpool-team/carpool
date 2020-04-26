@@ -13,11 +13,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 import BlueMarker from '../../../components/common/BlueMarker';
 import sheet from '../../../styles/sheet';
-import {geocodingClient} from '../../../maps/mapbox';
+import {geocodingClient, directionsClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
 import UpView from '../../../components/common/UpView';
-import StartLocationsFlaList from '../../../components/FindRoute/StartLocationsFlaList';
+import StartLocationsFlatList from '../../../components/FindRoute/StartLocationsFlatList';
 import DestinationLocationsFlatList from '../../../components/FindRoute/DestinationLocationsFlatList';
 
 const config = {
@@ -33,6 +33,7 @@ const FindRoute = () => {
   const [destinationGeo, setDestinationGeo] = useState(null);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
+  const [route, setRoute] = useState(null);
 
   const navigation = useNavigation();
   const _destination = useRef();
@@ -50,6 +51,16 @@ const FindRoute = () => {
       setCurrentPosition([longitude, latitude]);
     });
   }, []);
+
+  useEffect(() => {
+    if (route) {
+      navigation.navigate('ShowRoute', {
+        route,
+        start: startGeo,
+        destination: destinationGeo,
+      });
+    }
+  }, [route]);
 
   const onFocusDestination = () => {
     const {current} = _destination;
@@ -80,9 +91,29 @@ const FindRoute = () => {
     }
   };
 
-  const onSubmit = () => {
-    console.log(startGeo);
-    console.log(destinationGeo);
+  const onFindRoute = async () => {
+    try {
+      const response = await directionsClient
+        .getDirections({
+          profile: 'driving-traffic',
+          waypoints: [
+            {
+              coordinates: startGeo.center,
+            },
+            {
+              coordinates: destinationGeo.center,
+            },
+          ],
+          overview: 'full',
+          geometries: 'geojson',
+          //steps: true,
+        })
+        .send();
+
+      setRoute(response.body.routes[0]);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onStartItemPress = item => {
@@ -100,7 +131,7 @@ const FindRoute = () => {
   const renderList = () => {
     if (isStartFocused) {
       return (
-        <StartLocationsFlaList
+        <StartLocationsFlatList
           data={startResults}
           loading={startLoading}
           onItemPress={onStartItemPress}
@@ -128,7 +159,7 @@ const FindRoute = () => {
             style={{width: '65%', height: 6 * vh}}
             borderRadius={100}
             contentContainerStyle={sheet.center}
-            onPress={onSubmit}>
+            onPress={onFindRoute}>
             <Text
               style={{
                 color: colors.blue,
@@ -176,7 +207,7 @@ const FindRoute = () => {
             value={destination}
             onChangeText={setDestination}
             style={styles.input}
-            onSubmitEditing={onSubmit}
+            onSubmitEditing={onFindRoute}
             placeholder="To"
             returnKeyType="done"
             onFocus={() => setIsDestinationFocused(true)}
