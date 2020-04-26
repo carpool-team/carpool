@@ -14,18 +14,39 @@ body {
   width: 100%;
   height: 90px;
   display: grid;
-  grid-template-columns: auto 300px auto 300px auto auto 300px auto;
-  grid-template-areas: ". logo . navPlain . . navAccount .";
+  grid-template-columns: auto 300px auto auto;
+  grid-template-areas: " . logo navButtons . ";
+  background: linear-gradient(145deg, #ffffff, #d7d6d6);
+  box-shadow: 4px 4px 20px #8f8f8f, -8px -8px 12px #ffffff;
+}
+.navButtons {
+  display: grid;
+  grid-area: navButtons;
+  grid-template-columns: 300px auto auto auto 300px;
+  grid-template-areas: "navPlain . . . navAccount";
 }
 
-.logo {
+.logoContainer {
   grid-area: logo;
-  position: absolute;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 300px;
+  height: 90px;
+}
 
-  margin: auto;
-  top: 0;
-  left: 10px;
-  bottom: 0;
+.navPlain {
+  grid-area: navPlain;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  align-items: center;
+  justify-items: center;
+}
+
+.navButtonPlain {
+  font-size: 18px;
+  font-weight: $semi-bold;
+  color: $grayDark;
+  text-decoration: none;
 }
 
 .navAccount {
@@ -36,13 +57,6 @@ body {
   justify-items: center;
   grid-column-gap: 10px;
 }
-.navPlain {
-  grid-area: navPlain;
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  align-items: center;
-  justify-items: center;
-}
 
 .navButtonNeomorphism {
   font-size: 18px;
@@ -51,9 +65,10 @@ body {
   height: 45px;
   border: none;
   right: 5px;
-  border-radius: 57px;
+  border-radius: 20px;
   background: $background;
-  box-shadow: 19px 19px 39px #acabab, -19px -19px 39px #ffffff;
+  box-shadow: 8px 8px 12px #888888, -8px -8px 12px #ffffff;
+  cursor: pointer;
 }
 
 .navButtonLogin {
@@ -64,9 +79,85 @@ body {
   @extend .navButtonNeomorphism;
   color: $blue;
 }
-.navButtonPlain {
-  font-size: 18px;
-  font-weight: $semi-bold;
-  color: $grayDark;
-  text-decoration: none;
+
+.hamburgerIcon {
+  border-radius: 20px;
+  background: #efeeee;
+  box-shadow: 8px 8px 12px #8f8f8f, -8px -8px 12px #ffffff;
+  grid-area: burger;
+  display: none;
+  cursor: pointer;
+}
+
+.bar1,
+.bar2,
+.bar3 {
+  width: 35px;
+  height: 5px;
+  background-color: $grayDark;
+  margin: 10px 10px;
+  transition: 0.4s;
+  border-radius: 20px;
+}
+
+.change .bar1 {
+  -webkit-transform: rotate(-45deg) translate(0px, 6px);
+  transform: rotate(-45deg) translate(-9px, 12px);
+}
+
+.change .bar2 {
+  opacity: 0;
+}
+
+.change .bar3 {
+  -webkit-transform: rotate(45deg) translate(-8px, -8px);
+  transform: rotate(45deg) translate(-9px, -12px);
+}
+
+@media (max-width: 900px) {
+  .navBarContainer {
+    grid-template-columns: auto 170px;
+
+    grid-template-areas: "logo burger" ". navButtons";
+  }
+  .hamburgerIcon {
+    display: block;
+    position: absolute;
+    right: 0;
+    margin-top: 18px;
+    margin-right: 10px;
+  }
+  .navButtons {
+    float: left;
+
+    grid-template-rows: repeat(4, auto);
+    grid-template-columns: none;
+    grid-template-areas: "." "navPlain" "navAccount" ".";
+    grid-row-gap: 10px;
+    background-color: $background;
+    border-radius: 10px;
+    box-shadow: 4px 4px 7px #8f8f8f, -2px -2px 5px #ffffff;
+  }
+  .navPlain {
+    grid-row-gap: 10px;
+    grid-template-columns: none;
+  }
+  .navButtonPlain {
+    background-color: $background;
+    border-radius: 20px;
+    box-shadow: 8px 8px 12px #8f8f8f, -8px -8px 12px #ffffff;
+    width: 145px;
+    height: 45px;
+    border: none;
+    right: 5px;
+    text-align: center;
+    line-height: 45px;
+  }
+  .navAccount {
+    grid-row-gap: 10px;
+    grid-template-columns: none;
+  }
+  .hamburgerToogle {
+    display: none;
+  }
 }
