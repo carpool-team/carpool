@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
+  Text,
 } from 'react-native';
 import colors from '../../../styles/colors';
 import {vh, vw} from '../../../utils/constants';
@@ -12,35 +13,34 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 import BlueMarker from '../../../components/common/BlueMarker';
 import sheet from '../../../styles/sheet';
-import LocationsFlatList from '../../../components/LocationsFlatList';
 import {geocodingClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
+import UpView from '../../../components/common/UpView';
+import StartLocationsFlaList from '../../../components/FindRoute/StartLocationsFlaList';
+import DestinationLocationsFlatList from '../../../components/FindRoute/DestinationLocationsFlatList';
+
+const config = {
+  autocomplete: false,
+  countries: ['pl'],
+};
 
 const FindRoute = () => {
   const [currentPosition, setCurrentPosition] = useState([]);
   const [start, setStart] = useState(null);
+  const [startGeo, setStartGeo] = useState(null);
   const [destination, setDestination] = useState(null);
-  const [locationResults, setLocationResults] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [isEmpty, setIsEmpty] = useState(false);
+  const [destinationGeo, setDestinationGeo] = useState(null);
+  const [isStartFocused, setIsStartFocused] = useState(false);
+  const [isDestinationFocused, setIsDestinationFocused] = useState(false);
 
   const navigation = useNavigation();
-
-  const _start = useRef();
   const _destination = useRef();
 
-  const [
-    startResults,
-    startLoading,
-    startError,
-    onStartSearch,
-  ] = useForwardGeocoding(
-    start,
-    {
-      autocomplete: false,
-      countries: ['pl'],
-    },
+  const [startResults, startLoading] = useForwardGeocoding(start, config, true);
+  const [destinationResults, destinationLoading] = useForwardGeocoding(
+    destination,
+    config,
     true,
   );
 
@@ -51,23 +51,19 @@ const FindRoute = () => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log('RESULTS ', startResults);
-    console.log('LOADING ', startLoading);
-    console.log('ERROR ', startError);
-  }, [startResults, startLoading, startError]);
-
   const onFocusDestination = () => {
     const {current} = _destination;
-
     current && current.focus();
+  };
+
+  const onBlurDestination = () => {
+    const {current} = _destination;
+    current && current.blur();
   };
 
   const onCurrentClick = async () => {
     if (currentPosition.length) {
       try {
-        setLoading(true);
-
         const response = await geocodingClient
           .reverseGeocode({
             query: currentPosition,
@@ -75,12 +71,75 @@ const FindRoute = () => {
           .send();
 
         const result = response.body.features[0];
-        setLocationResults([result]);
+        setStart(result.place_name);
+        setStartGeo(result);
+        onFocusDestination();
       } catch (err) {
         console.log(err);
-      } finally {
-        setLoading(false);
       }
+    }
+  };
+
+  const onSubmit = () => {
+    console.log(startGeo);
+    console.log(destinationGeo);
+  };
+
+  const onStartItemPress = item => {
+    setStart(item.place_name);
+    setStartGeo(item);
+    onFocusDestination();
+  };
+
+  const onDestinationItemPress = item => {
+    setDestination(item.place_name);
+    setDestinationGeo(item);
+    onBlurDestination();
+  };
+
+  const renderList = () => {
+    if (isStartFocused) {
+      return (
+        <StartLocationsFlaList
+          data={startResults}
+          loading={startLoading}
+          onItemPress={onStartItemPress}
+          onCurrentClick={onCurrentClick}
+        />
+      );
+    } else if (isDestinationFocused) {
+      return (
+        <DestinationLocationsFlatList
+          data={destinationResults}
+          loading={destinationLoading}
+          onItemPress={onDestinationItemPress}
+        />
+      );
+    } else {
+      return (
+        <View
+          style={{
+            width: '100%',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <UpView
+            style={{width: '65%', height: 6 * vh}}
+            borderRadius={100}
+            contentContainerStyle={sheet.center}
+            onPress={onSubmit}>
+            <Text
+              style={{
+                color: colors.blue,
+                fontSize: 2.25 * vh,
+                ...sheet.textBold,
+              }}>
+              Search
+            </Text>
+          </UpView>
+        </View>
+      );
     }
   };
 
@@ -99,7 +158,6 @@ const FindRoute = () => {
         <View style={styles.inputWrapper}>
           <BlueMarker size={5 * vw} />
           <TextInput
-            ref={_start}
             value={start}
             onChangeText={setStart}
             style={styles.input}
@@ -107,6 +165,8 @@ const FindRoute = () => {
             autoFocus
             placeholder="From"
             returnKeyType="next"
+            onFocus={() => setIsStartFocused(true)}
+            onBlur={() => setIsStartFocused(false)}
           />
         </View>
         <View style={styles.inputWrapper}>
@@ -116,21 +176,15 @@ const FindRoute = () => {
             value={destination}
             onChangeText={setDestination}
             style={styles.input}
-            onSubmitEditing={() => null}
+            onSubmitEditing={onSubmit}
             placeholder="To"
-            returnKeyType="search"
+            returnKeyType="done"
+            onFocus={() => setIsDestinationFocused(true)}
+            onBlur={() => setIsDestinationFocused(false)}
           />
         </View>
       </View>
-      <View style={styles.resultsContainer}>
-        <LocationsFlatList
-          data={startResults}
-          loading={startLoading}
-          isEmpty={isEmpty}
-          _onItemPress={console.log}
-          _onCurrentClick={onCurrentClick}
-        />
-      </View>
+      <View style={styles.resultsContainer}>{renderList()}</View>
     </SafeAreaView>
   );
 };
