@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Switch } from "react-router";
 import { BreadcrumbsProvider } from "react-breadcrumbs-dynamic";
-import { Hello } from "./components/Hello/Hello";
+import Layout from "./components/layout/Layout";
 
 export default class App extends Component {
 	render() {
@@ -11,9 +11,7 @@ export default class App extends Component {
 				<Router>
 					<BreadcrumbsProvider>
 						<Switch>
-							<Route path={"/"}>
-								<Hello message={"Testing TS with React and WDS"}></Hello>
-							</Route>
+							<Route path={"/"} component={Layout} />
 						</Switch>
 					</BreadcrumbsProvider>
 				</Router>
