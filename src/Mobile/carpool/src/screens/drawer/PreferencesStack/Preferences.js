@@ -31,6 +31,20 @@ const Preferences = () => {
           Add location
         </Text>
       </UpView>
+      <UpView
+        style={{width: '65%', height: 6 * vh, marginTop: 6 * vh}}
+        borderRadius={100}
+        contentContainerStyle={sheet.center}
+        onPress={() => navigation.navigate('FindRoute')}>
+        <Text
+          style={{
+            color: colors.blue,
+            fontSize: 2.25 * vh,
+            ...sheet.textBold,
+          }}>
+          Find route
+        </Text>
+      </UpView>
     </View>
   );
 };
