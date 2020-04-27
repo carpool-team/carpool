@@ -13,20 +13,47 @@ const RouteInfoSheet = ({route}) => {
   const _renderContent = () => {
     const {duration, distance} = route;
 
+    const minutes = Math.round(duration / 60);
+    const hours = (minutes - (minutes % 60)) / 60;
+    const extraMinutes = minutes % 60;
+
+    const renderTime = () => {
+      return minutes > 60 ? (
+        <Text>
+          <Text style={styles.duration}>{hours}</Text>
+          <Text style={styles.minutes}>h </Text>
+          <Text style={styles.duration}>{extraMinutes}</Text>
+          <Text style={styles.minutes}>min</Text>
+        </Text>
+      ) : (
+        <Text>
+          <Text style={styles.duration}>{minutes}</Text>
+          <Text style={styles.minutes}> min</Text>
+        </Text>
+      );
+    };
+
+    const kilometers = (distance / 1000).toFixed(0);
+    const meters = (distance / 1000).toFixed(1) * 1000;
+
+    const renderDistance = () => {
+      return kilometers < 1 ? (
+        <Text>
+          <Text style={styles.distance}>{meters}</Text>
+          <Text style={styles.kilometers}>m</Text>
+        </Text>
+      ) : (
+        <Text>
+          <Text style={styles.distance}>{kilometers}</Text>
+          <Text style={styles.kilometers}>km</Text>
+        </Text>
+      );
+    };
+
     return (
       <View style={styles.content}>
-        <View style={sheet.rowCenter}>
-          <Text>
-            <Text style={styles.distance}>{(distance / 1000).toFixed(1)}</Text>
-            <Text style={styles.kilometers}> km</Text>
-          </Text>
-        </View>
-        <View style={sheet.rowCenter}>
-          <Text>
-            <Text style={styles.duration}>{Math.round(duration / 60)}</Text>
-            <Text style={styles.minutes}> min</Text>
-          </Text>
-        </View>
+        <View style={sheet.rowCenter}>{renderDistance()}</View>
+        <View style={sheet.rowCenter}>{renderTime()}</View>
         <UpView
           style={styles.button}
           borderRadius={100}
