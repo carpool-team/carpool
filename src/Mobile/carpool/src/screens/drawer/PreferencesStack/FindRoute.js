@@ -34,7 +34,7 @@ const FindRoute = () => {
   const [destinationGeo, setDestinationGeo] = useState(null);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
-  const [route, setRoute] = useState(null);
+  const [routes, setRoutes] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
@@ -55,14 +55,14 @@ const FindRoute = () => {
   }, []);
 
   useEffect(() => {
-    if (route) {
+    if (routes.length) {
       navigation.navigate('ShowRoute', {
-        route,
+        routes,
         start: startGeo,
         destination: destinationGeo,
       });
     }
-  }, [route]);
+  }, [routes]);
 
   const onFocusDestination = () => {
     const {current} = _destination;
@@ -109,11 +109,12 @@ const FindRoute = () => {
           ],
           overview: 'full',
           geometries: 'geojson',
+          alternatives: true,
           //steps: true,
         })
         .send();
-
-      setRoute(response.body.routes[0]);
+      console.log(response);
+      setRoutes(response.body.routes);
     } catch (err) {
       console.log(err);
     } finally {

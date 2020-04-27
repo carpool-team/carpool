@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, SafeAreaView} from 'react-native';
 import colors from '../../../styles/colors';
 import MapboxGL from '@react-native-mapbox-gl/maps';
@@ -8,18 +8,31 @@ import RouteTopSheet from '../../../components/FindRoute/RouteTopSheet';
 import Marker from '../../../components/common/Marker';
 
 const ShowRoute = props => {
-  const {route, start, destination} = props.route.params;
+  const [activeRoute, setActiveRoute] = useState(0);
 
-  const startCoords = route.geometry.coordinates[0];
-  const finishCoords = route.geometry.coordinates.slice(-1)[0];
+  const {routes, start, destination} = props.route.params;
+
+  const startCoords = routes[activeRoute].geometry.coordinates[0];
+  const finishCoords = routes[activeRoute].geometry.coordinates.slice(-1)[0];
 
   const bounds = {
     paddingLeft: 8 * vw,
     paddingRight: 8 * vw,
-    paddingTop: 16 * vh,
-    paddingBottom: 16 * vh,
+    paddingTop: 18 * vh,
+    paddingBottom: 18 * vh,
     ne: startCoords,
     sw: finishCoords,
+  };
+
+  const activeStyle = {
+    lineColor: colors.blue,
+    lineWidth: 1.5 * vw,
+    lineCap: 'round',
+  };
+  const inactiveStyle = {
+    lineColor: colors.gray,
+    lineWidth: 1.5 * vw,
+    lineCap: 'round',
   };
 
   return (
@@ -39,16 +52,19 @@ const ShowRoute = props => {
               bounds={bounds}
             />
             <MapboxGL.UserLocation />
-            <MapboxGL.ShapeSource id="route" shape={route.geometry}>
-              <MapboxGL.LineLayer
-                id="route"
-                style={{
-                  lineColor: colors.blue,
-                  lineWidth: 1.5 * vw,
-                  lineCap: 'round',
-                }}
-              />
-            </MapboxGL.ShapeSource>
+            {routes.map((item, index) => (
+              <MapboxGL.ShapeSource
+                key={index}
+                id={`route${index}`}
+                shape={item.geometry}
+                onPress={() => setActiveRoute(index)}>
+                <MapboxGL.LineLayer
+                  id={`route${index}`}
+                  style={index === activeRoute ? activeStyle : inactiveStyle}
+                  layerIndex={index === activeRoute ? 40 : 30}
+                />
+              </MapboxGL.ShapeSource>
+            ))}
             <MapboxGL.PointAnnotation
               key={finishCoords.toString()}
               id="selected"
@@ -62,7 +78,7 @@ const ShowRoute = props => {
           </MapboxGL.MapView>
         </View>
       </SafeAreaView>
-      <RouteInfoSheet route={route} />
+      <RouteInfoSheet route={routes[activeRoute]} />
     </View>
   );
 };
