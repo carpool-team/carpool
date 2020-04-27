@@ -5,7 +5,7 @@ import LocationsListItem from '../LocationsListItem';
 import colors from '../../styles/colors';
 import CurrentLocationListItem from '../CurrentLocationListItem';
 
-const StartLocationsFlaList = ({
+const StartLocationsFlatList = ({
   data,
   loading,
   onItemPress,
@@ -41,4 +41,4 @@ const StartLocationsFlaList = ({
   );
 };
 
-export default StartLocationsFlaList;
+export default StartLocationsFlatList;
