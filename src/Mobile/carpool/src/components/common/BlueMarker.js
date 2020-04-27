@@ -7,17 +7,17 @@ const BlueMarker = ({size, style}) => {
     width: size,
     height: size,
     borderRadius: size,
-    borderWidth: 0.125 * size,
-    borderColor: colors.blue,
+    backgroundColor: colors.blue,
     alignItems: 'center',
     justifyContent: 'center',
     ...style,
   };
   const smallCircleStyle = {
-    width: size / 2,
-    height: size / 2,
+    width: size / 1.5,
+    height: size / 1.5,
     borderRadius: size / 2,
-    backgroundColor: colors.blue,
+    borderWidth: 0.1 * size,
+    borderColor: '#fff',
   };
 
   return (

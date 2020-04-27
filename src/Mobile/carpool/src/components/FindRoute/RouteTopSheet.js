@@ -3,19 +3,27 @@ import {View, Text, StyleSheet} from 'react-native';
 import colors from '../../styles/colors';
 import {vw, vh} from '../../utils/constants';
 import sheet from '../../styles/sheet';
+import BlueMarker from '../common/BlueMarker';
+import Marker from '../common/Marker';
 
 const RouteTopSheet = ({start, destination}) => {
   return (
     <View style={styles.topSheet}>
       <View style={styles.contentContainer}>
         <View style={sheet.rowCenter}>
-          <Text style={styles.from}>From: </Text>
+          <BlueMarker size={4 * vw} style={{marginRight: 3 * vw}} />
+          {/* <Text style={styles.from}>From: </Text> */}
           <Text style={styles.placeName} numberOfLines={1}>
             {start.place_name}
           </Text>
         </View>
         <View style={[sheet.rowCenter, {marginTop: 2 * vh}]}>
-          <Text style={styles.to}>To: </Text>
+          <Marker
+            color={colors.green}
+            size={4 * vw}
+            style={{marginRight: 3 * vw}}
+          />
+          {/* <Text style={styles.to}>To: </Text> */}
           <Text style={styles.placeName} numberOfLines={1}>
             {destination.place_name}
           </Text>

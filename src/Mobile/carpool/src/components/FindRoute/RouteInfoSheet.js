@@ -4,8 +4,12 @@ import {vh, vw} from '../../utils/constants';
 import colors from '../../styles/colors';
 import sheet from '../../styles/sheet';
 import BottomSheet from 'reanimated-bottom-sheet';
+import UpView from '../common/UpView';
+import {useNavigation} from '@react-navigation/core';
 
 const RouteInfoSheet = ({route}) => {
+  const navigation = useNavigation();
+
   const _renderContent = () => {
     const {duration, distance} = route;
 
@@ -23,6 +27,13 @@ const RouteInfoSheet = ({route}) => {
             <Text style={styles.minutes}> min</Text>
           </Text>
         </View>
+        <UpView
+          style={styles.button}
+          borderRadius={100}
+          contentContainerStyle={sheet.center}
+          onPress={() => navigation.goBack()}>
+          <Text style={styles.goBack}>Go back</Text>
+        </UpView>
       </View>
     );
   };
@@ -43,8 +54,8 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: colors.background,
     height: '100%',
-    paddingTop: 1 * vh,
-    paddingBottom: 6 * vh,
+    paddingTop: 2 * vh,
+    paddingBottom: 5 * vh,
     paddingHorizontal: 8 * vw,
     flexDirection: 'row',
     alignItems: 'center',
@@ -83,6 +94,15 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20 * vw,
     borderTopLeftRadius: 20 * vw,
     height: 2.5 * vh,
+  },
+  button: {
+    width: 25 * vw,
+    height: 6 * vh,
+  },
+  goBack: {
+    color: colors.red,
+    fontSize: 2.25 * vh,
+    ...sheet.textBold,
   },
 });
 
