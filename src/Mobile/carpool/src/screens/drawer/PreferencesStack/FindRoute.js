@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   Text,
+  ActivityIndicator,
 } from 'react-native';
 import colors from '../../../styles/colors';
 import {vh, vw} from '../../../utils/constants';
@@ -34,6 +35,7 @@ const FindRoute = () => {
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
   const [route, setRoute] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
   const _destination = useRef();
@@ -93,6 +95,7 @@ const FindRoute = () => {
 
   const onFindRoute = async () => {
     try {
+      setLoading(true);
       const response = await directionsClient
         .getDirections({
           profile: 'driving-traffic',
@@ -113,6 +116,8 @@ const FindRoute = () => {
       setRoute(response.body.routes[0]);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,20 +160,24 @@ const FindRoute = () => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <UpView
-            style={{width: '65%', height: 6 * vh}}
-            borderRadius={100}
-            contentContainerStyle={sheet.center}
-            onPress={onFindRoute}>
-            <Text
-              style={{
-                color: colors.blue,
-                fontSize: 2.25 * vh,
-                ...sheet.textBold,
-              }}>
-              Search
-            </Text>
-          </UpView>
+          {loading ? (
+            <ActivityIndicator size="large" color={colors.green} />
+          ) : (
+            <UpView
+              style={{width: '65%', height: 6 * vh}}
+              borderRadius={100}
+              contentContainerStyle={sheet.center}
+              onPress={onFindRoute}>
+              <Text
+                style={{
+                  color: colors.blue,
+                  fontSize: 2.25 * vh,
+                  ...sheet.textBold,
+                }}>
+                Search
+              </Text>
+            </UpView>
+          )}
         </View>
       );
     }

@@ -1,18 +1,26 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, SafeAreaView} from 'react-native';
 import colors from '../../../styles/colors';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {vw} from '../../../utils/constants';
-import {useNavigation} from '@react-navigation/core';
+import {vw, vh} from '../../../utils/constants';
 import RouteInfoSheet from '../../../components/FindRoute/RouteInfoSheet';
 import RouteTopSheet from '../../../components/FindRoute/RouteTopSheet';
+import Marker from '../../../components/common/Marker';
 
 const ShowRoute = props => {
-  const [coordinates, setCoordinates] = useState([16, 879392, 52, 445182]);
-
   const {route, start, destination} = props.route.params;
 
-  console.log(route);
+  const startCoords = route.geometry.coordinates[0];
+  const finishCoords = route.geometry.coordinates.slice(-1)[0];
+
+  const bounds = {
+    paddingLeft: 8 * vw,
+    paddingRight: 8 * vw,
+    paddingTop: 16 * vh,
+    paddingBottom: 16 * vh,
+    ne: startCoords,
+    sw: finishCoords,
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -22,13 +30,13 @@ const ShowRoute = props => {
           <MapboxGL.MapView
             style={{flex: 1}}
             onPress={event => console.log(event)}
-            styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft">
+            styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
+            contentInset={10}>
             <MapboxGL.Camera
-              zoomLevel={16}
+              maxZoomLevel={19}
               animationMode="flyTo"
               animationDuration={0}
-              followUserLocation
-              followUserMode={'normal'}
+              bounds={bounds}
             />
             <MapboxGL.UserLocation />
             <MapboxGL.ShapeSource id="route" shape={route.geometry}>
@@ -41,6 +49,16 @@ const ShowRoute = props => {
                 }}
               />
             </MapboxGL.ShapeSource>
+            <MapboxGL.PointAnnotation
+              key={finishCoords.toString()}
+              id="selected"
+              coordinate={finishCoords}>
+              <Marker
+                color={colors.green}
+                size={5 * vw}
+                style={{marginTop: -6 * vw}}
+              />
+            </MapboxGL.PointAnnotation>
           </MapboxGL.MapView>
         </View>
       </SafeAreaView>
