@@ -113,7 +113,7 @@ const FindRoute = () => {
           //steps: true,
         })
         .send();
-      console.log(response);
+
       setRoutes(response.body.routes);
     } catch (err) {
       console.log(err);
@@ -198,31 +198,53 @@ const FindRoute = () => {
         </View>
         <View style={styles.inputWrapper}>
           <BlueMarker size={5 * vw} />
-          <TextInput
-            value={start}
-            onChangeText={setStart}
-            style={styles.input}
-            onSubmitEditing={onFocusDestination}
-            autoFocus
-            placeholder="From"
-            returnKeyType="next"
-            onFocus={() => setIsStartFocused(true)}
-            onBlur={() => setIsStartFocused(false)}
-          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={start}
+              onChangeText={setStart}
+              style={styles.input}
+              onSubmitEditing={onFocusDestination}
+              autoFocus
+              placeholder="From"
+              returnKeyType="next"
+              onFocus={() => setIsStartFocused(true)}
+              onBlur={() => setIsStartFocused(false)}
+            />
+            {startGeo && isStartFocused ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setStart(null);
+                  setStartGeo(null);
+                }}>
+                <Icon name="close" color={colors.grayVeryDark} size={6 * vw} />
+              </TouchableOpacity>
+            ) : null}
+          </View>
         </View>
         <View style={styles.inputWrapper}>
           <BlueMarker size={5 * vw} />
-          <TextInput
-            ref={_destination}
-            value={destination}
-            onChangeText={setDestination}
-            style={styles.input}
-            onSubmitEditing={onFindRoute}
-            placeholder="To"
-            returnKeyType="done"
-            onFocus={() => setIsDestinationFocused(true)}
-            onBlur={() => setIsDestinationFocused(false)}
-          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              ref={_destination}
+              value={destination}
+              onChangeText={setDestination}
+              style={styles.input}
+              onSubmitEditing={onFindRoute}
+              placeholder="To"
+              returnKeyType="done"
+              onFocus={() => setIsDestinationFocused(true)}
+              onBlur={() => setIsDestinationFocused(false)}
+            />
+            {destinationGeo && isDestinationFocused ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setDestination(null);
+                  setDestinationGeo(null);
+                }}>
+                <Icon name="close" color={colors.grayVeryDark} size={6 * vw} />
+              </TouchableOpacity>
+            ) : null}
+          </View>
         </View>
       </View>
       <View style={styles.resultsContainer}>{renderList()}</View>
@@ -262,12 +284,16 @@ const styles = StyleSheet.create({
     marginVertical: 0.5 * vh,
     ...sheet.rowCenter,
   },
+  inputContainer: {
+    flex: 1,
+    borderBottomWidth: 0.2 * vh,
+    borderColor: colors.grayDark,
+    marginLeft: 2 * vw,
+    ...sheet.rowCenter,
+  },
   input: {
     flex: 1,
     ...sheet.textMedium,
-    marginLeft: 2 * vw,
-    borderBottomWidth: 0.2 * vh,
-    borderColor: colors.grayDark,
     fontSize: 4 * vw,
     paddingVertical: 0.3 * vh,
     paddingHorizontal: 1 * vw,

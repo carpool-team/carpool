@@ -56,6 +56,8 @@ export default useForwardGeocoding = (
       } else {
         results.length && setResults([]);
       }
+    } else {
+      results.length && setResults([]);
     }
   }, [place]);
 
