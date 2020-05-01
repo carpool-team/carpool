@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView} from 'react-native';
 import colors from '../../../styles/colors';
 import MapboxGL from '@react-native-mapbox-gl/maps';
@@ -6,34 +6,47 @@ import {vw, vh} from '../../../utils/constants';
 import RouteInfoSheet from '../../../components/FindRoute/RouteInfoSheet';
 import RouteTopSheet from '../../../components/FindRoute/RouteTopSheet';
 import Marker from '../../../components/common/Marker';
+import {multiPoint} from '@turf/helpers';
+import bbox from '@turf/bbox';
 
-const ShowRoute = props => {
-  const [activeRoute, setActiveRoute] = useState(0);
+const getBounds = routesArray => {
+  const allCoords = routesArray.map(rt => rt.geometry.coordinates).flat(1);
+  const allPoints = multiPoint(allCoords);
+  const boundingBox = bbox(allPoints);
+  const [ne1, ne2, sw1, sw2] = boundingBox;
 
-  const {routes, start, destination} = props.route.params;
-
-  const startCoords = routes[activeRoute].geometry.coordinates[0];
-  const finishCoords = routes[activeRoute].geometry.coordinates.slice(-1)[0];
-
-  const bounds = {
+  return {
     paddingLeft: 8 * vw,
     paddingRight: 8 * vw,
     paddingTop: 18 * vh,
     paddingBottom: 18 * vh,
-    ne: startCoords,
-    sw: finishCoords,
+    ne: [ne1, ne2],
+    sw: [sw1, sw2],
   };
+};
 
-  const activeStyle = {
-    lineColor: colors.blue,
-    lineWidth: 1.5 * vw,
-    lineCap: 'round',
-  };
-  const inactiveStyle = {
-    lineColor: colors.gray,
-    lineWidth: 1.5 * vw,
-    lineCap: 'round',
-  };
+const activeStyle = {
+  lineColor: colors.blue,
+  lineWidth: 1.5 * vw,
+  lineCap: 'round',
+};
+const inactiveStyle = {
+  lineColor: colors.gray,
+  lineWidth: 1.5 * vw,
+  lineCap: 'round',
+};
+
+const ShowRoute = props => {
+  const [activeRoute, setActiveRoute] = useState(0);
+  const [bounds, setBounds] = useState(null);
+  const {routes, start, destination} = props.route.params;
+
+  const finishCoords = routes[activeRoute].geometry.coordinates.slice(-1)[0];
+
+  useEffect(() => {
+    const bds = getBounds(routes);
+    setBounds(bds);
+  }, []);
 
   return (
     <View style={{flex: 1}}>
@@ -49,7 +62,7 @@ const ShowRoute = props => {
               maxZoomLevel={19}
               animationMode="flyTo"
               animationDuration={0}
-              bounds={bounds}
+              bounds={bounds ? bounds : undefined}
             />
             <MapboxGL.UserLocation />
             {routes.map((item, index) => (
