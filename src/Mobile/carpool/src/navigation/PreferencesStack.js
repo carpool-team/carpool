@@ -4,6 +4,7 @@ import Preferences from '../screens/drawer/PreferencesStack/Preferences';
 import SearchLocation from '../screens/drawer/PreferencesStack/SearchLocation';
 import ShowSelected from '../screens/drawer/PreferencesStack/ShowSelected';
 import FindRoute from '../screens/drawer/PreferencesStack/FindRoute';
+import ShowRoute from '../screens/drawer/PreferencesStack/ShowRoute';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,13 @@ export default PreferencesStack = () => {
       <Stack.Screen
         name="FindRoute"
         component={FindRoute}
+        options={{
+          header: () => null,
+        }}
+      />
+      <Stack.Screen
+        name="ShowRoute"
+        component={ShowRoute}
         options={{
           header: () => null,
         }}

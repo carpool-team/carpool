@@ -50,8 +50,12 @@ export default useForwardGeocoding = (
   };
 
   useEffect(() => {
-    if (place?.length > trigger) {
-      onSearch();
+    if (place) {
+      if (place.length > trigger) {
+        onSearch();
+      } else {
+        results.length && setResults([]);
+      }
     } else {
       results.length && setResults([]);
     }
