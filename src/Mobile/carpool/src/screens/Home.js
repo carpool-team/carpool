@@ -3,6 +3,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {SafeAreaView, View} from 'react-native';
 import colors from '../styles/colors';
 import HamburgerMenu from '../components/navigation/HamburgerMenu';
+import AccountSwitch from '../components/navigation/AccountSwitch';
 
 const Home = () => {
   const [coordinates, setCoordinates] = useState([
@@ -23,6 +24,7 @@ const Home = () => {
       <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
         <View style={{flex: 1}}>
           <HamburgerMenu />
+          <AccountSwitch />
           <MapboxGL.MapView
             style={{flex: 1}}
             onPress={event => console.log(event)}
