@@ -114,12 +114,14 @@ body {
   transform: rotate(45deg) translate(-9px, -12px);
 }
 
-@media (max-width: 900px) {
+@media only screen and (max-width: 900px) {
   .navBarContainer {
-    grid-template-columns: auto 170px;
-
-    grid-template-areas: "logo burger" ". navButtons";
+    background: $background;
+    box-shadow: none;
+    grid-template-columns: auto auto;
+    grid-template-areas: "logo burger" "navButtons navButtons";
   }
+
   .hamburgerIcon {
     display: block;
     position: absolute;
@@ -128,30 +130,32 @@ body {
     margin-right: 10px;
   }
   .navButtons {
-    float: left;
+    float: right;
 
     grid-template-rows: repeat(4, auto);
     grid-template-columns: none;
     grid-template-areas: "." "navPlain" "navAccount" ".";
-    grid-row-gap: 10px;
+    grid-row-gap: 15px;
     background-color: $background;
-    border-radius: 10px;
-    box-shadow: 4px 4px 7px #8f8f8f, -2px -2px 5px #ffffff;
   }
   .navPlain {
-    grid-row-gap: 10px;
+    grid-row-gap: 15px;
     grid-template-columns: none;
   }
   .navButtonPlain {
     background-color: $background;
     border-radius: 20px;
     box-shadow: 8px 8px 12px #8f8f8f, -8px -8px 12px #ffffff;
-    width: 145px;
+    width: 80%;
     height: 45px;
     border: none;
     right: 5px;
     text-align: center;
     line-height: 45px;
+  }
+  .navButtonNeomorphism {
+    width: 80%;
+    grid-gap: 15px;
   }
   .navAccount {
     grid-row-gap: 10px;
