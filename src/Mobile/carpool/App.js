@@ -4,6 +4,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {LightTheme} from './src/styles/themes';
 import MainStackNavigator from './src/navigation/MainStackNavigator';
 import config from './config';
+import {AccountStore} from './src/context/AccountContext';
 
 MapboxGL.setAccessToken(config.mapboxKey);
 
@@ -14,7 +15,9 @@ const App = () => {
 
   return (
     <NavigationContainer theme={LightTheme}>
-      <MainStackNavigator />
+      <AccountStore>
+        <MainStackNavigator />
+      </AccountStore>
     </NavigationContainer>
   );
 };
