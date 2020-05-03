@@ -28,4 +28,9 @@ export default sheet = {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  rowCenterSplit: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
 };

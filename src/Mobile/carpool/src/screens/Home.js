@@ -87,7 +87,7 @@ const Home = () => {
                 onSelected={e => {
                   _onShow();
                   setCenter(point.coordinates);
-                  setRide(point.ride);
+                  setRide(point);
                   //_bottomSheet.current.snapTo(0);
                 }}
                 onDeselected={() => {
@@ -108,7 +108,11 @@ const Home = () => {
           </MapboxGL.MapView>
         </View>
       </SafeAreaView>
-      <RideInfoSheet visible={visible} ride={ride} />
+      <RideInfoSheet
+        visible={visible}
+        point={ride}
+        userLocation={coordinates}
+      />
     </View>
   );
 };

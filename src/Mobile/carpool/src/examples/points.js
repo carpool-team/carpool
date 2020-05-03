@@ -5,6 +5,7 @@ export const examplePassengerPoints = [
     timeLeft: 35,
     ride: {
       id: Math.random().toString(),
+      timeLeft: 35,
       user: {
         id: Math.random().toString(),
         firstName: 'John',
@@ -22,6 +23,7 @@ export const examplePassengerPoints = [
     timeLeft: 50,
     ride: {
       id: Math.random().toString(),
+      timeLeft: 50,
       user: {
         id: Math.random().toString(),
         firstName: 'Brandon',
@@ -39,6 +41,7 @@ export const examplePassengerPoints = [
     timeLeft: 19,
     ride: {
       id: Math.random().toString(),
+      timeLeft: 19,
       user: {
         id: Math.random().toString(),
         firstName: 'Stephen',
@@ -56,6 +59,7 @@ export const examplePassengerPoints = [
     timeLeft: 42,
     ride: {
       id: Math.random().toString(),
+      timeLeft: 42,
       user: {
         id: Math.random().toString(),
         firstName: 'Steve',
@@ -73,6 +77,7 @@ export const examplePassengerPoints = [
     timeLeft: 90,
     ride: {
       id: Math.random().toString(),
+      timeLeft: 90,
       user: {
         id: Math.random().toString(),
         firstName: 'Gordon',
@@ -90,6 +95,7 @@ export const examplePassengerPoints = [
     timeLeft: 120,
     ride: {
       id: Math.random().toString(),
+      timeLeft: 120,
       user: {
         id: Math.random().toString(),
         firstName: 'Marco',
@@ -107,6 +113,7 @@ export const examplePassengerPoints = [
     timeLeft: 7,
     ride: {
       id: Math.random().toString(),
+      timeLeft: 7,
       user: {
         id: Math.random().toString(),
         firstName: 'Bill',
@@ -124,6 +131,7 @@ export const examplePassengerPoints = [
     timeLeft: 180,
     ride: {
       id: Math.random().toString(),
+      timeLeft: 180,
       user: {
         id: Math.random().toString(),
         firstName: 'Bradley',
