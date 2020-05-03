@@ -14,6 +14,7 @@ export const examplePassengerPoints = [
       group: {
         id: Math.random().toString(),
         name: 'Corporation inc',
+        coordinates: [16.717880781607562, 52.449441753937776],
       },
     },
   },
@@ -32,6 +33,7 @@ export const examplePassengerPoints = [
       group: {
         id: Math.random().toString(),
         name: 'Gym fitness',
+        coordinates: [16.873619568494547, 52.47400508902609],
       },
     },
   },
@@ -50,6 +52,7 @@ export const examplePassengerPoints = [
       group: {
         id: Math.random().toString(),
         name: 'Gym fitness',
+        coordinates: [16.873619568494547, 52.47400508902609],
       },
     },
   },
@@ -68,6 +71,7 @@ export const examplePassengerPoints = [
       group: {
         id: Math.random().toString(),
         name: 'Corporation inc',
+        coordinates: [16.717880781607562, 52.449441753937776],
       },
     },
   },
@@ -86,6 +90,7 @@ export const examplePassengerPoints = [
       group: {
         id: Math.random().toString(),
         name: 'Grocery store',
+        coordinates: [16.8969900272229, 52.447001762887766],
       },
     },
   },
@@ -104,6 +109,7 @@ export const examplePassengerPoints = [
       group: {
         id: Math.random().toString(),
         name: 'Grocery store',
+        coordinates: [16.8969900272229, 52.447001762887766],
       },
     },
   },
@@ -122,6 +128,7 @@ export const examplePassengerPoints = [
       group: {
         id: Math.random().toString(),
         name: 'Corporation inc',
+        coordinates: [16.717880781607562, 52.449441753937776],
       },
     },
   },
@@ -140,6 +147,7 @@ export const examplePassengerPoints = [
       group: {
         id: Math.random().toString(),
         name: 'Gym fitness',
+        coordinates: [16.873619568494547, 52.47400508902609],
       },
     },
   },

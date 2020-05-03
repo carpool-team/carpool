@@ -68,7 +68,8 @@ const Home = () => {
             style={{flex: 1}}
             styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
             contentInset={10}
-            compassEnabled={false}>
+            compassEnabled={false}
+            onPress={e => console.log(e)}>
             <MapboxGL.Camera
               zoomLevel={14}
               maxZoomLevel={19}
