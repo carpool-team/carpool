@@ -7,6 +7,7 @@ import sheet from '../../styles/sheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import turfDistance from '@turf/distance';
 import {point as turfPoint} from '@turf/helpers';
+import Marker from '../common/Marker';
 
 const getColor = time => {
   if (time < 20) {
@@ -150,6 +151,70 @@ const RideInfoSheet = ({visible, point, userLocation}) => {
                 </Text>
               </View>
             </View>
+          </UpView>
+          <View style={{width: '100%', marginTop: 3 * vh, ...sheet.rowCenter}}>
+            <Marker
+              size={8 * vw}
+              color={getColor(point.ride.timeLeft)}
+              style={{marginRight: 3 * vw}}
+            />
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={{flex: 4}}>
+                <Text
+                  style={{
+                    ...sheet.textBold,
+                    color: colors.blue,
+                    fontSize: 4 * vw,
+                  }}>
+                  From:{' '}
+                </Text>
+                <Text
+                  style={{
+                    ...sheet.textSemiBold,
+                    fontSize: 4 * vw,
+                    color: colors.grayDark,
+                  }}>
+                  Stefana Batorego 9, Poznań
+                </Text>
+              </Text>
+              <Text style={{flex: 1}}>
+                <Text
+                  style={{
+                    ...sheet.textBold,
+                    color: colors.green,
+                    fontSize: 4 * vw,
+                  }}>
+                  To:{' '}
+                </Text>
+                <Text
+                  style={{
+                    ...sheet.textSemiBold,
+                    fontSize: 4 * vw,
+                    color: colors.grayDark,
+                  }}>
+                  Zakole 7, Suchy Las
+                </Text>
+              </Text>
+            </View>
+          </View>
+          <UpView
+            style={{width: '65%', height: 6 * vh, marginTop: 3 * vh}}
+            borderRadius={100}
+            contentContainerStyle={sheet.center}
+            onPress={() => null}>
+            <Text
+              style={{
+                ...sheet.textBold,
+                color: colors.green,
+                fontSize: 4 * vw,
+              }}>
+              Select
+            </Text>
           </UpView>
         </View>
       </View>
