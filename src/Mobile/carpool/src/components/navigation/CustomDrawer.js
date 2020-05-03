@@ -10,8 +10,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import sheet from '../../styles/sheet';
 import UpView from '../common/UpView';
+import {examplePassengerPoints} from '../../examples/points';
+import {useNavigation} from '@react-navigation/core';
 
 export default CustomDrawer = props => {
+  const [ride, setRide] = React.useState(examplePassengerPoints[2]);
+  const navigation = useNavigation();
+
+  const {firstName, lastName} = ride.ride.user;
+
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props} style={{flex: 1}}>
@@ -46,9 +53,13 @@ export default CustomDrawer = props => {
               style={styles.rideCard}
               contentContainerStyle={styles.rideCardContent}
               borderRadius={4 * vw}
-              onPress={() => null}>
-              <Text style={styles.driversName}>Jonathan</Text>
-              <Text style={styles.leaving}>Leaving in 6 minutes</Text>
+              onPress={() => navigation.navigate('Home', {ride})}>
+              <Text
+                style={styles.driversName}>{`${firstName} ${lastName}`}</Text>
+              <Text
+                style={
+                  styles.leaving
+                }>{`Leaving in ${ride.timeLeft} minutes`}</Text>
             </UpView>
           </View>
           <DrawerItemList {...props} />

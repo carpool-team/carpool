@@ -17,6 +17,7 @@ export const examplePassengerPoints = [
         coordinates: [16.717880781607562, 52.449441753937776],
       },
     },
+    signedUp: false,
   },
   {
     id: Math.random().toString(),
@@ -36,6 +37,7 @@ export const examplePassengerPoints = [
         coordinates: [16.873619568494547, 52.47400508902609],
       },
     },
+    signedUp: false,
   },
   {
     id: Math.random().toString(),
@@ -55,6 +57,7 @@ export const examplePassengerPoints = [
         coordinates: [16.873619568494547, 52.47400508902609],
       },
     },
+    signedUp: true,
   },
   {
     id: Math.random().toString(),
@@ -74,6 +77,7 @@ export const examplePassengerPoints = [
         coordinates: [16.717880781607562, 52.449441753937776],
       },
     },
+    signedUp: false,
   },
   {
     id: Math.random().toString(),
@@ -93,6 +97,7 @@ export const examplePassengerPoints = [
         coordinates: [16.8969900272229, 52.447001762887766],
       },
     },
+    signedUp: false,
   },
   {
     id: Math.random().toString(),
@@ -112,6 +117,7 @@ export const examplePassengerPoints = [
         coordinates: [16.8969900272229, 52.447001762887766],
       },
     },
+    signedUp: false,
   },
   {
     id: Math.random().toString(),
@@ -131,6 +137,7 @@ export const examplePassengerPoints = [
         coordinates: [16.717880781607562, 52.449441753937776],
       },
     },
+    signedUp: false,
   },
   {
     id: Math.random().toString(),
@@ -150,5 +157,6 @@ export const examplePassengerPoints = [
         coordinates: [16.873619568494547, 52.47400508902609],
       },
     },
+    signedUp: false,
   },
 ];

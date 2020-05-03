@@ -95,7 +95,13 @@ const RideInfoSheet = ({visible, point, userLocation}) => {
           borderRadius={100}
           contentContainerStyle={sheet.center}
           onPress={() => null}>
-          <Text style={styles.buttonText}>Select</Text>
+          {point.signedUp ? (
+            <Text style={[styles.buttonText, {color: colors.blue}]}>
+              Show way
+            </Text>
+          ) : (
+            <Text style={styles.buttonText}>Select</Text>
+          )}
         </UpView>
       </View>
     </View>

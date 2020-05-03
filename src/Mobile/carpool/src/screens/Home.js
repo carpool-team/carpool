@@ -1,13 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {SafeAreaView, View, Text, TouchableOpacity} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import colors from '../styles/colors';
 import HamburgerMenu from '../components/navigation/HamburgerMenu';
 import AccountSwitch from '../components/navigation/AccountSwitch';
 import Marker from '../components/common/Marker';
-import {vw, vh} from '../utils/constants';
+import {vw} from '../utils/constants';
 import {examplePassengerPoints} from '../examples/points';
-import BottomSheet from 'reanimated-bottom-sheet';
 import RideInfoSheet from '../components/Ride/RideInfoSheet';
 import {AccountContext} from '../context/AccountContext';
 
@@ -27,7 +26,7 @@ const getColor = time => {
   }
 };
 
-const Home = () => {
+const Home = ({navigation, route}) => {
   const {
     accountState: {activeAccount},
   } = React.useContext(AccountContext);
@@ -53,6 +52,14 @@ const Home = () => {
     }
   }, [activeAccount]);
 
+  useEffect(() => {
+    if (route.params) {
+      _onShow();
+      setRide(route.params.ride);
+      setCenter(route.params.ride.coordinates);
+    }
+  }, [route]);
+
   const _onLocateUser = e => {
     if (e) {
       const {
@@ -77,7 +84,16 @@ const Home = () => {
         style={{flex: 1}}
         styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
         contentInset={10}
-        compassEnabled={false}>
+        compassEnabled={false}
+        onPress={() => {
+          if (visible) {
+            _onHide();
+            setRide(null);
+            setCenter(coordinates);
+          }
+        }}
+        rotateEnabled={false}
+        >
         <MapboxGL.Camera
           zoomLevel={14}
           maxZoomLevel={19}
@@ -100,13 +116,15 @@ const Home = () => {
               _onHide();
               setRide(null);
               setCenter(coordinates);
-            }}>
+            }}
+            //selected={false}
+          >
             <Marker
               color={getColor(point.timeLeft)}
               size={6 * vw}
               style={{
                 marginTop: -6 * vw,
-                padding: 2 * vw,
+                padding: 2.5 * vw,
               }}
             />
           </MapboxGL.PointAnnotation>
