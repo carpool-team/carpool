@@ -4,6 +4,8 @@ import { Switch } from "react-router";
 import { BreadcrumbsProvider } from "react-breadcrumbs-dynamic";
 import Layout from "./components/layout/Layout";
 
+import "scss_path/main.scss";
+
 export default class App extends Component {
 	render() {
 		return (
