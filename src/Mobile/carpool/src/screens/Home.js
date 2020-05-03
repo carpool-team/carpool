@@ -9,6 +9,7 @@ import {vw, vh} from '../utils/constants';
 import {examplePassengerPoints} from '../examples/points';
 import BottomSheet from 'reanimated-bottom-sheet';
 import RideInfoSheet from '../components/Ride/RideInfoSheet';
+import {AccountContext} from '../context/AccountContext';
 
 const getColor = time => {
   if (time < 20) {
@@ -27,18 +28,30 @@ const getColor = time => {
 };
 
 const Home = () => {
+  const {
+    accountState: {activeAccount},
+  } = React.useContext(AccountContext);
+
   const [coordinates, setCoordinates] = useState([]);
   const [center, setCenter] = useState([]);
   const [ride, setRide] = useState(null);
   const [visible, setVisible] = useState(false);
 
-  const _map = useRef(null);
+  const _passengerMap = useRef(null);
+  const _driverMap = useRef(null);
 
   useEffect(() => {
     if (!center.length) {
       setCenter(coordinates);
     }
   }, [coordinates]);
+
+  useEffect(() => {
+    if (activeAccount === 'driver' && visible) {
+      setCenter(coordinates);
+      _onHide();
+    }
+  }, [activeAccount]);
 
   const _onLocateUser = e => {
     if (e) {
@@ -57,63 +70,85 @@ const Home = () => {
     setVisible(false);
   };
 
+  const renderPassenger = () => (
+    <>
+      <MapboxGL.MapView
+        ref={_passengerMap}
+        style={{flex: 1}}
+        styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
+        contentInset={10}
+        compassEnabled={false}>
+        <MapboxGL.Camera
+          zoomLevel={14}
+          maxZoomLevel={19}
+          animationMode="flyTo"
+          animationDuration={500}
+          centerCoordinate={[center[0], center[1] - 0.0015]}
+        />
+        <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
+        {examplePassengerPoints.map(point => (
+          <MapboxGL.PointAnnotation
+            key={point.id}
+            id="selected"
+            coordinate={point.coordinates}
+            onSelected={e => {
+              _onShow();
+              setCenter(point.coordinates);
+              setRide(point);
+            }}
+            onDeselected={() => {
+              _onHide();
+              setRide(null);
+              setCenter(coordinates);
+            }}>
+            <Marker
+              color={getColor(point.timeLeft)}
+              size={6 * vw}
+              style={{
+                marginTop: -6 * vw,
+                padding: 2 * vw,
+              }}
+            />
+          </MapboxGL.PointAnnotation>
+        ))}
+      </MapboxGL.MapView>
+      <RideInfoSheet
+        visible={visible}
+        point={ride}
+        userLocation={coordinates}
+      />
+    </>
+  );
+
+  const renderDriver = () => (
+    <MapboxGL.MapView
+      ref={_driverMap}
+      style={{flex: 1}}
+      styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
+      contentInset={10}
+      compassEnabled={false}>
+      <MapboxGL.Camera
+        zoomLevel={14}
+        maxZoomLevel={19}
+        animationMode="flyTo"
+        animationDuration={500}
+        //followUserLocation
+        //followUserMode={'normal'}
+        centerCoordinate={[coordinates[0], coordinates[1] - 0.0015]}
+      />
+      <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
+    </MapboxGL.MapView>
+  );
+
   return (
     <View style={{flex: 1}}>
       <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
         <View style={{flex: 1}}>
           <HamburgerMenu />
           <AccountSwitch />
-          <MapboxGL.MapView
-            ref={_map}
-            style={{flex: 1}}
-            styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
-            contentInset={10}
-            compassEnabled={false}
-            onPress={e => console.log(e)}>
-            <MapboxGL.Camera
-              zoomLevel={14}
-              maxZoomLevel={19}
-              animationMode="flyTo"
-              animationDuration={500}
-              //followUserLocation={!center.length}
-              //followUserMode={'normal'}
-              centerCoordinate={[center[0], center[1] - 0.0015]}
-            />
-            <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
-            {examplePassengerPoints.map(point => (
-              <MapboxGL.PointAnnotation
-                key={point.id}
-                id="selected"
-                coordinate={point.coordinates}
-                onSelected={e => {
-                  _onShow();
-                  setCenter(point.coordinates);
-                  setRide(point);
-                  //_bottomSheet.current.snapTo(0);
-                }}
-                onDeselected={() => {
-                  _onHide();
-                  setRide(null);
-                  setCenter(coordinates);
-                }}>
-                <Marker
-                  color={getColor(point.timeLeft)}
-                  size={6 * vw}
-                  style={{
-                    marginTop: -6 * vw,
-                    padding: 2 * vw,
-                  }}
-                />
-              </MapboxGL.PointAnnotation>
-            ))}
-          </MapboxGL.MapView>
+          {activeAccount === 'passenger' ? renderPassenger() : renderDriver()}
         </View>
       </SafeAreaView>
-      <RideInfoSheet
-        visible={visible}
-        point={ride}
-        userLocation={coordinates}
-      />
     </View>
   );
 };

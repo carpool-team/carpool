@@ -35,7 +35,6 @@ const getDistance = dist => {
 
 const RideInfoSheet = ({visible, point, userLocation}) => {
   const [distance, setDistance] = useState(null);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (userLocation.length && point) {
