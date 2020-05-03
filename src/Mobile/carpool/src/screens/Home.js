@@ -1,12 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {SafeAreaView, View, TouchableOpacity} from 'react-native';
+import {SafeAreaView, View, Text, TouchableOpacity} from 'react-native';
 import colors from '../styles/colors';
 import HamburgerMenu from '../components/navigation/HamburgerMenu';
 import AccountSwitch from '../components/navigation/AccountSwitch';
 import Marker from '../components/common/Marker';
-import {vw} from '../utils/constants';
+import {vw, vh} from '../utils/constants';
 import {examplePassengerPoints} from '../examples/points';
+import BottomSheet from 'reanimated-bottom-sheet';
+import RideInfoSheet from '../components/Ride/RideInfoSheet';
 
 const getColor = time => {
   if (time < 20) {
@@ -27,6 +29,16 @@ const getColor = time => {
 const Home = () => {
   const [coordinates, setCoordinates] = useState([]);
   const [center, setCenter] = useState([]);
+  const [ride, setRide] = useState(null);
+  const [visible, setVisible] = useState(false);
+
+  const _map = useRef(null);
+
+  useEffect(() => {
+    if (!center.length) {
+      setCenter(coordinates);
+    }
+  }, [coordinates]);
 
   const _onLocateUser = e => {
     if (e) {
@@ -37,11 +49,13 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    if (!center.length) {
-      setCenter(coordinates);
-    }
-  }, [coordinates]);
+  const _onShow = () => {
+    setVisible(true);
+  };
+
+  const _onHide = () => {
+    setVisible(false);
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -50,15 +64,19 @@ const Home = () => {
           <HamburgerMenu />
           <AccountSwitch />
           <MapboxGL.MapView
+            ref={_map}
             style={{flex: 1}}
-            styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft">
+            styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
+            contentInset={10}
+            compassEnabled={false}>
             <MapboxGL.Camera
               zoomLevel={14}
+              maxZoomLevel={19}
               animationMode="flyTo"
               animationDuration={500}
               //followUserLocation={!center.length}
               //followUserMode={'normal'}
-              centerCoordinate={center}
+              centerCoordinate={[center[0], center[1] - 0.0015]}
             />
             <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
             {examplePassengerPoints.map(point => (
@@ -66,8 +84,17 @@ const Home = () => {
                 key={point.id}
                 id="selected"
                 coordinate={point.coordinates}
-                onSelected={e => setCenter(point.coordinates)}
-                onDeselected={() => setCenter(coordinates)}>
+                onSelected={e => {
+                  _onShow();
+                  setCenter(point.coordinates);
+                  setRide(point.ride);
+                  //_bottomSheet.current.snapTo(0);
+                }}
+                onDeselected={() => {
+                  _onHide();
+                  setRide(null);
+                  setCenter(coordinates);
+                }}>
                 <Marker
                   color={getColor(point.timeLeft)}
                   size={6 * vw}
@@ -81,6 +108,7 @@ const Home = () => {
           </MapboxGL.MapView>
         </View>
       </SafeAreaView>
+      <RideInfoSheet visible={visible} ride={ride} />
     </View>
   );
 };
