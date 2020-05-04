@@ -7,6 +7,7 @@ import {Text, View, StyleSheet} from 'react-native';
 import {vw, vh} from '../../utils/constants';
 import colors from '../../styles/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import sheet from '../../styles/sheet';
 import UpView from '../common/UpView';
 
@@ -20,7 +21,11 @@ export default CustomDrawer = props => {
               style={styles.avatarCircle}
               contentContainerStyle={sheet.center}
               borderRadius={9999}>
-              <Icon name="user" color={colors.grayDark} size={10 * vw} />
+              <Ionicon
+                name="md-person"
+                color={colors.grayDark}
+                size={11 * vw}
+              />
             </UpView>
             <View style={styles.userDataWrapper}>
               <Text style={styles.username}>John</Text>

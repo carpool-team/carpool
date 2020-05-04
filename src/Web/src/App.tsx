@@ -1,8 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Switch } from "react-router";
 import { BreadcrumbsProvider } from "react-breadcrumbs-dynamic";
+import { LoaderSpinner } from "./components/ui/loaderSpinner/LoaderSpinner";
+import { NavBar } from "./components/NavBar/NavBar";
 import Layout from "./components/layout/Layout";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 
 import "scss_path/main.scss";
 
@@ -12,9 +15,11 @@ export default class App extends Component {
 			<React.Fragment>
 				<Router>
 					<BreadcrumbsProvider>
-						<Switch>
-							<Route path={"/"} component={Layout} />
-						</Switch>
+						<Suspense fallback={<LoaderSpinner />}>
+							<Switch>
+								<Route path={"/"} component={LoadingScreen} />
+           					</Switch>
+						</Suspense>
 					</BreadcrumbsProvider>
 				</Router>
 			</React.Fragment>
