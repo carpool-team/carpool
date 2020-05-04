@@ -33,7 +33,7 @@ const getDistance = dist => {
   }
 };
 
-const RideInfoSheet = ({visible, point, userLocation}) => {
+const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
   const [distance, setDistance] = useState(null);
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const RideInfoSheet = ({visible, point, userLocation}) => {
           style={styles.button}
           borderRadius={100}
           contentContainerStyle={sheet.center}
-          onPress={() => null}>
+          onPress={point.signedUp ? onShowWay : () => null}>
           {point.signedUp ? (
             <Text style={[styles.buttonText, {color: colors.blue}]}>
               Show way

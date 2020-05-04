@@ -7,7 +7,7 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import UpView from '../common/UpView';
 import {useNavigation} from '@react-navigation/core';
 
-const RouteInfoSheet = ({route}) => {
+const RouteInfoSheet = ({route, onGoBack}) => {
   const navigation = useNavigation();
 
   const _renderContent = () => {
@@ -58,7 +58,7 @@ const RouteInfoSheet = ({route}) => {
           style={styles.button}
           borderRadius={100}
           contentContainerStyle={sheet.center}
-          onPress={() => navigation.goBack()}>
+          onPress={onGoBack ? onGoBack : () => navigation.goBack()}>
           <Text style={styles.goBack}>Go back</Text>
         </UpView>
       </View>
