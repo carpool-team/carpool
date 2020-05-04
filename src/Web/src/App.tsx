@@ -4,6 +4,8 @@ import { Switch } from "react-router";
 import { BreadcrumbsProvider } from "react-breadcrumbs-dynamic";
 import { LoaderSpinner } from "./components/ui/loaderSpinner/LoaderSpinner";
 import { NavBar } from "./components/NavBar/NavBar";
+import Layout from "./components/layout/Layout";
+import LoadingScreen from "./components/LoadingScreen/LoadingScreen";
 
 export default class App extends Component {
 	render() {
@@ -13,10 +15,8 @@ export default class App extends Component {
 					<BreadcrumbsProvider>
 						<Suspense fallback={<LoaderSpinner />}>
 							<Switch>
-								<Route path={"/"}>
-                					<NavBar />
-								</Route>
-							</Switch>
+								<Route path={"/"} component={LoadingScreen} />
+           					</Switch>
 						</Suspense>
 					</BreadcrumbsProvider>
 				</Router>
