@@ -1,6 +1,6 @@
-@import "../../assets/colors.scss";
-@import "../../assets/fonts.scss";
-@import "../../assets/images.scss";
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+@import "~scss_path/images";
 
 .map {
   background-image: $map;

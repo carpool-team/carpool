@@ -6,7 +6,8 @@
   "scripts": {
     "bundle": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --mode development --open --hot",
+    "start": "webpack-dev-server --mode development --open --hot --config webpack.dev.js",
+    "run-mobile": "webpack-dev-server --mode development --open --hot --config webpack.mobile.js",
     "build": "webpack --mode production",
     "check-types": "tsc"
   },
@@ -37,7 +38,8 @@
     "typescript": "^3.8.3",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2"
   },
   "dependencies": {
     "@types/react-breadcrumbs-dynamic": "^1.0.2",

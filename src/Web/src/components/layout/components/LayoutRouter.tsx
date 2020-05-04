@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from "react";
 import { Switch, Route, RouteComponentProps } from "react-router";
+import LoadingScreen from "../../loadingScreen/LoadingScreen";
 
 class LayoutRouter extends Component<RouteComponentProps> {
 	private routes = {
@@ -16,8 +17,8 @@ class LayoutRouter extends Component<RouteComponentProps> {
 			<main className={this.cssClasses.main}>
 				<Suspense fallback={"Load"}>
 					<Switch>
-						<Route path={this.routes.main} />
-						<Route path={url + this.routes.main} />
+						<Route path={this.routes.main} component={LoadingScreen} />
+						<Route path={url + this.routes.main} component={LoadingScreen} />
 					</Switch>
 				</Suspense>
 			</main>

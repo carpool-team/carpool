@@ -11,14 +11,9 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
     alias: {
-      scss_path: path.resolve(__dirname, "src/scss")
+      scss_path: path.resolve(__dirname, "src/scss"),
+      assets_path: path.resolve(__dirname, "src/assets")
     }
-  },
-
-  devServer: {
-    host: "0.0.0.0",
-    port: 8080,
-    disableHostCheck: true,
   },
 
   module: {

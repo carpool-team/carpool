@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { NavBar } from "../navBar/NavBar";
+import { Footer } from "../footer/Footer";
 import LayoutRouter from "./components/LayoutRouter";
 import { RouteComponentProps, withRouter } from "react-router";
-import Footer from "../footer/Footer";
 
 import "./Layout.scss";
 
