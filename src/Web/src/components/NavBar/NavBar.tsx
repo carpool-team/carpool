@@ -1,15 +1,10 @@
 import React from "react";
 import "./NavBar.scss";
-import logo from "../../assets/logo_small.png";
 
 export class NavBar extends React.Component {
   state = {
     logged: false,
     hamburgerActive: false,
-  };
-
-  logoStyle = {
-    backgroundImage: "url(" + logo + ")",
   };
 
   handleHamburgerClick = () => {
@@ -22,7 +17,7 @@ export class NavBar extends React.Component {
   render() {
     return (
       <div id="container" className="navBarContainer">
-        <div className="logoContainer" style={this.logoStyle}></div>
+        <div className="logoContainer"></div>
         <div className="navButtons hamburgerToogle" id="navButtons">
           <nav className="navPlain">
             <a className="navButtonPlain " href="/">
@@ -53,5 +48,3 @@ export class NavBar extends React.Component {
     );
   }
 }
-
-export class NavBara extends React.Component<{}> {}

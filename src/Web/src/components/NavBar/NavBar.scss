@@ -1,13 +1,16 @@
 @import "../../assets/colors.scss";
 @import "../../assets/fonts.scss";
+@import "../../assets/images.scss";
+
 html,
 body {
   font-family: "Montserrat";
   font-weight: 300;
+  margin: 0px;
 }
 
 .navBarContainer {
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   background-color: $background;
@@ -32,6 +35,7 @@ body {
   background-repeat: no-repeat;
   width: 300px;
   height: 90px;
+  background-image: $logo_small;
 }
 
 .navPlain {
@@ -81,6 +85,7 @@ body {
 }
 
 .hamburgerIcon {
+  width: auto;
   border-radius: 20px;
   background: #efeeee;
   box-shadow: 8px 8px 12px #8f8f8f, -8px -8px 12px #ffffff;
@@ -118,8 +123,11 @@ body {
   .navBarContainer {
     background: $background;
     box-shadow: none;
-    grid-template-columns: auto auto;
+    grid-template-columns: 70% 30%;
     grid-template-areas: "logo burger" "navButtons navButtons";
+  }
+  .logoContainer {
+    background-size: 200px auto !important;
   }
 
   .hamburgerIcon {
@@ -136,7 +144,7 @@ body {
     grid-template-columns: none;
     grid-template-areas: "." "navPlain" "navAccount" ".";
     grid-row-gap: 15px;
-    background-color: $background;
+    background-color: $backgroundTransparent;
   }
   .navPlain {
     grid-row-gap: 15px;
@@ -158,7 +166,7 @@ body {
     grid-gap: 15px;
   }
   .navAccount {
-    grid-row-gap: 10px;
+    grid-row-gap: 15px;
     grid-template-columns: none;
   }
   .hamburgerToogle {
