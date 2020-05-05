@@ -21,6 +21,7 @@ import UpView from '../../../components/common/UpView';
 import StartLocationsFlatList from '../../../components/FindRoute/StartLocationsFlatList';
 import GroupsFlatlist from '../../../components/GroupsFlatlist';
 import {exampleGroups} from '../../../examples/groups';
+import DatePicker from 'react-native-date-picker';
 
 const config = {
   autocomplete: false,
@@ -35,6 +36,7 @@ const AskForRide = () => {
   const [destinationGeo, setDestinationGeo] = useState(null);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
+  const [date, setDate] = useState(null);
 
   const navigation = useNavigation();
   const _destination = useRef();
@@ -47,11 +49,6 @@ const AskForRide = () => {
       setCurrentPosition([longitude, latitude]);
     });
   }, []);
-
-  useEffect(() => {
-    console.log(startGeo);
-    console.log(destinationGeo);
-  }, [startGeo, destinationGeo]);
 
   const onFocusDestination = () => {
     const {current} = _destination;
@@ -113,43 +110,35 @@ const AskForRide = () => {
         />
       );
     } else {
-      return (
-        <View
-          style={{
-            width: '100%',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          {startLoading ? (
-            <ActivityIndicator size="large" color={colors.green} />
-          ) : (
-            <UpView
-              style={{width: '65%', height: 6 * vh}}
-              borderRadius={100}
-              contentContainerStyle={sheet.center}
-              onPress={() => null}>
-              <Text
-                style={{
-                  color: colors.blue,
-                  fontSize: 2.25 * vh,
-                  ...sheet.textBold,
-                }}>
-                Search
-              </Text>
-            </UpView>
-          )}
+      return startLoading ? (
+        <View style={styles.loadingWrapper}>
+          <ActivityIndicator size="large" color={colors.green} />
+        </View>
+      ) : (
+        <View style={styles.datePickerWrapper}>
+          <View>
+            <Text style={styles.arrivalTime}>Arrival time</Text>
+            <DatePicker
+              date={date}
+              onDateChange={setDate}
+              locale="pl"
+              minimumDate={new Date()}
+            />
+          </View>
+          <UpView
+            style={{width: '65%', height: 6 * vh, marginTop: 4 * vh}}
+            borderRadius={100}
+            contentContainerStyle={sheet.center}
+            onPress={() => navigation.goBack()}>
+            <Text style={styles.submit}>Submit</Text>
+          </UpView>
         </View>
       );
     }
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-      }}>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.topPanel}>
         <View style={styles.inputWrapper}>
           <BlueMarker size={5 * vw} />
@@ -258,6 +247,30 @@ const styles = StyleSheet.create({
   resultsContainer: {
     flex: 1,
     alignItems: 'center',
+  },
+  loadingWrapper: {
+    width: '100%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  datePickerWrapper: {
+    width: '100%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10 * vh,
+  },
+  arrivalTime: {
+    color: colors.grayDark,
+    fontSize: 5 * vw,
+    ...sheet.textBold,
+    textAlign: 'center',
+  },
+  submit: {
+    color: colors.green,
+    fontSize: 2.25 * vh,
+    ...sheet.textBold,
   },
 });
 
