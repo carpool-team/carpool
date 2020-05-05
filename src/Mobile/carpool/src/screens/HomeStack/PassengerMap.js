@@ -1,21 +1,19 @@
 import React, {useState, useEffect, useRef} from 'react';
+import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {SafeAreaView, View} from 'react-native';
-import colors from '../styles/colors';
-import HamburgerMenu from '../components/navigation/HamburgerMenu';
-import AccountSwitch from '../components/navigation/AccountSwitch';
-import Marker from '../components/common/Marker';
-import {vw, vh} from '../utils/constants';
-import {examplePassengerPoints} from '../examples/points';
-import RideInfoSheet from '../components/Ride/RideInfoSheet';
-import {AccountContext} from '../context/AccountContext';
-import {directionsClient} from '../maps/mapbox';
-import {getBoundsForRoutes} from '../utils/bounds';
-import {activeRouteStyle, inactiveRouteStyle} from '../styles/map';
-import RouteInfoSheet from '../components/FindRoute/RouteInfoSheet';
-import UpView from '../components/common/UpView';
+import colors from '../../styles/colors';
+import Marker from '../../components/common/Marker';
+import {vw, vh} from '../../utils/constants';
+import {examplePassengerPoints} from '../../examples/points';
+import RideInfoSheet from '../../components/Ride/RideInfoSheet';
+import {directionsClient} from '../../maps/mapbox';
+import {getBoundsForRoutes} from '../../utils/bounds';
+import {activeRouteStyle, inactiveRouteStyle} from '../../styles/map';
+import RouteInfoSheet from '../../components/FindRoute/RouteInfoSheet';
+import UpView from '../../components/common/UpView';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import sheet from '../styles/sheet';
+import sheet from '../../styles/sheet';
+import {useNavigation, useRoute} from '@react-navigation/core';
 
 const getColor = time => {
   if (time < 20) {
@@ -33,12 +31,7 @@ const getColor = time => {
   }
 };
 
-const Home = ({navigation, route}) => {
-  const {
-    accountState: {activeAccount},
-  } = React.useContext(AccountContext);
-
-  const [coordinates, setCoordinates] = useState([]);
+const PassengerMap = ({coordinates, _onLocateUser}) => {
   const [center, setCenter] = useState([]);
   const [ride, setRide] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -47,8 +40,14 @@ const Home = ({navigation, route}) => {
   const [activeRoute, setActiveRoute] = useState(0);
 
   const _passengerMap = useRef(null);
-  const _driverMap = useRef(null);
   const _passengerCamera = useRef(null);
+
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  useEffect(() => {
+    return () => onCleanState();
+  }, []);
 
   useEffect(() => {
     if (!center.length) {
@@ -57,23 +56,18 @@ const Home = ({navigation, route}) => {
   }, [coordinates]);
 
   useEffect(() => {
-    if (activeAccount === 'driver' && visible) {
-      setCenter(coordinates);
-      _onHide();
-    }
-  }, [activeAccount]);
-
-  useEffect(() => {
     if (route.params) {
-      _onShow();
-      setRide(route.params.ride);
-      setCenter(route.params.ride.coordinates);
+      if (route.params.ride) {
+        _onShow();
+        setRide(route.params.ride);
+        setCenter(route.params.ride.coordinates);
+      }
     }
   }, [route]);
 
   useEffect(() => {
     if (routes.length) {
-      setVisible(false);
+      _onHide();
       const bds = getBoundsForRoutes(routes);
       setBounds({
         ...bds,
@@ -82,15 +76,6 @@ const Home = ({navigation, route}) => {
       });
     }
   }, [routes]);
-
-  const _onLocateUser = e => {
-    if (e) {
-      const {
-        coords: {latitude, longitude},
-      } = e;
-      setCoordinates([longitude, latitude]);
-    }
-  };
 
   const _onShow = () => {
     setVisible(true);
@@ -123,31 +108,32 @@ const Home = ({navigation, route}) => {
     }
   };
 
+  const onSelected = point => {
+    _onShow();
+    setCenter(point.coordinates);
+    setRide(point);
+  };
+
+  const onCleanState = () => {
+    _onHide();
+    setRide(null);
+    setCenter(coordinates);
+    setBounds(null);
+    setRoutes([]);
+  };
+
   const renderPassengerPoints = () =>
     examplePassengerPoints.map(point => (
       <MapboxGL.PointAnnotation
         key={point.id}
         id="selected"
         coordinate={point.coordinates}
-        onSelected={e => {
-          _onShow();
-          setCenter(point.coordinates);
-          setRide(point);
-        }}
-        onDeselected={() => {
-          _onHide();
-          setRide(null);
-          setCenter(coordinates);
-          setBounds(null);
-          setRoutes([]);
-        }}>
+        onSelected={() => onSelected(point)}
+        onDeselected={onCleanState}>
         <Marker
           color={getColor(point.timeLeft)}
           size={6 * vw}
-          style={{
-            marginTop: -6 * vw,
-            padding: 2.5 * vw,
-          }}
+          style={styles.marker}
         />
       </MapboxGL.PointAnnotation>
     ));
@@ -172,7 +158,7 @@ const Home = ({navigation, route}) => {
       : null;
   };
 
-  const renderPassenger = () => (
+  return (
     <>
       <MapboxGL.MapView
         ref={_passengerMap}
@@ -182,11 +168,7 @@ const Home = ({navigation, route}) => {
         compassEnabled={false}
         onPress={() => {
           if (visible) {
-            _onHide();
-            setRide(null);
-            setCenter(coordinates);
-            setBounds(null);
-            setRoutes([]);
+            onCleanState();
           }
         }}
         rotateEnabled={false}>
@@ -212,25 +194,11 @@ const Home = ({navigation, route}) => {
         onShowWay={onShowWay}
       />
       {!visible && routes.length ? (
-        <RouteInfoSheet
-          route={routes[activeRoute]}
-          onGoBack={() => {
-            setRoutes([]);
-            setVisible(true);
-            setBounds(null);
-            setCenter(ride.coordinates);
-          }}
-        />
+        <RouteInfoSheet route={routes[activeRoute]} onGoBack={onCleanState} />
       ) : null}
       {ride || visible ? null : (
         <UpView
-          style={{
-            height: 16 * vw,
-            width: 16 * vw,
-            position: 'absolute',
-            bottom: 8 * vh,
-            right: 5 * vw,
-          }}
+          style={styles.button}
           contentContainerStyle={sheet.center}
           borderRadius={9999}
           onPress={() => navigation.navigate('AskForRide')}>
@@ -239,38 +207,20 @@ const Home = ({navigation, route}) => {
       )}
     </>
   );
-
-  const renderDriver = () => (
-    <MapboxGL.MapView
-      ref={_driverMap}
-      style={{flex: 1}}
-      styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
-      contentInset={10}
-      compassEnabled={false}>
-      <MapboxGL.Camera
-        zoomLevel={14}
-        maxZoomLevel={19}
-        animationMode="flyTo"
-        animationDuration={500}
-        //followUserLocation
-        //followUserMode={'normal'}
-        centerCoordinate={[coordinates[0], coordinates[1] - 0.0015]}
-      />
-      <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
-    </MapboxGL.MapView>
-  );
-
-  return (
-    <View style={{flex: 1}}>
-      <SafeAreaView style={{flex: 1, backgroundColor: colors.background}}>
-        <View style={{flex: 1}}>
-          <HamburgerMenu />
-          <AccountSwitch />
-          {activeAccount === 'passenger' ? renderPassenger() : renderDriver()}
-        </View>
-      </SafeAreaView>
-    </View>
-  );
 };
 
-export default Home;
+const styles = StyleSheet.create({
+  marker: {
+    marginTop: -6 * vw,
+    padding: 2.5 * vw,
+  },
+  button: {
+    height: 16 * vw,
+    width: 16 * vw,
+    position: 'absolute',
+    bottom: 8 * vh,
+    right: 5 * vw,
+  },
+});
+
+export default PassengerMap;

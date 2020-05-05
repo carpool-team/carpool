@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import Home from '../screens/Home';
 import Rides from '../screens/drawer/Rides';
-import Preferences from '../screens/drawer/PreferencesStack/Preferences';
 import Settings from '../screens/drawer/Settings';
 import Help from '../screens/drawer/Help';
 import CustomDrawer from '../components/navigation/CustomDrawer';
