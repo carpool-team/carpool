@@ -222,19 +222,21 @@ const Home = ({navigation, route}) => {
           }}
         />
       ) : null}
-      <UpView
-        style={{
-          height: 16 * vw,
-          width: 16 * vw,
-          position: 'absolute',
-          bottom: 8 * vh,
-          right: 5 * vw,
-        }}
-        contentContainerStyle={sheet.center}
-        borderRadius={9999}
-        onPress={() => navigation.navigate('AskForRide')}>
-        <Icon name="plus" color={colors.grayDark} size={8 * vw} />
-      </UpView>
+      {ride || visible ? null : (
+        <UpView
+          style={{
+            height: 16 * vw,
+            width: 16 * vw,
+            position: 'absolute',
+            bottom: 8 * vh,
+            right: 5 * vw,
+          }}
+          contentContainerStyle={sheet.center}
+          borderRadius={9999}
+          onPress={() => navigation.navigate('AskForRide')}>
+          <Icon name="plus" color={colors.grayDark} size={8 * vw} />
+        </UpView>
+      )}
     </>
   );
 
