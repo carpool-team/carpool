@@ -10,10 +10,9 @@ import {directionsClient} from '../../maps/mapbox';
 import {getBoundsForRoutes} from '../../utils/bounds';
 import {activeRouteStyle, inactiveRouteStyle} from '../../styles/map';
 import RouteInfoSheet from '../../components/FindRoute/RouteInfoSheet';
-import UpView from '../../components/common/UpView';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import sheet from '../../styles/sheet';
 import {useNavigation, useRoute} from '@react-navigation/core';
+import {CircleButton} from '../../components/common/buttons';
 
 const getColor = time => {
   if (time < 20) {
@@ -197,13 +196,11 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
         <RouteInfoSheet route={routes[activeRoute]} onGoBack={onCleanState} />
       ) : null}
       {ride || visible ? null : (
-        <UpView
-          style={styles.button}
-          contentContainerStyle={sheet.center}
-          borderRadius={9999}
-          onPress={() => navigation.navigate('AskForRide')}>
-          <Icon name="plus" color={colors.grayDark} size={8 * vw} />
-        </UpView>
+        <CircleButton
+          style={{position: 'absolute', bottom: 8 * vh, right: 5 * vw}}
+          onPress={() => navigation.navigate('AskForRide')}
+          icon={<Icon name="plus" color={colors.grayDark} size={8 * vw} />}
+        />
       )}
     </>
   );

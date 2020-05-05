@@ -17,11 +17,11 @@ import sheet from '../../../styles/sheet';
 import {geocodingClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
-import UpView from '../../../components/common/UpView';
 import StartLocationsFlatList from '../../../components/FindRoute/StartLocationsFlatList';
 import GroupsFlatlist from '../../../components/GroupsFlatlist';
 import {exampleGroups} from '../../../examples/groups';
 import DatePicker from 'react-native-date-picker';
+import {StandardButton} from '../../../components/common/buttons';
 
 const config = {
   autocomplete: false,
@@ -125,13 +125,13 @@ const AskForRide = () => {
               minimumDate={new Date()}
             />
           </View>
-          <UpView
-            style={{width: '65%', height: 6 * vh, marginTop: 4 * vh}}
-            borderRadius={100}
-            contentContainerStyle={sheet.center}
-            onPress={() => navigation.goBack()}>
-            <Text style={styles.submit}>Submit</Text>
-          </UpView>
+          <StandardButton
+            width="65%"
+            style={{marginTop: 4 * vh}}
+            onPress={() => navigation.goBack()}
+            title="Submit"
+            color={colors.green}
+          />
         </View>
       );
     }

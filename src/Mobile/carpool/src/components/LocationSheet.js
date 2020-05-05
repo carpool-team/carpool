@@ -3,9 +3,9 @@ import {View, Text, StyleSheet} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import colors from '../styles/colors';
 import sheet from '../styles/sheet';
-import UpView from './common/UpView';
 import {vh, vw} from '../utils/constants';
 import Marker from './common/Marker';
+import {StandardButton} from './common/buttons';
 
 const LocationSheet = ({_onSelect, _onGoBack, location}) => {
   const _renderContent = () => (
@@ -19,20 +19,18 @@ const LocationSheet = ({_onSelect, _onGoBack, location}) => {
         <Text style={styles.placeName}>{location.place_name}</Text>
       </View>
       <View style={styles.buttonsContainer}>
-        <UpView
-          style={styles.button}
-          borderRadius={100}
-          contentContainerStyle={sheet.center}
-          onPress={_onGoBack}>
-          <Text style={styles.goBack}>Go back</Text>
-        </UpView>
-        <UpView
-          style={styles.button}
-          borderRadius={100}
-          contentContainerStyle={sheet.center}
-          onPress={_onSelect}>
-          <Text style={styles.select}>Select</Text>
-        </UpView>
+        <StandardButton
+          color={colors.red}
+          title="Go back"
+          onPress={_onGoBack}
+          width="45%"
+        />
+        <StandardButton
+          color={colors.green}
+          title="Select"
+          onPress={_onSelect}
+          width="45%"
+        />
       </View>
     </View>
   );

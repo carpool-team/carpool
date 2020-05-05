@@ -8,6 +8,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import turfDistance from '@turf/distance';
 import {point as turfPoint} from '@turf/helpers';
 import Waypoints from './Waypoints';
+import {CircleButton, StandardButton} from '../common/buttons';
 
 const getColor = time => {
   if (time < 20) {
@@ -55,16 +56,16 @@ const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
           }}
           borderRadius={4 * vw}>
           <View style={styles.upperContainer}>
-            <UpView
-              style={styles.avatarCircle}
-              contentContainerStyle={sheet.center}
-              borderRadius={9999}>
-              <Ionicon
-                name="md-person"
-                color={colors.grayDark}
-                size={11 * vw}
-              />
-            </UpView>
+            <CircleButton
+              style={{marginRight: 3 * vw}}
+              icon={
+                <Ionicon
+                  name="md-person"
+                  color={colors.grayDark}
+                  size={11 * vw}
+                />
+              }
+            />
             <View style={styles.userInfoContainer}>
               <View
                 style={{
@@ -90,19 +91,13 @@ const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
           ride={point.ride}
           start={point.coordinates}
         />
-        <UpView
-          style={styles.button}
-          borderRadius={100}
-          contentContainerStyle={sheet.center}
-          onPress={point.signedUp ? onShowWay : () => null}>
-          {point.signedUp ? (
-            <Text style={[styles.buttonText, {color: colors.blue}]}>
-              Show way
-            </Text>
-          ) : (
-            <Text style={styles.buttonText}>Select</Text>
-          )}
-        </UpView>
+        <StandardButton
+          width="65%"
+          style={{marginTop: 3 * vh}}
+          color={point.signedUp ? colors.blue : colors.green}
+          title={point.signedUp ? 'Show way' : 'Select'}
+          onPress={point.signedUp ? onShowWay : () => null}
+        />
       </View>
     </View>
   ) : null;
@@ -136,11 +131,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3 * vw,
     paddingVertical: 2 * vh,
     ...sheet.rowCenter,
-  },
-  avatarCircle: {
-    width: 16 * vw,
-    height: 16 * vw,
-    marginRight: 3 * vw,
   },
   userInfoContainer: {
     flex: 1,

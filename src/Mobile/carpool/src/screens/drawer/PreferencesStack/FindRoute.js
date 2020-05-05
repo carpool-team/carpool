@@ -17,9 +17,9 @@ import sheet from '../../../styles/sheet';
 import {geocodingClient, directionsClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
-import UpView from '../../../components/common/UpView';
 import StartLocationsFlatList from '../../../components/FindRoute/StartLocationsFlatList';
 import DestinationLocationsFlatList from '../../../components/FindRoute/DestinationLocationsFlatList';
+import {StandardButton} from '../../../components/common/buttons';
 
 const config = {
   autocomplete: false,
@@ -164,20 +164,12 @@ const FindRoute = () => {
           {loading ? (
             <ActivityIndicator size="large" color={colors.green} />
           ) : (
-            <UpView
-              style={{width: '65%', height: 6 * vh}}
-              borderRadius={100}
-              contentContainerStyle={sheet.center}
-              onPress={onFindRoute}>
-              <Text
-                style={{
-                  color: colors.blue,
-                  fontSize: 2.25 * vh,
-                  ...sheet.textBold,
-                }}>
-                Search
-              </Text>
-            </UpView>
+            <StandardButton
+              width="65%"
+              onPress={onFindRoute}
+              color={colors.blue}
+              title="Search"
+            />
           )}
         </View>
       );
