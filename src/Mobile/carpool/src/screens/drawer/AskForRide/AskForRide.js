@@ -14,12 +14,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 import BlueMarker from '../../../components/common/BlueMarker';
 import sheet from '../../../styles/sheet';
-import {geocodingClient, directionsClient} from '../../../maps/mapbox';
+import {geocodingClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
 import UpView from '../../../components/common/UpView';
 import StartLocationsFlatList from '../../../components/FindRoute/StartLocationsFlatList';
-import DestinationLocationsFlatList from '../../../components/FindRoute/DestinationLocationsFlatList';
+import GroupsFlatlist from '../../../components/GroupsFlatlist';
+import {exampleGroups} from '../../../examples/groups';
 
 const config = {
   autocomplete: false,
@@ -34,18 +35,11 @@ const AskForRide = () => {
   const [destinationGeo, setDestinationGeo] = useState(null);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
-  const [routes, setRoutes] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const navigation = useNavigation();
   const _destination = useRef();
 
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
-  const [destinationResults, destinationLoading] = useForwardGeocoding(
-    destination,
-    config,
-    true,
-  );
 
   useEffect(() => {
     Geolocation.getCurrentPosition(info => {
@@ -55,14 +49,9 @@ const AskForRide = () => {
   }, []);
 
   useEffect(() => {
-    if (routes.length) {
-      navigation.navigate('ShowRoute', {
-        routes,
-        start: startGeo,
-        destination: destinationGeo,
-      });
-    }
-  }, [routes]);
+    console.log(startGeo);
+    console.log(destinationGeo);
+  }, [startGeo, destinationGeo]);
 
   const onFocusDestination = () => {
     const {current} = _destination;
@@ -93,35 +82,6 @@ const AskForRide = () => {
     }
   };
 
-  const onFindRoute = async () => {
-    try {
-      setLoading(true);
-      const response = await directionsClient
-        .getDirections({
-          profile: 'driving-traffic',
-          waypoints: [
-            {
-              coordinates: startGeo.center,
-            },
-            {
-              coordinates: destinationGeo.center,
-            },
-          ],
-          overview: 'full',
-          geometries: 'geojson',
-          alternatives: true,
-          //steps: true,
-        })
-        .send();
-
-      setRoutes(response.body.routes);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const onStartItemPress = item => {
     setStart(item.place_name);
     setStartGeo(item);
@@ -146,9 +106,9 @@ const AskForRide = () => {
       );
     } else if (isDestinationFocused) {
       return (
-        <DestinationLocationsFlatList
-          data={destinationResults}
-          loading={destinationLoading}
+        <GroupsFlatlist
+          data={exampleGroups}
+          loading={false}
           onItemPress={onDestinationItemPress}
         />
       );
@@ -161,14 +121,14 @@ const AskForRide = () => {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          {loading ? (
+          {startLoading ? (
             <ActivityIndicator size="large" color={colors.green} />
           ) : (
             <UpView
               style={{width: '65%', height: 6 * vh}}
               borderRadius={100}
               contentContainerStyle={sheet.center}
-              onPress={onFindRoute}>
+              onPress={() => null}>
               <Text
                 style={{
                   color: colors.blue,
@@ -224,7 +184,7 @@ const AskForRide = () => {
               value={destination}
               onChangeText={setDestination}
               style={styles.input}
-              onSubmitEditing={onFindRoute}
+              onSubmitEditing={() => null}
               placeholder="To"
               returnKeyType="done"
               onFocus={() => setIsDestinationFocused(true)}
