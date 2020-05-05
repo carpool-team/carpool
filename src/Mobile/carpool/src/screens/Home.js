@@ -13,6 +13,9 @@ import {directionsClient} from '../maps/mapbox';
 import {getBoundsForRoutes} from '../utils/bounds';
 import {activeRouteStyle, inactiveRouteStyle} from '../styles/map';
 import RouteInfoSheet from '../components/FindRoute/RouteInfoSheet';
+import UpView from '../components/common/UpView';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import sheet from '../styles/sheet';
 
 const getColor = time => {
   if (time < 20) {
@@ -79,10 +82,6 @@ const Home = ({navigation, route}) => {
       });
     }
   }, [routes]);
-
-  useEffect(() => {
-    console.log(bounds);
-  }, [bounds]);
 
   const _onLocateUser = e => {
     if (e) {
@@ -223,6 +222,19 @@ const Home = ({navigation, route}) => {
           }}
         />
       ) : null}
+      <UpView
+        style={{
+          height: 16 * vw,
+          width: 16 * vw,
+          position: 'absolute',
+          bottom: 8 * vh,
+          right: 5 * vw,
+        }}
+        contentContainerStyle={sheet.center}
+        borderRadius={9999}
+        onPress={() => navigation.navigate('AskForRide')}>
+        <Icon name="plus" color={colors.grayDark} size={8 * vw} />
+      </UpView>
     </>
   );
 

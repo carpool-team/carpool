@@ -10,6 +10,7 @@ import {vh} from '../utils/constants';
 import sheet from '../styles/sheet';
 import colors from '../styles/colors';
 import PreferencesStack from './PreferencesStack';
+import HomeStack from './HomeStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,7 +24,14 @@ export default DrawerNavigator = () => (
       },
       activeBackgroundColor: colors.background,
     }}>
-    <Drawer.Screen name="Home" component={Home} />
+    {/* <Drawer.Screen name="Home" component={Home} /> */}
+    <Drawer.Screen
+      name="HomeStack"
+      component={HomeStack}
+      options={{
+        drawerLabel: 'Home',
+      }}
+    />
     <Drawer.Screen
       name="Rides"
       component={Rides}
@@ -31,13 +39,6 @@ export default DrawerNavigator = () => (
         drawerLabel: 'Your rides',
       }}
     />
-    {/* <Drawer.Screen
-      name="Preferences"
-      component={Preferences}
-      options={{
-        drawerLabel: 'Your preferences',
-      }}
-    /> */}
     <Drawer.Screen
       name="PreferencesStack"
       component={PreferencesStack}
