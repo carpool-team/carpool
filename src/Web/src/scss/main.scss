@@ -1,2 +1,9 @@
-@import "normalize";
-@import "variables";
+@import "vendors/normalize";
+
+@import "fonts";
+
+html,
+body {
+  font-family: "Montserrat";
+  font-weight: $light;
+}
