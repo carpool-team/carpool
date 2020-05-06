@@ -3,6 +3,9 @@
         "title": "Welcome to react using react-i18next",
         "groups": {
             "addGroupBtn": "Add group"
+        },
+        "loadingScreen": {
+            "quote": "Share a ride"
         }
     }
 }

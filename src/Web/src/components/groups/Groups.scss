@@ -1,2 +1,8 @@
 @import "scss/management";
 @import "scss/addGroupForm";
+
+.groupsContainer {
+    bottom: 0;
+    flex: 1 1 auto;
+    display: flex;
+}

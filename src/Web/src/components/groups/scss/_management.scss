@@ -1,6 +1,8 @@
 .groupsManagement {
     display: flex;
     padding: 48px;
+    bottom: 0;
+    flex: 1 1 auto;
     &__listPanel {
         flex: 1 1 auto;
         display: flex;
