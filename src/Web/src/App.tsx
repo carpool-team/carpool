@@ -5,7 +5,7 @@ import { BreadcrumbsProvider } from "react-breadcrumbs-dynamic";
 import { LoaderSpinner } from "./components/ui/loaderSpinner/LoaderSpinner";
 import Layout from "./components/layout/Layout";
 
-import "scss_path/main.scss";
+import "./scss/main.scss";
 
 export default class App extends Component {
 	render() {

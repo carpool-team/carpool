@@ -3,7 +3,11 @@
         "groups": {
             "addGroupBtn": "Dodaj grupę",
             "groupsBtn": "Grupy",
-            "ridesBtn": "Przejazdy"
+            "ridesBtn": "Przejazdy",
+            "code": "Kod grupy",
+            "groupName": "Nazwa grupy",
+            "address": "Adres",
+            "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie"
         },
         "nextBtn": "Dalej",
         "loadingScreen": {

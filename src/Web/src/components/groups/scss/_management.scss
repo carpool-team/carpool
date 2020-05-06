@@ -1,10 +1,9 @@
 .groupsManagement {
     display: flex;
     padding: 48px;
-    bottom: 0;
     flex: 1 1 auto;
     &__listPanel {
-        flex: 1 1 auto;
+        flex: 1;
         display: flex;
         flex-direction: column;
         padding: 16px 0;
@@ -16,7 +15,11 @@
         }
     }
     &__map {
-        flex: 4 4 auto;
+        flex: 2;
+        align-self: center;
+        & > img {
+            width: 100%;
+        }
     }
 }
 

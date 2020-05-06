@@ -9,6 +9,8 @@ import { ButtonType } from "../../ui/Button/enums/ButtonType";
 import ButtonLink from "../../ui/Button/ButtonLink";
 import Button from "../../ui/Button/Button";
 
+import mapImage from "assets_path/img/loadingMap.png";
+
 interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
 	callbacks: IGroupCallbacks;
 }
@@ -79,11 +81,12 @@ class ManageScreen extends Component<IManageScreenProps> {
 	}
 
 	render() {
+		const { t } = this.props;
 		return (
 			<div className={this.cssClasses.container}>
 				{this.renderGroups()}
 				<div className={this.cssClasses.map}>
-
+					<img src={mapImage} alt={""} />
 				</div>
 			</div>
 		);
