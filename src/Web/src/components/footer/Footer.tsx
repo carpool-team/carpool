@@ -1,7 +1,9 @@
 import React from "react";
 import "./Footer.scss";
+import { Link } from "react-router-dom";
+import LayoutRouter from "../layout/components/LayoutRouter";
 
-export class Footer extends React.Component {
+class Footer extends React.Component {
 	render() {
 		return (
 			<footer id="footerContainer" className="footerContainer">
@@ -20,7 +22,12 @@ export class Footer extends React.Component {
 					<a className="footerGroupElement">Pasażer</a>
 					<a className="footerGroupElement">Kierowca</a>
 					<a className="footerGroupElement">Firma</a>
-					<a className="footerGroupElement">Grupy</a>
+					<Link
+						className={"footerGroupElement"}
+						to={`/${LayoutRouter.routes.groups}`}
+					>
+						Grupy
+					</Link>
 				</div>
 				<div className="footerGroup g2">
 					<a className="footerGroupTitle">O nas</a>
@@ -34,3 +41,5 @@ export class Footer extends React.Component {
 		);
 	}
 }
+
+export default Footer;

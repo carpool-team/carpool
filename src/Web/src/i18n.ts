@@ -16,8 +16,8 @@ i18n
 			default: ["en"]
 		},
 		debug: true,
-		ns: ["common"],
-		defaultNS: "common",
+		ns: ["defaultNamespace"],
+		defaultNS: "defaultNamespace",
 		react: {
 			wait: true,
 		}

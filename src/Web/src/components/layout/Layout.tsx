@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavBar } from "../navBar/NavBar";
-import { Footer } from "../footer/Footer";
+import Footer from "../Footer/Footer";
 import LayoutRouter from "./components/LayoutRouter";
 import { RouteComponentProps, withRouter } from "react-router";
 
@@ -14,9 +14,9 @@ class Layout extends Component<RouteComponentProps> {
 				<NavBar />
 				<LayoutRouter
 					match={this.props.match}
+					staticContext={this.props.staticContext}
 					history={this.props.history}
 					location={this.props.location}
-					staticContext={this.props.staticContext}
 				/>
 				<Footer />
 			</React.Fragment>

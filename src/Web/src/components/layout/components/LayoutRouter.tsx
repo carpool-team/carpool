@@ -1,10 +1,12 @@
 import React, { Component, Suspense } from "react";
-import { Switch, Route, RouteComponentProps } from "react-router";
+import { Switch, Route, RouteComponentProps, withRouter } from "react-router";
 import LoadingScreen from "../../loadingScreen/LoadingScreen";
+import { LoaderSpinner } from "../../ui/loaderSpinner/LoaderSpinner";
+import Groups from "../../groups/Groups";
 
 class LayoutRouter extends Component<RouteComponentProps> {
-	private routes = {
-		main: ""
+	static routes = {
+		groups: "groups/",
 	};
 
 	private cssClasses = {
@@ -12,13 +14,13 @@ class LayoutRouter extends Component<RouteComponentProps> {
 	};
 
 	render = () => {
-		const url: string = this.props.match.url;
+		const { path } = this.props.match;
 		return (
 			<main className={this.cssClasses.main}>
-				<Suspense fallback={"Load"}>
+				<Suspense fallback={<LoaderSpinner />}>
 					<Switch>
-						<Route path={this.routes.main} component={LoadingScreen} />
-						<Route path={url + this.routes.main} component={LoadingScreen} />
+						<Route exact path={path} component={LoadingScreen} />
+						<Route path={path + LayoutRouter.routes.groups} component={Groups} />
 					</Switch>
 				</Suspense>
 			</main>

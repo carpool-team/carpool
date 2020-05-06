@@ -1,5 +1,8 @@
 {
-    "common": {
-        "title": "Welcome to react using react-i18next"
+    "defaultNamespace": {
+        "title": "Welcome to react using react-i18next",
+        "groups": {
+            "addGroupBtn": "Add group"
+        }
     }
 }
