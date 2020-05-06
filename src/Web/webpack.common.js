@@ -4,7 +4,7 @@ module.exports = {
   entry: path.resolve(__dirname, "src/index"),
 
   output: {
-    path: path.join(__dirname, "/dist"),
+    path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
   },
 
@@ -34,7 +34,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
-        loader: "file-loader",
+        loader: "url-loader",
         options: {
           name: "[path][name].[ext]",
         },
