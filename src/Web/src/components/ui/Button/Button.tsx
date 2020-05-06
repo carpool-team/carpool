@@ -6,8 +6,8 @@ import { getSizeClass, getTypeClass } from "./Helpers";
 import "./Button.scss";
 
 interface IButtonProps {
-	size: ButtonSize;
-	type: ButtonType;
+	size?: ButtonSize;
+	type?: ButtonType;
 	onClick?: () => void;
 }
 

@@ -15,7 +15,7 @@ i18n
 		},
 		lng: "pl",
 		fallbackLng: {
-			default: ["en"]
+			default: ["pl"]
 		},
 		debug: true,
 		ns: ["defaultNamespace"],

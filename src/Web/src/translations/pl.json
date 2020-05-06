@@ -4,6 +4,10 @@
             "addGroupBtn": "Dodaj grupę",
             "groupsBtn": "Grupy",
             "ridesBtn": "Przejazdy"
+        },
+        "nextBtn": "Dalej",
+        "loadingScreen": {
+            "quote": "Share a ride"
         }
     }
 }

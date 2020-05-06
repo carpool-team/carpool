@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import produce from "immer";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../components/system/resources/IReactI18nProps";
 import { IGroupCallbacks } from "../interfaces/IGroupCallbacks";
 import Input from "../../ui/input/Input";
 import { InputType } from "../../ui/input/enums/InputType";
-import produce from "immer";
+import Button from "../../ui/Button/Button";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {
 	callbacks: IGroupCallbacks;
@@ -12,13 +13,25 @@ interface IAddGroupFormScreenProps extends IReactI18nProps {
 
 interface IAddGroupFormScreenState {
 	groupName: string;
+	step: number;
 }
 
 class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFormScreenState> {
+	private resources = {
+		nextBtn: "nextBtn",
+	};
+
+	private cssClasses = {
+		firstStep: {
+			container: "formContainer"
+		},
+	};
+
 	constructor(props: IAddGroupFormScreenProps) {
 		super(props);
 		this.state = {
-			groupName: ""
+			groupName: "",
+			step: 1,
 		};
 	}
 
@@ -28,16 +41,34 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 		}));
 	}
 
-	render() {
+	private incrementStep = () => {
+		this.setState(produce((draft: IAddGroupFormScreenState) => {
+			draft.step += 1;
+		}));
+	}
+
+	private renderFirstStep = () => {
+		const { t } = this.props;
 		return (
-			<form>
+			<div className={this.cssClasses.firstStep.container}>
 				<Input
 					type={InputType.Text}
 					changeHandler={this.handleChangeGroupName}
 					value={this.state.groupName}
 				/>
-			</form>
+				<Button onClick={this.incrementStep} >
+					{t(this.resources.nextBtn)}
+				</Button>
+			</div>
 		);
+	}
+
+	render() {
+		if (this.state.step === 1) {
+			return this.renderFirstStep();
+		} else {
+			return <div className=""></div>
+		}
 	}
 }
 

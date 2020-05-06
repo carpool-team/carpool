@@ -11,7 +11,10 @@ class Layout extends Component<RouteComponentProps> {
 		main: "main"
 	};
 
+	private mainPaths: string[] = ["/", ""];
+
 	render: () => JSX.Element = () => {
+		const { pathname } = this.props.location;
 		return (
 			<React.Fragment>
 				<NavBar />
@@ -23,7 +26,7 @@ class Layout extends Component<RouteComponentProps> {
 						location={this.props.location}
 					/>
 				</main>
-				<Footer />
+				{this.mainPaths.includes(pathname) ? <Footer /> : null}
 			</React.Fragment>
 		);
 	}
