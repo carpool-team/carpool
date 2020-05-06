@@ -1,7 +1,9 @@
 {
     "defaultNamespace": {
         "groups": {
-            "addGroupBtn": "Dodaj grupę"
+            "addGroupBtn": "Dodaj grupę",
+            "groupsBtn": "Grupy",
+            "ridesBtn": "Przejazdy"
         }
     }
 }

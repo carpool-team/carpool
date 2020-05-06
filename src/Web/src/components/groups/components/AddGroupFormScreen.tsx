@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../components/system/resources/IReactI18nProps";
 import { IGroupCallbacks } from "../interfaces/IGroupCallbacks";
-import Input from "../../../components/ui/loaderSpinner/Input";
-import { InputType } from "../../../components/ui/loaderSpinner/enums/InputType";
+import Input from "../../ui/input/Input";
+import { InputType } from "../../ui/input/enums/InputType";
 import produce from "immer";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {

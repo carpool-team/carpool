@@ -1,5 +1,8 @@
 import React from "react";
 import "./NavBar.scss";
+import Button from "../ui/Button/Button";
+import { ButtonSize } from "../ui/Button/enums/ButtonSize";
+import { ButtonType } from "../ui/Button/enums/ButtonType";
 
 export class NavBar extends React.Component {
 	state = {
@@ -31,8 +34,20 @@ export class NavBar extends React.Component {
 						</a>
 					</nav>
 					<nav className="navAccount">
-						<button className="navButtonLogin">Zaloguj się</button>
-						<button className="navButtonRegister">Zarejestruj się</button>
+						<Button
+							size={ButtonSize.Large}
+							type={ButtonType.Success}
+							onClick={() => { }}
+						>
+							Zaloguj się
+						</Button>
+						<Button
+							size={ButtonSize.Large}
+							type={ButtonType.Info}
+							onClick={() => { }}
+						>
+							Zarejestruj się
+						</Button>
 					</nav>
 				</div>
 				<div

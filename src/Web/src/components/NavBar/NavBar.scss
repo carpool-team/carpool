@@ -56,28 +56,6 @@
   grid-column-gap: 10px;
 }
 
-.navButtonNeomorphism {
-  font-size: 18px;
-  font-weight: $semi-bold;
-  width: 145px;
-  height: 45px;
-  border: none;
-  right: 5px;
-  border-radius: 20px;
-  background: $background;
-  box-shadow: 8px 8px 12px #888888, -8px -8px 12px #ffffff;
-  cursor: pointer;
-}
-
-.navButtonLogin {
-  @extend .navButtonNeomorphism;
-  color: $green;
-}
-.navButtonRegister {
-  @extend .navButtonNeomorphism;
-  color: $blue;
-}
-
 .hamburgerIcon {
   width: auto;
   border-radius: 20px;
