@@ -14,6 +14,7 @@ class Layout extends Component<RouteComponentProps> {
 	private mainPaths: string[] = ["/", ""];
 
 	render: () => JSX.Element = () => {
+		// current url
 		const { pathname } = this.props.location;
 		return (
 			<React.Fragment>

@@ -5,6 +5,8 @@ interface IINputProps {
 	changeHandler: (newValue: string) => void;
 	type: InputType;
 	value: string;
+	placeholder?: string;
+	commment?: string;
 }
 
 const Input = (props: IINputProps) => {
@@ -13,7 +15,11 @@ const Input = (props: IINputProps) => {
 	};
 
 	const renderTextInput = () => (
-		<input onChange={generalChangeHandler} />
+		<input
+			placeholder={props.placeholder}
+			onChange={generalChangeHandler}
+			value={props.value}
+		/>
 	);
 
 	switch (props.type) {

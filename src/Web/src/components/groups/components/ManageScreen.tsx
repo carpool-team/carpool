@@ -29,15 +29,17 @@ class ManageScreen extends Component<IManageScreenProps> {
 	};
 
 	renderGroupsList = () => {
-		return <div className={this.cssClasses.list}>
-			{this.props.callbacks.getGroups().map(group => {
-				return (
-					<div key={group.name}>
-						{group.name}
-					</div>
-				);
-			})}
-		</div>;
+		return (
+			<ul className={this.cssClasses.list}>
+				{this.props.callbacks.getGroups().map(group => {
+					return (
+						<li key={group.name}>
+							{group.name}
+						</li>
+					);
+				})}
+			</ul>
+		);
 	}
 
 	renderGroups = () => {
