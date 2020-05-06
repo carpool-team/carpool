@@ -3,15 +3,17 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
 import en from "./translations/en.json";
+import pl from "./translations/pl.json";
 
 i18n
 	.use(LanguageDetector)
 	.use(initReactI18next)
 	.init({
 		resources: {
-			en
+			en,
+			pl
 		},
-		lng: "en",
+		lng: "pl",
 		fallbackLng: {
 			default: ["en"]
 		},

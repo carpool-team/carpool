@@ -47,6 +47,7 @@
     "@types/react-router-dom": "^5.1.4",
     "i18next": "^19.4.3",
     "i18next-browser-languagedetector": "^4.1.1",
+    "immer": "^6.0.5",
     "json-loader": "^0.5.7",
     "react": "^16.13.1",
     "react-breadcrumbs-dynamic": "^1.2.1",

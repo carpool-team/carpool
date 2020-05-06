@@ -3,8 +3,13 @@ import { Switch, Route, RouteComponentProps } from "react-router";
 import { LoaderSpinner } from "../../ui/loaderSpinner/LoaderSpinner";
 import ManageScreen from "./ManageScreen";
 import AddGroupFormScreen from "./AddGroupFormScreen";
+import { IGroupCallbacks } from "../interfaces/IGroupCallbacks";
 
-class GroupsRouter extends Component<RouteComponentProps> {
+interface IGroupsRouterProps extends RouteComponentProps {
+	callbacks: IGroupCallbacks;
+}
+
+class GroupsRouter extends Component<IGroupsRouterProps> {
 	public static routes = {
 		addGroup: "add/",
 	};
@@ -14,8 +19,16 @@ class GroupsRouter extends Component<RouteComponentProps> {
 		return (
 			<Suspense fallback={<LoaderSpinner />}>
 				<Switch>
-					<Route exact path={path} component={ManageScreen} />
-					<Route path={path + GroupsRouter.routes.addGroup} component={AddGroupFormScreen} />
+					<Route exact path={path}>
+						<ManageScreen
+							callbacks={this.props.callbacks}
+						/>
+					</Route>
+					<Route path={path + GroupsRouter.routes.addGroup}>
+						<AddGroupFormScreen
+							callbacks={this.props.callbacks}
+						/>
+					</Route>
 				</Switch>
 			</Suspense >
 		);

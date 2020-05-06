@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from "react";
-import { Switch, Route, RouteComponentProps, withRouter } from "react-router";
+import { Switch, Route, RouteComponentProps } from "react-router";
 import LoadingScreen from "../../loadingScreen/LoadingScreen";
 import { LoaderSpinner } from "../../ui/loaderSpinner/LoaderSpinner";
 import Groups from "../../groups/Groups";
