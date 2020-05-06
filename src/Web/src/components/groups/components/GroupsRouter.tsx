@@ -20,14 +20,10 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 			<Suspense fallback={<LoaderSpinner />}>
 				<Switch>
 					<Route exact path={path}>
-						<ManageScreen
-							callbacks={this.props.callbacks}
-						/>
+						<ManageScreen callbacks={this.props.callbacks} />
 					</Route>
 					<Route path={path + GroupsRouter.routes.addGroup}>
-						<AddGroupFormScreen
-							callbacks={this.props.callbacks}
-						/>
+						<AddGroupFormScreen callbacks={this.props.callbacks} />
 					</Route>
 				</Switch>
 			</Suspense >

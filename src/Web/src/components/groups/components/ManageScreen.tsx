@@ -17,7 +17,7 @@ class ManageScreen extends Component<IManageScreenProps> {
 	renderGroupsList = () => {
 		return this.props.callbacks.getGroups().map(group => {
 			return (
-				<div>
+				<div key={group.name}>
 					{group.name}
 				</div>
 			);

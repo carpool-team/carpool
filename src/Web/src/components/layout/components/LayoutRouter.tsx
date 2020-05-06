@@ -9,21 +9,15 @@ class LayoutRouter extends Component<RouteComponentProps> {
 		groups: "groups/",
 	};
 
-	private cssClasses = {
-		main: "main"
-	};
-
 	render = () => {
 		const { path } = this.props.match;
 		return (
-			<main className={this.cssClasses.main}>
-				<Suspense fallback={<LoaderSpinner />}>
-					<Switch>
-						<Route exact path={path} component={LoadingScreen} />
-						<Route path={path + LayoutRouter.routes.groups} component={Groups} />
-					</Switch>
-				</Suspense>
-			</main>
+			<Suspense fallback={<LoaderSpinner />}>
+				<Switch>
+					<Route exact path={path} component={LoadingScreen} />
+					<Route path={path + LayoutRouter.routes.groups} component={Groups} />
+				</Switch>
+			</Suspense>
 		);
 	}
 }

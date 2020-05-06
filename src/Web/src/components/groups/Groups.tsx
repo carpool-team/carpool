@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import { produce } from "immer";
 import GroupsRouter from "./components/GroupsRouter";
 import { withRouter, RouteComponentProps } from "react-router";
 import { IGroupCallbacks } from "./interfaces/IGroupCallbacks";
-import { produce } from "immer";
 import { IGroup } from "./interfaces/IGroup";
+
+import "./Groups.scss";
 
 interface IGroupsProps extends RouteComponentProps { }
 
@@ -12,10 +14,23 @@ interface IGroupsState {
 }
 
 class Groups extends Component<IGroupsProps, IGroupsState> {
+	private cssClasses = {
+		container: "groupsContainer",
+	};
+
 	constructor(props: IGroupsProps) {
 		super(props);
 		this.state = {
-			groups: []
+			groups: [
+				{
+					name: "Testowa grupa 1",
+					users: []
+				},
+				{
+					name: "Testowa grupa 2",
+					users: []
+				}
+			]
 		};
 	}
 
@@ -35,13 +50,15 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 			getGroups: this.getGroupsHandler,
 		};
 		return (
-			<GroupsRouter
-				match={this.props.match}
-				staticContext={this.props.staticContext}
-				history={this.props.history}
-				location={this.props.location}
-				callbacks={callbacks}
-			/>
+			<section className={this.cssClasses.container}>
+				<GroupsRouter
+					match={this.props.match}
+					staticContext={this.props.staticContext}
+					history={this.props.history}
+					location={this.props.location}
+					callbacks={callbacks}
+				/>
+			</section>
 		);
 	}
 }
