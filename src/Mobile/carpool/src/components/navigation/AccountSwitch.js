@@ -2,10 +2,10 @@ import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {vh, vw} from '../../utils/constants';
 import sheet from '../../styles/sheet';
-import UpView from '../common/UpView';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import colors from '../../styles/colors';
 import {AccountContext, AccountActions} from '../../context/AccountContext';
+import {CircleButton} from '../common/buttons';
 
 const activeSize = 10 * vw;
 const inactiveSize = 7 * vw;
@@ -36,34 +36,29 @@ const AccountSwitch = () => {
         style={{
           ...sheet.rowCenter,
         }}>
-        <UpView
-          style={
-            activeAccount === 'driver'
-              ? {...styles.active, marginRight: 4 * vw}
-              : {...styles.inactive, marginRight: 4 * vw}
+        <CircleButton
+          style={{marginRight: 4 * vw}}
+          size={activeAccount === 'driver' ? 16 * vw : 12 * vw}
+          onPress={onDriverPress}
+          icon={
+            <Ionicon
+              name="ios-car"
+              color={colors.grayDark}
+              size={activeAccount === 'driver' ? activeSize : inactiveSize}
+            />
           }
-          contentContainerStyle={sheet.center}
-          borderRadius={9999}
-          onPress={onDriverPress}>
-          <Ionicon
-            name="ios-car"
-            color={colors.grayDark}
-            size={activeAccount === 'driver' ? activeSize : inactiveSize}
-          />
-        </UpView>
-        <UpView
-          style={
-            activeAccount === 'passenger' ? styles.active : styles.inactive
+        />
+        <CircleButton
+          size={activeAccount === 'passenger' ? 16 * vw : 12 * vw}
+          onPress={onPassengerPress}
+          icon={
+            <Ionicon
+              name="md-person"
+              color={colors.grayDark}
+              size={activeAccount === 'passenger' ? activeSize : inactiveSize}
+            />
           }
-          contentContainerStyle={sheet.center}
-          borderRadius={9999}
-          onPress={onPassengerPress}>
-          <Ionicon
-            name="md-person"
-            color={colors.grayDark}
-            size={activeAccount === 'passenger' ? activeSize : inactiveSize}
-          />
-        </UpView>
+        />
       </View>
     </View>
   );

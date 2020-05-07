@@ -4,10 +4,10 @@ import {vh, vw} from '../../utils/constants';
 import colors from '../../styles/colors';
 import sheet from '../../styles/sheet';
 import BottomSheet from 'reanimated-bottom-sheet';
-import UpView from '../common/UpView';
 import {useNavigation} from '@react-navigation/core';
+import {StandardButton} from '../common/buttons';
 
-const RouteInfoSheet = ({route}) => {
+const RouteInfoSheet = ({route, onGoBack}) => {
   const navigation = useNavigation();
 
   const _renderContent = () => {
@@ -54,13 +54,12 @@ const RouteInfoSheet = ({route}) => {
       <View style={styles.content}>
         <View style={sheet.rowCenter}>{renderDistance()}</View>
         <View style={sheet.rowCenter}>{renderTime()}</View>
-        <UpView
-          style={styles.button}
-          borderRadius={100}
-          contentContainerStyle={sheet.center}
-          onPress={() => navigation.goBack()}>
-          <Text style={styles.goBack}>Go back</Text>
-        </UpView>
+        <StandardButton
+          color={colors.red}
+          onPress={onGoBack ? onGoBack : () => navigation.goBack()}
+          title="Go back"
+          width={25 * vw}
+        />
       </View>
     );
   };
