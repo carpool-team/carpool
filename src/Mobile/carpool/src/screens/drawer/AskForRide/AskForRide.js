@@ -14,11 +14,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 import BlueMarker from '../../../components/common/BlueMarker';
 import sheet from '../../../styles/sheet';
-import {geocodingClient, directionsClient} from '../../../maps/mapbox';
+import {geocodingClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
 import StartLocationsFlatList from '../../../components/FindRoute/StartLocationsFlatList';
-import DestinationLocationsFlatList from '../../../components/FindRoute/DestinationLocationsFlatList';
+import GroupsFlatlist from '../../../components/GroupsFlatlist';
+import {exampleGroups} from '../../../examples/groups';
+import DatePicker from 'react-native-date-picker';
 import {StandardButton} from '../../../components/common/buttons';
 
 const config = {
@@ -26,7 +28,7 @@ const config = {
   countries: ['pl'],
 };
 
-const FindRoute = () => {
+const AskForRide = () => {
   const [currentPosition, setCurrentPosition] = useState([]);
   const [start, setStart] = useState(null);
   const [startGeo, setStartGeo] = useState(null);
@@ -34,18 +36,12 @@ const FindRoute = () => {
   const [destinationGeo, setDestinationGeo] = useState(null);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
-  const [routes, setRoutes] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [date, setDate] = useState(null);
 
   const navigation = useNavigation();
   const _destination = useRef();
 
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
-  const [destinationResults, destinationLoading] = useForwardGeocoding(
-    destination,
-    config,
-    true,
-  );
 
   useEffect(() => {
     Geolocation.getCurrentPosition(info => {
@@ -53,16 +49,6 @@ const FindRoute = () => {
       setCurrentPosition([longitude, latitude]);
     });
   }, []);
-
-  useEffect(() => {
-    if (routes.length) {
-      navigation.navigate('ShowRoute', {
-        routes,
-        start: startGeo,
-        destination: destinationGeo,
-      });
-    }
-  }, [routes]);
 
   const onFocusDestination = () => {
     const {current} = _destination;
@@ -93,35 +79,6 @@ const FindRoute = () => {
     }
   };
 
-  const onFindRoute = async () => {
-    try {
-      setLoading(true);
-      const response = await directionsClient
-        .getDirections({
-          profile: 'driving-traffic',
-          waypoints: [
-            {
-              coordinates: startGeo.center,
-            },
-            {
-              coordinates: destinationGeo.center,
-            },
-          ],
-          overview: 'full',
-          geometries: 'geojson',
-          alternatives: true,
-          //steps: true,
-        })
-        .send();
-
-      setRoutes(response.body.routes);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const onStartItemPress = item => {
     setStart(item.place_name);
     setStartGeo(item);
@@ -146,48 +103,43 @@ const FindRoute = () => {
       );
     } else if (isDestinationFocused) {
       return (
-        <DestinationLocationsFlatList
-          data={destinationResults}
-          loading={destinationLoading}
+        <GroupsFlatlist
+          data={exampleGroups}
+          loading={false}
           onItemPress={onDestinationItemPress}
         />
       );
     } else {
-      return (
-        <View
-          style={{
-            width: '100%',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          {loading ? (
-            <ActivityIndicator size="large" color={colors.green} />
-          ) : (
-            <StandardButton
-              width="65%"
-              onPress={onFindRoute}
-              color={colors.blue}
-              title="Search"
+      return startLoading ? (
+        <View style={styles.loadingWrapper}>
+          <ActivityIndicator size="large" color={colors.green} />
+        </View>
+      ) : (
+        <View style={styles.datePickerWrapper}>
+          <View>
+            <Text style={styles.arrivalTime}>Arrival time</Text>
+            <DatePicker
+              date={date}
+              onDateChange={setDate}
+              locale="pl"
+              minimumDate={new Date()}
             />
-          )}
+          </View>
+          <StandardButton
+            width="65%"
+            style={{marginTop: 4 * vh}}
+            onPress={() => navigation.goBack()}
+            title="Submit"
+            color={colors.green}
+          />
         </View>
       );
     }
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: colors.background,
-      }}>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.topPanel}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="close" color={colors.grayVeryDark} size={8 * vw} />
-          </TouchableOpacity>
-        </View>
         <View style={styles.inputWrapper}>
           <BlueMarker size={5 * vw} />
           <View style={styles.inputContainer}>
@@ -221,7 +173,7 @@ const FindRoute = () => {
               value={destination}
               onChangeText={setDestination}
               style={styles.input}
-              onSubmitEditing={onFindRoute}
+              onSubmitEditing={() => null}
               placeholder="To"
               returnKeyType="done"
               onFocus={() => setIsDestinationFocused(true)}
@@ -250,6 +202,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   topPanel: {
+    paddingTop: 4 * vh,
     width: '100%',
     backgroundColor: colors.background,
     shadowColor: '#000',
@@ -295,6 +248,30 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  loadingWrapper: {
+    width: '100%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  datePickerWrapper: {
+    width: '100%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10 * vh,
+  },
+  arrivalTime: {
+    color: colors.grayDark,
+    fontSize: 5 * vw,
+    ...sheet.textBold,
+    textAlign: 'center',
+  },
+  submit: {
+    color: colors.green,
+    fontSize: 2.25 * vh,
+    ...sheet.textBold,
+  },
 });
 
-export default FindRoute;
+export default AskForRide;

@@ -10,23 +10,31 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import sheet from '../../styles/sheet';
 import UpView from '../common/UpView';
+import {examplePassengerPoints} from '../../examples/points';
+import {useNavigation} from '@react-navigation/core';
+import {CircleButton, StandardButton} from '../common/buttons';
 
 export default CustomDrawer = props => {
+  const [ride, setRide] = React.useState(examplePassengerPoints[2]);
+  const navigation = useNavigation();
+
+  const {firstName, lastName} = ride.ride.user;
+
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props} style={{flex: 1}}>
         <View style={{flex: 1}}>
           <View style={styles.userInfoContainer}>
-            <UpView
-              style={styles.avatarCircle}
-              contentContainerStyle={sheet.center}
-              borderRadius={9999}>
-              <Ionicon
-                name="md-person"
-                color={colors.grayDark}
-                size={11 * vw}
-              />
-            </UpView>
+            <CircleButton
+              size={18 * vw}
+              icon={
+                <Ionicon
+                  name="md-person"
+                  color={colors.grayDark}
+                  size={11 * vw}
+                />
+              }
+            />
             <View style={styles.userDataWrapper}>
               <Text style={styles.username}>John</Text>
               <View style={sheet.rowCenter}>
@@ -46,22 +54,25 @@ export default CustomDrawer = props => {
               style={styles.rideCard}
               contentContainerStyle={styles.rideCardContent}
               borderRadius={4 * vw}
-              onPress={() => null}>
-              <Text style={styles.driversName}>Jonathan</Text>
-              <Text style={styles.leaving}>Leaving in 6 minutes</Text>
+              onPress={() => navigation.navigate('Home', {ride})}>
+              <Text
+                style={styles.driversName}>{`${firstName} ${lastName}`}</Text>
+              <Text
+                style={
+                  styles.leaving
+                }>{`Leaving in ${ride.timeLeft} minutes`}</Text>
             </UpView>
           </View>
           <DrawerItemList {...props} />
         </View>
       </DrawerContentScrollView>
       <View style={styles.bottomContainer}>
-        <UpView
-          style={{width: '65%', height: 6 * vh}}
-          borderRadius={100}
-          contentContainerStyle={sheet.center}
-          onPress={() => console.log('ELOELO')}>
-          <Text style={styles.logout}>Logout</Text>
-        </UpView>
+        <StandardButton
+          width="65%"
+          title="Logout"
+          color={colors.red}
+          onPress={() => null}
+        />
       </View>
     </View>
   );
@@ -76,10 +87,6 @@ const styles = StyleSheet.create({
     paddingVertical: 3 * vh,
     borderBottomColor: colors.gray,
     borderBottomWidth: 0.1 * vh,
-  },
-  avatarCircle: {
-    width: 18 * vw,
-    height: 18 * vw,
   },
   userDataWrapper: {
     height: 18 * vw,

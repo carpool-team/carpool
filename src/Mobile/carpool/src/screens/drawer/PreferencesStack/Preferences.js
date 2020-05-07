@@ -1,10 +1,9 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import colors from '../../../styles/colors';
-import UpView from '../../../components/common/UpView';
-import sheet from '../../../styles/sheet';
-import {vh} from '../../../utils/constants';
 import {useNavigation} from '@react-navigation/core';
+import {StandardButton} from '../../../components/common/buttons';
+import {vh} from '../../../utils/constants';
 
 const Preferences = () => {
   const navigation = useNavigation();
@@ -17,34 +16,19 @@ const Preferences = () => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <UpView
-        style={{width: '65%', height: 6 * vh}}
-        borderRadius={100}
-        contentContainerStyle={sheet.center}
-        onPress={() => navigation.navigate('SearchLocation')}>
-        <Text
-          style={{
-            color: colors.blue,
-            fontSize: 2.25 * vh,
-            ...sheet.textBold,
-          }}>
-          Add location
-        </Text>
-      </UpView>
-      <UpView
-        style={{width: '65%', height: 6 * vh, marginTop: 6 * vh}}
-        borderRadius={100}
-        contentContainerStyle={sheet.center}
-        onPress={() => navigation.navigate('FindRoute')}>
-        <Text
-          style={{
-            color: colors.blue,
-            fontSize: 2.25 * vh,
-            ...sheet.textBold,
-          }}>
-          Find route
-        </Text>
-      </UpView>
+      <StandardButton
+        width="65%"
+        onPress={() => navigation.navigate('SearchLocation')}
+        color={colors.blue}
+        title="Add location"
+      />
+      <StandardButton
+        width="65%"
+        onPress={() => navigation.navigate('FindRoute')}
+        color={colors.blue}
+        title="Find route"
+        style={{marginTop: 6 * vh}}
+      />
     </View>
   );
 };
