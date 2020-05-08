@@ -8,20 +8,20 @@ import {
   Text,
   ActivityIndicator,
 } from 'react-native';
-import colors from '../../../styles/colors';
-import {vh, vw} from '../../../utils/constants';
+import colors from '../../styles/colors';
+import {vh, vw} from '../../utils/constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
-import BlueMarker from '../../../components/common/BlueMarker';
-import sheet from '../../../styles/sheet';
-import {geocodingClient} from '../../../maps/mapbox';
+import BlueMarker from '../../components/common/BlueMarker';
+import sheet from '../../styles/sheet';
+import {geocodingClient} from '../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
-import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
-import StartLocationsFlatList from '../../../components/FindRoute/StartLocationsFlatList';
-import GroupsFlatlist from '../../../components/GroupsFlatlist';
-import {exampleGroups} from '../../../examples/groups';
+import useForwardGeocoding from '../../hooks/useForwardGeocoding';
+import StartLocationsFlatList from '../../components/FindRoute/StartLocationsFlatList';
+import GroupsFlatlist from '../../components/GroupsFlatlist';
+import {exampleGroups} from '../../examples/groups';
 import DatePicker from 'react-native-date-picker';
-import {StandardButton} from '../../../components/common/buttons';
+import {StandardButton} from '../../components/common/buttons';
 
 const config = {
   autocomplete: false,
@@ -36,7 +36,7 @@ const AskForRide = () => {
   const [destinationGeo, setDestinationGeo] = useState(null);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(new Date());
 
   const navigation = useNavigation();
   const _destination = useRef();
@@ -123,6 +123,7 @@ const AskForRide = () => {
               onDateChange={setDate}
               locale="pl"
               minimumDate={new Date()}
+              minuteInterval={10}
             />
           </View>
           <StandardButton
