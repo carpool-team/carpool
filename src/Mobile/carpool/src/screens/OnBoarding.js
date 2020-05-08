@@ -1,9 +1,8 @@
 import React, {useEffect} from 'react';
 import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
-import sheet from '../styles/sheet';
+import {sheet, colors} from '../styles';
 import {vh} from '../utils/constants';
-import colors from '../styles/colors';
 
 const OnBoarding = () => {
   const navigation = useNavigation();

@@ -1,9 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {SafeAreaView, View} from 'react-native';
-import colors from '../../styles/colors';
-import HamburgerMenu from '../../components/navigation/HamburgerMenu';
-import AccountSwitch from '../../components/navigation/AccountSwitch';
+import {colors} from '../../styles';
+import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
 import {AccountContext} from '../../context/AccountContext';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';

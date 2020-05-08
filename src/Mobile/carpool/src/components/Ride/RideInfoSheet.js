@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import colors from '../../styles/colors';
+import {colors, sheet} from '../../styles';
 import {vw, vh} from '../../utils/constants';
-import UpView from '../common/UpView';
-import sheet from '../../styles/sheet';
+import {UpView} from '../common';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Waypoints from './Waypoints';

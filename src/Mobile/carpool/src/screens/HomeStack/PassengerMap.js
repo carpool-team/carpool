@@ -1,19 +1,17 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import colors from '../../styles/colors';
-import Marker from '../../components/common/Marker';
+import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
+import {Marker} from '../../components/common';
 import {vw, vh} from '../../utils/constants';
-import {examplePassengerPoints} from '../../examples/points';
+import {examplePassengerPoints} from '../../examples';
 import RideInfoSheet from '../../components/Ride/RideInfoSheet';
 import {directionsClient} from '../../maps/mapbox';
 import {getBoundsForRoutes} from '../../utils/bounds';
-import {activeRouteStyle, inactiveRouteStyle} from '../../styles/map';
-import RouteInfoSheet from '../../components/FindRoute/RouteInfoSheet';
+import {RouteInfoSheet} from '../../components/FindRoute';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import {CircleButton} from '../../components/common/buttons';
-import {parseDistance} from '../../utils/parse';
 
 const getColor = time => {
   if (time < 20) {

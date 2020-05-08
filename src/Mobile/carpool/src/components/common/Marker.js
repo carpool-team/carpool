@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import colors from '../../styles/colors';
+import {colors} from '../../styles';
 
 const Marker = ({size = 100, color = colors.grayDark, children, style}) => {
   const bigCircleStyle = {

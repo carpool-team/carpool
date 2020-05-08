@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView} from 'react-native';
-import colors from '../../../styles/colors';
+import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {vw, vh} from '../../../utils/constants';
-import RouteInfoSheet from '../../../components/FindRoute/RouteInfoSheet';
-import RouteTopSheet from '../../../components/FindRoute/RouteTopSheet';
-import Marker from '../../../components/common/Marker';
+import {RouteInfoSheet, RouteTopSheet} from '../../../components/FindRoute';
+import {Marker} from '../../../components/common';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
 

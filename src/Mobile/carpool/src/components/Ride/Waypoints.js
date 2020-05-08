@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import sheet from '../../styles/sheet';
-import Marker from '../common/Marker';
+import {sheet, colors} from '../../styles';
+import {Marker} from '../common';
 import {vw} from '../../utils/constants';
-import colors from '../../styles/colors';
 import {geocodingClient} from '../../maps/mapbox';
 
 const getColor = time => {

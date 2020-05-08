@@ -5,12 +5,11 @@ import {
 import * as React from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {vw, vh} from '../../utils/constants';
-import colors from '../../styles/colors';
+import {colors, sheet} from '../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import sheet from '../../styles/sheet';
-import UpView from '../common/UpView';
-import {examplePassengerPoints} from '../../examples/points';
+import {UpView} from '../common';
+import {examplePassengerPoints} from '../../examples';
 import {useNavigation} from '@react-navigation/core';
 import {CircleButton, StandardButton} from '../common/buttons';
 

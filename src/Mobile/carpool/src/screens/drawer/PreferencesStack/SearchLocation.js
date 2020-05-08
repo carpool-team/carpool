@@ -6,12 +6,11 @@ import {
   TextInput,
   StyleSheet,
 } from 'react-native';
-import colors from '../../../styles/colors';
+import {colors, sheet} from '../../../styles';
 import {vh, vw} from '../../../utils/constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
-import BlueMarker from '../../../components/common/BlueMarker';
-import sheet from '../../../styles/sheet';
+import {BlueMarker} from '../../../components/common';
 import LocationsFlatList from '../../../components/LocationsFlatList';
 import {geocodingClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';

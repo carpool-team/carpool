@@ -8,18 +8,17 @@ import {
   Text,
   ActivityIndicator,
 } from 'react-native';
-import colors from '../../styles/colors';
+import {colors, sheet} from '../../styles';
 import {vh, vw} from '../../utils/constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
-import BlueMarker from '../../components/common/BlueMarker';
-import sheet from '../../styles/sheet';
+import {BlueMarker} from '../../components/common';
 import {geocodingClient} from '../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../hooks/useForwardGeocoding';
-import StartLocationsFlatList from '../../components/FindRoute/StartLocationsFlatList';
+import {StartLocationsFlatList} from '../../components/FindRoute';
 import GroupsFlatlist from '../../components/GroupsFlatlist';
-import {exampleGroups} from '../../examples/groups';
+import {exampleGroups} from '../../examples';
 import DatePicker from 'react-native-date-picker';
 import {StandardButton} from '../../components/common/buttons';
 

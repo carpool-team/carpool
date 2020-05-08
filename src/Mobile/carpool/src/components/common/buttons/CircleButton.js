@@ -1,6 +1,6 @@
 import React from 'react';
-import UpView from '../UpView';
-import sheet from '../../../styles/sheet';
+import {UpView} from '../';
+import {sheet} from '../../../styles';
 import {vw} from '../../../utils/constants';
 
 const CircleButton = ({style, icon, onPress, size = 16 * vw}) => {
