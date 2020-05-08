@@ -5,6 +5,7 @@ import {vw, vh} from '../../utils/constants';
 import UpView from '../common/UpView';
 import sheet from '../../styles/sheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Waypoints from './Waypoints';
 import {CircleButton, StandardButton} from '../common/buttons';
 import {parseDistance} from '../../utils/parse';
@@ -28,6 +29,13 @@ const getColor = time => {
 
 const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
   const [distance, setDistance] = useState(null);
+  const [extended, setExtended] = useState(false);
+
+  useEffect(() => {
+    if (!visible && extended) {
+      setExtended(false);
+    }
+  }, [visible]);
 
   useEffect(() => {
     if (point && userLocation.length) {
@@ -100,12 +108,51 @@ const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
           ride={point.ride}
           start={point.coordinates}
         />
+        {extended ? (
+          <>
+            <View style={styles.detailsRow}>
+              <UpView
+                borderRadius={20}
+                contentContainerStyle={sheet.center}
+                style={{marginRight: 8 * vw}}>
+                <View style={styles.leftCard}>
+                  <MaterialIcon
+                    name="star"
+                    size={10 * vw}
+                    color={colors.yellow}
+                  />
+                  <Text style={styles.rating}>{point.ride.user.rating}</Text>
+                </View>
+              </UpView>
+              <UpView borderRadius={20} contentContainerStyle={sheet.center}>
+                <View style={styles.rightCard}>
+                  {point.ride.price ? (
+                    <Text style={styles.price}>
+                      {`${point.ride.price} PLN`}
+                    </Text>
+                  ) : (
+                    <Text style={styles.free}>Free</Text>
+                  )}
+                </View>
+              </UpView>
+            </View>
+            <View style={styles.carWrapper}>
+              <Ionicon
+                name="ios-car"
+                color={colors.grayVeryDark}
+                size={20 * vw}
+                style={{marginRight: 4 * vw}}
+              />
+              <Text style={styles.car}>{point.ride.user.car}</Text>
+            </View>
+          </>
+        ) : null}
         <StandardButton
           width="65%"
           style={{marginTop: 3 * vh}}
           color={point.signedUp ? colors.blue : colors.green}
           title={point.signedUp ? 'Show way' : 'Select'}
-          onPress={point.signedUp ? onShowWay : () => null}
+          onPress={point.signedUp ? onShowWay : () => setExtended(true)}
         />
       </View>
     </View>
@@ -173,6 +220,49 @@ const styles = StyleSheet.create({
     ...sheet.textBold,
     color: colors.green,
     fontSize: 4 * vw,
+  },
+  detailsRow: {
+    ...sheet.rowCenterSplit,
+    marginTop: 3 * vh,
+    marginBottom: 3 * vh,
+  },
+  leftCard: {
+    paddingVertical: 3 * vh,
+    paddingHorizontal: 4 * vw,
+    width: 32 * vw,
+    ...sheet.rowCenter,
+    justifyContent: 'center',
+  },
+  rating: {
+    ...sheet.textBold,
+    fontSize: 6 * vw,
+    color: colors.grayDark,
+  },
+  rightCard: {
+    paddingVertical: 3 * vh,
+    paddingHorizontal: 4 * vw,
+    width: 32 * vw,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  price: {
+    ...sheet.textBold,
+    fontSize: 6 * vw,
+    color: colors.green,
+  },
+  free: {
+    ...sheet.textBold,
+    fontSize: 6 * vw,
+    color: colors.blue,
+  },
+  carWrapper: {
+    ...sheet.rowCenter,
+    marginBottom: 3 * vh,
+  },
+  car: {
+    ...sheet.textBold,
+    fontSize: 7 * vw,
+    color: colors.grayDark,
   },
 });
 

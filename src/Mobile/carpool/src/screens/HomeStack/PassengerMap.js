@@ -73,6 +73,8 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
         ...bds,
         paddingTop: 20 * vh,
         paddingBottom: 20 * vh,
+        paddingLeft: 20 * vw,
+        paddingRight: 20 * vw,
       });
     }
   }, [routes]);
@@ -166,11 +168,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
         styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
         contentInset={10}
         compassEnabled={false}
-        onPress={() => {
-          if (visible) {
-            onCleanState();
-          }
-        }}
+        onPress={e => console.log(e)}
         rotateEnabled={false}>
         <MapboxGL.Camera
           ref={_passengerCamera}
