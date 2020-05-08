@@ -5,10 +5,10 @@ import {vw, vh} from '../../utils/constants';
 import UpView from '../common/UpView';
 import sheet from '../../styles/sheet';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import turfDistance from '@turf/distance';
-import {point as turfPoint} from '@turf/helpers';
 import Waypoints from './Waypoints';
 import {CircleButton, StandardButton} from '../common/buttons';
+import {parseDistance} from '../../utils/parse';
+import {directionsClient} from '../../maps/mapbox';
 
 const getColor = time => {
   if (time < 20) {
@@ -26,26 +26,35 @@ const getColor = time => {
   }
 };
 
-const getDistance = dist => {
-  if (dist < 1000) {
-    return `${dist} m`;
-  } else {
-    return `${(dist / 1000).toFixed(1)} km`;
-  }
-};
-
 const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
   const [distance, setDistance] = useState(null);
 
   useEffect(() => {
-    if (userLocation.length && point) {
-      const userPoint = turfPoint(userLocation);
-      const locPoint = turfPoint(point.coordinates);
-      const dist = turfDistance(userPoint, locPoint);
-
-      setDistance((dist * 1000).toFixed(0));
+    if (point && userLocation.length) {
+      onGetDistance();
     }
   }, [point]);
+
+  const onGetDistance = async () => {
+    const response = await directionsClient
+      .getDirections({
+        profile: 'walking',
+        waypoints: [
+          {
+            coordinates: userLocation,
+          },
+          {
+            coordinates: point.coordinates,
+          },
+        ],
+        overview: 'full',
+        geometries: 'geojson',
+        alternatives: true,
+      })
+      .send();
+
+    setDistance(parseDistance(response.body.routes[0].distance));
+  };
 
   return visible ? (
     <View style={styles.wrapper}>
@@ -74,7 +83,7 @@ const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
                 <Text style={styles.username} numberOfLines={1}>
                   {`${point.ride.user.firstName} ${point.ride.user.lastName}`}
                 </Text>
-                <Text style={styles.distance}>{getDistance(distance)}</Text>
+                <Text style={styles.distance}>{distance}</Text>
               </View>
               <Text
                 style={[

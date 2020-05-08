@@ -13,6 +13,7 @@ import RouteInfoSheet from '../../components/FindRoute/RouteInfoSheet';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import {CircleButton} from '../../components/common/buttons';
+import {parseDistance} from '../../utils/parse';
 
 const getColor = time => {
   if (time < 20) {
