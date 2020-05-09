@@ -14,7 +14,7 @@
     display: block;
     border: none;
     background-repeat: no-repeat;
-    background-size: auto 100%;
+    background-size: auto auto;
     flex: 1 1 auto;
   }
   &__quote {
@@ -28,16 +28,27 @@
     color: $green;
   }
 }
-
-@media only screen and (max-width: 900px) {
-  .quote {
-    padding-top: 50px;
-    font-size: 70px;
-    margin-right: 30px;
-    width: 100%;
-    float: none;
+@media only screen and (max-width: 700px) {
+  .loadingScreen {
+    &__quote {
+      font-size: 120px;
+      width: 499px;
+    }
   }
-  .map {
-    height: 600px;
+}
+
+@media only screen and (max-width: 500px) {
+  .loadingScreen {
+    flex: 1 1 auto;
+    display: flex;
+    &__map {
+      height: 90vh;
+    }
+    &__quote {
+      padding-top: 5vh;
+      font-size: 90px;
+      width: 97%;
+      float: none;
+    }
   }
 }

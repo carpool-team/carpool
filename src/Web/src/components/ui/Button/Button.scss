@@ -2,34 +2,41 @@
 @import "~scss_path/fonts";
 
 .button {
-    font-weight: $semi-bold;
-    border: none;
-    right: 5px;
-    border-radius: 20px;
-    background: $background;
-    box-shadow: 8px 8px 12px #888888, -8px -8px 12px #ffffff;
-    color: $grayDark;
-    cursor: pointer;
-    &--link {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-decoration: none;
-    }
+  font-weight: $semi-bold;
+  border: none;
+  right: 5px;
+  border-radius: 20px;
+  background: $background;
+  box-shadow: 8px 8px 12px #888888, -8px -8px 12px #ffffff;
+  color: $grayDark;
+  cursor: pointer;
+  &--link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  }
+  &--large {
+    font-size: 18px;
+    width: 145px;
+    height: 45px;
+  }
+  &--standard {
+    font-size: 18px;
+    width: 145px;
+    height: 45px;
+  }
+  &--success {
+    color: $green;
+  }
+  &--info {
+    color: $blue;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .button {
     &--large {
-        font-size: 18px;
-        width: 145px;
-        height: 45px;
+      width: 80%;
     }
-    &--standard {
-        font-size: 18px;
-        width: 145px;
-        height: 45px;
-    }
-    &--success {
-        color: $green;
-    }
-    &--info {
-        color: $blue;
-    }
+  }
 }
