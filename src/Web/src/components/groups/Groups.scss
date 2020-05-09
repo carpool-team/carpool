@@ -1,8 +1,10 @@
 @import "scss/management";
 @import "scss/addGroupForm";
+@import "~scss_path/colors";
 
 .groupsContainer {
-    bottom: 0;
-    flex: 1 1 auto;
-    display: flex;
+  bottom: 0;
+  background-color: $background;
+  flex: 1 1 auto;
+  display: flex;
 }

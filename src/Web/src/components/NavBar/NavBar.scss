@@ -13,8 +13,9 @@
 
   grid-template-columns: auto 300px auto auto;
   grid-template-areas: " . logo navButtons . ";
-  background: linear-gradient(145deg, #ffffff, #d7d6d6);
-  box-shadow: 4px 4px 20px #8f8f8f, -8px -8px 12px #ffffff;
+  //background: linear-gradient(145deg, #ffffff, #d7d6d6);
+  //box-shadow: 4px 4px 20px #8f8f8f, -8px -8px 12px #ffffff;
+  box-shadow: 1px 1px 10px #8f8f8f;
 }
 .navButtons {
   display: grid;

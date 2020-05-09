@@ -11,11 +11,12 @@ interface IButtonLinkProps {
   size: ButtonSize;
   type: ButtonType;
   shape?: ButtonShape;
-  to: string;
+  label: string;
 }
 
-const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
-  const baseCssClass: string = "button button--link";
+
+const ButtonCheckBox: FunctionComponent<IButtonLinkProps> = (props) => {
+  const baseCssClass: string = "button button--checkbox";
   const cssClasses: string = [
     baseCssClass,
     getShapeClass(props.shape),
@@ -23,11 +24,22 @@ const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
     getTypeClass(props.type),
   ].join(" ");
 
+  let state ={
+	  active: false;
+  }
+
+
+  handleChecboxState = () => {
+	let elem = document.getElementsByClassName;
+			elem?.classList.toggle("change");
+	}
+
   return (
-    <Link to={props.to} className={cssClasses}>
-      {props.children}
-    </Link>
+    <>
+      <button className={cssClasses} onClick={this.handleChecboxState.bind(this)}></button>
+      {props.label}
+    </>
   );
 };
 
-export default ButtonLink;
+export default ButtonCheckBox;

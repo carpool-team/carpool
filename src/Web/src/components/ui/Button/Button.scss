@@ -5,9 +5,10 @@
   font-weight: $semi-bold;
   border: none;
   right: 5px;
-  border-radius: 20px;
   background: $background;
-  box-shadow: 8px 8px 12px #888888, -8px -8px 12px #ffffff;
+  //box-shadow: 6px 6px 12px #888888, -6px -6px 12px #ffffff;
+  //background-color: #e0e5ec;
+  box-shadow: 6px 6px 16px #a7a7a7, -6px -6px 16px #ffffff;
   color: $grayDark;
   cursor: pointer;
   &--link {
@@ -16,21 +17,62 @@
     align-items: center;
     text-decoration: none;
   }
+  &--checkbox {
+    .neumorphic-checkbox {
+      padding: 20px;
+      position: relative;
+      margin: 0 5px;
+      transition: all 0.25s ease;
+    }
+
+    .neumorphic-checkbox::after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid #a3aab9;
+      background: transparent;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.25s ease;
+    }
+
+    .neumorphic-checkbox_active {
+      box-shadow: 7px 7px 15px rgba(55, 84, 170, 0.15),
+        -7px -7px 20px rgba(255, 255, 255, 1),
+        inset 0px 0px 4px rgba(255, 255, 255, 0),
+        inset 7px 7px 15px rgba(55, 84, 170, 0.15),
+        inset -7px -7px 20px rgba(255, 255, 255, 1),
+        0px 0px 4px rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .neumorphic-checkbox_active::after {
+      background-color: #a3aab9;
+    }
+  }
   &--large {
     font-size: 18px;
-    width: 145px;
-    height: 45px;
   }
   &--standard {
     font-size: 18px;
-    width: 145px;
-    height: 45px;
   }
   &--success {
     color: $green;
   }
   &--info {
     color: $blue;
+  }
+  &--circle {
+    border-radius: 50px;
+    width: 25px;
+    height: 25px;
+  }
+  &--rectangle {
+    border-radius: 20px;
+    width: 145px;
+    height: 45px;
   }
 }
 @media only screen and (max-width: 500px) {
