@@ -81,14 +81,22 @@ class ManageScreen extends Component<IManageScreenProps> {
 	}
 
 	render() {
-		const { t } = this.props;
 		return (
-			<div className={this.cssClasses.container}>
-				{this.renderGroups()}
-				<div className={this.cssClasses.map}>
-					<img src={mapImage} alt={""} />
+			<>
+				<div className={this.cssClasses.container}>
+					{this.renderGroups()}
+					<div className={this.cssClasses.map}>
+						<img src={mapImage} alt={""} />
+					</div>
+
 				</div>
-			</div>
+				<Button onClick={() => this.props.callbacks.addGroup({
+					name: "REDUX ADDED GROUP",
+					users: []
+				})}>
+					REDUX TEST
+				</Button>
+			</>
 		);
 	}
 }

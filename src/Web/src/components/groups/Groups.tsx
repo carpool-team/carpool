@@ -1,48 +1,27 @@
 import React, { Component } from "react";
-import { produce } from "immer";
+import { connect } from "react-redux";
 import GroupsRouter from "./components/GroupsRouter";
 import { withRouter, RouteComponentProps } from "react-router";
 import { IGroupCallbacks } from "./interfaces/IGroupCallbacks";
 import { IGroup } from "./interfaces/IGroup";
+import { StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from "./store/PropsTypes";
 
 import "./Groups.scss";
 
-interface IGroupsProps extends RouteComponentProps { }
+interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
-interface IGroupsState {
-	groups: IGroup[];
-}
-
-class Groups extends Component<IGroupsProps, IGroupsState> {
+class Groups extends Component<IGroupsProps> {
 	private cssClasses = {
 		container: "groupsContainer",
 	};
 
-	constructor(props: IGroupsProps) {
-		super(props);
-		this.state = {
-			groups: [
-				{
-					name: "Testowa grupa 1",
-					users: []
-				},
-				{
-					name: "Testowa grupa 2",
-					users: []
-				}
-			]
-		};
-	}
-
 	/** Handles adding group */
 	addGroupHandler = (group: IGroup) => {
-		this.setState(produce((draft: IGroupsState) => {
-			draft.groups.push(group);
-		}));
+		this.props.groupsAddGroup(group);
 	}
 
 	/** Gets groups */
-	getGroupsHandler = () => this.state.groups;
+	getGroupsHandler = () => this.props.groups;
 
 	render() {
 		let callbacks: IGroupCallbacks = {
@@ -63,4 +42,4 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 	}
 }
 
-export default withRouter(Groups);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Groups));
