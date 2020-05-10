@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { Link } from "react-router-dom";
 import { ButtonSize } from "./enums/ButtonSize";
 import { ButtonType } from "./enums/ButtonType";
@@ -14,7 +14,6 @@ interface IButtonLinkProps {
   label: string;
 }
 
-
 const ButtonCheckBox: FunctionComponent<IButtonLinkProps> = (props) => {
   const baseCssClass: string = "button button--checkbox";
   const cssClasses: string = [
@@ -24,20 +23,15 @@ const ButtonCheckBox: FunctionComponent<IButtonLinkProps> = (props) => {
     getTypeClass(props.type),
   ].join(" ");
 
-  let state ={
-	  active: false;
-  }
-
-
-  handleChecboxState = () => {
-	let elem = document.getElementsByClassName;
-			elem?.classList.toggle("change");
-	}
+  const [active, setActive] = useState(false);
 
   return (
     <>
-      <button className={cssClasses} onClick={this.handleChecboxState.bind(this)}></button>
-      {props.label}
+      <button
+        className={cssClasses + (!active ? "button--checkbox_active" : "")}
+        onClick={!active ? () => setActive(true) : () => setActive(false)}
+      ></button>
+      <div className={"button--checkbox-label"}>{props.label}</div>
     </>
   );
 };

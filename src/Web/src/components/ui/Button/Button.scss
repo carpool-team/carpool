@@ -6,11 +6,10 @@
   border: none;
   right: 5px;
   background: $background;
-  //box-shadow: 6px 6px 12px #888888, -6px -6px 12px #ffffff;
-  //background-color: #e0e5ec;
   box-shadow: 6px 6px 16px #a7a7a7, -6px -6px 16px #ffffff;
   color: $grayDark;
   cursor: pointer;
+
   &--link {
     display: flex;
     justify-content: center;
@@ -18,40 +17,46 @@
     text-decoration: none;
   }
   &--checkbox {
-    .neumorphic-checkbox {
-      padding: 20px;
-      position: relative;
-      margin: 0 5px;
-      transition: all 0.25s ease;
-    }
-
-    .neumorphic-checkbox::after {
-      content: "";
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 2px solid #a3aab9;
-      background: transparent;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      transition: all 0.25s ease;
-    }
-
-    .neumorphic-checkbox_active {
-      box-shadow: 7px 7px 15px rgba(55, 84, 170, 0.15),
-        -7px -7px 20px rgba(255, 255, 255, 1),
-        inset 0px 0px 4px rgba(255, 255, 255, 0),
-        inset 7px 7px 15px rgba(55, 84, 170, 0.15),
-        inset -7px -7px 20px rgba(255, 255, 255, 1),
-        0px 0px 4px rgba(255, 255, 255, 0.2) !important;
-    }
-
-    .neumorphic-checkbox_active::after {
-      background-color: #a3aab9;
-    }
+    float: left;
+    font-size: 18px;
+    padding: 20px;
+    position: relative;
+    transition: all 0.25s ease;
   }
+  &--checkbox::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid $gray;
+    background: transparent;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.25s ease;
+  }
+
+  &--checkbox_active {
+    box-shadow: inset 4px 4px 8px #bfbebe, inset -4px -4px 8px #ffffff !important;
+  }
+
+  &--checkbox_active::after {
+    background-color: $gray;
+  }
+  &--checkbox-label {
+    font-size: 18px;
+    font-weight: $semi-bold;
+    border: none;
+    right: 5px;
+    background: $background;
+    height: inherit;
+    padding-left: 50px;
+    vertical-align: middle;
+    line-height: 40px;
+    color: $grayDark;
+  }
+
   &--large {
     font-size: 18px;
   }
