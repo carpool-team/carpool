@@ -18,3 +18,17 @@ export const exampleGroups = [
     coordinates: [16.8969900272229, 52.447001762887766],
   },
 ];
+
+export const exampleInvitations = [
+  {
+    id: Math.random().toString(),
+    name: 'Company inc.',
+    coordinates: [16.987526080005175, 52.38287455058366],
+    author: {
+      id: Math.random().toString(),
+      firstName: 'John',
+      lastName: 'Doe',
+    },
+    members: 46,
+  },
+];

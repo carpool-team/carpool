@@ -9,6 +9,7 @@ import sheet from '../styles/sheet';
 import colors from '../styles/colors';
 import PreferencesStack from './PreferencesStack';
 import HomeStack from './HomeStack';
+import GroupsStack from './GroupsStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -38,6 +39,13 @@ export default DrawerNavigator = () => (
       }}
     />
     <Drawer.Screen
+      name="GroupsStack"
+      component={GroupsStack}
+      options={{
+        drawerLabel: 'Groups',
+      }}
+    />
+    <Drawer.Screen
       name="PreferencesStack"
       component={PreferencesStack}
       options={{
@@ -45,6 +53,5 @@ export default DrawerNavigator = () => (
       }}
     />
     <Drawer.Screen name="Settings" component={Settings} />
-    <Drawer.Screen name="Help" component={Help} />
   </Drawer.Navigator>
 );
