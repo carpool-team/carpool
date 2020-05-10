@@ -27,6 +27,7 @@ class Groups extends Component<IGroupsProps> {
 		let callbacks: IGroupCallbacks = {
 			addGroup: this.addGroupHandler,
 			getGroups: this.getGroupsHandler,
+			redirect: route => this.props.history.push(route),
 		};
 		return (
 			<section className={this.cssClasses.container}>

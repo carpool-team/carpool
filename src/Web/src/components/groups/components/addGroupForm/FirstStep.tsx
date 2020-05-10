@@ -9,10 +9,8 @@ import { InputType } from "../../../ui/input/enums/InputType";
 import mapImage from "assets_path/img/loadingMap.png";
 
 interface IFirstStepCallbacks {
-	handleChangeGroupName: (newValue: string) => void;
+	handleChange: (newValue: string, key: string) => void;
 	incrementStep: () => void;
-	handleChangeAddress: (newValue: string) => void;
-	handleChangeCode: (newValue: string) => void;
 }
 
 interface IFirstStepProps extends IReactI18nProps {
@@ -24,40 +22,46 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 	const cssClasses = {
 		container: "formFirstSide__container",
 		map: "formFirstSide__map",
-		buttons: "formFirstSide__inputs"
+		inputs: "formFirstSide__inputs"
+	};
+
+	const dataKeys = {
+		groupName: "group.groupName",
+		code: "group.code",
+		address: "group.address"
 	};
 
 	const resources = {
 		nextBtn: "nextBtn",
-		groupNameInput: "groups.groupName",
-		groupCodeInput: "groups.code",
-		groupCodeInputComment: "groups.codeInputComment",
-		addressInput: "groups.address",
+		groupNameInput: "groups.addGroupForm.groupName",
+		groupCodeInput: "groups.addGroupForm.code",
+		groupCodeInputComment: "groups.addGroupForm.codeInputComment",
+		addressInput: "groups.addGroupForm.address",
 	};
 
 	const { t } = props;
 
 	return (
 		<div className={cssClasses.container}>
-			<div className={cssClasses.buttons}>
+			<div className={cssClasses.inputs}>
 				<Input
 					type={InputType.Text}
-					changeHandler={props.callbacks.handleChangeGroupName}
+					changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.groupName)}
 					placeholder={t(resources.groupNameInput)}
-					value={props.data.groupName}
+					value={props.data.group.groupName}
 				/>
 				<Input
 					type={InputType.Text}
-					changeHandler={props.callbacks.handleChangeCode}
+					changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.code)}
 					placeholder={t(resources.groupCodeInput)}
 					commment={t(resources.groupCodeInputComment)}
-					value={props.data.code}
+					value={props.data.group.code}
 				/>
 				<Input
 					type={InputType.Text}
-					changeHandler={props.callbacks.handleChangeAddress}
+					changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.address)}
 					placeholder={t(resources.addressInput)}
-					value={props.data.address}
+					value={props.data.group.address}
 				/>
 				<Button onClick={props.callbacks.incrementStep} >
 					{t(resources.nextBtn)}

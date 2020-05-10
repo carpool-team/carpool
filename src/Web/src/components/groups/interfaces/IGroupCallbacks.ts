@@ -4,4 +4,5 @@ import { IGroup } from "./IGroup";
 export interface IGroupCallbacks {
 	addGroup: (group: IGroup) => void;
 	getGroups: () => IGroup[];
+	redirect: (route: string) => void;
 }

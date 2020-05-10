@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import produce from "immer";
+import _ from "lodash";
 import SecondStep from "./SecondStep";
 import FirstStep from "./FirstStep";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../../components/system/resources/IReactI18nProps";
 import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
-import { IFormData } from "./interfaces/IFormData";
+import { IFormData, initialFormData } from "./interfaces/IFormData";
+import { IGroup } from "../../interfaces/IGroup";
+import LayoutRouter from "../../../layout/components/LayoutRouter";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {
 	callbacks: IGroupCallbacks;
@@ -19,46 +22,61 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 	constructor(props: IAddGroupFormScreenProps) {
 		super(props);
 		this.state = {
-			formData: {
-				groupName: "",
-				step: 1,
-				code: "",
-				address: "",
-			}
+			formData: initialFormData
 		};
 	}
 
-	private handleChangeGroupName = (newValue: string) => {
+	/**
+	 * Generic handler for changing form data
+	 *
+	 * @param newValue new value to assign
+	 * @param key form data object value key to assign to
+	 */
+	private changeHandler = (newValue: string, key: string) => {
 		this.setState(produce((draft: IAddGroupFormScreenState) => {
-			draft.formData.groupName = newValue;
+			_.set(draft.formData, key, newValue);
 		}));
 	}
 
-	private handleChangeCode = (newValue: string) => {
-		this.setState(produce((draft: IAddGroupFormScreenState) => {
-			draft.formData.code = newValue;
-		}));
-	}
-
-	private handleChangeAddress = (newValue: string) => {
-		this.setState(produce((draft: IAddGroupFormScreenState) => {
-			draft.formData.address = newValue;
-		}));
-	}
-
+	/** Increments form step */
 	private incrementStep = () => {
 		this.setState(produce((draft: IAddGroupFormScreenState) => {
 			draft.formData.step += 1;
 		}));
 	}
 
+	/** Decrements form step */
+	private decrementStep = () => {
+		this.setState(produce((draft: IAddGroupFormScreenState) => {
+			draft.formData.step -= 1;
+		}));
+	}
+
+	private addUser = () => {
+		this.setState(produce((draft: IAddGroupFormScreenState) => {
+			draft.formData.users.push(this.state.formData.user);
+			draft.formData.user = initialFormData.user;
+		}));
+	}
+
+	private createGroup = () => {
+		let group: IGroup = {
+			name: this.state.formData.group.groupName,
+			users: this.state.formData.users.map(user => ({
+				name: user.name,
+				surname: user.surname,
+				email: user.email,
+			})),
+		};
+		this.props.callbacks.addGroup(group);
+		this.props.callbacks.redirect("/" + LayoutRouter.routes.groups); // make path absolute
+	}
+
 	private renderFirstStep = () => (
 		<FirstStep
 			data={this.state.formData}
 			callbacks={{
-				handleChangeGroupName: this.handleChangeGroupName,
-				handleChangeCode: this.handleChangeCode,
-				handleChangeAddress: this.handleChangeAddress,
+				handleChange: this.changeHandler,
 				incrementStep: this.incrementStep
 			}}
 		/>
@@ -68,7 +86,10 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 		<SecondStep
 			data={this.state.formData}
 			callbacks={{
-
+				handleChange: this.changeHandler,
+				decrementStep: this.decrementStep,
+				createGroup: this.createGroup,
+				addUser: this.addUser,
 			}}
 		/>
 	)
@@ -76,8 +97,10 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 	render() {
 		if (this.state.formData.step === 1) {
 			return this.renderFirstStep();
-		} else {
+		} else if (this.state.formData.step === 2) {
 			return this.renderSecondStep();
+		} else {
+			throw "Unhandled add group form step";
 		}
 	}
 }

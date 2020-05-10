@@ -43,6 +43,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.150",
     "@types/react-breadcrumbs-dynamic": "^1.0.2",
     "@types/react-redux": "^7.1.8",
     "@types/react-router": "^5.1.5",
@@ -52,6 +53,7 @@
     "i18next-browser-languagedetector": "^4.1.1",
     "immer": "^6.0.5",
     "json-loader": "^0.5.7",
+    "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-breadcrumbs-dynamic": "^1.2.1",
     "react-dom": "^16.13.1",
