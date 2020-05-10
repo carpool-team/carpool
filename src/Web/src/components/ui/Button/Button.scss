@@ -16,6 +16,18 @@
     align-items: center;
     text-decoration: none;
   }
+  &--checkbox-label {
+    font-size: 18px;
+    font-weight: $semi-bold;
+    border: none;
+    right: 5px;
+    background: $background;
+    height: inherit;
+    padding-left: 50px;
+    vertical-align: middle;
+    line-height: 40px;
+    color: $grayDark;
+  }
   &--checkbox {
     float: left;
     font-size: 18px;
@@ -43,18 +55,6 @@
 
   &--checkbox_active::after {
     background-color: $gray;
-  }
-  &--checkbox-label {
-    font-size: 18px;
-    font-weight: $semi-bold;
-    border: none;
-    right: 5px;
-    background: $background;
-    height: inherit;
-    padding-left: 50px;
-    vertical-align: middle;
-    line-height: 40px;
-    color: $grayDark;
   }
 
   &--large {
