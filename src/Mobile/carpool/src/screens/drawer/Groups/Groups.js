@@ -4,7 +4,11 @@ import {vw, vh} from '../../../utils/constants';
 import UpView from '../../../components/common/UpView';
 import sheet from '../../../styles/sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import colors from '../../../styles/colors';
+import GroupListItem from '../../../components/Groups/GroupListItem';
+import GroupsFlatList from '../../../components/Groups/GroupsFlatList';
+import {exampleGroups} from '../../../examples/groups';
 
 const Groups = ({navigation}) => {
   return (
@@ -13,7 +17,6 @@ const Groups = ({navigation}) => {
         style={{
           flex: 1,
           alignItems: 'center',
-          paddingHorizontal: 4 * vw,
           paddingTop: 4 * vh,
         }}>
         <TouchableOpacity
@@ -21,6 +24,7 @@ const Groups = ({navigation}) => {
             ...sheet.rowCenterSplit,
             width: '100%',
             marginBottom: 4 * vh,
+            paddingHorizontal: 4 * vw,
           }}
           onPress={() => navigation.navigate('Invitations')}>
           <Text
@@ -33,9 +37,11 @@ const Groups = ({navigation}) => {
           </Text>
           <Icon name="group-add" size={8 * vw} color={colors.grayDark} />
         </TouchableOpacity>
-        <UpView
-          borderRadius={4 * vw}
-          style={{width: '100%', height: 100}}></UpView>
+        <GroupsFlatList
+          data={exampleGroups}
+          loading={false}
+          onItemPress={console.log}
+        />
       </View>
     </SafeAreaView>
   );
