@@ -20,7 +20,8 @@ export default GroupsStack = props => {
         name="GroupDetails"
         component={GroupDetails}
         options={{
-          headerTitle: 'Group Details',
+          //headerTitle: null,
+          headerShown: false,
         }}
       />
     </Stack.Navigator>
