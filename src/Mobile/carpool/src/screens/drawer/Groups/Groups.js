@@ -1,16 +1,17 @@
 import React from 'react';
 import {SafeAreaView, TouchableOpacity, View, Text} from 'react-native';
 import {vw, vh} from '../../../utils/constants';
-import UpView from '../../../components/common/UpView';
 import sheet from '../../../styles/sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Ionicon from 'react-native-vector-icons/Ionicons';
 import colors from '../../../styles/colors';
-import GroupListItem from '../../../components/Groups/GroupListItem';
 import GroupsFlatList from '../../../components/Groups/GroupsFlatList';
 import {exampleGroups} from '../../../examples/groups';
 
 const Groups = ({navigation}) => {
+  const onItemPress = item => {
+    navigation.navigate('GroupDetails', {group: item});
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View
@@ -40,7 +41,7 @@ const Groups = ({navigation}) => {
         <GroupsFlatList
           data={exampleGroups}
           loading={false}
-          onItemPress={console.log}
+          onItemPress={onItemPress}
         />
       </View>
     </SafeAreaView>
