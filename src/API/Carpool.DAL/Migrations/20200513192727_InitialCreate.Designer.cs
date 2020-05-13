@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Carpool.DAL.Migrations
 {
     [DbContext(typeof(CarpoolDbContext))]
-    [Migration("20200425153004_ChangedMistypedTableNameLocations")]
-    partial class ChangedMistypedTableNameLocations
+    [Migration("20200513192727_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
