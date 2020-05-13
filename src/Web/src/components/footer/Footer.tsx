@@ -3,6 +3,7 @@ import "./Footer.scss";
 import { Link } from "react-router-dom";
 import LayoutRouter from "../layout/components/LayoutRouter";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
+import { withTranslation } from "react-i18next";
 
 interface IFooterProps extends IReactI18nProps { }
 
@@ -96,4 +97,4 @@ const Footer: (props: IFooterProps) => JSX.Element = props => {
 	);
 };
 
-export default Footer;
+export default withTranslation()(Footer);
