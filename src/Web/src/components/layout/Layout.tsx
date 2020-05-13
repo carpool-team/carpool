@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NavBar } from "../navBar/NavBar";
+import NavBar from "../navBar/NavBar";
 import Footer from "../Footer/Footer";
 import LayoutRouter from "./components/LayoutRouter";
 import { RouteComponentProps, withRouter } from "react-router";

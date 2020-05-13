@@ -14,9 +14,9 @@ const Footer: (props: IFooterProps) => JSX.Element = props => {
 		groups: "footer.groups",
 		services: "footer.services",
 		environment: "footer.environment",
-		business: "footer.business",
-		passenger: "footer.passenger",
-		driver: "footer.driver",
+		business: "common.business",
+		passenger: "common.passenger",
+		driver: "common.driver",
 		about: "footer.about",
 		idea: "footer.idea",
 	};

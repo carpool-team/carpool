@@ -20,11 +20,17 @@
             "groups": "Grupy",
             "services": "Usługi",
             "environment": "Środowisko",
-            "business": "Firma",
-            "passenger": "Pasażer",
-            "driver": "Kierowca",
             "about": "O nas",
             "idea": "Idea"
+        },
+        "navBar": {
+            "register": "Zarejestruj się",
+            "login": "Zaloguj się"
+        },
+        "common": {
+            "business": "Firma",
+            "passenger": "Pasażer",
+            "driver": "Kierowca"
         },
         "prevBtn": "Wstecz",
         "createBtn": "Utwórz",
