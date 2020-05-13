@@ -90,16 +90,6 @@ class ManageScreen extends Component<IManageScreenProps> {
 						<img src={mapImage} alt={""} />
 					</div>
 				</div>
-				<Button
-					onClick={() =>
-						this.props.callbacks.addGroup({
-							name: "REDUX ADDED GROUP",
-							users: [],
-						})
-					}
-				>
-					REDUX TEST
-				</Button>
 			</>
 		);
 	}

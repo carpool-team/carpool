@@ -16,6 +16,16 @@
             "groupsBtn": "Grupy",
             "ridesBtn": "Przejazdy"
         },
+        "footer": {
+            "groups": "Grupy",
+            "services": "Usługi",
+            "environment": "Środowisko",
+            "business": "Firma",
+            "passenger": "Pasażer",
+            "driver": "Kierowca",
+            "about": "O nas",
+            "idea": "Idea"
+        },
         "prevBtn": "Wstecz",
         "createBtn": "Utwórz",
         "addBtn": "Dodaj",
