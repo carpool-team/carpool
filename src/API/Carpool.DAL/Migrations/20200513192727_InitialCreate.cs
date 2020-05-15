@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Carpool.DAL.Migrations
 {
-    public partial class AddedBasicModels : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -78,7 +78,7 @@ namespace Carpool.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Location",
+                name: "Locations",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -88,21 +88,21 @@ namespace Carpool.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Location", x => x.Id);
+                    table.PrimaryKey("PK_Locations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Location_Coordinates_CoordinatesId",
+                        name: "FK_Locations_Coordinates_CoordinatesId",
                         column: x => x.CoordinatesId,
                         principalTable: "Coordinates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Location_LocationNames_LocationNameId",
+                        name: "FK_Locations_LocationNames_LocationNameId",
                         column: x => x.LocationNameId,
                         principalTable: "LocationNames",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Location_Users_UserId",
+                        name: "FK_Locations_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -135,18 +135,18 @@ namespace Carpool.DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Location_CoordinatesId",
-                table: "Location",
+                name: "IX_Locations_CoordinatesId",
+                table: "Locations",
                 column: "CoordinatesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Location_LocationNameId",
-                table: "Location",
+                name: "IX_Locations_LocationNameId",
+                table: "Locations",
                 column: "LocationNameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Location_UserId",
-                table: "Location",
+                name: "IX_Locations_UserId",
+                table: "Locations",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -163,7 +163,7 @@ namespace Carpool.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "Locations");
 
             migrationBuilder.DropTable(
                 name: "UserGroup");

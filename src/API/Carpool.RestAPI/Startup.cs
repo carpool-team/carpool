@@ -24,7 +24,7 @@ namespace Carpool.RestAPI
 			services.AddMvc(options => options.EnableEndpointRouting = false);
 
 			services.AddDbContext<CarpoolDbContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("CarpoolDbContext")));
+					options.UseSqlServer(Configuration.GetConnectionString("SQLAZURECONNSTR_AzureConnection ")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

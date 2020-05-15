@@ -19,5 +19,11 @@ namespace Carpool.Core.Models
 		public List<Location> Locations { get; set; }
 
 		public List<UserGroup> UserGroups { get; set; }
+
+		public List<RideRequest> RideRequests { get; set; }
+
+		public List<Ride> CreatedRides { get; set; }
+
+		public List<UserParticipatedRide> ParticipatedRides { get; set; }
 	}
 }
