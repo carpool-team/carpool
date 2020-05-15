@@ -33,4 +33,8 @@ export default sheet = {
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  columnCenter: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
 };
