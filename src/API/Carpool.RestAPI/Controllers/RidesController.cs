@@ -13,6 +13,7 @@ using Carpool.RestAPI.Abstract;
 using Newtonsoft.Json;
 using Carpool.Core.DTOs.RideDTOs;
 using Carpool.Core.DTOs.StopDTOs;
+using Carpool.Core.DTOs.UserDTOs;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -31,21 +32,29 @@ namespace Carpool.RestAPI.Controllers
 		[HttpGet]
 		public async Task<ActionResult<String>> GetRides()
 		{
-			var rides = await _context.Rides.AsNoTracking()
-				.Include(ride => ride.Stops)
-				.Include(ride => ride.StartingLocation)
-					.ThenInclude(st => st.Coordinates)
-				.Include(ride => ride.StartingLocation)
-					.ThenInclude(st => st.LocationName)
-				.Include(ride => ride.Participants)
-				.Include(ride => ride.Owner)
-				.Include(ride => ride.Destination)
-					.ThenInclude(st => st.Coordinates)
-				.Include(ride => ride.Destination)
-					.ThenInclude(st => st.LocationName)
-				.ToListAsync();
-			var ridesDTO = rides.Select(ride => IndexRideDTO.GetFromRide(ride)).ToList();
-			return Json(ridesDTO);
+			try
+			{
+				var rides = await _context.Rides.AsNoTracking()
+					.Include(ride => ride.Stops)
+					.Include(ride => ride.StartingLocation)
+						.ThenInclude(st => st.Coordinates)
+					.Include(ride => ride.StartingLocation)
+						.ThenInclude(st => st.LocationName)
+					.Include(ride => ride.Participants)
+					.Include(ride => ride.Owner)
+					.Include(ride => ride.Destination)
+						.ThenInclude(st => st.Coordinates)
+					.Include(ride => ride.Destination)
+						.ThenInclude(st => st.LocationName)
+					.ToListAsync();
+				rides.ForEach(r => r.Participants.ForEach(p => p.User = _context.Users.FirstOrDefault(u => u.Id == p.UserId)));
+				var ridesDTO = rides.Select(ride => IndexRideDTO.GetFromRide(ride)).ToList();
+				return Json(ridesDTO);
+			}
+			catch (Exception ex)
+			{
+				return Json(ex);
+			}
 		}
 
 		// GET: api/Rides/5
@@ -152,7 +161,9 @@ namespace Carpool.RestAPI.Controllers
 			var ride = await _context.Rides.Include(ride => ride.Participants).FirstOrDefaultAsync(ride => ride.Id == addParticipantToRideDTO.RideId);
 			ride.Participants.Add(new UserParticipatedRide()
 			{
+				RideId = ride.Id,
 				Ride = ride,
+				UserId = addParticipantToRideDTO.ParticipantId,
 				User = await _context.Users.FirstOrDefaultAsync(user => user.Id == addParticipantToRideDTO.ParticipantId)
 			});
 			await _context.SaveChangesAsync();

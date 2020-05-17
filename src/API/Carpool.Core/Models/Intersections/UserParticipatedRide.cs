@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Carpool.Core.Models.Intersections
 {
-	public class UserParticipatedRide : ParentModel
+	public class UserParticipatedRide
 	{
 		public Guid UserId { get; set; }
 		public User User { get; set; }

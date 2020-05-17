@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Carpool.Core.Models.Intersections
 {
-	public class UserGroup : ParentModel
+	public class UserGroup
 	{
 		public Guid UserId { get; set; }
 		public User User { get; set; }

@@ -4,14 +4,16 @@ using Carpool.DAL.DatabaseContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Carpool.DAL.Migrations
 {
     [DbContext(typeof(CarpoolDbContext))]
-    partial class CarpoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200517213125_ChangedUserParticipatedRideKey")]
+    partial class ChangedUserParticipatedRideKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,6 +71,10 @@ namespace Carpool.DAL.Migrations
                     b.Property<Guid>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("UserId", "GroupId");
 
                     b.HasIndex("GroupId");
@@ -82,6 +88,10 @@ namespace Carpool.DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("RideId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RideId");

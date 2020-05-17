@@ -50,14 +50,17 @@ namespace Carpool.DAL.DatabaseContexts
 				.HasForeignKey(ug => ug.GroupId);
 
 			modelBuilder.Entity<UserParticipatedRide>()
+				.HasKey(upr => new { upr.UserId, upr.RideId });
+
+			modelBuilder.Entity<UserParticipatedRide>()
 				.HasOne(ur => ur.User)
 				.WithMany(ur => ur.ParticipatedRides)
-				.HasForeignKey(ug => ug.RideId);
+				.HasForeignKey(ug => ug.UserId);
 
 			modelBuilder.Entity<UserParticipatedRide>()
 				.HasOne(ur => ur.Ride)
 				.WithMany(ur => ur.Participants)
-				.HasForeignKey(ur => ur.UserId);
+				.HasForeignKey(ur => ur.RideId);
 
 			#region DataSeeding
 
