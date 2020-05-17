@@ -112,7 +112,7 @@
   }
   .navButtons {
     float: right;
-
+    z-index:1;
     grid-template-rows: repeat(4, auto);
     grid-template-columns: none;
     grid-template-areas: "." "navPlain" "navAccount" ".";

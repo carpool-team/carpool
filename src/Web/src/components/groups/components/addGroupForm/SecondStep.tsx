@@ -7,6 +7,8 @@ import Button from "../../../ui/Button/Button";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { ButtonType } from "../../../ui/Button/enums/ButtonType";
 
+import userIco from "assets_path/img/user_ico.png";
+
 interface ISecondStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
 	decrementStep: () => void;
@@ -23,9 +25,11 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 	const cssClasses = {
 		container: "formSecondSide__container",
 		inputs: "formSecondSide__inputs",
+		userIco: "formSecondSide__userIco",
 		userList: "formSecondSide__userList",
 		userListItem: "formSecondSide__userListItem",
 		buttonsGroup: "formSecondSide__buttonsGroup"
+
 	};
 
 	const dataKeys = {
@@ -77,13 +81,13 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 				<Button onClick={props.callbacks.addUser} >
 					{t(resources.addBtn)}
 				</Button>
-			</div>
-			<Button
+				<Button
 				onClick={props.callbacks.createGroup}
 				type={ButtonType.Success}
-			>
-				{t(resources.createBtn)}
-			</Button>
+			    >
+					{t(resources.createBtn)}
+				</Button>
+			</div>	
 		</div>
 	);
 
@@ -91,6 +95,7 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 		<ul className={cssClasses.userList}>
 			{props.data.users.map(user => (
 				<li className={cssClasses.userListItem}>
+					<img className={cssClasses.userIco} src={userIco} alt={""} />
 					{user.name + " " + user.surname}
 				</li>
 			))}

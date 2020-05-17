@@ -6,6 +6,8 @@
   border: none;
   right: 5px;
   background: $background;
+  margin-left: 5px;
+  margin-right: 5px;
   box-shadow: 6px 6px 16px #a7a7a7, -6px -6px 16px #ffffff;
   color: $grayDark;
   cursor: pointer;
@@ -56,7 +58,6 @@
   &--checkbox_active::after {
     background-color: $gray;
   }
-
   &--large {
     font-size: 18px;
   }

@@ -1,4 +1,5 @@
 import React from "react";
+import MediaQuery from "react-responsive";
 import Input from "../../../ui/input/Input";
 import Button from "../../../ui/Button/Button";
 import { IFormData } from "./interfaces/IFormData";
@@ -67,9 +68,11 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					{t(resources.nextBtn)}
 				</Button>
 			</div>
+			<MediaQuery query="(min-width: 900px)">
 			<div className={cssClasses.map}>
 				<img src={mapImage} alt={""} />
 			</div>
+			</MediaQuery>
 		</div>
 	);
 };
