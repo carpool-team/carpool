@@ -17,9 +17,10 @@ const Home = () => {
   const [rides, setRides] = useState([]);
 
   // Requests
+  const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
   const [response, loading, error, _getAllRides] = useRequest(
     METHODS.GET,
-    ENDPOINTS.GET_ALL_RIDES,
+    `${ENDPOINTS.GET_ALL_RIDES}?userId=${userId}`,
   );
 
   const _driverMap = useRef(null);

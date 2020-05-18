@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {colors, sheet} from '../../styles';
 import {vw, vh} from '../../utils/constants';
 import {UpView} from '../common';
@@ -11,6 +11,7 @@ import {parseDistance} from '../../utils/parse';
 import {directionsClient} from '../../maps/mapbox';
 import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';
+import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
 
 const getLeavingIn = date => {
   const now = Date.now();
@@ -31,13 +32,30 @@ const getLeavingIn = date => {
   }
 };
 
-const RideInfoSheet = ({visible, ride, userLocation, onShowWay}) => {
+const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
   const [distance, setDistance] = useState(null);
   const [extended, setExtended] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  // Requests
+  const participantId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
+  const [rideId, setRideId] = useState(null);
+  const [response, loading, error, _addParticipant] = useRequest(
+    METHODS.PUT,
+    ENDPOINTS.ADD_PARTICIPANT,
+    {
+      participantId,
+      rideId,
+    },
+  );
 
   useEffect(() => {
     if (!visible && extended) {
       setExtended(false);
+    }
+    if (!visible) {
+      setRideId(null);
+      setSuccess(false);
     }
   }, [visible]);
 
@@ -46,6 +64,19 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay}) => {
       onGetDistance();
     }
   }, [ride]);
+
+  useEffect(() => {
+    if (rideId) {
+      _addParticipant();
+    }
+  }, [rideId]);
+
+  useEffect(() => {
+    if (response === 'ok') {
+      setSuccess(true);
+      setExtended(false);
+    }
+  }, [response]);
 
   const onGetDistance = async () => {
     const response = await directionsClient
@@ -68,9 +99,25 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay}) => {
     setDistance(parseDistance(response.body.routes[0].distance));
   };
 
+  const onSelectRide = () => {
+    setRideId(ride.id);
+  };
+
   return visible ? (
     <View style={styles.wrapper}>
       <View style={styles.container}>
+        {success ? (
+          <Text
+            style={{
+              ...sheet.textSemiBold,
+              color: colors.green,
+              fontSize: 5 * vw,
+              textAlign: 'center',
+              marginBottom: 4 * vh,
+            }}>
+            You have signed up for this ride!
+          </Text>
+        ) : null}
         <UpView
           style={{
             width: '100%',
@@ -145,13 +192,31 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay}) => {
             </View>
           </>
         ) : null}
-        <StandardButton
-          width="65%"
-          style={{marginTop: 3 * vh}}
-          color={false ? colors.blue : colors.green}
-          title={false ? 'Show way' : 'Select'}
-          onPress={false ? onShowWay : () => setExtended(true)}
-        />
+        {loading ? (
+          <ActivityIndicator size="large" color={colors.green} />
+        ) : success ? (
+          <StandardButton
+            width="65%"
+            style={{marginTop: 3 * vh}}
+            color={colors.blue}
+            title="Go back"
+            onPress={onClose}
+          />
+        ) : (
+          <StandardButton
+            width="65%"
+            style={{marginTop: 3 * vh}}
+            color={ride.isUserParticipant ? colors.blue : colors.green}
+            title={ride.isUserParticipant ? 'Show way' : 'Select'}
+            onPress={
+              ride.isUserParticipant
+                ? onShowWay
+                : !extended
+                ? () => setExtended(true)
+                : onSelectRide
+            }
+          />
+        )}
       </View>
     </View>
   ) : null;

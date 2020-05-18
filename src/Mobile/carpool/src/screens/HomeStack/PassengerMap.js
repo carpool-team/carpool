@@ -177,6 +177,7 @@ const PassengerMap = ({coordinates, _onLocateUser, rides, loading}) => {
         ride={ride}
         userLocation={coordinates}
         onShowWay={onShowWay}
+        onClose={onCleanState}
       />
       {!visible && routes.length ? (
         <RouteInfoSheet route={routes[activeRoute]} onGoBack={onCleanState} />
