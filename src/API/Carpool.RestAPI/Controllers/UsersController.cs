@@ -125,7 +125,8 @@ namespace Carpool.RestAPI.Controllers
 				LastName = "Kononowicz",
 				Email = "biurointerwencjiobywatelskich@kononowicz.pl",
 				Locations = _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).ToListAsync().Result,
-				PhoneNumber = "997"
+				PhoneNumber = "997",
+				Vehicle = new Vehicle() { Name = "Opel Astra" }
 			};
 			_context.Users.Add(user);
 			await _context.SaveChangesAsync();

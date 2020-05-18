@@ -27,5 +27,7 @@ namespace Carpool.Core.Models
 		public List<UserParticipatedRide> ParticipatedRides { get; set; }
 
 		public List<Rating> Ratings { get; set; }
+
+		public Vehicle Vehicle { get; set; }
 	}
 }
