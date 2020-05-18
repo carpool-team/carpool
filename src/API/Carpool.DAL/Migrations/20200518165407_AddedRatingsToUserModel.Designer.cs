@@ -4,14 +4,16 @@ using Carpool.DAL.DatabaseContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Carpool.DAL.Migrations
 {
     [DbContext(typeof(CarpoolDbContext))]
-    partial class CarpoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200518165407_AddedRatingsToUserModel")]
+    partial class AddedRatingsToUserModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,7 +139,7 @@ namespace Carpool.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid?>("EvaluatingPersonId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Value")
@@ -145,7 +147,7 @@ namespace Carpool.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("EvaluatingPersonId");
 
                     b.ToTable("Rating");
                 });
@@ -312,9 +314,9 @@ namespace Carpool.DAL.Migrations
 
             modelBuilder.Entity("Carpool.Core.Models.Rating", b =>
                 {
-                    b.HasOne("Carpool.Core.Models.User", null)
+                    b.HasOne("Carpool.Core.Models.User", "EvaluatingPerson")
                         .WithMany("Ratings")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("EvaluatingPersonId");
                 });
 
             modelBuilder.Entity("Carpool.Core.Models.Ride", b =>
