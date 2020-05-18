@@ -21,6 +21,7 @@ import GroupsFlatlist from '../../components/GroupsFlatlist';
 import {exampleGroups} from '../../examples';
 import DatePicker from 'react-native-date-picker';
 import {StandardButton} from '../../components/common/buttons';
+import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
 
 const config = {
   autocomplete: false,
@@ -39,8 +40,21 @@ const AskForRide = () => {
 
   const navigation = useNavigation();
   const _destination = useRef();
+  const requesterId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
 
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
+
+  //Requests
+  const [response, loading, error, _sendRideRequest] = useRequest(
+    METHODS.POST,
+    ENDPOINTS.SEND_RIDE_REQUEST,
+    {
+      requesterId,
+      destination: destinationGeo,
+      startingLocation: startGeo,
+      date,
+    },
+  );
 
   useEffect(() => {
     Geolocation.getCurrentPosition(info => {
@@ -48,6 +62,12 @@ const AskForRide = () => {
       setCurrentPosition([longitude, latitude]);
     });
   }, []);
+
+  useEffect(() => {
+    if (response && !loading) {
+      navigation.goBack();
+    }
+  }, [loading, response]);
 
   const onFocusDestination = () => {
     const {current} = _destination;
@@ -70,7 +90,14 @@ const AskForRide = () => {
 
         const result = response.body.features[0];
         setStart(result.place_name);
-        setStartGeo(result);
+        const stGeo = {
+          coordinates: {
+            longitude: result.center[1],
+            latitude: result.center[0],
+          },
+          locationName: null,
+        };
+        setStartGeo(stGeo);
         onFocusDestination();
       } catch (err) {
         console.log(err);
@@ -80,14 +107,32 @@ const AskForRide = () => {
 
   const onStartItemPress = item => {
     setStart(item.place_name);
-    setStartGeo(item);
+    const stGeo = {
+      coordinates: {
+        longitude: item.center[1],
+        latitude: item.center[0],
+      },
+      locationName: null,
+    };
+    setStartGeo(stGeo);
     onFocusDestination();
   };
 
   const onDestinationItemPress = item => {
     setDestination(item.place_name);
-    setDestinationGeo(item);
+    const dstGeo = {
+      coordinates: {
+        longitude: item.coordinates[1],
+        latitude: item.coordinates[0],
+      },
+      locationName: null,
+    };
+    setDestinationGeo(dstGeo);
     onBlurDestination();
+  };
+
+  const onSubmit = () => {
+    _sendRideRequest();
   };
 
   const renderList = () => {
@@ -117,21 +162,34 @@ const AskForRide = () => {
         <View style={styles.datePickerWrapper}>
           <View>
             <Text style={styles.arrivalTime}>Arrival time</Text>
-            <DatePicker
-              date={date}
-              onDateChange={setDate}
-              locale="pl"
-              minimumDate={new Date()}
-              minuteInterval={10}
-            />
+            {loading ? (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <ActivityIndicator size="large" color={colors.green} />
+              </View>
+            ) : (
+              <DatePicker
+                date={date}
+                onDateChange={setDate}
+                locale="pl"
+                minimumDate={new Date()}
+                minuteInterval={10}
+              />
+            )}
           </View>
-          <StandardButton
-            width="65%"
-            style={{marginTop: 4 * vh}}
-            onPress={() => navigation.goBack()}
-            title="Submit"
-            color={colors.green}
-          />
+          {loading ? null : (
+            <StandardButton
+              width="65%"
+              style={{marginTop: 4 * vh}}
+              onPress={onSubmit}
+              title="Submit"
+              color={colors.green}
+            />
+          )}
         </View>
       );
     }
