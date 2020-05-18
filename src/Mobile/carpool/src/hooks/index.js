@@ -1,3 +1,4 @@
 import useForwardGeocoding from './useForwardGeocoding';
+import useRequest from './useRequest';
 
-export {useForwardGeocoding};
+export {useForwardGeocoding, useRequest};
