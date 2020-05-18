@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.RestAPI.Abstract;
-using Carpool.RestAPI.DTOs.LocationDTOs;
+using Carpool.Core.DTOs.LocationDTOs;
 
 namespace Carpool.RestAPI.Controllers
 {
