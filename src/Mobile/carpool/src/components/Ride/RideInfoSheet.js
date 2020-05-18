@@ -32,7 +32,14 @@ const getLeavingIn = date => {
   }
 };
 
-const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
+const RideInfoSheet = ({
+  visible,
+  ride,
+  userLocation,
+  onShowWay,
+  onClose,
+  _getAllRides,
+}) => {
   const [distance, setDistance] = useState(null);
   const [extended, setExtended] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -56,6 +63,7 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
     if (!visible) {
       setRideId(null);
       setSuccess(false);
+      _getAllRides();
     }
   }, [visible]);
 

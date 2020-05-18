@@ -86,6 +86,7 @@ const Home = () => {
               _onLocateUser={_onLocateUser}
               rides={rides}
               loading={loading}
+              _getAllRides={_getAllRides}
             />
           ) : (
             renderDriver()

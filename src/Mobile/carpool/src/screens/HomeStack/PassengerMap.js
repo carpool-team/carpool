@@ -15,7 +15,13 @@ import {CircleButton} from '../../components/common/buttons';
 import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';
 
-const PassengerMap = ({coordinates, _onLocateUser, rides, loading}) => {
+const PassengerMap = ({
+  coordinates,
+  _onLocateUser,
+  rides,
+  loading,
+  _getAllRides,
+}) => {
   const [center, setCenter] = useState([]);
   const [ride, setRide] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -81,7 +87,7 @@ const PassengerMap = ({coordinates, _onLocateUser, rides, loading}) => {
               coordinates: coordinates,
             },
             {
-              coordinates: ride.coordinates,
+              coordinates: parseCoords(ride.startingLocation.coordinates),
             },
           ],
           overview: 'full',
@@ -178,6 +184,7 @@ const PassengerMap = ({coordinates, _onLocateUser, rides, loading}) => {
         userLocation={coordinates}
         onShowWay={onShowWay}
         onClose={onCleanState}
+        _getAllRides={_getAllRides}
       />
       {!visible && routes.length ? (
         <RouteInfoSheet route={routes[activeRoute]} onGoBack={onCleanState} />
