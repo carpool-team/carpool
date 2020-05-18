@@ -5,6 +5,7 @@
 .loadingScreen {
   flex: 1 1 auto;
   display: flex;
+  flex-direction: column;
   &__map {
     background-image: $map;
     width: 100%;
@@ -26,6 +27,29 @@
     font-size: 150px;
     font-weight: $bold;
     color: $green;
+  }
+  &__groups{
+    width: 100%;
+    height: fit-content;
+    background-color: $green;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap-reverse;
+
+    &--button{
+      
+      justify-content: center;
+      align-items: center;
+
+    }
+  
+    &--baner{
+      flex: 2;
+      justify-content: right;
+      align-items: center;
+      object-fit: contain;
+    } 
   }
 }
 @media only screen and (max-width: 700px) {

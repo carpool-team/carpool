@@ -37,7 +37,8 @@
         "addBtn": "Dodaj",
         "nextBtn": "Dalej",
         "loadingScreen": {
-            "quote": "Share a ride"
+            "quote": "Share a ride",
+            "join": "Dołącz do grupy"
         }
     }
 }
