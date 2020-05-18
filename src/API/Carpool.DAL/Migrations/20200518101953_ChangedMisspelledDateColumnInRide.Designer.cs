@@ -4,14 +4,16 @@ using Carpool.DAL.DatabaseContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Carpool.DAL.Migrations
 {
     [DbContext(typeof(CarpoolDbContext))]
-    partial class CarpoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200518101953_ChangedMisspelledDateColumnInRide")]
+    partial class ChangedMisspelledDateColumnInRide
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,9 +148,6 @@ namespace Carpool.DAL.Migrations
                     b.Property<Guid?>("OwnerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
                     b.Property<Guid?>("StartingLocationId")
                         .HasColumnType("uniqueidentifier");
 
@@ -168,9 +167,6 @@ namespace Carpool.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("DestinationId")
                         .HasColumnType("uniqueidentifier");

@@ -16,6 +16,10 @@ namespace Carpool.RestAPI.DTOs.RideDTOs
 		public Location Destination { get; set; }
 		public Location StartingLocation { get; set; }
 
+		public DateTime Date { get; set; }
+
+		public double Price { get; set; }
+
 		private AddRideDTO()
 		{
 		}

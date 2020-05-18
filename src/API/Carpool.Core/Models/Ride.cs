@@ -12,5 +12,9 @@ namespace Carpool.Core.Models
 		public List<UserParticipatedRide> Participants { get; set; }
 
 		public List<Stop> Stops { get; set; }
+
+		public DateTime Date { get; set; }
+
+		public double Price { get; set; }
 	}
 }
