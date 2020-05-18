@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.Core.Models.Intersections;
+using Carpool.Core.DTOs.RatingDTOs;
 
 namespace Carpool.RestAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class UsersController : ControllerBase
+	public class UsersController : Controller
 	{
 		private readonly CarpoolDbContext _context;
 
@@ -101,6 +102,18 @@ namespace Carpool.RestAPI.Controllers
 			await _context.SaveChangesAsync();
 
 			return user;
+		}
+
+		[HttpPost("AddUserRating")]
+		public async Task<ActionResult> AddUserRating([FromBody] AddRatingDTO ratingDTO)
+		{
+			var user = await _context.Users.Include(user => user.Ratings).FirstOrDefaultAsync(user => user.Id == ratingDTO.UserId);
+			user.Ratings.Add(new Rating()
+			{
+				Value = ratingDTO.Value
+			});
+			await _context.SaveChangesAsync();
+			return Json("Rating Saved");
 		}
 
 		[HttpPost("AddMockUser")]
