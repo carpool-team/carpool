@@ -207,3 +207,33 @@ export const examplePassengerPoints = [
     signedUp: true,
   },
 ];
+
+export const examplePoints = [
+  {
+    id: Math.random().toString(),
+    date: new Date(),
+    destination: {
+      coordinates: {
+        longitude: 52.449441753937776,
+        latitude: 16.717880781607562,
+      },
+      locationName: null,
+      id: Math.random().toString(),
+    },
+    owner: {
+      firstName: 'John',
+      lastName: 'Doe',
+      userId: Math.random().toString(),
+    },
+    participants: [],
+    startingLocation: {
+      coordinates: {
+        longitude: 52.44776959009451,
+        latitude: 16.87619606957975,
+      },
+      locationName: null,
+      id: Math.random().toString(),
+    },
+    stops: [],
+  },
+];

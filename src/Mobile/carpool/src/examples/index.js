@@ -1,4 +1,4 @@
 import {exampleGroups} from './groups';
-import {examplePassengerPoints} from './points';
+import {examplePassengerPoints, examplePoints} from './points';
 
-export {exampleGroups, examplePassengerPoints};
+export {exampleGroups, examplePassengerPoints, examplePoints};

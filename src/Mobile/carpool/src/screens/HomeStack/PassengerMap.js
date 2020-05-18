@@ -4,7 +4,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
 import {Marker} from '../../components/common';
 import {vw, vh} from '../../utils/constants';
-import {examplePassengerPoints} from '../../examples';
+import {examplePassengerPoints, examplePoints} from '../../examples';
 import RideInfoSheet from '../../components/Ride/RideInfoSheet';
 import {directionsClient} from '../../maps/mapbox';
 import {getBoundsForRoutes} from '../../utils/bounds';
@@ -12,24 +12,10 @@ import {RouteInfoSheet} from '../../components/FindRoute';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import {CircleButton} from '../../components/common/buttons';
+import {parseCoords} from '../../utils/coords';
+import {getColor} from '../../utils/getColor';
 
-const getColor = time => {
-  if (time < 20) {
-    return colors.red;
-  } else {
-    if (time < 45) {
-      return colors.orange;
-    } else {
-      if (time < 90) {
-        return colors.yellow;
-      } else {
-        return colors.green;
-      }
-    }
-  }
-};
-
-const PassengerMap = ({coordinates, _onLocateUser}) => {
+const PassengerMap = ({coordinates, _onLocateUser, rides, loading}) => {
   const [center, setCenter] = useState([]);
   const [ride, setRide] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -108,10 +94,10 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
     }
   };
 
-  const onSelected = point => {
+  const onSelected = ride => {
     _onShow();
-    setCenter(point.coordinates);
-    setRide(point);
+    setCenter(parseCoords(ride.startingLocation.coordinates));
+    setRide(ride);
   };
 
   const onCleanState = () => {
@@ -122,21 +108,24 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
     setRoutes([]);
   };
 
-  const renderPassengerPoints = () =>
-    examplePassengerPoints.map(point => (
-      <MapboxGL.PointAnnotation
-        key={point.id}
-        id="selected"
-        coordinate={point.coordinates}
-        onSelected={() => onSelected(point)}
-        onDeselected={onCleanState}>
-        <Marker
-          color={getColor(point.timeLeft)}
-          size={6 * vw}
-          style={styles.marker}
-        />
-      </MapboxGL.PointAnnotation>
-    ));
+  const renderPassengerPoints = () => {
+    return rides.length
+      ? rides.map(ride => (
+          <MapboxGL.PointAnnotation
+            key={ride.id}
+            id="selected"
+            coordinate={parseCoords(ride.startingLocation.coordinates)}
+            onSelected={() => onSelected(ride)}
+            onDeselected={onCleanState}>
+            <Marker
+              color={getColor(ride.date)}
+              size={6 * vw}
+              style={styles.marker}
+            />
+          </MapboxGL.PointAnnotation>
+        ))
+      : null;
+  };
 
   const renderRoutes = () => {
     return routes.length
@@ -185,7 +174,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       </MapboxGL.MapView>
       <RideInfoSheet
         visible={visible}
-        point={ride}
+        ride={ride}
         userLocation={coordinates}
         onShowWay={onShowWay}
       />

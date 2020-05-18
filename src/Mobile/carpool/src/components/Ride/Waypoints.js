@@ -4,32 +4,22 @@ import {sheet, colors} from '../../styles';
 import {Marker} from '../common';
 import {vw} from '../../utils/constants';
 import {geocodingClient} from '../../maps/mapbox';
-
-const getColor = time => {
-  if (time < 20) {
-    return colors.red;
-  } else {
-    if (time < 45) {
-      return colors.orange;
-    } else {
-      if (time < 90) {
-        return colors.yellow;
-      } else {
-        return colors.green;
-      }
-    }
-  }
-};
+import {parseCoords} from '../../utils/coords';
+import {getColor} from '../../utils/getColor';
 
 const Waypoints = ({style, ride, start}) => {
   const [loading, setLoading] = useState(false);
   const [startName, setStartName] = useState(null);
+  const [destName, setDestName] = useState(null);
 
   useEffect(() => {
-    if (start.length) {
-      onGetPlaceName(start);
+    if (start.length && ride) {
+      if (!startName || !destName) {
+        onGetPlaceName(start);
+        onGetDestinationName(parseCoords(ride.destination.coordinates));
+      }
     }
-  }, [start]);
+  }, [start, ride]);
 
   const onGetPlaceName = async coords => {
     try {
@@ -49,11 +39,29 @@ const Waypoints = ({style, ride, start}) => {
     }
   };
 
+  const onGetDestinationName = async coords => {
+    try {
+      setLoading(true);
+      const response = await geocodingClient
+        .reverseGeocode({
+          query: coords,
+        })
+        .send();
+
+      const result = response.body.features[0];
+      setDestName(result.place_name);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={[styles.container, style]}>
       <Marker
         size={8 * vw}
-        color={getColor(ride.timeLeft)}
+        color={getColor(ride.date)}
         style={{marginRight: 3 * vw}}
       />
       {loading ? null : (
@@ -62,9 +70,9 @@ const Waypoints = ({style, ride, start}) => {
             <Text style={styles.from}>From: </Text>
             <Text style={styles.placeName}>{startName}</Text>
           </Text>
-          <Text style={{flex: 1}}>
+          <Text style={{flex: 1}} numberOfLines={1}>
             <Text style={styles.to}>To: </Text>
-            <Text style={styles.placeName}>{ride.group.name}</Text>
+            <Text style={styles.placeName}>{destName}</Text>
           </Text>
         </View>
       )}

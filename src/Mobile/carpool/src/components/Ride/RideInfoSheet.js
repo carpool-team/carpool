@@ -9,24 +9,29 @@ import Waypoints from './Waypoints';
 import {CircleButton, StandardButton} from '../common/buttons';
 import {parseDistance} from '../../utils/parse';
 import {directionsClient} from '../../maps/mapbox';
+import {parseCoords} from '../../utils/coords';
+import {getColor} from '../../utils/getColor';
 
-const getColor = time => {
-  if (time < 20) {
-    return colors.red;
+const getLeavingIn = date => {
+  const now = Date.now();
+  const lv = new Date(date).getTime();
+  const diff = lv - now;
+  const minutes = parseInt(diff / (1000 * 60));
+  const hours = parseInt(minutes / 60);
+  const dt = new Date(date).toLocaleString();
+
+  if (minutes < 60) {
+    return `Leaving in ${minutes} minutes`;
   } else {
-    if (time < 45) {
-      return colors.orange;
+    if (hours < 12) {
+      return `Leaving in ${hours} hours`;
     } else {
-      if (time < 90) {
-        return colors.yellow;
-      } else {
-        return colors.green;
-      }
+      return `${dt}`;
     }
   }
 };
 
-const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
+const RideInfoSheet = ({visible, ride, userLocation, onShowWay}) => {
   const [distance, setDistance] = useState(null);
   const [extended, setExtended] = useState(false);
 
@@ -37,10 +42,10 @@ const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
   }, [visible]);
 
   useEffect(() => {
-    if (point && userLocation.length) {
+    if (ride && userLocation.length) {
       onGetDistance();
     }
-  }, [point]);
+  }, [ride]);
 
   const onGetDistance = async () => {
     const response = await directionsClient
@@ -51,7 +56,7 @@ const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
             coordinates: userLocation,
           },
           {
-            coordinates: point.coordinates,
+            coordinates: parseCoords(ride.startingLocation.coordinates),
           },
         ],
         overview: 'full',
@@ -88,24 +93,20 @@ const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
                   ...sheet.rowCenterSplit,
                 }}>
                 <Text style={styles.username} numberOfLines={1}>
-                  {`${point.ride.user.firstName} ${point.ride.user.lastName}`}
+                  {`${ride.owner.firstName} ${ride.owner.lastName}`}
                 </Text>
                 <Text style={styles.distance}>{distance}</Text>
               </View>
-              <Text
-                style={[
-                  styles.leavingIn,
-                  {color: getColor(point.ride.timeLeft)},
-                ]}>
-                {`Leaving in ${point.ride.timeLeft} minutes`}
+              <Text style={[styles.leavingIn, {color: getColor(ride.date)}]}>
+                {getLeavingIn(ride.date)}
               </Text>
             </View>
           </View>
         </UpView>
         <Waypoints
           style={{marginTop: 3 * vh}}
-          ride={point.ride}
-          start={point.coordinates}
+          ride={ride}
+          start={parseCoords(ride.startingLocation.coordinates)}
         />
         {extended ? (
           <>
@@ -120,15 +121,13 @@ const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
                     size={10 * vw}
                     color={colors.yellow}
                   />
-                  <Text style={styles.rating}>{point.ride.user.rating}</Text>
+                  <Text style={styles.rating}>{4.7}</Text>
                 </View>
               </UpView>
               <UpView borderRadius={20} contentContainerStyle={sheet.center}>
                 <View style={styles.rightCard}>
-                  {point.ride.price ? (
-                    <Text style={styles.price}>
-                      {`${point.ride.price} PLN`}
-                    </Text>
+                  {ride.price ? (
+                    <Text style={styles.price}>{`${ride.price} PLN`}</Text>
                   ) : (
                     <Text style={styles.free}>Free</Text>
                   )}
@@ -142,16 +141,16 @@ const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
                 size={20 * vw}
                 style={{marginRight: 4 * vw}}
               />
-              <Text style={styles.car}>{point.ride.user.car}</Text>
+              <Text style={styles.car}>{'Opel Astra'}</Text>
             </View>
           </>
         ) : null}
         <StandardButton
           width="65%"
           style={{marginTop: 3 * vh}}
-          color={point.signedUp ? colors.blue : colors.green}
-          title={point.signedUp ? 'Show way' : 'Select'}
-          onPress={point.signedUp ? onShowWay : () => setExtended(true)}
+          color={false ? colors.blue : colors.green}
+          title={false ? 'Show way' : 'Select'}
+          onPress={false ? onShowWay : () => setExtended(true)}
         />
       </View>
     </View>

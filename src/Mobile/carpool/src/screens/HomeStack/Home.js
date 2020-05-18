@@ -6,6 +6,7 @@ import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
 import {AccountContext} from '../../context/AccountContext';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
+import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
 
 const Home = () => {
   const {
@@ -13,6 +14,13 @@ const Home = () => {
   } = React.useContext(AccountContext);
 
   const [coordinates, setCoordinates] = useState([]);
+  const [rides, setRides] = useState([]);
+
+  // Requests
+  const [response, loading, error, _getAllRides] = useRequest(
+    METHODS.GET,
+    ENDPOINTS.GET_ALL_RIDES,
+  );
 
   const _driverMap = useRef(null);
   const route = useRoute();
@@ -27,7 +35,16 @@ const Home = () => {
         navigation.setParams({...params});
       }
     }
+    if (activeAccount === 'passenger') {
+      _getAllRides();
+    }
   }, [activeAccount]);
+
+  useEffect(() => {
+    if (response) {
+      response.length && setRides([...response]);
+    }
+  }, [response, loading, error]);
 
   const _onLocateUser = e => {
     if (e) {
@@ -50,8 +67,6 @@ const Home = () => {
         maxZoomLevel={19}
         animationMode="flyTo"
         animationDuration={500}
-        //followUserLocation
-        //followUserMode={'normal'}
         centerCoordinate={[coordinates[0], coordinates[1] - 0.0015]}
       />
       <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
@@ -68,6 +83,8 @@ const Home = () => {
             <PassengerMap
               coordinates={coordinates}
               _onLocateUser={_onLocateUser}
+              rides={rides}
+              loading={loading}
             />
           ) : (
             renderDriver()
