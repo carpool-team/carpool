@@ -2,7 +2,7 @@ import React from 'react';
 import {RefreshControl, FlatList} from 'react-native';
 import {vw, vh} from '../../utils/constants';
 import LocationsListItem from '../LocationsListItem';
-import colors from '../../styles/colors';
+import {colors} from '../../styles';
 import CurrentLocationListItem from '../CurrentLocationListItem';
 
 const StartLocationsFlatList = ({

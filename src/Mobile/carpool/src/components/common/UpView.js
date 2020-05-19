@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import colors from '../../styles/colors';
+import {colors} from '../../styles';
 
 const UpView = ({
   style,

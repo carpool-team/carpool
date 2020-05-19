@@ -1,34 +1,19 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import colors from '../../styles/colors';
-import Marker from '../../components/common/Marker';
+import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
+import {Marker} from '../../components/common';
 import {vw, vh} from '../../utils/constants';
-import {examplePassengerPoints} from '../../examples/points';
 import RideInfoSheet from '../../components/Ride/RideInfoSheet';
 import {directionsClient} from '../../maps/mapbox';
 import {getBoundsForRoutes} from '../../utils/bounds';
-import {activeRouteStyle, inactiveRouteStyle} from '../../styles/map';
-import RouteInfoSheet from '../../components/FindRoute/RouteInfoSheet';
+import {RouteInfoSheet} from '../../components/FindRoute';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation, useRoute} from '@react-navigation/core';
 import {CircleButton} from '../../components/common/buttons';
-
-const getColor = time => {
-  if (time < 20) {
-    return colors.red;
-  } else {
-    if (time < 45) {
-      return colors.orange;
-    } else {
-      if (time < 90) {
-        return colors.yellow;
-      } else {
-        return colors.green;
-      }
-    }
-  }
-};
+import {parseCoords} from '../../utils/coords';
+import {getColor} from '../../utils/getColor';
+import {PassengerContext} from '../../context/PassengerContext';
 
 const PassengerMap = ({coordinates, _onLocateUser}) => {
   const [center, setCenter] = useState([]);
@@ -37,6 +22,11 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
   const [routes, setRoutes] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [activeRoute, setActiveRoute] = useState(0);
+
+  // Store
+  const {
+    passengerState: {allRides},
+  } = useContext(PassengerContext);
 
   const _passengerMap = useRef(null);
   const _passengerCamera = useRef(null);
@@ -57,9 +47,10 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
   useEffect(() => {
     if (route.params) {
       if (route.params.ride) {
+        const {ride} = route.params;
         _onShow();
-        setRide(route.params.ride);
-        setCenter(route.params.ride.coordinates);
+        setRide(ride);
+        setCenter(parseCoords(ride.startingLocation.coordinates));
       }
     }
   }, [route]);
@@ -72,6 +63,8 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
         ...bds,
         paddingTop: 20 * vh,
         paddingBottom: 20 * vh,
+        paddingLeft: 20 * vw,
+        paddingRight: 20 * vw,
       });
     }
   }, [routes]);
@@ -94,7 +87,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
               coordinates: coordinates,
             },
             {
-              coordinates: ride.coordinates,
+              coordinates: parseCoords(ride.startingLocation.coordinates),
             },
           ],
           overview: 'full',
@@ -107,10 +100,10 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
     }
   };
 
-  const onSelected = point => {
+  const onSelected = ride => {
     _onShow();
-    setCenter(point.coordinates);
-    setRide(point);
+    setCenter(parseCoords(ride.startingLocation.coordinates));
+    setRide(ride);
   };
 
   const onCleanState = () => {
@@ -121,21 +114,24 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
     setRoutes([]);
   };
 
-  const renderPassengerPoints = () =>
-    examplePassengerPoints.map(point => (
-      <MapboxGL.PointAnnotation
-        key={point.id}
-        id="selected"
-        coordinate={point.coordinates}
-        onSelected={() => onSelected(point)}
-        onDeselected={onCleanState}>
-        <Marker
-          color={getColor(point.timeLeft)}
-          size={6 * vw}
-          style={styles.marker}
-        />
-      </MapboxGL.PointAnnotation>
-    ));
+  const renderPassengerPoints = () => {
+    return allRides.data.length
+      ? allRides.data.map(ride => (
+          <MapboxGL.PointAnnotation
+            key={ride.id}
+            id="selected"
+            coordinate={parseCoords(ride.startingLocation.coordinates)}
+            onSelected={() => onSelected(ride)}
+            onDeselected={onCleanState}>
+            <Marker
+              color={getColor(ride.date)}
+              size={6 * vw}
+              style={styles.marker}
+            />
+          </MapboxGL.PointAnnotation>
+        ))
+      : null;
+  };
 
   const renderRoutes = () => {
     return routes.length
@@ -165,12 +161,8 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
         styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
         contentInset={10}
         compassEnabled={false}
-        onPress={() => {
-          if (visible) {
-            onCleanState();
-          }
-        }}
-        rotateEnabled={false}>
+        rotateEnabled={false}
+        onPress={onCleanState}>
         <MapboxGL.Camera
           ref={_passengerCamera}
           zoomLevel={14}
@@ -188,9 +180,10 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       </MapboxGL.MapView>
       <RideInfoSheet
         visible={visible}
-        point={ride}
+        ride={ride}
         userLocation={coordinates}
         onShowWay={onShowWay}
+        onClose={onCleanState}
       />
       {!visible && routes.length ? (
         <RouteInfoSheet route={routes[activeRoute]} onGoBack={onCleanState} />
@@ -198,8 +191,10 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       {ride || visible ? null : (
         <CircleButton
           style={{position: 'absolute', bottom: 8 * vh, right: 5 * vw}}
-          onPress={() => navigation.navigate('AskForRide')}
-          icon={<Icon name="plus" color={colors.grayDark} size={8 * vw} />}
+          onPress={() =>
+            navigation.navigate('FindRide', {rides: allRides.data})
+          }
+          icon={<Icon name="search" color={colors.grayDark} size={6 * vw} />}
         />
       )}
     </>

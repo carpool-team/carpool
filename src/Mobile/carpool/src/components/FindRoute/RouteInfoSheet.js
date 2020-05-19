@@ -1,8 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {vh, vw} from '../../utils/constants';
-import colors from '../../styles/colors';
-import sheet from '../../styles/sheet';
+import {colors, sheet} from '../../styles';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {useNavigation} from '@react-navigation/core';
 import {StandardButton} from '../common/buttons';

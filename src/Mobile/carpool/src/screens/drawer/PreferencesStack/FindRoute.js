@@ -5,20 +5,20 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  Text,
   ActivityIndicator,
 } from 'react-native';
-import colors from '../../../styles/colors';
+import {colors, sheet} from '../../../styles';
 import {vh, vw} from '../../../utils/constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
-import BlueMarker from '../../../components/common/BlueMarker';
-import sheet from '../../../styles/sheet';
+import {BlueMarker} from '../../../components/common';
 import {geocodingClient, directionsClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
-import StartLocationsFlatList from '../../../components/FindRoute/StartLocationsFlatList';
-import DestinationLocationsFlatList from '../../../components/FindRoute/DestinationLocationsFlatList';
+import {
+  DestinationLocationsFlatList,
+  StartLocationsFlatList,
+} from '../../../components/FindRoute';
 import {StandardButton} from '../../../components/common/buttons';
 
 const config = {

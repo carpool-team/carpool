@@ -1,9 +1,8 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {vh, vw} from '../../utils/constants';
-import sheet from '../../styles/sheet';
+import {sheet, colors} from '../../styles';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import colors from '../../styles/colors';
 import {AccountContext, AccountActions} from '../../context/AccountContext';
 import {CircleButton} from '../common/buttons';
 

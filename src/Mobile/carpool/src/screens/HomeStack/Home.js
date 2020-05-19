@@ -1,17 +1,21 @@
 import React, {useState, useEffect, useRef} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {SafeAreaView, View} from 'react-native';
-import colors from '../../styles/colors';
-import HamburgerMenu from '../../components/navigation/HamburgerMenu';
-import AccountSwitch from '../../components/navigation/AccountSwitch';
+import {colors} from '../../styles';
+import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
 import {AccountContext} from '../../context/AccountContext';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
+import {
+  PassengerContext,
+  createGetAllRides,
+} from '../../context/PassengerContext';
 
 const Home = () => {
   const {
     accountState: {activeAccount},
   } = React.useContext(AccountContext);
+  const {dispatch} = React.useContext(PassengerContext);
 
   const [coordinates, setCoordinates] = useState([]);
 
@@ -27,6 +31,9 @@ const Home = () => {
         delete params.ride;
         navigation.setParams({...params});
       }
+    }
+    if (activeAccount === 'passenger') {
+      createGetAllRides(dispatch);
     }
   }, [activeAccount]);
 
@@ -51,8 +58,6 @@ const Home = () => {
         maxZoomLevel={19}
         animationMode="flyTo"
         animationDuration={500}
-        //followUserLocation
-        //followUserMode={'normal'}
         centerCoordinate={[coordinates[0], coordinates[1] - 0.0015]}
       />
       <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
