@@ -85,7 +85,7 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		[HttpPut("ChangeGroupLocation")]
-		public async Task<ActionResult> AddGroupLocation([FromBody] ChangeGroupLocationDTO changeGroupLocationDTO)
+		public async Task<ActionResult> ChangeGroupLocation([FromBody] ChangeGroupLocationDTO changeGroupLocationDTO)
 		{
 			var group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == changeGroupLocationDTO.GroupId);
 			var location = await _context.Locations.FirstOrDefaultAsync(location => location.Id == changeGroupLocationDTO.LocationId);
@@ -94,6 +94,18 @@ namespace Carpool.RestAPI.Controllers
 			await _context.SaveChangesAsync();
 
 			return Json(changeGroupLocationDTO);
+		}
+
+		[HttpPut("AddRideToGroup")]
+		public async Task<ActionResult> AddRideToGroup([FromBody]AddRideToGroupDTO addRideToGroupDTO)
+		{
+			var group = await _context.Groups.Include(group => group.Rides).FirstOrDefaultAsync(group => group.Id == addRideToGroupDTO.GroupId);
+			var ride = await _context.Rides.FirstOrDefaultAsync(ride => ride.Id == addRideToGroupDTO.RideId);
+			group.Rides.Add(ride);
+
+			await _context.SaveChangesAsync();
+
+			return Json(addRideToGroupDTO);
 		}
 
 		// POST: api/Groups
