@@ -6,31 +6,12 @@ import {UpView} from '../common';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Waypoints from './Waypoints';
-import {CircleButton, StandardButton} from '../common/buttons';
+import {StandardButton} from '../common/buttons';
 import {parseDistance} from '../../utils/parse';
 import {directionsClient} from '../../maps/mapbox';
 import {parseCoords} from '../../utils/coords';
-import {getColor} from '../../utils/getColor';
 import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
-
-const getLeavingIn = date => {
-  const now = Date.now();
-  const lv = new Date(date).getTime();
-  const diff = lv - now;
-  const minutes = parseInt(diff / (1000 * 60));
-  const hours = parseInt(minutes / 60);
-  const dt = new Date(date).toLocaleString();
-
-  if (minutes < 60) {
-    return `Leaving in ${minutes} minutes`;
-  } else {
-    if (hours < 12) {
-      return `Leaving in ${hours} hours`;
-    } else {
-      return `${dt}`;
-    }
-  }
-};
+import DriverInfo from './DriverInfo';
 
 const RideInfoSheet = ({
   visible,
@@ -126,38 +107,7 @@ const RideInfoSheet = ({
             You have signed up for this ride!
           </Text>
         ) : null}
-        <UpView
-          style={{
-            width: '100%',
-          }}
-          borderRadius={4 * vw}>
-          <View style={styles.upperContainer}>
-            <CircleButton
-              style={{marginRight: 3 * vw}}
-              icon={
-                <Ionicon
-                  name="md-person"
-                  color={colors.grayDark}
-                  size={11 * vw}
-                />
-              }
-            />
-            <View style={styles.userInfoContainer}>
-              <View
-                style={{
-                  ...sheet.rowCenterSplit,
-                }}>
-                <Text style={styles.username} numberOfLines={1}>
-                  {`${ride.owner.firstName} ${ride.owner.lastName}`}
-                </Text>
-                <Text style={styles.distance}>{distance}</Text>
-              </View>
-              <Text style={[styles.leavingIn, {color: getColor(ride.date)}]}>
-                {getLeavingIn(ride.date)}
-              </Text>
-            </View>
-          </View>
-        </UpView>
+        <DriverInfo ride={ride} distance={distance} />
         <Waypoints
           style={{marginTop: 3 * vh}}
           ride={ride}

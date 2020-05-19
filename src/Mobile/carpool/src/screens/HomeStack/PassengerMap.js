@@ -48,9 +48,10 @@ const PassengerMap = ({
   useEffect(() => {
     if (route.params) {
       if (route.params.ride) {
+        const {ride} = route.params;
         _onShow();
-        setRide(route.params.ride);
-        setCenter(route.params.ride.coordinates);
+        setRide(ride);
+        setCenter(parseCoords(ride.startingLocation.coordinates));
       }
     }
   }, [route]);
@@ -161,8 +162,8 @@ const PassengerMap = ({
         styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
         contentInset={10}
         compassEnabled={false}
-        onPress={e => console.log(e)}
-        rotateEnabled={false}>
+        rotateEnabled={false}
+        onPress={onCleanState}>
         <MapboxGL.Camera
           ref={_passengerCamera}
           zoomLevel={14}
@@ -192,8 +193,8 @@ const PassengerMap = ({
       {ride || visible ? null : (
         <CircleButton
           style={{position: 'absolute', bottom: 8 * vh, right: 5 * vw}}
-          onPress={() => navigation.navigate('AskForRide')}
-          icon={<Icon name="plus" color={colors.grayDark} size={8 * vw} />}
+          onPress={() => navigation.navigate('FindRide', {rides})}
+          icon={<Icon name="search" color={colors.grayDark} size={6 * vw} />}
         />
       )}
     </>

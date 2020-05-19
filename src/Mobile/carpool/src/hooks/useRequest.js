@@ -41,18 +41,16 @@ const useRequest = (method, endpoint, body = null) => {
       }
 
       const res = await fetch(`${config.devUrl}${endpoint}`, request);
-      console.log('RES', res);
 
       if (res.status > 399) {
         setError('Error occured');
       } else {
         const json = await res.json();
-        console.log(json);
         setResponse(json);
       }
     } catch (error) {
       setError(error);
-      console.log('ERROR OCCURED');
+      console.log('ERROR OCCURED', error);
     } finally {
       setLoading(false);
     }
