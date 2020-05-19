@@ -2,7 +2,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {vw, vh} from '../../utils/constants';
 import {colors, sheet} from '../../styles';
@@ -12,31 +12,32 @@ import {useNavigation} from '@react-navigation/core';
 import {CircleButton, StandardButton} from '../common/buttons';
 import {useRequest, ENDPOINTS, METHODS} from '../../hooks';
 import DriverInfo from '../Ride/DriverInfo';
+import {
+  createGetUserRides,
+  PassengerContext,
+} from '../../context/PassengerContext';
 
 export default CustomDrawer = props => {
   const [ride, setRide] = useState(null);
   const navigation = useNavigation();
 
-  // Requests
-  const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
-  const [response, loading, error, _fetchUserRides] = useRequest(
-    METHODS.GET,
-    ENDPOINTS.GET_USERS_RIDES(userId),
-  );
+  // Store
+  const {
+    passengerState: {userRides},
+    dispatch,
+  } = useContext(PassengerContext);
 
   useEffect(() => {
     if (!ride) {
-      _fetchUserRides();
+      createGetUserRides(dispatch);
     }
   }, []);
 
   useEffect(() => {
-    if (response) {
-      if (response.length) {
-        setRide(response[0]);
-      }
+    if (userRides.data.length) {
+      setRide(userRides.data[0]);
     }
-  }, [response, loading]);
+  }, [userRides]);
 
   const onRidePress = () => {
     navigation.navigate('Home', {ride});

@@ -1,62 +1,41 @@
 import React from 'react';
-import {View, SafeAreaView, FlatList, TouchableOpacity} from 'react-native';
+import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {vw, vh} from '../../utils/constants';
-import DriverInfo from '../../components/Ride/DriverInfo';
-import Waypoints from '../../components/Ride/Waypoints';
-import {parseCoords} from '../../utils/coords';
 import {colors} from '../../styles';
 import {CircleButton} from '../../components/common/buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import RidesFlatList from '../../components/Ride/RidesFlatList';
 
 const FindRide = ({navigation, route}) => {
   const {rides} = route.params;
 
-  const onItemPress = item => {
-    navigation.navigate('Home', {ride: item});
-  };
+  const onPress = () => navigation.navigate('AskForRide');
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <FlatList
-          data={rides}
-          keyExtractor={item => item.id}
-          style={{width: '100%'}}
-          contentContainerStyle={{
-            paddingHorizontal: 6 * vw,
-            paddingVertical: 4 * vh,
-          }}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onPress={() => onItemPress(item)}
-              style={{
-                marginBottom: 4 * vh,
-                borderBottomWidth: 0.2 * vw,
-                borderColor: colors.grayDark,
-                paddingBottom: 4 * vh,
-              }}>
-              <DriverInfo ride={item} style={{marginBottom: 2 * vh}} />
-              <Waypoints
-                ride={item}
-                start={parseCoords(item.startingLocation.coordinates)}
-                style={{paddingHorizontal: 2 * vw}}
-              />
-            </TouchableOpacity>
-          )}
-        />
+      <View style={styles.wrapper}>
+        <RidesFlatList data={rides} />
       </View>
       <CircleButton
-        style={{position: 'absolute', bottom: 8 * vh, right: 5 * vw}}
-        onPress={() => navigation.navigate('AskForRide')}
+        style={styles.button}
+        onPress={onPress}
         icon={<Icon name="plus" color={colors.grayDark} size={6 * vw} />}
       />
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    position: 'absolute',
+    bottom: 8 * vh,
+    right: 5 * vw,
+  },
+});
 
 export default FindRide;

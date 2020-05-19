@@ -96,16 +96,7 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
     <View style={styles.wrapper}>
       <View style={styles.container}>
         {success ? (
-          <Text
-            style={{
-              ...sheet.textSemiBold,
-              color: colors.green,
-              fontSize: 5 * vw,
-              textAlign: 'center',
-              marginBottom: 4 * vh,
-            }}>
-            You have signed up for this ride!
-          </Text>
+          <Text style={styles.success}>You have signed up for this ride!</Text>
         ) : null}
         <DriverInfo ride={ride} distance={distance} />
         <Waypoints
@@ -284,6 +275,13 @@ const styles = StyleSheet.create({
     ...sheet.textBold,
     fontSize: 7 * vw,
     color: colors.grayDark,
+  },
+  success: {
+    ...sheet.textSemiBold,
+    color: colors.green,
+    fontSize: 5 * vw,
+    textAlign: 'center',
+    marginBottom: 4 * vh,
   },
 });
 

@@ -15,18 +15,13 @@ const Home = () => {
   const {
     accountState: {activeAccount},
   } = React.useContext(AccountContext);
-  const {passengerState, dispatch} = React.useContext(PassengerContext);
+  const {dispatch} = React.useContext(PassengerContext);
 
   const [coordinates, setCoordinates] = useState([]);
-  const [rides, setRides] = useState([]);
 
   const _driverMap = useRef(null);
   const route = useRoute();
   const navigation = useNavigation();
-
-  useEffect(() => {
-    setRides([...passengerState.allRides.data]);
-  }, [passengerState]);
 
   useEffect(() => {
     // Delete ride from params
@@ -79,7 +74,6 @@ const Home = () => {
             <PassengerMap
               coordinates={coordinates}
               _onLocateUser={_onLocateUser}
-              _getAllRides={() => null}
             />
           ) : (
             renderDriver()
