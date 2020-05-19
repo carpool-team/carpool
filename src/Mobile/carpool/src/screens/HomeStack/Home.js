@@ -7,11 +7,17 @@ import {AccountContext} from '../../context/AccountContext';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
 import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
+import {
+  PassengerContext,
+  createGetAllRides,
+  createGetUserRides,
+} from '../../context/PassengerContext';
 
 const Home = () => {
   const {
     accountState: {activeAccount},
   } = React.useContext(AccountContext);
+  const {passengerState, dispatch} = React.useContext(PassengerContext);
 
   const [coordinates, setCoordinates] = useState([]);
   const [rides, setRides] = useState([]);
@@ -26,6 +32,15 @@ const Home = () => {
   const _driverMap = useRef(null);
   const route = useRoute();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    createGetAllRides(dispatch);
+    createGetUserRides(dispatch);
+  }, []);
+
+  useEffect(() => {
+    console.log(passengerState);
+  }, [passengerState]);
 
   useEffect(() => {
     // Delete ride from params

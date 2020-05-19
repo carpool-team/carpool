@@ -5,6 +5,7 @@ import {LightTheme} from './src/styles';
 import MainStackNavigator from './src/navigation/MainStackNavigator';
 import config from './config';
 import {AccountStore} from './src/context/AccountContext';
+import {PassengerStore} from './src/context/PassengerContext';
 
 MapboxGL.setAccessToken(config.mapboxKey);
 
@@ -16,7 +17,9 @@ const App = () => {
   return (
     <NavigationContainer theme={LightTheme}>
       <AccountStore>
-        <MainStackNavigator />
+        <PassengerStore>
+          <MainStackNavigator />
+        </PassengerStore>
       </AccountStore>
     </NavigationContainer>
   );
