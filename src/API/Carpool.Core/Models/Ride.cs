@@ -11,6 +11,8 @@ namespace Carpool.Core.Models
 		public User Owner { get; set; }
 		public List<UserParticipatedRide> Participants { get; set; }
 
+		public Group Group { get; set; }
+
 		public List<Stop> Stops { get; set; }
 
 		public DateTime Date { get; set; }
