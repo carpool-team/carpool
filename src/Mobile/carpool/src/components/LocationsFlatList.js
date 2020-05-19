@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, RefreshControl, Text, View} from 'react-native';
 import {vw, vh} from '../utils/constants';
 import LocationsListItem from './LocationsListItem';
-import colors from '../styles/colors';
+import {colors} from '../styles';
 import {useNavigation} from '@react-navigation/core';
 import CurrentLocationListItem from './CurrentLocationListItem';
 

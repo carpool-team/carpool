@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import colors from '../../styles/colors';
+import {colors} from '../../styles';
 
 const BlueMarker = ({size, style}) => {
   const bigCircleStyle = {
