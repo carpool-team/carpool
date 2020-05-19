@@ -44,6 +44,14 @@ namespace Carpool.RestAPI.Controllers
 			return @group;
 		}
 
+		[HttpGet("GetUserGroups/{userId}")]
+		public async Task<ActionResult<List<Group>>> GetUserGroups([FromRoute]Guid userId)
+		{
+			var groups = await _context.Groups.Where(group => group.UserGroups.Any(ug => ug.UserId == userId)).ToListAsync();
+
+			return Json(groups);
+		}
+
 		// PUT: api/Groups/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -74,6 +82,18 @@ namespace Carpool.RestAPI.Controllers
 			}
 
 			return NoContent();
+		}
+
+		[HttpPut("ChangeGroupLocation")]
+		public async Task<ActionResult> AddGroupLocation([FromBody] ChangeGroupLocationDTO changeGroupLocationDTO)
+		{
+			var group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == changeGroupLocationDTO.GroupId);
+			var location = await _context.Locations.FirstOrDefaultAsync(location => location.Id == changeGroupLocationDTO.LocationId);
+			group.Location = location;
+
+			await _context.SaveChangesAsync();
+
+			return Json(changeGroupLocationDTO);
 		}
 
 		// POST: api/Groups
