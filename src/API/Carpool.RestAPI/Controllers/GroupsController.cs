@@ -9,6 +9,7 @@ using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.Core.DTOs.GroupDTOs;
 using Carpool.Core.Models.Intersections;
+using Carpool.Core.DTOs.LocationDTOs;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -47,9 +48,17 @@ namespace Carpool.RestAPI.Controllers
 		[HttpGet("GetUserGroups/{userId}")]
 		public async Task<ActionResult<List<Group>>> GetUserGroups([FromRoute]Guid userId)
 		{
-			var groups = await _context.Groups.Where(group => group.UserGroups.Any(ug => ug.UserId == userId)).ToListAsync();
+			var groups = await _context.Groups
+				.Include(group => group.Location)
+					.ThenInclude(location => location.LocationName)
+				.Include(group => group.Location)
+					.ThenInclude(location => location.Coordinates)
+				.Include(location => location.Rides)
+				.Include(group => group.UserGroups).Where(group => group.UserGroups.Any(ug => ug.UserId == userId)).ToListAsync();
 
-			return Json(groups);
+			var groupDTOs = groups.Select(group => IndexGroupDTO.FromGroup(group)).ToList();
+
+			return Json(groupDTOs);
 		}
 
 		// PUT: api/Groups/5
