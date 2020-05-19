@@ -44,12 +44,16 @@ namespace Carpool.RestAPI.Controllers
 						.ThenInclude(st => st.LocationName)
 					.Include(ride => ride.Participants)
 					.Include(ride => ride.Owner)
+						.ThenInclude(user => user.Vehicle)
 					.Include(ride => ride.Destination)
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.Destination)
 						.ThenInclude(st => st.LocationName)
+					.Where(ride => ride.Date >= DateTime.Now)
+					.OrderBy(ride => ride.Date)
 					.ToListAsync();
 				rides.ForEach(r => r.Participants.ForEach(p => p.User = _context.Users.FirstOrDefault(u => u.Id == p.UserId)));
+				rides.ForEach(r => r.Owner.Vehicle = r.Owner.Vehicle ?? new Vehicle());
 				var ridesDTO = rides.Select(ride => IndexRideDTO.GetFromRide(ride)).ToList();
 				if (userId != null)
 					ridesDTO.ForEach(ride => ride.IsUserParticipant = ride.Participants.Any(participant => participant.UserId == userId));
@@ -200,7 +204,8 @@ namespace Carpool.RestAPI.Controllers
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.Destination)
 						.ThenInclude(st => st.LocationName)
-					.Where(ride => ride.Participants.Any(participant => participant.UserId == userId))
+					.Where(ride => ride.Participants.Any(participant => participant.UserId == userId) && ride.Date >= DateTime.Now)
+					.OrderBy(ride => ride.Date)
 					.ToListAsync();
 				rides.ForEach(r => r.Participants.ForEach(p => p.User = _context.Users.FirstOrDefault(u => u.Id == p.UserId)));
 				var ridesDTO = rides.Select(ride => IndexRideDTO.GetFromRide(ride)).ToList();
