@@ -9,6 +9,7 @@ export const METHODS = {
 
 export const ENDPOINTS = {
   GET_ALL_RIDES: '/Rides',
+  GET_USERS_RIDES: id => `/Rides/GetUserRides/${id}`,
   ADD_PARTICIPANT: '/Rides/AddParticipant',
   SEND_RIDE_REQUEST: '/RideRequests',
 };

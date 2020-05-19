@@ -26,14 +26,15 @@ const getLeavingIn = date => {
   }
 };
 
-const DriverInfo = ({ride, distance, style, children}) => {
-  return (
+const DriverInfo = ({ride, distance, style, onPress}) => {
+  return ride ? (
     <UpView
       style={{
         width: '100%',
         ...style,
       }}
-      borderRadius={4 * vw}>
+      borderRadius={4 * vw}
+      onPress={onPress}>
       <View style={styles.upperContainer}>
         <CircleButton
           style={{marginRight: 3 * vw}}
@@ -56,9 +57,8 @@ const DriverInfo = ({ride, distance, style, children}) => {
           </Text>
         </View>
       </View>
-      {children}
     </UpView>
-  );
+  ) : null;
 };
 
 const styles = StyleSheet.create({
