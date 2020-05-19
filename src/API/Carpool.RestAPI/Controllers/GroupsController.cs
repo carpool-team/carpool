@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.Core.DTOs.GroupDTOs;
+using Carpool.Core.Models.Intersections;
 
 namespace Carpool.RestAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class GroupsController : ControllerBase
+	public class GroupsController : Controller
 	{
 		private readonly CarpoolDbContext _context;
 
@@ -89,6 +90,22 @@ namespace Carpool.RestAPI.Controllers
 			await _context.SaveChangesAsync();
 
 			return CreatedAtAction("GetGroup", new { id = group.Id }, groupDTO);
+		}
+
+		[HttpPost("AddUserToGroup")]
+		public async Task<ActionResult> AddUserToGroup(AddUserToGroupDTO addUserToGroupDTO)
+		{
+			var group = await _context.Groups.Include(group => group.UserGroups).FirstOrDefaultAsync(group => group.Id == addUserToGroupDTO.GroupId);
+			var userGroup = new UserGroup()
+			{
+				Group = group,
+				GroupId = addUserToGroupDTO.GroupId,
+				UserId = addUserToGroupDTO.UserId
+			};
+			group.UserGroups.Add(userGroup);
+			await _context.SaveChangesAsync();
+
+			return Json(userGroup);
 		}
 
 		// DELETE: api/Groups/5
