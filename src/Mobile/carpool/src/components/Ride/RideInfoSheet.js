@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {colors, sheet} from '../../styles';
 import {vw, vh} from '../../utils/constants';
@@ -12,18 +12,18 @@ import {directionsClient} from '../../maps/mapbox';
 import {parseCoords} from '../../utils/coords';
 import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
 import DriverInfo from './DriverInfo';
+import {
+  PassengerContext,
+  createGetAllRides,
+} from '../../context/PassengerContext';
 
-const RideInfoSheet = ({
-  visible,
-  ride,
-  userLocation,
-  onShowWay,
-  onClose,
-  _getAllRides,
-}) => {
+const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
   const [distance, setDistance] = useState(null);
   const [extended, setExtended] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  // Store
+  const {dispatch} = useContext(PassengerContext);
 
   // Requests
   const participantId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
@@ -44,7 +44,7 @@ const RideInfoSheet = ({
     if (!visible) {
       setRideId(null);
       setSuccess(false);
-      _getAllRides();
+      createGetAllRides(dispatch);
     }
   }, [visible]);
 

@@ -1,10 +1,9 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
 import {Marker} from '../../components/common';
 import {vw, vh} from '../../utils/constants';
-import {examplePassengerPoints, examplePoints} from '../../examples';
 import RideInfoSheet from '../../components/Ride/RideInfoSheet';
 import {directionsClient} from '../../maps/mapbox';
 import {getBoundsForRoutes} from '../../utils/bounds';
@@ -14,20 +13,20 @@ import {useNavigation, useRoute} from '@react-navigation/core';
 import {CircleButton} from '../../components/common/buttons';
 import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';
+import {PassengerContext} from '../../context/PassengerContext';
 
-const PassengerMap = ({
-  coordinates,
-  _onLocateUser,
-  rides,
-  loading,
-  _getAllRides,
-}) => {
+const PassengerMap = ({coordinates, _onLocateUser}) => {
   const [center, setCenter] = useState([]);
   const [ride, setRide] = useState(null);
   const [visible, setVisible] = useState(false);
   const [routes, setRoutes] = useState([]);
   const [bounds, setBounds] = useState(null);
   const [activeRoute, setActiveRoute] = useState(0);
+
+  // Store
+  const {
+    passengerState: {allRides},
+  } = useContext(PassengerContext);
 
   const _passengerMap = useRef(null);
   const _passengerCamera = useRef(null);
@@ -116,8 +115,8 @@ const PassengerMap = ({
   };
 
   const renderPassengerPoints = () => {
-    return rides.length
-      ? rides.map(ride => (
+    return allRides.data.length
+      ? allRides.data.map(ride => (
           <MapboxGL.PointAnnotation
             key={ride.id}
             id="selected"
@@ -185,7 +184,6 @@ const PassengerMap = ({
         userLocation={coordinates}
         onShowWay={onShowWay}
         onClose={onCleanState}
-        _getAllRides={_getAllRides}
       />
       {!visible && routes.length ? (
         <RouteInfoSheet route={routes[activeRoute]} onGoBack={onCleanState} />
@@ -193,7 +191,9 @@ const PassengerMap = ({
       {ride || visible ? null : (
         <CircleButton
           style={{position: 'absolute', bottom: 8 * vh, right: 5 * vw}}
-          onPress={() => navigation.navigate('FindRide', {rides})}
+          onPress={() =>
+            navigation.navigate('FindRide', {rides: allRides.data})
+          }
           icon={<Icon name="search" color={colors.grayDark} size={6 * vw} />}
         />
       )}

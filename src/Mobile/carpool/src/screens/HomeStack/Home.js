@@ -6,11 +6,9 @@ import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
 import {AccountContext} from '../../context/AccountContext';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
-import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
 import {
   PassengerContext,
   createGetAllRides,
-  createGetUserRides,
 } from '../../context/PassengerContext';
 
 const Home = () => {
@@ -22,24 +20,12 @@ const Home = () => {
   const [coordinates, setCoordinates] = useState([]);
   const [rides, setRides] = useState([]);
 
-  // Requests
-  const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
-  const [response, loading, error, _getAllRides] = useRequest(
-    METHODS.GET,
-    `${ENDPOINTS.GET_ALL_RIDES}?userId=${userId}`,
-  );
-
   const _driverMap = useRef(null);
   const route = useRoute();
   const navigation = useNavigation();
 
   useEffect(() => {
-    createGetAllRides(dispatch);
-    createGetUserRides(dispatch);
-  }, []);
-
-  useEffect(() => {
-    console.log(passengerState);
+    setRides([...passengerState.allRides.data]);
   }, [passengerState]);
 
   useEffect(() => {
@@ -52,15 +38,9 @@ const Home = () => {
       }
     }
     if (activeAccount === 'passenger') {
-      _getAllRides();
+      createGetAllRides(dispatch);
     }
   }, [activeAccount]);
-
-  useEffect(() => {
-    if (response) {
-      response.length && setRides([...response]);
-    }
-  }, [response, loading, error]);
 
   const _onLocateUser = e => {
     if (e) {
@@ -99,9 +79,7 @@ const Home = () => {
             <PassengerMap
               coordinates={coordinates}
               _onLocateUser={_onLocateUser}
-              rides={rides}
-              loading={loading}
-              _getAllRides={_getAllRides}
+              _getAllRides={() => null}
             />
           ) : (
             renderDriver()
