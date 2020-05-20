@@ -1,45 +1,61 @@
-import React from 'react';
-import {View, Text, SafeAreaView, Alert} from 'react-native';
-import UpView from '../../../components/common/UpView';
-import {vw, vh} from '../../../utils/constants';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import colors from '../../../styles/colors';
-import sheet from '../../../styles/sheet';
-import {CircleButton} from '../../../components/common/buttons';
+import React, {useContext} from 'react';
+import {SafeAreaView, Alert} from 'react-native';
 import InvitationsFlatList from '../../../components/Groups/InvitationsFlatList';
-import {exampleInvitations} from '../../../examples/groups';
+import {
+  AccountContext,
+  createGetUserInvitations,
+  createGetUserGroups,
+} from '../../../context/AccountContext';
+import {apiRequest} from '../../../utils/apiRequest';
+import {METHODS, ENDPOINTS} from '../../../hooks';
 
 const Invitations = ({navigation}) => {
-  const renderAlert = () => {
-    Alert.alert(
-      'Warning!',
-      'Are you sure you want to decline this invitation?',
-      [
+  const {accountState, dispatch} = useContext(AccountContext);
+  const {data: invitations, loading} = accountState.invitations;
+
+  const onAccept = async item => {
+    try {
+      const response = await apiRequest(
+        METHODS.PUT,
+        ENDPOINTS.CHANGE_INVITATION_STATE,
         {
-          text: 'Decline',
-          onPress: () => null,
-          style: 'destructive',
+          id: item.id,
+          isAccepted: true,
         },
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'cancel',
-        },
-      ],
-    );
+      );
+
+      // console.log(response);
+      createGetUserInvitations(dispatch);
+      createGetUserGroups(dispatch);
+    } catch (err) {
+      console.log('ERROR', err);
+    }
   };
 
-  const onAccept = item => {
-    console.log(item);
+  const onDecline = async item => {
+    try {
+      const response = await apiRequest(
+        METHODS.PUT,
+        ENDPOINTS.CHANGE_INVITATION_STATE,
+        {
+          id: item.id,
+          isAccepted: false,
+        },
+      );
+
+      //console.log(response);
+      createGetUserInvitations(dispatch);
+    } catch (err) {
+      console.log('ERROR', err);
+    }
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <InvitationsFlatList
-        data={exampleInvitations}
-        loading={false}
-        onDecline={renderAlert}
+        data={invitations}
+        loading={loading}
+        onDecline={onDecline}
         onAccept={onAccept}
       />
     </SafeAreaView>
