@@ -1,11 +1,10 @@
 import React, { Component, Suspense } from "react";
 import { Switch, Route, RouteComponentProps } from "react-router";
-import LoadingScreen from "../../loadingScreen/LoadingScreen";
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 import { LoaderSpinner } from "../../ui/loaderSpinner/LoaderSpinner";
 import Groups from "../../groups/Groups";
 
 class LayoutRouter extends Component<RouteComponentProps> {
-	
 	static routes = {
 		groups: "groups/",
 	};
