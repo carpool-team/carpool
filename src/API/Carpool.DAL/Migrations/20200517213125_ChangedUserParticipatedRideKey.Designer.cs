@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Carpool.DAL.Migrations
 {
     [DbContext(typeof(CarpoolDbContext))]
-    [Migration("20200425153004_ChangedMistypedTableNameLocations")]
-    partial class ChangedMistypedTableNameLocations
+    [Migration("20200517213125_ChangedUserParticipatedRideKey")]
+    partial class ChangedUserParticipatedRideKey
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,6 +82,25 @@ namespace Carpool.DAL.Migrations
                     b.ToTable("UserGroup");
                 });
 
+            modelBuilder.Entity("Carpool.Core.Models.Intersections.UserParticipatedRide", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RideId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RideId");
+
+                    b.HasIndex("RideId");
+
+                    b.ToTable("UserParticipatedRides");
+                });
+
             modelBuilder.Entity("Carpool.Core.Models.Location", b =>
                 {
                     b.Property<Guid>("Id")
@@ -120,6 +139,84 @@ namespace Carpool.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LocationNames");
+                });
+
+            modelBuilder.Entity("Carpool.Core.Models.Ride", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DestinationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartingLocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("StartingLocationId");
+
+                    b.ToTable("Rides");
+                });
+
+            modelBuilder.Entity("Carpool.Core.Models.RideRequest", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DestinationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RequesterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("StartingLocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationId");
+
+                    b.HasIndex("RequesterId");
+
+                    b.HasIndex("StartingLocationId");
+
+                    b.ToTable("RideRequests");
+                });
+
+            modelBuilder.Entity("Carpool.Core.Models.Stop", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CoordinatesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RideId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoordinatesId");
+
+                    b.HasIndex("RideId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Stops");
                 });
 
             modelBuilder.Entity("Carpool.Core.Models.User", b =>
@@ -165,6 +262,21 @@ namespace Carpool.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Carpool.Core.Models.Intersections.UserParticipatedRide", b =>
+                {
+                    b.HasOne("Carpool.Core.Models.Ride", "Ride")
+                        .WithMany("Participants")
+                        .HasForeignKey("RideId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Carpool.Core.Models.User", "User")
+                        .WithMany("ParticipatedRides")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Carpool.Core.Models.Location", b =>
                 {
                     b.HasOne("Carpool.Core.Models.Coordinates", "Coordinates")
@@ -177,6 +289,51 @@ namespace Carpool.DAL.Migrations
 
                     b.HasOne("Carpool.Core.Models.User", null)
                         .WithMany("Locations")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Carpool.Core.Models.Ride", b =>
+                {
+                    b.HasOne("Carpool.Core.Models.Location", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId");
+
+                    b.HasOne("Carpool.Core.Models.User", "Owner")
+                        .WithMany("CreatedRides")
+                        .HasForeignKey("OwnerId");
+
+                    b.HasOne("Carpool.Core.Models.Location", "StartingLocation")
+                        .WithMany()
+                        .HasForeignKey("StartingLocationId");
+                });
+
+            modelBuilder.Entity("Carpool.Core.Models.RideRequest", b =>
+                {
+                    b.HasOne("Carpool.Core.Models.Location", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId");
+
+                    b.HasOne("Carpool.Core.Models.User", "Requester")
+                        .WithMany("RideRequests")
+                        .HasForeignKey("RequesterId");
+
+                    b.HasOne("Carpool.Core.Models.Location", "StartingLocation")
+                        .WithMany()
+                        .HasForeignKey("StartingLocationId");
+                });
+
+            modelBuilder.Entity("Carpool.Core.Models.Stop", b =>
+                {
+                    b.HasOne("Carpool.Core.Models.Coordinates", "Coordinates")
+                        .WithMany()
+                        .HasForeignKey("CoordinatesId");
+
+                    b.HasOne("Carpool.Core.Models.Ride", null)
+                        .WithMany("Stops")
+                        .HasForeignKey("RideId");
+
+                    b.HasOne("Carpool.Core.Models.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId");
                 });
 

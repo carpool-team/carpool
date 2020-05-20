@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Carpool.Core.Models.Intersections
 {
-	public class UserGroup
+	public class UserParticipatedRide
 	{
 		public Guid UserId { get; set; }
 		public User User { get; set; }
 
-		public Guid GroupId { get; set; }
-		public Group Group { get; set; }
+		public Guid RideId { get; set; }
+		public Ride Ride { get; set; }
 	}
 }

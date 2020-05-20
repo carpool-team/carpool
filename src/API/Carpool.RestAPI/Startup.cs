@@ -22,9 +22,9 @@ namespace Carpool.RestAPI
 		{
 			services.AddControllers();
 			services.AddMvc(options => options.EnableEndpointRouting = false);
-
+			services.AddSingleton<IConfiguration>(Configuration);
 			services.AddDbContext<CarpoolDbContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("CarpoolDbContext")));
+					options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

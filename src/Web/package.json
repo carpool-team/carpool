@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --mode development --open --hot --config webpack.dev.js",
     "run-mobile": "webpack-dev-server --mode development --open --hot --config webpack.mobile.js",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production --config webpack.prod.js",
     "check-types": "tsc"
   },
   "keywords": [],
