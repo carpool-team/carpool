@@ -21,7 +21,7 @@ namespace Carpool.Core.DTOs.GroupDTOs
 		{
 			return new IndexGroupDTO()
 			{
-				Location = LocationDTO.FromLocation(group.Location),
+				Location = group.Location != null ? LocationDTO.FromLocation(group.Location) : null,
 				Name = group.Name,
 				RideCount = group.Rides.Count(),
 				UserCount = group.UserGroups.Count()
