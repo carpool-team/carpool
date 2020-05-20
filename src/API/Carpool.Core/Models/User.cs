@@ -29,5 +29,9 @@ namespace Carpool.Core.Models
 		public List<Rating> Ratings { get; set; }
 
 		public Vehicle Vehicle { get; set; }
+
+		public List<GroupInvite> GroupInvites { get; set; }
+
+		public List<GroupInvite> SentGroupInvites { get; set; }
 	}
 }

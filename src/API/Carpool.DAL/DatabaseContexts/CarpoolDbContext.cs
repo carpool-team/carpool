@@ -17,6 +17,7 @@ namespace Carpool.DAL.DatabaseContexts
 		#region Models
 
 		public DbSet<Location> Locations { get; set; }
+		public DbSet<LocationName> LocationNames { get; set; }
 		public DbSet<Coordinates> Coordinates { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Group> Groups { get; set; }
@@ -24,12 +25,14 @@ namespace Carpool.DAL.DatabaseContexts
 		public DbSet<Ride> Rides { get; set; }
 		public DbSet<RideRequest> RideRequests { get; set; }
 		public DbSet<Stop> Stops { get; set; }
+		public DbSet<Rating> Ratings { get; set; }
+		public DbSet<Vehicle> Vehicles { get; set; }
+		public DbSet<GroupInvite> GroupInvites { get; set; }
 
 		#endregion Models
 
 		#region Intersections
 
-		public DbSet<LocationName> LocationNames { get; set; }
 		public DbSet<UserParticipatedRide> UserParticipatedRides { get; set; }
 
 		#endregion Intersections
@@ -61,6 +64,11 @@ namespace Carpool.DAL.DatabaseContexts
 				.HasOne(ur => ur.Ride)
 				.WithMany(ur => ur.Participants)
 				.HasForeignKey(ur => ur.RideId);
+
+			modelBuilder.Entity<GroupInvite>()
+				.HasOne(ur => ur.InvitedUser)
+				.WithMany(iu => iu.GroupInvites)
+				.HasForeignKey(ur => ur.InvitedUserId);
 
 			#region DataSeeding
 
