@@ -5,6 +5,7 @@ import { LoaderSpinner } from "../../ui/loaderSpinner/LoaderSpinner";
 import Groups from "../../groups/Groups";
 
 class LayoutRouter extends Component<RouteComponentProps> {
+	
 	static routes = {
 		groups: "groups/",
 	};
