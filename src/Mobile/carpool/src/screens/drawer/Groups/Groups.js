@@ -1,15 +1,25 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {SafeAreaView, TouchableOpacity, View, Text} from 'react-native';
 import {vw, vh} from '../../../utils/constants';
 import sheet from '../../../styles/sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../../styles/colors';
 import GroupsFlatList from '../../../components/Groups/GroupsFlatList';
-import {exampleGroups} from '../../../examples/groups';
+import {
+  AccountContext,
+  createGetUserGroups,
+} from '../../../context/AccountContext';
 
 const Groups = ({navigation}) => {
+  const {accountState, dispatch} = useContext(AccountContext);
+  const {data: groups, loading, error} = accountState.groups;
+
   const onItemPress = item => {
     navigation.navigate('GroupDetails', {group: item});
+  };
+
+  const onRefresh = () => {
+    createGetUserGroups(dispatch);
   };
 
   return (
@@ -39,9 +49,10 @@ const Groups = ({navigation}) => {
           <Icon name="group-add" size={8 * vw} color={colors.grayDark} />
         </TouchableOpacity>
         <GroupsFlatList
-          data={exampleGroups}
-          loading={false}
+          data={groups}
+          loading={loading}
           onItemPress={onItemPress}
+          onRefresh={onRefresh}
         />
       </View>
     </SafeAreaView>

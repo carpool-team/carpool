@@ -4,7 +4,7 @@ import {vh, vw} from '../../utils/constants';
 import GroupListItem from './GroupListItem';
 import colors from '../../styles/colors';
 
-const GroupsFlatList = ({data, loading, onItemPress}) => {
+const GroupsFlatList = ({data, loading, onItemPress, onRefresh}) => {
   return (
     <FlatList
       data={data}
@@ -15,7 +15,7 @@ const GroupsFlatList = ({data, loading, onItemPress}) => {
       contentContainerStyle={{
         paddingHorizontal: 4 * vw,
       }}
-      keyExtractor={item => item.id}
+      keyExtractor={item => Math.random().toString()}
       renderItem={({item}) => (
         <GroupListItem item={item} onItemPress={onItemPress} />
       )}
@@ -24,6 +24,7 @@ const GroupsFlatList = ({data, loading, onItemPress}) => {
           colors={colors.green}
           tintColor={colors.green}
           refreshing={loading}
+          onRefresh={onRefresh}
         />
       }
     />

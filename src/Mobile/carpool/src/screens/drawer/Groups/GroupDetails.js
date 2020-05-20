@@ -15,6 +15,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import Marker from '../../../components/common/Marker';
 import config from '../../../../config';
+import {parseCoords} from '../../../utils/coords';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
@@ -44,15 +45,15 @@ const GroupDetails = ({navigation, route}) => {
         </View>
         <View style={styles.statsRow}>
           <View style={sheet.columnCenter}>
-            <Text style={styles.totalRides}>{group.totalRides}</Text>
+            <Text style={styles.totalRides}>{group.rideCount}</Text>
             <Text style={styles.rides}>total rides</Text>
           </View>
           <View style={sheet.columnCenter}>
-            <Text style={styles.totalMembers}>{group.members}</Text>
+            <Text style={styles.totalMembers}>{group.userCount}</Text>
             <Text style={styles.members}>members</Text>
           </View>
           <View style={sheet.columnCenter}>
-            <Text style={styles.totalDistance}>{group.totalDistance}</Text>
+            <Text style={styles.totalDistance}>{123}</Text>
             <Text style={styles.distance}>kilometers</Text>
           </View>
         </View>
@@ -107,21 +108,20 @@ const GroupDetails = ({navigation, route}) => {
             styleURL={config.mapLight}
             contentInset={10}
             compassEnabled={false}
-            //zoomEnabled={false}
             scrollEnabled={false}
             pitchEnabled={false}
             rotateEnabled={false}>
             <MapboxGL.Camera
-              zoomLevel={14}
+              zoomLevel={12}
               maxZoomLevel={19}
               animationMode="flyTo"
               animationDuration={500}
-              centerCoordinate={group.coordinates}
+              centerCoordinate={parseCoords(group.location.coordinates)}
             />
             <MapboxGL.PointAnnotation
-              key={group.coordinates.toString()}
+              key={group.location.coordinates.toString()}
               id="selected"
-              coordinate={group.coordinates}>
+              coordinate={parseCoords(group.location.coordinates)}>
               <Marker color={colors.green} size={6 * vw} />
             </MapboxGL.PointAnnotation>
             <MapboxGL.UserLocation visible />

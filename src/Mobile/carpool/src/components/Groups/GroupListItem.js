@@ -21,16 +21,19 @@ const GroupListItem = ({item, onItemPress}) => {
           <Text style={styles.name} numberOfLines={1}>
             {item.name}
           </Text>
-          <Text style={styles.since}>{`Since ${item.date}`}</Text>
+          <Text
+            style={
+              styles.since
+            }>{`Since ${new Date().toLocaleDateString()}`}</Text>
         </View>
         <View style={{...sheet.rowCenterSplit, width: '100%'}}>
           <View style={sheet.rowCenter}>
             <Icon name="group" size={10 * vw} color={colors.grayDark} />
-            <Text style={styles.members}>{item.members}</Text>
+            <Text style={styles.members}>{item.userCount}</Text>
           </View>
           <View style={sheet.rowCenter}>
             <Ionicon name="ios-car" size={10 * vw} color={colors.grayDark} />
-            <Text style={styles.rides}>{item.totalRides}</Text>
+            <Text style={styles.rides}>{item.rideCount}</Text>
           </View>
           <View style={sheet.rowCenter}>
             <Ionicon
@@ -38,7 +41,7 @@ const GroupListItem = ({item, onItemPress}) => {
               size={10 * vw}
               color={colors.grayDark}
             />
-            <Text style={styles.distance}>{`${item.totalDistance} km`}</Text>
+            <Text style={styles.distance}>{`123 km`}</Text>
           </View>
         </View>
       </View>
