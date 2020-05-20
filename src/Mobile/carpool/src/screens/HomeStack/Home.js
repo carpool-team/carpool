@@ -3,7 +3,10 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {SafeAreaView, View} from 'react-native';
 import {colors} from '../../styles';
 import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
-import {AccountContext} from '../../context/AccountContext';
+import {
+  AccountContext,
+  createGetUserGroups,
+} from '../../context/AccountContext';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
 import {
@@ -13,16 +16,21 @@ import {
 import config from '../../../config';
 
 const Home = () => {
-  const {
-    accountState: {activeAccount},
-  } = React.useContext(AccountContext);
+  const {accountState, dispatch: accountDispatch} = React.useContext(
+    AccountContext,
+  );
   const {dispatch} = React.useContext(PassengerContext);
+  const {activeAccount} = accountState;
 
   const [coordinates, setCoordinates] = useState([]);
 
   const _driverMap = useRef(null);
   const route = useRoute();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    createGetUserGroups(accountDispatch);
+  }, []);
 
   useEffect(() => {
     // Delete ride from params

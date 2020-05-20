@@ -11,6 +11,7 @@ export const apiRequest = async (method, endpoint, body = null) => {
       request.body = JSON.stringify(body);
     }
 
+    console.log(method, endpoint, request);
     const res = await fetch(`${config.devUrl}${endpoint}`, request);
 
     if (res.status > 399) {

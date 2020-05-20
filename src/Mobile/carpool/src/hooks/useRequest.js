@@ -12,6 +12,7 @@ export const ENDPOINTS = {
   GET_USERS_RIDES: id => `/Rides/GetUserRides/${id}`,
   ADD_PARTICIPANT: '/Rides/AddParticipant',
   SEND_RIDE_REQUEST: '/RideRequests',
+  GET_USER_GROUPS: id => `/groups/GetUserGroups/${id}`,
 };
 
 /**

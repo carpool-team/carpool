@@ -1,4 +1,7 @@
 import React, {createContext, useReducer} from 'react';
+import {apiRequest} from '../../utils/apiRequest';
+import {METHODS, ENDPOINTS} from '../../hooks';
+const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
 
 const initialState = {
   activeAccount: 'passenger',
@@ -62,6 +65,22 @@ const toggleActive = state => {
       ...state,
       activeAccount: 'driver',
     };
+  }
+};
+
+export const createGetUserGroups = async dispatch => {
+  try {
+    dispatch({type: AccountActions.GET_GROUPS_LOADING});
+    const response = await apiRequest(
+      METHODS.GET,
+      ENDPOINTS.GET_USER_GROUPS(userId),
+    );
+    dispatch({
+      type: AccountActions.GET_GROUPS_SUCCESS,
+      payload: response,
+    });
+  } catch (err) {
+    dispatch({type: AccountActions.GET_GROUPS_ERROR, payload: err});
   }
 };
 
