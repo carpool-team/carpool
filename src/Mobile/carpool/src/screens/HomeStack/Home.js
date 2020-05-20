@@ -10,6 +10,7 @@ import {
   PassengerContext,
   createGetAllRides,
 } from '../../context/PassengerContext';
+import config from '../../../config';
 
 const Home = () => {
   const {
@@ -50,7 +51,7 @@ const Home = () => {
     <MapboxGL.MapView
       ref={_driverMap}
       style={{flex: 1}}
-      styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
+      styleURL={config.mapLight}
       contentInset={10}
       compassEnabled={false}>
       <MapboxGL.Camera

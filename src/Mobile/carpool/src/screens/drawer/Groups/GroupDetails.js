@@ -14,6 +14,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import Marker from '../../../components/common/Marker';
+import config from '../../../../config';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
@@ -103,7 +104,7 @@ const GroupDetails = ({navigation, route}) => {
           }}>
           <MapboxGL.MapView
             style={{flex: 1}}
-            styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
+            styleURL={config.mapLight}
             contentInset={10}
             compassEnabled={false}
             //zoomEnabled={false}
