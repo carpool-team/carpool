@@ -53,10 +53,15 @@ namespace Carpool.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("LocationId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("Groups");
                 });
@@ -131,17 +136,45 @@ namespace Carpool.DAL.Migrations
                     b.ToTable("LocationNames");
                 });
 
+            modelBuilder.Entity("Carpool.Core.Models.Rating", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Rating");
+                });
+
             modelBuilder.Entity("Carpool.Core.Models.Ride", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid?>("DestinationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("GroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("OwnerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<Guid?>("StartingLocationId")
                         .HasColumnType("uniqueidentifier");
@@ -149,6 +182,8 @@ namespace Carpool.DAL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DestinationId");
+
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("OwnerId");
 
@@ -162,6 +197,9 @@ namespace Carpool.DAL.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("DestinationId")
                         .HasColumnType("uniqueidentifier");
@@ -230,11 +268,37 @@ namespace Carpool.DAL.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("VehicleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
+                    b.HasIndex("VehicleId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Carpool.Core.Models.Vehicle", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vehicle");
+                });
+
+            modelBuilder.Entity("Carpool.Core.Models.Group", b =>
+                {
+                    b.HasOne("Carpool.Core.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
                 });
 
             modelBuilder.Entity("Carpool.Core.Models.Intersections.UserGroup", b =>
@@ -282,11 +346,22 @@ namespace Carpool.DAL.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Carpool.Core.Models.Rating", b =>
+                {
+                    b.HasOne("Carpool.Core.Models.User", null)
+                        .WithMany("Ratings")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Carpool.Core.Models.Ride", b =>
                 {
                     b.HasOne("Carpool.Core.Models.Location", "Destination")
                         .WithMany()
                         .HasForeignKey("DestinationId");
+
+                    b.HasOne("Carpool.Core.Models.Group", "Group")
+                        .WithMany("Rides")
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("Carpool.Core.Models.User", "Owner")
                         .WithMany("CreatedRides")
@@ -332,6 +407,10 @@ namespace Carpool.DAL.Migrations
                     b.HasOne("Carpool.Core.Models.Company", null)
                         .WithMany("Users")
                         .HasForeignKey("CompanyId");
+
+                    b.HasOne("Carpool.Core.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId");
                 });
 #pragma warning restore 612, 618
         }

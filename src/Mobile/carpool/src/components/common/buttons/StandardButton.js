@@ -1,8 +1,7 @@
 import React from 'react';
 import {Text} from 'react-native';
-import UpView from '../UpView';
-import colors from '../../../styles/colors';
-import sheet from '../../../styles/sheet';
+import {UpView} from '../';
+import {colors, sheet} from '../../../styles';
 import {vw, vh} from '../../../utils/constants';
 
 const StandardButton = ({

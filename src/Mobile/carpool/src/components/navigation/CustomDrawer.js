@@ -2,23 +2,46 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import * as React from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {vw, vh} from '../../utils/constants';
-import colors from '../../styles/colors';
+import {colors, sheet} from '../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import sheet from '../../styles/sheet';
-import UpView from '../common/UpView';
-import {examplePassengerPoints} from '../../examples/points';
 import {useNavigation} from '@react-navigation/core';
 import {CircleButton, StandardButton} from '../common/buttons';
+import {useRequest, ENDPOINTS, METHODS} from '../../hooks';
+import DriverInfo from '../Ride/DriverInfo';
+import {
+  createGetUserRides,
+  PassengerContext,
+} from '../../context/PassengerContext';
 
 export default CustomDrawer = props => {
-  const [ride, setRide] = React.useState(examplePassengerPoints[2]);
+  const [ride, setRide] = useState(null);
   const navigation = useNavigation();
 
-  const {firstName, lastName} = ride.ride.user;
+  // Store
+  const {
+    passengerState: {userRides},
+    dispatch,
+  } = useContext(PassengerContext);
+
+  useEffect(() => {
+    if (!ride) {
+      createGetUserRides(dispatch);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userRides.data.length) {
+      setRide(userRides.data[0]);
+    }
+  }, [userRides]);
+
+  const onRidePress = () => {
+    navigation.navigate('Home', {ride});
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -49,19 +72,14 @@ export default CustomDrawer = props => {
             </View>
           </View>
           <View style={styles.rideInfoContainer}>
-            <Text style={styles.upcomingRide}>Upcoming ride</Text>
-            <UpView
-              style={styles.rideCard}
-              contentContainerStyle={styles.rideCardContent}
-              borderRadius={4 * vw}
-              onPress={() => navigation.navigate('Home', {ride})}>
-              <Text
-                style={styles.driversName}>{`${firstName} ${lastName}`}</Text>
-              <Text
-                style={
-                  styles.leaving
-                }>{`Leaving in ${ride.timeLeft} minutes`}</Text>
-            </UpView>
+            {ride ? (
+              <Text style={styles.upcomingRide}>Upcoming ride</Text>
+            ) : (
+              <Text style={styles.upcomingRide}>
+                You don't have ant upcoming rides
+              </Text>
+            )}
+            <DriverInfo ride={ride} onPress={onRidePress} />
           </View>
           <DrawerItemList {...props} />
         </View>

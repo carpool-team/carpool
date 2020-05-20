@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {View, SafeAreaView} from 'react-native';
-import colors from '../../../styles/colors';
+import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {vw} from '../../../utils/constants';
 import {useNavigation} from '@react-navigation/core';
-import Marker from '../../../components/common/Marker';
+import {Marker} from '../../../components/common';
 import LocationSheet from '../../../components/LocationSheet';
 
 const ShowSelected = props => {

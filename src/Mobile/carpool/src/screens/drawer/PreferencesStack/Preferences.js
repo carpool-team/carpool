@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import colors from '../../../styles/colors';
+import {colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/core';
 import {StandardButton} from '../../../components/common/buttons';
 import {vh} from '../../../utils/constants';

@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import colors from '../../styles/colors';
+import {colors} from '../../styles';
 import {vh, vw} from '../../utils/constants';
 import {useNavigation} from '@react-navigation/core';
 

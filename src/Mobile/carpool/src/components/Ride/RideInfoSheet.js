@@ -1,103 +1,171 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import colors from '../../styles/colors';
+import React, {useEffect, useState, useContext} from 'react';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {colors, sheet} from '../../styles';
 import {vw, vh} from '../../utils/constants';
-import UpView from '../common/UpView';
-import sheet from '../../styles/sheet';
+import {UpView} from '../common';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import turfDistance from '@turf/distance';
-import {point as turfPoint} from '@turf/helpers';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Waypoints from './Waypoints';
-import {CircleButton, StandardButton} from '../common/buttons';
+import {StandardButton} from '../common/buttons';
+import {parseDistance} from '../../utils/parse';
+import {directionsClient} from '../../maps/mapbox';
+import {parseCoords} from '../../utils/coords';
+import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
+import DriverInfo from './DriverInfo';
+import {
+  PassengerContext,
+  createGetAllRides,
+} from '../../context/PassengerContext';
 
-const getColor = time => {
-  if (time < 20) {
-    return colors.red;
-  } else {
-    if (time < 45) {
-      return colors.orange;
-    } else {
-      if (time < 90) {
-        return colors.yellow;
-      } else {
-        return colors.green;
-      }
-    }
-  }
-};
-
-const getDistance = dist => {
-  if (dist < 1000) {
-    return `${dist} m`;
-  } else {
-    return `${(dist / 1000).toFixed(1)} km`;
-  }
-};
-
-const RideInfoSheet = ({visible, point, userLocation, onShowWay}) => {
+const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
   const [distance, setDistance] = useState(null);
+  const [extended, setExtended] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  // Store
+  const {dispatch} = useContext(PassengerContext);
+
+  // Requests
+  const participantId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
+  const [rideId, setRideId] = useState(null);
+  const [response, loading, error, _addParticipant] = useRequest(
+    METHODS.PUT,
+    ENDPOINTS.ADD_PARTICIPANT,
+    {
+      participantId,
+      rideId,
+    },
+  );
 
   useEffect(() => {
-    if (userLocation.length && point) {
-      const userPoint = turfPoint(userLocation);
-      const locPoint = turfPoint(point.coordinates);
-      const dist = turfDistance(userPoint, locPoint);
-
-      setDistance((dist * 1000).toFixed(0));
+    if (!visible && extended) {
+      setExtended(false);
     }
-  }, [point]);
+    if (!visible) {
+      setRideId(null);
+      setSuccess(false);
+      createGetAllRides(dispatch);
+    }
+  }, [visible]);
+
+  useEffect(() => {
+    if (ride && userLocation.length) {
+      onGetDistance();
+    }
+  }, [ride]);
+
+  useEffect(() => {
+    if (rideId) {
+      _addParticipant();
+    }
+  }, [rideId]);
+
+  useEffect(() => {
+    if (response === 'ok') {
+      setSuccess(true);
+      setExtended(false);
+    }
+  }, [response]);
+
+  const onGetDistance = async () => {
+    const response = await directionsClient
+      .getDirections({
+        profile: 'walking',
+        waypoints: [
+          {
+            coordinates: userLocation,
+          },
+          {
+            coordinates: parseCoords(ride.startingLocation.coordinates),
+          },
+        ],
+        overview: 'full',
+        geometries: 'geojson',
+        alternatives: true,
+      })
+      .send();
+
+    setDistance(parseDistance(response.body.routes[0].distance));
+  };
+
+  const onSelectRide = () => {
+    setRideId(ride.id);
+  };
 
   return visible ? (
     <View style={styles.wrapper}>
       <View style={styles.container}>
-        <UpView
-          style={{
-            width: '100%',
-          }}
-          borderRadius={4 * vw}>
-          <View style={styles.upperContainer}>
-            <CircleButton
-              style={{marginRight: 3 * vw}}
-              icon={
-                <Ionicon
-                  name="md-person"
-                  color={colors.grayDark}
-                  size={11 * vw}
-                />
-              }
-            />
-            <View style={styles.userInfoContainer}>
-              <View
-                style={{
-                  ...sheet.rowCenterSplit,
-                }}>
-                <Text style={styles.username} numberOfLines={1}>
-                  {`${point.ride.user.firstName} ${point.ride.user.lastName}`}
-                </Text>
-                <Text style={styles.distance}>{getDistance(distance)}</Text>
-              </View>
-              <Text
-                style={[
-                  styles.leavingIn,
-                  {color: getColor(point.ride.timeLeft)},
-                ]}>
-                {`Leaving in ${point.ride.timeLeft} minutes`}
-              </Text>
-            </View>
-          </View>
-        </UpView>
+        {success ? (
+          <Text style={styles.success}>You have signed up for this ride!</Text>
+        ) : null}
+        <DriverInfo ride={ride} distance={distance} />
         <Waypoints
           style={{marginTop: 3 * vh}}
-          ride={point.ride}
-          start={point.coordinates}
+          ride={ride}
+          start={parseCoords(ride.startingLocation.coordinates)}
         />
-        <StandardButton
-          width="65%"
-          style={{marginTop: 3 * vh}}
-          color={point.signedUp ? colors.blue : colors.green}
-          title={point.signedUp ? 'Show way' : 'Select'}
-          onPress={point.signedUp ? onShowWay : () => null}
-        />
+        {extended ? (
+          <>
+            <View style={styles.detailsRow}>
+              <UpView
+                borderRadius={20}
+                contentContainerStyle={sheet.center}
+                style={{marginRight: 8 * vw}}>
+                <View style={styles.leftCard}>
+                  <MaterialIcon
+                    name="star"
+                    size={10 * vw}
+                    color={colors.yellow}
+                  />
+                  <Text style={styles.rating}>{4.7}</Text>
+                </View>
+              </UpView>
+              <UpView borderRadius={20} contentContainerStyle={sheet.center}>
+                <View style={styles.rightCard}>
+                  {ride.price ? (
+                    <Text style={styles.price}>{`${ride.price} PLN`}</Text>
+                  ) : (
+                    <Text style={styles.free}>Free</Text>
+                  )}
+                </View>
+              </UpView>
+            </View>
+            <View style={styles.carWrapper}>
+              <Ionicon
+                name="ios-car"
+                color={colors.grayVeryDark}
+                size={20 * vw}
+                style={{marginRight: 4 * vw}}
+              />
+              <Text style={styles.car}>{'Opel Astra'}</Text>
+            </View>
+          </>
+        ) : null}
+        {loading ? (
+          <ActivityIndicator size="large" color={colors.green} />
+        ) : success ? (
+          <StandardButton
+            width="65%"
+            style={{marginTop: 3 * vh}}
+            color={colors.blue}
+            title="Go back"
+            onPress={onClose}
+          />
+        ) : (
+          <StandardButton
+            width="65%"
+            style={{marginTop: 3 * vh}}
+            color={ride.isUserParticipant ? colors.blue : colors.green}
+            title={ride.isUserParticipant ? 'Show way' : 'Select'}
+            onPress={
+              ride.isUserParticipant
+                ? onShowWay
+                : !extended
+                ? () => setExtended(true)
+                : onSelectRide
+            }
+          />
+        )}
       </View>
     </View>
   ) : null;
@@ -164,6 +232,56 @@ const styles = StyleSheet.create({
     ...sheet.textBold,
     color: colors.green,
     fontSize: 4 * vw,
+  },
+  detailsRow: {
+    ...sheet.rowCenterSplit,
+    marginTop: 3 * vh,
+    marginBottom: 3 * vh,
+  },
+  leftCard: {
+    paddingVertical: 3 * vh,
+    paddingHorizontal: 4 * vw,
+    width: 32 * vw,
+    ...sheet.rowCenter,
+    justifyContent: 'center',
+  },
+  rating: {
+    ...sheet.textBold,
+    fontSize: 6 * vw,
+    color: colors.grayDark,
+  },
+  rightCard: {
+    paddingVertical: 3 * vh,
+    paddingHorizontal: 4 * vw,
+    width: 32 * vw,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  price: {
+    ...sheet.textBold,
+    fontSize: 6 * vw,
+    color: colors.green,
+  },
+  free: {
+    ...sheet.textBold,
+    fontSize: 6 * vw,
+    color: colors.blue,
+  },
+  carWrapper: {
+    ...sheet.rowCenter,
+    marginBottom: 3 * vh,
+  },
+  car: {
+    ...sheet.textBold,
+    fontSize: 7 * vw,
+    color: colors.grayDark,
+  },
+  success: {
+    ...sheet.textSemiBold,
+    color: colors.green,
+    fontSize: 5 * vw,
+    textAlign: 'center',
+    marginBottom: 4 * vh,
   },
 });
 

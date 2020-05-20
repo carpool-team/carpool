@@ -8,8 +8,9 @@ namespace Carpool.Core.DTOs.UserDTOs
 	public class IndexUserDTO
 	{
 		public Guid UserId { get; set; }
-		public String FirstName { get; set; }
-		public String LastName { get; set; }
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public Vehicle Vehicle { get; set; }
 
 		private IndexUserDTO()
 		{
@@ -22,6 +23,7 @@ namespace Carpool.Core.DTOs.UserDTOs
 				UserId = user.Id,
 				FirstName = user.FirstName,
 				LastName = user.LastName,
+				Vehicle = user.Vehicle
 			};
 		}
 	}

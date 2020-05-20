@@ -9,6 +9,7 @@ using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.RestAPI.Abstract;
 using Carpool.Core.DTOs.LocationDTOs;
+using System.Text.Json;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -27,7 +28,7 @@ namespace Carpool.RestAPI.Controllers
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
 		{
-			return await _context.Locations.ToListAsync();
+			return await _context.Locations.Include(location => location.Coordinates).Include(location => location.LocationName).ToListAsync();
 		}
 
 		// GET: api/Locations/5
@@ -80,7 +81,7 @@ namespace Carpool.RestAPI.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<ActionResult<Location>> PostLocation(Location location)
+		public async Task<ActionResult<Location>> PostLocation([FromBody] Location location)
 		{
 			_context.Locations.Add(location);
 			await _context.SaveChangesAsync();
