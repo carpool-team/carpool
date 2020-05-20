@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {
   View,
   SafeAreaView,
@@ -18,10 +18,10 @@ import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../hooks/useForwardGeocoding';
 import {StartLocationsFlatList} from '../../components/FindRoute';
 import GroupsFlatlist from '../../components/GroupsFlatlist';
-import {exampleGroups} from '../../examples';
 import DatePicker from 'react-native-date-picker';
 import {StandardButton} from '../../components/common/buttons';
 import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
+import {AccountContext} from '../../context/AccountContext';
 
 const config = {
   autocomplete: false,
@@ -43,6 +43,15 @@ const AskForRide = () => {
   const requesterId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
 
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
+
+  // Store
+  const {
+    accountState: {
+      groups: {data: groups},
+    },
+  } = useContext(AccountContext);
+  let grps = groups.map(group => ({...group, place_name: group.name}));
+  console.log(grps);
 
   //Requests
   const [response, loading, error, _sendRideRequest] = useRequest(
@@ -121,10 +130,7 @@ const AskForRide = () => {
   const onDestinationItemPress = item => {
     setDestination(item.place_name);
     const dstGeo = {
-      coordinates: {
-        longitude: item.coordinates[1],
-        latitude: item.coordinates[0],
-      },
+      coordinates: item.location.coordinates,
       locationName: null,
     };
     setDestinationGeo(dstGeo);
@@ -148,7 +154,8 @@ const AskForRide = () => {
     } else if (isDestinationFocused) {
       return (
         <GroupsFlatlist
-          data={exampleGroups}
+          //data={exampleGroups}
+          data={grps}
           loading={false}
           onItemPress={onDestinationItemPress}
         />
