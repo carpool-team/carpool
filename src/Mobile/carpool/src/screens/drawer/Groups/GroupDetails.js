@@ -90,7 +90,7 @@ const GroupDetails = ({navigation, route}) => {
           <UpView
             borderRadius={2 * vw}
             style={{width: 42 * vw, height: 15 * vh}}
-            onPress={() => null}>
+            onPress={() => navigation.navigate('FindRide')}>
             <View style={styles.cardContent}>
               <MaterialIcon name="search" size={10 * vw} color={colors.blue} />
               <Text style={styles.cardLabel}>Find a ride</Text>

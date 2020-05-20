@@ -1,20 +1,32 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {vw, vh} from '../../utils/constants';
 import {colors} from '../../styles';
 import {CircleButton} from '../../components/common/buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RidesFlatList from '../../components/Ride/RidesFlatList';
+import {
+  PassengerContext,
+  createGetAllRides,
+} from '../../context/PassengerContext';
 
 const FindRide = ({navigation, route}) => {
-  const {rides} = route.params;
+  const {passengerState, dispatch} = useContext(PassengerContext);
+  const {data: allRides, loading} = passengerState.allRides;
 
   const onPress = () => navigation.navigate('AskForRide');
+  const onRefresh = () => {
+    createGetAllRides(dispatch);
+  };
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.wrapper}>
-        <RidesFlatList data={rides} />
+        <RidesFlatList
+          data={allRides}
+          onRefresh={onRefresh}
+          loading={loading}
+        />
       </View>
       <CircleButton
         style={styles.button}
