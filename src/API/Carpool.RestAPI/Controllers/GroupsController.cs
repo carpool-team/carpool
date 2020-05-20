@@ -127,6 +127,12 @@ namespace Carpool.RestAPI.Controllers
 			{
 				Name = groupDTO.Name,
 			};
+			if (groupDTO.Code != "")
+			{
+				if (_context.Groups.Any(group => group.Code == groupDTO.Code))
+					return Json(-1);
+				group.Code = groupDTO.Code;
+			}
 			_context.Groups.Add(group);
 			await _context.SaveChangesAsync();
 

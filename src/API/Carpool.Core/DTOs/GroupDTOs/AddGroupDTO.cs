@@ -9,5 +9,7 @@ namespace Carpool.Core.DTOs.GroupDTOs
 	public class AddGroupDTO
 	{
 		public string Name { get; set; }
+
+		public string Code { get; set; }
 	}
 }

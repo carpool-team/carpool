@@ -15,5 +15,7 @@ namespace Carpool.Core.Models
 		public List<Ride> Rides { get; set; }
 
 		public string Name { get; set; }
+
+		public string Code { get; set; }
 	}
 }
