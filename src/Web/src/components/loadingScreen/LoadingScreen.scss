@@ -36,20 +36,18 @@
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap-reverse;
-
+    justify-content: space-around;
     &--button{
-      
-      justify-content: center;
-      align-items: center;
-
+      margin: 2em;
     }
-  
     &--baner{
-      flex: 2;
-      justify-content: right;
-      align-items: center;
-      object-fit: contain;
-    } 
+      margin: 1em;
+    }
+    &--img{
+      width: 100%;
+      height: auto;
+      display: block;
+    }
   }
 }
 @media only screen and (max-width: 700px) {

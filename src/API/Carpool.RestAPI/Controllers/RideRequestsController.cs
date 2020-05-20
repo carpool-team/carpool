@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
+using Carpool.Core.DTOs.RideRequestDTOs;
 
 namespace Carpool.RestAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class RideRequestsController : ControllerBase
+	public class RideRequestsController : Controller
 	{
 		private readonly CarpoolDbContext _context;
 
@@ -78,12 +79,19 @@ namespace Carpool.RestAPI.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<ActionResult<RideRequest>> PostRideRequest([FromBody]RideRequest rideRequest)
+		public async Task<ActionResult<RideRequest>> PostRideRequest([FromBody]AddRideRequestDTO rideRequestDTO)
 		{
+			var rideRequest = new RideRequest()
+			{
+				Date = rideRequestDTO.Date,
+				Destination = rideRequestDTO.Destination,
+				StartingLocation = rideRequestDTO.StartingLocation,
+				Requester = await _context.Users.FirstOrDefaultAsync(user => user.Id == rideRequestDTO.RequesterId),
+			};
 			_context.RideRequests.Add(rideRequest);
 			await _context.SaveChangesAsync();
 
-			return CreatedAtAction("GetRideRequest", new { id = rideRequest.Id }, rideRequest);
+			return CreatedAtAction("GetRideRequest", new { id = rideRequest.Id }, rideRequestDTO);
 		}
 
 		// DELETE: api/RideRequests/5
@@ -100,6 +108,13 @@ namespace Carpool.RestAPI.Controllers
 			await _context.SaveChangesAsync();
 
 			return rideRequest;
+		}
+
+		[HttpGet("GetEmptyAddRideRequest")]
+		public async Task<ActionResult<AddRideRequestDTO>> GetEmptyAddRideRequest()
+		{
+			var addRideRequestDTO = AddRideRequestDTO.GetEmpty();
+			return Json(addRideRequestDTO);
 		}
 
 		private bool RideRequestExists(Guid id)

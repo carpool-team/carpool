@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.Core.Models.Intersections;
+using Carpool.Core.DTOs.RatingDTOs;
 
 namespace Carpool.RestAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class UsersController : ControllerBase
+	public class UsersController : Controller
 	{
 		private readonly CarpoolDbContext _context;
 
@@ -103,6 +104,18 @@ namespace Carpool.RestAPI.Controllers
 			return user;
 		}
 
+		[HttpPost("AddUserRating")]
+		public async Task<ActionResult> AddUserRating([FromBody] AddRatingDTO ratingDTO)
+		{
+			var user = await _context.Users.Include(user => user.Ratings).FirstOrDefaultAsync(user => user.Id == ratingDTO.UserId);
+			user.Ratings.Add(new Rating()
+			{
+				Value = ratingDTO.Value
+			});
+			await _context.SaveChangesAsync();
+			return Json("Rating Saved");
+		}
+
 		[HttpPost("AddMockUser")]
 		public async Task<IActionResult> AddMockUser()
 		{
@@ -112,7 +125,8 @@ namespace Carpool.RestAPI.Controllers
 				LastName = "Kononowicz",
 				Email = "biurointerwencjiobywatelskich@kononowicz.pl",
 				Locations = _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).ToListAsync().Result,
-				PhoneNumber = "997"
+				PhoneNumber = "997",
+				Vehicle = new Vehicle() { Name = "Opel Astra" }
 			};
 			_context.Users.Add(user);
 			await _context.SaveChangesAsync();

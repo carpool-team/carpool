@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../screens/HomeStack/Home';
-import AskForRide from '../screens/drawer/AskForRide/AskForRide';
+import AskForRide from '../screens/HomeStack/AskForRide';
+import FindRide from '../screens/HomeStack/FindRide';
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,13 @@ export default HomeStack = () => {
         component={Home}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="FindRide"
+        component={FindRide}
+        options={{
+          title: 'Browse',
         }}
       />
       <Stack.Screen

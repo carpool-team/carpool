@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView} from 'react-native';
-import colors from '../../../styles/colors';
+import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {vw, vh} from '../../../utils/constants';
-import RouteInfoSheet from '../../../components/FindRoute/RouteInfoSheet';
-import RouteTopSheet from '../../../components/FindRoute/RouteTopSheet';
-import Marker from '../../../components/common/Marker';
+import {RouteInfoSheet, RouteTopSheet} from '../../../components/FindRoute';
+import {Marker} from '../../../components/common';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
+import config from '../../../../config';
 
 const getBounds = routesArray => {
   const allCoords = routesArray.map(rt => rt.geometry.coordinates).flat(1);
@@ -56,7 +56,7 @@ const ShowRoute = props => {
           <MapboxGL.MapView
             style={{flex: 1}}
             onPress={event => console.log(event)}
-            styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
+            styleURL={config.mapLight}
             contentInset={10}>
             <MapboxGL.Camera
               maxZoomLevel={19}
