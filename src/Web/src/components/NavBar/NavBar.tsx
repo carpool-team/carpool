@@ -5,6 +5,10 @@ import { ButtonSize } from "../ui/Button/enums/ButtonSize";
 import { ButtonType } from "../ui/Button/enums/ButtonType";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
+import ButtonLink from "../ui/Button/ButtonLink";
+import { ButtonShape } from "../ui/Button/enums/ButtonShape";
+import LayoutRouter from "../layout/components/LayoutRouter";
+import App from "../../App";
 
 interface INavBarProps extends IReactI18nProps { }
 
@@ -65,14 +69,13 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 				<div className={this.cssClasses.logoContainer}></div>
 				<div className={[this.cssClasses.navButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.navButtons}>
 					<nav className={this.cssClasses.navPlain}>
-						<a className={this.cssClasses.navButtonPlain} href="/">
+						<a className={this.cssClasses.navButtonPlain} href={App.rootRoute}>
 							{t(this.resources.passenger)}
 						</a>
-						<a className={this.cssClasses.navButtonPlain} href="/">
-
+						<a className={this.cssClasses.navButtonPlain} href={App.rootRoute}>
 							{t(this.resources.driver)}
 						</a>
-						<a className={this.cssClasses.navButtonPlain} href="/">
+						<a className={this.cssClasses.navButtonPlain} href={App.rootRoute}>
 							{t(this.resources.business)}
 						</a>
 					</nav>

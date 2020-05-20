@@ -8,6 +8,7 @@ import Layout from "./components/layout/Layout";
 import "./scss/main.scss";
 
 export default class App extends Component {
+	public static rootRoute: string = "/";
 	render() {
 		return (
 			<React.Fragment>
@@ -15,7 +16,7 @@ export default class App extends Component {
 					<BreadcrumbsProvider>
 						<Suspense fallback={<LoaderSpinner />}>
 							<Switch>
-								<Route path={"/"} component={Layout} />
+								<Route path={App.rootRoute} component={Layout} />
 							</Switch>
 						</Suspense>
 					</BreadcrumbsProvider>
