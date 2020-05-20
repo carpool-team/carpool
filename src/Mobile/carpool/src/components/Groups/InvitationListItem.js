@@ -16,15 +16,13 @@ const InvitationListItem = ({item, onAccept, onDecline}) => {
             width: '100%',
           }}>
           <Text style={styles.name} numberOfLines={1}>
-            {item.name}
+            {item.group.name}
           </Text>
-          <Text style={styles.author}>
-            {`${item.author.firstName} ${item.author.lastName} invited you`}
-          </Text>
+          <Text style={styles.author}>John Doe invited you</Text>
         </View>
         <View style={{...sheet.rowCenter}}>
           <MaterialIcon name="group" size={10 * vw} color={colors.grayDark} />
-          <Text style={styles.members}>{item.members}</Text>
+          <Text style={styles.members}>{item.group.userCount}</Text>
           <View style={styles.bottomRow}>
             <CircleButton
               size={14 * vw}
@@ -32,7 +30,7 @@ const InvitationListItem = ({item, onAccept, onDecline}) => {
                 <MaterialIcon name="close" size={8 * vw} color={colors.red} />
               }
               style={{marginRight: 4 * vw}}
-              onPress={onDecline}
+              onPress={() => onDecline(item)}
             />
             <CircleButton
               size={14 * vw}
@@ -52,6 +50,7 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     height: 22 * vh,
+    marginBottom: 4 * vh,
   },
   container: {
     flex: 1,

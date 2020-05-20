@@ -10,6 +10,11 @@ const initialState = {
     loading: false,
     error: null,
   },
+  invitations: {
+    data: [],
+    loading: false,
+    error: null,
+  },
 };
 
 export const AccountActions = {
@@ -17,6 +22,9 @@ export const AccountActions = {
   GET_GROUPS_SUCCESS: 'GET_GROUPS_SUCCESS',
   GET_GROUPS_LOADING: 'GET_GROUPS_LOADING',
   GET_GROUPS_ERROR: 'GET_GROUPS_ERROR',
+  GET_INVITATIONS_SUCCESS: 'GET_INVITATIONS_SUCCESS',
+  GET_INVITATIONS_LOADING: 'GET_INVITATIONS_LOADING',
+  GET_INVITATIONS_ERROR: 'GET_INVITATIONS_ERROR',
 };
 
 const reducer = (state, action) => {
@@ -44,6 +52,32 @@ const reducer = (state, action) => {
       return {
         ...state,
         groups: {
+          data: [],
+          loading: false,
+          error: action.payload,
+        },
+      };
+    case AccountActions.GET_INVITATIONS_SUCCESS:
+      return {
+        ...state,
+        invitations: {
+          data: action.payload,
+          loading: false,
+          error: null,
+        },
+      };
+    case AccountActions.GET_INVITATIONS_LOADING:
+      return {
+        ...state,
+        invitations: {
+          ...state.invitations,
+          loading: true,
+        },
+      };
+    case AccountActions.GET_INVITATIONS_ERROR:
+      return {
+        ...state,
+        invitations: {
           data: [],
           loading: false,
           error: action.payload,
@@ -81,6 +115,22 @@ export const createGetUserGroups = async dispatch => {
     });
   } catch (err) {
     dispatch({type: AccountActions.GET_GROUPS_ERROR, payload: err});
+  }
+};
+
+export const createGetUserInvitations = async dispatch => {
+  try {
+    dispatch({type: AccountActions.GET_INVITATIONS_LOADING});
+    const response = await apiRequest(
+      METHODS.GET,
+      ENDPOINTS.GET_USER_INVITATIONS(userId),
+    );
+    dispatch({
+      type: AccountActions.GET_INVITATIONS_SUCCESS,
+      payload: response,
+    });
+  } catch (err) {
+    dispatch({type: AccountActions.GET_INVITATIONS_ERROR, payload: err});
   }
 };
 

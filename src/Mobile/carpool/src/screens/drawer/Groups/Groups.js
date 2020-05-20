@@ -8,11 +8,13 @@ import GroupsFlatList from '../../../components/Groups/GroupsFlatList';
 import {
   AccountContext,
   createGetUserGroups,
+  createGetUserInvitations,
 } from '../../../context/AccountContext';
 
 const Groups = ({navigation}) => {
   const {accountState, dispatch} = useContext(AccountContext);
-  const {data: groups, loading, error} = accountState.groups;
+  const {data: groups, loading} = accountState.groups;
+  const {data: invitations, loading: invLoading} = accountState.invitations;
 
   const onItemPress = item => {
     navigation.navigate('GroupDetails', {group: item});
@@ -20,16 +22,18 @@ const Groups = ({navigation}) => {
 
   const onRefresh = () => {
     createGetUserGroups(dispatch);
+    createGetUserInvitations(dispatch);
   };
 
-  return (
-    <SafeAreaView style={{flex: 1}}>
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          paddingTop: 4 * vh,
-        }}>
+  useEffect(() => {
+    createGetUserInvitations(dispatch);
+  }, []);
+
+  const getInvitations = number => {
+    if (number === 0) {
+      return null;
+    } else {
+      return (
         <TouchableOpacity
           style={{
             ...sheet.rowCenterSplit,
@@ -44,10 +48,23 @@ const Groups = ({navigation}) => {
               fontSize: 4 * vw,
               color: colors.blue,
             }}>
-            1 new invitation
+            {`${number} new invitation${number > 1 ? 's' : ''}`}
           </Text>
           <Icon name="group-add" size={8 * vw} color={colors.grayDark} />
         </TouchableOpacity>
+      );
+    }
+  };
+
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          paddingTop: 4 * vh,
+        }}>
+        {getInvitations(invitations.length)}
         <GroupsFlatList
           data={groups}
           loading={loading}

@@ -8,11 +8,15 @@ export const METHODS = {
 };
 
 export const ENDPOINTS = {
+  // GET
   GET_ALL_RIDES: '/Rides',
   GET_USERS_RIDES: id => `/Rides/GetUserRides/${id}`,
-  ADD_PARTICIPANT: '/Rides/AddParticipant',
-  SEND_RIDE_REQUEST: '/RideRequests',
   GET_USER_GROUPS: id => `/groups/GetUserGroups/${id}`,
+  GET_USER_INVITATIONS: id => `/GroupInvites/GetUserInvites/${id}`,
+  // PUT
+  SEND_RIDE_REQUEST: '/RideRequests',
+  ADD_PARTICIPANT: '/Rides/AddParticipant',
+  CHANGE_INVITATION_STATE: '/GroupInvites',
 };
 
 /**
