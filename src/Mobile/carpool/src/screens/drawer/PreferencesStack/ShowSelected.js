@@ -6,6 +6,7 @@ import {vw} from '../../../utils/constants';
 import {useNavigation} from '@react-navigation/core';
 import {Marker} from '../../../components/common';
 import LocationSheet from '../../../components/LocationSheet';
+import config from '../../../../config';
 
 const ShowSelected = props => {
   const navigation = useNavigation();
@@ -22,7 +23,7 @@ const ShowSelected = props => {
           <MapboxGL.MapView
             style={{flex: 1}}
             onPress={event => console.log(event)}
-            styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft">
+            styleURL={config.mapLight}>
             <MapboxGL.Camera
               zoomLevel={16}
               animationMode="flyTo"

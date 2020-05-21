@@ -1,5 +1,10 @@
 import React from 'react';
-import {FlatList, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  RefreshControl,
+} from 'react-native';
 import {vw, vh} from '../../utils/constants';
 import {colors} from '../../styles';
 import DriverInfo from './DriverInfo';
@@ -7,7 +12,7 @@ import Waypoints from './Waypoints';
 import {parseCoords} from '../../utils/coords';
 import {useNavigation} from '@react-navigation/native';
 
-const RidesFlatList = ({data}) => {
+const RidesFlatList = ({data, loading, onRefresh}) => {
   const navigation = useNavigation();
 
   const onItemPress = item => {
@@ -32,6 +37,14 @@ const RidesFlatList = ({data}) => {
           />
         </TouchableOpacity>
       )}
+      refreshControl={
+        <RefreshControl
+          colors={colors.green}
+          tintColor={colors.green}
+          refreshing={loading}
+          onRefresh={onRefresh}
+        />
+      }
     />
   );
 };

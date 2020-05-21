@@ -3,25 +3,34 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {SafeAreaView, View} from 'react-native';
 import {colors} from '../../styles';
 import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
-import {AccountContext} from '../../context/AccountContext';
+import {
+  AccountContext,
+  createGetUserGroups,
+} from '../../context/AccountContext';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
 import {
   PassengerContext,
   createGetAllRides,
 } from '../../context/PassengerContext';
+import config from '../../../config';
 
 const Home = () => {
-  const {
-    accountState: {activeAccount},
-  } = React.useContext(AccountContext);
+  const {accountState, dispatch: accountDispatch} = React.useContext(
+    AccountContext,
+  );
   const {dispatch} = React.useContext(PassengerContext);
+  const {activeAccount} = accountState;
 
   const [coordinates, setCoordinates] = useState([]);
 
   const _driverMap = useRef(null);
   const route = useRoute();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    createGetUserGroups(accountDispatch);
+  }, []);
 
   useEffect(() => {
     // Delete ride from params
@@ -50,7 +59,7 @@ const Home = () => {
     <MapboxGL.MapView
       ref={_driverMap}
       style={{flex: 1}}
-      styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
+      styleURL={config.mapLight}
       contentInset={10}
       compassEnabled={false}>
       <MapboxGL.Camera

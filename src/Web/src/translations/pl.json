@@ -1,0 +1,44 @@
+{
+    "defaultNamespace": {
+        "groups": {
+            "addGroupForm": {
+                "code": "Kod grupy",
+                "groupName": "Nazwa grupy",
+                "address": "Adres",
+                "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie",
+                "email": "Adres e-mail",
+                "emailComment": "Na ten adres zostanie wysłane zaproszenie",
+                "createBtn": "Utwórz grupę",
+                "name": "Imię",
+                "surname": "Nazwisko"
+            },
+            "addGroupBtn": "Dodaj grupę",
+            "groupsBtn": "Grupy",
+            "ridesBtn": "Przejazdy"
+        },
+        "footer": {
+            "groups": "Grupy",
+            "services": "Usługi",
+            "environment": "Środowisko",
+            "about": "O nas",
+            "idea": "Idea"
+        },
+        "navBar": {
+            "register": "Zarejestruj się",
+            "login": "Zaloguj się"
+        },
+        "common": {
+            "business": "Firma",
+            "passenger": "Pasażer",
+            "driver": "Kierowca"
+        },
+        "prevBtn": "Wstecz",
+        "createBtn": "Utwórz",
+        "addBtn": "Dodaj",
+        "nextBtn": "Dalej",
+        "loadingScreen": {
+            "quote": "Share a ride",
+            "join": "Grupy"
+        }
+    }
+}

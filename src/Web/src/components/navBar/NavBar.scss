@@ -13,8 +13,9 @@
 
   grid-template-columns: auto 300px auto auto;
   grid-template-areas: " . logo navButtons . ";
-  background: linear-gradient(145deg, #ffffff, #d7d6d6);
-  box-shadow: 4px 4px 20px #8f8f8f, -8px -8px 12px #ffffff;
+  //background: linear-gradient(145deg, #ffffff, #d7d6d6);
+  //box-shadow: 4px 4px 20px #8f8f8f, -8px -8px 12px #ffffff;
+  box-shadow: 1px 1px 10px #8f8f8f;
 }
 .navButtons {
   display: grid;
@@ -54,28 +55,6 @@
   align-items: center;
   justify-items: center;
   grid-column-gap: 10px;
-}
-
-.navButtonNeomorphism {
-  font-size: 18px;
-  font-weight: $semi-bold;
-  width: 145px;
-  height: 45px;
-  border: none;
-  right: 5px;
-  border-radius: 20px;
-  background: $background;
-  box-shadow: 8px 8px 12px #888888, -8px -8px 12px #ffffff;
-  cursor: pointer;
-}
-
-.navButtonLogin {
-  @extend .navButtonNeomorphism;
-  color: $green;
-}
-.navButtonRegister {
-  @extend .navButtonNeomorphism;
-  color: $blue;
 }
 
 .hamburgerIcon {
@@ -133,7 +112,7 @@
   }
   .navButtons {
     float: right;
-
+    z-index:1;
     grid-template-rows: repeat(4, auto);
     grid-template-columns: none;
     grid-template-areas: "." "navPlain" "navAccount" ".";

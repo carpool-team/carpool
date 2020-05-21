@@ -1,0 +1,95 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.formFirstSide {
+    &__container {
+        display: flex;
+        padding: 48px;
+        flex: 1 1 auto;
+    }
+    &__inputs {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin: 16px;
+        align-items: center;
+        justify-content: center;
+        & > :nth-last-child(2) {
+            margin-bottom: 64px;
+        }
+    }
+    &__map {
+        flex: 2;
+        margin: 16px;
+        align-self: center;
+        & > img {
+            width: 100%;
+        }
+    }
+}
+
+.formSecondSide {
+    &__container {
+        display: grid;
+        padding: 1em;
+        width: 100%; 
+        grid-template-columns: 50% 50%;
+        @media only screen and (max-width: 700px) {
+            grid-template-rows: 50%f auto ;
+            grid-template-columns: 100%;
+        }
+    }
+    
+    &__inputs {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        margin: 16px;
+        align-items: center;
+        justify-content: center;
+        & > :nth-last-child(2) {
+            margin-bottom: 2em;
+        }
+        
+    }
+    &__buttonsGroup{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        & > button {
+            margin-top: 1em;
+        }
+    }
+    &__userList{
+        margin-left: 3em;
+        margin-right: 3em;
+        @media only screen and (max-width: 500px) {
+            margin-left: 0em;
+            margin-right: 0em;
+        }
+
+        flex: 50%;   
+        list-style-type: none;
+        //border: 2px solid $gray;  
+        border-radius: 1em;
+
+        & > :first-child(0) {
+            margin-top: 2em;
+        }
+    }
+    &__userListItem{
+        display: flex;
+        margin-top: 10px;
+        font-weight: $medium;
+        color: $grayDark;  
+        font-size: 18px;    
+        align-items: center;
+        border-bottom: 1px solid $gray;  
+    }
+
+    &__userIco{
+        height: 40px;
+        margin-right: 5px;
+    }
+}

@@ -14,6 +14,7 @@ import {CircleButton} from '../../components/common/buttons';
 import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';
 import {PassengerContext} from '../../context/PassengerContext';
+import config from '../../../config';
 
 const PassengerMap = ({coordinates, _onLocateUser}) => {
   const [center, setCenter] = useState([]);
@@ -158,7 +159,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       <MapboxGL.MapView
         ref={_passengerMap}
         style={{flex: 1}}
-        styleURL="mapbox://styles/jkobrynski/ck9632hsy2m4q1invvx1jjvo9/draft"
+        styleURL={config.mapLight}
         contentInset={10}
         compassEnabled={false}
         rotateEnabled={false}
@@ -191,9 +192,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       {ride || visible ? null : (
         <CircleButton
           style={{position: 'absolute', bottom: 8 * vh, right: 5 * vw}}
-          onPress={() =>
-            navigation.navigate('FindRide', {rides: allRides.data})
-          }
+          onPress={() => navigation.navigate('FindRide')}
           icon={<Icon name="search" color={colors.grayDark} size={6 * vw} />}
         />
       )}
