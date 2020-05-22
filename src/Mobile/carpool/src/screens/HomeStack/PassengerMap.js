@@ -171,7 +171,11 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
           animationMode="flyTo"
           animationDuration={500}
           centerCoordinate={
-            bounds ? undefined : [center[0], center[1] - 0.0015]
+            !center.length
+              ? undefined
+              : bounds
+              ? undefined
+              : [center[0], center[1] - 0.0015]
           }
           bounds={bounds ? bounds : undefined}
         />

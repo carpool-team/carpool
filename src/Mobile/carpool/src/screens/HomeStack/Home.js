@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {SafeAreaView, View} from 'react-native';
+import {SafeAreaView, View, Text} from 'react-native';
 import {colors} from '../../styles';
 import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
 import {
