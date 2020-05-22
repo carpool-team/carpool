@@ -39,7 +39,7 @@ const RidesFlatList = ({data, loading, onRefresh}) => {
       )}
       refreshControl={
         <RefreshControl
-          colors={colors.green}
+          colors={[colors.green]}
           tintColor={colors.green}
           refreshing={loading}
           onRefresh={onRefresh}

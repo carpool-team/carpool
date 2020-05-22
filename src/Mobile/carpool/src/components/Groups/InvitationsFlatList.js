@@ -25,7 +25,7 @@ const InvitationsFlatList = ({data, loading, onAccept, onDecline}) => {
       )}
       refreshControl={
         <RefreshControl
-          colors={colors.green}
+          colors={[colors.green]}
           tintColor={colors.green}
           refreshing={loading}
         />

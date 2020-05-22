@@ -28,7 +28,7 @@ const StartLocationsFlatList = ({
       )}
       refreshControl={
         <RefreshControl
-          colors={colors.green}
+          colors={[colors.green]}
           tintColor={colors.green}
           refreshing={loading}
         />

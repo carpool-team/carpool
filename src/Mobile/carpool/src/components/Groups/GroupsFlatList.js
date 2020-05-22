@@ -21,7 +21,7 @@ const GroupsFlatList = ({data, loading, onItemPress, onRefresh}) => {
       )}
       refreshControl={
         <RefreshControl
-          colors={colors.green}
+          colors={[colors.green]}
           tintColor={colors.green}
           refreshing={loading}
           onRefresh={onRefresh}
