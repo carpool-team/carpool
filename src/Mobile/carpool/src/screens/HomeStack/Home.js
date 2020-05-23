@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {SafeAreaView, View, Text} from 'react-native';
+import {SafeAreaView, View, PermissionsAndroid, Platform} from 'react-native';
 import {colors} from '../../styles';
 import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
 import {
@@ -14,6 +14,30 @@ import {
   createGetAllRides,
 } from '../../context/PassengerContext';
 import config from '../../../config';
+
+const requestLocationPermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Carpool',
+        message:
+          'Carpool needs access to your location ' +
+          'so you can use the app properly.',
+        buttonNeutral: 'Ask Me Later',
+        buttonNegative: 'Cancel',
+        buttonPositive: 'OK',
+      },
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log('You can use the location');
+    } else {
+      console.log('Location permission denied');
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
 
 const Home = () => {
   const {accountState, dispatch: accountDispatch} = React.useContext(
@@ -30,6 +54,9 @@ const Home = () => {
 
   useEffect(() => {
     createGetUserGroups(accountDispatch);
+    if (Platform.OS === 'android') {
+      requestLocationPermission();
+    }
   }, []);
 
   useEffect(() => {
