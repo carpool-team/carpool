@@ -8,6 +8,13 @@ import bbox from '@turf/bbox';
 import {vw, vh} from '../../utils/constants';
 import {activeRouteStyle, colors, sheet} from '../../styles';
 import {Marker, BlueMarker} from '../common';
+import {useGetDirections} from '../../hooks';
+
+const dirConfig = {
+  profile: 'driving',
+  overview: 'full',
+  geometries: 'geojson',
+};
 
 const getBounds = routesArray => {
   const allCoords = routesArray.map(rt => rt.geometry.coordinates).flat(1);
@@ -27,12 +34,16 @@ const getBounds = routesArray => {
 
 const RouteMinimap = ({start, destination}) => {
   const [routes, setRoutes] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [bounds, setBounds] = useState(null);
+
+  // Directions
+  const [results, loading, error, _getDirections] = useGetDirections({
+    ...dirConfig,
+  });
 
   useEffect(() => {
     if (start && destination) {
-      onGetRoutes(
+      _getDirections(
         parseCoords(start.coordinates),
         parseCoords(destination.coordinates),
       );
@@ -46,35 +57,14 @@ const RouteMinimap = ({start, destination}) => {
     }
   }, [routes]);
 
+  useEffect(() => {
+    if (results) {
+      setRoutes(results.body.routes);
+    }
+  }, [results]);
+
   const parseCoords = coords => {
     return [coords.latitude, coords.longitude];
-  };
-
-  const onGetRoutes = async (startCoords, finishCoords) => {
-    try {
-      setLoading(true);
-      const response = await directionsClient
-        .getDirections({
-          profile: 'driving',
-          waypoints: [
-            {
-              coordinates: startCoords,
-            },
-            {
-              coordinates: finishCoords,
-            },
-          ],
-          overview: 'full',
-          geometries: 'geojson',
-        })
-        .send();
-
-      setRoutes(response.body.routes);
-    } catch (err) {
-      console.log('ERROR', err);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const renderPoints = () => {
