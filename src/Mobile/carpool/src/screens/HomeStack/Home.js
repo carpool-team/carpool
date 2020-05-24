@@ -14,6 +14,7 @@ import {
   createGetAllRides,
 } from '../../context/PassengerContext';
 import config from '../../../config';
+import DriverMap from './DriverMap';
 
 const requestLocationPermission = async () => {
   try {
@@ -112,7 +113,10 @@ const Home = () => {
               _onLocateUser={_onLocateUser}
             />
           ) : (
-            renderDriver()
+            <DriverMap
+              coordinates={coordinates}
+              _onLocateUser={_onLocateUser}
+            />
           )}
         </View>
       </SafeAreaView>

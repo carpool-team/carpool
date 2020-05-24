@@ -1,34 +1,25 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useRef, useContext, useEffect} from 'react';
 import {
   View,
-  SafeAreaView,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
   Text,
   ActivityIndicator,
+  SafeAreaView,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
-import {colors, sheet} from '../../styles';
-import {vh, vw} from '../../utils/constants';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from '@react-navigation/core';
-import {BlueMarker} from '../../components/common';
-import {geocodingClient} from '../../maps/mapbox';
+import {AccountContext} from '../../../context/AccountContext';
+import {StartLocationsFlatList} from '../../../components/FindRoute';
+import GroupsFlatlist from '../../../components/GroupsFlatlist';
 import Geolocation from '@react-native-community/geolocation';
-import useForwardGeocoding from '../../hooks/useForwardGeocoding';
-import {StartLocationsFlatList} from '../../components/FindRoute';
-import GroupsFlatlist from '../../components/GroupsFlatlist';
-import DatePicker from 'react-native-date-picker';
-import {StandardButton} from '../../components/common/buttons';
-import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
-import {AccountContext} from '../../context/AccountContext';
+import {BlueMarker} from '../../../components/common';
+import {colors, sheet} from '../../../styles';
+import {vh, vw} from '../../../utils/constants';
+import {geocodingClient} from '../../../maps/mapbox';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {StandardButton} from '../../../components/common/buttons';
 
-const config = {
-  autocomplete: false,
-  countries: ['pl'],
-};
-
-const AskForRide = () => {
+const ChooseRoute = ({navigation}) => {
   const [currentPosition, setCurrentPosition] = useState([]);
   const [start, setStart] = useState(null);
   const [startGeo, setStartGeo] = useState(null);
@@ -36,33 +27,20 @@ const AskForRide = () => {
   const [destinationGeo, setDestinationGeo] = useState(null);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
-  const [date, setDate] = useState(new Date());
 
-  const navigation = useNavigation();
   const _destination = useRef();
   const requesterId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
 
+  // Geocoding
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
 
   // Store
   const {
     accountState: {
-      groups: {data: groups},
+      groups: {data: groups, loading: groupsLoading},
     },
   } = useContext(AccountContext);
   let grps = groups.map(group => ({...group, place_name: group.name}));
-
-  //Requests
-  const [response, loading, error, _sendRideRequest] = useRequest(
-    METHODS.POST,
-    ENDPOINTS.SEND_RIDE_REQUEST,
-    {
-      requesterId,
-      destination: destinationGeo,
-      startingLocation: startGeo,
-      date,
-    },
-  );
 
   useEffect(() => {
     Geolocation.getCurrentPosition(info => {
@@ -70,12 +48,6 @@ const AskForRide = () => {
       setCurrentPosition([longitude, latitude]);
     });
   }, []);
-
-  useEffect(() => {
-    if (response && !loading) {
-      navigation.goBack();
-    }
-  }, [loading, response]);
 
   const onFocusDestination = () => {
     const {current} = _destination;
@@ -136,10 +108,6 @@ const AskForRide = () => {
     onBlurDestination();
   };
 
-  const onSubmit = () => {
-    _sendRideRequest();
-  };
-
   const renderList = () => {
     if (isStartFocused) {
       return (
@@ -153,49 +121,37 @@ const AskForRide = () => {
     } else if (isDestinationFocused) {
       return (
         <GroupsFlatlist
-          //data={exampleGroups}
           data={grps}
-          loading={false}
+          loaidng={groupsLoading}
           onItemPress={onDestinationItemPress}
         />
       );
     } else {
       return startLoading ? (
-        <View style={styles.loadingWrapper}>
+        <View
+          style={{
+            width: '100%',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
           <ActivityIndicator size="large" color={colors.green} />
         </View>
       ) : (
-        <View style={styles.datePickerWrapper}>
-          <View>
-            <Text style={styles.arrivalTime}>Arrival time</Text>
-            {loading ? (
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <ActivityIndicator size="large" color={colors.green} />
-              </View>
-            ) : (
-              <DatePicker
-                date={date}
-                onDateChange={setDate}
-                locale="pl"
-                minimumDate={new Date()}
-                minuteInterval={10}
-              />
-            )}
-          </View>
-          {loading ? null : (
-            <StandardButton
-              width="65%"
-              style={{marginTop: 4 * vh}}
-              onPress={onSubmit}
-              title="Submit"
-              color={colors.green}
-            />
-          )}
+        <View
+          style={{
+            flex: 1,
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            paddingVertical: 8 * vh,
+          }}>
+          <StandardButton
+            width="65%"
+            onPress={() => null}
+            title="Next"
+            color={colors.blue}
+          />
         </View>
       );
     }
@@ -338,4 +294,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AskForRide;
+export default ChooseRoute;
