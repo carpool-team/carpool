@@ -1,7 +1,6 @@
 import React, {useState, useRef, useContext, useEffect} from 'react';
 import {
   View,
-  Text,
   ActivityIndicator,
   SafeAreaView,
   TextInput,
@@ -18,6 +17,7 @@ import {vh, vw} from '../../../utils/constants';
 import {geocodingClient} from '../../../maps/mapbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {StandardButton} from '../../../components/common/buttons';
+import {RouteMinimap} from '../../../components/Route';
 
 const ChooseRoute = ({navigation}) => {
   const [currentPosition, setCurrentPosition] = useState([]);
@@ -29,7 +29,6 @@ const ChooseRoute = ({navigation}) => {
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
 
   const _destination = useRef();
-  const requesterId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
 
   // Geocoding
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
@@ -128,25 +127,14 @@ const ChooseRoute = ({navigation}) => {
       );
     } else {
       return startLoading ? (
-        <View
-          style={{
-            width: '100%',
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+        <View style={styles.loadingWrapper}>
           <ActivityIndicator size="large" color={colors.green} />
         </View>
       ) : (
-        <View
-          style={{
-            flex: 1,
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            paddingVertical: 8 * vh,
-          }}>
+        <View style={styles.mapContainer}>
+          <RouteMinimap start={startGeo} destination={destinationGeo} />
           <StandardButton
+            style={{marginTop: 4 * vh}}
             width="65%"
             onPress={() => null}
             title="Next"
@@ -274,23 +262,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  datePickerWrapper: {
-    width: '100%',
+  mapContainer: {
     flex: 1,
+    width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 10 * vh,
-  },
-  arrivalTime: {
-    color: colors.grayDark,
-    fontSize: 5 * vw,
-    ...sheet.textBold,
-    textAlign: 'center',
-  },
-  submit: {
-    color: colors.green,
-    fontSize: 2.25 * vh,
-    ...sheet.textBold,
+    paddingBottom: 4 * vh,
   },
 });
 
