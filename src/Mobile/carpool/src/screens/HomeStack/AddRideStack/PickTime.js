@@ -42,7 +42,6 @@ const PickTime = () => {
         date={time}
         onDateChange={setTime}
         locale="pl"
-        minimumDate={new Date()}
         minuteInterval={10}
         mode="time"
       />
