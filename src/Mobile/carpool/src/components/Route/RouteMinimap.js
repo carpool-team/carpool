@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {View, ActivityIndicator, Text, StyleSheet} from 'react-native';
-import {directionsClient} from '../../maps/mapbox';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import config from '../../../config';
 import {multiPoint} from '@turf/helpers';

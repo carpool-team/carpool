@@ -46,7 +46,6 @@ const ChooseRoute = ({navigation}) => {
       const {longitude, latitude} = info.coords;
       setCurrentPosition([longitude, latitude]);
     });
-    navigation.navigate('PickTime');
   }, []);
 
   const onFocusDestination = () => {

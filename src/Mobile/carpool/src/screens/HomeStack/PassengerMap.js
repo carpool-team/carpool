@@ -5,7 +5,6 @@ import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
 import {Marker} from '../../components/common';
 import {vw, vh} from '../../utils/constants';
 import RideInfoSheet from '../../components/Ride/RideInfoSheet';
-import {directionsClient} from '../../maps/mapbox';
 import {getBoundsForRoutes} from '../../utils/bounds';
 import {RouteInfoSheet} from '../../components/FindRoute';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,6 +14,14 @@ import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';
 import {PassengerContext} from '../../context/PassengerContext';
 import config from '../../../config';
+import {useGetDirections} from '../../hooks';
+
+const dirConfig = {
+  profile: 'walking',
+  overview: 'full',
+  geometries: 'geojson',
+  alternatives: true,
+};
 
 const PassengerMap = ({coordinates, _onLocateUser}) => {
   const [center, setCenter] = useState([]);
@@ -28,6 +35,9 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
   const {
     passengerState: {allRides},
   } = useContext(PassengerContext);
+
+  // Directions
+  const [results, loading, error, _getDirections] = useGetDirections(dirConfig);
 
   const _passengerMap = useRef(null);
   const _passengerCamera = useRef(null);
@@ -78,26 +88,18 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
     setVisible(false);
   };
 
+  useEffect(() => {
+    if (results) {
+      setRoutes(results.body.routes);
+    }
+  }, [results]);
+
   const onShowWay = async () => {
     if (ride) {
-      const response = await directionsClient
-        .getDirections({
-          profile: 'walking',
-          waypoints: [
-            {
-              coordinates: coordinates,
-            },
-            {
-              coordinates: parseCoords(ride.startingLocation.coordinates),
-            },
-          ],
-          overview: 'full',
-          geometries: 'geojson',
-          alternatives: true,
-        })
-        .send();
-
-      setRoutes(response.body.routes);
+      _getDirections(
+        coordinates,
+        parseCoords(ride.startingLocation.coordinates),
+      );
     }
   };
 
