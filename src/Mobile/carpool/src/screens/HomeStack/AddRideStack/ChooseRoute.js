@@ -46,6 +46,7 @@ const ChooseRoute = ({navigation}) => {
       const {longitude, latitude} = info.coords;
       setCurrentPosition([longitude, latitude]);
     });
+    navigation.navigate('PickTime');
   }, []);
 
   const onFocusDestination = () => {
@@ -136,7 +137,7 @@ const ChooseRoute = ({navigation}) => {
           <StandardButton
             style={{marginTop: 4 * vh}}
             width="65%"
-            onPress={() => null}
+            onPress={() => navigation.navigate('PickTime')}
             title="Next"
             color={colors.blue}
           />
