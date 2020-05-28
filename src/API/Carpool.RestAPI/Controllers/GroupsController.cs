@@ -135,7 +135,7 @@ namespace Carpool.RestAPI.Controllers
 			}
 			_context.Groups.Add(group);
 			await _context.SaveChangesAsync();
-
+			groupDTO.Id = group.Id;
 			return CreatedAtAction("GetGroup", new { id = group.Id }, groupDTO);
 		}
 

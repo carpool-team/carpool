@@ -8,7 +8,6 @@ namespace Carpool.RestAPI.DTOs.RideDTOs
 {
 	public class AddRideDTO
 	{
-		public Guid OwnerId { get; set; }
 		public List<Guid> ParticipantsIds { get; set; }
 
 		public List<AddStopDTO> AddStopDTOs { get; set; }
@@ -28,7 +27,6 @@ namespace Carpool.RestAPI.DTOs.RideDTOs
 		{
 			return new AddRideDTO()
 			{
-				OwnerId = new Guid(),
 				ParticipantsIds = new List<Guid>(),
 				AddStopDTOs = new List<AddStopDTO>(),
 				Destination = new Location(),

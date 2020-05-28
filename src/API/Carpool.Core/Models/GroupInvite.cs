@@ -16,5 +16,7 @@ namespace Carpool.Core.Models
 		public User InvitedUser { get; set; }
 
 		public bool IsAccepted { get; set; }
+
+		public DateTime DateAdded { get; set; }
 	}
 }

@@ -9,14 +9,14 @@ namespace Carpool.Core.DTOs.LocationDTOs
 	public class CoordinatesDTO
 	{
 		public double Latitude { get; set; }
-		public double Longitute { get; set; }
+		public double Longitude { get; set; }
 
 		public static CoordinatesDTO FromCoordinates(Coordinates coordinates)
 		{
 			return new CoordinatesDTO()
 			{
 				Latitude = coordinates.Latitude,
-				Longitute = coordinates.Longitude
+				Longitude = coordinates.Longitude
 			};
 		}
 	}

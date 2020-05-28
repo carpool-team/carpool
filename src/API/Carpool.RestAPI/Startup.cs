@@ -25,6 +25,7 @@ namespace Carpool.RestAPI
 			services.AddSingleton<IConfiguration>(Configuration);
 			services.AddDbContext<CarpoolDbContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+			services.AddSwaggerDocument();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +46,9 @@ namespace Carpool.RestAPI
 			{
 				endpoints.MapControllers();
 			});
+
+			app.UseOpenApi();
+			app.UseSwaggerUi3();
 		}
 	}
 }

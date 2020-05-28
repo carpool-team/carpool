@@ -50,6 +50,9 @@ namespace Carpool.RestAPI.Controllers
 			var groupInviteDTOs = await _context.GroupInvites
 				.Include(groupInvite => groupInvite.InvitedUser)
 				.Include(groupInvite => groupInvite.Group)
+					.ThenInclude(group => group.Rides)
+				.Include(groupInvite => groupInvite.Group)
+					.ThenInclude(group => group.UserGroups)
 				.Where(groupInvite => groupInvite.InvitedUserId == userId && groupInvite.IsPending == true)
 				.Select(groupInvite => IndexGroupInviteDTO.FromGroupInvite(groupInvite))
 				.ToListAsync();
@@ -79,7 +82,9 @@ namespace Carpool.RestAPI.Controllers
 					Group = groupInvite.Group,
 					User = groupInvite.InvitedUser
 				};
-				groupInvite.InvitedUser.UserGroups.Add(userGroup);
+				var ug = groupInvite.InvitedUser.UserGroups.FirstOrDefault(ug => ug.GroupId == groupInvite.Group.Id && ug.UserId == groupInvite.InvitedUser.Id);
+				if (ug == null)
+					groupInvite.InvitedUser.UserGroups.Add(userGroup);
 			}
 
 			try
@@ -98,7 +103,7 @@ namespace Carpool.RestAPI.Controllers
 				}
 			}
 
-			return NoContent();
+			return Json("ok");
 		}
 
 		// POST: api/GroupInvites
@@ -113,11 +118,12 @@ namespace Carpool.RestAPI.Controllers
 				Group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == groupInviteDTO.GroupId),
 				InvitedUser = await _context.Users.FirstOrDefaultAsync(user => user.Id == groupInviteDTO.InvitedUserId),
 				IsAccepted = false,
+				DateAdded = DateTime.Now
 			};
 			_context.GroupInvites.Add(groupInvite);
 			await _context.SaveChangesAsync();
-
-			return CreatedAtAction("GetGroupInvite", new { id = groupInvite.Id }, groupInvite);
+			groupInviteDTO.Id = groupInvite.Id;
+			return CreatedAtAction("GetGroupInvite", new { id = groupInvite.Id }, groupInviteDTO);
 		}
 
 		// DELETE: api/GroupInvites/5

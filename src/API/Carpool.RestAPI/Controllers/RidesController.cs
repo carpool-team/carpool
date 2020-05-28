@@ -29,9 +29,9 @@ namespace Carpool.RestAPI.Controllers
 			_context = context;
 		}
 
-		// GET: api/Rides
+		// GET: api/Rides?userId={id}
 		[HttpGet]
-		public async Task<ActionResult<String>> GetRides([FromQuery]Guid? userId)
+		public async Task<ActionResult<List<IndexRideDTO>>> GetRides([FromQuery]Guid? userId)
 		{
 			try
 			{
@@ -63,6 +63,31 @@ namespace Carpool.RestAPI.Controllers
 			{
 				return Json(ex);
 			}
+		}
+
+		[HttpGet("GetUserOwnedRides")]
+		public async Task<ActionResult<List<IndexRideDTO>>> GetUserOwnedRides([FromQuery]Guid userId)
+		{
+			var rides = await _context.Rides.AsNoTracking()
+					.Include(ride => ride.Stops)
+					.Include(ride => ride.StartingLocation)
+						.ThenInclude(st => st.Coordinates)
+					.Include(ride => ride.StartingLocation)
+						.ThenInclude(st => st.LocationName)
+					.Include(ride => ride.Participants)
+					.Include(ride => ride.Owner)
+						.ThenInclude(user => user.Vehicle)
+					.Include(ride => ride.Destination)
+						.ThenInclude(st => st.Coordinates)
+					.Include(ride => ride.Destination)
+						.ThenInclude(st => st.LocationName)
+					.Where(ride => ride.Date >= DateTime.Now && ride.Owner.Id == userId)
+					.OrderBy(ride => ride.Date)
+					.ToListAsync();
+			rides.ForEach(r => r.Participants.ForEach(p => p.User = _context.Users.FirstOrDefault(u => u.Id == p.UserId)));
+			rides.ForEach(r => r.Owner.Vehicle = r.Owner.Vehicle ?? new Vehicle());
+			var ridesDTO = rides.Select(ride => IndexRideDTO.GetFromRide(ride)).ToList();
+			return Json(ridesDTO);
 		}
 
 		// GET: api/Rides/5
@@ -115,7 +140,7 @@ namespace Carpool.RestAPI.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<ActionResult<Ride>> PostRide([FromBody] AddRideDTO addRideDTO)
+		public async Task<ActionResult<Ride>> PostRide([FromBody] AddRideDTO addRideDTO, [FromQuery] Guid userId)
 		{
 			try
 			{
@@ -130,7 +155,7 @@ namespace Carpool.RestAPI.Controllers
 					Price = addRideDTO.Price,
 					Destination = addRideDTO.Destination,
 					StartingLocation = addRideDTO.StartingLocation,
-					Owner = await _context.Users.FirstOrDefaultAsync(user => user.Id == addRideDTO.OwnerId),
+					Owner = await _context.Users.FirstOrDefaultAsync(user => user.Id == userId),
 					Stops = stops
 				};
 				ride.Participants = users.Select(user => new UserParticipatedRide()

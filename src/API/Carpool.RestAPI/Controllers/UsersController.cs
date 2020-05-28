@@ -121,12 +121,12 @@ namespace Carpool.RestAPI.Controllers
 		{
 			var user = new User()
 			{
-				FirstName = "Krzysztof",
-				LastName = "Kononowicz",
-				Email = "biurointerwencjiobywatelskich@kononowicz.pl",
+				FirstName = "Wojciech",
+				LastName = "Suchodolski",
+				Email = "nitrotykarz@las.pl",
 				Locations = _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).ToListAsync().Result,
-				PhoneNumber = "997",
-				Vehicle = new Vehicle() { Name = "Opel Astra" }
+				PhoneNumber = "123456789",
+				Vehicle = new Vehicle() { Name = "Audi A4" }
 			};
 			_context.Users.Add(user);
 			await _context.SaveChangesAsync();

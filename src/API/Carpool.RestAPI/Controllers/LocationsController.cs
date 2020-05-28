@@ -108,7 +108,7 @@ namespace Carpool.RestAPI.Controllers
 		[HttpGet("GetMockLocation")]
 		public async Task<ActionResult<Location>> GetMockLocation()
 		{
-			var szkolna = new Location()
+			var location = new Location()
 			{
 				Coordinates = new Coordinates()
 				{
@@ -120,16 +120,8 @@ namespace Carpool.RestAPI.Controllers
 					Name = "ul. Szkolna 17, Białystok"
 				}
 			};
-			var location = new LocationDTO()
-			{
-				Coordinates = new CoordinatesDTO()
-				{
-					Latitude = szkolna.Coordinates.Latitude,
-					Longitute = szkolna.Coordinates.Longitude
-				},
-				Name = szkolna.LocationName.Name
-			};
-			return Json(location);
+			var locationDTO = LocationDTO.FromLocation(location);
+			return Json(locationDTO);
 		}
 
 		[HttpPost("AddMockLocation")]
