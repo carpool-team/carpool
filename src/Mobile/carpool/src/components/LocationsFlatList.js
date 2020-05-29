@@ -28,7 +28,7 @@ const LocationsFlatList = ({data, loading, _onCurrentClick}) => {
       )}
       refreshControl={
         <RefreshControl
-          colors={colors.green}
+          colors={[colors.green]}
           tintColor={colors.green}
           refreshing={loading}
         />

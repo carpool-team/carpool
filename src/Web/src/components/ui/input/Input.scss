@@ -1,0 +1,17 @@
+@import "~scss_path/colors";
+
+.input {
+    width: 75%;
+    border: 0;
+    border-bottom: 2px solid $grayVeryDark;
+    outline: 0;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    background: none;
+    &__comment {
+        font-size: small;
+        max-width: 65%;
+        text-align: center;
+        text-justify: auto;
+    }
+}
