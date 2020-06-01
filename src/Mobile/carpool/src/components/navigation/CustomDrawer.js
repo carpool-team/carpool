@@ -10,15 +10,18 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/core';
 import {CircleButton, StandardButton} from '../common/buttons';
-import {useRequest, ENDPOINTS, METHODS} from '../../hooks';
 import DriverInfo from '../Ride/DriverInfo';
 import {
   createGetUserRides,
   PassengerContext,
 } from '../../context/PassengerContext';
+import {DriverContext} from '../../context/DriverContext';
+import {AccountContext} from '../../context/AccountContext';
+import DriversRideInfo from '../Ride/DriversRideInfo';
 
 export default CustomDrawer = props => {
   const [ride, setRide] = useState(null);
+  const [driversRide, setDriversRide] = useState(null);
   const navigation = useNavigation();
 
   // Store
@@ -26,6 +29,14 @@ export default CustomDrawer = props => {
     passengerState: {userRides},
     dispatch,
   } = useContext(PassengerContext);
+  const {
+    driverState: {driversRides},
+    dispatch: driverDispatch,
+  } = useContext(DriverContext);
+  const {
+    accountState: {activeAccount},
+    dispatch: accountDispatch,
+  } = React.useContext(AccountContext);
 
   useEffect(() => {
     if (!ride) {
@@ -39,9 +50,17 @@ export default CustomDrawer = props => {
     }
   }, [userRides]);
 
+  useEffect(() => {
+    if (driversRides.data.length) {
+      setDriversRide(driversRides.data[0]);
+    }
+  }, [driversRides]);
+
   const onRidePress = () => {
     navigation.navigate('Home', {ride});
   };
+
+  const isPassenger = activeAccount === 'passenger';
 
   return (
     <View style={{flex: 1}}>
@@ -79,7 +98,11 @@ export default CustomDrawer = props => {
                 You don't have ant upcoming rides
               </Text>
             )}
-            <DriverInfo ride={ride} onPress={onRidePress} />
+            {isPassenger ? (
+              <DriverInfo ride={ride} onPress={onRidePress} />
+            ) : (
+              <DriversRideInfo ride={driversRide} onPress={() => null} />
+            )}
           </View>
           <DrawerItemList {...props} />
         </View>
