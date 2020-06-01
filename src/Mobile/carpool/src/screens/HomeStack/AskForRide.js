@@ -55,9 +55,8 @@ const AskForRide = () => {
   //Requests
   const [response, loading, error, _sendRideRequest] = useRequest(
     METHODS.POST,
-    ENDPOINTS.SEND_RIDE_REQUEST,
+    ENDPOINTS.SEND_RIDE_REQUEST(requesterId),
     {
-      requesterId,
       destination: destinationGeo,
       startingLocation: startGeo,
       date,

@@ -9,14 +9,22 @@ export const METHODS = {
 
 export const ENDPOINTS = {
   // GET
-  GET_ALL_RIDES: '/Rides',
-  GET_USERS_RIDES: id => `/Rides/GetUserRides/${id}`,
-  GET_USER_GROUPS: id => `/groups/GetUserGroups/${id}`,
-  GET_USER_INVITATIONS: id => `/GroupInvites/GetUserInvites/${id}`,
+  // GET_ALL_RIDES: '/Rides',
+  GET_ALL_RIDES: '/rides',
+  // GET_USERS_RIDES: id => `/Rides/GetUserRides/${id}`,
+  GET_USERS_RIDES: id => `/users/${id}/rides`,
+  // GET_USER_GROUPS: id => `/groups/GetUserGroups/${id}`,
+  GET_USER_GROUPS: id => `/users/${id}/groups`,
+  // GET_USER_INVITATIONS: id => `/GroupInvites/GetUserInvites/${id}`,
+  GET_USER_INVITATIONS: id => `/users/${id}/groupInvites`,
+  // POST
+  // SEND_RIDE_REQUEST: '/RideRequests',
+  SEND_RIDE_REQUEST: id => `/users/${id}/rideRequests`,
   // PUT
-  SEND_RIDE_REQUEST: '/RideRequests',
-  ADD_PARTICIPANT: '/Rides/AddParticipant',
-  CHANGE_INVITATION_STATE: '/GroupInvites',
+  // ADD_PARTICIPANT: '/Rides/AddParticipant',
+  ADD_PARTICIPANT: id => `/rides/${id}/users`,
+  // CHANGE_INVITATION_STATE: '/GroupInvites',
+  CHANGE_INVITATION_STATE: id => `/groupinvites/${id}`,
 };
 
 /**

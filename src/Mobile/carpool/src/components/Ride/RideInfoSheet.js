@@ -37,10 +37,9 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
   const [rideId, setRideId] = useState(null);
   const [response, loading, error, _addParticipant] = useRequest(
     METHODS.PUT,
-    ENDPOINTS.ADD_PARTICIPANT,
+    ENDPOINTS.ADD_PARTICIPANT(rideId),
     {
       participantId,
-      rideId,
     },
   );
 
