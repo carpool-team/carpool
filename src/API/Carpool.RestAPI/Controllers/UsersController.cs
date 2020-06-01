@@ -164,7 +164,7 @@ namespace Carpool.RestAPI.Controllers
 		#region Rides
 
 		[HttpGet("{userId}/rides/participated")]
-		public async Task<ActionResult<List<IndexRideDTO>>> GetUserParticipatedRides([FromRoute] Guid userId)
+		public async Task<ActionResult<List<IndexRideDTO>>> GetUserParticipatedRides([FromRoute] Guid userId, [FromQuery]bool past = false)
 		{
 			try
 			{
@@ -182,7 +182,7 @@ namespace Carpool.RestAPI.Controllers
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.Destination)
 						.ThenInclude(st => st.LocationName)
-					.Where(ride => ride.Date >= DateTime.Now && ride.Participants.Any(participant => participant.UserId == userId))
+					.Where(ride => past ? ride.Date <= DateTime.Now : ride.Date >= DateTime.Now && ride.Participants.Any(participant => participant.UserId == userId))
 					.OrderBy(ride => ride.Date)
 					.Select(ride => IndexRideDTO.FromRide(ride))
 					.ToListAsync();
@@ -199,7 +199,7 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		[HttpGet("{userId}/rides/owned")]
-		public async Task<ActionResult<List<IndexRideDTO>>> GetUserOwnedRides([FromRoute] Guid userId)
+		public async Task<ActionResult<List<IndexRideDTO>>> GetUserOwnedRides([FromRoute] Guid userId, [FromQuery]bool past = false)
 		{
 			try
 			{
@@ -217,7 +217,7 @@ namespace Carpool.RestAPI.Controllers
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.Destination)
 						.ThenInclude(st => st.LocationName)
-					.Where(ride => ride.Date >= DateTime.Now && ride.Owner.Id == userId)
+					.Where(ride => past ? ride.Date <= DateTime.Now : ride.Date >= DateTime.Now && ride.Owner.Id == userId)
 					.OrderBy(ride => ride.Date)
 					.Select(ride => IndexRideDTO.FromRide(ride))
 					.ToListAsync();
