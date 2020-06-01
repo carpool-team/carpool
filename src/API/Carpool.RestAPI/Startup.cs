@@ -20,12 +20,19 @@ namespace Carpool.RestAPI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddCors(options =>
+			{
+				options.AddDefaultPolicy(
+					builder =>
+					{
+						builder.WithOrigins("http://localhost:8080");
+					});
+			});
 			services.AddControllers();
 			services.AddMvc(options => options.EnableEndpointRouting = false);
 			services.AddSingleton<IConfiguration>(Configuration);
 			services.AddDbContext<CarpoolDbContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-			services.AddSwaggerDocument();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,6 +46,8 @@ namespace Carpool.RestAPI
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+
+			app.UseCors();
 
 			app.UseAuthorization();
 

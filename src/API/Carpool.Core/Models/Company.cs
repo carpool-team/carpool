@@ -7,6 +7,7 @@ namespace Carpool.Core.Models
 {
 	public class Company : ParentModel
 	{
+		public string Name { get; set; }
 		public List<User> Users { get; set; }
 	}
 }

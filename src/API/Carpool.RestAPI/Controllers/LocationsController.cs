@@ -32,10 +32,10 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		// GET: api/Locations/5
-		[HttpGet("{id}")]
-		public async Task<ActionResult<Location>> GetLocation(Guid id)
+		[HttpGet("{locationId}")]
+		public async Task<ActionResult<Location>> GetLocation(Guid locationId)
 		{
-			var location = await _context.Locations.FindAsync(id);
+			var location = await _context.Locations.FindAsync(locationId);
 
 			if (location == null)
 			{
@@ -48,10 +48,10 @@ namespace Carpool.RestAPI.Controllers
 		// PUT: api/Locations/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPut("{id}")]
-		public async Task<IActionResult> PutLocation(Guid id, Location location)
+		[HttpPut("{locationId}")]
+		public async Task<IActionResult> PutLocation(Guid locationId, Location location)
 		{
-			if (id != location.Id)
+			if (locationId != location.Id)
 			{
 				return BadRequest();
 			}
@@ -64,7 +64,7 @@ namespace Carpool.RestAPI.Controllers
 			}
 			catch (DbUpdateConcurrencyException)
 			{
-				if (!LocationExists(id))
+				if (!LocationExists(locationId))
 				{
 					return NotFound();
 				}

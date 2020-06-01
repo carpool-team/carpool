@@ -32,10 +32,10 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		// GET: api/Groups/5
-		[HttpGet("{id}")]
-		public async Task<ActionResult<Group>> GetGroup(Guid id)
+		[HttpGet("{groupId}")]
+		public async Task<ActionResult<Group>> GetGroup(Guid groupId)
 		{
-			var @group = await _context.Groups.FindAsync(id);
+			var @group = await _context.Groups.FindAsync(groupId);
 
 			if (@group == null)
 			{
@@ -43,22 +43,6 @@ namespace Carpool.RestAPI.Controllers
 			}
 
 			return @group;
-		}
-
-		[HttpGet("GetUserGroups/{userId}")]
-		public async Task<ActionResult<List<Group>>> GetUserGroups([FromRoute]Guid userId)
-		{
-			var groups = await _context.Groups
-				.Include(group => group.Location)
-					.ThenInclude(location => location.LocationName)
-				.Include(group => group.Location)
-					.ThenInclude(location => location.Coordinates)
-				.Include(location => location.Rides)
-				.Include(group => group.UserGroups).Where(group => group.UserGroups.Any(ug => ug.UserId == userId)).ToListAsync();
-
-			var groupDTOs = groups.Select(group => IndexGroupDTO.FromGroup(group)).ToList();
-
-			return Json(groupDTOs);
 		}
 
 		// PUT: api/Groups/5
@@ -93,28 +77,36 @@ namespace Carpool.RestAPI.Controllers
 			return NoContent();
 		}
 
-		[HttpPut("ChangeGroupLocation")]
-		public async Task<ActionResult> ChangeGroupLocation([FromBody] ChangeGroupLocationDTO changeGroupLocationDTO)
+		[HttpPut("{groupId}/locations")]
+		public async Task<ActionResult> ChangeGroupLocation([FromRoute]Guid groupId, [FromBody] ChangeGroupLocationDTO changeGroupLocationDTO)
 		{
-			var group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == changeGroupLocationDTO.GroupId);
+			if (groupId != changeGroupLocationDTO.GroupId)
+			{
+				return BadRequest();
+			}
+			var group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == groupId);
 			var location = await _context.Locations.FirstOrDefaultAsync(location => location.Id == changeGroupLocationDTO.LocationId);
 			group.Location = location;
 
 			await _context.SaveChangesAsync();
 
-			return Json(changeGroupLocationDTO);
+			return NoContent();
 		}
 
-		[HttpPut("AddRideToGroup")]
-		public async Task<ActionResult> AddRideToGroup([FromBody]AddRideToGroupDTO addRideToGroupDTO)
+		[HttpPut("{groupId}/rides")]
+		public async Task<ActionResult> AddRideToGroup([FromRoute]Guid groupId, [FromBody]AddRideToGroupDTO addRideToGroupDTO)
 		{
+			if (groupId != addRideToGroupDTO.GroupId)
+			{
+				return BadRequest();
+			}
 			var group = await _context.Groups.Include(group => group.Rides).FirstOrDefaultAsync(group => group.Id == addRideToGroupDTO.GroupId);
 			var ride = await _context.Rides.FirstOrDefaultAsync(ride => ride.Id == addRideToGroupDTO.RideId);
 			group.Rides.Add(ride);
 
 			await _context.SaveChangesAsync();
 
-			return Json(addRideToGroupDTO);
+			return NoContent();
 		}
 
 		// POST: api/Groups
@@ -139,9 +131,13 @@ namespace Carpool.RestAPI.Controllers
 			return CreatedAtAction("GetGroup", new { id = group.Id }, groupDTO);
 		}
 
-		[HttpPost("AddUserToGroup")]
-		public async Task<ActionResult> AddUserToGroup(AddUserToGroupDTO addUserToGroupDTO)
+		[HttpPut("{groupId}/users")]
+		public async Task<ActionResult> AddUserToGroup([FromRoute]Guid groupId, [FromBody]AddUserToGroupDTO addUserToGroupDTO)
 		{
+			if (groupId != addUserToGroupDTO.GroupId)
+			{
+				return BadRequest();
+			}
 			var group = await _context.Groups.Include(group => group.UserGroups).FirstOrDefaultAsync(group => group.Id == addUserToGroupDTO.GroupId);
 			var userGroup = new UserGroup()
 			{
@@ -150,9 +146,22 @@ namespace Carpool.RestAPI.Controllers
 				UserId = addUserToGroupDTO.UserId
 			};
 			group.UserGroups.Add(userGroup);
-			await _context.SaveChangesAsync();
-
-			return Json(userGroup);
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!GroupExists(groupId))
+				{
+					return NotFound();
+				}
+				else
+				{
+					throw;
+				}
+			}
+			return NoContent();
 		}
 
 		// DELETE: api/Groups/5

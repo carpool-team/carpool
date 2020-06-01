@@ -31,10 +31,10 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		// GET: api/GroupInvites/5
-		[HttpGet("{id}")]
-		public async Task<ActionResult<GroupInvite>> GetGroupInvite(Guid id)
+		[HttpGet("{groupInviteId}")]
+		public async Task<ActionResult<GroupInvite>> GetGroupInvite([FromRoute]Guid groupInviteId)
 		{
-			var groupInvite = await _context.GroupInvites.FindAsync(id);
+			var groupInvite = await _context.GroupInvites.FindAsync(groupInviteId);
 
 			if (groupInvite == null)
 			{
@@ -44,33 +44,18 @@ namespace Carpool.RestAPI.Controllers
 			return groupInvite;
 		}
 
-		[HttpGet("GetUserInvites/{userId}")]
-		public async Task<ActionResult<List<GroupInvite>>> GetUserInvites(Guid userId)
-		{
-			var groupInviteDTOs = await _context.GroupInvites
-				.Include(groupInvite => groupInvite.InvitedUser)
-				.Include(groupInvite => groupInvite.Group)
-					.ThenInclude(group => group.Rides)
-				.Include(groupInvite => groupInvite.Group)
-					.ThenInclude(group => group.UserGroups)
-				.Where(groupInvite => groupInvite.InvitedUserId == userId && groupInvite.IsPending == true)
-				.Select(groupInvite => IndexGroupInviteDTO.FromGroupInvite(groupInvite))
-				.ToListAsync();
-			return Json(groupInviteDTOs);
-		}
-
 		// PUT: api/GroupInvites/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPut]
-		public async Task<IActionResult> PutGroupInvite([FromBody]ChangeGroupInviteDTO changeGroupInviteDTO)
+		[HttpPut("{groupInviteId}")]
+		public async Task<IActionResult> PutGroupInvite([FromBody]ChangeGroupInviteDTO changeGroupInviteDTO, [FromRoute]Guid groupInviteId)
 		{
-			//if (id != groupInvite.Id)
-			//{
-			//	return BadRequest();
-			//}
+			if (groupInviteId != changeGroupInviteDTO.GroupInviteId)
+			{
+				return BadRequest();
+			}
 
-			var groupInvite = await _context.GroupInvites.Include(groupInvite => groupInvite.InvitedUser).ThenInclude(user => user.UserGroups).Include(groupInvite => groupInvite.Group).FirstOrDefaultAsync(groupInvite => groupInvite.Id == changeGroupInviteDTO.Id);
+			var groupInvite = await _context.GroupInvites.Include(groupInvite => groupInvite.InvitedUser).ThenInclude(user => user.UserGroups).Include(groupInvite => groupInvite.Group).FirstOrDefaultAsync(groupInvite => groupInvite.Id == changeGroupInviteDTO.GroupInviteId);
 
 			groupInvite.IsPending = false;
 			groupInvite.IsAccepted = changeGroupInviteDTO.IsAccepted;
@@ -93,7 +78,7 @@ namespace Carpool.RestAPI.Controllers
 			}
 			catch (DbUpdateConcurrencyException)
 			{
-				if (!GroupInviteExists(changeGroupInviteDTO.Id))
+				if (!GroupInviteExists(changeGroupInviteDTO.GroupInviteId))
 				{
 					return NotFound();
 				}
@@ -127,10 +112,10 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		// DELETE: api/GroupInvites/5
-		[HttpDelete("{id}")]
-		public async Task<ActionResult<GroupInvite>> DeleteGroupInvite(Guid id)
+		[HttpDelete("{groupInviteId}")]
+		public async Task<ActionResult<GroupInvite>> DeleteGroupInvite(Guid groupInviteId)
 		{
-			var groupInvite = await _context.GroupInvites.FindAsync(id);
+			var groupInvite = await _context.GroupInvites.FindAsync(groupInviteId);
 			if (groupInvite == null)
 			{
 				return NotFound();

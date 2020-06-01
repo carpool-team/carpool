@@ -86,7 +86,7 @@ namespace Carpool.RestAPI.Controllers
 				Date = rideRequestDTO.Date,
 				Destination = rideRequestDTO.Destination,
 				StartingLocation = rideRequestDTO.StartingLocation,
-				Requester = await _context.Users.FirstOrDefaultAsync(user => user.Id == rideRequestDTO.RequesterId),
+				Requester = null,
 			};
 			_context.RideRequests.Add(rideRequest);
 			await _context.SaveChangesAsync();

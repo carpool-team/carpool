@@ -1,18 +1,20 @@
 ﻿using Carpool.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Carpool.Core.DTOs.RideRequestDTOs
 {
 	public class AddRideRequestDTO
 	{
-		public Guid RequesterId { get; set; }
-
+		[Required]
 		public Location Destination { get; set; }
 
+		[Required]
 		public Location StartingLocation { get; set; }
 
+		[Required]
 		public DateTime Date { get; set; }
 
 		private AddRideRequestDTO()
@@ -23,7 +25,6 @@ namespace Carpool.Core.DTOs.RideRequestDTOs
 		{
 			return new AddRideRequestDTO()
 			{
-				RequesterId = new Guid(),
 				Destination = new Location()
 				{
 					Coordinates = new Coordinates(),

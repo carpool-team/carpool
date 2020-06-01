@@ -2,6 +2,7 @@
 using Carpool.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace Carpool.RestAPI.DTOs.RideDTOs
@@ -12,9 +13,13 @@ namespace Carpool.RestAPI.DTOs.RideDTOs
 
 		public List<AddStopDTO> AddStopDTOs { get; set; }
 
+		[Required]
 		public Location Destination { get; set; }
+
+		[Required]
 		public Location StartingLocation { get; set; }
 
+		[Required]
 		public DateTime Date { get; set; }
 
 		public double Price { get; set; }

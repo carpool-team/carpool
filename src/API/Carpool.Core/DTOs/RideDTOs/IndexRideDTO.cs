@@ -27,17 +27,17 @@ namespace Carpool.Core.DTOs.RideDTOs
 		{
 		}
 
-		public static IndexRideDTO GetFromRide(Ride ride)
+		public static IndexRideDTO FromRide(Ride ride)
 		{
 			return new IndexRideDTO()
 			{
 				Id = ride.Id,
 				Owner = IndexUserDTO.GetFromUser(ride.Owner),
-				Participants = ride.Participants.Select(participant => IndexUserDTO.GetFromUser(participant.User)).ToList(),
-				Stops = ride.Stops.Select(stop => IndexStopDTO.GetFromStop(stop)).ToList(),
-				Destination = ride.Destination,
-				StartingLocation = ride.StartingLocation,
-				Date = ride.Date
+				Participants = ride.Participants.Select(participant => participant.User != null ? IndexUserDTO.GetFromUser(participant.User) : null).ToList(),
+				Stops = ride.Stops.Select(stop => stop != null ? IndexStopDTO.GetFromStop(stop) : null).ToList(),
+				Destination = ride.Destination ?? null,
+				StartingLocation = ride.StartingLocation ?? null,
+				Date = ride.Date,
 			};
 		}
 	}

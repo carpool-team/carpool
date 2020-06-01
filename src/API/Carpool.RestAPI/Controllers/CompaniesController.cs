@@ -45,10 +45,10 @@ namespace Carpool.RestAPI.Controllers
 		// PUT: api/Companies/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPut("{id}")]
-		public async Task<IActionResult> PutCompany(Guid id, Company company)
+		[HttpPut("{companyId}")]
+		public async Task<IActionResult> PutCompany(Guid companyId, Company company)
 		{
-			if (id != company.Id)
+			if (companyId != company.Id)
 			{
 				return BadRequest();
 			}
@@ -61,7 +61,7 @@ namespace Carpool.RestAPI.Controllers
 			}
 			catch (DbUpdateConcurrencyException)
 			{
-				if (!CompanyExists(id))
+				if (!CompanyExists(companyId))
 				{
 					return NotFound();
 				}
