@@ -29,25 +29,18 @@ const SetSeats = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Text
-          style={{
-            ...sheet.textSemiBold,
-            color: colors.grayDark,
-            fontSize: 6 * vw,
-          }}>
-          SEATS
-        </Text>
-        <View style={[sheet.rowCenterSplit, {width: '100%'}]}>
-          <View style={[sheet.rowCenter, {flex: 2}]}>
+        <Text style={styles.seats}>SEATS</Text>
+        <View style={[sheet.rowCenterSplit, styles.carWrapper]}>
+          <View style={[sheet.rowCenter, styles.car]}>
             <Ionicon
               name="ios-car"
               size={25 * vw}
               color={colors.grayVeryDark}
             />
           </View>
-          <View style={[sheet.rowCenterSplit, {flex: 3}]}>
+          <View style={[sheet.rowCenterSplit, styles.buttonsWrapper]}>
             <CircleButton
               onPress={onDecrement}
               icon={
@@ -58,14 +51,7 @@ const SetSeats = ({navigation}) => {
                 />
               }
             />
-            <Text
-              style={{
-                ...sheet.textSemiBold,
-                color: colors.blue,
-                fontSize: 8 * vw,
-              }}>
-              {seats}
-            </Text>
+            <Text style={styles.numOfSeats}>{seats}</Text>
             <CircleButton
               onPress={onIncrement}
               icon={
@@ -86,6 +72,10 @@ const SetSeats = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -93,6 +83,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6 * vw,
     paddingTop: 4 * vh,
     paddingBottom: 6 * vh,
+  },
+  seats: {
+    ...sheet.textSemiBold,
+    color: colors.grayDark,
+    fontSize: 6 * vw,
+  },
+  carWrapper: {
+    width: '100%',
+  },
+  car: {
+    flex: 2,
+  },
+  buttonsWrapper: {
+    flex: 3,
+  },
+  numOfSeats: {
+    ...sheet.textSemiBold,
+    color: colors.blue,
+    fontSize: 8 * vw,
   },
 });
 
