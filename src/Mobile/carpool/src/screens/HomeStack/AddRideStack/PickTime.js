@@ -6,7 +6,7 @@ import DatePicker from 'react-native-date-picker';
 import PickDays from '../../../components/AddRide/PickDays';
 import {StandardButton} from '../../../components/common/buttons';
 
-const PickTime = () => {
+const PickTime = ({navigation}) => {
   const [isRegular, setIsRegular] = useState(false);
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
@@ -47,7 +47,7 @@ const PickTime = () => {
         <StandardButton
           style={{}}
           width="65%"
-          onPress={() => null}
+          onPress={() => navigation.navigate('SetSeats')}
           title="Next"
           color={colors.blue}
         />
