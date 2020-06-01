@@ -1,5 +1,4 @@
-import React, {useRef} from 'react';
-import {View, Text} from 'react-native';
+import React, {useRef, useContext} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import config from '../../../config';
 import {CircleButton} from '../../components/common/buttons';
@@ -7,10 +6,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {colors} from '../../styles';
 import {vw, vh} from '../../utils/constants';
 import {useNavigation} from '@react-navigation/core';
+import {DriverContext} from '../../context/DriverContext';
 
 const DriverMap = ({coordinates, _onLocateUser}) => {
   const _driverMap = useRef(null);
   const navigation = useNavigation();
+  const {driverState} = useContext(DriverContext);
 
   return (
     <>

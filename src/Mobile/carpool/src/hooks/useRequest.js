@@ -12,7 +12,7 @@ export const ENDPOINTS = {
   // GET_ALL_RIDES: '/Rides',
   GET_ALL_RIDES: '/rides',
   // GET_USERS_RIDES: id => `/Rides/GetUserRides/${id}`,
-  GET_USERS_RIDES: id => `/users/${id}/rides`,
+  GET_USERS_RIDES: id => `/users/${id}/rides/participated`,
   // GET_USER_GROUPS: id => `/groups/GetUserGroups/${id}`,
   GET_USER_GROUPS: id => `/users/${id}/groups`,
   // GET_USER_INVITATIONS: id => `/GroupInvites/GetUserInvites/${id}`,
@@ -25,6 +25,7 @@ export const ENDPOINTS = {
   ADD_PARTICIPANT: id => `/rides/${id}/users`,
   // CHANGE_INVITATION_STATE: '/GroupInvites',
   CHANGE_INVITATION_STATE: id => `/groupinvites/${id}`,
+  GET_DRIVERS_RIDES: id => `/users/${id}/rides/owned`,
 };
 
 /**
