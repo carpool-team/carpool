@@ -13,6 +13,7 @@ import Button from "../../ui/Button/Button";
 import ButtonCheckBox from "../../ui/Button/ButtonCheckBox";
 
 import mapImage from "assets_path/img/loadingMap.png";
+import { IGroup } from "../interfaces/IGroup";
 
 interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
 	callbacks: IGroupCallbacks;
