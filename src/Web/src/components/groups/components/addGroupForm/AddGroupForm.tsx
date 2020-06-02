@@ -10,6 +10,7 @@ import { IFormData, initialFormData } from "./interfaces/IFormData";
 import { IGroup } from "../../interfaces/IGroup";
 import LayoutRouter from "../../../layout/components/LayoutRouter";
 
+const tempUserId: string = "8151a9b2-52ee-4ce0-a2dd-08d7f7744d91"; // TODO: ZAORAĆ, NIE MAGIC STRING
 interface IAddGroupFormScreenProps extends IReactI18nProps {
 	callbacks: IGroupCallbacks;
 }
@@ -63,6 +64,7 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 		let group: IGroup = {
 			name: this.state.formData.group.groupName,
 			code: this.state.formData.group.code,
+			owner: tempUserId,
 			location: {
 				coordinates: { // TODO: legit lat,lng
 					latitude: 0,

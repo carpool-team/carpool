@@ -9,6 +9,7 @@ export interface IGroup {
 	};
 	code: string;
 	name: string;
+	owner: string;
 	rideCount: number;
 	userCount: number;
 }

@@ -18,6 +18,13 @@ const reducer: Reducer<IGroupsState> = (
 ) => {
 	return produce<IGroupsState>(state, (draft) => {
 		switch (action.type) {
+			case GroupsActionTypes.AddGroupSuccess:
+				draft.groups.push(action.newGroup);
+				break;
+			case GroupsActionTypes.GetGroupsSuccess:
+				console.log(action.groups);
+				draft.groups = action.groups;
+				break;
 			default:
 				break;
 		}

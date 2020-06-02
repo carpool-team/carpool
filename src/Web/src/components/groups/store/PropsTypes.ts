@@ -1,6 +1,6 @@
 import { IGroup } from "../interfaces/IGroup";
-import { IAddGroupAction } from "./Types";
-import { addGroup } from "./Actions";
+import { IAddGroupAction, IGetGroupsAction } from "./Types";
+import { addGroup, getGroups, } from "./Actions";
 import { IGroupsState } from "./State";
 
 interface IStatePropsType {
@@ -16,11 +16,13 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 });
 
 interface IDispatchPropsType {
-	groupsAddGroup: (group: IGroup) => IAddGroupAction;
+	addGroup: (group: IGroup) => IAddGroupAction;
+	getGroups: (userOnly: boolean) => IGetGroupsAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
-	groupsAddGroup: addGroup,
+	addGroup,
+	getGroups,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;

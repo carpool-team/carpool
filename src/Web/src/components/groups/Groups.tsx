@@ -4,9 +4,6 @@ import GroupsRouter from "./components/GroupsRouter";
 import { withRouter, RouteComponentProps } from "react-router";
 import { IGroupCallbacks } from "./interfaces/IGroupCallbacks";
 import { IGroup } from "./interfaces/IGroup";
-import { apiRequest, IRequestProps } from "./../../api/apiRequest";
-import { RequestType } from "./../../api/enum/RequestType";
-import { RequestEndpoint } from "./../../api/enum/RequestEndpoint";
 
 import {
 	StateProps,
@@ -24,42 +21,14 @@ class Groups extends Component<IGroupsProps> {
 		container: "groupsContainer",
 	};
 
-	private getGroupProps: IRequestProps = {
-		method: RequestType.GET,
-		endpoint: RequestEndpoint.GET_USER_GROUPS,
-		userId: "8151a9b2-52ee-4ce0-a2dd-08d7f7744d91",
-	};
-
-	private addGroupProps: IRequestProps = {
-		method: RequestType.POST,
-		endpoint: RequestEndpoint.POST_ADD_GROUP,
-		body: {
-			name: "Grupa do dodania",
-			code: "GDD",
-		},
-	};
+	constructor(props: IGroupsProps) {
+		super(props);
+		this.props.getGroups(false);
+	}
 
 	/** Handles adding group */
 	addGroupHandler = (group: IGroup) => {
-		this.props.groupsAddGroup(group);
-	}
-
-	getGroupsRequest = async (): Promise<void> => {
-		try {
-			const response = await apiRequest(this.getGroupProps);
-			this.setState({ groups: response });
-		} catch (err) {
-			this.setState({ error: err });
-		}
-	}
-
-	addGroupRequest = async (): Promise<void> => {
-		try {
-			const response = await apiRequest(this.addGroupProps);
-			this.setState({ groups: response });
-		} catch (err) {
-			this.setState({ error: err });
-		}
+		this.props.addGroup(group);
 	}
 
 	getGroupsHandler = () => this.props.groups;
