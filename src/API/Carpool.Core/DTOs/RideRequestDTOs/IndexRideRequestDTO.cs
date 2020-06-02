@@ -24,7 +24,7 @@ namespace Carpool.Core.DTOs.RideRequestDTOs
 		{
 			return new IndexRideRequestDTO()
 			{
-				Requester = IndexUserDTO.GetFromUser(rideRequest.Requester),
+				Requester = IndexUserDTO.FromUser(rideRequest.Requester),
 				Destination = rideRequest.Destination,
 				StartingLocation = rideRequest.StartingLocation,
 				Date = rideRequest.Date,

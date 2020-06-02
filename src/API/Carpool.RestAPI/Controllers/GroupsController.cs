@@ -10,6 +10,7 @@ using Carpool.DAL.DatabaseContexts;
 using Carpool.Core.DTOs.GroupDTOs;
 using Carpool.Core.Models.Intersections;
 using Carpool.Core.DTOs.LocationDTOs;
+using Carpool.Core.DTOs.UserDTOs;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -43,6 +44,22 @@ namespace Carpool.RestAPI.Controllers
 			}
 
 			return @group;
+		}
+
+		[HttpGet("{groupId}/users")]
+		public async Task<ActionResult<List<User>>> GetGroupUsers([FromRoute]Guid groupId)
+        {
+			var group = await _context.Groups
+				.Include(group => group.UserGroups)
+				.ThenInclude(member => member.User)
+				.FirstOrDefaultAsync(group => group.Id == groupId);
+			if(group == null)
+            {
+				return NotFound(groupId);
+            }
+			var users = group.UserGroups.Select(userGroup => IndexUserDTO.FromUser(userGroup.User)).ToList();
+			return Ok(users);
+
 		}
 
 		// PUT: api/Groups/5

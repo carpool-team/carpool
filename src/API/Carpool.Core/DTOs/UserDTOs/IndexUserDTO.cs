@@ -16,7 +16,7 @@ namespace Carpool.Core.DTOs.UserDTOs
 		{
 		}
 
-		public static IndexUserDTO GetFromUser(User user)
+		public static IndexUserDTO FromUser(User user)
 		{
 			return new IndexUserDTO()
 			{

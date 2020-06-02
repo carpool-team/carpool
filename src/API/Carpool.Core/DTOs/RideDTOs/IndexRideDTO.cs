@@ -32,8 +32,8 @@ namespace Carpool.Core.DTOs.RideDTOs
 			return new IndexRideDTO()
 			{
 				Id = ride.Id,
-				Owner = IndexUserDTO.GetFromUser(ride.Owner),
-				Participants = ride.Participants.Select(participant => participant.User != null ? IndexUserDTO.GetFromUser(participant.User) : null).ToList(),
+				Owner = IndexUserDTO.FromUser(ride.Owner),
+				Participants = ride.Participants.Select(participant => participant.User != null ? IndexUserDTO.FromUser(participant.User) : null).ToList(),
 				Stops = ride.Stops.Select(stop => stop != null ? IndexStopDTO.GetFromStop(stop) : null).ToList(),
 				Destination = ride.Destination ?? null,
 				StartingLocation = ride.StartingLocation ?? null,

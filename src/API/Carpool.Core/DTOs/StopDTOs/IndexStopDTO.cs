@@ -19,7 +19,7 @@ namespace Carpool.Core.DTOs.StopDTOs
 		{
 			return new IndexStopDTO()
 			{
-				User = IndexUserDTO.GetFromUser(stop.User),
+				User = IndexUserDTO.FromUser(stop.User),
 				Coordinates = stop.Coordinates,
 			};
 		}
