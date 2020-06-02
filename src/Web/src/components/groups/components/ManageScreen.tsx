@@ -13,6 +13,7 @@ import Button from "../../ui/Button/Button";
 import ButtonCheckBox from "../../ui/Button/ButtonCheckBox";
 
 import mapImage from "assets_path/img/loadingMap.png";
+import { IGroup } from "../interfaces/IGroup";
 
 interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
   callbacks: IGroupCallbacks;
@@ -34,9 +35,11 @@ class ManageScreen extends Component<IManageScreenProps> {
   };
 
   renderGroupsList = () => {
+    const groups = this.props.callbacks.getGroups();
+
     return (
       <ul className={this.cssClasses.list}>
-        {this.props.callbacks.getGroups().map((group) => {
+        {groups.map((group: IGroup) => {
           return (
             <li key={group.name}>
               <ButtonCheckBox

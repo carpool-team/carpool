@@ -3,23 +3,26 @@ import { RequestEndpoint } from "./enum/RequestEndpoint";
 
 export const getRequestEndpoint: (
   endpoint?: RequestEndpoint,
-  userID?: string
-) => string = (endpoint, userID) => {
+  userId?: string,
+  groupId?: string
+) => string = (endpoint, userId, groupId) => {
   switch (endpoint) {
-    case RequestEndpoint.GET_ALL_RIDES:
-      return "/Rides";
-    case RequestEndpoint.GET_USERS_RIDES:
-      return `/Rides/GetUserRides/${userID}`;
+    case RequestEndpoint.POST_ADD_GROUP:
+      return "/groups";
+    case RequestEndpoint.GET_GROUP_BY_ID:
+      return `/groups/${groupId}`;
     case RequestEndpoint.GET_USER_GROUPS:
-      return `/users/${userID}/groups`;
-    case RequestEndpoint.GET_USER_INVITATIONS:
-      return `/GroupInvites/GetUserInvites/${userID}`;
-    case RequestEndpoint.SEND_RIDE_REQUEST:
-      return "/RideRequests";
-    case RequestEndpoint.ADD_PARTICIPANT:
-      return "/Rides/AddParticipant";
-    case RequestEndpoint.CHANGE_INVITATION_STATE:
-      return "/GroupInvites";
+      return `/users/${userId}/groups`;
+    case RequestEndpoint.GET_ALL_GROUPS:
+      return `/groups`;
+    case RequestEndpoint.PUT_ADD_RIDE_TO_GROUP:
+      return `/groups/${groupId}/rides`;
+    case RequestEndpoint.PUT_ADD_USER_TO_GROUP:
+      return `/groups/${groupId}/users`;
+    case RequestEndpoint.PUT_ADD_LOCATION_TO_GROUP:
+      return `/groups/${groupId}/locations`;
+    case RequestEndpoint.DELETE_GROUP_BY_ID:
+      return `/groups/${groupId}`;
     default:
       return "";
   }
@@ -33,6 +36,8 @@ export const getRequestType: (type?: RequestType) => string = (type) => {
       return "POST";
     case RequestType.PUT:
       return "PUT";
+    case RequestType.DELETE:
+      return "DELETE";
     default:
       return "";
   }

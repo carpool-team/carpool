@@ -2,6 +2,15 @@ import { IGroupUser } from "./IGroupUser";
 
 /** Group interface */
 export interface IGroup {
-	name: string;
-	users: IGroupUser[];
+  location: {
+    coordinates: {
+      latitude: number;
+      longtitude: number;
+    };
+    name: string;
+  };
+  name: string;
+  rideCount: number;
+  userCount: number;
+  //users: IGroupUser[];
 }

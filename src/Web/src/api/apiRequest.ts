@@ -11,6 +11,7 @@ export interface IRequestProps {
   method: RequestType;
   endpoint: RequestEndpoint;
   userId?: string;
+  groupId?: string;
   body?: any;
 }
 
@@ -25,7 +26,11 @@ export const apiRequest = async (props: IRequestProps) => {
       "Content-Type": "application/json",
     };
     const method = getRequestType(props.method);
-    const endpoint = getRequestEndpoint(props.endpoint, props.userId);
+    const endpoint = getRequestEndpoint(
+      props.endpoint,
+      props.userId,
+      props.groupId
+    );
     let request: IRequest = {
       method,
       headers,
@@ -37,10 +42,9 @@ export const apiRequest = async (props: IRequestProps) => {
     const res = await fetch(`${proxyUrl}${config.devUrl}${endpoint}`, request);
 
     if (res.status > 399) {
-      console.log("ERROR", res);
+      console.log("Status Error", res);
     } else {
       const json = await res.json();
-      //console.log(json);
       return json;
     }
   } catch (error) {
