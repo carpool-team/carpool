@@ -132,6 +132,8 @@ namespace Carpool.RestAPI.Controllers
 		[HttpPost]
 		public async Task<ActionResult<Group>> PostGroup(AddGroupDTO groupDTO)
 		{
+			if (groupDTO.OwnerId == null)
+				return BadRequest("No ownerId");
 			if (groupDTO.Code != "")
 			{
 				if (_context.Groups.Any(group => group.Code == groupDTO.Code))
