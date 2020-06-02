@@ -122,13 +122,13 @@ namespace Carpool.RestAPI.Controllers
 			if (groupDTO.Code != "")
 			{
 				if (_context.Groups.Any(group => group.Code == groupDTO.Code))
-					return Json(-1);
+					return Conflict();
 				group.Code = groupDTO.Code;
 			}
 			_context.Groups.Add(group);
 			await _context.SaveChangesAsync();
 			groupDTO.Id = group.Id;
-			return CreatedAtAction("GetGroup", new { id = group.Id }, groupDTO);
+			return CreatedAtAction("GetGroup", new { groupId = group.Id }, groupDTO);
 		}
 
 		[HttpPut("{groupId}/users")]
