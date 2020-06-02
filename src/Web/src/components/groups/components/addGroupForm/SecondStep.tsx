@@ -82,25 +82,31 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 					{t(resources.addBtn)}
 				</Button>
 				<Button
-				onClick={props.callbacks.createGroup}
-				type={ButtonType.Success}
-			    >
+					onClick={props.callbacks.createGroup}
+					type={ButtonType.Success}
+				>
 					{t(resources.createBtn)}
 				</Button>
-			</div>	
+			</div>
 		</div>
 	);
 
-	const renderUserList = () => (
-		<ul className={cssClasses.userList}>
-			{props.data.users.map(user => (
-				<li className={cssClasses.userListItem}>
-					<img className={cssClasses.userIco} src={userIco} alt={""} />
-					{user.name + " " + user.surname}
-				</li>
-			))}
-		</ul>
-	);
+	const renderUserList = () => {
+		const createListItems = () => props.data.users.map((user, idx) => (
+			<li
+				className={cssClasses.userListItem}
+				key={idx}
+			>
+				<img className={cssClasses.userIco} src={userIco} alt={""} />
+				{user.name + " " + user.surname}
+			</li>
+		));
+		return (
+			<ul className={cssClasses.userList}>
+				{createListItems()}
+			</ul>
+		);
+	};
 
 	return (
 		<div className={cssClasses.container}>

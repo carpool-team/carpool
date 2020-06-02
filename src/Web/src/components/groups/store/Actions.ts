@@ -1,7 +1,8 @@
 import {
-	IAddGroupAction,
 	GroupsActionTypes,
-	IAddGroupActionError
+	IAddGroupAction,
+	IAddGroupActionError,
+	IAddGroupActionSuccess
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 
@@ -12,8 +13,15 @@ export function addGroup(group: IGroup): IAddGroupAction {
 	};
 }
 
-export function AddGroupError(): IAddGroupActionError {
+export function addGroupSuccess(): IAddGroupActionSuccess {
+	return {
+		type: GroupsActionTypes.AddGroupSuccess,
+	};
+}
+
+export function addGroupError(error: Error): IAddGroupActionError {
 	return {
 		type: GroupsActionTypes.AddGroupError,
+		error,
 	};
 }

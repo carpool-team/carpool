@@ -17,7 +17,9 @@ export interface IAddGroupAction extends Action<GroupsActionTypes.AddGroup> {
 export interface IAddGroupActionSuccess extends Action<GroupsActionTypes.AddGroupSuccess> { }
 
 /** Action for adding group error */
-export interface IAddGroupActionError extends Action<GroupsActionTypes.AddGroupError> { }
+export interface IAddGroupActionError extends Action<GroupsActionTypes.AddGroupError> {
+	error: Error;
+}
 
 /** Type of group action */
 export type GroupsAction =

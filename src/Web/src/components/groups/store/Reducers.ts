@@ -4,7 +4,7 @@ import { produce } from "immer";
 import { GroupsAction, GroupsActionTypes } from "./Types";
 
 const initialState: IGroupsState = {
-  groups: [],
+	groups: [],
 };
 
 /**
@@ -13,19 +13,16 @@ const initialState: IGroupsState = {
  * @param action - action for reducer
  */
 const reducer: Reducer<IGroupsState> = (
-  state = initialState,
-  action: GroupsAction
+	state = initialState,
+	action: GroupsAction
 ) => {
-  return produce<IGroupsState>(state, (draft) => {
-    switch (action.type) {
-      case GroupsActionTypes.AddGroup:
-        draft.groups.push(action.group);
-        break;
-      default:
-        break;
-    }
-    return;
-  });
+	return produce<IGroupsState>(state, (draft) => {
+		switch (action.type) {
+			default:
+				break;
+		}
+		return;
+	});
 };
 
 export { reducer as groupsReducer };

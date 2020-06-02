@@ -62,11 +62,21 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 	private createGroup = () => {
 		let group: IGroup = {
 			name: this.state.formData.group.groupName,
-			users: this.state.formData.users.map(user => ({
-				name: user.name,
-				surname: user.surname,
-				email: user.email,
-			})),
+			code: this.state.formData.group.code,
+			location: {
+				coordinates: { // TODO: legit lat,lng
+					latitude: 0,
+					longtitude: 0,
+				},
+				name: this.state.formData.group.address
+			},
+			rideCount: 0,
+			userCount: this.state.formData.users.length
+			// users: this.state.formData.users.map(user => ({
+			// 	name: user.name,
+			// 	surname: user.surname,
+			// 	email: user.email,
+			// })),
 		};
 		this.props.callbacks.addGroup(group);
 		this.props.callbacks.redirect("/" + LayoutRouter.routes.groups); // make path absolute
