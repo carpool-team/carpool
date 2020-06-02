@@ -9,6 +9,7 @@ import {sheet, colors} from '../styles';
 import PreferencesStack from './PreferencesStack';
 import HomeStack from './HomeStack';
 import GroupsStack from './GroupsStack';
+import RidesStack from './RidesStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -32,7 +33,7 @@ export default DrawerNavigator = () => (
     />
     <Drawer.Screen
       name="Rides"
-      component={Rides}
+      component={RidesStack}
       options={{
         drawerLabel: 'Your rides',
       }}

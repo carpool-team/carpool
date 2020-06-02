@@ -66,11 +66,11 @@ const Waypoints = ({style, ride, start}) => {
       />
       {loading ? null : (
         <View style={styles.column}>
-          <Text style={{flex: 4}} numberOfLines={1}>
+          <Text numberOfLines={1}>
             <Text style={styles.from}>From: </Text>
             <Text style={styles.placeName}>{startName}</Text>
           </Text>
-          <Text style={{flex: 1}} numberOfLines={1}>
+          <Text numberOfLines={1}>
             <Text style={styles.to}>To: </Text>
             <Text style={styles.placeName}>{destName}</Text>
           </Text>
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
+    height: 14 * vw,
   },
   from: {
     ...sheet.textBold,
