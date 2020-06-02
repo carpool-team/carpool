@@ -17,5 +17,7 @@ namespace Carpool.Core.Models
 		public string Name { get; set; }
 
 		public string Code { get; set; }
+
+		public User Owner { get; set; }
 	}
 }

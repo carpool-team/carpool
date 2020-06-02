@@ -115,16 +115,17 @@ namespace Carpool.RestAPI.Controllers
 		[HttpPost]
 		public async Task<ActionResult<Group>> PostGroup(AddGroupDTO groupDTO)
 		{
-			var group = new Group()
-			{
-				Name = groupDTO.Name,
-			};
 			if (groupDTO.Code != "")
 			{
 				if (_context.Groups.Any(group => group.Code == groupDTO.Code))
 					return Conflict();
-				group.Code = groupDTO.Code;
 			}
+			var group = new Group()
+			{
+				Name = groupDTO.Name,
+				Owner = await _context.Users.FindAsync(groupDTO.OwnerId),
+				Code = groupDTO.Code,
+			};
 			_context.Groups.Add(group);
 			await _context.SaveChangesAsync();
 			groupDTO.Id = group.Id;

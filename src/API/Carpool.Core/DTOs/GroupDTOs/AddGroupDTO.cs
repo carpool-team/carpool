@@ -15,5 +15,7 @@ namespace Carpool.Core.DTOs.GroupDTOs
 		public string Code { get; set; }
 
 		public Guid Id { get; set; }
+
+		public Guid OwnerId { get; set; }
 	}
 }
