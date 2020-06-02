@@ -1,7 +1,4 @@
 {
-  "extends": [
-    "tslint-react"
-  ],
   "rules": {
     "no-var-keyword": true,
     "no-parameter-reassignment": true,
@@ -121,6 +118,11 @@
     "semicolon": [
       true,
       "always"
+    ],
+    "use-strict": [
+      true,
+      "check-module",
+      "check-function"
     ],
     "variable-name": [
       false,
