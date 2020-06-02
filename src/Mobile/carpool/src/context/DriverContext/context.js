@@ -6,12 +6,20 @@ const initialState = {
     loading: false,
     error: null,
   },
+  driversPastRides: {
+    data: [],
+    loading: false,
+    error: null,
+  },
 };
 
 export const DriverActions = {
   GET_DRIVERS_RIDES_SUCCESS: 'GET_DRIVERS_RIDES_SUCCESS',
   GET_DRIVERS_RIDES_LOADING: 'GET_DRIVERS_RIDES_LOADING',
   GET_DRIVERS_RIDES_ERROR: 'GET_DRIVERS_RIDES_ERROR',
+  GET_DRIVERS_PAST_RIDES_SUCCESS: 'GET_DRIVERS_PAST_RIDES_SUCCESS',
+  GET_DRIVERS_PAST_RIDES_LOADING: 'GET_DRIVERS_PAST_RIDES_LOADING',
+  GET_DRIVERS_PAST_RIDES_ERROR: 'GET_DRIVERS_PAST_RIDES_ERROR',
 };
 
 const reducer = (state, action) => {
@@ -37,6 +45,32 @@ const reducer = (state, action) => {
       return {
         ...state,
         driversRides: {
+          data: [],
+          loading: false,
+          error: action.payload,
+        },
+      };
+    case DriverActions.GET_DRIVERS_PAST_RIDES_SUCCESS:
+      return {
+        ...state,
+        driversPastRides: {
+          data: action.payload,
+          loading: false,
+          error: null,
+        },
+      };
+    case DriverActions.GET_DRIVERS_PAST_RIDES_LOADING:
+      return {
+        ...state,
+        driversPastRides: {
+          ...state.driversRides,
+          loading: true,
+        },
+      };
+    case DriverActions.GET_DRIVERS_PAST_RIDES_ERROR:
+      return {
+        ...state,
+        driversPastRides: {
           data: [],
           loading: false,
           error: action.payload,

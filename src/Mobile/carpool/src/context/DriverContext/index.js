@@ -1,4 +1,10 @@
 import {DriverActions, DriverContext, DriverStore} from './context';
-import {createGetDriversRides} from './actions';
+import {createGetDriversRides, createGetDriversPastRides} from './actions';
 
-export {DriverActions, DriverContext, DriverStore, createGetDriversRides};
+export {
+  DriverActions,
+  DriverContext,
+  DriverStore,
+  createGetDriversRides,
+  createGetDriversPastRides,
+};

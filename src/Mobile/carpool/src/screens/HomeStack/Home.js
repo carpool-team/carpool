@@ -18,6 +18,7 @@ import DriverMap from './DriverMap';
 import {
   DriverContext,
   createGetDriversRides,
+  createGetDriversPastRides,
 } from '../../context/DriverContext';
 
 const requestLocationPermission = async () => {
@@ -69,6 +70,7 @@ const Home = () => {
     // Delete ride from params
     if (activeAccount === 'driver') {
       createGetDriversRides(driverDispatch);
+      createGetDriversPastRides(driverDispatch);
       if (route.params) {
         let params = route.params;
         delete params.ride;

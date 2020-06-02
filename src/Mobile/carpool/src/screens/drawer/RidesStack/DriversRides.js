@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {vh, vw} from '../../../utils/constants';
@@ -6,21 +6,31 @@ import {StandardButton} from '../../../components/common/buttons';
 import {
   DriverContext,
   createGetDriversRides,
+  createGetDriversPastRides,
 } from '../../../context/DriverContext';
 import DriversRidesFlatList from '../../../components/Driver/DriversRidesFlatList';
 
 const DriversRides = () => {
   const [isUpcoming, setIsUpcoming] = useState(true);
+  const [data, setData] = useState([]);
 
   const {
-    driverState: {driversRides},
+    driverState: {driversRides, driversPastRides},
     dispatch,
   } = useContext(DriverContext);
-  const {data, loading, error} = driversRides;
 
   const onRefresh = () => {
     createGetDriversRides(dispatch);
+    createGetDriversPastRides(dispatch);
   };
+
+  useEffect(() => {
+    if (isUpcoming) {
+      setData([...driversRides.data]);
+    } else {
+      setData([...driversPastRides.data]);
+    }
+  }, [isUpcoming]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -44,7 +54,7 @@ const DriversRides = () => {
         <View style={styles.flatlistWrapper}>
           <DriversRidesFlatList
             data={data}
-            loading={loading}
+            loading={driversRides.loading || driversPastRides.loading}
             onRefresh={onRefresh}
             onItemPress={console.log}
           />
@@ -63,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     alignItems: 'center',
-    paddingVertical: 4 * vh,
+    paddingTop: 4 * vh,
   },
   topRow: {
     width: '100%',

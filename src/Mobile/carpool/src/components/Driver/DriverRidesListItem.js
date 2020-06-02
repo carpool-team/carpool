@@ -16,6 +16,10 @@ const getLeavingIn = date => {
   const hours = parseInt(minutes / 60);
   const dt = new Date(date).toLocaleString();
 
+  if (lv < now) {
+    return `${dt}`;
+  }
+
   if (minutes < 60) {
     return `Leaving in ${minutes} minutes`;
   } else {

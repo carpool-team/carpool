@@ -26,6 +26,7 @@ export const ENDPOINTS = {
   // CHANGE_INVITATION_STATE: '/GroupInvites',
   CHANGE_INVITATION_STATE: id => `/groupinvites/${id}`,
   GET_DRIVERS_RIDES: id => `/users/${id}/rides/owned`,
+  GET_DRIVERS_PAST_RIDES: id => `/users/${id}/rides/owned?past=true`,
 };
 
 /**
