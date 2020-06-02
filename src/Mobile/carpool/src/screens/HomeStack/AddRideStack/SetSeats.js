@@ -6,7 +6,7 @@ import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {colors, sheet} from '../../../styles';
 import {CircleButton, StandardButton} from '../../../components/common/buttons';
 
-const MIN_VALUE = 0;
+const MIN_VALUE = 1;
 const MAX_VALUE = 4;
 
 const SetSeats = ({navigation}) => {

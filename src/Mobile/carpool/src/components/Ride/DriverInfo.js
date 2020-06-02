@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     color: colors.blue,
   },
   leavingIn: {
-    ...sheet.textBold,
+    ...sheet.textSemiBold,
     fontSize: 4 * vw,
   },
 });

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {sheet, colors} from '../../styles';
-import {UpView} from '../common';
-import {vw} from '../../utils/constants';
+import {sheet, colors} from '../../../styles';
+import {UpView} from '../../common';
+import {vw} from '../../../utils/constants';
 
 const weekDays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Ndz'];
 

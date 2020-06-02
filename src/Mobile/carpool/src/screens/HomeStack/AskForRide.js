@@ -17,7 +17,7 @@ import {geocodingClient} from '../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../hooks/useForwardGeocoding';
 import {StartLocationsFlatList} from '../../components/FindRoute';
-import GroupsFlatlist from '../../components/GroupsFlatlist';
+import GroupsFlatlist from '../../components/Locations/GroupsFlatlist';
 import DatePicker from 'react-native-date-picker';
 import {StandardButton} from '../../components/common/buttons';
 import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
@@ -69,6 +69,10 @@ const AskForRide = () => {
       setCurrentPosition([longitude, latitude]);
     });
   }, []);
+
+  useEffect(() => {
+    console.log(startResults);
+  }, [startResults]);
 
   useEffect(() => {
     if (response && !loading) {

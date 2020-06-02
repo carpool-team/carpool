@@ -11,7 +11,7 @@ import {vh, vw} from '../../../utils/constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 import {BlueMarker} from '../../../components/common';
-import LocationsFlatList from '../../../components/LocationsFlatList';
+import LocationsFlatList from '../../../components/Locations/LocationsFlatList';
 import {geocodingClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';

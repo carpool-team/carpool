@@ -1,10 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
-import {colors, sheet} from '../styles';
-import {vh, vw} from '../utils/constants';
-import {Marker} from './common';
-import {StandardButton} from './common/buttons';
+import {colors, sheet} from '../../styles';
+import {vh, vw} from '../../utils/constants';
+import {Marker} from '../common';
+import {StandardButton} from '../common/buttons';
 
 const LocationSheet = ({_onSelect, _onGoBack, location}) => {
   const _renderContent = () => (

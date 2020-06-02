@@ -3,7 +3,7 @@ import {View, Text, SafeAreaView, Switch, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {vw, vh} from '../../../utils/constants';
 import DatePicker from 'react-native-date-picker';
-import PickDays from '../../../components/AddRide/PickDays';
+import PickDays from '../../../components/Driver/AddRide/PickDays';
 import {StandardButton} from '../../../components/common/buttons';
 
 const PickTime = ({navigation}) => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {colors, sheet} from '../styles';
-import {vh, vw} from '../utils/constants';
-import {Marker} from './common';
+import {colors, sheet} from '../../styles';
+import {vh, vw} from '../../utils/constants';
+import {Marker} from '../common';
 
 const CurrentLocationListItem = ({onPress = () => null}) => {
   return (
