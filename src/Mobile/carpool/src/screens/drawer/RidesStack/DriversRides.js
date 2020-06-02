@@ -10,7 +10,7 @@ import {
 } from '../../../context/DriverContext';
 import DriversRidesFlatList from '../../../components/Driver/DriversRidesFlatList';
 
-const DriversRides = () => {
+const DriversRides = ({navigation}) => {
   const [isUpcoming, setIsUpcoming] = useState(true);
   const [data, setData] = useState([]);
 
@@ -19,11 +19,6 @@ const DriversRides = () => {
     dispatch,
   } = useContext(DriverContext);
 
-  const onRefresh = () => {
-    createGetDriversRides(dispatch);
-    createGetDriversPastRides(dispatch);
-  };
-
   useEffect(() => {
     if (isUpcoming) {
       setData([...driversRides.data]);
@@ -31,6 +26,15 @@ const DriversRides = () => {
       setData([...driversPastRides.data]);
     }
   }, [isUpcoming]);
+
+  const onRefresh = () => {
+    createGetDriversRides(dispatch);
+    createGetDriversPastRides(dispatch);
+  };
+
+  const onItemPress = ride => {
+    navigation.navigate('DriversRideDetails', {ride});
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -56,7 +60,7 @@ const DriversRides = () => {
             data={data}
             loading={driversRides.loading || driversPastRides.loading}
             onRefresh={onRefresh}
-            onItemPress={console.log}
+            onItemPress={onItemPress}
           />
         </View>
       </View>

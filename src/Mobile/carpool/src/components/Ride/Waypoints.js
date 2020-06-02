@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: 14 * vw,
+    height: 13 * vw,
   },
   from: {
     ...sheet.textBold,

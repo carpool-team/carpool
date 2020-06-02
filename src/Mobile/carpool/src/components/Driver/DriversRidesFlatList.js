@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: 4 * vw,
+    paddingBottom: 8 * vh,
   },
 });
 
