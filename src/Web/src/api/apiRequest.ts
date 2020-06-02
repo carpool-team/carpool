@@ -40,8 +40,11 @@ export const apiRequest = async (props: IRequestProps) => {
     }
 
     const res = await fetch(`${proxyUrl}${config.devUrl}${endpoint}`, request);
-
-    if (res.status > 399) {
+    console.log(res);
+    if (res.status == 409) {
+      //TODO obsłużyć komunikat jeżeli kod grupy istnieje już w bazie
+      console.log("Kod grupy istnieje już w bazie", res.status);
+    } else if (res.status > 399) {
       console.log("Status Error", res);
     } else {
       const json = await res.json();
