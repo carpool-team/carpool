@@ -92,7 +92,7 @@ const getInvitesEpic: Epic<InviteAction> = (action$) =>
 		ofType(InvitesActionTypes.GetInvites),
 		switchMap(async (action: IGetInvitesAction) => {
 			let requestBody: IRequestProps;
-			if (action.invitesOnly) {
+			if (action.userOnly) {
 				requestBody = {
 					// TODO
 					method: RequestType.GET,

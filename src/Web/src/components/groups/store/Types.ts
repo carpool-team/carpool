@@ -59,7 +59,7 @@ export interface IGetGroupsActionError
 /** Action for getting invites */
 export interface IGetInvitesAction
 	extends Action<InvitesActionTypes.GetInvites> {
-	invitesOnly: boolean;
+	userOnly: boolean;
 }
 
 /** Action for getting invites success */

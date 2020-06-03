@@ -56,10 +56,10 @@ export function getGroupsError(error: Error): IGetGroupsActionError {
 	};
 }
 
-export function getInvites(invitesOnly: boolean): IGetInvitesAction {
+export function getInvites(userOnly: boolean): IGetInvitesAction {
 	return {
 		type: InvitesActionTypes.GetInvites,
-		invitesOnly,
+		userOnly,
 	};
 }
 

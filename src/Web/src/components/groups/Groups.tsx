@@ -23,8 +23,8 @@ class Groups extends Component<IGroupsProps> {
 
 	constructor(props: IGroupsProps) {
 		super(props);
-		this.props.getGroups(false);
-		this.props.getInvites(false);
+		this.props.getGroups(true);
+		this.props.getInvites(true);
 	}
 
 	/** Handles adding group */

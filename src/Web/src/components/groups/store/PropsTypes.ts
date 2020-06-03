@@ -21,7 +21,7 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 interface IDispatchPropsType {
 	addGroup: (group: IGroup) => IAddGroupAction;
 	getGroups: (userOnly: boolean) => IGetGroupsAction;
-	getInvites: (invitesOnly: boolean) => IGetInvitesAction;
+	getInvites: (userOnly: boolean) => IGetInvitesAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
