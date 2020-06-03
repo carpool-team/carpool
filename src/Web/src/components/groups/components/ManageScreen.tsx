@@ -89,6 +89,8 @@ class ManageScreen extends Component<IManageScreenProps> {
           </Button>
         </div>
         <hr />
+        //TODO tymczasowo na tym widoku, docelowo na innej zakładce wyświetlać w
+        //funkcji renderInvites
         {this.renderInvitesList()}
         <hr />
         <div className={this.cssClasses.buttonsPanel}>
