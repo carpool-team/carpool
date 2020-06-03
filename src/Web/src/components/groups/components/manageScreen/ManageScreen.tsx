@@ -56,10 +56,9 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		this.setState(produce((draft: IManageScreenState) => {
 			draft.selectedScreen = list;
 		}));
-		console.log(this.state);
 	}
 
-	renderInvitesList = () => <InvitesList getInvitesCallback={this.props.callbacks.getGroups} />;
+	renderInvitesList = () => <InvitesList getInvitesCallback={this.props.callbacks.getInvites} />;
 
 	renderGroupsList = () => <GroupsList getGroupsCallback={this.props.callbacks.getGroups} />;
 

@@ -3,9 +3,7 @@ import { IInvite } from "../interfaces/IInvite";
 
 /** Groups state interface */
 export interface IGroupsState {
-  /** List of groups */
-  groups: IGroup[];
-}
-export interface IInvitesState {
-  invites: IInvite[];
+	/** List of groups */
+	groups: IGroup[];
+	invites: IInvite[];
 }

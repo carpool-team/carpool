@@ -1,10 +1,11 @@
 import { IGroupsState } from "./State";
 import { Reducer } from "redux";
 import { produce } from "immer";
-import { GroupsAction, GroupsActionTypes } from "./Types";
+import { GroupsAction, GroupsActionTypes, InviteAction, InvitesActionTypes } from "./Types";
 
 const initialState: IGroupsState = {
 	groups: [],
+	invites: [],
 };
 
 /**
@@ -14,7 +15,7 @@ const initialState: IGroupsState = {
  */
 const reducer: Reducer<IGroupsState> = (
 	state = initialState,
-	action: GroupsAction
+	action: GroupsAction | InviteAction
 ) => {
 	return produce<IGroupsState>(state, (draft) => {
 		switch (action.type) {
@@ -22,8 +23,11 @@ const reducer: Reducer<IGroupsState> = (
 				draft.groups.push(action.newGroup);
 				break;
 			case GroupsActionTypes.GetGroupsSuccess:
-				console.log(action.groups);
 				draft.groups = action.groups;
+				break;
+			case InvitesActionTypes.GetInvitesSuccess:
+				console.log("INVITES REDUCER: ", action.invites);
+				draft.invites = action.invites;
 				break;
 			default:
 				break;

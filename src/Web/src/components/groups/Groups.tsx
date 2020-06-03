@@ -24,6 +24,7 @@ class Groups extends Component<IGroupsProps> {
 	constructor(props: IGroupsProps) {
 		super(props);
 		this.props.getGroups(false);
+		this.props.getInvites(false);
 	}
 
 	/** Handles adding group */
@@ -33,10 +34,13 @@ class Groups extends Component<IGroupsProps> {
 
 	getGroupsHandler = () => this.props.groups;
 
+	getInvitesHandler = () => this.props.invites;
+
 	render() {
 		let callbacks: IGroupCallbacks = {
 			addGroup: this.addGroupHandler,
 			getGroups: this.getGroupsHandler,
+			getInvites: this.getInvitesHandler,
 			redirect: (route) => this.props.history.push(route),
 		};
 
