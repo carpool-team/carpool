@@ -25,6 +25,8 @@
 
 .groupList {
   &__buttons {
+    display: flex;
+    flex-direction: row;
     & > button,
     > a {
       margin: 16px;

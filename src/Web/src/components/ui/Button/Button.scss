@@ -33,6 +33,18 @@
     color: $grayDark;
   }
   &--checkbox {
+    &_noContent {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      content: none !important;
+      float: left;
+      font-size: 18px;
+      padding: 20px;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
     float: left;
     font-size: 18px;
     padding: 20px;
