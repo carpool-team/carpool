@@ -233,23 +233,30 @@ namespace Carpool.RestAPI.Controllers
 			}
 		}
 
+		[HttpGet("{userId}/rides/owned/{rideId}")]
+		public async Task<ActionResult<IndexRideDTO>> GetUserOwnedRide([FromRoute]Guid userId, [FromRoute]Guid rideId)
+		{
+			var ride = await _context.Rides.FindAsync(rideId);
+
+			if (ride == null)
+			{
+				return NotFound();
+			}
+
+			return IndexRideDTO.FromRide(ride);
+		}
+
 		[HttpPost("{userId}/rides")]
 		public async Task<ActionResult<Ride>> PostRide([FromBody] AddRideDTO addRideDTO, [FromRoute] Guid userId)
 		{
 			try
 			{
-				var stops = addRideDTO.AddStopDTOs.Select(stop => new Stop()
-				{
-					User = _context.Users.FirstOrDefault(user => user.Id == stop.UserId),
-					Coordinates = stop.Coordinates
-				}).ToList();
-				var users = stops.Select(stop => stop.User).ToList<User>();
+
 				var ride = new Ride()
 				{
 					Price = addRideDTO.Price,
 					StartingLocation = addRideDTO.StartingLocation,
 					Owner = await _context.Users.FirstOrDefaultAsync(user => user.Id == userId),
-					Stops = stops
 				};
 				if(String.IsNullOrEmpty(addRideDTO.GroupId.ToString()))
 				{
@@ -259,21 +266,36 @@ namespace Carpool.RestAPI.Controllers
 				}
                 else
                 {
-					var group = await _context.Groups.Include(group => group.Location).FirstOrDefaultAsync(group => group.Id == addRideDTO.GroupId);
+					var group = await _context.Groups
+						.Include(group => group.Location)
+						.ThenInclude(location => location.Coordinates)
+						.Include(group => group.Location)
+						.ThenInclude(location => location.LocationName)
+						.FirstOrDefaultAsync(group => group.Id == addRideDTO.GroupId);
 					ride.Group = group;
 					ride.Destination = group.Location;
 
 				}
-				ride.Participants = users.Select(user => new UserParticipatedRide()
+				if (addRideDTO.AddStopDTOs != null)
 				{
-					Ride = ride,
-					User = user
-				}).ToList();
+					var stops = addRideDTO.AddStopDTOs.Select(stop => new Stop()
+					{
+						User = _context.Users.FirstOrDefault(user => user.Id == stop.UserId),
+						Coordinates = stop.Coordinates
+					}).ToList();
+					ride.Stops = stops;
+					var users = stops.Select(stop => stop.User).ToList<User>();
+					ride.Participants = users.Select(user => new UserParticipatedRide()
+					{
+						Ride = ride,
+						User = user
+					}).ToList();
+				}
 				ride.Date = addRideDTO.Date;
 				_context.Rides.Add(ride);
 				await _context.SaveChangesAsync();
 
-				return CreatedAtAction("GetRide", new { id = ride.Id }, IndexRideDTO.FromRide(ride));
+				return CreatedAtAction("GetUserOwnedRide", new { userId, rideId = ride.Id }, IndexRideDTO.FromRide(ride));
 			}
 			catch (Exception ex)
 			{

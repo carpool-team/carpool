@@ -23,7 +23,7 @@ namespace Carpool.Core.DTOs.UserDTOs
 				UserId = user.Id,
 				FirstName = user.FirstName,
 				LastName = user.LastName,
-				Vehicle = user.Vehicle ?? new Vehicle()
+				Vehicle = user.Vehicle ?? null
 			};
 		}
 	}

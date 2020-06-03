@@ -33,8 +33,8 @@ namespace Carpool.Core.DTOs.RideDTOs
 			{
 				Id = ride.Id,
 				Owner = IndexUserDTO.FromUser(ride.Owner),
-				Participants = ride.Participants.Select(participant => participant.User != null ? IndexUserDTO.FromUser(participant.User) : null).ToList(),
-				Stops = ride.Stops.Select(stop => stop != null ? IndexStopDTO.GetFromStop(stop) : null).ToList(),
+				Participants = ride.Participants != null ? ride.Participants.Select(participant => IndexUserDTO.FromUser(participant.User)).ToList() : null,
+				Stops = ride.Stops != null ? ride.Stops.Select(stop => IndexStopDTO.GetFromStop(stop)).ToList() : null,
 				Destination = ride.Destination ?? null,
 				StartingLocation = ride.StartingLocation ?? null,
 				Date = ride.Date,
