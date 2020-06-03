@@ -108,7 +108,7 @@ namespace Carpool.RestAPI.Controllers
 			_context.GroupInvites.Add(groupInvite);
 			await _context.SaveChangesAsync();
 			groupInviteDTO.Id = groupInvite.Id;
-			return CreatedAtAction("GetGroupInvite", new { id = groupInvite.Id }, groupInviteDTO);
+			return CreatedAtAction("GetGroupInvite", new { groupInviteId = groupInvite.Id }, groupInviteDTO);
 		}
 
 		// DELETE: api/GroupInvites/5

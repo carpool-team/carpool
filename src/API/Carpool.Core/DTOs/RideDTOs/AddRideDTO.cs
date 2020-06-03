@@ -13,7 +13,8 @@ namespace Carpool.RestAPI.DTOs.RideDTOs
 
 		public List<AddStopDTO> AddStopDTOs { get; set; }
 
-		[Required]
+		public Guid GroupId { get; set; }
+
 		public Location Destination { get; set; }
 
 		[Required]

@@ -247,11 +247,23 @@ namespace Carpool.RestAPI.Controllers
 				var ride = new Ride()
 				{
 					Price = addRideDTO.Price,
-					Destination = addRideDTO.Destination,
 					StartingLocation = addRideDTO.StartingLocation,
 					Owner = await _context.Users.FirstOrDefaultAsync(user => user.Id == userId),
 					Stops = stops
 				};
+				if(String.IsNullOrEmpty(addRideDTO.GroupId.ToString()))
+				{
+					if (addRideDTO.Destination == null)
+						return BadRequest("No group id nor destination");
+					ride.Destination = addRideDTO.Destination;
+				}
+                else
+                {
+					var group = await _context.Groups.Include(group => group.Location).FirstOrDefaultAsync(group => group.Id == addRideDTO.GroupId);
+					ride.Group = group;
+					ride.Destination = group.Location;
+
+				}
 				ride.Participants = users.Select(user => new UserParticipatedRide()
 				{
 					Ride = ride,
