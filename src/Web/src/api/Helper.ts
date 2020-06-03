@@ -4,8 +4,9 @@ import { RequestEndpoint } from "./enum/RequestEndpoint";
 export const getRequestEndpoint: (
   endpoint?: RequestEndpoint,
   userId?: string,
-  groupId?: string
-) => string = (endpoint, userId, groupId) => {
+  groupId?: string,
+  inviteId?: string
+) => string = (endpoint, userId, groupId, inviteId) => {
   switch (endpoint) {
     case RequestEndpoint.POST_ADD_GROUP:
       return "/groups";
@@ -23,6 +24,18 @@ export const getRequestEndpoint: (
       return `/groups/${groupId}/locations`;
     case RequestEndpoint.DELETE_GROUP_BY_ID:
       return `/groups/${groupId}`;
+    case RequestEndpoint.GET_INVITES_BY_USER_ID:
+      return `/users/${userId}/groupInvites`;
+    case RequestEndpoint.GET_ALL_INVITES:
+      return `/groupinvites`;
+    case RequestEndpoint.POST_INVITE:
+      return `/groupinvites`;
+    case RequestEndpoint.GET_INVITE_BY_ID:
+      return `/groupinvites/${inviteId}`;
+    case RequestEndpoint.PUT_CHANGE_INVITE:
+      return `/groupinvites/${inviteId}`;
+    case RequestEndpoint.DELETE_INVITE_BY_ID:
+      return `/groupinvites/${inviteId}`;
     default:
       return "";
   }
