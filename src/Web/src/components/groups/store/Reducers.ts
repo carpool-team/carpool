@@ -25,8 +25,10 @@ const reducer: Reducer<IGroupsState> = (
 			case GroupsActionTypes.GetGroupsSuccess:
 				draft.groups = action.groups;
 				break;
+			case InvitesActionTypes.AnswerInviteSuccess:
+				draft.invites[draft.invites.findIndex(i => i.id === action.inviteId)].isPending = false;
+				break;
 			case InvitesActionTypes.GetInvitesSuccess:
-				console.log("INVITES REDUCER: ", action.invites);
 				draft.invites = action.invites;
 				break;
 			default:

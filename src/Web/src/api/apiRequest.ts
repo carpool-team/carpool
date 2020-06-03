@@ -41,6 +41,8 @@ export const apiRequest = async (props: IRequestProps) => {
 			request.body = JSON.stringify(props.body);
 		}
 
+		console.log("URL: ", `${proxyUrl}${config.devUrl}${endpoint}`);
+		console.log("REQ: ", request);
 		const res = await fetch(`${proxyUrl}${config.devUrl}${endpoint}`, request);
 
 		if (res.status === 409) {

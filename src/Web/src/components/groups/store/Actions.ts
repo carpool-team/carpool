@@ -10,6 +10,9 @@ import {
 	IGetInvitesAction,
 	IGetInvitessActionSuccess,
 	IGetInvitesActionError,
+	IAnswerInviteActionError,
+	IAnswerInviteActionSuccess,
+	IAnswerInviteAction,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
@@ -52,6 +55,30 @@ export function getGroupsSuccess(groups: IGroup[]): IGetGroupsActionSuccess {
 export function getGroupsError(error: Error): IGetGroupsActionError {
 	return {
 		type: GroupsActionTypes.GetGroupsError,
+		error,
+	};
+}
+
+export function answerInvite(accepted: boolean, inviteId: string): IAnswerInviteAction {
+	return {
+		type: InvitesActionTypes.AnswerInvite,
+		accepted,
+		inviteId
+	};
+}
+
+export function answerInviteSuccess(
+	inviteId: string
+): IAnswerInviteActionSuccess {
+	return {
+		type: InvitesActionTypes.AnswerInviteSuccess,
+		inviteId,
+	};
+}
+
+export function answerInviteError(error: Error): IAnswerInviteActionError {
+	return {
+		type: InvitesActionTypes.AnswerInviteError,
 		error,
 	};
 }

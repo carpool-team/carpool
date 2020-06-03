@@ -12,12 +12,9 @@ export enum GroupsActionTypes {
 	GetGroupsError = "GROUPS_GET_GROUPS_ERROR",
 }
 export enum InvitesActionTypes {
-	AcceptInvite = "INVITES_ACCEPT_INVITE",
-	AcceptInviteSuccess = "INVITES_ACCEPT_INVITE_SUCCESS",
-	AcceptInviteError = "INVITES_ACCEPT_INVITE_ERROR",
-	DeclineInvite = "INVITES_DECLINE_INVITE",
-	DeclineInviteSuccess = "INVITES_DECLINE_INVITE_SUCCESS",
-	DeclineInviteError = "INVITES_DECLINE_INVITE_ERROR",
+	AnswerInvite = "INVITES_ANSWER_INVITE",
+	AnswerInviteSuccess = "INVITES_ANSWER_INVITE_SUCCESS",
+	AnswerInviteError = "INVITES_ANSWER_INVITE_ERROR",
 	GetInvites = "INVITES_GET_INVITES",
 	GetInvitesSuccess = "INVITES_GET_INVITES_SUCCESS",
 	GetInvitesError = "INVITES_GET_INVITES_ERROR",
@@ -56,6 +53,23 @@ export interface IGetGroupsActionError
 	extends Action<GroupsActionTypes.GetGroupsError> {
 	error: Error;
 }
+
+/** Action for answering invitation */
+export interface IAnswerInviteAction extends Action<InvitesActionTypes.AnswerInvite> {
+	accepted: boolean;
+	inviteId: string;
+}
+
+/** Action for answering invitation success */
+export interface IAnswerInviteActionSuccess extends Action<InvitesActionTypes.AnswerInviteSuccess> {
+	inviteId: string;
+}
+
+/** Action for answering invitation error */
+export interface IAnswerInviteActionError extends Action<InvitesActionTypes.AnswerInviteError> {
+	error: Error;
+}
+
 /** Action for getting invites */
 export interface IGetInvitesAction
 	extends Action<InvitesActionTypes.GetInvites> {
@@ -84,6 +98,9 @@ export type GroupsAction =
 	| IGetGroupsActionError;
 
 export type InviteAction =
+	IAnswerInviteAction
+	| IAnswerInviteActionSuccess
+	| IAnswerInviteActionError
 	| IGetInvitesAction
 	| IGetInvitessActionSuccess
 	| IGetInvitesActionError;

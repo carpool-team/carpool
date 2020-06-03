@@ -41,6 +41,7 @@ class Groups extends Component<IGroupsProps> {
 			addGroup: this.addGroupHandler,
 			getGroups: this.getGroupsHandler,
 			getInvites: this.getInvitesHandler,
+			answerInvite: (answer, id) => this.props.answerInvite(answer, id),
 			redirect: (route) => this.props.history.push(route),
 		};
 

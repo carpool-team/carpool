@@ -7,6 +7,7 @@ import { IInvite } from "../../../interfaces/IInvite";
 
 interface IInvitesListProps {
 	getInvitesCallback: () => IInvite[];
+	answerInviteCallback: (accepted: boolean, id: string) => void;
 }
 
 const InvitesList = (props: IInvitesListProps) => {
@@ -19,6 +20,8 @@ const InvitesList = (props: IInvitesListProps) => {
 		return (
 			<li key={key}>
 				<ButtonAcceptDecline
+					additionalAcceptOnClick={() => props.answerInviteCallback(true, invite.id)}
+					additionalDeclineOnClick={() => props.answerInviteCallback(false, invite.id)}
 					size={ButtonSize.Standard}
 					type={ButtonType.Standard}
 					shape={ButtonShape.Circle}

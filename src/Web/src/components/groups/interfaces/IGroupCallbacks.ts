@@ -6,5 +6,6 @@ export interface IGroupCallbacks {
 	addGroup: (group: IGroup) => void;
 	getGroups: () => IGroup[];
 	getInvites: () => IInvite[];
+	answerInvite: (accepted: boolean, inviteId: string) => void;
 	redirect: (route: string) => void;
 }

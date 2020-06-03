@@ -7,57 +7,67 @@ import { getSizeClass, getTypeClass, getShapeClass } from "./Helpers";
 import "./Button.scss";
 
 interface IButtonLinkProps {
-  size: ButtonSize;
-  type: ButtonType;
-  shape?: ButtonShape;
-  label: string;
+	size: ButtonSize;
+	type: ButtonType;
+	shape?: ButtonShape;
+	label: string;
+	additionalDeclineOnClick?: () => void;
+	additionalAcceptOnClick?: () => void;
 }
 
 const ButtonCheckBox: FunctionComponent<IButtonLinkProps> = (props) => {
-  const baseCssClass: string = "button button--checkbox_noContent";
-  const cssClasses: string = [
-    baseCssClass,
-    getShapeClass(props.shape),
-    getSizeClass(props.size),
-    getTypeClass(props.type),
-  ].join(" ");
+	const baseCssClass: string = "button button--checkbox_noContent";
+	const activeCssClass: string = "button--checkbox_active";
+	const checkboxLabelCssClass: string = "button--checkbox-label";
+	const acceptCssClass: string = "fa fa-check";
+	const declineCssClass: string = "fa fa-times";
 
-  const [activeAccept, setActiveAccept] = useState(true);
-  const [activeDecline, setActiveDecline] = useState(true);
+	const buttonCssClasses: string = [
+		baseCssClass,
+		getShapeClass(props.shape),
+		getSizeClass(props.size),
+		getTypeClass(props.type),
+	].join(" ");
 
-  return (
-    <>
-      <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-      />
-      <button
-        className={
-          cssClasses + (!activeAccept ? "button--checkbox_active" : "")
-        }
-        onClick={
-          !activeAccept
-            ? () => setActiveAccept(true)
-            : () => setActiveAccept(false)
-        }
-      >
-        <i className="fa fa-check" aria-hidden="true"></i>
-      </button>
-      <button
-        className={
-          cssClasses + (!activeDecline ? "button--checkbox_active" : "")
-        }
-        onClick={
-          !activeDecline
-            ? () => setActiveDecline(true)
-            : () => setActiveDecline(false)
-        }
-      >
-        <i className="fa fa-times" aria-hidden="true"></i>
-      </button>
-      <div className={"button--checkbox-label"}>{props.label}</div>
-    </>
-  );
+	const [activeAccept, setActiveAccept] = useState(true);
+	const [activeDecline, setActiveDecline] = useState(true);
+
+
+	const acceptOnClick = () => {
+		setActiveAccept(!activeAccept);
+		if (props.additionalAcceptOnClick) {
+			props.additionalAcceptOnClick();
+		}
+	};
+
+	const declineOnClick = () => {
+		setActiveDecline(!activeAccept);
+		if (props.additionalDeclineOnClick) {
+			props.additionalDeclineOnClick();
+		}
+	};
+
+	return (
+		<>
+			<button
+				className={
+					buttonCssClasses + (!activeAccept ? activeCssClass : "")
+				}
+				onClick={acceptOnClick}
+			>
+				<i className={acceptCssClass} aria-hidden={true}></i>
+			</button>
+			<button
+				className={
+					buttonCssClasses + (!activeDecline ? activeCssClass : "")
+				}
+				onClick={declineOnClick}
+			>
+				<i className={declineCssClass} aria-hidden={true}></i>
+			</button>
+			<div className={checkboxLabelCssClass}>{props.label}</div>
+		</>
+	);
 };
 
 export default ButtonCheckBox;

@@ -12,6 +12,8 @@ import {
 	IGetInvitessActionSuccess,
 	InviteAction,
 	InvitesActionTypes,
+	IAnswerInviteAction,
+	IAnswerInviteActionSuccess,
 } from "./Types";
 import { apiRequest, IRequestProps } from "../../../api/apiRequest";
 import { RequestType } from "../../../api/enum/RequestType";
@@ -124,4 +126,43 @@ const getInvitesEpic: Epic<InviteAction> = (action$) =>
 		)
 	);
 
-export const groupEpics = [addGroupEpic, getGroupsEpic, getInvitesEpic];
+const answerInviteEpic: Epic<InviteAction> = (action$) =>
+	action$.pipe(
+		ofType(InvitesActionTypes.AnswerInvite),
+		switchMap(async (action: IAnswerInviteAction) => {
+			let requestBody: IRequestProps = {
+				method: RequestType.PUT,
+				endpoint: RequestEndpoint.PUT_CHANGE_INVITE,
+				inviteId: action.inviteId,
+				body: {
+					groupInviteId: action.inviteId,
+					isAccepted: action.accepted,
+				},
+			};
+			const response = await apiRequest(requestBody);
+			return {
+				response,
+				id: action.inviteId,
+			};
+		}),
+		mergeMap((result) => {
+			if (result.response === "ok") {
+				return [
+					<IAnswerInviteActionSuccess>{
+						type: InvitesActionTypes.AnswerInviteSuccess,
+						inviteId: result.id,
+					},
+				];
+			} else {
+				throw "Error occured in answering invitation";
+			}
+		}),
+		catchError((err: Error) =>
+			of(<any>{
+				type: InvitesActionTypes.AnswerInviteError,
+				error: err,
+			})
+		)
+	);
+
+export const groupEpics = [addGroupEpic, getGroupsEpic, getInvitesEpic, answerInviteEpic];

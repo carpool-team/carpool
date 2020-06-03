@@ -58,7 +58,12 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		}));
 	}
 
-	renderInvitesList = () => <InvitesList getInvitesCallback={this.props.callbacks.getInvites} />;
+	renderInvitesList = () => (
+		<InvitesList
+			answerInviteCallback={this.props.callbacks.answerInvite}
+			getInvitesCallback={this.props.callbacks.getInvites}
+		/>
+	)
 
 	renderGroupsList = () => <GroupsList getGroupsCallback={this.props.callbacks.getGroups} />;
 
