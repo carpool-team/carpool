@@ -309,7 +309,7 @@ namespace Carpool.RestAPI.Controllers
 		#region Groups
 
 		[HttpGet("{userId}/groups")]
-		public async Task<ActionResult<List<Group>>> GetUserGroups([FromRoute]Guid userId)
+		public async Task<ActionResult<List<IndexGroupDTO>>> GetUserGroups([FromRoute]Guid userId)
 		{
 			var groupDTOs = await _context.Groups
 				.Include(group => group.Location)

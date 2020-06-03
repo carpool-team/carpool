@@ -10,7 +10,9 @@ namespace Carpool.Core.DTOs.GroupDTOs
 {
 	public class IndexGroupDTO
 	{
-		[Required]
+        public Guid Id { get; set; }
+
+        [Required]
 		public LocationDTO Location { get; set; }
 
 		[Required]
@@ -24,6 +26,7 @@ namespace Carpool.Core.DTOs.GroupDTOs
 		{
 			return new IndexGroupDTO()
 			{
+				Id = group.Id,
 				Location = group.Location != null ? LocationDTO.FromLocation(group.Location) : null,
 				Name = group.Name,
 				RideCount = group.Rides.Count(),
