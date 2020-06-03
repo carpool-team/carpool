@@ -11,12 +11,19 @@ const StandardButton = ({
   color = colors.blue,
   style,
   onPress,
+  backgroundColor,
 }) => {
+  let contentContainerStyle = {...sheet.center};
+
+  if (backgroundColor) {
+    contentContainerStyle.backgroundColor = backgroundColor;
+  }
+
   return (
     <UpView
       style={{width, height, ...style}}
       borderRadius={100}
-      contentContainerStyle={sheet.center}
+      contentContainerStyle={contentContainerStyle}
       onPress={onPress}>
       <Text style={{color, fontSize: 0.375 * height, ...sheet.textBold}}>
         {title}

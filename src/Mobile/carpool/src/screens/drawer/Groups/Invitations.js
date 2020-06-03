@@ -15,11 +15,12 @@ const Invitations = ({navigation}) => {
 
   const onAccept = async item => {
     try {
+      // Not sure if it still works
       const response = await apiRequest(
         METHODS.PUT,
-        ENDPOINTS.CHANGE_INVITATION_STATE,
+        ENDPOINTS.CHANGE_INVITATION_STATE(item.id),
         {
-          id: item.id,
+          groupInviteId: item.id,
           isAccepted: true,
         },
       );

@@ -6,6 +6,10 @@ export const getColor = date => {
   const diff = dt - now;
   const minutes = parseInt(diff / (1000 * 60));
 
+  if (dt < now) {
+    return colors.grayDark;
+  }
+
   if (minutes < 20) {
     return colors.red;
   } else {

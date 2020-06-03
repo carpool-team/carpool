@@ -37,6 +37,7 @@ export default useForwardGeocoding = (
       }
 
       const response = await geocodingClient.forwardGeocode(body).send();
+      console.log('RESSS', response);
 
       if (response.statusCode === 200) {
         const {features} = response.body;

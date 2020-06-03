@@ -6,6 +6,8 @@ import MainStackNavigator from './src/navigation/MainStackNavigator';
 import config from './config';
 import {AccountStore} from './src/context/AccountContext';
 import {PassengerStore} from './src/context/PassengerContext';
+import {DriverStore} from './src/context/DriverContext';
+import {AddRideStore} from './src/screens/HomeStack/AddRideStack/context';
 
 MapboxGL.setAccessToken(config.mapboxKey);
 
@@ -18,7 +20,11 @@ const App = () => {
     <NavigationContainer theme={LightTheme}>
       <AccountStore>
         <PassengerStore>
-          <MainStackNavigator />
+          <DriverStore>
+            <AddRideStore>
+              <MainStackNavigator />
+            </AddRideStore>
+          </DriverStore>
         </PassengerStore>
       </AccountStore>
     </NavigationContainer>

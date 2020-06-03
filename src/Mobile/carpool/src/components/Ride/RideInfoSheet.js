@@ -8,7 +8,6 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Waypoints from './Waypoints';
 import {StandardButton} from '../common/buttons';
 import {parseDistance} from '../../utils/parse';
-import {directionsClient} from '../../maps/mapbox';
 import {parseCoords} from '../../utils/coords';
 import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
 import DriverInfo from './DriverInfo';
@@ -16,6 +15,14 @@ import {
   PassengerContext,
   createGetAllRides,
 } from '../../context/PassengerContext';
+import {useGetDirections} from '../../hooks';
+
+const dirConfig = {
+  profile: 'walking',
+  overview: 'full',
+  geometries: 'geojson',
+  alternatives: true,
+};
 
 const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
   const [distance, setDistance] = useState(null);
@@ -30,12 +37,14 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
   const [rideId, setRideId] = useState(null);
   const [response, loading, error, _addParticipant] = useRequest(
     METHODS.PUT,
-    ENDPOINTS.ADD_PARTICIPANT,
+    ENDPOINTS.ADD_PARTICIPANT(rideId),
     {
       participantId,
-      rideId,
     },
   );
+
+  // Directions
+  const [results, ldng, err, _getDirections] = useGetDirections(dirConfig);
 
   useEffect(() => {
     if (!visible && extended) {
@@ -67,25 +76,17 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
     }
   }, [response]);
 
-  const onGetDistance = async () => {
-    const response = await directionsClient
-      .getDirections({
-        profile: 'walking',
-        waypoints: [
-          {
-            coordinates: userLocation,
-          },
-          {
-            coordinates: parseCoords(ride.startingLocation.coordinates),
-          },
-        ],
-        overview: 'full',
-        geometries: 'geojson',
-        alternatives: true,
-      })
-      .send();
+  useEffect(() => {
+    if (results) {
+      setDistance(parseDistance(results.body.routes[0].distance));
+    }
+  }, [results]);
 
-    setDistance(parseDistance(response.body.routes[0].distance));
+  const onGetDistance = () => {
+    _getDirections(
+      userLocation,
+      parseCoords(ride.startingLocation.coordinates),
+    );
   };
 
   const onSelectRide = () => {

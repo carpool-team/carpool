@@ -5,7 +5,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {vw} from '../../../utils/constants';
 import {useNavigation} from '@react-navigation/core';
 import {Marker} from '../../../components/common';
-import LocationSheet from '../../../components/LocationSheet';
+import LocationSheet from '../../../components/Locations/LocationSheet';
 import config from '../../../../config';
 
 const ShowSelected = props => {

@@ -1,34 +1,31 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useRef, useContext, useEffect} from 'react';
 import {
   View,
+  ActivityIndicator,
   SafeAreaView,
-  TouchableOpacity,
   TextInput,
   StyleSheet,
-  Text,
-  ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
-import {colors, sheet} from '../../styles';
-import {vh, vw} from '../../utils/constants';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from '@react-navigation/core';
-import {BlueMarker} from '../../components/common';
-import {geocodingClient} from '../../maps/mapbox';
+import {AccountContext} from '../../../context/AccountContext';
+import {StartLocationsFlatList} from '../../../components/FindRoute';
+import GroupsFlatlist from '../../../components/Locations/GroupsFlatlist';
 import Geolocation from '@react-native-community/geolocation';
-import useForwardGeocoding from '../../hooks/useForwardGeocoding';
-import {StartLocationsFlatList} from '../../components/FindRoute';
-import GroupsFlatlist from '../../components/Locations/GroupsFlatlist';
-import DatePicker from 'react-native-date-picker';
-import {StandardButton} from '../../components/common/buttons';
-import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
-import {AccountContext} from '../../context/AccountContext';
+import {BlueMarker} from '../../../components/common';
+import {colors, sheet} from '../../../styles';
+import {vh, vw} from '../../../utils/constants';
+import {geocodingClient} from '../../../maps/mapbox';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {StandardButton} from '../../../components/common/buttons';
+import {RouteMinimap} from '../../../components/Route';
+import {AddRideContext, AddRideContextActions} from './context';
 
 const config = {
   autocomplete: false,
   countries: ['pl'],
 };
 
-const AskForRide = () => {
+const ChooseRoute = ({navigation}) => {
   const [currentPosition, setCurrentPosition] = useState([]);
   const [start, setStart] = useState(null);
   const [startGeo, setStartGeo] = useState(null);
@@ -36,32 +33,21 @@ const AskForRide = () => {
   const [destinationGeo, setDestinationGeo] = useState(null);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
-  const [date, setDate] = useState(new Date());
+  const [groupId, setGroupId] = useState(null);
 
-  const navigation = useNavigation();
   const _destination = useRef();
-  const requesterId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
 
+  // Geocoding
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
 
   // Store
   const {
     accountState: {
-      groups: {data: groups},
+      groups: {data: groups, loading: groupsLoading},
     },
   } = useContext(AccountContext);
   let grps = groups.map(group => ({...group, place_name: group.name}));
-
-  //Requests
-  const [response, loading, error, _sendRideRequest] = useRequest(
-    METHODS.POST,
-    ENDPOINTS.SEND_RIDE_REQUEST(requesterId),
-    {
-      destination: destinationGeo,
-      startingLocation: startGeo,
-      date,
-    },
-  );
+  const {addRideState, dispatch: addRideDispatch} = useContext(AddRideContext);
 
   useEffect(() => {
     Geolocation.getCurrentPosition(info => {
@@ -71,14 +57,10 @@ const AskForRide = () => {
   }, []);
 
   useEffect(() => {
-    console.log(startResults);
-  }, [startResults]);
-
-  useEffect(() => {
-    if (response && !loading) {
-      navigation.goBack();
+    if (addRideState.startingLocation && addRideState.groupId) {
+      navigation.navigate('PickTime');
     }
-  }, [loading, response]);
+  }, [addRideState]);
 
   const onFocusDestination = () => {
     const {current} = _destination;
@@ -135,12 +117,20 @@ const AskForRide = () => {
       coordinates: item.location.coordinates,
       locationName: null,
     };
+    setGroupId(item.id);
     setDestinationGeo(dstGeo);
     onBlurDestination();
   };
 
   const onSubmit = () => {
-    _sendRideRequest();
+    addRideDispatch({
+      type: AddRideContextActions.SET_STARTING_LOCATION,
+      payload: startGeo,
+    });
+    addRideDispatch({
+      type: AddRideContextActions.SET_GROUP_ID,
+      payload: groupId,
+    });
   };
 
   const renderList = () => {
@@ -156,9 +146,8 @@ const AskForRide = () => {
     } else if (isDestinationFocused) {
       return (
         <GroupsFlatlist
-          //data={exampleGroups}
           data={grps}
-          loading={false}
+          loaidng={groupsLoading}
           onItemPress={onDestinationItemPress}
         />
       );
@@ -168,37 +157,15 @@ const AskForRide = () => {
           <ActivityIndicator size="large" color={colors.green} />
         </View>
       ) : (
-        <View style={styles.datePickerWrapper}>
-          <View>
-            <Text style={styles.arrivalTime}>Arrival time</Text>
-            {loading ? (
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <ActivityIndicator size="large" color={colors.green} />
-              </View>
-            ) : (
-              <DatePicker
-                date={date}
-                onDateChange={setDate}
-                locale="pl"
-                minimumDate={new Date()}
-                minuteInterval={10}
-              />
-            )}
-          </View>
-          {loading ? null : (
-            <StandardButton
-              width="65%"
-              style={{marginTop: 4 * vh}}
-              onPress={onSubmit}
-              title="Submit"
-              color={colors.green}
-            />
-          )}
+        <View style={styles.mapContainer}>
+          <RouteMinimap start={startGeo} destination={destinationGeo} />
+          <StandardButton
+            style={{marginTop: 4 * vh}}
+            width="65%"
+            onPress={onSubmit}
+            title="Next"
+            color={colors.blue}
+          />
         </View>
       );
     }
@@ -321,24 +288,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  datePickerWrapper: {
-    width: '100%',
+  mapContainer: {
     flex: 1,
+    width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 10 * vh,
-  },
-  arrivalTime: {
-    color: colors.grayDark,
-    fontSize: 5 * vw,
-    ...sheet.textBold,
-    textAlign: 'center',
-  },
-  submit: {
-    color: colors.green,
-    fontSize: 2.25 * vh,
-    ...sheet.textBold,
+    paddingBottom: 4 * vh,
   },
 });
 
-export default AskForRide;
+export default ChooseRoute;

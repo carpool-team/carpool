@@ -1,8 +1,8 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
-import {sheet, colors} from '../styles';
-import {vh, vw} from '../utils/constants';
-import {Marker} from './common';
+import {sheet, colors} from '../../styles';
+import {vh, vw} from '../../utils/constants';
+import {Marker} from '../common';
 
 const LocationsListItem = ({item, onPress = () => null}) => {
   return (
