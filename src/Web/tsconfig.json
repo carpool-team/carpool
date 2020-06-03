@@ -15,6 +15,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "target": "ES6",
     "lib": [

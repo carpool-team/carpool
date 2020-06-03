@@ -9,12 +9,10 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/src/API/Carpool.RestAPI/bin/Debug/netcoreapp3.1/Carpool.RestAPI.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/API/Carpool.RestAPI",
             "stopAtEntry": false,
-            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {
                 "action": "openExternally",
                 "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
@@ -38,7 +36,15 @@
             "request": "launch",
             "reAttach": true,
             "url": "http://localhost:8080",
-            "webRoot": "${workspaceFolder}/src/Web"
+            "webRoot": "${workspaceFolder}",
+            "suggestPathMappingWizard": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "pathMappings": [
+                {
+                    "url": "webpack:///src",
+                    "path": "${workspaceFolder}/src/Web/src"
+                }
+            ]
         }
     ]
 }
