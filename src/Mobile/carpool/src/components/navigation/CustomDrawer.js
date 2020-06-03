@@ -60,6 +60,13 @@ export default CustomDrawer = props => {
     navigation.navigate('Home', {ride});
   };
 
+  const onDriversRidePress = () => {
+    navigation.navigate('Rides', {
+      screen: 'DriversRideDetails',
+      params: {ride: driversRide},
+    });
+  };
+
   const isPassenger = activeAccount === 'passenger';
 
   return (
@@ -101,7 +108,10 @@ export default CustomDrawer = props => {
             {isPassenger ? (
               <DriverInfo ride={ride} onPress={onRidePress} />
             ) : (
-              <DriversRideInfo ride={driversRide} onPress={() => null} />
+              <DriversRideInfo
+                ride={driversRide}
+                onPress={onDriversRidePress}
+              />
             )}
           </View>
           <DrawerItemList {...props} />
