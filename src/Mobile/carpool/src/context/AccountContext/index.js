@@ -4,8 +4,7 @@ import {METHODS, ENDPOINTS} from '../../hooks';
 const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
 
 const initialState = {
-  //activeAccount: 'passenger',
-  activeAccount: 'driver',
+  activeAccount: 'passenger',
   groups: {
     data: [],
     loading: false,
