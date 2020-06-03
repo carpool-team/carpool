@@ -1,15 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, SafeAreaView, Switch, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {vw, vh} from '../../../utils/constants';
 import DatePicker from 'react-native-date-picker';
 import PickDays from '../../../components/Driver/AddRide/PickDays';
 import {StandardButton} from '../../../components/common/buttons';
+import {AddRideContext, AddRideContextActions} from './context';
 
 const PickTime = ({navigation}) => {
   const [isRegular, setIsRegular] = useState(false);
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
+
+  const {addRideState, dispatch} = useContext(AddRideContext);
+
+  useEffect(() => {
+    if (addRideState.date) {
+      navigation.navigate('SetSeats');
+    }
+  }, [addRideState]);
 
   const renderSingular = () => (
     <View style={styles.singularContainer}>
@@ -36,6 +45,10 @@ const PickTime = ({navigation}) => {
     </View>
   );
 
+  const onSubmit = () => {
+    dispatch({type: AddRideContextActions.SET_DATE, payload: date});
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -47,7 +60,7 @@ const PickTime = ({navigation}) => {
         <StandardButton
           style={{}}
           width="65%"
-          onPress={() => navigation.navigate('SetSeats')}
+          onPress={onSubmit}
           title="Next"
           color={colors.blue}
         />

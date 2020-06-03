@@ -18,6 +18,7 @@ import {geocodingClient} from '../../../maps/mapbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {StandardButton} from '../../../components/common/buttons';
 import {RouteMinimap} from '../../../components/Route';
+import {AddRideContext, AddRideContextActions} from './context';
 
 const config = {
   autocomplete: false,
@@ -32,6 +33,7 @@ const ChooseRoute = ({navigation}) => {
   const [destinationGeo, setDestinationGeo] = useState(null);
   const [isStartFocused, setIsStartFocused] = useState(false);
   const [isDestinationFocused, setIsDestinationFocused] = useState(false);
+  const [groupId, setGroupId] = useState(null);
 
   const _destination = useRef();
 
@@ -45,6 +47,7 @@ const ChooseRoute = ({navigation}) => {
     },
   } = useContext(AccountContext);
   let grps = groups.map(group => ({...group, place_name: group.name}));
+  const {addRideState, dispatch: addRideDispatch} = useContext(AddRideContext);
 
   useEffect(() => {
     Geolocation.getCurrentPosition(info => {
@@ -52,6 +55,12 @@ const ChooseRoute = ({navigation}) => {
       setCurrentPosition([longitude, latitude]);
     });
   }, []);
+
+  useEffect(() => {
+    if (addRideState.startingLocation && addRideState.groupId) {
+      navigation.navigate('PickTime');
+    }
+  }, [addRideState]);
 
   const onFocusDestination = () => {
     const {current} = _destination;
@@ -108,8 +117,20 @@ const ChooseRoute = ({navigation}) => {
       coordinates: item.location.coordinates,
       locationName: null,
     };
+    setGroupId(item.id);
     setDestinationGeo(dstGeo);
     onBlurDestination();
+  };
+
+  const onSubmit = () => {
+    addRideDispatch({
+      type: AddRideContextActions.SET_STARTING_LOCATION,
+      payload: startGeo,
+    });
+    addRideDispatch({
+      type: AddRideContextActions.SET_GROUP_ID,
+      payload: groupId,
+    });
   };
 
   const renderList = () => {
@@ -141,7 +162,7 @@ const ChooseRoute = ({navigation}) => {
           <StandardButton
             style={{marginTop: 4 * vh}}
             width="65%"
-            onPress={() => navigation.navigate('PickTime')}
+            onPress={onSubmit}
             title="Next"
             color={colors.blue}
           />

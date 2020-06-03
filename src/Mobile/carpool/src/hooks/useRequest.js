@@ -20,6 +20,7 @@ export const ENDPOINTS = {
   // POST
   // SEND_RIDE_REQUEST: '/RideRequests',
   SEND_RIDE_REQUEST: id => `/users/${id}/rideRequests`,
+  CREATE_NEW_RIDE: id => `/users/${id}/rides`,
   // PUT
   // ADD_PARTICIPANT: '/Rides/AddParticipant',
   ADD_PARTICIPANT: id => `/rides/${id}/users`,

@@ -1,16 +1,39 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import {vw, vh} from '../../../utils/constants';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {colors, sheet} from '../../../styles';
 import {CircleButton, StandardButton} from '../../../components/common/buttons';
+import {AddRideContext, AddRideContextActions} from './context';
+import {useRequest, METHODS, ENDPOINTS} from '../../../hooks';
 
 const MIN_VALUE = 1;
 const MAX_VALUE = 4;
+const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
 
 const SetSeats = ({navigation}) => {
-  const [seats, setSeats] = useState(0);
+  const [seats, setSeats] = useState(MIN_VALUE);
+
+  const {addRideState, dispatch} = useContext(AddRideContext);
+
+  // Requests
+  const [response, loading, error, _createRide] = useRequest(
+    METHODS.POST,
+    ENDPOINTS.CREATE_NEW_RIDE(userId),
+    {...addRideState},
+  );
+
+  const onSubmit = () => {
+    _createRide();
+  };
+
+  useEffect(() => {
+    if (response) {
+      dispatch({type: AddRideContextActions.CLEAN_STATE});
+      navigation.navigate('Home');
+    }
+  }, [response, error]);
 
   const onIncrement = () => {
     if (seats < MAX_VALUE) {
@@ -62,7 +85,7 @@ const SetSeats = ({navigation}) => {
         </View>
         <StandardButton
           width="65%"
-          onPress={() => navigation.navigate('Home')}
+          onPress={onSubmit}
           title="Submit"
           color={colors.blue}
         />
