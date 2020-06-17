@@ -175,15 +175,23 @@ namespace Carpool.RestAPI.Controllers
 			return _context.Rides.Any(e => e.Id == id);
 		}
 
-		[HttpPut("{rideId}/users")]
-		public async Task<ActionResult> AddParticipant([FromRoute]Guid rideId, [FromBody] AddParticipantToRideDTO addParticipantToRideDTO)
+		[HttpPost("{rideId}/users")]
+		public async Task<ActionResult> AddParticipant([FromRoute]Guid rideId, [FromBody] AddStopDTO stop)
 		{
 			var ride = await _context.Rides.Include(ride => ride.Participants).FirstOrDefaultAsync(ride => ride.Id == rideId);
 			ride.Participants.Add(new UserParticipatedRide()
 			{
 				Ride = ride,
-				User = await _context.Users.FirstOrDefaultAsync(user => user.Id == addParticipantToRideDTO.ParticipantId)
+				User = await _context.Users.FirstOrDefaultAsync(user => user.Id == stop.ParticipantId)
 			});
+			if(stop.Coordinates == null)
+            {
+				ride.Stops.Add(new Stop()
+				{
+					Coordinates = stop.Coordinates,
+					User = await _context.Users.FirstOrDefaultAsync(user => user.Id == stop.ParticipantId)
+				});
+            }
 			await _context.SaveChangesAsync();
 			return NoContent();
 		}

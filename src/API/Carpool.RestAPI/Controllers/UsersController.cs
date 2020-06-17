@@ -205,6 +205,7 @@ namespace Carpool.RestAPI.Controllers
 			{
 				var rides = await _context.Rides.AsNoTracking()
 					.Include(ride => ride.Stops)
+						.ThenInclude(stop => stop.User)
 					.Include(ride => ride.StartingLocation)
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.StartingLocation)
