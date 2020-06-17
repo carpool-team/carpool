@@ -68,7 +68,12 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 
 	renderGroupsList = () => <GroupsList getGroupsCallback={this.props.callbacks.getGroups} />;
 
-	renderRidesList = () => <RidesList getRidesCallback={this.props.callbacks.getRides} />;
+	renderRidesList = () => (
+		<RidesList
+			getRidesCallback={this.props.callbacks.getRides}
+			participateCallback={this.props.callbacks.participateInRide}
+		/>
+	)
 
 	renderGroups = () => {
 		const { t } = this.props;

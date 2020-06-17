@@ -25,8 +25,11 @@ export enum RidesActionTypes {
 	GetRides = "RIDES_GET_RIDES",
 	GetRidesSuccess = "RIDES_GET_RIDES_SUCCESS",
 	GetRidesError = "RIDES_GET_RIDES_ERROR",
+	ParticipateInRide = "RIDES_PARTICIPATE_IN_RIDE",
+	ParticipateInRideError = "RIDES_PARTICIPATE_IN_RIDE_ERROR",
 }
 
+//#region GROUPS
 /** Action for adding group */
 export interface IAddGroupAction extends Action<GroupsActionTypes.AddGroup> {
 	group: IGroup;
@@ -60,7 +63,9 @@ export interface IGetGroupsActionError
 	extends Action<GroupsActionTypes.GetGroupsError> {
 	error: Error;
 }
+//#endregion
 
+//#region INVITES
 /** Action for answering invitation */
 export interface IAnswerInviteAction extends Action<InvitesActionTypes.AnswerInvite> {
 	accepted: boolean;
@@ -94,7 +99,9 @@ export interface IGetInvitesActionError
 	extends Action<InvitesActionTypes.GetInvitesError> {
 	error: Error;
 }
+//#endregion
 
+//#region RIDES
 /** Action for getting rides */
 export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
 	userOnly: boolean;
@@ -109,6 +116,17 @@ export interface IGetRidesActionSuccess extends Action<RidesActionTypes.GetRides
 export interface IGetRidesActionError extends Action<RidesActionTypes.GetRidesError> {
 	error: Error;
 }
+
+/** Action for participating in ride */
+export interface IParticipateInRideAction extends Action<RidesActionTypes.ParticipateInRide> {
+	rideId: string;
+}
+
+/** Action for participating in ride */
+export interface IParticipateInRideActionError extends Action<RidesActionTypes.ParticipateInRideError> {
+	error: Error;
+}
+//#endregion
 
 /** Type of group action */
 export type GroupsAction =
@@ -130,4 +148,6 @@ export type InviteAction =
 export type RideAction =
 	IGetRidesAction
 	| IGetRidesActionSuccess
-	| IGetRidesActionError;
+	| IGetRidesActionError
+	| IParticipateInRideAction
+	| IParticipateInRideActionError;

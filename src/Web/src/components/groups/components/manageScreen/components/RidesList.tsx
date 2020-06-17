@@ -1,5 +1,4 @@
 import React from "react";
-import ButtonAcceptDecline from "../../../../ui/Button/ButtonJoin";
 import { ButtonSize } from "../../../../ui/Button/enums/ButtonSize";
 import { ButtonType } from "../../../../ui/Button/enums/ButtonType";
 import { ButtonShape } from "../../../../ui/Button/enums/ButtonShape";
@@ -8,7 +7,7 @@ import ButtonJoin from "../../../../ui/Button/ButtonJoin";
 
 interface IRidesListProps {
 	getRidesCallback: () => IRide[];
-	// answerInviteCallback: (join: boolean, id: string) => void;
+	participateCallback: (rideId: string) => void;
 }
 
 const InvitesList = (props: IRidesListProps) => {
@@ -25,6 +24,7 @@ const InvitesList = (props: IRidesListProps) => {
 					type={ButtonType.Standard}
 					shape={ButtonShape.Circle}
 					owner={ride.isUserParticipant}
+					additionalJoinOnClick={() => props.participateCallback(ride.id)}
 					label={key}
 				></ButtonJoin>
 			</li>

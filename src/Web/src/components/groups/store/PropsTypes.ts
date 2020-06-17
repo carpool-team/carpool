@@ -1,6 +1,6 @@
 import { IGroup } from "../interfaces/IGroup";
-import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction } from "./Types";
-import { addGroup, getGroups, getInvites, answerInvite, getRides, } from "./Actions";
+import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction, IParticipateInRideAction } from "./Types";
+import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, } from "./Actions";
 import { IGroupsState } from "./State";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
@@ -27,6 +27,7 @@ interface IDispatchPropsType {
 	getInvites: (userOnly: boolean) => IGetInvitesAction;
 	answerInvite: (accepted: boolean, inviteId: string) => IAnswerInviteAction;
 	getRides: (userOnly: boolean) => IGetRidesAction;
+	participateInRide: (rideId: string) => IParticipateInRideAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
@@ -35,6 +36,7 @@ export const mapDispatchToProps: IDispatchPropsType = {
 	getInvites,
 	answerInvite,
 	getRides,
+	participateInRide,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;

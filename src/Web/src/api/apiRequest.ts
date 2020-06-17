@@ -13,6 +13,7 @@ export interface IRequestProps {
 	userId?: string;
 	groupId?: string;
 	inviteId?: string;
+	rideId?: string;
 	body?: any;
 }
 
@@ -31,7 +32,8 @@ export const apiRequest = async (props: IRequestProps) => {
 			props.endpoint,
 			props.userId,
 			props.groupId,
-			props.inviteId
+			props.inviteId,
+			props.rideId,
 		);
 		let request: IRequest = {
 			method,

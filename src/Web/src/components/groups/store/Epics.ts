@@ -18,6 +18,7 @@ import {
 	RidesActionTypes,
 	IGetRidesAction,
 	IGetRidesActionSuccess,
+	IParticipateInRideAction,
 } from "./Types";
 import { apiRequest, IRequestProps } from "../../../api/apiRequest";
 import { RequestType } from "../../../api/enum/RequestType";
@@ -25,6 +26,10 @@ import { RequestEndpoint } from "../../../api/enum/RequestEndpoint";
 import _ from "lodash";
 
 const tempUserId: string = "8151a9b2-52ee-4ce0-a2dd-08d7f7744d91"; // TODO: ZAORAĆ, NIE MAGIC STRING
+const tempCoords: Object = {
+	"longitude": 0,
+	"latitude": 0
+}; // TODO: ZAORAĆ< POIBIERAC LAT,LNG
 
 const addGroupEpic: Epic<GroupsAction> = (action$) =>
 	action$.pipe(
@@ -200,6 +205,39 @@ const getRidesEpic: Epic<RideAction> = (action$) =>
 				error: err,
 			})
 		)
-	)
+	);
 
-export const groupEpics = [addGroupEpic, getGroupsEpic, getInvitesEpic, answerInviteEpic, getRidesEpic];
+const participateInRideEpic: Epic<RideAction> = (action$) =>
+	action$.pipe(
+		ofType(RidesActionTypes.ParticipateInRide),
+		switchMap(async (action: IParticipateInRideAction) => {
+			let requestBody: IRequestProps = {
+				// TODO
+				method: RequestType.POST,
+				endpoint: RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT,
+				rideId: action.rideId,
+				body: {
+					participantId: tempUserId,
+					coordinates: tempCoords,
+				}
+			};
+			const response = await apiRequest(requestBody);
+			return response;
+		}),
+		mergeMap(_ => {
+			return [
+				<IGetRidesAction>{
+					type: RidesActionTypes.GetRides,
+					userOnly: true,
+				},
+			];
+		}),
+		catchError((err: Error) =>
+			of(<any>{
+				type: RidesActionTypes.ParticipateInRideError,
+				error: err,
+			})
+		)
+	);
+
+export const groupEpics = [addGroupEpic, getGroupsEpic, getInvitesEpic, answerInviteEpic, getRidesEpic, participateInRideEpic];

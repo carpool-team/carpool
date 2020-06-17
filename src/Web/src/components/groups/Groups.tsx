@@ -47,6 +47,7 @@ class Groups extends Component<IGroupsProps> {
 			answerInvite: (answer, id) => this.props.answerInvite(answer, id),
 			redirect: (route) => this.props.history.push(route),
 			getRides: this.getRidesHandler,
+			participateInRide: this.props.participateInRide,
 		};
 
 		return (

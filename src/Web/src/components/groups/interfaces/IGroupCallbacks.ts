@@ -10,4 +10,5 @@ export interface IGroupCallbacks {
 	answerInvite: (accepted: boolean, inviteId: string) => void;
 	redirect: (route: string) => void;
 	getRides: () => IRide[];
+	participateInRide: (rideId: string) => void;
 }

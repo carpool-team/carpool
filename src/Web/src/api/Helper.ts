@@ -5,8 +5,9 @@ export const getRequestEndpoint: (
 	endpoint?: RequestEndpoint,
 	userId?: string,
 	groupId?: string,
-	inviteId?: string
-) => string = (endpoint, userId, groupId, inviteId) => {
+	inviteId?: string,
+	rideId?: string,
+) => string = (endpoint, userId, groupId, inviteId, rideId) => {
 	switch (endpoint) {
 		case RequestEndpoint.POST_ADD_GROUP:
 			return "/groups";
@@ -42,6 +43,8 @@ export const getRequestEndpoint: (
 			return `/users/${userId}/rides/participated`;
 		case RequestEndpoint.GET_RIDES_OWNED_BY_USER_ID:
 			return `/users/${userId}/rides/owned`;
+		case RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT:
+			return `/rides/${rideId}/users`;
 		default:
 			return "";
 	}
