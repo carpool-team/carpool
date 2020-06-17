@@ -26,7 +26,7 @@ const getLeavingIn = date => {
   }
 };
 
-const DriverInfo = ({ride, distance, style, onPress}) => {
+const DriversRideInfo = ({ride, style, onPress}) => {
   return ride ? (
     <UpView
       style={{
@@ -39,7 +39,7 @@ const DriverInfo = ({ride, distance, style, onPress}) => {
         <CircleButton
           style={{marginRight: 3 * vw}}
           icon={
-            <Ionicon name="md-person" color={colors.grayDark} size={11 * vw} />
+            <Ionicon name="ios-car" color={colors.grayDark} size={11 * vw} />
           }
         />
         <View style={styles.userInfoContainer}>
@@ -47,10 +47,9 @@ const DriverInfo = ({ride, distance, style, onPress}) => {
             style={{
               ...sheet.rowCenterSplit,
             }}>
-            <Text style={styles.username} numberOfLines={1}>
-              {`${ride.owner.firstName} ${ride.owner.lastName}`}
+            <Text style={styles.regularRide} numberOfLines={1}>
+              Regular ride
             </Text>
-            <Text style={styles.distance}>{distance}</Text>
           </View>
           <Text style={[styles.leavingIn, {color: getColor(ride.date)}]}>
             {getLeavingIn(ride.date)}
@@ -75,10 +74,10 @@ const styles = StyleSheet.create({
     height: 16 * vw,
     paddingVertical: 0.5 * vh,
   },
-  username: {
+  regularRide: {
     ...sheet.textBold,
     fontSize: 4 * vw,
-    color: colors.grayDark,
+    color: colors.blue,
     flex: 1,
     marginRight: 1 * vw,
   },
@@ -93,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DriverInfo;
+export default DriversRideInfo;

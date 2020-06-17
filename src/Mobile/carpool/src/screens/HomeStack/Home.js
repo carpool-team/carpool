@@ -14,6 +14,12 @@ import {
   createGetAllRides,
 } from '../../context/PassengerContext';
 import config from '../../../config';
+import DriverMap from './DriverMap';
+import {
+  DriverContext,
+  createGetDriversRides,
+  createGetDriversPastRides,
+} from '../../context/DriverContext';
 
 const requestLocationPermission = async () => {
   try {
@@ -44,6 +50,7 @@ const Home = () => {
     AccountContext,
   );
   const {dispatch} = React.useContext(PassengerContext);
+  const {dispatch: driverDispatch} = React.useContext(DriverContext);
   const {activeAccount} = accountState;
 
   const [coordinates, setCoordinates] = useState([]);
@@ -62,6 +69,8 @@ const Home = () => {
   useEffect(() => {
     // Delete ride from params
     if (activeAccount === 'driver') {
+      createGetDriversRides(driverDispatch);
+      createGetDriversPastRides(driverDispatch);
       if (route.params) {
         let params = route.params;
         delete params.ride;
@@ -112,7 +121,10 @@ const Home = () => {
               _onLocateUser={_onLocateUser}
             />
           ) : (
-            renderDriver()
+            <DriverMap
+              coordinates={coordinates}
+              _onLocateUser={_onLocateUser}
+            />
           )}
         </View>
       </SafeAreaView>

@@ -1,8 +1,8 @@
 import React from 'react';
 import {RefreshControl, FlatList} from 'react-native';
-import {vw, vh} from '../utils/constants';
-import {colors} from '../styles';
-import LocationsListItem from './LocationsListItem';
+import {vw, vh} from '../../utils/constants';
+import {colors} from '../../styles';
+import LocationsListItem from '../Locations/LocationsListItem';
 
 const GroupsFlatlist = ({data, loading, onItemPress}) => {
   return (
