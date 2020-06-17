@@ -25,6 +25,7 @@ class Groups extends Component<IGroupsProps> {
 		super(props);
 		this.props.getGroups(true);
 		this.props.getInvites(true);
+		this.props.getRides(true);
 	}
 
 	/** Handles adding group */
@@ -36,6 +37,8 @@ class Groups extends Component<IGroupsProps> {
 
 	getInvitesHandler = () => this.props.invites;
 
+	getRidesHandler = () => this.props.rides;
+
 	render() {
 		let callbacks: IGroupCallbacks = {
 			addGroup: this.addGroupHandler,
@@ -43,6 +46,7 @@ class Groups extends Component<IGroupsProps> {
 			getInvites: this.getInvitesHandler,
 			answerInvite: (answer, id) => this.props.answerInvite(answer, id),
 			redirect: (route) => this.props.history.push(route),
+			getRides: this.getRidesHandler,
 		};
 
 		return (

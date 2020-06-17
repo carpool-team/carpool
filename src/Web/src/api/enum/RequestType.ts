@@ -1,6 +1,6 @@
 export enum RequestType {
-  GET,
-  PUT,
-  POST,
-  DELETE,
+	GET,
+	PUT,
+	POST,
+	DELETE,
 }

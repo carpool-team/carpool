@@ -14,6 +14,10 @@ import {
 	InvitesActionTypes,
 	IAnswerInviteAction,
 	IAnswerInviteActionSuccess,
+	RideAction,
+	RidesActionTypes,
+	IGetRidesAction,
+	IGetRidesActionSuccess,
 } from "./Types";
 import { apiRequest, IRequestProps } from "../../../api/apiRequest";
 import { RequestType } from "../../../api/enum/RequestType";
@@ -152,6 +156,10 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 						type: InvitesActionTypes.AnswerInviteSuccess,
 						inviteId: result.id,
 					},
+					<IGetGroupsAction>{
+						type: GroupsActionTypes.GetGroups,
+						userOnly: true,
+					}
 				];
 			} else {
 				throw "Error occured in answering invitation";
@@ -165,4 +173,33 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 		)
 	);
 
-export const groupEpics = [addGroupEpic, getGroupsEpic, getInvitesEpic, answerInviteEpic];
+const getRidesEpic: Epic<RideAction> = (action$) =>
+	action$.pipe(
+		ofType(RidesActionTypes.GetRides),
+		switchMap(async (action: IGetRidesAction) => {
+			let requestBody: IRequestProps = {
+				// TODO
+				method: RequestType.GET,
+				endpoint: RequestEndpoint.GET_RIDES_AVAILABLE_BY_USER_ID,
+				userId: action.userOnly ? tempUserId : null,
+			};
+			const response = await apiRequest(requestBody);
+			return response;
+		}),
+		mergeMap((response) => {
+			return [
+				<IGetRidesActionSuccess>{
+					type: RidesActionTypes.GetRidesSuccess,
+					rides: response,
+				},
+			];
+		}),
+		catchError((err: Error) =>
+			of(<any>{
+				type: RidesActionTypes.GetRidesError,
+				error: err,
+			})
+		)
+	)
+
+export const groupEpics = [addGroupEpic, getGroupsEpic, getInvitesEpic, answerInviteEpic, getRidesEpic];

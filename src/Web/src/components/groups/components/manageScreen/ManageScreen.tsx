@@ -12,6 +12,7 @@ import ButtonLink from "../../../ui/Button/ButtonLink";
 import Button from "../../../ui/Button/Button";
 import GroupsList from "./components/GroupsList";
 import InvitesList from "./components/InvitesList";
+import RidesList from "./components/RidesList";
 
 import mapImage from "assets_path/img/loadingMap.png";
 
@@ -67,6 +68,8 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 
 	renderGroupsList = () => <GroupsList getGroupsCallback={this.props.callbacks.getGroups} />;
 
+	renderRidesList = () => <RidesList getRidesCallback={this.props.callbacks.getRides} />;
+
 	renderGroups = () => {
 		const { t } = this.props;
 		const { url } = this.props.match;
@@ -81,7 +84,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 				list = this.renderInvitesList();
 				break;
 			case Lists.Rides:
-				list = <span>TODO: RIDES LIST</span>;
+				list = this.renderRidesList();
 				break;
 			default:
 				list = <></>;

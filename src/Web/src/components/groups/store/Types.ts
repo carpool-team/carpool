@@ -1,6 +1,7 @@
 import { Action } from "redux";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
+import { IRide } from "../interfaces/IRide";
 
 /** Enum of groups actions */
 export enum GroupsActionTypes {
@@ -18,6 +19,12 @@ export enum InvitesActionTypes {
 	GetInvites = "INVITES_GET_INVITES",
 	GetInvitesSuccess = "INVITES_GET_INVITES_SUCCESS",
 	GetInvitesError = "INVITES_GET_INVITES_ERROR",
+}
+
+export enum RidesActionTypes {
+	GetRides = "RIDES_GET_RIDES",
+	GetRidesSuccess = "RIDES_GET_RIDES_SUCCESS",
+	GetRidesError = "RIDES_GET_RIDES_ERROR",
 }
 
 /** Action for adding group */
@@ -88,6 +95,21 @@ export interface IGetInvitesActionError
 	error: Error;
 }
 
+/** Action for getting rides */
+export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
+	userOnly: boolean;
+}
+
+/** Action for getting rides success */
+export interface IGetRidesActionSuccess extends Action<RidesActionTypes.GetRidesSuccess> {
+	rides: IRide[];
+}
+
+/** Action for getting rides error */
+export interface IGetRidesActionError extends Action<RidesActionTypes.GetRidesError> {
+	error: Error;
+}
+
 /** Type of group action */
 export type GroupsAction =
 	| IAddGroupAction
@@ -104,3 +126,8 @@ export type InviteAction =
 	| IGetInvitesAction
 	| IGetInvitessActionSuccess
 	| IGetInvitesActionError;
+
+export type RideAction =
+	IGetRidesAction
+	| IGetRidesActionSuccess
+	| IGetRidesActionError;

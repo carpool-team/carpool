@@ -1,5 +1,6 @@
 import { IGroup } from "./IGroup";
 import { IInvite } from "./IInvite";
+import { IRide } from "./IRide";
 
 /** Callbacks interface for groups */
 export interface IGroupCallbacks {
@@ -8,4 +9,5 @@ export interface IGroupCallbacks {
 	getInvites: () => IInvite[];
 	answerInvite: (accepted: boolean, inviteId: string) => void;
 	redirect: (route: string) => void;
+	getRides: () => IRide[];
 }

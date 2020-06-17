@@ -13,10 +13,16 @@ import {
 	IAnswerInviteActionError,
 	IAnswerInviteActionSuccess,
 	IAnswerInviteAction,
+	IGetRidesAction,
+	IGetRidesActionSuccess,
+	IGetRidesActionError,
+	RidesActionTypes,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
+import { IRide } from "../interfaces/IRide";
 
+//#region GROUPS
 export function addGroup(group: IGroup): IAddGroupAction {
 	return {
 		type: GroupsActionTypes.AddGroup,
@@ -58,7 +64,9 @@ export function getGroupsError(error: Error): IGetGroupsActionError {
 		error,
 	};
 }
+//#endregion
 
+//#region INVITES
 export function answerInvite(accepted: boolean, inviteId: string): IAnswerInviteAction {
 	return {
 		type: InvitesActionTypes.AnswerInvite,
@@ -105,3 +113,27 @@ export function getInvitesError(error: Error): IGetInvitesActionError {
 		error,
 	};
 }
+//#endregion
+
+//#region RIDES
+export function getRides(userOnly: boolean): IGetRidesAction {
+	return {
+		type: RidesActionTypes.GetRides,
+		userOnly,
+	};
+}
+
+export function getRidesSuccess(rides: IRide[]): IGetRidesActionSuccess {
+	return {
+		type: RidesActionTypes.GetRidesSuccess,
+		rides,
+	};
+}
+
+export function getRidesError(error: Error): IGetRidesActionError {
+	return {
+		type: RidesActionTypes.GetRidesError,
+		error,
+	};
+}
+//#endregion
