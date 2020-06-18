@@ -19,9 +19,9 @@ interface IButtonJoinProps {
 
 const ButtonJoin: FunctionComponent<IButtonJoinProps> = (props) => {
 	const baseCssClass: string = "button button--checkbox_noContent";
-	const checkboxLabelCssClass: string = "button--checkbox-label";
+	const checkboxLabelCssClass: string = "button--join-label";
 	const acceptCssClass: string = "fa fa-plus";
-	const icoCssClass: string = "button__userIco";
+	const icoCssClass: string = "button--userIco";
 
 	const buttonCssClasses: string = [
 		baseCssClass,
