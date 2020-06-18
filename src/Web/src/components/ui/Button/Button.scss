@@ -32,6 +32,14 @@
     line-height: 40px;
     color: $grayDark;
   }
+  &--join-label {
+    display: flex;
+    margin-left: 100px;
+    font-weight: $medium;
+    color: $grayDark;
+    font-size: 18px;
+    align-items: center;
+  }
   &--checkbox {
     &_noContent {
       display: flex;
@@ -93,6 +101,10 @@
     border-radius: 20px;
     width: 145px;
     height: 45px;
+  }
+  &--userIco {
+    height: 40px;
+    margin-right: 5px;
   }
 }
 @media only screen and (max-width: 500px) {

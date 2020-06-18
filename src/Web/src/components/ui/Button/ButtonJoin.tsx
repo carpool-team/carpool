@@ -9,52 +9,52 @@ import driverIco from "assets_path/img/driver_ico.png";
 import "./Button.scss";
 
 interface IButtonJoinProps {
-	size: ButtonSize;
-	type: ButtonType;
-	shape?: ButtonShape;
-	owner: boolean;
-	label: string;
-	additionalJoinOnClick?: () => void;
+  size: ButtonSize;
+  type: ButtonType;
+  shape?: ButtonShape;
+  owner: boolean;
+  label: string;
+  additionalJoinOnClick?: () => void;
 }
 
 const ButtonJoin: FunctionComponent<IButtonJoinProps> = (props) => {
-	const baseCssClass: string = "button button--checkbox_noContent";
-	const checkboxLabelCssClass: string = "button--checkbox-label";
-	const acceptCssClass: string = "fa fa-plus";
-	const icoCssClass: string = "button__userIco";
+  const baseCssClass: string = "button button--checkbox_noContent";
+  const checkboxLabelCssClass: string = "button--join-label";
+  const acceptCssClass: string = "fa fa-plus";
+  const icoCssClass: string = "button--userIco";
 
-	const buttonCssClasses: string = [
-		baseCssClass,
-		getShapeClass(props.shape),
-		getSizeClass(props.size),
-		getTypeClass(props.type),
-	].join(" ");
+  const buttonCssClasses: string = [
+    baseCssClass,
+    getShapeClass(props.shape),
+    getSizeClass(props.size),
+    getTypeClass(props.type),
+  ].join(" ");
 
-	const [join, setJoin] = useState(true);
+  const [join, setJoin] = useState(true);
 
-	const joinOnClick = () => {
-		setJoin(!join);
-		if (props.additionalJoinOnClick) {
-			props.additionalJoinOnClick();
-		}
-	};
+  const joinOnClick = () => {
+    setJoin(!join);
+    if (props.additionalJoinOnClick) {
+      props.additionalJoinOnClick();
+    }
+  };
 
-	return (
-		<>
-			<button
-				className={buttonCssClasses + (!join ? acceptCssClass : "")}
-				onClick={joinOnClick}
-			>
-				<i className={acceptCssClass} aria-hidden={true}></i>
-			</button>
-			{props.owner ? (
-				<img className={icoCssClass} src={userIco} alt={""} />
-			) : (
-					<img className={icoCssClass} src={driverIco} alt={""} />
-				)}
-			<div className={checkboxLabelCssClass}>{props.label}</div>
-		</>
-	);
+  return (
+    <>
+      <button
+        className={buttonCssClasses + (!join ? acceptCssClass : "")}
+        onClick={joinOnClick}
+      >
+        <i className={acceptCssClass} aria-hidden={true}></i>
+      </button>
+      {props.owner ? (
+        <img className={icoCssClass} src={userIco} alt={""} />
+      ) : (
+        <img className={icoCssClass} src={driverIco} alt={""} />
+      )}
+      <div className={checkboxLabelCssClass}>{props.label}</div>
+    </>
+  );
 };
 
 export default ButtonJoin;
