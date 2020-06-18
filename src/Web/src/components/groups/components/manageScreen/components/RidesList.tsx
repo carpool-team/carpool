@@ -16,20 +16,22 @@ const InvitesList = (props: IRidesListProps) => {
 	const rides: IRide[] = props.getRidesCallback();
 
 	const renderRide = (ride: IRide) => {
-		let key: string = ride.id;
+		let label: string = ride.destination.locationName.name;
 		return (
-			<li key={key}>
+			<li key={ride.id}>
 				<ButtonJoin
 					size={ButtonSize.Standard}
 					type={ButtonType.Standard}
 					shape={ButtonShape.Circle}
 					owner={ride.isUserParticipant}
 					additionalJoinOnClick={() => props.participateCallback(ride.id)}
-					label={key}
+					label={label}
 				></ButtonJoin>
 			</li>
 		);
 	};
+
+	console.log("RIDES: ", rides);
 
 	const renderRides = (rides: IRide[]) => rides.map((i) => renderRide(i));
 

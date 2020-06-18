@@ -6,7 +6,10 @@ interface ILocation {
 		latitude: number;
 		coordinatesId: string;
 	};
-	locationName: string;
+	locationName: {
+		id: string;
+		name: string;
+	};
 	id: string;
 }
 interface IParticipant {
