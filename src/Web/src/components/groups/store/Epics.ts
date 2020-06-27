@@ -24,6 +24,7 @@ import { apiRequest, IRequestProps } from "../../../api/apiRequest";
 import { RequestType } from "../../../api/enum/RequestType";
 import { RequestEndpoint } from "../../../api/enum/RequestEndpoint";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 const tempUserId: string = "8151a9b2-52ee-4ce0-a2dd-08d7f7744d91"; // TODO: ZAORAĆ, NIE MAGIC STRING
 const tempCoords: Object = {
@@ -225,6 +226,7 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 			return response;
 		}),
 		mergeMap(_ => {
+			toast.success("Succesfully participated in ride!");
 			return [
 				<IGetRidesAction>{
 					type: RidesActionTypes.GetRides,
@@ -232,12 +234,13 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 				},
 			];
 		}),
-		catchError((err: Error) =>
-			of(<any>{
+		catchError((err: Error) => {
+			toast.error("Could not participate in ride :(");
+			return of(<any>{
 				type: RidesActionTypes.ParticipateInRideError,
 				error: err,
-			})
-		)
+			});
+		})
 	);
 
 export const groupEpics = [addGroupEpic, getGroupsEpic, getInvitesEpic, answerInviteEpic, getRidesEpic, participateInRideEpic];

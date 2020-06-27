@@ -3,8 +3,10 @@ import NavBar from "../NavBar/NavBar";
 import Footer from "../footer/Footer";
 import LayoutRouter from "./components/LayoutRouter";
 import { RouteComponentProps, withRouter } from "react-router";
+import { ToastContainer } from "react-toastify";
 
 import "./Layout.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 class Layout extends Component<RouteComponentProps> {
 	private cssClasses = {
@@ -19,6 +21,7 @@ class Layout extends Component<RouteComponentProps> {
 		return (
 			<React.Fragment>
 				<NavBar />
+				<ToastContainer />
 				<main className={this.cssClasses.main}>
 					<LayoutRouter
 						match={this.props.match}
