@@ -28,6 +28,8 @@ export const getShapeClass: (type?: ButtonShape) => void = (shape) => {
       return "button--rectangle";
     case ButtonShape.Circle:
       return "button--circle";
+    case ButtonShape.NavBar:
+      return "button--navbar"
     default:
       return "button--rectangle";
   }

@@ -2,4 +2,5 @@
 export enum ButtonShape {
   Rectangle,
   Circle,
+  NavBar
 }

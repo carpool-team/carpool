@@ -92,6 +92,15 @@
     border-radius: 20px;
     width: 145px;
     height: 45px;
+    }
+  &--navbar {
+    border-radius: 20px;
+    width: 145px;
+    height: 45px;
+    @media only screen and (max-width: 900px){
+      width: 80%;
+
+  }
   }
   &--userIco {
     height: 40px;
