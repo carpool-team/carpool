@@ -27,18 +27,9 @@
     right: 5px;
     background: $background;
     height: inherit;
-    padding-left: 50px;
     vertical-align: middle;
     line-height: 40px;
     color: $grayDark;
-  }
-  &--join-label {
-    display: flex;
-    margin-left: 100px;
-    font-weight: $medium;
-    color: $grayDark;
-    font-size: 18px;
-    align-items: center;
   }
   &--checkbox {
     &_noContent {

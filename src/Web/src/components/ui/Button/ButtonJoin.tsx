@@ -19,8 +19,9 @@ interface IButtonJoinProps {
 
 const ButtonJoin: FunctionComponent<IButtonJoinProps> = (props) => {
 	const baseCssClass: string = "button button--checkbox_noContent";
-	const checkboxLabelCssClass: string = "button--join-label";
+	const checkboxLabelCssClass: string = "button--checkbox-label";
 	const acceptCssClass: string = "fa fa-plus";
+	const declineCssClass: string = "fa fa-minus";
 	const icoCssClass: string = "button--userIco";
 
 	const buttonCssClasses: string = [
@@ -42,10 +43,10 @@ const ButtonJoin: FunctionComponent<IButtonJoinProps> = (props) => {
 	return (
 		<>
 			<button
-				className={buttonCssClasses + (!join ? acceptCssClass : "")}
+				className={buttonCssClasses}// + (!join ? acceptCssClass : "")}
 				onClick={joinOnClick}
 			>
-				<i className={acceptCssClass} aria-hidden={true}></i>
+				<i className={join ? acceptCssClass : declineCssClass} aria-hidden={true}></i>
 			</button>
 			{props.owner ? (
 				<img className={icoCssClass} src={userIco} alt={""} />
