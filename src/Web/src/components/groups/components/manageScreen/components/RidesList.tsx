@@ -16,7 +16,15 @@ const InvitesList = (props: IRidesListProps) => {
 	const rides: IRide[] = props.getRidesCallback();
 
 	const renderRide = (ride: IRide) => {
-		let label: string = ride.destination.locationName.name;
+		let label: string
+
+		if (ride.destination.locationName.name == null) {
+			label = "Brak nazwy lokacji";
+		}
+		else {
+			label = ride.destination.locationName.name;
+		}
+
 		return (
 			<li key={ride.id}>
 				<ButtonJoin
