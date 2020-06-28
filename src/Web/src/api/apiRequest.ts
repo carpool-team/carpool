@@ -1,6 +1,7 @@
 import { RequestType } from "./enum/RequestType";
 import { RequestEndpoint } from "./enum/RequestEndpoint";
 import { getRequestEndpoint, getRequestType } from "./Helper";
+import { tempUserId } from "./useRequest";
 
 export interface IRequest {
 	method: string;
@@ -21,7 +22,7 @@ export const apiRequest = async (props: IRequestProps) => {
 	try {
 		const config = {
 			devUrl: "https://carpool-rest-api.azurewebsites.net/api",
-			userId: "8151a9b2-52ee-4ce0-a2dd-08d7f7744d91",
+			userId: tempUserId,
 		};
 		const proxyUrl = "https://cors-anywhere.herokuapp.com/";
 		const headers = {

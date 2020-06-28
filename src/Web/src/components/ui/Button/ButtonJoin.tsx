@@ -42,12 +42,12 @@ const ButtonJoin: FunctionComponent<IButtonJoinProps> = (props) => {
 
 	return (
 		<>
-			<button
+			{props.owner ? <button
 				className={buttonCssClasses}// + (!join ? acceptCssClass : "")}
 				onClick={joinOnClick}
 			>
 				<i className={join ? acceptCssClass : declineCssClass} aria-hidden={true}></i>
-			</button>
+			</button> : <></>}
 			{props.owner ? (
 				<img className={icoCssClass} src={userIco} alt={""} />
 			) : (

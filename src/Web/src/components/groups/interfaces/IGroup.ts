@@ -13,5 +13,5 @@ export interface IGroup {
 	owner: string;
 	rideCount: number;
 	userCount: number;
-	selected: boolean;
+	selected?: boolean;
 }

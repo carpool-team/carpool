@@ -30,6 +30,7 @@ export enum RidesActionTypes {
 	GetRidesSuccess = "RIDES_GET_RIDES_SUCCESS",
 	GetRidesError = "RIDES_GET_RIDES_ERROR",
 	ParticipateInRide = "RIDES_PARTICIPATE_IN_RIDE",
+	ParticipateInRideSuccess = "RIDES_PARTICIPATE_IN_RIDE_SUCCESS",
 	ParticipateInRideError = "RIDES_PARTICIPATE_IN_RIDE_ERROR",
 }
 
@@ -132,7 +133,12 @@ export interface IParticipateInRideAction extends Action<RidesActionTypes.Partic
 	rideId: string;
 }
 
-/** Action for participating in ride */
+/** Action for participating in ride success */
+export interface IParticipateInRideActionSuccess extends Action<RidesActionTypes.ParticipateInRideSuccess> {
+	rideId: string;
+}
+
+/** Action for participating in ride error */
 export interface IParticipateInRideActionError extends Action<RidesActionTypes.ParticipateInRideError> {
 	error: Error;
 }
@@ -161,4 +167,5 @@ export type RideAction =
 	| IGetRidesActionSuccess
 	| IGetRidesActionError
 	| IParticipateInRideAction
+	| IParticipateInRideActionSuccess
 	| IParticipateInRideActionError;

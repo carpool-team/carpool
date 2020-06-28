@@ -19,6 +19,7 @@ import {
 	RidesActionTypes,
 	IParticipateInRideAction,
 	ISetGroupSelectedAction,
+	IParticipateInRideActionSuccess,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
@@ -150,6 +151,13 @@ export function getRidesError(error: Error): IGetRidesActionError {
 export function participateInRide(rideId: string): IParticipateInRideAction {
 	return {
 		type: RidesActionTypes.ParticipateInRide,
+		rideId,
+	};
+}
+
+export function participateInRideSuccess(rideId: string): IParticipateInRideActionSuccess {
+	return {
+		type: RidesActionTypes.ParticipateInRideSuccess,
 		rideId,
 	};
 }

@@ -20,20 +20,19 @@ const reducer: Reducer<IGroupsState> = (
 	action: GroupsAction | InviteAction | RideAction
 ) => {
 	return produce<IGroupsState>(state, (draft) => {
+		let idx: number;
 		switch (action.type) {
 			case GroupsActionTypes.AddGroupSuccess:
 				draft.groups.push(action.newGroup);
 				break;
 			case GroupsActionTypes.GetGroupsSuccess:
 				draft.groups = action.groups;
-				draft.groups.forEach(g => {
-					if (!g.selected) {
-						g.selected = false;
-					}
-				});
 				break;
 			case InvitesActionTypes.AnswerInviteSuccess:
-				draft.invites[draft.invites.findIndex(i => i.id === action.inviteId)].isPending = false;
+				idx = draft.invites.findIndex(i => i.id === action.inviteId);
+				if (idx > -1) {
+					draft.invites[idx].isPending = true;
+				}
 				break;
 			case InvitesActionTypes.GetInvitesSuccess:
 				draft.invites = action.invites;
@@ -42,10 +41,15 @@ const reducer: Reducer<IGroupsState> = (
 				draft.rides = action.rides;
 				break;
 			case GroupsActionTypes.SetGroupSelected:
-				console.log("ACTION: ", action);
-				let idx: number = draft.groups.findIndex(g => g.id === action.id);
+				idx = draft.groups.findIndex(g => g.id === action.id);
 				if (idx > -1) {
 					draft.groups[idx].selected = action.selected;
+				}
+				break;
+			case RidesActionTypes.ParticipateInRideSuccess:
+				idx = draft.rides.findIndex(r => r.id === action.rideId);
+				if (idx > -1) {
+					draft.rides[idx].isUserParticipant = true;
 				}
 				break;
 			default:

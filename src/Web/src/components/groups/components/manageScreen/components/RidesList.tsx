@@ -4,6 +4,7 @@ import { ButtonType } from "../../../../ui/Button/enums/ButtonType";
 import { ButtonShape } from "../../../../ui/Button/enums/ButtonShape";
 import { IRide } from "../../../interfaces/IRide";
 import ButtonJoin from "../../../../ui/Button/ButtonJoin";
+import { tempUserId } from "../../../../../api/useRequest";
 
 interface IRidesListProps {
 	getRidesCallback: () => IRide[];
@@ -30,7 +31,7 @@ const InvitesList = (props: IRidesListProps) => {
 					size={ButtonSize.Standard}
 					type={ButtonType.Standard}
 					shape={ButtonShape.Circle}
-					owner={ride.isUserParticipant}
+					owner={ride.owner.userId === tempUserId}
 					additionalJoinOnClick={() => props.participateCallback(ride.id)}
 					label={label}
 				></ButtonJoin>

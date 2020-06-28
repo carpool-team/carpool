@@ -15,6 +15,8 @@ interface IRequestProps {
 	body?: any;
 }
 
+export const tempUserId: string = "8151a9b2-52ee-4ce0-a2dd-08d7f7744d91";
+
 const useRequest = (props: IRequestProps) => {
 	const [response, setResponse] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -22,7 +24,7 @@ const useRequest = (props: IRequestProps) => {
 
 	const config = {
 		devUrl: "https://carpool-rest-api.azurewebsites.net/api",
-		userId: "8151a9b2-52ee-4ce0-a2dd-08d7f7744d91",
+		userId: tempUserId,
 	};
 
 	const _execute = async () => {

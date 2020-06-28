@@ -19,14 +19,15 @@ import {
 	IGetRidesAction,
 	IGetRidesActionSuccess,
 	IParticipateInRideAction,
+	IParticipateInRideActionSuccess,
 } from "./Types";
 import { apiRequest, IRequestProps } from "../../../api/apiRequest";
 import { RequestType } from "../../../api/enum/RequestType";
 import { RequestEndpoint } from "../../../api/enum/RequestEndpoint";
 import _ from "lodash";
 import { toast } from "react-toastify";
+import { tempUserId } from "../../../api/useRequest";
 
-const tempUserId: string = "8151a9b2-52ee-4ce0-a2dd-08d7f7744d91"; // TODO: ZAORAĆ, NIE MAGIC STRING
 const tempCoords: Object = {
 	"longitude": 0,
 	"latitude": 0
@@ -223,15 +224,22 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 				}
 			};
 			const response = await apiRequest(requestBody);
-			return response;
+			// return response;
+			return {
+				id: action.rideId,
+			};
 		}),
-		mergeMap(_ => {
+		mergeMap(response => {
 			toast.success("Succesfully participated in ride!");
 			return [
 				<IGetRidesAction>{
 					type: RidesActionTypes.GetRides,
 					userOnly: true,
 				},
+				<IParticipateInRideActionSuccess>{
+					type: RidesActionTypes.ParticipateInRideSuccess,
+					rideId: response.id,
+				}
 			];
 		}),
 		catchError((err: Error) => {

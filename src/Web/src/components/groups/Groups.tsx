@@ -13,6 +13,7 @@ import {
 } from "./store/PropsTypes";
 
 import "./Groups.scss";
+import { tempUserId } from "../../api/useRequest";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
@@ -25,7 +26,7 @@ class Groups extends Component<IGroupsProps> {
 		super(props);
 		this.props.getGroups(true);
 		this.props.getInvites(true);
-		this.props.getRides(true);
+		this.props.getRides(false);
 	}
 
 	/** Handles adding group */
@@ -39,7 +40,7 @@ class Groups extends Component<IGroupsProps> {
 
 	getRidesHandler = () => {
 		let groupIds: string[] = this.props.groups.filter(g => g.selected).map(g => g.id);
-		return this.props.rides.filter(r => groupIds.includes(r.group?.id));
+		return this.props.rides.filter(r => groupIds.includes(r.group?.id) && (!r.isUserParticipant || r.owner.userId === tempUserId));
 	}
 
 	render() {
