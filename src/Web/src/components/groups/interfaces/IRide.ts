@@ -1,23 +1,6 @@
-import { IGroupUser } from "./IGroupUser";
-
-interface ILocation {
-	coordinates: {
-		longitude: number;
-		latitude: number;
-		coordinatesId: string;
-	};
-	locationName: {
-		id: string;
-		name: string;
-	};
-	id: string;
-}
-interface IParticipant {
-	userId: string;
-	firstName: string;
-	lastName: string;
-	vehicle: string;
-}
+import { IGroup } from "./IGroup";
+import { IParticipant } from "./IParticipant";
+import { ILocation } from "./ILocation";
 
 /** Group interface */
 export interface IRide {
@@ -29,4 +12,5 @@ export interface IRide {
 	startingLocation: ILocation;
 	date: string;
 	isUserParticipant: boolean;
+	group: IGroup;
 }

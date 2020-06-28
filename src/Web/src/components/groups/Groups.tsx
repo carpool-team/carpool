@@ -37,7 +37,10 @@ class Groups extends Component<IGroupsProps> {
 
 	getInvitesHandler = () => this.props.invites;
 
-	getRidesHandler = () => this.props.rides;
+	getRidesHandler = () => {
+		let groupIds: string[] = this.props.groups.filter(g => g.selected).map(g => g.id);
+		return this.props.rides.filter(r => groupIds.includes(r.group?.id));
+	}
 
 	render() {
 		let callbacks: IGroupCallbacks = {
@@ -48,6 +51,7 @@ class Groups extends Component<IGroupsProps> {
 			redirect: (route) => this.props.history.push(route),
 			getRides: this.getRidesHandler,
 			participateInRide: this.props.participateInRide,
+			setGroupSelected: (id, selected) => this.props.setGroupSelected(id, selected),
 		};
 
 		return (

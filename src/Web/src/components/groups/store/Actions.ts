@@ -18,6 +18,7 @@ import {
 	IGetRidesActionError,
 	RidesActionTypes,
 	IParticipateInRideAction,
+	ISetGroupSelectedAction,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
@@ -63,6 +64,14 @@ export function getGroupsError(error: Error): IGetGroupsActionError {
 	return {
 		type: GroupsActionTypes.GetGroupsError,
 		error,
+	};
+}
+
+export function setGroupSelected(id: string, selected: boolean): ISetGroupSelectedAction {
+	return {
+		type: GroupsActionTypes.SetGroupSelected,
+		id,
+		selected,
 	};
 }
 //#endregion

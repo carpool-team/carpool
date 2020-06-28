@@ -2,6 +2,7 @@ import { IGroupsState } from "./State";
 import { Reducer } from "redux";
 import { produce } from "immer";
 import { GroupsAction, GroupsActionTypes, InviteAction, InvitesActionTypes, RideAction, RidesActionTypes } from "./Types";
+import { IGroup } from "../interfaces/IGroup";
 
 const initialState: IGroupsState = {
 	groups: [],
@@ -25,6 +26,11 @@ const reducer: Reducer<IGroupsState> = (
 				break;
 			case GroupsActionTypes.GetGroupsSuccess:
 				draft.groups = action.groups;
+				draft.groups.forEach(g => {
+					if (!g.selected) {
+						g.selected = false;
+					}
+				});
 				break;
 			case InvitesActionTypes.AnswerInviteSuccess:
 				draft.invites[draft.invites.findIndex(i => i.id === action.inviteId)].isPending = false;
@@ -34,6 +40,13 @@ const reducer: Reducer<IGroupsState> = (
 				break;
 			case RidesActionTypes.GetRidesSuccess:
 				draft.rides = action.rides;
+				break;
+			case GroupsActionTypes.SetGroupSelected:
+				console.log("ACTION: ", action);
+				let idx: number = draft.groups.findIndex(g => g.id === action.id);
+				if (idx > -1) {
+					draft.groups[idx].selected = action.selected;
+				}
 				break;
 			default:
 				break;

@@ -7,32 +7,36 @@ import { getSizeClass, getTypeClass, getShapeClass } from "./Helpers";
 import "./Button.scss";
 
 interface IButtonLinkProps {
-  size: ButtonSize;
-  type: ButtonType;
-  shape?: ButtonShape;
-  label: string;
+	size: ButtonSize;
+	type: ButtonType;
+	shape?: ButtonShape;
+	label: string;
+	active: boolean;
+	onClick: (newValue: boolean) => void;
 }
 
 const ButtonCheckBox: FunctionComponent<IButtonLinkProps> = (props) => {
-  const baseCssClass: string = "button button--checkbox";
-  const cssClasses: string = [
-    baseCssClass,
-    getShapeClass(props.shape),
-    getSizeClass(props.size),
-    getTypeClass(props.type),
-  ].join(" ");
-
-  const [active, setActive] = useState(false);
-
-  return (
-    <>
-      <button
-        className={cssClasses + (!active ? "button--checkbox_active" : "")}
-        onClick={!active ? () => setActive(true) : () => setActive(false)}
-      ></button>
-      <div className={"button--checkbox-label"}>{props.label}</div>
-    </>
-  );
+	const baseCssClass: string = "button button--checkbox";
+	const activeCssClass: string = "button--checkbox_active";
+	const labelCssClass: string = "button--checkbox-label";
+	const cssClasses: string[] = [
+		baseCssClass,
+		getShapeClass(props.shape),
+		getSizeClass(props.size),
+		getTypeClass(props.type),
+	];
+	if (props.active) {
+		cssClasses.push(activeCssClass);
+	}
+	return (
+		<>
+			<button
+				className={cssClasses.join(" ")}
+				onClick={() => props.onClick(!props.active)}
+			></button>
+			<div className={labelCssClass}>{props.label}</div>
+		</>
+	);
 };
 
 export default ButtonCheckBox;

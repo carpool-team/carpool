@@ -7,6 +7,7 @@ import { IGroup } from "../../../interfaces/IGroup";
 
 interface IGroupsListProps {
 	getGroupsCallback: () => IGroup[];
+	setGroupChecked: (id: string, checked: boolean) => void;
 }
 
 const GroupsList = (props: IGroupsListProps) => {
@@ -22,6 +23,8 @@ const GroupsList = (props: IGroupsListProps) => {
 							type={ButtonType.Standard}
 							shape={ButtonShape.Circle}
 							label={group.name}
+							active={group.selected}
+							onClick={(newValue) => props.setGroupChecked(group.id, newValue)}
 						></ButtonCheckBox>
 					</li>
 				);

@@ -16,12 +16,11 @@ const InvitesList = (props: IRidesListProps) => {
 	const rides: IRide[] = props.getRidesCallback();
 
 	const renderRide = (ride: IRide) => {
-		let label: string
+		let label: string;
 
 		if (ride.destination.locationName.name == null) {
 			label = "Brak nazwy lokacji";
-		}
-		else {
+		} else {
 			label = ride.destination.locationName.name;
 		}
 
@@ -38,8 +37,6 @@ const InvitesList = (props: IRidesListProps) => {
 			</li>
 		);
 	};
-
-	console.log("RIDES: ", rides);
 
 	const renderRides = (rides: IRide[]) => rides.map((i) => renderRide(i));
 

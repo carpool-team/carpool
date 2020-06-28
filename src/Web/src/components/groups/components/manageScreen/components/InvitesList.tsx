@@ -33,7 +33,6 @@ const InvitesList = (props: IInvitesListProps) => {
 
 	const renderInvites = (invites: IInvite[]) => invites.map(i => renderInvite(i));
 
-	console.log("INVITES FILTERED: ", invites);
 	return (
 		<ul className={listCssClass}>
 			{renderInvites(invites)}

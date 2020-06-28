@@ -1,5 +1,6 @@
 /** Group interface */
 export interface IGroup {
+	id: string;
 	location: {
 		coordinates: {
 			latitude: number;
@@ -12,4 +13,5 @@ export interface IGroup {
 	owner: string;
 	rideCount: number;
 	userCount: number;
+	selected: boolean;
 }

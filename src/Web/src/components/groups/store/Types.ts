@@ -11,7 +11,10 @@ export enum GroupsActionTypes {
 	GetGroups = "GROUPS_GET_GROUPS",
 	GetGroupsSuccess = "GROUPS_GET_GROUPS_SUCCESS",
 	GetGroupsError = "GROUPS_GET_GROUPS_ERROR",
+	SetGroupSelected = "GROUPS_SET_GROUP_SELECTED",
 }
+
+/** Enum of invites actions */
 export enum InvitesActionTypes {
 	AnswerInvite = "INVITES_ANSWER_INVITE",
 	AnswerInviteSuccess = "INVITES_ANSWER_INVITE_SUCCESS",
@@ -21,6 +24,7 @@ export enum InvitesActionTypes {
 	GetInvitesError = "INVITES_GET_INVITES_ERROR",
 }
 
+/** Enum of rides actions */
 export enum RidesActionTypes {
 	GetRides = "RIDES_GET_RIDES",
 	GetRidesSuccess = "RIDES_GET_RIDES_SUCCESS",
@@ -62,6 +66,12 @@ export interface IGetGroupsActionSuccess
 export interface IGetGroupsActionError
 	extends Action<GroupsActionTypes.GetGroupsError> {
 	error: Error;
+}
+
+/** Action for setting group (un)selected */
+export interface ISetGroupSelectedAction extends Action<GroupsActionTypes.SetGroupSelected> {
+	id: string;
+	selected: boolean;
 }
 //#endregion
 
@@ -135,7 +145,8 @@ export type GroupsAction =
 	| IAddGroupActionError
 	| IGetGroupsAction
 	| IGetGroupsActionSuccess
-	| IGetGroupsActionError;
+	| IGetGroupsActionError
+	| ISetGroupSelectedAction;
 
 export type InviteAction =
 	IAnswerInviteAction

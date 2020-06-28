@@ -66,7 +66,12 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		/>
 	)
 
-	renderGroupsList = () => <GroupsList getGroupsCallback={this.props.callbacks.getGroups} />;
+	renderGroupsList = () => (
+		<GroupsList
+			getGroupsCallback={this.props.callbacks.getGroups}
+			setGroupChecked={this.props.callbacks.setGroupSelected}
+		/>
+	)
 
 	renderRidesList = () => (
 		<RidesList
@@ -82,17 +87,15 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		let list: JSX.Element;
 
 		switch (this.state.selectedScreen) {
-			case Lists.Groups:
-				list = this.renderGroupsList();
-				break;
 			case Lists.Invites:
 				list = this.renderInvitesList();
 				break;
 			case Lists.Rides:
 				list = this.renderRidesList();
 				break;
+			case Lists.Groups:
 			default:
-				list = <></>;
+				list = this.renderGroupsList();
 				break;
 		}
 
