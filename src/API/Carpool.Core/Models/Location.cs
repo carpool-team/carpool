@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace Carpool.Core.Models
 {
-	public class Location : ParentModel
+	public class Location : BaseEntity
 	{
 		public Coordinates Coordinates { get; set; }
 

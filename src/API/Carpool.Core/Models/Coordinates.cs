@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Carpool.Core.Models
 {
-	public class Coordinates : ParentModel
+	public class Coordinates : BaseEntity
 	{
 		[Required]
 		public double Longitude { get; set; }

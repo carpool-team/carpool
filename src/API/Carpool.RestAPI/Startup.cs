@@ -1,4 +1,7 @@
+using System.Reflection;
 using Carpool.DAL.DatabaseContexts;
+using Carpool.DAL.Repositories.Group;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +31,14 @@ namespace Carpool.RestAPI
 						builder.WithOrigins("http://localhost:8080");
 					});
 			});
-			services.AddControllers();
+			services.AddControllers().AddNewtonsoftJson();
 			services.AddMvc(options => options.EnableEndpointRouting = false);
 			services.AddSingleton<IConfiguration>(Configuration);
+
+            services.AddScoped<IGroupRepository, GroupRepository>();
+
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
 			services.AddDbContext<CarpoolDbContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 		}

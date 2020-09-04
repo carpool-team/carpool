@@ -11,19 +11,24 @@ using Carpool.Core.DTOs.GroupDTOs;
 using Carpool.Core.Models.Intersections;
 using Carpool.Core.DTOs.LocationDTOs;
 using Carpool.Core.DTOs.UserDTOs;
+using Carpool.RestAPI.Commands.Group;
+using MediatR;
 
 namespace Carpool.RestAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class GroupsController : Controller
+	public class GroupsController : ControllerBase
 	{
 		private readonly CarpoolDbContext _context;
 
-		public GroupsController(CarpoolDbContext context)
+        private readonly IMediator _mediator;
+
+		public GroupsController(CarpoolDbContext context, IMediator mediator)
 		{
 			_context = context;
-		}
+            _mediator = mediator;
+        }
 
 		// GET: api/Groups
 		[HttpGet]
@@ -130,26 +135,11 @@ namespace Carpool.RestAPI.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<ActionResult<Group>> PostGroup(AddGroupDTO groupDTO)
+		public async Task<IActionResult> PostGroup([FromBody]AddGroupCommand addGroupCommand)
 		{
-			if (groupDTO.OwnerId == null)
-				return BadRequest("No ownerId");
-			if (groupDTO.Code != "")
-			{
-				if (_context.Groups.Any(group => group.Code == groupDTO.Code))
-					return Conflict();
-			}
-			var group = new Group()
-			{
-				Name = groupDTO.Name,
-				Owner = await _context.Users.FindAsync(groupDTO.OwnerId),
-				Code = groupDTO.Code,
-			};
-			_context.Groups.Add(group);
-			await _context.SaveChangesAsync();
-			groupDTO.Id = group.Id;
-			return CreatedAtAction("GetGroup", new { groupId = group.Id }, groupDTO);
-		}
+            await _mediator.Send(addGroupCommand);
+            return Ok();
+        }
 
 		[HttpPut("{groupId}/users")]
 		public async Task<ActionResult> AddUserToGroup([FromRoute]Guid groupId, [FromBody]AddUserToGroupDTO addUserToGroupDTO)

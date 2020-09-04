@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Carpool.Core.Models
 {
-	public class GroupInvite : ParentModel
+	public class GroupInvite : BaseEntity
 	{
 		public bool IsPending { get; set; }
 

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Carpool.Core.Models
 {
-	public class Group : ParentModel
+	public class Group : BaseEntity
 	{
 		public List<UserGroup> UserGroups { get; set; }
 

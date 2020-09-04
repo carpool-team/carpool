@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Carpool.Core.Abstract
 {
-	public abstract class ParentModel
+	public abstract class BaseEntity : IBaseEntity
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

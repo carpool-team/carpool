@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Carpool.Core.Models
 {
-	public class Vehicle : ParentModel
+	public class Vehicle : BaseEntity
 	{
 		public string Name { get; set; }
 	}
