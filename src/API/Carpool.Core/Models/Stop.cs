@@ -7,6 +7,7 @@ namespace Carpool.Core.Models
 {
 	public class Stop : ParentModel
 	{
+        public Guid UserId { get; set; }
 		public User User { get; set; }
 		public Coordinates Coordinates { get; set; }
 	}
