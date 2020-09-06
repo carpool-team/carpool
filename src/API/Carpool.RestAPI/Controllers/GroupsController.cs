@@ -1,22 +1,20 @@
-﻿using System;
+﻿using Carpool.Core.DTOs.GroupDTOs;
+using Carpool.Core.DTOs.UserDTOs;
+using Carpool.Core.Models;
+using Carpool.Core.Models.Intersections;
+using Carpool.DAL.DatabaseContexts;
+using Carpool.RestAPI.Commands.Group;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Carpool.Core.Models;
-using Carpool.DAL.DatabaseContexts;
-using Carpool.Core.DTOs.GroupDTOs;
-using Carpool.Core.Models.Intersections;
-using Carpool.Core.DTOs.LocationDTOs;
-using Carpool.Core.DTOs.UserDTOs;
-using Carpool.RestAPI.Commands.Group;
-using MediatR;
 
 namespace Carpool.RestAPI.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class GroupsController : ControllerBase
 	{
@@ -30,15 +28,16 @@ namespace Carpool.RestAPI.Controllers
             _mediator = mediator;
         }
 
-		// GET: api/Groups
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
-		{
-			return await _context.Groups.ToListAsync();
-		}
+        //// GET: api/Groups
+        [HttpGet]
+        public async Task<ActionResult<List<IndexGroupDTO>>> GetGroups(GetGroupsCommand command)
+        {
+            var response = await _mediator.Send(command);
+			return await response.ToListAsync();
+        }
 
-		// GET: api/Groups/5
-		[HttpGet("{groupId}")]
+        // GET: api/Groups/5
+        [HttpGet("{groupId}")]
 		public async Task<ActionResult<Group>> GetGroup(Guid groupId)
 		{
 			var @group = await _context.Groups.FindAsync(groupId);
@@ -99,37 +98,37 @@ namespace Carpool.RestAPI.Controllers
 			return NoContent();
 		}
 
-		[HttpPut("{groupId}/locations")]
-		public async Task<ActionResult> ChangeGroupLocation([FromRoute]Guid groupId, [FromBody] ChangeGroupLocationDTO changeGroupLocationDTO)
-		{
-			if (groupId != changeGroupLocationDTO.GroupId)
-			{
-				return BadRequest();
-			}
-			var group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == groupId);
-			var location = await _context.Locations.FirstOrDefaultAsync(location => location.Id == changeGroupLocationDTO.LocationId);
-			group.Location = location;
+		//[HttpPut("{groupId}/locations")]
+		//public async Task<ActionResult> ChangeGroupLocation([FromRoute]Guid groupId, [FromBody] ChangeGroupLocationDTO changeGroupLocationDTO)
+		//{
+		//	if (groupId != changeGroupLocationDTO.GroupId)
+		//	{
+		//		return BadRequest();
+		//	}
+		//	var group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == groupId);
+		//	var location = await _context.Locations.FirstOrDefaultAsync(location => location.Id == changeGroupLocationDTO.LocationId);
+		//	group.Location = location;
 
-			await _context.SaveChangesAsync();
+		//	await _context.SaveChangesAsync();
 
-			return NoContent();
-		}
+		//	return NoContent();
+		//}
 
-		[HttpPut("{groupId}/rides")]
-		public async Task<ActionResult> AddRideToGroup([FromRoute]Guid groupId, [FromBody]AddRideToGroupDTO addRideToGroupDTO)
-		{
-			if (groupId != addRideToGroupDTO.GroupId)
-			{
-				return BadRequest();
-			}
-			var group = await _context.Groups.Include(group => group.Rides).FirstOrDefaultAsync(group => group.Id == addRideToGroupDTO.GroupId);
-			var ride = await _context.Rides.FirstOrDefaultAsync(ride => ride.Id == addRideToGroupDTO.RideId);
-			group.Rides.Add(ride);
+		//[HttpPut("{groupId}/rides")]
+		//public async Task<ActionResult> AddRideToGroup([FromRoute]Guid groupId, [FromBody]AddRideToGroupDTO addRideToGroupDTO)
+		//{
+		//	if (groupId != addRideToGroupDTO.GroupId)
+		//	{
+		//		return BadRequest();
+		//	}
+		//	var group = await _context.Groups.Include(group => group.Rides).FirstOrDefaultAsync(group => group.Id == addRideToGroupDTO.GroupId);
+		//	var ride = await _context.Rides.FirstOrDefaultAsync(ride => ride.Id == addRideToGroupDTO.RideId);
+		//	group.Rides.Add(ride);
 
-			await _context.SaveChangesAsync();
+		//	await _context.SaveChangesAsync();
 
-			return NoContent();
-		}
+		//	return NoContent();
+		//}
 
 		// POST: api/Groups
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for

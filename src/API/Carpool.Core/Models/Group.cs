@@ -8,7 +8,7 @@ namespace Carpool.Core.Models
 {
 	public class Group : BaseEntity
 	{
-		public List<UserGroup> UserGroups { get; set; }
+        public List<UserGroup> UserGroups { get; set; }
 
 		public Location Location { get; set; }
 
@@ -18,6 +18,8 @@ namespace Carpool.Core.Models
 
 		public string Code { get; set; }
 
-		public User Owner { get; set; }
+        public Guid? OwnerId { get; set; }
+
+        public User Owner { get; set; }
 	}
 }

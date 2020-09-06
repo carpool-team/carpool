@@ -1,21 +1,15 @@
-﻿using Carpool.Core.DTOs.LocationDTOs;
-using Carpool.Core.Models;
+﻿using Carpool.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 
 namespace Carpool.Core.DTOs.GroupDTOs
 {
-	public class IndexGroupDTO
+    public class IndexGroupDTO
 	{
         public Guid Id { get; set; }
 
-        [Required]
-		public LocationDTO Location { get; set; }
+		public Location Location { get; set; }
 
-		[Required]
 		public string Name { get; set; }
 
 		public int RideCount { get; set; }
@@ -23,15 +17,16 @@ namespace Carpool.Core.DTOs.GroupDTOs
 		public int UserCount { get; set; }
 
 		public static IndexGroupDTO FromGroup(Group group)
-		{
+        {
+            _ = group?.Location?.Coordinates ?? throw new InvalidOperationException("Location cannot be null");
 			return new IndexGroupDTO()
 			{
 				Id = group.Id,
-				Location = group.Location != null ? LocationDTO.FromLocation(group.Location) : null,
+				Location = group.Location,
 				Name = group.Name,
-				RideCount = group.Rides.Count(),
-				UserCount = group.UserGroups.Count()
-			};
+                RideCount = group.Rides?.Count() ?? 0,
+                UserCount = group.UserGroups?.Count() ?? 0
+		};
 		}
 	}
 }

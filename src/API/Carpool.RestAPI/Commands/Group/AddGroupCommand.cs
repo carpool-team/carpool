@@ -25,7 +25,7 @@ namespace Carpool.RestAPI.Commands.Group
         public string Code { get; set; }
 
         public Guid Id { get; set; }
-
+        [Required]
         public Guid OwnerId { get; set; }
     }
 }

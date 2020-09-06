@@ -1,19 +1,16 @@
-﻿using System;
+﻿using Carpool.Core.Models;
+using Carpool.DAL.DatabaseContexts;
+using Carpool.RestAPI.Abstract;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Carpool.Core.Models;
-using Carpool.DAL.DatabaseContexts;
-using Carpool.RestAPI.Abstract;
-using Carpool.Core.DTOs.LocationDTOs;
-using System.Text.Json;
 
 namespace Carpool.RestAPI.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class LocationsController : ParentController
 	{
@@ -28,7 +25,7 @@ namespace Carpool.RestAPI.Controllers
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
 		{
-			return await _context.Locations.Include(location => location.Coordinates).Include(location => location.LocationName).ToListAsync();
+			return await _context.Locations.Include(location => location.Coordinates).ToListAsync();
 		}
 
 		// GET: api/Locations/5
@@ -105,24 +102,6 @@ namespace Carpool.RestAPI.Controllers
 			return location;
 		}
 
-		[HttpGet("GetMockLocation")]
-		public async Task<ActionResult<Location>> GetMockLocation()
-		{
-			var location = new Location()
-			{
-				Coordinates = new Coordinates()
-				{
-					Longitude = 53.123454,
-					Latitude = 23.086287,
-				},
-				LocationName = new LocationName()
-				{
-					Name = "ul. Szkolna 17, Białystok"
-				}
-			};
-			var locationDTO = LocationDTO.FromLocation(location);
-			return Json(locationDTO);
-		}
 
 		[HttpPost("AddMockLocation")]
 		public async Task<IActionResult> AddMockLocation()
@@ -134,10 +113,9 @@ namespace Carpool.RestAPI.Controllers
 					Longitude = 53.123454,
 					Latitude = 23.086287,
 				},
-				LocationName = new LocationName()
-				{
+
 					Name = "ul. Szkolna 17, Białystok"
-				}
+				
 			};
 			_context.Locations.Add(location);
 			await _context.SaveChangesAsync();

@@ -23,11 +23,11 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		// GET: api/RideRequests
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<RideRequest>>> GetRideRequests()
-		{
-			return await _context.RideRequests.ToListAsync();
-		}
+		//[HttpGet]
+		//public async Task<ActionResult<IEnumerable<RideRequest>>> GetRideRequests()
+		//{
+		//	return await _context.RideRequests.ToListAsync();
+		//}
 
 		// GET: api/RideRequests/5
 		[HttpGet("{id}")]

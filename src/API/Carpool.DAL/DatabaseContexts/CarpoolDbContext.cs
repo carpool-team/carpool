@@ -17,7 +17,6 @@ namespace Carpool.DAL.DatabaseContexts
 		#region Models
 
 		public DbSet<Location> Locations { get; set; }
-		public DbSet<LocationName> LocationNames { get; set; }
 		public DbSet<Coordinates> Coordinates { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Group> Groups { get; set; }

@@ -41,14 +41,12 @@ namespace Carpool.RestAPI.Controllers
 					.Include(ride => ride.StartingLocation)
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.StartingLocation)
-						.ThenInclude(st => st.LocationName)
 					.Include(ride => ride.Participants)
 					.Include(ride => ride.Owner)
 						.ThenInclude(user => user.Vehicle)
 					.Include(ride => ride.Destination)
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.Destination)
-						.ThenInclude(st => st.LocationName)
 					.Where(ride => ride.Date >= DateTime.Now)
 					.OrderBy(ride => ride.Date)
 					.ToListAsync();
@@ -175,26 +173,26 @@ namespace Carpool.RestAPI.Controllers
 			return _context.Rides.Any(e => e.Id == id);
 		}
 
-		[HttpPost("{rideId}/users")]
-		public async Task<ActionResult> AddParticipant([FromRoute]Guid rideId, [FromBody] AddStopDTO stop)
-		{
-			var ride = await _context.Rides.Include(ride => ride.Participants).FirstOrDefaultAsync(ride => ride.Id == rideId);
-			ride.Participants.Add(new UserParticipatedRide()
-			{
-				Ride = ride,
-				User = await _context.Users.FirstOrDefaultAsync(user => user.Id == stop.ParticipantId)
-			});
-			if(stop.Coordinates == null)
-            {
-				ride.Stops.Add(new Stop()
-				{
-					Coordinates = stop.Coordinates,
-					User = await _context.Users.FirstOrDefaultAsync(user => user.Id == stop.ParticipantId)
-				});
-            }
-			await _context.SaveChangesAsync();
-			return NoContent();
-		}
+		//[HttpPost("{rideId}/users")]
+		//public async Task<ActionResult> AddParticipant([FromRoute]Guid rideId, [FromBody] AddStopDTO stop)
+		//{
+		//	var ride = await _context.Rides.Include(ride => ride.Participants).FirstOrDefaultAsync(ride => ride.Id == rideId);
+		//	ride.Participants.Add(new UserParticipatedRide()
+		//	{
+		//		Ride = ride,
+		//		User = await _context.Users.FirstOrDefaultAsync(user => user.Id == stop.ParticipantId)
+		//	});
+		//	if(stop.Coordinates == null)
+  //          {
+		//		ride.Stops.Add(new Stop()
+		//		{
+		//			Coordinates = stop.Coordinates,
+		//			User = await _context.Users.FirstOrDefaultAsync(user => user.Id == stop.ParticipantId)
+		//		});
+  //          }
+		//	await _context.SaveChangesAsync();
+		//	return NoContent();
+		//}
 
 		[HttpGet("GetEmptyRide")]
 		public async Task<ActionResult<AddRideDTO>> GetEmptyRide()
@@ -211,32 +209,30 @@ namespace Carpool.RestAPI.Controllers
 			ride.Destination = new Location()
 			{
 				Coordinates = new Coordinates(),
-				LocationName = new LocationName(),
 			};
 			ride.StartingLocation = new Location()
 			{
 				Coordinates = new Coordinates(),
-				LocationName = new LocationName(),
 			};
 			ride.Date = DateTime.Now;
 			return Json(ride);
 		}
 
-		[HttpPost("AddMockRide")]
-		public async Task<ActionResult<Ride>> AddMockRide()
-		{
-			var ride = new Ride()
-			{
-				Destination = await _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).FirstOrDefaultAsync(),
-				StartingLocation = await _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).FirstOrDefaultAsync(),
-				Owner = await _context.Users.FirstOrDefaultAsync(user => user.LastName.Contains("kononowicz")),
-				Participants = new List<UserParticipatedRide>(),
-				Stops = new List<Stop>()
-			};
-			_context.Rides.Add(ride);
-			await _context.SaveChangesAsync();
+		//[HttpPost("AddMockRide")]
+		//public async Task<ActionResult<Ride>> AddMockRide()
+		//{
+		//	var ride = new Ride()
+		//	{
+		//		Destination = await _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).FirstOrDefaultAsync(),
+		//		StartingLocation = await _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).FirstOrDefaultAsync(),
+		//		Owner = await _context.Users.FirstOrDefaultAsync(user => user.LastName.Contains("kononowicz")),
+		//		Participants = new List<UserParticipatedRide>(),
+		//		Stops = new List<Stop>()
+		//	};
+		//	_context.Rides.Add(ride);
+		//	await _context.SaveChangesAsync();
 
-			return CreatedAtAction("GetRide", new { id = ride.Id }, ride);
-		}
+		//	return CreatedAtAction("GetRide", new { id = ride.Id }, ride);
+		//}
 	}
 }

@@ -23,12 +23,12 @@ namespace Carpool.RestAPI.Controllers
 			_context = context;
 		}
 
-		// GET: api/GroupInvites
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<GroupInvite>>> GetGroupInvites()
-		{
-			return await _context.GroupInvites.ToListAsync();
-		}
+		//// GET: api/GroupInvites
+		//[HttpGet]
+		//public async Task<ActionResult<IEnumerable<GroupInvite>>> GetGroupInvites()
+		//{
+		//	return await _context.GroupInvites.ToListAsync();
+		//}
 
 		// GET: api/GroupInvites/5
 		[HttpGet("{groupInviteId}")]
@@ -94,22 +94,22 @@ namespace Carpool.RestAPI.Controllers
 		// POST: api/GroupInvites
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPost]
-		public async Task<ActionResult<GroupInvite>> PostGroupInvite(AddGroupInviteDTO groupInviteDTO)
-		{
-			var groupInvite = new GroupInvite()
-			{
-				IsPending = true,
-				Group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == groupInviteDTO.GroupId),
-				InvitedUser = await _context.Users.FirstOrDefaultAsync(user => user.Id == groupInviteDTO.InvitedUserId),
-				IsAccepted = false,
-				DateAdded = DateTime.Now
-			};
-			_context.GroupInvites.Add(groupInvite);
-			await _context.SaveChangesAsync();
-			groupInviteDTO.Id = groupInvite.Id;
-			return CreatedAtAction("GetGroupInvite", new { groupInviteId = groupInvite.Id }, groupInviteDTO);
-		}
+		//[HttpPost]
+		//public async Task<ActionResult<GroupInvite>> PostGroupInvite(AddGroupInviteDTO groupInviteDTO)
+		//{
+		//	var groupInvite = new GroupInvite()
+		//	{
+		//		IsPending = true,
+		//		Group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == groupInviteDTO.GroupId),
+		//		InvitedUser = await _context.Users.FirstOrDefaultAsync(user => user.Id == groupInviteDTO.InvitedUserId),
+		//		IsAccepted = false,
+		//		DateAdded = DateTime.Now
+		//	};
+		//	_context.GroupInvites.Add(groupInvite);
+		//	await _context.SaveChangesAsync();
+		//	groupInviteDTO.Id = groupInvite.Id;
+		//	return CreatedAtAction("GetGroupInvite", new { groupInviteId = groupInvite.Id }, groupInviteDTO);
+		//}
 
 		// DELETE: api/GroupInvites/5
 		[HttpDelete("{groupInviteId}")]

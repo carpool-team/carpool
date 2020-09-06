@@ -9,8 +9,10 @@ namespace Carpool.Core.Models
 {
 	public class Location : BaseEntity
 	{
+		[Required]
 		public Coordinates Coordinates { get; set; }
+		[Required]
 
-		public LocationName LocationName { get; set; }
+		public string Name { get; set; }
 	}
 }

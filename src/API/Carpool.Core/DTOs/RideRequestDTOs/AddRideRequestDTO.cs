@@ -28,12 +28,10 @@ namespace Carpool.Core.DTOs.RideRequestDTOs
 				Destination = new Location()
 				{
 					Coordinates = new Coordinates(),
-					LocationName = new LocationName(),
 				},
 				StartingLocation = new Location()
 				{
 					Coordinates = new Coordinates(),
-					LocationName = new LocationName(),
 				},
 				Date = DateTime.Now
 			};

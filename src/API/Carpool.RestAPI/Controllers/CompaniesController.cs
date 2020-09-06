@@ -22,11 +22,11 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		// GET: api/Companies
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
-		{
-			return await _context.Companies.ToListAsync();
-		}
+		//[HttpGet]
+		//public async Task<ActionResult<IEnumerable<Company>>> GetCompanies()
+		//{
+		//	return await _context.Companies.ToListAsync();
+		//}
 
 		// GET: api/Companies/5
 		[HttpGet("{id}")]

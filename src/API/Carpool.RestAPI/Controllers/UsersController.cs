@@ -29,11 +29,11 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		// GET: api/Users
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<User>>> GetUsers()
-		{
-			return await _context.Users.ToListAsync();
-		}
+		//[HttpGet]
+		//public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+		//{
+		//	return await _context.Users.ToListAsync();
+		//}
 
 		// GET: api/Users/5
 		[HttpGet("{id}")]
@@ -143,23 +143,23 @@ namespace Carpool.RestAPI.Controllers
 
 		#endregion Ratings
 
-		[HttpPost("AddMockUser")]
-		public async Task<IActionResult> AddMockUser()
-		{
-			var user = new User()
-			{
-				FirstName = "Wojciech",
-				LastName = "Suchodolski",
-				Email = "nitrotykarz@las.pl",
-				Locations = _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).ToListAsync().Result,
-				PhoneNumber = "123456789",
-				Vehicle = new Vehicle() { Name = "Audi A4" }
-			};
-			_context.Users.Add(user);
-			await _context.SaveChangesAsync();
+		//[HttpPost("AddMockUser")]
+		//public async Task<IActionResult> AddMockUser()
+		//{
+		//	var user = new User()
+		//	{
+		//		FirstName = "Wojciech",
+		//		LastName = "Suchodolski",
+		//		Email = "nitrotykarz@las.pl",
+		//		Locations = _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).ToListAsync().Result,
+		//		PhoneNumber = "123456789",
+		//		Vehicle = new Vehicle() { Name = "Audi A4" }
+		//	};
+		//	_context.Users.Add(user);
+		//	await _context.SaveChangesAsync();
 
-			return CreatedAtAction("GetUser", new { id = user.Id }, user);
-		}
+		//	return CreatedAtAction("GetUser", new { id = user.Id }, user);
+		//}
 
 		#region Rides
 
@@ -173,7 +173,6 @@ namespace Carpool.RestAPI.Controllers
 					.Include(ride => ride.StartingLocation)
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.StartingLocation)
-						.ThenInclude(st => st.LocationName)
 					.Include(ride => ride.Participants)
 						.ThenInclude(participant => participant.User)
 					.Include(ride => ride.Owner)
@@ -181,7 +180,6 @@ namespace Carpool.RestAPI.Controllers
 					.Include(ride => ride.Destination)
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.Destination)
-						.ThenInclude(st => st.LocationName)
 					.Where(ride => past ? ride.Date <= DateTime.Now : ride.Date >= DateTime.Now && ride.Participants.Any(participant => participant.UserId == userId))
 					.OrderBy(ride => ride.Date)
 					.Select(ride => IndexRideDTO.FromRide(ride))
@@ -209,7 +207,6 @@ namespace Carpool.RestAPI.Controllers
 					.Include(ride => ride.StartingLocation)
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.StartingLocation)
-						.ThenInclude(st => st.LocationName)
 					.Include(ride => ride.Participants)
 						.ThenInclude(participant => participant.User)
 					.Include(ride => ride.Owner)
@@ -217,7 +214,6 @@ namespace Carpool.RestAPI.Controllers
 					.Include(ride => ride.Destination)
 						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.Destination)
-						.ThenInclude(st => st.LocationName)
 					.Where(ride => past ? ride.Date <= DateTime.Now : ride.Date >= DateTime.Now && ride.Owner.Id == userId)
 					.OrderBy(ride => ride.Date)
 					.Select(ride => IndexRideDTO.FromRide(ride))
@@ -247,62 +243,62 @@ namespace Carpool.RestAPI.Controllers
 			return IndexRideDTO.FromRide(ride);
 		}
 
-		[HttpPost("{userId}/rides")]
-		public async Task<ActionResult<Ride>> PostRide([FromBody] AddRideDTO addRideDTO, [FromRoute] Guid userId)
-		{
-			try
-			{
+		//[HttpPost("{userId}/rides")]
+		//public async Task<ActionResult<Ride>> PostRide([FromBody] AddRideDTO addRideDTO, [FromRoute] Guid userId)
+		//{
+		//	try
+		//	{
 
-				var ride = new Ride()
-				{
-					Price = addRideDTO.Price,
-					StartingLocation = addRideDTO.StartingLocation,
-					Owner = await _context.Users.FirstOrDefaultAsync(user => user.Id == userId),
-				};
-				if(String.IsNullOrEmpty(addRideDTO.GroupId.ToString()))
-				{
-					if (addRideDTO.Destination == null)
-						return BadRequest("No group id nor destination");
-					ride.Destination = addRideDTO.Destination;
-				}
-                else
-                {
-					var group = await _context.Groups
-						.Include(group => group.Location)
-						.ThenInclude(location => location.Coordinates)
-						.Include(group => group.Location)
-						.ThenInclude(location => location.LocationName)
-						.FirstOrDefaultAsync(group => group.Id == addRideDTO.GroupId);
-					ride.Group = group;
-					ride.Destination = group.Location;
+		//		var ride = new Ride()
+		//		{
+		//			Price = addRideDTO.Price,
+		//			StartingLocation = addRideDTO.StartingLocation,
+		//			Owner = await _context.Users.FirstOrDefaultAsync(user => user.Id == userId),
+		//		};
+		//		if(String.IsNullOrEmpty(addRideDTO.GroupId.ToString()))
+		//		{
+		//			if (addRideDTO.Destination == null)
+		//				return BadRequest("No group id nor destination");
+		//			ride.Destination = addRideDTO.Destination;
+		//		}
+  //              else
+  //              {
+		//			var group = await _context.Groups
+		//				.Include(group => group.Location)
+		//				.ThenInclude(location => location.Coordinates)
+		//				.Include(group => group.Location)
+		//				.ThenInclude(location => location.LocationName)
+		//				.FirstOrDefaultAsync(group => group.Id == addRideDTO.GroupId);
+		//			ride.Group = group;
+		//			ride.Destination = group.Location;
 
-				}
-				if (addRideDTO.AddStopDTOs != null)
-				{
-					var stops = addRideDTO.AddStopDTOs.Select(stop => new Stop()
-					{
-						User = _context.Users.FirstOrDefault(user => user.Id == stop.UserId),
-						Coordinates = stop.Coordinates
-					}).ToList();
-					ride.Stops = stops;
-					var users = stops.Select(stop => stop.User).ToList<User>();
-					ride.Participants = users.Select(user => new UserParticipatedRide()
-					{
-						Ride = ride,
-						User = user
-					}).ToList();
-				}
-				ride.Date = addRideDTO.Date;
-				_context.Rides.Add(ride);
-				await _context.SaveChangesAsync();
+		//		}
+		//		if (addRideDTO.AddStopDTOs != null)
+		//		{
+		//			var stops = addRideDTO.AddStopDTOs.Select(stop => new Stop()
+		//			{
+		//				User = _context.Users.FirstOrDefault(user => user.Id == stop.UserId),
+		//				Coordinates = stop.Coordinates
+		//			}).ToList();
+		//			ride.Stops = stops;
+		//			var users = stops.Select(stop => stop.User).ToList<User>();
+		//			ride.Participants = users.Select(user => new UserParticipatedRide()
+		//			{
+		//				Ride = ride,
+		//				User = user
+		//			}).ToList();
+		//		}
+		//		ride.Date = addRideDTO.Date;
+		//		_context.Rides.Add(ride);
+		//		await _context.SaveChangesAsync();
 
-				return CreatedAtAction("GetUserOwnedRide", new { userId, rideId = ride.Id }, IndexRideDTO.FromRide(ride));
-			}
-			catch (Exception ex)
-			{
-				return Json(ex);
-			}
-		}
+		//		return CreatedAtAction("GetUserOwnedRide", new { userId, rideId = ride.Id }, IndexRideDTO.FromRide(ride));
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		return Json(ex);
+		//	}
+		//}
 
 		#endregion Rides
 
@@ -336,7 +332,6 @@ namespace Carpool.RestAPI.Controllers
 		{
 			var groupDTOs = await _context.Groups
 				.Include(group => group.Location)
-					.ThenInclude(location => location.LocationName)
 				.Include(group => group.Location)
 					.ThenInclude(location => location.Coordinates)
 				.Include(location => location.Rides)
@@ -353,21 +348,21 @@ namespace Carpool.RestAPI.Controllers
 
 		#region Ride Requests
 
-		[HttpPost("{userId}/rideRequests")]
-		public async Task<ActionResult<RideRequest>> PostRideRequest([FromRoute]Guid userId, [FromBody]AddRideRequestDTO rideRequestDTO)
-		{
-			var rideRequest = new RideRequest()
-			{
-				Date = rideRequestDTO.Date,
-				Destination = rideRequestDTO.Destination,
-				StartingLocation = rideRequestDTO.StartingLocation,
-				Requester = await _context.Users.FirstOrDefaultAsync(user => user.Id == userId),
-			};
-			_context.RideRequests.Add(rideRequest);
-			await _context.SaveChangesAsync();
+		//[HttpPost("{userId}/rideRequests")]
+		//public async Task<ActionResult<RideRequest>> PostRideRequest([FromRoute]Guid userId, [FromBody]AddRideRequestDTO rideRequestDTO)
+		//{
+		//	var rideRequest = new RideRequest()
+		//	{
+		//		Date = rideRequestDTO.Date,
+		//		Destination = rideRequestDTO.Destination,
+		//		StartingLocation = rideRequestDTO.StartingLocation,
+		//		Requester = await _context.Users.FirstOrDefaultAsync(user => user.Id == userId),
+		//	};
+		//	_context.RideRequests.Add(rideRequest);
+		//	await _context.SaveChangesAsync();
 
-			return CreatedAtAction("PostRideRequest", new { id = rideRequest.Id }, rideRequestDTO);
-		}
+		//	return CreatedAtAction("PostRideRequest", new { id = rideRequest.Id }, rideRequestDTO);
+		//}
 
 		[HttpGet("{userId}/rideRequests")]
 

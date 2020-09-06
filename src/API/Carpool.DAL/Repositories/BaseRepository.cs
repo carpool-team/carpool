@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Carpool.Core.Abstract;
 using Carpool.DAL.DatabaseContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.DAL.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        private readonly CarpoolDbContext _context;
+        internal readonly CarpoolDbContext _context;
 
         public BaseRepository(CarpoolDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(_context));
         }
 
         public void Dispose()
@@ -30,6 +32,7 @@ namespace Carpool.DAL.Repositories
         {
             return _context.Set<T>().Find(id);
         }
+
 
         public async Task AddAsync(T entity, CancellationToken cancellationToken)
         {
