@@ -14,6 +14,5 @@ namespace Carpool.RestAPI.Queries.Group
         }
 
         public Guid Id { get; set; }
-        public string Test { get; set; }
     }
 }
