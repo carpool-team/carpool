@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Carpool.RestAPI.Queries.Group;
+using Carpool.RestAPI.Queries.User;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -30,110 +32,48 @@ namespace Carpool.RestAPI.Controllers
 
         //// GET: api/Groups
         [HttpGet]
-        public async Task<ActionResult<List<IndexGroupDTO>>> GetGroups(GetGroupsCommand command)
+        public async Task<ActionResult<List<IndexGroupDTO>>> GetGroups(GetGroupsQuery query)
         {
-            var response = await _mediator.Send(command);
+            var response = await _mediator.Send(query);
 			return await response.ToListAsync();
         }
 
         // GET: api/Groups/5
         [HttpGet("{groupId}")]
-		public async Task<ActionResult<Group>> GetGroup(Guid groupId)
-		{
-			var @group = await _context.Groups.FindAsync(groupId);
-
-			if (@group == null)
-			{
-				return NotFound();
-			}
-
-			return @group;
-		}
-
-		[HttpGet("{groupId}/users")]
-		public async Task<ActionResult<List<User>>> GetGroupUsers([FromRoute]Guid groupId)
+		public async Task<ActionResult<Group>> GetGroup(GetGroupQuery query)
         {
-			var group = await _context.Groups
-				.Include(group => group.UserGroups)
-				.ThenInclude(member => member.User)
-				.FirstOrDefaultAsync(group => group.Id == groupId);
-			if(group == null)
-            {
-				return NotFound(groupId);
-            }
-			var users = group.UserGroups.Select(userGroup => IndexUserDTO.FromUser(userGroup.User)).ToList();
-			return Ok(users);
-
+            var response = await _mediator.Send(query);
+            return response;
 		}
 
-		// PUT: api/Groups/5
+        // PUT: api/Groups/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{id}")]
-		public async Task<IActionResult> PutGroup(Guid id, Group @group)
-		{
-			if (id != @group.Id)
-			{
-				return BadRequest();
-			}
-
-			_context.Entry(@group).State = EntityState.Modified;
-
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!GroupExists(id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-
-			return NoContent();
+		public async Task<IActionResult> PutGroup(Guid id, UpdateGroupCommand updateGroupCommand)
+        {
+            var response = await _mediator.Send(updateGroupCommand);
+            return Ok();
 		}
 
-		//[HttpPut("{groupId}/locations")]
-		//public async Task<ActionResult> ChangeGroupLocation([FromRoute]Guid groupId, [FromBody] ChangeGroupLocationDTO changeGroupLocationDTO)
-		//{
-		//	if (groupId != changeGroupLocationDTO.GroupId)
-		//	{
-		//		return BadRequest();
-		//	}
-		//	var group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == groupId);
-		//	var location = await _context.Locations.FirstOrDefaultAsync(location => location.Id == changeGroupLocationDTO.LocationId);
-		//	group.Location = location;
+		[HttpPut("{groupId}/locations")]
+		public async Task<ActionResult> ChangeGroupLocation([FromRoute]Guid groupId, [FromBody] ChangeGroupLocationCommand changeGroupLocationCommand)
+        {
+            var response = await _mediator.Send(changeGroupLocationCommand);
+            return Ok(response);
+        }
 
-		//	await _context.SaveChangesAsync();
+        [HttpPut("{groupId}/rides")]
+        public async Task<ActionResult> AddRideToGroup([FromRoute] Guid groupId, [FromBody] AddRideToGroupCommand addRideToGroupCommand)
+        {
+            var response = await _mediator.Send(addRideToGroupCommand);
+            return Ok(response);
+        }
 
-		//	return NoContent();
-		//}
-
-		//[HttpPut("{groupId}/rides")]
-		//public async Task<ActionResult> AddRideToGroup([FromRoute]Guid groupId, [FromBody]AddRideToGroupDTO addRideToGroupDTO)
-		//{
-		//	if (groupId != addRideToGroupDTO.GroupId)
-		//	{
-		//		return BadRequest();
-		//	}
-		//	var group = await _context.Groups.Include(group => group.Rides).FirstOrDefaultAsync(group => group.Id == addRideToGroupDTO.GroupId);
-		//	var ride = await _context.Rides.FirstOrDefaultAsync(ride => ride.Id == addRideToGroupDTO.RideId);
-		//	group.Rides.Add(ride);
-
-		//	await _context.SaveChangesAsync();
-
-		//	return NoContent();
-		//}
-
-		// POST: api/Groups
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPost]
+        // POST: api/Groups
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
 		public async Task<IActionResult> PostGroup([FromBody]AddGroupCommand addGroupCommand)
 		{
             await _mediator.Send(addGroupCommand);
@@ -141,57 +81,18 @@ namespace Carpool.RestAPI.Controllers
         }
 
 		[HttpPut("{groupId}/users")]
-		public async Task<ActionResult> AddUserToGroup([FromRoute]Guid groupId, [FromBody]AddUserToGroupDTO addUserToGroupDTO)
-		{
-			if (groupId != addUserToGroupDTO.GroupId)
-			{
-				return BadRequest();
-			}
-			var group = await _context.Groups.Include(group => group.UserGroups).FirstOrDefaultAsync(group => group.Id == addUserToGroupDTO.GroupId);
-			var userGroup = new UserGroup()
-			{
-				Group = group,
-				GroupId = addUserToGroupDTO.GroupId,
-				UserId = addUserToGroupDTO.UserId
-			};
-			group.UserGroups.Add(userGroup);
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!GroupExists(groupId))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-			return NoContent();
+		public async Task<ActionResult> AddUserToGroup([FromRoute]Guid groupId, [FromBody]AddUserToGroupCommand addUserToGroupCommand)
+        {
+            var response = await _mediator.Send(addUserToGroupCommand);
+			return Ok();
 		}
 
 		// DELETE: api/Groups/5
 		[HttpDelete("{id}")]
 		public async Task<ActionResult<Group>> DeleteGroup(Guid id)
-		{
-			var @group = await _context.Groups.FindAsync(id);
-			if (@group == null)
-			{
-				return NotFound();
-			}
-
-			_context.Groups.Remove(@group);
-			await _context.SaveChangesAsync();
-
-			return @group;
+        {
+            var response = await _mediator.Send(new DeleteGroupCommand(id));
+            return Ok();
 		}
-
-		private bool GroupExists(Guid id)
-		{
-			return _context.Groups.Any(e => e.Id == id);
-		}
-	}
+    }
 }

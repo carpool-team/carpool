@@ -1,6 +1,7 @@
 using System.Reflection;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.DAL.Repositories.Group;
+using Carpool.DAL.Repositories.User;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,7 +36,8 @@ namespace Carpool.RestAPI
 			services.AddMvc(options => options.EnableEndpointRouting = false);
 			services.AddSingleton<IConfiguration>(Configuration);
 
-            services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddTransient<IGroupRepository, GroupRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 

@@ -14,6 +14,9 @@ using Carpool.Core.DTOs.GroupInvitesDTOs;
 using Carpool.RestAPI.DTOs.RideDTOs;
 using Carpool.Core.DTOs.GroupDTOs;
 using Carpool.Core.DTOs.RideRequestDTOs;
+using Carpool.Core.DTOs.UserDTOs;
+using Carpool.RestAPI.Queries.User;
+using MediatR;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -22,11 +25,13 @@ namespace Carpool.RestAPI.Controllers
 	public class UsersController : Controller
 	{
 		private readonly CarpoolDbContext _context;
+        private readonly IMediator _mediator;
 
-		public UsersController(CarpoolDbContext context)
-		{
-			_context = context;
-		}
+		public UsersController(CarpoolDbContext context, IMediator mediator)
+        {
+            _context = context;
+            _mediator = mediator;
+        }
 
 		// GET: api/Users
 		//[HttpGet]
@@ -48,6 +53,13 @@ namespace Carpool.RestAPI.Controllers
 
 			return user;
 		}
+
+        [HttpGet("~/api/groups/{groupId}/users")]
+        public async Task<ActionResult<List<IndexUserDTO>>> GetGroupUsers([FromRoute] Guid groupId)
+        {
+            var result = await _mediator.Send(new GetGroupUsersQuery(groupId));
+            return await result.ToListAsync();
+        }
 
 		// PUT: api/Users/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for

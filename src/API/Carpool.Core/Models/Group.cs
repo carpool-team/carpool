@@ -10,6 +10,7 @@ namespace Carpool.Core.Models
 	{
         public List<UserGroup> UserGroups { get; set; }
 
+        public Guid LocationId { get; set; }
 		public Location Location { get; set; }
 
 		public List<Ride> Rides { get; set; }

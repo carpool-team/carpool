@@ -23,15 +23,15 @@ namespace Carpool.DAL.Repositories
         {
         }
 
-        public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken)
-        {
-            return await _context.Set<T>().FindAsync(id, cancellationToken);
-        }
+        //public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        //{
+        //    return await _context.Set<T>().FindAsync(id, cancellationToken);
+        //}
 
-        public T GetById(Guid id)
-        {
-            return _context.Set<T>().Find(id);
-        }
+        //public T GetById(Guid id)
+        //{
+        //    return _context.Set<T>().Find(id);
+        //}
 
 
         public async Task AddAsync(T entity, CancellationToken cancellationToken)
@@ -42,6 +42,17 @@ namespace Carpool.DAL.Repositories
         public void Add(T entity)
         {
             _context.Set<T>().Add(entity);
+        }
+
+
+        public void Update(T entity)
+        {
+            _context.Set<T>().Update(entity);
+        }
+
+        public void Delete(T entity)
+        {
+            _context.Set<T>().Remove(entity);
         }
 
         public async Task SaveAsync(CancellationToken cancellationToken)

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Carpool.DAL.DatabaseContexts;
 using Carpool.DAL.Repositories.Group;
 using Carpool.RestAPI.Commands.Group;
 using MediatR;
-using Microsoft.AspNetCore.Server.IIS.Core;
 
-namespace Carpool.RestAPI.Handlers.Group
+namespace Carpool.RestAPI.Handlers.Commands.Group
 {
     public class AddGroupCommandHandler : AsyncRequestHandler<AddGroupCommand>
     {
