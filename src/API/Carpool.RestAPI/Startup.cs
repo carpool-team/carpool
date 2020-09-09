@@ -1,5 +1,7 @@
 using System.Reflection;
+using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
+using Carpool.DAL.Repositories.Company;
 using Carpool.DAL.Repositories.Group;
 using Carpool.DAL.Repositories.User;
 using MediatR;
@@ -38,7 +40,7 @@ namespace Carpool.RestAPI
 
             services.AddTransient<IGroupRepository, GroupRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
-
+            services.AddTransient<ICompanyRepository, CompanyRepository>();
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
 			services.AddDbContext<CarpoolDbContext>(options =>

@@ -7,7 +7,7 @@ using Carpool.Core.Abstract;
 
 namespace Carpool.DAL.Repositories
 {
-    public interface IBaseRepository<T> : IDisposable where T : IBaseEntity
+    public interface IBaseRepository<in T> : IDisposable where T : IBaseEntity
     {
         //Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         //T GetById(Guid id);
