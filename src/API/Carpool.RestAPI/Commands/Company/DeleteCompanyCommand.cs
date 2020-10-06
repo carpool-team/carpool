@@ -8,11 +8,11 @@ namespace Carpool.RestAPI.Commands.Company
 {
     public class DeleteCompanyCommand : IRequest
     {
-        public DeleteCompanyCommand(Guid id)
+        public DeleteCompanyCommand(int id)
         {
             Id = id;
         }
 
-        public Guid Id { get; }
+        public int Id { get; }
     }
 }

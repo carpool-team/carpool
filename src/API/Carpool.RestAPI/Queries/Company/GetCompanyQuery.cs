@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MediatR;
+﻿using MediatR;
 
-namespace Carpool.RestAPI.Handlers.Queries.Company
+namespace Carpool.RestAPI.Queries.Company
 {
     public class GetCompanyQuery : IRequest<Core.Models.Company>
     {
-        public GetCompanyQuery(Guid id)
+        public GetCompanyQuery(int id)
         {
             Id = id;
         }
-        public Guid Id { get; set; }
+        public int Id { get; set; }
     }
 }

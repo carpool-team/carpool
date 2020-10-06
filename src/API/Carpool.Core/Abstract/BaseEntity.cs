@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Carpool.Core.Abstract
 {
-	public abstract class BaseEntity : IBaseEntity
+	public abstract class BaseEntity<T> : IBaseEntity<T>
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public Guid Id { get; set; }
+		public T Id { get; set; }
 	}
 }

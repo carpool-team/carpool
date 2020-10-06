@@ -3,6 +3,7 @@ using Carpool.Core.Models.Intersections;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace Carpool.DAL.DatabaseContexts
@@ -38,6 +39,12 @@ namespace Carpool.DAL.DatabaseContexts
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			_ = modelBuilder ?? throw new NullReferenceException(nameof(modelBuilder));
+			
+			base.OnModelCreating(modelBuilder);
+
+			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+			
 			modelBuilder.Entity<UserGroup>()
 				.HasKey(ug => new { ug.UserId, ug.GroupId });
 

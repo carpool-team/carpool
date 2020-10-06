@@ -34,15 +34,15 @@ namespace Carpool.RestAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<IndexGroupDTO>>> GetGroups(GetGroupsQuery query)
         {
-            var response = await _mediator.Send(query);
-			return await response.ToListAsync();
+            var response = await _mediator.Send(query).ConfigureAwait(false);
+			return await response.ToListAsync().ConfigureAwait(false);
         }
 
         // GET: api/Groups/5
         [HttpGet("{groupId}")]
 		public async Task<ActionResult<Group>> GetGroup(GetGroupQuery query)
         {
-            var response = await _mediator.Send(query);
+            var response = await _mediator.Send(query).ConfigureAwait(false);
             return response;
 		}
 
@@ -52,21 +52,21 @@ namespace Carpool.RestAPI.Controllers
 		[HttpPut("{id}")]
 		public async Task<IActionResult> PutGroup(Guid id, UpdateGroupCommand updateGroupCommand)
         {
-            var response = await _mediator.Send(updateGroupCommand);
+            var response = await _mediator.Send(updateGroupCommand).ConfigureAwait(false);
             return Ok();
 		}
 
 		[HttpPut("{groupId}/locations")]
 		public async Task<ActionResult> ChangeGroupLocation([FromRoute]Guid groupId, [FromBody] ChangeGroupLocationCommand changeGroupLocationCommand)
         {
-            var response = await _mediator.Send(changeGroupLocationCommand);
+            var response = await _mediator.Send(changeGroupLocationCommand).ConfigureAwait(false);
             return Ok(response);
         }
 
         [HttpPut("{groupId}/rides")]
         public async Task<ActionResult> AddRideToGroup([FromRoute] Guid groupId, [FromBody] AddRideToGroupCommand addRideToGroupCommand)
         {
-            var response = await _mediator.Send(addRideToGroupCommand);
+            var response = await _mediator.Send(addRideToGroupCommand).ConfigureAwait(false);
             return Ok(response);
         }
 
@@ -76,14 +76,14 @@ namespace Carpool.RestAPI.Controllers
         [HttpPost]
 		public async Task<IActionResult> PostGroup([FromBody]AddGroupCommand addGroupCommand)
 		{
-            await _mediator.Send(addGroupCommand);
+            await _mediator.Send(addGroupCommand).ConfigureAwait(false);
             return Ok();
         }
 
 		[HttpPut("{groupId}/users")]
 		public async Task<ActionResult> AddUserToGroup([FromRoute]Guid groupId, [FromBody]AddUserToGroupCommand addUserToGroupCommand)
         {
-            var response = await _mediator.Send(addUserToGroupCommand);
+            var response = await _mediator.Send(addUserToGroupCommand).ConfigureAwait(false);
 			return Ok();
 		}
 
@@ -91,7 +91,7 @@ namespace Carpool.RestAPI.Controllers
 		[HttpDelete("{id}")]
 		public async Task<ActionResult<Group>> DeleteGroup(Guid id)
         {
-            var response = await _mediator.Send(new DeleteGroupCommand(id));
+            var response = await _mediator.Send(new DeleteGroupCommand(id)).ConfigureAwait(false);
             return Ok();
 		}
     }

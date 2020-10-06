@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Carpool.RestAPI.Queries.Location;
+using MediatR;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -15,31 +17,31 @@ namespace Carpool.RestAPI.Controllers
 	public class LocationsController : ParentController
 	{
 		private readonly CarpoolDbContext _context;
+		private readonly IMediator _mediator;
 
-		public LocationsController(CarpoolDbContext context)
+		public LocationsController(CarpoolDbContext context, IMediator mediator)
 		{
 			_context = context;
+			_mediator = mediator;
 		}
 
 		// GET: api/Locations
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
+		public async Task<IActionResult> GetLocation()
 		{
-			return await _context.Locations.Include(location => location.Coordinates).ToListAsync();
+			var request = new GetLocationsQuery();
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+			return Ok(response);
 		}
 
 		// GET: api/Locations/5
 		[HttpGet("{locationId}")]
-		public async Task<ActionResult<Location>> GetLocation(Guid locationId)
+		public async Task<IActionResult> GetLocation(Guid locationId)
 		{
-			var location = await _context.Locations.FindAsync(locationId);
+			var request = new GetLocationByIdQuery(locationId);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			if (location == null)
-			{
-				return NotFound();
-			}
-
-			return location;
+			return Ok(response);
 		}
 
 		// PUT: api/Locations/5

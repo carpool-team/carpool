@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Carpool.DAL.DatabaseContexts;
@@ -9,13 +10,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.DAL.Repositories.Group
 {
-    public class GroupRepository : BaseRepository<Core.Models.Group>, IGroupRepository
+    public class GroupRepository : BaseRepository<Core.Models.Group, Guid>, IGroupRepository
     {
         public GroupRepository(CarpoolDbContext context) : base(context)
         {
         }
 
-        public async Task<Core.Models.Group> GetByIdAsync(Guid id)
+        public async Task<Core.Models.Group> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Groups
                 .AsNoTracking()
@@ -24,9 +25,9 @@ namespace Carpool.DAL.Repositories.Group
                     .ThenInclude(location => location.Coordinates)
                 .Include(group => group.Owner)
                 .Include(group => group.UserGroups)
-                .FirstOrDefaultAsync(group => group.Id == id);
+                .FirstOrDefaultAsync(group => group.Id == id, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
-        public async Task<Core.Models.Group> GetByIdAsNoTrackingAsync(Guid id)
+        public async Task<Core.Models.Group> GetByIdAsNoTrackingAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Groups
                 .Include(group => group.Rides)
@@ -34,7 +35,7 @@ namespace Carpool.DAL.Repositories.Group
                 .ThenInclude(location => location.Coordinates)
                 .Include(group => group.Owner)
                 .Include(group => group.UserGroups)
-                .FirstOrDefaultAsync(group => group.Id == id);
+                .FirstOrDefaultAsync(group => group.Id == id, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
         public Core.Models.Group GetById(Guid id)
@@ -64,7 +65,7 @@ namespace Carpool.DAL.Repositories.Group
 
         public async Task<bool> GroupCodeExists(string code)
         {
-            return await _context.Groups.AnyAsync(group => group.Code == code);
+            return await _context.Groups.AnyAsync(group => group.Code == code).ConfigureAwait(false);
         }
 
         public async IAsyncEnumerable<Core.Models.Group> GetRangeAsync(int pageCount, int pagesToSkip)
@@ -78,7 +79,7 @@ namespace Carpool.DAL.Repositories.Group
                 .Skip(pagesToSkip * pageCount)
                 .Take(pageCount)
                 .AsAsyncEnumerable().GetAsyncEnumerator();
-            while (await iterator.MoveNextAsync())
+            while (await iterator.MoveNextAsync().ConfigureAwait(false))
             {
                 yield return iterator.Current;
             }

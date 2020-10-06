@@ -10,54 +10,54 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.DAL.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
+    public class BaseRepository<TEntity, T> : IBaseRepository<TEntity, T> where TEntity : BaseEntity<T>
     {
         internal readonly CarpoolDbContext _context;
 
         public BaseRepository(CarpoolDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(_context));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public void Dispose()
         {
         }
 
-        //public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken)
-        //{
-        //    return await _context.Set<T>().FindAsync(id, cancellationToken);
-        //}
+        // public async Task<TEntity> GetByIdAsync(T id, CancellationToken cancellationToken)
+        // {
+        //     return await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken).ConfigureAwait(false);
+        // }
+        //
+        // public TEntity GetById(T id)
+        // {
+        //     return _context.Set<TEntity>().Find(id);
+        // }
 
-        //public T GetById(Guid id)
-        //{
-        //    return _context.Set<T>().Find(id);
-        //}
 
-
-        public async Task AddAsync(T entity, CancellationToken cancellationToken)
+        public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            await _context.Set<T>().AddAsync(entity, cancellationToken);
+            await _context.Set<TEntity>().AddAsync(entity, cancellationToken).ConfigureAwait(false);
         }
 
-        public void Add(T entity)
+        public void Add(TEntity entity)
         {
-            _context.Set<T>().Add(entity);
+            _context.Set<TEntity>().Add(entity);
         }
 
 
-        public void Update(T entity)
+        public void Update(TEntity entity)
         {
-            _context.Set<T>().Update(entity);
+            _context.Set<TEntity>().Update(entity);
         }
 
-        public void Delete(T entity)
+        public void Delete(TEntity entity)
         {
-            _context.Set<T>().Remove(entity);
+            _context.Set<TEntity>().Remove(entity);
         }
 
-        public async Task SaveAsync(CancellationToken cancellationToken)
+        public async Task SaveAsync(CancellationToken cancellationToken = default)
         {
-            await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public void Save()

@@ -3,18 +3,20 @@ using Carpool.Core.Models.Intersections;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace Carpool.Core.Models
 {
-	public class User : BaseEntity
+	public class User : IdentityUser<Guid>
 	{
+		public User() : base()
+		{
+			
+		}
+		
 		public string FirstName { get; set; }
 
 		public string LastName { get; set; }
-
-		public string Email { get; set; }
-
-		public string PhoneNumber { get; set; }
 
 		public List<Location> Locations { get; set; }
 
@@ -33,5 +35,7 @@ namespace Carpool.Core.Models
 		public List<GroupInvite> GroupInvites { get; set; }
 
 		public List<GroupInvite> SentGroupInvites { get; set; }
+		
+		public Guid CompanyId { get; set; }
 	}
 }

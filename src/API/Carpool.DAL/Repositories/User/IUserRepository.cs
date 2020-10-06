@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Carpool.DAL.Repositories.User
 {
-    public interface IUserRepository : IBaseRepository<Core.Models.User>
+    public interface IUserRepository
     {
         IAsyncEnumerable<Core.Models.User> GetGroupUsersByGroupIdAsync(Guid id);
     }
