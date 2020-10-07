@@ -20,6 +20,7 @@ namespace Carpool.RestAPI.Controllers
 			_mediator = mediator;
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		//// GET: api/GroupInvites
 		//[HttpGet]
 		//public async Task<ActionResult<IEnumerable<GroupInvite>>> GetGroupInvites()
@@ -36,6 +37,7 @@ namespace Carpool.RestAPI.Controllers
 			return Ok(response);
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// PUT: api/GroupInvites/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -50,6 +52,7 @@ namespace Carpool.RestAPI.Controllers
 			return Json("ok");
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// POST: api/GroupInvites
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

@@ -33,6 +33,7 @@ namespace Carpool.RestAPI.Controllers
             _mediator = mediator;
         }
 
+		//TODO: Rewrite to use mediator pattern
 		// GET: api/Users
 		//[HttpGet]
 		//public async Task<ActionResult<IEnumerable<User>>> GetUsers()
@@ -40,6 +41,7 @@ namespace Carpool.RestAPI.Controllers
 		//	return await _context.Users.ToListAsync();
 		//}
 
+		//TODO: Rewrite to use mediator pattern
 		// GET: api/Users/5
 		[HttpGet("{id}")]
 		public async Task<ActionResult<User>> GetUser(Guid id)
@@ -61,6 +63,7 @@ namespace Carpool.RestAPI.Controllers
             return await result.ToListAsync();
         }
 
+        //TODO: Rewrite to use mediator pattern
 		// PUT: api/Users/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -93,6 +96,7 @@ namespace Carpool.RestAPI.Controllers
 			return NoContent();
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// POST: api/Users
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -105,6 +109,7 @@ namespace Carpool.RestAPI.Controllers
 			return CreatedAtAction("GetUser", new { id = user.Id }, user);
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// DELETE: api/Users/5
 		[HttpDelete("{userId}")]
 		public async Task<ActionResult<User>> DeleteUser(Guid userId)
@@ -123,6 +128,7 @@ namespace Carpool.RestAPI.Controllers
 
 		#region Ratings
 
+		//TODO: Rewrite to use mediator pattern
 		[HttpGet("{userId}/ratings/{ratingId}")]
 		public async Task<ActionResult<Rating>> GetUserRatingById([FromRoute]Guid userId, [FromRoute]Guid ratingId)
 		{
@@ -136,6 +142,7 @@ namespace Carpool.RestAPI.Controllers
 			return rating;
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		[HttpPost("{userId}/ratings")]
 		public async Task<ActionResult> AddUserRating([FromBody] AddRatingDTO ratingDTO, [FromRoute] Guid userId)
 		{
@@ -155,26 +162,9 @@ namespace Carpool.RestAPI.Controllers
 
 		#endregion Ratings
 
-		//[HttpPost("AddMockUser")]
-		//public async Task<IActionResult> AddMockUser()
-		//{
-		//	var user = new User()
-		//	{
-		//		FirstName = "Wojciech",
-		//		LastName = "Suchodolski",
-		//		Email = "nitrotykarz@las.pl",
-		//		Locations = _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).ToListAsync().Result,
-		//		PhoneNumber = "123456789",
-		//		Vehicle = new Vehicle() { Name = "Audi A4" }
-		//	};
-		//	_context.Users.Add(user);
-		//	await _context.SaveChangesAsync();
-
-		//	return CreatedAtAction("GetUser", new { id = user.Id }, user);
-		//}
-
 		#region Rides
 
+		//TODO: Rewrite to use mediator pattern
 		[HttpGet("{userId}/rides/participated")]
 		public async Task<ActionResult<List<IndexRideDTO>>> GetUserParticipatedRides([FromRoute] Guid userId, [FromQuery]bool past = false)
 		{
@@ -206,6 +196,7 @@ namespace Carpool.RestAPI.Controllers
 			}
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		[HttpGet("{userId}/rides/owned")]
 		public async Task<ActionResult<List<IndexRideDTO>>> GetUserOwnedRides([FromRoute] Guid userId, [FromQuery]bool past = false)
 		{
@@ -238,6 +229,7 @@ namespace Carpool.RestAPI.Controllers
 			}
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		[HttpGet("{userId}/rides/owned/{rideId}")]
 		public async Task<ActionResult<IndexRideDTO>> GetUserOwnedRide([FromRoute]Guid userId, [FromRoute]Guid rideId)
 		{
@@ -251,6 +243,7 @@ namespace Carpool.RestAPI.Controllers
 			return IndexRideDTO.FromRide(ride);
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		//[HttpPost("{userId}/rides")]
 		//public async Task<ActionResult<Ride>> PostRide([FromBody] AddRideDTO addRideDTO, [FromRoute] Guid userId)
 		//{
@@ -312,6 +305,7 @@ namespace Carpool.RestAPI.Controllers
 
 		#region Group Invites
 
+		//TODO: Rewrite to use mediator pattern
 		[HttpGet("{userId}/groupInvites")]
 		public async Task<ActionResult<List<GroupInvite>>> GetUserGroupInvites([FromRoute]Guid userId)
 		{
@@ -335,6 +329,7 @@ namespace Carpool.RestAPI.Controllers
 
 		#region Groups
 
+		//TODO: Rewrite to use mediator pattern
 		[HttpGet("{userId}/groups")]
 		public async Task<ActionResult<List<IndexGroupDTO>>> GetUserGroups([FromRoute]Guid userId)
 		{
@@ -355,6 +350,7 @@ namespace Carpool.RestAPI.Controllers
 
 		#region Ride Requests
 
+		//TODO: Rewrite to use mediator pattern
 		//[HttpPost("{userId}/rideRequests")]
 		//public async Task<ActionResult<RideRequest>> PostRideRequest([FromRoute]Guid userId, [FromBody]AddRideRequestDTO rideRequestDTO)
 		//{
@@ -370,9 +366,6 @@ namespace Carpool.RestAPI.Controllers
 
 		//	return CreatedAtAction("PostRideRequest", new { id = rideRequest.Id }, rideRequestDTO);
 		//}
-
-		[HttpGet("{userId}/rideRequests")]
-
 		#endregion Ride Requests
 
 		private bool UserExists(Guid id)

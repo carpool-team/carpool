@@ -29,6 +29,7 @@ namespace Carpool.RestAPI.Controllers
 			_context = context;
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// GET: api/Rides?userId={id}
 		[HttpGet]
 		public async Task<ActionResult<List<IndexRideDTO>>> GetRides([FromQuery]Guid? userId)
@@ -60,6 +61,7 @@ namespace Carpool.RestAPI.Controllers
 			}
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// GET: api/Rides/5
 		[HttpGet("{rideId}")]
 		public async Task<ActionResult<Ride>> GetRide(Guid rideId)
@@ -74,6 +76,7 @@ namespace Carpool.RestAPI.Controllers
 			return ride;
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// PUT: api/Rides/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -106,6 +109,7 @@ namespace Carpool.RestAPI.Controllers
 			return NoContent();
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// POST: api/Rides
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
@@ -150,6 +154,7 @@ namespace Carpool.RestAPI.Controllers
 			return ride;
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// DELETE: api/Rides/5
 		[HttpDelete("{id}")]
 		public async Task<ActionResult<Ride>> DeleteRide(Guid id)
@@ -166,11 +171,13 @@ namespace Carpool.RestAPI.Controllers
 			return ride;
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		private bool RideExists(Guid id)
 		{
 			return _context.Rides.Any(e => e.Id == id);
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		//[HttpPost("{rideId}/users")]
 		//public async Task<ActionResult> AddParticipant([FromRoute]Guid rideId, [FromBody] AddStopDTO stop)
 		//{
@@ -217,22 +224,5 @@ namespace Carpool.RestAPI.Controllers
 			ride.Date = DateTime.Now;
 			return Json(ride);
 		}
-
-		//[HttpPost("AddMockRide")]
-		//public async Task<ActionResult<Ride>> AddMockRide()
-		//{
-		//	var ride = new Ride()
-		//	{
-		//		Destination = await _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).FirstOrDefaultAsync(),
-		//		StartingLocation = await _context.Locations.Where(loc => loc.LocationName.Name.Contains("Szkolna")).Include(ln => ln.Coordinates).Include(ln => ln.LocationName).FirstOrDefaultAsync(),
-		//		Owner = await _context.Users.FirstOrDefaultAsync(user => user.LastName.Contains("kononowicz")),
-		//		Participants = new List<UserParticipatedRide>(),
-		//		Stops = new List<Stop>()
-		//	};
-		//	_context.Rides.Add(ride);
-		//	await _context.SaveChangesAsync();
-
-		//	return CreatedAtAction("GetRide", new { id = ride.Id }, ride);
-		//}
 	}
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.Core.DTOs.RideRequestDTOs;
+using Carpool.RestAPI.Commands.RideRequest;
 using Carpool.RestAPI.Queries.RideRequest;
 using MediatR;
 
@@ -26,6 +27,7 @@ namespace Carpool.RestAPI.Controllers
 			_mediator = mediator;
 		}
 
+		//TODO: Rewrite to use mediator pattern
 		// GET: api/RideRequests
 		//[HttpGet]
 		//public async Task<ActionResult<IEnumerable<RideRequest>>> GetRideRequests()
@@ -47,79 +49,34 @@ namespace Carpool.RestAPI.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{id}")]
-		public async Task<IActionResult> PutRideRequest(Guid id, RideRequest rideRequest)
+		public async Task<IActionResult> PutRideRequest(Guid id, UpdateRideRequestCommand request)
 		{
-			if (id != rideRequest.Id)
-			{
-				return BadRequest();
-			}
+			request.RideRequestId = id;
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			_context.Entry(rideRequest).State = EntityState.Modified;
-
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!RideRequestExists(id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-
-			return NoContent();
+			
+			return Ok(request);
 		}
 
 		// POST: api/RideRequests
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<ActionResult<RideRequest>> PostRideRequest([FromBody]AddRideRequestDTO rideRequestDTO)
+		public async Task<IActionResult> PostRideRequest([FromBody]AddRideRequestCommand request)
 		{
-			var rideRequest = new RideRequest()
-			{
-				Date = rideRequestDTO.Date,
-				Destination = rideRequestDTO.Destination,
-				StartingLocation = rideRequestDTO.StartingLocation,
-				Requester = null,
-			};
-			_context.RideRequests.Add(rideRequest);
-			await _context.SaveChangesAsync();
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			return CreatedAtAction("GetRideRequest", new { id = rideRequest.Id }, rideRequestDTO);
+			return Ok(response);
 		}
 
 		// DELETE: api/RideRequests/5
 		[HttpDelete("{id}")]
-		public async Task<ActionResult<RideRequest>> DeleteRideRequest(Guid id)
+		public async Task<IActionResult> DeleteRideRequest(Guid id)
 		{
-			var rideRequest = await _context.RideRequests.FindAsync(id);
-			if (rideRequest == null)
-			{
-				return NotFound();
-			}
+			var request = new DeleteRideRequestCommand(id);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			_context.RideRequests.Remove(rideRequest);
-			await _context.SaveChangesAsync();
-
-			return rideRequest;
-		}
-
-		[HttpGet("GetEmptyAddRideRequest")]
-		public async Task<ActionResult<AddRideRequestDTO>> GetEmptyAddRideRequest()
-		{
-			var addRideRequestDTO = AddRideRequestDTO.GetEmpty();
-			return Json(addRideRequestDTO);
-		}
-
-		private bool RideRequestExists(Guid id)
-		{
-			return _context.RideRequests.Any(e => e.Id == id);
+			return Ok(response);
 		}
 	}
 }

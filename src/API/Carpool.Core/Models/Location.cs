@@ -14,7 +14,6 @@ namespace Carpool.Core.Models
 
 		[Required]
 		public double Latitude { get; set; }
-		[Required]
 
 		public string Name { get; set; }
 	}
