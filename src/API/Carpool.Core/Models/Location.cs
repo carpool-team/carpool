@@ -10,8 +10,10 @@ namespace Carpool.Core.Models
 	public class Location : BaseEntity<Guid>
 	{
 		[Required]
-		public Coordinates Coordinates { get; set; }
-		public Guid CoordinatesId { get; set; }
+		public double Longitude { get; set; }
+
+		[Required]
+		public double Latitude { get; set; }
 		[Required]
 
 		public string Name { get; set; }

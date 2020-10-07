@@ -18,7 +18,6 @@ namespace Carpool.DAL.DatabaseContexts
 		#region Models
 
 		public DbSet<Location> Locations { get; set; }
-		public DbSet<Coordinates> Coordinates { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Group> Groups { get; set; }
 		public DbSet<Company> Companies { get; set; }
@@ -44,22 +43,9 @@ namespace Carpool.DAL.DatabaseContexts
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-			
-			modelBuilder.Entity<UserGroup>()
-				.HasKey(ug => new { ug.UserId, ug.GroupId });
-
-			modelBuilder.Entity<UserGroup>()
-				.HasOne(ug => ug.User)
-				.WithMany(ug => ug.UserGroups)
-				.HasForeignKey(ug => ug.UserId);
-
-			modelBuilder.Entity<UserGroup>()
-				.HasOne(ug => ug.Group)
-				.WithMany(ug => ug.UserGroups)
-				.HasForeignKey(ug => ug.GroupId);
 
 			modelBuilder.Entity<UserParticipatedRide>()
-				.HasKey(upr => new { upr.UserId, upr.RideId });
+			            .HasKey(upr => new { upr.UserId, upr.RideId });
 
 			modelBuilder.Entity<UserParticipatedRide>()
 				.HasOne(ur => ur.User)

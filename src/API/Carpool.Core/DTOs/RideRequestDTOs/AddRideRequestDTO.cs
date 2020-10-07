@@ -27,11 +27,9 @@ namespace Carpool.Core.DTOs.RideRequestDTOs
 			{
 				Destination = new Location()
 				{
-					Coordinates = new Coordinates(),
 				},
 				StartingLocation = new Location()
 				{
-					Coordinates = new Coordinates(),
 				},
 				Date = DateTime.Now
 			};

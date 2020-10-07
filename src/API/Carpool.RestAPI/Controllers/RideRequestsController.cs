@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.Core.DTOs.RideRequestDTOs;
+using Carpool.RestAPI.Queries.RideRequest;
+using MediatR;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -16,10 +18,12 @@ namespace Carpool.RestAPI.Controllers
 	public class RideRequestsController : Controller
 	{
 		private readonly CarpoolDbContext _context;
+		private readonly IMediator _mediator;
 
-		public RideRequestsController(CarpoolDbContext context)
+		public RideRequestsController(CarpoolDbContext context, IMediator mediator)
 		{
 			_context = context;
+			_mediator = mediator;
 		}
 
 		// GET: api/RideRequests
@@ -33,14 +37,10 @@ namespace Carpool.RestAPI.Controllers
 		[HttpGet("{id}")]
 		public async Task<ActionResult<RideRequest>> GetRideRequest(Guid id)
 		{
-			var rideRequest = await _context.RideRequests.FindAsync(id);
+			var request = new GetRideRequestByIdQuery(id);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			if (rideRequest == null)
-			{
-				return NotFound();
-			}
-
-			return rideRequest;
+			return Ok(response);
 		}
 
 		// PUT: api/RideRequests/5

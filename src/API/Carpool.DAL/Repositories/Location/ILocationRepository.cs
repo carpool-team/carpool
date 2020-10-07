@@ -19,5 +19,9 @@ namespace Carpool.DAL.Repositories.Location
 
 		Core.Models.Location GetById(Guid id);
 		Core.Models.Location GetByIdAsNoTracking(Guid id);
+
+		Task<Core.Models.Location> GetByCoordsAsync(double longitude,
+		                                            double latitude,
+		                                            CancellationToken cancellationToken);
 	}
 }

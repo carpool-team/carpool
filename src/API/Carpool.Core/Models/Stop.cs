@@ -9,8 +9,8 @@ namespace Carpool.Core.Models
 	{
         public Guid UserId { get; set; }
 		public User User { get; set; }
-		public Coordinates Coordinates { get; set; }
-		public Guid CoordinatesId { get; set; }
+		public Location Location { get; set; }
+		public Guid LocationId { get; set; }
 		public Ride Ride { get; set; }
 		public Guid RideId { get; set; }
 	}

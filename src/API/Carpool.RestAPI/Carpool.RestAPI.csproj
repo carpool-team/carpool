@@ -39,9 +39,5 @@
     <ProjectReference Include="..\Carpool.DAL\Carpool.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Commands\Location" />
-  </ItemGroup>
-
 
 </Project>

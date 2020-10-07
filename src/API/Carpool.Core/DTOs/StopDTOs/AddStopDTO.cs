@@ -12,7 +12,7 @@ namespace Carpool.Core.DTOs.StopDTOs
 		public Guid ParticipantId { get; set; }
 
 		[Required]
-		public Coordinates Coordinates { get; set; }
+		public Location Location { get; set; }
 
         public Guid UserId { get; set; }
     }

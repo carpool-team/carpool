@@ -9,7 +9,7 @@ namespace Carpool.Core.DTOs.StopDTOs
 	public class IndexStopDTO
 	{
 		public IndexUserDTO User { get; set; }
-		public Coordinates Coordinates { get; set; }
+		public Location Location { get; set; }
 
 		private IndexStopDTO()
 		{
@@ -20,7 +20,7 @@ namespace Carpool.Core.DTOs.StopDTOs
 			return new IndexStopDTO()
 			{
 				User = IndexUserDTO.FromUser(stop.User),
-				Coordinates = stop.Coordinates,
+				Location = stop.Location,
 			};
 		}
 	}

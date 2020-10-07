@@ -17,12 +17,10 @@ namespace Carpool.RestAPI.Controllers
 	[ApiController]
 	public class CompaniesController : ControllerBase
 	{
-		private readonly CarpoolDbContext _context;
         private readonly IMediator _mediator;
 
-		public CompaniesController(CarpoolDbContext context, IMediator mediator)
+		public CompaniesController(IMediator mediator)
         {
-            _context = context;
             _mediator = mediator;
         }
 

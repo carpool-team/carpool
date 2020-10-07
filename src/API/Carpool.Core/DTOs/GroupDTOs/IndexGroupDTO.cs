@@ -18,7 +18,7 @@ namespace Carpool.Core.DTOs.GroupDTOs
 
 		public static IndexGroupDTO FromGroup(Group group)
         {
-            _ = group?.Location?.Coordinates ?? throw new InvalidOperationException("Location cannot be null");
+            _ = group?.Location ?? throw new InvalidOperationException("Location cannot be null");
 			return new IndexGroupDTO()
 			{
 				Id = group.Id,

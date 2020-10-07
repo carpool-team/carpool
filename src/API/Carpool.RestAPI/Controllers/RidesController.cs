@@ -39,17 +39,15 @@ namespace Carpool.RestAPI.Controllers
 				var rides = await _context.Rides.AsNoTracking()
 					.Include(ride => ride.Stops)
 					.Include(ride => ride.StartingLocation)
-						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.StartingLocation)
 					.Include(ride => ride.Participants)
 					.Include(ride => ride.Owner)
 						.ThenInclude(user => user.Vehicle)
 					.Include(ride => ride.Destination)
-						.ThenInclude(st => st.Coordinates)
 					.Include(ride => ride.Destination)
 					.Where(ride => ride.Date >= DateTime.Now)
 					.OrderBy(ride => ride.Date)
-					.ToListAsync();
+					.ToListAsync().ConfigureAwait(false);
 				rides.ForEach(r => r.Participants.ForEach(p => p.User = _context.Users.FirstOrDefault(u => u.Id == p.UserId)));
 				var ridesDTO = rides.Select(ride => IndexRideDTO.FromRide(ride)).ToList();
 				if (userId != null)
@@ -128,6 +126,7 @@ namespace Carpool.RestAPI.Controllers
 			}
 		}
 
+		//TODO: Rewerite to use mediator pattern
 		private async Task<Ride> getRideFromAddRideDTO(AddRideDTO addRideDTO)
 		{
 			var ride = new Ride()
@@ -139,7 +138,6 @@ namespace Carpool.RestAPI.Controllers
 				Stops = addRideDTO.AddStopDTOs.Select(stop => new Stop()
 				{
 					User = _context.Users.FirstOrDefault(user => user.Id == stop.UserId),
-					Coordinates = stop.Coordinates
 				}).ToList(),
 				Date = addRideDTO.Date
 			};
@@ -194,6 +192,8 @@ namespace Carpool.RestAPI.Controllers
 		//	return NoContent();
 		//}
 
+		
+		//TODO: Rewrite to use mediator pattern
 		[HttpGet("GetEmptyRide")]
 		public async Task<ActionResult<AddRideDTO>> GetEmptyRide()
 		{
@@ -208,11 +208,11 @@ namespace Carpool.RestAPI.Controllers
 			};
 			ride.Destination = new Location()
 			{
-				Coordinates = new Coordinates(),
+				//Coordinates = new Coordinates(),
 			};
 			ride.StartingLocation = new Location()
 			{
-				Coordinates = new Coordinates(),
+				//Coordinates = new Coordinates(),
 			};
 			ride.Date = DateTime.Now;
 			return Json(ride);

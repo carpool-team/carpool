@@ -22,7 +22,6 @@ namespace Carpool.DAL.Repositories.Group
                 .AsNoTracking()
                 .Include(group => group.Rides)
                 .Include(group => group.Location)
-                    .ThenInclude(location => location.Coordinates)
                 .Include(group => group.Owner)
                 .Include(group => group.UserGroups)
                 .FirstOrDefaultAsync(group => group.Id == id, cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -32,7 +31,6 @@ namespace Carpool.DAL.Repositories.Group
             return await _context.Groups
                 .Include(group => group.Rides)
                 .Include(group => group.Location)
-                .ThenInclude(location => location.Coordinates)
                 .Include(group => group.Owner)
                 .Include(group => group.UserGroups)
                 .FirstOrDefaultAsync(group => group.Id == id, cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -44,7 +42,6 @@ namespace Carpool.DAL.Repositories.Group
                 .AsNoTracking()
                 .Include(group => group.Rides)
                 .Include(group => group.Location)
-                .ThenInclude(location => location.Coordinates)
                 .Include(group => group.Owner)
                 .Include(group => group.UserGroups)
                 .FirstOrDefault(group => group.Id == id);
@@ -55,7 +52,6 @@ namespace Carpool.DAL.Repositories.Group
             return _context.Groups
                 .Include(group => group.Rides)
                 .Include(group => group.Location)
-                .ThenInclude(location => location.Coordinates)
                 .Include(group => group.Owner)
                 .Include(group => group.UserGroups)
                 .FirstOrDefault(group => group.Id == id);
@@ -75,7 +71,6 @@ namespace Carpool.DAL.Repositories.Group
                 .Include(group => group.Rides)
                 .Include(group => group.UserGroups)
                 .Include(group => group.Location)
-                    .ThenInclude(location => location.Coordinates)
                 .Skip(pagesToSkip * pageCount)
                 .Take(pageCount)
                 .AsAsyncEnumerable().GetAsyncEnumerator();

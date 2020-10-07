@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
-using Carpool.Core.DTOs.GroupInvitesDTOs;
-using Carpool.Core.Models.Intersections;
 using Carpool.RestAPI.Commands.GroupInvite;
 using Carpool.RestAPI.Queries.GroupInvite;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -19,12 +13,10 @@ namespace Carpool.RestAPI.Controllers
 	[ApiController]
 	public class GroupInvitesController : Controller
 	{
-		private readonly CarpoolDbContext _context;
 		private readonly IMediator _mediator;
 
-		public GroupInvitesController(CarpoolDbContext context, IMediator mediator)
+		public GroupInvitesController(IMediator mediator)
 		{
-			_context = context;
 			_mediator = mediator;
 		}
 

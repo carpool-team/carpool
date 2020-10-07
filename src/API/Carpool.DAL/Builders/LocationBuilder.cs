@@ -16,9 +16,8 @@ namespace Carpool.DAL.Builders
 
 			builder.Property(x => x.Name);
 
-			builder.HasOne(x => x.Coordinates)
-			       .WithMany()
-			       .HasForeignKey(x => x.CoordinatesId);
+			builder.Property(x => x.Latitude).IsRequired();
+			builder.Property(x => x.Longitude).IsRequired();
 		}
 	}
 }

@@ -20,13 +20,10 @@ namespace Carpool.RestAPI.Controllers
 	[ApiController]
 	public class GroupsController : ControllerBase
 	{
-		private readonly CarpoolDbContext _context;
-
         private readonly IMediator _mediator;
 
-		public GroupsController(CarpoolDbContext context, IMediator mediator)
+		public GroupsController(IMediator mediator)
 		{
-			_context = context;
             _mediator = mediator;
         }
 
