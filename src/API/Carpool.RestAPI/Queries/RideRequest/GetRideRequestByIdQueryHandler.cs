@@ -11,14 +11,14 @@ namespace Carpool.RestAPI.Queries.RideRequest
 		private readonly IRideRequestRepository _repository;
 
 		public GetRideRequestByIdQueryHandler(IRideRequestRepository repository)
-		{
-			_repository = repository;
-		}
+			=> _repository = repository;
 
 		public async Task<Core.Models.RideRequest> Handle(GetRideRequestByIdQuery request,
 		                                                  CancellationToken cancellationToken)
 		{
-			var rideRequest = await _repository.GetByIdAsNoTrackingAsync(request.Id, cancellationToken).ConfigureAwait(false);
+			var rideRequest = await _repository.GetByIdAsNoTrackingAsync(request.Id, cancellationToken)
+			                                   .ConfigureAwait(false);
+
 			_ = rideRequest ?? throw new NullReferenceException(nameof(rideRequest));
 			return rideRequest;
 		}

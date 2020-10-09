@@ -1,5 +1,4 @@
 ﻿using System;
-using Carpool.Core.Models;
 using MediatR;
 using Newtonsoft.Json;
 

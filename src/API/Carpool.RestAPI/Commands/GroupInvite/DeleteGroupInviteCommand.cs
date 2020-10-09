@@ -8,9 +8,7 @@ namespace Carpool.RestAPI.Commands.GroupInvite
 	{
 		[JsonConstructor]
 		public DeleteGroupInviteCommand(Guid groupInviteId)
-		{
-			GroupInviteId = groupInviteId;
-		}
+			=> GroupInviteId = groupInviteId;
 
 		public Guid GroupInviteId { get; set; }
 	}

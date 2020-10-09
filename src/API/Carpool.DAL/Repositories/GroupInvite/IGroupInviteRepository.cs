@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,5 +12,11 @@ namespace Carpool.DAL.Repositories.GroupInvite
 
 		Core.Models.GroupInvite GetById(Guid id);
 		Core.Models.GroupInvite GetByIdAsNoTracking(Guid id);
+
+		Task<List<Core.Models.GroupInvite>> GetPartAsync(CancellationToken cancellationToken);
+
+		Task<List<Core.Models.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(
+			Guid userId,
+			CancellationToken cancellationToken);
 	}
 }

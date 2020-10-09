@@ -1,8 +1,7 @@
-﻿using Carpool.Core.Abstract;
-using Carpool.Core.Models.Intersections;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Carpool.Core.Abstract;
+using Carpool.Core.Models.Intersections;
 
 namespace Carpool.Core.Models
 {

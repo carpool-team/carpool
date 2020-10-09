@@ -1,6 +1,4 @@
-﻿using System;
-using Carpool.Core.Models;
-using MediatR;
+﻿using MediatR;
 using Newtonsoft.Json;
 
 namespace Carpool.RestAPI.Commands.Location

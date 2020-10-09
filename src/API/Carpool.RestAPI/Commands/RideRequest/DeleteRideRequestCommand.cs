@@ -8,9 +8,7 @@ namespace Carpool.RestAPI.Commands.RideRequest
 	{
 		[JsonConstructor]
 		public DeleteRideRequestCommand(Guid rideRequestId)
-		{
-			RideRequestId = rideRequestId;
-		}
+			=> RideRequestId = rideRequestId;
 
 		public Guid RideRequestId { get; set; }
 	}

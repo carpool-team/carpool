@@ -3,174 +3,176 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Carpool.DAL.Migrations
 {
-    public partial class AddedGroupInvitesTable : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Rating_Users_UserId",
-                table: "Rating");
+	public partial class AddedGroupInvitesTable : Migration
+	{
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropForeignKey(
+				"FK_Rating_Users_UserId",
+				"Rating");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Users_Vehicle_VehicleId",
-                table: "Users");
+			migrationBuilder.DropForeignKey(
+				"FK_Users_Vehicle_VehicleId",
+				"Users");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Vehicle",
-                table: "Vehicle");
+			migrationBuilder.DropPrimaryKey(
+				"PK_Vehicle",
+				"Vehicle");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Rating",
-                table: "Rating");
+			migrationBuilder.DropPrimaryKey(
+				"PK_Rating",
+				"Rating");
 
-            migrationBuilder.RenameTable(
-                name: "Vehicle",
-                newName: "Vehicles");
+			migrationBuilder.RenameTable(
+				"Vehicle",
+				newName: "Vehicles");
 
-            migrationBuilder.RenameTable(
-                name: "Rating",
-                newName: "Ratings");
+			migrationBuilder.RenameTable(
+				"Rating",
+				newName: "Ratings");
 
-            migrationBuilder.RenameIndex(
-                name: "IX_Rating_UserId",
-                table: "Ratings",
-                newName: "IX_Ratings_UserId");
+			migrationBuilder.RenameIndex(
+				"IX_Rating_UserId",
+				table: "Ratings",
+				newName: "IX_Ratings_UserId");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Vehicles",
-                table: "Vehicles",
-                column: "Id");
+			migrationBuilder.AddPrimaryKey(
+				"PK_Vehicles",
+				"Vehicles",
+				"Id");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Ratings",
-                table: "Ratings",
-                column: "Id");
+			migrationBuilder.AddPrimaryKey(
+				"PK_Ratings",
+				"Ratings",
+				"Id");
 
-            migrationBuilder.CreateTable(
-                name: "GroupInvites",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsPending = table.Column<bool>(nullable: false),
-                    GroupId = table.Column<Guid>(nullable: true),
-                    InvitedUserId = table.Column<Guid>(nullable: false),
-                    IsAccepted = table.Column<bool>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupInvites", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GroupInvites_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_GroupInvites_Users_InvitedUserId",
-                        column: x => x.InvitedUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GroupInvites_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+			migrationBuilder.CreateTable(
+				"GroupInvites",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					IsPending = table.Column<bool>(nullable: false),
+					GroupId = table.Column<Guid>(nullable: true),
+					InvitedUserId = table.Column<Guid>(nullable: false),
+					IsAccepted = table.Column<bool>(nullable: false),
+					UserId = table.Column<Guid>(nullable: true)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_GroupInvites", x => x.Id);
+					table.ForeignKey(
+						"FK_GroupInvites_Groups_GroupId",
+						x => x.GroupId,
+						"Groups",
+						"Id",
+						onDelete: ReferentialAction.Restrict);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupInvites_GroupId",
-                table: "GroupInvites",
-                column: "GroupId");
+					table.ForeignKey(
+						"FK_GroupInvites_Users_InvitedUserId",
+						x => x.InvitedUserId,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupInvites_InvitedUserId",
-                table: "GroupInvites",
-                column: "InvitedUserId");
+					table.ForeignKey(
+						"FK_GroupInvites_Users_UserId",
+						x => x.UserId,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Restrict);
+				});
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupInvites_UserId",
-                table: "GroupInvites",
-                column: "UserId");
+			migrationBuilder.CreateIndex(
+				"IX_GroupInvites_GroupId",
+				"GroupInvites",
+				"GroupId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Ratings_Users_UserId",
-                table: "Ratings",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+			migrationBuilder.CreateIndex(
+				"IX_GroupInvites_InvitedUserId",
+				"GroupInvites",
+				"InvitedUserId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Users_Vehicles_VehicleId",
-                table: "Users",
-                column: "VehicleId",
-                principalTable: "Vehicles",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-        }
+			migrationBuilder.CreateIndex(
+				"IX_GroupInvites_UserId",
+				"GroupInvites",
+				"UserId");
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Ratings_Users_UserId",
-                table: "Ratings");
+			migrationBuilder.AddForeignKey(
+				"FK_Ratings_Users_UserId",
+				"Ratings",
+				"UserId",
+				"Users",
+				principalColumn: "Id",
+				onDelete: ReferentialAction.Restrict);
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Users_Vehicles_VehicleId",
-                table: "Users");
+			migrationBuilder.AddForeignKey(
+				"FK_Users_Vehicles_VehicleId",
+				"Users",
+				"VehicleId",
+				"Vehicles",
+				principalColumn: "Id",
+				onDelete: ReferentialAction.Restrict);
+		}
 
-            migrationBuilder.DropTable(
-                name: "GroupInvites");
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropForeignKey(
+				"FK_Ratings_Users_UserId",
+				"Ratings");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Vehicles",
-                table: "Vehicles");
+			migrationBuilder.DropForeignKey(
+				"FK_Users_Vehicles_VehicleId",
+				"Users");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Ratings",
-                table: "Ratings");
+			migrationBuilder.DropTable(
+				"GroupInvites");
 
-            migrationBuilder.RenameTable(
-                name: "Vehicles",
-                newName: "Vehicle");
+			migrationBuilder.DropPrimaryKey(
+				"PK_Vehicles",
+				"Vehicles");
 
-            migrationBuilder.RenameTable(
-                name: "Ratings",
-                newName: "Rating");
+			migrationBuilder.DropPrimaryKey(
+				"PK_Ratings",
+				"Ratings");
 
-            migrationBuilder.RenameIndex(
-                name: "IX_Ratings_UserId",
-                table: "Rating",
-                newName: "IX_Rating_UserId");
+			migrationBuilder.RenameTable(
+				"Vehicles",
+				newName: "Vehicle");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Vehicle",
-                table: "Vehicle",
-                column: "Id");
+			migrationBuilder.RenameTable(
+				"Ratings",
+				newName: "Rating");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Rating",
-                table: "Rating",
-                column: "Id");
+			migrationBuilder.RenameIndex(
+				"IX_Ratings_UserId",
+				table: "Rating",
+				newName: "IX_Rating_UserId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Rating_Users_UserId",
-                table: "Rating",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+			migrationBuilder.AddPrimaryKey(
+				"PK_Vehicle",
+				"Vehicle",
+				"Id");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Users_Vehicle_VehicleId",
-                table: "Users",
-                column: "VehicleId",
-                principalTable: "Vehicle",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-        }
-    }
+			migrationBuilder.AddPrimaryKey(
+				"PK_Rating",
+				"Rating",
+				"Id");
+
+			migrationBuilder.AddForeignKey(
+				"FK_Rating_Users_UserId",
+				"Rating",
+				"UserId",
+				"Users",
+				principalColumn: "Id",
+				onDelete: ReferentialAction.Restrict);
+
+			migrationBuilder.AddForeignKey(
+				"FK_Users_Vehicle_VehicleId",
+				"Users",
+				"VehicleId",
+				"Vehicle",
+				principalColumn: "Id",
+				onDelete: ReferentialAction.Restrict);
+		}
+	}
 }

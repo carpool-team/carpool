@@ -5,18 +5,14 @@ using MediatR;
 
 namespace Carpool.RestAPI.Queries.Company
 {
-    public class GetCompanyQueryHandler : IRequestHandler<GetCompanyQuery, Core.Models.Company>
-    {
-        private readonly ICompanyRepository _repository;
+	public class GetCompanyQueryHandler : IRequestHandler<GetCompanyQuery, Core.Models.Company>
+	{
+		private readonly ICompanyRepository _repository;
 
-        public GetCompanyQueryHandler(ICompanyRepository repository)
-        {
-            _repository = repository;
-        }
+		public GetCompanyQueryHandler(ICompanyRepository repository)
+			=> _repository = repository;
 
-        public async Task<Core.Models.Company> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
-        {
-            return await _repository.GetByIdAsNoTrackingAsync(request.Id, cancellationToken).ConfigureAwait(false);
-        }
-    }
+		public async Task<Core.Models.Company> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
+			=> await _repository.GetByIdAsNoTrackingAsync(request.Id, cancellationToken).ConfigureAwait(false);
+	}
 }

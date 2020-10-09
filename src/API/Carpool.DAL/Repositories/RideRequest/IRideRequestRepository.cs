@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace Carpool.DAL.Repositories.RideRequest
 		Task<Core.Models.RideRequest> GetByIdAsNoTrackingAsync(Guid id, CancellationToken cancellationToken);
 
 		Core.Models.RideRequest GetById(Guid id);
-		Core.Models.RideRequest GetByAsNoTrackingId(Guid id);	
+		Core.Models.RideRequest GetByAsNoTrackingId(Guid id);
+
+		Task<IEnumerable<Core.Models.RideRequest>> GetPartAsync(CancellationToken cancellationToken);
 	}
 }

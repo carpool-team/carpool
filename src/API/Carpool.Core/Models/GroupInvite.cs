@@ -1,7 +1,5 @@
-﻿using Carpool.Core.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Carpool.Core.Abstract;
 
 namespace Carpool.Core.Models
 {
@@ -15,7 +13,7 @@ namespace Carpool.Core.Models
 		public Guid InvitedUserId { get; set; }
 
 		public User InvitedUser { get; set; }
-		
+
 		public User Inviter { get; set; }
 		public Guid InviterId { get; set; }
 

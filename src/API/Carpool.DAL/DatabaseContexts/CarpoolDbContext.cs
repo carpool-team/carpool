@@ -1,66 +1,51 @@
-﻿using Carpool.Core.Models;
+﻿using System;
+using System.Reflection;
+using Carpool.Core.Models;
 using Carpool.Core.Models.Intersections;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 
 namespace Carpool.DAL.DatabaseContexts
 {
 	public class CarpoolDbContext : DbContext
 	{
 		public CarpoolDbContext(DbContextOptions<CarpoolDbContext> options)
-	: base(options)
+			: base(options)
 		{
 		}
-
-		#region Models
-
-		public DbSet<Location> Locations { get; set; }
-		public DbSet<User> Users { get; set; }
-		public DbSet<Group> Groups { get; set; }
-		public DbSet<Company> Companies { get; set; }
-		public DbSet<Ride> Rides { get; set; }
-		public DbSet<RideRequest> RideRequests { get; set; }
-		public DbSet<Stop> Stops { get; set; }
-		public DbSet<Rating> Ratings { get; set; }
-		public DbSet<Vehicle> Vehicles { get; set; }
-		public DbSet<GroupInvite> GroupInvites { get; set; }
-
-		#endregion Models
 
 		#region Intersections
 
 		public DbSet<UserParticipatedRide> UserParticipatedRides { get; set; }
+		
+		public DbSet<UserGroup> UserGroups { get; set; }
 
 		#endregion Intersections
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			_ = modelBuilder ?? throw new NullReferenceException(nameof(modelBuilder));
-			
+
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
 			modelBuilder.Entity<UserParticipatedRide>()
-			            .HasKey(upr => new { upr.UserId, upr.RideId });
+			            .HasKey(upr => new {upr.UserId, upr.RideId});
 
 			modelBuilder.Entity<UserParticipatedRide>()
-				.HasOne(ur => ur.User)
-				.WithMany(ur => ur.ParticipatedRides)
-				.HasForeignKey(ug => ug.UserId);
+			            .HasOne(ur => ur.User)
+			            .WithMany(ur => ur.ParticipatedRides)
+			            .HasForeignKey(ug => ug.UserId);
 
 			modelBuilder.Entity<UserParticipatedRide>()
-				.HasOne(ur => ur.Ride)
-				.WithMany(ur => ur.Participants)
-				.HasForeignKey(ur => ur.RideId);
+			            .HasOne(ur => ur.Ride)
+			            .WithMany(ur => ur.Participants)
+			            .HasForeignKey(ur => ur.RideId);
 
 			modelBuilder.Entity<GroupInvite>()
-				.HasOne(ur => ur.InvitedUser)
-				.WithMany(iu => iu.GroupInvites)
-				.HasForeignKey(ur => ur.InvitedUserId);
+			            .HasOne(ur => ur.InvitedUser)
+			            .WithMany(iu => iu.GroupInvites)
+			            .HasForeignKey(ur => ur.InvitedUserId);
 
 			#region DataSeeding
 
@@ -92,5 +77,20 @@ namespace Carpool.DAL.DatabaseContexts
 
 			#endregion DataSeeding
 		}
+
+		#region Models
+
+		public DbSet<Location> Locations { get; set; }
+		public DbSet<User> Users { get; set; }
+		public DbSet<Group> Groups { get; set; }
+		public DbSet<Company> Companies { get; set; }
+		public DbSet<Ride> Rides { get; set; }
+		public DbSet<RideRequest> RideRequests { get; set; }
+		public DbSet<Stop> Stops { get; set; }
+		public DbSet<Rating> Ratings { get; set; }
+		public DbSet<Vehicle> Vehicles { get; set; }
+		public DbSet<GroupInvite> GroupInvites { get; set; }
+
+		#endregion Models
 	}
 }

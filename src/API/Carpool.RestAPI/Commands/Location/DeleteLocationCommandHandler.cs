@@ -10,11 +10,10 @@ namespace Carpool.RestAPI.Commands.Location
 		private readonly ILocationRepository _repository;
 
 		public DeleteLocationCommandHandler(ILocationRepository repository)
-		{
-			_repository = repository;
-		}
+			=> _repository = repository;
 
-		public async Task<Core.Models.Location> Handle(DeleteLocationCommand request, CancellationToken cancellationToken)
+		public async Task<Core.Models.Location> Handle(DeleteLocationCommand request,
+		                                               CancellationToken cancellationToken)
 		{
 			var location = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
 			_repository.Delete(location);

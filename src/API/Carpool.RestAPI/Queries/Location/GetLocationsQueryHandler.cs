@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Carpool.DAL.Repositories.Location;
@@ -12,9 +11,7 @@ namespace Carpool.RestAPI.Queries.Location
 		private readonly ILocationRepository _repository;
 
 		public GetLocationsQueryHandler(ILocationRepository repository)
-		{
-			_repository = repository;
-		}
+			=> _repository = repository;
 
 		public async Task<IEnumerable<Core.Models.Location>> Handle(GetLocationsQuery request,
 		                                                            CancellationToken cancellationToken)

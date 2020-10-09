@@ -2,87 +2,87 @@
 
 namespace Carpool.DAL.Migrations
 {
-    public partial class ChangedUserParticipatedRideKey : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_UserParticipatedRides_Users_RideId",
-                table: "UserParticipatedRides");
+	public partial class ChangedUserParticipatedRideKey : Migration
+	{
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropForeignKey(
+				"FK_UserParticipatedRides_Users_RideId",
+				"UserParticipatedRides");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_UserParticipatedRides_Rides_UserId",
-                table: "UserParticipatedRides");
+			migrationBuilder.DropForeignKey(
+				"FK_UserParticipatedRides_Rides_UserId",
+				"UserParticipatedRides");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_UserParticipatedRides",
-                table: "UserParticipatedRides");
+			migrationBuilder.DropPrimaryKey(
+				"PK_UserParticipatedRides",
+				"UserParticipatedRides");
 
-            migrationBuilder.DropIndex(
-                name: "IX_UserParticipatedRides_UserId",
-                table: "UserParticipatedRides");
+			migrationBuilder.DropIndex(
+				"IX_UserParticipatedRides_UserId",
+				"UserParticipatedRides");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_UserParticipatedRides",
-                table: "UserParticipatedRides",
-                columns: new[] { "UserId", "RideId" });
+			migrationBuilder.AddPrimaryKey(
+				"PK_UserParticipatedRides",
+				"UserParticipatedRides",
+				new[] {"UserId", "RideId"});
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_UserParticipatedRides_Rides_RideId",
-                table: "UserParticipatedRides",
-                column: "RideId",
-                principalTable: "Rides",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+			migrationBuilder.AddForeignKey(
+				"FK_UserParticipatedRides_Rides_RideId",
+				"UserParticipatedRides",
+				"RideId",
+				"Rides",
+				principalColumn: "Id",
+				onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_UserParticipatedRides_Users_UserId",
-                table: "UserParticipatedRides",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-        }
+			migrationBuilder.AddForeignKey(
+				"FK_UserParticipatedRides_Users_UserId",
+				"UserParticipatedRides",
+				"UserId",
+				"Users",
+				principalColumn: "Id",
+				onDelete: ReferentialAction.Cascade);
+		}
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_UserParticipatedRides_Rides_RideId",
-                table: "UserParticipatedRides");
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropForeignKey(
+				"FK_UserParticipatedRides_Rides_RideId",
+				"UserParticipatedRides");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_UserParticipatedRides_Users_UserId",
-                table: "UserParticipatedRides");
+			migrationBuilder.DropForeignKey(
+				"FK_UserParticipatedRides_Users_UserId",
+				"UserParticipatedRides");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_UserParticipatedRides",
-                table: "UserParticipatedRides");
+			migrationBuilder.DropPrimaryKey(
+				"PK_UserParticipatedRides",
+				"UserParticipatedRides");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_UserParticipatedRides",
-                table: "UserParticipatedRides",
-                column: "Id");
+			migrationBuilder.AddPrimaryKey(
+				"PK_UserParticipatedRides",
+				"UserParticipatedRides",
+				"Id");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_UserParticipatedRides_UserId",
-                table: "UserParticipatedRides",
-                column: "UserId");
+			migrationBuilder.CreateIndex(
+				"IX_UserParticipatedRides_UserId",
+				"UserParticipatedRides",
+				"UserId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_UserParticipatedRides_Users_RideId",
-                table: "UserParticipatedRides",
-                column: "RideId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+			migrationBuilder.AddForeignKey(
+				"FK_UserParticipatedRides_Users_RideId",
+				"UserParticipatedRides",
+				"RideId",
+				"Users",
+				principalColumn: "Id",
+				onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_UserParticipatedRides_Rides_UserId",
-                table: "UserParticipatedRides",
-                column: "UserId",
-                principalTable: "Rides",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-        }
-    }
+			migrationBuilder.AddForeignKey(
+				"FK_UserParticipatedRides_Rides_UserId",
+				"UserParticipatedRides",
+				"UserId",
+				"Rides",
+				principalColumn: "Id",
+				onDelete: ReferentialAction.Cascade);
+		}
+	}
 }

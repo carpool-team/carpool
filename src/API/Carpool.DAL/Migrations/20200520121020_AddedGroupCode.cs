@@ -2,21 +2,21 @@
 
 namespace Carpool.DAL.Migrations
 {
-    public partial class AddedGroupCode : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<string>(
-                name: "Code",
-                table: "Groups",
-                nullable: true);
-        }
+	public partial class AddedGroupCode : Migration
+	{
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.AddColumn<string>(
+				"Code",
+				"Groups",
+				nullable: true);
+		}
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Code",
-                table: "Groups");
-        }
-    }
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropColumn(
+				"Code",
+				"Groups");
+		}
+	}
 }

@@ -1,30 +1,26 @@
-﻿using Carpool.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Carpool.Core.Models;
 
 namespace Carpool.Core.DTOs.UserDTOs
 {
 	public class IndexUserDTO
 	{
+		private IndexUserDTO()
+		{
+		}
+
 		public Guid UserId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public Vehicle Vehicle { get; set; }
 
-		private IndexUserDTO()
-		{
-		}
-
 		public static IndexUserDTO FromUser(User user)
-		{
-			return new IndexUserDTO()
+			=> new IndexUserDTO
 			{
 				UserId = user.Id,
 				FirstName = user.FirstName,
 				LastName = user.LastName,
 				Vehicle = user.Vehicle ?? null
 			};
-		}
 	}
 }

@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Carpool.DAL.Repositories.Location;
-using Carpool.DAL.Repositories.Ride;
 using Carpool.DAL.Repositories.RideRequest;
 using MediatR;
 
@@ -13,7 +12,8 @@ namespace Carpool.RestAPI.Commands.RideRequest
 		private readonly IRideRequestRepository _rideRequestRepository;
 		private readonly ILocationRepository _locationRepository;
 
-		public UpdateRideRequestCommandHandler(IRideRequestRepository rideRequestRepository, ILocationRepository locationRepository)
+		public UpdateRideRequestCommandHandler(IRideRequestRepository rideRequestRepository,
+		                                       ILocationRepository locationRepository)
 		{
 			_rideRequestRepository = rideRequestRepository;
 			_locationRepository = locationRepository;
@@ -21,14 +21,18 @@ namespace Carpool.RestAPI.Commands.RideRequest
 
 		protected override async Task Handle(UpdateRideRequestCommand request, CancellationToken cancellationToken)
 		{
-			var rideRequest = await _rideRequestRepository.GetByIdAsync((Guid) request.RideRequestId, cancellationToken).ConfigureAwait(false);
+			var rideRequest = await _rideRequestRepository.GetByIdAsync((Guid) request.RideRequestId, cancellationToken)
+			                                              .ConfigureAwait(false);
 
 			rideRequest.Date = request.Date ?? rideRequest.Date;
 			rideRequest.RequesterId = request.RequesterId ?? rideRequest.RequesterId;
 
 			if (request.DestinationId != null)
 			{
-				var destination = await _locationRepository.GetByIdAsync((Guid) request.DestinationId, cancellationToken).ConfigureAwait(false);
+				var destination = await _locationRepository
+				                        .GetByIdAsync((Guid) request.DestinationId, cancellationToken)
+				                        .ConfigureAwait(false);
+
 				rideRequest.DestinationId = destination?.Id ?? throw new NullReferenceException(nameof(destination));
 			}
 			else
@@ -39,11 +43,15 @@ namespace Carpool.RestAPI.Commands.RideRequest
 
 				rideRequest.DestinationId = destination?.Id ?? throw new NullReferenceException(nameof(destination));
 			}
-			
+
 			if (request.StartingLocationId != null)
 			{
-				var startingLocation = await _locationRepository.GetByIdAsync((Guid) request.StartingLocationId, cancellationToken).ConfigureAwait(false);
-				rideRequest.DestinationId = startingLocation?.Id ?? throw new NullReferenceException(nameof(startingLocation));
+				var startingLocation = await _locationRepository
+				                             .GetByIdAsync((Guid) request.StartingLocationId, cancellationToken)
+				                             .ConfigureAwait(false);
+
+				rideRequest.DestinationId =
+					startingLocation?.Id ?? throw new NullReferenceException(nameof(startingLocation));
 			}
 			else
 			{

@@ -1,5 +1,4 @@
 ﻿using System;
-using Carpool.Core.Models;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -8,7 +7,13 @@ namespace Carpool.RestAPI.Commands.RideRequest
 	public class UpdateRideRequestCommand : IRequest
 	{
 		[JsonConstructor]
-		public UpdateRideRequestCommand(Core.Models.Location destination, Guid? destinationId, Guid? startingLocationId, Guid? requesterId, DateTime? date, Guid? rideRequestId, Core.Models.Location startingLocation)
+		public UpdateRideRequestCommand(Core.Models.Location destination,
+		                                Guid? destinationId,
+		                                Guid? startingLocationId,
+		                                Guid? requesterId,
+		                                DateTime? date,
+		                                Guid? rideRequestId,
+		                                Core.Models.Location startingLocation)
 		{
 			Destination = destination;
 			DestinationId = destinationId;

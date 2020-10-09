@@ -1,5 +1,4 @@
 using System.Reflection;
-using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.DAL.Repositories.Company;
 using Carpool.DAL.Repositories.Group;
@@ -29,22 +28,20 @@ namespace Carpool.RestAPI
 			services.AddCors(options =>
 			{
 				options.AddDefaultPolicy(
-					builder =>
-					{
-						builder.WithOrigins("http://localhost:8080");
-					});
+					builder => { builder.WithOrigins("http://localhost:8080"); });
 			});
+
 			services.AddControllers().AddNewtonsoftJson();
 			services.AddMvc(options => options.EnableEndpointRouting = false);
-			services.AddSingleton<IConfiguration>(Configuration);
+			services.AddSingleton(Configuration);
 
-            services.AddTransient<IGroupRepository, GroupRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<ICompanyRepository, CompanyRepository>();
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+			services.AddTransient<IGroupRepository, GroupRepository>();
+			services.AddTransient<IUserRepository, UserRepository>();
+			services.AddTransient<ICompanyRepository, CompanyRepository>();
+			services.AddMediatR(Assembly.GetExecutingAssembly());
 
 			services.AddDbContext<CarpoolDbContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,10 +60,7 @@ namespace Carpool.RestAPI
 
 			app.UseAuthorization();
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapControllers();
-			});
+			app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 			app.UseOpenApi();
 			app.UseSwaggerUi3();

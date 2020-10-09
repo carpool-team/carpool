@@ -1,10 +1,6 @@
-﻿using Carpool.Core.DTOs.GroupDTOs;
-using Carpool.Core.DTOs.UserDTOs;
+﻿using System;
+using Carpool.Core.DTOs.GroupDTOs;
 using Carpool.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Carpool.Core.DTOs.GroupInvitesDTOs
 {
@@ -22,8 +18,7 @@ namespace Carpool.Core.DTOs.GroupInvitesDTOs
 		public DateTime DateAdded { get; set; }
 
 		public static IndexGroupInviteDTO FromGroupInvite(GroupInvite groupInvite)
-		{
-			return new IndexGroupInviteDTO()
+			=> new IndexGroupInviteDTO
 			{
 				Id = groupInvite.Id,
 				IsPending = groupInvite.IsPending,
@@ -32,6 +27,5 @@ namespace Carpool.Core.DTOs.GroupInvitesDTOs
 				IsAccepted = groupInvite.IsAccepted,
 				DateAdded = groupInvite.DateAdded
 			};
-		}
 	}
 }

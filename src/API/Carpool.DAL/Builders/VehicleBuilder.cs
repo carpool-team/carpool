@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Carpool.DAL.Builders
 {
-	public class VehicleBuilder: IEntityTypeConfiguration<Vehicle>
+	public class VehicleBuilder : IEntityTypeConfiguration<Vehicle>
 	{
 		public void Configure(EntityTypeBuilder<Vehicle> builder)
 		{

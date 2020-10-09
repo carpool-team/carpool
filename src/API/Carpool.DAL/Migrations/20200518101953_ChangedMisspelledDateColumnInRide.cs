@@ -2,22 +2,22 @@
 
 namespace Carpool.DAL.Migrations
 {
-    public partial class ChangedMisspelledDateColumnInRide : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.RenameColumn(
-                name: "date",
-                table: "Rides",
-                newName: "Date");
-        }
+	public partial class ChangedMisspelledDateColumnInRide : Migration
+	{
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.RenameColumn(
+				"date",
+				"Rides",
+				"Date");
+		}
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.RenameColumn(
-                name: "Date",
-                table: "Rides",
-                newName: "date");
-        }
-    }
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.RenameColumn(
+				"Date",
+				"Rides",
+				"date");
+		}
+	}
 }

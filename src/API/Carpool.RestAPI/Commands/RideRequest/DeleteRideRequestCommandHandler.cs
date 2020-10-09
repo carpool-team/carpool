@@ -10,14 +10,14 @@ namespace Carpool.RestAPI.Commands.RideRequest
 		private readonly IRideRequestRepository _repository;
 
 		public DeleteRideRequestCommandHandler(IRideRequestRepository repository)
-		{
-			_repository = repository;
-		}
+			=> _repository = repository;
 
 		public async Task<Core.Models.RideRequest> Handle(DeleteRideRequestCommand request,
-		                                            CancellationToken cancellationToken)
+		                                                  CancellationToken cancellationToken)
 		{
-			var rideRequest = await _repository.GetByIdAsync(request.RideRequestId, cancellationToken).ConfigureAwait(false);
+			var rideRequest = await _repository.GetByIdAsync(request.RideRequestId, cancellationToken)
+			                                   .ConfigureAwait(false);
+
 			_repository.Delete(rideRequest);
 			return rideRequest;
 		}

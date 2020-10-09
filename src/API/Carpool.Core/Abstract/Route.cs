@@ -1,7 +1,5 @@
-﻿using Carpool.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Carpool.Core.Models;
 
 namespace Carpool.Core.Abstract
 {

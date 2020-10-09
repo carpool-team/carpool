@@ -12,7 +12,7 @@ namespace Carpool.DAL.Builders
 			_ = builder ?? throw new NullReferenceException(nameof(builder));
 
 			builder.HasKey(x => x.Id);
-			
+
 			builder.Property(x => x.IsAccepted).IsRequired();
 			builder.Property(x => x.IsPending).IsRequired();
 			builder.Property(x => x.DateAdded).IsRequired();

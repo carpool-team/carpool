@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,5 +30,13 @@ namespace Carpool.DAL.Repositories.GroupInvite
 
 		public Core.Models.GroupInvite GetByIdAsNoTracking(Guid id)
 			=> _context.GroupInvites.AsNoTracking().FirstOrDefault(x => x.Id == id);
+
+		public async Task<List<Core.Models.GroupInvite>> GetPartAsync(CancellationToken cancellationToken)
+			=> await _context.GroupInvites.ToListAsync(cancellationToken).ConfigureAwait(false);
+
+		public async Task<List<Core.Models.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(
+			Guid userId,
+			CancellationToken cancellationToken)
+			=> await _context.GroupInvites.AsNoTracking().Where(x => x.InvitedUserId == userId).OrderByDescending(x => x.DateAdded).ToListAsync(cancellationToken).ConfigureAwait(false);
 	}
 }

@@ -8,10 +8,8 @@ namespace Carpool.RestAPI.Commands.Location
 	{
 		[JsonConstructor]
 		public DeleteLocationCommand(Guid id)
-		{
-			Id = id;
-		}
-		
+			=> Id = id;
+
 		public Guid Id { get; set; }
 	}
 }

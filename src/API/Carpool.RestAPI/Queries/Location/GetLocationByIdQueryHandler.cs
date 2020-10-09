@@ -11,18 +11,15 @@ namespace Carpool.RestAPI.Queries.Location
 		private readonly ILocationRepository _repository;
 
 		public GetLocationByIdQueryHandler(ILocationRepository repository)
-		{
-			_repository = repository;
-		}
+			=> _repository = repository;
 
-		public async Task<Core.Models.Location> Handle(GetLocationByIdQuery request, CancellationToken cancellationToken)
+		public async Task<Core.Models.Location> Handle(GetLocationByIdQuery request,
+		                                               CancellationToken cancellationToken)
 		{
-			var location = await _repository.GetByIdAsNoTrackingAsync(request.LocationId, cancellationToken).ConfigureAwait(false);
+			var location = await _repository.GetByIdAsNoTrackingAsync(request.LocationId, cancellationToken)
+			                                .ConfigureAwait(false);
 
-			if (location == null)
-			{
-				throw new NullReferenceException();
-			}
+			if (location == null) throw new NullReferenceException();
 
 			return location;
 		}

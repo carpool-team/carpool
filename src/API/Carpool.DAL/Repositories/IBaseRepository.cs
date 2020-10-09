@@ -1,25 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Carpool.Core.Abstract;
 
 namespace Carpool.DAL.Repositories
 {
-    public interface IBaseRepository<in TEntity, T> : IDisposable where TEntity : IBaseEntity<T>
-    {
-        //Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-        //T GetById(Guid id);
+	public interface IBaseRepository<in TEntity, T> : IDisposable where TEntity : IBaseEntity<T>
+	{
+		//Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+		//T GetById(Guid id);
 
-        Task AddAsync(TEntity entity, CancellationToken cancellationToken);
-        void Add(TEntity entity);
+		Task AddAsync(TEntity entity, CancellationToken cancellationToken);
+		void Add(TEntity entity);
 
-        void Update(TEntity entity);
+		void Update(TEntity entity);
 
-        void Delete(TEntity entity);
+		void Delete(TEntity entity);
 
-        Task SaveAsync(CancellationToken cancellationToken);
-        void Save();
-    }
+		Task SaveAsync(CancellationToken cancellationToken);
+		void Save();
+	}
 }

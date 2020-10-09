@@ -8,9 +8,7 @@ namespace Carpool.RestAPI.Queries.Location
 	{
 		[JsonConstructor]
 		public GetLocationByIdQuery(Guid locationId)
-		{
-			LocationId = locationId;
-		}
+			=> LocationId = locationId;
 
 		public Guid LocationId { get; set; }
 	}

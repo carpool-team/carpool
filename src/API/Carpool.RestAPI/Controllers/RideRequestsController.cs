@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
-using Carpool.Core.DTOs.RideRequestDTOs;
 using Carpool.RestAPI.Commands.RideRequest;
 using Carpool.RestAPI.Queries.RideRequest;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -27,13 +23,15 @@ namespace Carpool.RestAPI.Controllers
 			_mediator = mediator;
 		}
 
-		//TODO: Rewrite to use mediator pattern
 		// GET: api/RideRequests
-		//[HttpGet]
-		//public async Task<ActionResult<IEnumerable<RideRequest>>> GetRideRequests()
-		//{
-		//	return await _context.RideRequests.ToListAsync();
-		//}
+		[HttpGet]
+		public async Task<ActionResult<IEnumerable<RideRequest>>> GetRideRequests()
+		{
+			var request = new GetRideRequestsQuery();
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+
+			return Ok(response);
+		}
 
 		// GET: api/RideRequests/5
 		[HttpGet("{id}")]
@@ -54,7 +52,7 @@ namespace Carpool.RestAPI.Controllers
 			request.RideRequestId = id;
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			
+
 			return Ok(request);
 		}
 
@@ -62,7 +60,7 @@ namespace Carpool.RestAPI.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<IActionResult> PostRideRequest([FromBody]AddRideRequestCommand request)
+		public async Task<IActionResult> PostRideRequest([FromBody] AddRideRequestCommand request)
 		{
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 

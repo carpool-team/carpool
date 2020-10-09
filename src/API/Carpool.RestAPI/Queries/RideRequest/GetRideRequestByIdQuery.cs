@@ -8,9 +8,7 @@ namespace Carpool.RestAPI.Queries.RideRequest
 	{
 		[JsonConstructor]
 		public GetRideRequestByIdQuery(Guid id)
-		{
-			Id = id;
-		}
+			=> Id = id;
 
 		public Guid Id { get; set; }
 	}

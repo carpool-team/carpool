@@ -18,14 +18,14 @@ namespace Carpool.DAL.Builders
 			builder.HasOne(x => x.Requester)
 			       .WithMany()
 			       .HasForeignKey(x => x.RequesterId);
-			
+
 			builder.HasOne(x => x.Destination)
 			       .WithMany()
 			       .HasForeignKey(x => x.DestinationId);
 
 			builder.HasOne(x => x.StartingLocation)
 			       .WithMany()
-			       .HasForeignKey(x => x.StartingLocationId);		
+			       .HasForeignKey(x => x.StartingLocationId);
 		}
 	}
 }
