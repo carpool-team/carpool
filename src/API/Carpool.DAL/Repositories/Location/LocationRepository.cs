@@ -36,10 +36,10 @@ namespace Carpool.DAL.Repositories.Location
 			                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken).ConfigureAwait(false);
 
 		public Core.Models.Location GetById(Guid id)
-			=> throw new NotImplementedException();
+			=> _context.Locations.FirstOrDefault(x => x.Id == id);
 
 		public Core.Models.Location GetByIdAsNoTracking(Guid id)
-			=> throw new NotImplementedException();
+			=> _context.Locations.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
 		public async Task<Core.Models.Location> GetByCoordsAsync(double longitude,
 		                                                         double latitude,

@@ -15,8 +15,12 @@ namespace Carpool.RestAPI.Queries.RideRequest
 		public GetRideRequestsQueryHandler(IRideRequestRepository repository)
 			=> _repository = repository;
 
-		public Task<IEnumerable<Core.Models.RideRequest>> Handle(GetRideRequestsQuery request,
+		public async Task<IEnumerable<Core.Models.RideRequest>> Handle(GetRideRequestsQuery request,
 		                                                         CancellationToken cancellationToken)
-			=> throw new NotImplementedException();
+		{
+			var rideRequests = await _repository.GetPartAsync(cancellationToken).ConfigureAwait(false);
+
+			return rideRequests;
+		}
 	}
 }
