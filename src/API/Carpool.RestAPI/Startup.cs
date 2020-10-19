@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Text;
 using AutoWrapper;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
@@ -13,12 +14,15 @@ using Carpool.DAL.Repositories.RideParticipant;
 using Carpool.DAL.Repositories.RideRequest;
 using Carpool.DAL.Repositories.User;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace Carpool.RestAPI
@@ -48,6 +52,34 @@ namespace Carpool.RestAPI
 			
 			services.AddHttpContextAccessor();
 			services.AddControllers().AddNewtonsoftJson();
+
+            services.AddIdentity<User, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<CarpoolDbContext>()
+                .AddDefaultTokenProviders();
+
+			services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+			}).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters =
+                    new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(
+                                Encoding.UTF8
+                                    .GetBytes(Configuration["Jwt:Key"]))
+                    };
+            });
+
 			services.AddMvc(options => options.EnableEndpointRouting = false);
 			services.AddSingleton(Configuration);
 
@@ -60,6 +92,7 @@ namespace Carpool.RestAPI
 			services.AddScoped<IRatingRepository, RatingRepository>();
 			services.AddScoped<IRideParticipantRepository, RideParticipantRepository>();
 			services.AddScoped<ILocationRepository, LocationRepository>();
+
 			services.AddMediatR(Assembly.GetExecutingAssembly());
 
 
@@ -104,6 +137,8 @@ namespace Carpool.RestAPI
 			app.UseRouting();
 
 			app.UseCors();
+
+            app.UseAuthentication();
 
 			app.UseAuthorization();
 
