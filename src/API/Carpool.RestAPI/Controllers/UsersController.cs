@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Carpool.Core.DTOs.GroupDTOs;
-using Carpool.Core.DTOs.GroupInvitesDTOs;
-using Carpool.Core.DTOs.RatingDTOs;
-using Carpool.Core.DTOs.RideDTOs;
-using Carpool.Core.DTOs.UserDTOs;
+using AutoWrapper.Wrappers;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.RestAPI.Commands.Rating;
 using Carpool.RestAPI.Commands.User;
+using Carpool.RestAPI.DTOs.GroupDTOs;
+using Carpool.RestAPI.DTOs.RideDTOs;
+using Carpool.RestAPI.DTOs.UserDTOs;
 using Carpool.RestAPI.Queries.Group;
 using Carpool.RestAPI.Queries.GroupInvite;
 using Carpool.RestAPI.Queries.Rating;
@@ -55,10 +54,10 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		[HttpGet("~/api/groups/{groupId}/users")]
-		public async Task<ActionResult<List<IndexUserDTO>>> GetGroupUsers([FromRoute] Guid groupId)
+		public async Task<ApiResponse> GetGroupUsers([FromRoute] Guid groupId)
 		{
 			var result = await _mediator.Send(new GetGroupUsersQuery(groupId)).ConfigureAwait(false);
-			return await result.ToListAsync().ConfigureAwait(false);
+			return new ApiResponse(result);
 		}
 
 		// PUT: api/Users/5

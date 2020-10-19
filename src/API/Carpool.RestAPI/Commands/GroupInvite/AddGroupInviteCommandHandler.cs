@@ -6,14 +6,14 @@ using MediatR;
 
 namespace Carpool.RestAPI.Commands.GroupInvite
 {
-	public class AddGroupInviteCommandHandler : IRequestHandler<AddGroupInviteCommand, Core.Models.GroupInvite>
+	public class AddGroupInviteCommandHandler : IRequestHandler<AddGroupInviteCommand, Guid>
 	{
 		private readonly IGroupInviteRepository _repository;
 
 		public AddGroupInviteCommandHandler(IGroupInviteRepository repository)
 			=> _repository = repository;
 
-		public async Task<Core.Models.GroupInvite> Handle(AddGroupInviteCommand request,
+		public async Task<Guid> Handle(AddGroupInviteCommand request,
 		                                                  CancellationToken cancellationToken)
 		{
 			var groupInvite = new Core.Models.GroupInvite
@@ -28,7 +28,7 @@ namespace Carpool.RestAPI.Commands.GroupInvite
 			await _repository.AddAsync(groupInvite, cancellationToken).ConfigureAwait(false);
 			await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
 
-			return groupInvite;
+			return groupInvite.Id;
 		}
 	}
 }

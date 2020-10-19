@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Carpool.RestAPI.Commands.GroupInvite
 {
-	public class AddGroupInviteCommand : IRequest<Core.Models.GroupInvite>
+	public class AddGroupInviteCommand : IRequest<Guid>
 	{
 		[JsonConstructor]
 		public AddGroupInviteCommand(Guid groupId, Guid invitedUserId, Guid inviterId)

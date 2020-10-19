@@ -5,8 +5,7 @@ namespace Carpool.Core.Models
 {
 	public class Rating : BaseEntity<Guid>
 	{
-		public User User { get; set; }
 		public Guid UserId { get; set; }
-		public int Value { get; set; }
+		public byte Value { get; set; }
 	}
 }

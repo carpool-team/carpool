@@ -12,19 +12,6 @@ namespace Carpool.DAL.Builders
 			_ = builder ?? throw new NullReferenceException(nameof(builder));
 
 			builder.HasKey(x => x.Id);
-
-
-			builder.HasOne(x => x.User)
-			       .WithMany()
-			       .HasForeignKey(x => x.UserId);
-
-			builder.HasOne(x => x.Location)
-			       .WithMany()
-			       .HasForeignKey(x => x.LocationId);
-
-			builder.HasOne(x => x.Ride)
-			       .WithMany()
-			       .HasForeignKey(x => x.RideId);
 		}
 	}
 }

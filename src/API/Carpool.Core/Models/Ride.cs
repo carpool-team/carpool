@@ -7,13 +7,11 @@ namespace Carpool.Core.Models
 {
 	public class Ride : Route
 	{
-		public User Owner { get; set; }
 		public Guid OwnerId { get; set; }
 
 		public List<UserParticipatedRide> Participants { get; set; }
 
 		public Guid GroupId { get; set; }
-		public Group Group { get; set; }
 
 		public List<Stop> Stops { get; set; }
 

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Carpool.Core.Abstract;
 using Carpool.DAL.DatabaseContexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.DAL.Repositories
 {
@@ -49,6 +50,12 @@ namespace Carpool.DAL.Repositories
 			_context.Set<TEntity>().Remove(entity);
 		}
 
+		public async Task DeleteByIdAsync(T id)
+		{
+			var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(x => id.Equals(x.Id)).ConfigureAwait(false);
+			_context.Set<TEntity>().Remove(entity);
+		}
+		
 		public async Task SaveAsync(CancellationToken cancellationToken = default)
 		{
 			await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

@@ -11,6 +11,6 @@ namespace Carpool.DAL.Repositories.Company
 
 		Core.Models.Company GetById(int id);
 		Core.Models.Company GetByIdAsNoTracking(int id);
-		IAsyncEnumerable<Core.Models.Company> GetRangeAsync(int pageCount, int pagesToSkip);
+		Task<List<Core.Models.Company>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip);
 	}
 }

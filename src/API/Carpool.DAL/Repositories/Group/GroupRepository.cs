@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Carpool.Core.Models.Intersections;
 using Carpool.DAL.DatabaseContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,21 +64,32 @@ namespace Carpool.DAL.Repositories.Group
 			return await _context.Groups.AnyAsync(group => group.Code == code).ConfigureAwait(false);
 		}
 
-		public async IAsyncEnumerable<Core.Models.Group> GetRangeAsync(int pageCount, int pagesToSkip)
+		public async Task<IEnumerable<Core.Models.Group>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip)
 		{
-			var iterator = _context.Groups
+			var groups = await _context.Groups
 			                       .AsNoTracking()
 			                       .Include(group => group.Rides)
 			                       .Include(group => group.UserGroups)
 			                       .Include(group => group.Location)
 			                       .Skip(pagesToSkip * pageCount)
 			                       .Take(pageCount)
-			                       .AsAsyncEnumerable().GetAsyncEnumerator();
+			                       .ToListAsync().ConfigureAwait(false);
 
-			while (await iterator.MoveNextAsync().ConfigureAwait(false)) yield return iterator.Current;
+			return groups;
 		}
 
 		public async Task<List<Core.Models.Group>> GetGroupsByUserIdAsNoTrackingAsync(Guid userId, CancellationToken cancellationToken)
-			=> await _context.UserGroups.Include(x => x.Group).AsNoTracking().Where(x => x.UserId == userId).Select(x => x.Group).ToListAsync(cancellationToken).ConfigureAwait(false);
+		{
+			var groupIds = await _context.UserGroups.AsNoTracking().Where(x => x.UserId == userId)
+				.Select(x => x.GroupId).ToListAsync(cancellationToken).ConfigureAwait(false);
+
+			var groups = await _context.Groups.Where(x => groupIds.Contains(x.Id)).ToListAsync(cancellationToken).ConfigureAwait(false);
+			return groups;
+		}
+
+		public async Task AddUserToGroupAsync(UserGroup userGroup, CancellationToken cancellationToken = default)
+		{
+			await _context.UserGroups.AddAsync(userGroup, cancellationToken).ConfigureAwait(false);
+		}
 	}
 }

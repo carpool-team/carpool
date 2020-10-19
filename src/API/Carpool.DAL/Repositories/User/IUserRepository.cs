@@ -7,7 +7,7 @@ namespace Carpool.DAL.Repositories.User
 {
 	public interface IUserRepository : IBaseRepository<Core.Models.User, Guid>
 	{
-		IAsyncEnumerable<Core.Models.User> GetGroupUsersByGroupIdAsync(Guid id);
+		Task<List<Core.Models.User>> GetGroupUsersByGroupIdAsync(Guid id);
 
 		Task<Core.Models.User> GetByIdAsNoTrackingAsync(Guid id, CancellationToken cancellationToken);
 

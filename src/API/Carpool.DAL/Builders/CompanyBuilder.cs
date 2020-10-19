@@ -17,7 +17,9 @@ namespace Carpool.DAL.Builders
 
 			builder.HasMany(x => x.Users)
 			       .WithOne()
-			       .HasForeignKey(u => u.CompanyId);
+			       .HasForeignKey(u => u.CompanyId)			       
+			       .OnDelete(DeleteBehavior.ClientNoAction);
+
 		}
 	}
 }

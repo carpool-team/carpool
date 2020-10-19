@@ -1,10 +1,11 @@
 ﻿using System;
+using Carpool.RestAPI.DTOs.GroupDTOs;
 using MediatR;
 using Newtonsoft.Json;
 
 namespace Carpool.RestAPI.Queries.Group
 {
-	public class GetGroupQuery : IRequest<Core.Models.Group>
+	public class GetGroupQuery : IRequest<GroupDetailsDto>
 	{
 		[JsonConstructor]
 		public GetGroupQuery(Guid id)

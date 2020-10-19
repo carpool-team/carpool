@@ -15,8 +15,7 @@ namespace Carpool.DAL.Repositories.GroupInvite
 		}
 
 		public async Task<Core.Models.GroupInvite> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-			=> await _context.GroupInvites.Include(x => x.InvitedUser)
-			                 .ThenInclude(y => y.UserGroups).FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+			=> await _context.GroupInvites.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
 			                 .ConfigureAwait(false);
 
 		public async Task<Core.Models.GroupInvite> GetByIdAsNoTrackingAsync(Guid id,

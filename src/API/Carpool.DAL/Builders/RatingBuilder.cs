@@ -14,10 +14,6 @@ namespace Carpool.DAL.Builders
 			builder.HasKey(x => x.Id);
 
 			builder.Property(x => x.Value).IsRequired();
-
-			builder.HasOne(x => x.User)
-			       .WithMany()
-			       .HasForeignKey(x => x.UserId);
 		}
 	}
 }

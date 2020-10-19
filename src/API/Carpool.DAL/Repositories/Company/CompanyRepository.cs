@@ -23,7 +23,7 @@ namespace Carpool.DAL.Repositories.Company
 			int id,
 			CancellationToken cancellationToken = default)
 		{
-			return await _context.Companies.AsNoTracking()
+			return await _context.Companies.Include(x => x.Users).AsNoTracking()
 			                     .FirstOrDefaultAsync(company => company.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
 		}
@@ -38,15 +38,14 @@ namespace Carpool.DAL.Repositories.Company
 			return _context.Companies.AsNoTracking().FirstOrDefault(company => company.Id == id);
 		}
 
-		public async IAsyncEnumerable<Core.Models.Company> GetRangeAsync(int pageCount, int pagesToSkip)
+		public async Task<List<Core.Models.Company>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip)
 		{
-			var iterator = _context.Companies
+			return await _context.Companies
 			                       .AsNoTracking()
 			                       .Skip(pagesToSkip * pageCount)
 			                       .Take(pageCount)
-			                       .AsAsyncEnumerable().GetAsyncEnumerator();
+			                       .ToListAsync().ConfigureAwait(false);
 
-			while (await iterator.MoveNextAsync().ConfigureAwait(false)) yield return iterator.Current;
 		}
 	}
 }

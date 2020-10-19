@@ -7,7 +7,7 @@ namespace Carpool.RestAPI.Commands.User
 	public class UpdateUserCommand : IRequest
 	{
 		[JsonConstructor]
-		public UpdateUserCommand(Guid? userId, string firstName, string lastName, Guid? companyId)
+		public UpdateUserCommand(Guid? userId, string firstName, string lastName, int? companyId)
 		{
 			UserId = userId;
 			FirstName = firstName;
@@ -20,6 +20,6 @@ namespace Carpool.RestAPI.Commands.User
 
 		public string LastName { get; set; }
 		
-		public Guid? CompanyId { get; set; }
+		public int? CompanyId { get; set; }
 	}
 }

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Carpool.RestAPI.Commands.Group
 {
-	public class UpdateGroupCommand : IRequest
+	public class UpdateGroupCommand : IRequest<Guid>
 	{
 		[JsonConstructor]
 		public UpdateGroupCommand(Guid id, Guid locationId, string name, string code, Guid? ownerId)

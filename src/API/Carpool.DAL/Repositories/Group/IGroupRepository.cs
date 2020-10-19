@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Carpool.Core.Models.Intersections;
 
 namespace Carpool.DAL.Repositories.Group
 {
@@ -15,10 +16,11 @@ namespace Carpool.DAL.Repositories.Group
 
 		Task<bool> GroupCodeExists(string code);
 
-		IAsyncEnumerable<Core.Models.Group> GetRangeAsync(int pageCount, int pagesToSkip);
-		
-		Task<List<Core.Models.Group>> GetGroupsByUserIdAsNoTrackingAsync(
-			Guid userId,
-			CancellationToken cancellationToken);
+		Task<IEnumerable<Core.Models.Group>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip);
+
+		Task<List<Core.Models.Group>> GetGroupsByUserIdAsNoTrackingAsync(Guid userId,
+		                                                                 CancellationToken cancellationToken = default);
+
+		Task AddUserToGroupAsync(UserGroup userGroup, CancellationToken cancellationToken = default);
 	}
 }

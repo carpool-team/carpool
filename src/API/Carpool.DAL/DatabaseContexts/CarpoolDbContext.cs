@@ -28,54 +28,6 @@ namespace Carpool.DAL.DatabaseContexts
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-			modelBuilder.Entity<UserParticipatedRide>()
-			            .HasKey(upr => new {upr.UserId, upr.RideId});
-
-			modelBuilder.Entity<UserParticipatedRide>()
-			            .HasOne(ur => ur.User)
-			            .WithMany(ur => ur.ParticipatedRides)
-			            .HasForeignKey(ug => ug.UserId);
-
-			modelBuilder.Entity<UserParticipatedRide>()
-			            .HasOne(ur => ur.Ride)
-			            .WithMany(ur => ur.Participants)
-			            .HasForeignKey(ur => ur.RideId);
-
-			modelBuilder.Entity<GroupInvite>()
-			            .HasOne(ur => ur.InvitedUser)
-			            .WithMany(iu => iu.GroupInvites)
-			            .HasForeignKey(ur => ur.InvitedUserId);
-
-			#region DataSeeding
-
-			//modelBuilder.Entity<User>().HasData(new User()
-			//{
-			//	FirstName = "Krzysztof",
-			//	LastName = "Kononowicz",
-			//	Email = "biurointerwencjiobywatelskich@kononowicz.pl",
-			//	Id = new Guid("40ab249f-a1ee-48ec-f24b-08d7e933352c"),
-			//	PhoneNumber = "997997997",
-			//	Locations = new List<Location>()
-			//	{
-			//		new Location()
-			//		{
-			//			Coordinates = new Coordinates()
-			//			{
-			//				Latitude = 23.086287,
-			//				Longitude = 53.123454,
-			//				Id = new Guid("81c9e763-7c57-4e9c-a263-08d7e930c1ef")
-			//			},
-			//			LocationName = new LocationName()
-			//			{
-			//				Id = new Guid("f2d1545b-0ba6-47af-6679-08d7e930c1fb"),
-			//				Name = "ul. Szkolna 17, Białystok"
-			//			}
-			//		}
-			//	}
-			//});
-
-			#endregion DataSeeding
 		}
 
 		#region Models

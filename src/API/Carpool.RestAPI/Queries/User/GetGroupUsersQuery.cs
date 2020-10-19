@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Carpool.Core.DTOs.UserDTOs;
+using Carpool.RestAPI.DTOs.UserDTOs;
 using MediatR;
 using Newtonsoft.Json;
 
 namespace Carpool.RestAPI.Queries.User
 {
-	public class GetGroupUsersQuery : IRequest<IAsyncEnumerable<IndexUserDTO>>
+	public class GetGroupUsersQuery : IRequest<List<IndexUserDto>>
 	{
 		[JsonConstructor]
 		public GetGroupUsersQuery(Guid id)

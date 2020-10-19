@@ -17,17 +17,9 @@ namespace Carpool.DAL.Builders
 			builder.Property(x => x.IsPending).IsRequired();
 			builder.Property(x => x.DateAdded).IsRequired();
 
-			builder.HasOne(x => x.Group)
-			       .WithOne()
-			       .HasForeignKey<GroupInvite>(x => x.GroupId);
-
-			builder.HasOne(x => x.InvitedUser)
-			       .WithMany()
-			       .HasForeignKey(x => x.InvitedUserId);
-
-			builder.HasOne(x => x.Inviter)
-			       .WithMany()
-			       .HasForeignKey(x => x.InviterId);
+			// builder.HasOne(x => x.Group)
+			//        .WithMany()
+			//        .HasForeignKey(x => x.GroupId);
 		}
 	}
 }

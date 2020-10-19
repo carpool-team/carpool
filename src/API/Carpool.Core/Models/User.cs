@@ -24,12 +24,12 @@ namespace Carpool.Core.Models
 
 		public List<Rating> Ratings { get; set; }
 
+		public Guid? VehicleId { get; set; }
 		public Vehicle Vehicle { get; set; }
 
 		public List<GroupInvite> GroupInvites { get; set; }
 
 		public List<GroupInvite> SentGroupInvites { get; set; }
-
-		public Guid CompanyId { get; set; }
+		public int CompanyId { get; set; }
 	}
 }

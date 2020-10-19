@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Carpool.Core.DTOs.GroupDTOs;
+using AutoWrapper.Wrappers;
 using Carpool.Core.Models;
 using Carpool.RestAPI.Commands.Group;
+using Carpool.RestAPI.DTOs.GroupDTOs;
 using Carpool.RestAPI.Queries.Group;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,37 +23,39 @@ namespace Carpool.RestAPI.Controllers
 
 		//// GET: api/Groups
 		[HttpGet]
-		public async Task<ActionResult<List<IndexGroupDTO>>> GetGroups(GetGroupsQuery query)
+		public async Task<ApiResponse> GetGroups(GetGroupsQuery query)
 		{
 			var response = await _mediator.Send(query).ConfigureAwait(false);
-			return await response.ToListAsync().ConfigureAwait(false);
+			return new ApiResponse(response);
 		}
 
 		// GET: api/Groups/5
 		[HttpGet("{groupId}")]
-		public async Task<ActionResult<Group>> GetGroup(GetGroupQuery query)
+		public async Task<ApiResponse> GetGroup([FromRoute]Guid groupId)
 		{
-			var response = await _mediator.Send(query).ConfigureAwait(false);
-			return response;
+			var request = new GetGroupQuery(groupId);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse(response);
 		}
 
 		// PUT: api/Groups/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{id}")]
-		public async Task<IActionResult> PutGroup(Guid id, UpdateGroupCommand updateGroupCommand)
+		public async Task<ApiResponse> PutGroup(Guid id, UpdateGroupCommand updateGroupCommand)
 		{
 			var response = await _mediator.Send(updateGroupCommand).ConfigureAwait(false);
-			return Ok();
+			return new ApiResponse($"Group with id: {response} has been deleted");
 		}
 
 		[HttpPut("{groupId}/locations")]
-		public async Task<ActionResult> ChangeGroupLocation([FromRoute] Guid groupId,
+		public async Task<ApiResponse> ChangeGroupLocation([FromRoute] Guid groupId,
 		                                                    [FromBody]
 		                                                    ChangeGroupLocationCommand changeGroupLocationCommand)
 		{
+			changeGroupLocationCommand.GroupId = groupId;
 			var response = await _mediator.Send(changeGroupLocationCommand).ConfigureAwait(false);
-			return Ok(response);
+			return new ApiResponse($"Location of a group with id: {groupId} has ben changed");
 		}
 
 		[HttpPut("{groupId}/rides")]

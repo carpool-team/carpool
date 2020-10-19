@@ -15,17 +15,16 @@ namespace Carpool.DAL.Builders
 
 			builder.Property(x => x.Date).IsRequired();
 
-			builder.HasOne(x => x.Requester)
-			       .WithMany()
-			       .HasForeignKey(x => x.RequesterId);
-
 			builder.HasOne(x => x.Destination)
 			       .WithMany()
-			       .HasForeignKey(x => x.DestinationId);
+			       .HasForeignKey(x => x.DestinationId)
+					.OnDelete(DeleteBehavior.ClientNoAction);
+                   
 
 			builder.HasOne(x => x.StartingLocation)
 			       .WithMany()
-			       .HasForeignKey(x => x.StartingLocationId);
-		}
+			       .HasForeignKey(x => x.StartingLocationId)
+                   .OnDelete(DeleteBehavior.ClientNoAction);
+        }
 	}
 }

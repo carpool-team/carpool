@@ -18,19 +18,23 @@ namespace Carpool.DAL.Builders
 
 			builder.HasMany(x => x.Rides)
 			       .WithOne()
-			       .HasForeignKey(x => x.GroupId);
+			       .HasForeignKey(x => x.GroupId)
+				  .OnDelete(DeleteBehavior.ClientNoAction);
 
 			builder.HasMany(x => x.UserGroups)
 			       .WithOne()
-			       .HasForeignKey(ug => ug.GroupId);
+			       .HasForeignKey(ug => ug.GroupId)
+			       .OnDelete(DeleteBehavior.ClientNoAction);
 
-			builder.HasOne(x => x.Location)
+            builder.HasOne(x => x.Location)
 			       .WithMany()
-			       .HasForeignKey(x => x.LocationId);
+			       .HasForeignKey(x => x.LocationId)
+			       .OnDelete(DeleteBehavior.ClientNoAction);
 
-			builder.HasOne(x => x.Owner)
-			       .WithOne()
-			       .HasForeignKey<Group>(x => x.OwnerId);
+
+			// builder.HasOne(x => x.Owner)
+			//        .WithOne()
+			//        .HasForeignKey<Group>(x => x.OwnerId);
 		}
 	}
 }

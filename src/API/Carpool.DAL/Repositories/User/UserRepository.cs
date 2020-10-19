@@ -15,15 +15,15 @@ namespace Carpool.DAL.Repositories.User
 		public UserRepository(CarpoolDbContext context)
 			=> _context = context;
 
-		public async IAsyncEnumerable<Core.Models.User> GetGroupUsersByGroupIdAsync(Guid id)
+		public async Task<List<Core.Models.User>> GetGroupUsersByGroupIdAsync(Guid id)
 		{
-			var iterator = _context.Users
+			var users = await _context.Users
 			                       .AsNoTracking()
 			                       .Include(user => user.UserGroups)
 			                       .Where(user => user.UserGroups.Any(group => group.GroupId == id))
-			                       .AsAsyncEnumerable().GetAsyncEnumerator();
+			                       .ToListAsync().ConfigureAwait(false);
 
-			while (await iterator.MoveNextAsync().ConfigureAwait(false)) yield return iterator.Current;
+			return users;
 		}
 
 		public async Task<Core.Models.User> GetByIdAsNoTrackingAsync(Guid id, CancellationToken cancellationToken)
@@ -53,7 +53,13 @@ namespace Carpool.DAL.Repositories.User
 		public void Delete(Core.Models.User entity)
 			=> _context.Users.Remove(entity);
 
-		public async Task SaveAsync(CancellationToken cancellationToken)
+		public async Task DeleteByIdAsync(Guid id)
+		{
+			var entity = await _context.Users.FirstOrDefaultAsync(x => id.Equals(x.Id)).ConfigureAwait(false);
+			_context.Users.Remove(entity);
+		}
+
+		public async Task SaveAsync(CancellationToken cancellationToken = default)
 			=> await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
 		public void Save()

@@ -1,20 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Carpool.DAL.Repositories.Company;
 using MediatR;
 
 namespace Carpool.RestAPI.Queries.Company
 {
-	public class GetCompaniesQueryHandler : RequestHandler<GetCompaniesQuery, IAsyncEnumerable<Core.Models.Company>>
+	public class GetCompaniesQueryHandler : IRequestHandler<GetCompaniesQuery, List<Core.Models.Company>>
 	{
 		private readonly ICompanyRepository _repository;
 
 		public GetCompaniesQueryHandler(ICompanyRepository repository)
 			=> _repository = repository;
 
-		protected override async IAsyncEnumerable<Core.Models.Company> Handle(GetCompaniesQuery request)
+
+		public async Task<List<Core.Models.Company>> Handle(GetCompaniesQuery request, CancellationToken cancellationToken)
 		{
-			var companies = _repository.GetRangeAsync(request.PageCount, request.PagesToSkip);
-			await foreach (var company in companies) yield return company;
+			return await _repository.GetRangeAsNoTrackingAsync(request.Count, request.Page).ConfigureAwait(false);
 		}
 	}
 }

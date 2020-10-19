@@ -9,6 +9,6 @@ namespace Carpool.RestAPI.Commands.User
 
 		public string LastName { get; set; }
 
-		public Guid CompanyId { get; set; }
+		public int CompanyId { get; set; }
 	}
 }

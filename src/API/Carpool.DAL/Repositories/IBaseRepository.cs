@@ -16,8 +16,8 @@ namespace Carpool.DAL.Repositories
 		void Update(TEntity entity);
 
 		void Delete(TEntity entity);
-
-		Task SaveAsync(CancellationToken cancellationToken);
+		Task DeleteByIdAsync(T id);
+		Task SaveAsync(CancellationToken cancellationToken = default);
 		void Save();
 	}
 }
