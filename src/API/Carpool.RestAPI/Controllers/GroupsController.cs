@@ -23,9 +23,10 @@ namespace Carpool.RestAPI.Controllers
 
 		//// GET: api/Groups
 		[HttpGet]
-		public async Task<ApiResponse> GetGroups(GetGroupsQuery query)
-		{
-			var response = await _mediator.Send(query).ConfigureAwait(false);
+		public async Task<ApiResponse> GetGroups([FromQuery]int page, [FromQuery]int count)
+        {
+            var request = new GetGroupsQuery(page, count);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 			return new ApiResponse(response);
 		}
 
