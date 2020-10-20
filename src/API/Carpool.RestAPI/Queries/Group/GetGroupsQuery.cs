@@ -6,13 +6,13 @@ namespace Carpool.RestAPI.Queries.Group
 {
 	public class GetGroupsQuery : IRequest<IEnumerable<IndexGroupDTO>>
 	{
-        public GetGroupsQuery(int pageCount, int pagesToSkip)
+		public GetGroupsQuery(int page, int count)
         {
-            PageCount = pageCount;
-            PagesToSkip = pagesToSkip;
+            Page = page;
+            Count = count;
         }
 
-        public int PageCount { get; set; }
-		public int PagesToSkip { get; set; }
+        public int Page { get; set; }
+		public int Count { get; set; }
 	}
 }
