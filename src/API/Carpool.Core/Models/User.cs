@@ -30,6 +30,6 @@ namespace Carpool.Core.Models
 		public List<GroupInvite> GroupInvites { get; set; }
 
 		public List<GroupInvite> SentGroupInvites { get; set; }
-		public int CompanyId { get; set; }
+		public int? CompanyId { get; set; }
 	}
 }
