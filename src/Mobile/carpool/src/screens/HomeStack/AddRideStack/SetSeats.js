@@ -10,7 +10,7 @@ import {useRequest, METHODS, ENDPOINTS} from '../../../hooks';
 
 const MIN_VALUE = 1;
 const MAX_VALUE = 4;
-const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
+const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 
 const SetSeats = ({navigation}) => {
   const [seats, setSeats] = useState(MIN_VALUE);
