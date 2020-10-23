@@ -8,20 +8,17 @@ namespace Carpool.RestAPI.Commands.Group
 	public class AddGroupCommand : IRequest
 	{
 		[JsonConstructor]
-		public AddGroupCommand(string name, string code, Guid id, Guid ownerId)
+		public AddGroupCommand(string name, string code, Guid ownerId)
 		{
 			Name = name;
 			Code = code;
-			Id = id;
 			OwnerId = ownerId;
 		}
 
 		[Required] public string Name { get; set; }
 
 		public string Code { get; set; }
-
-		public Guid Id { get; set; }
-
+		
 		[Required] public Guid OwnerId { get; set; }
 	}
 }
