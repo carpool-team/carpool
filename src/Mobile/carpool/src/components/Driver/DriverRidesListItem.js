@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {UpView} from '../common';
-import {vw, vh} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {sheet, colors} from '../../styles';
 import {CircleButton} from '../common/buttons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -35,15 +35,13 @@ const DriverRidesListItem = ({item, onItemPress}) => {
   return (
     <UpView
       onPress={() => onItemPress(item)}
-      borderRadius={4 * vw}
+      borderRadius={16}
       style={styles.upview}>
       <View style={styles.container}>
         <View style={styles.topRow}>
           <CircleButton
             style={styles.circleButton}
-            icon={
-              <Ionicon name="ios-car" color={colors.grayDark} size={8 * vw} />
-            }
+            icon={<Ionicon name="ios-car" color={colors.grayDark} size={32} />}
           />
           <View style={styles.column}>
             <Text style={styles.singleRide}>Single ride</Text>
@@ -69,7 +67,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 2 * vh,
     paddingBottom: 3 * vh,
-    paddingHorizontal: 5 * vw,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -78,22 +76,22 @@ const styles = StyleSheet.create({
     ...sheet.rowCenter,
   },
   circleButton: {
-    marginRight: 3 * vw,
+    marginRight: 12,
   },
   column: {
     flexDirection: 'column',
-    height: 14 * vw,
+    height: 56,
     justifyContent: 'space-between',
   },
   singleRide: {
     ...sheet.textBold,
-    fontSize: 4 * vw,
+    fontSize: 16,
     color: colors.grayDark,
   },
   leavingIn: {
     ...sheet.textSemiBold,
     color: colors.green,
-    fontSize: 4 * vw,
+    fontSize: 16,
   },
 });
 

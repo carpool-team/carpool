@@ -1,6 +1,6 @@
 import React from 'react';
 import {RefreshControl, FlatList} from 'react-native';
-import {vw, vh} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import LocationsListItem from '../Locations/LocationsListItem';
 import {colors} from '../../styles';
 import CurrentLocationListItem from '../Locations/CurrentLocationListItem';
@@ -18,7 +18,7 @@ const StartLocationsFlatList = ({
         width: '100%',
       }}
       contentContainerStyle={{
-        paddingHorizontal: 8 * vw,
+        paddingHorizontal: 32,
         paddingTop: 2 * vh,
       }}
       data={data}

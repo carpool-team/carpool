@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh, vw} from '../../../utils/constants';
+import {vh} from '../../../utils/constants';
 import {RouteMinimap} from '../../../components/Route';
 import Waypoints from '../../../components/Ride/Waypoints';
 import {parseCoords} from '../../../utils/coords';
@@ -33,7 +33,7 @@ const DriversRideDetails = ({navigation, route}) => {
           <TouchableOpacity>
             <Ionicon
               name="md-more"
-              size={8 * vw}
+              size={32}
               color={colors.grayDark}
               style={styles.moreIcon}
             />
@@ -55,9 +55,9 @@ const DriversRideDetails = ({navigation, route}) => {
               contentContainerStyle={sheet.center}
               style={styles.upView}
               onPress={() => null}
-              borderRadius={2 * vw}>
+              borderRadius={8}>
               <View style={styles.upviewContent}>
-                <Ionicon name="md-person" color={colors.blue} size={10 * vw} />
+                <Ionicon name="md-person" color={colors.blue} size={40} />
                 <Text style={styles.upviewCount}>
                   {ride.participants.length}
                 </Text>
@@ -67,9 +67,9 @@ const DriversRideDetails = ({navigation, route}) => {
               contentContainerStyle={sheet.center}
               style={styles.upView}
               onPress={() => null}
-              borderRadius={2 * vw}>
+              borderRadius={8}>
               <View style={styles.upviewContent}>
-                <Marker color={colors.blue} size={6 * vw} />
+                <Marker color={colors.blue} size={24} />
                 <Text style={styles.upviewCount}>{ride.stops.length}</Text>
               </View>
             </UpView>
@@ -91,22 +91,22 @@ const styles = StyleSheet.create({
   },
   topRow: {
     marginBottom: 3 * vh,
-    marginHorizontal: 4 * vw,
+    marginHorizontal: 16,
     ...sheet.rowCenterSplit,
   },
   singleRide: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
+    fontSize: 20,
     color: colors.green,
     marginBottom: 1 * vh,
   },
   date: {
     ...sheet.textMedium,
-    fontSize: 4 * vw,
+    fontSize: 16,
     color: colors.grayDark,
   },
   moreIcon: {
-    paddingHorizontal: 4 * vw,
+    paddingHorizontal: 16,
     paddingVertical: 1 * vh,
   },
   mapWrapper: {
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   bottomWrapper: {
     flex: 1,
     paddingTop: 3 * vh,
-    paddingHorizontal: 4 * vw,
+    paddingHorizontal: 16,
   },
   bottomRow: {
     ...sheet.rowCenterSplit,
@@ -126,14 +126,14 @@ const styles = StyleSheet.create({
     width: '46%',
   },
   upviewContent: {
-    padding: 4 * vw,
+    padding: 16,
     ...sheet.rowCenter,
   },
   upviewCount: {
     ...sheet.textSemiBold,
-    fontSize: 7 * vw,
+    fontSize: 28,
     color: colors.grayDark,
-    marginLeft: 4 * vw,
+    marginLeft: 16,
   },
 });
 

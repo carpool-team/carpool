@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {vh, vw} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {colors, sheet} from '../../styles';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {useNavigation} from '@react-navigation/core';
@@ -57,13 +57,13 @@ const RouteInfoSheet = ({route, onGoBack}) => {
           color={colors.red}
           onPress={onGoBack ? onGoBack : () => navigation.goBack()}
           title="Go back"
-          width={25 * vw}
+          width={100}
         />
       </View>
     );
   };
 
-  const _renderHeader = () => <View style={styles.header}></View>;
+  const _renderHeader = () => <View style={styles.header} />;
 
   return (
     <BottomSheet
@@ -81,29 +81,29 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingTop: 2 * vh,
     paddingBottom: 5 * vh,
-    paddingHorizontal: 8 * vw,
+    paddingHorizontal: 32,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
   },
   distance: {
     ...sheet.textSemiBold,
-    fontSize: 7 * vw,
+    fontSize: 28,
     color: colors.blue,
   },
   kilometers: {
     ...sheet.textSemiBold,
-    fontSize: 4.5 * vw,
+    fontSize: 18,
     color: colors.blue,
   },
   duration: {
     ...sheet.textSemiBold,
-    fontSize: 7 * vw,
+    fontSize: 28,
     color: colors.grayDark,
   },
   minutes: {
     ...sheet.textSemiBold,
-    fontSize: 4.5 * vw,
+    fontSize: 18,
     color: colors.grayDark,
   },
   header: {
@@ -116,12 +116,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     alignItems: 'center',
-    borderTopRightRadius: 20 * vw,
-    borderTopLeftRadius: 20 * vw,
+    borderTopRightRadius: 80,
+    borderTopLeftRadius: 80,
     height: 2.5 * vh,
   },
   button: {
-    width: 25 * vw,
+    width: 100,
     height: 6 * vh,
   },
   goBack: {

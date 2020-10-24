@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
-import {vw, vh} from '../../../utils/constants';
+import {vh} from '../../../utils/constants';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {colors, sheet} from '../../../styles';
@@ -57,28 +57,20 @@ const SetSeats = ({navigation}) => {
         <Text style={styles.seats}>SEATS</Text>
         <View style={[sheet.rowCenterSplit, styles.carWrapper]}>
           <View style={[sheet.rowCenter, styles.car]}>
-            <Ionicon
-              name="ios-car"
-              size={25 * vw}
-              color={colors.grayVeryDark}
-            />
+            <Ionicon name="ios-car" size={100} color={colors.grayVeryDark} />
           </View>
           <View style={[sheet.rowCenterSplit, styles.buttonsWrapper]}>
             <CircleButton
               onPress={onDecrement}
               icon={
-                <FAIcon
-                  name="minus"
-                  size={6 * vw}
-                  color={colors.grayVeryDark}
-                />
+                <FAIcon name="minus" size={24} color={colors.grayVeryDark} />
               }
             />
             <Text style={styles.numOfSeats}>{seats}</Text>
             <CircleButton
               onPress={onIncrement}
               icon={
-                <FAIcon name="plus" size={6 * vw} color={colors.grayVeryDark} />
+                <FAIcon name="plus" size={24} color={colors.grayVeryDark} />
               }
             />
           </View>
@@ -103,14 +95,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-around',
-    paddingHorizontal: 6 * vw,
+    paddingHorizontal: 24,
     paddingTop: 4 * vh,
     paddingBottom: 6 * vh,
   },
   seats: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 6 * vw,
+    fontSize: 24,
   },
   carWrapper: {
     width: '100%',
@@ -124,7 +116,7 @@ const styles = StyleSheet.create({
   numOfSeats: {
     ...sheet.textSemiBold,
     color: colors.blue,
-    fontSize: 8 * vw,
+    fontSize: 32,
   },
 });
 

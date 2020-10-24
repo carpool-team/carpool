@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import UpView from '../common/UpView';
-import {vh, vw} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import sheet from '../../styles/sheet';
 import colors from '../../styles/colors';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -9,7 +9,7 @@ import {CircleButton} from '../common/buttons';
 
 const InvitationListItem = ({item, onAccept, onDecline}) => {
   return (
-    <UpView borderRadius={4 * vw} style={styles.card}>
+    <UpView borderRadius={16} style={styles.card}>
       <View style={styles.container}>
         <View
           style={{
@@ -21,21 +21,19 @@ const InvitationListItem = ({item, onAccept, onDecline}) => {
           <Text style={styles.author}>John Doe invited you</Text>
         </View>
         <View style={{...sheet.rowCenter}}>
-          <MaterialIcon name="group" size={10 * vw} color={colors.grayDark} />
+          <MaterialIcon name="group" size={40} color={colors.grayDark} />
           <Text style={styles.members}>{item.group.userCount}</Text>
           <View style={styles.bottomRow}>
             <CircleButton
-              size={14 * vw}
-              icon={
-                <MaterialIcon name="close" size={8 * vw} color={colors.red} />
-              }
-              style={{marginRight: 4 * vw}}
+              size={56}
+              icon={<MaterialIcon name="close" size={32} color={colors.red} />}
+              style={{marginRight: 16}}
               onPress={() => onDecline(item)}
             />
             <CircleButton
-              size={14 * vw}
+              size={56}
               icon={
-                <MaterialIcon name="check" size={8 * vw} color={colors.green} />
+                <MaterialIcon name="check" size={32} color={colors.green} />
               }
               onPress={() => onAccept(item)}
             />
@@ -56,24 +54,24 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 2 * vh,
     paddingBottom: 4 * vh,
-    paddingHorizontal: 5 * vw,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   name: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
+    fontSize: 20,
     color: colors.grayVeryDark,
   },
   author: {
     ...sheet.textRegular,
-    fontSize: 3.5 * vw,
+    fontSize: 14,
     color: colors.grayDark,
   },
   members: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
-    marginLeft: 2 * vw,
+    fontSize: 20,
+    marginLeft: 8,
     color: colors.blue,
   },
   bottomRow: {

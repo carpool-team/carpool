@@ -4,7 +4,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import config from '../../../config';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
-import {vw, vh} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {activeRouteStyle, colors, sheet} from '../../styles';
 import {Marker, BlueMarker} from '../common';
 import {useGetDirections} from '../../hooks';
@@ -22,10 +22,10 @@ const getBounds = routesArray => {
   const [ne1, ne2, sw1, sw2] = boundingBox;
 
   return {
-    paddingLeft: 8 * vw,
-    paddingRight: 8 * vw,
-    paddingTop: 18 * vh,
-    paddingBottom: 18 * vh,
+    paddingLeft: 32,
+    paddingRight: 32,
+    paddingTop: 72,
+    paddingBottom: 72,
     ne: [ne1, ne2],
     sw: [sw1, sw2],
   };
@@ -78,17 +78,13 @@ const RouteMinimap = ({start, destination}) => {
             key={start.toString()}
             id="selected"
             coordinate={start}>
-            <BlueMarker size={5 * vw} />
+            <BlueMarker size={20} />
           </MapboxGL.PointAnnotation>
           <MapboxGL.PointAnnotation
             key={finish.toString()}
             id="selected"
             coordinate={finish}>
-            <Marker
-              color={colors.green}
-              size={5 * vw}
-              style={{marginTop: -6 * vw}}
-            />
+            <Marker color={colors.green} size={20} style={{marginTop: -24}} />
           </MapboxGL.PointAnnotation>
         </>
       );
@@ -216,22 +212,22 @@ const styles = StyleSheet.create({
   },
   time: {
     ...sheet.textSemiBold,
-    fontSize: 8 * vw,
+    fontSize: 32,
     color: colors.green,
   },
   timeUnit: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
+    fontSize: 32,
     color: colors.green,
   },
   distance: {
     ...sheet.textSemiBold,
-    fontSize: 8 * vw,
+    fontSize: 32,
     color: colors.orange,
   },
   distanceUnit: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
+    fontSize: 32,
     color: colors.orange,
   },
 });

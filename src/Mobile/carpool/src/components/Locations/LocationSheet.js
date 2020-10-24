@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {colors, sheet} from '../../styles';
-import {vh, vw} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {Marker} from '../common';
 import {StandardButton} from '../common/buttons';
 
@@ -10,11 +10,7 @@ const LocationSheet = ({_onSelect, _onGoBack, location}) => {
   const _renderContent = () => (
     <View style={styles.content}>
       <View style={sheet.rowCenter}>
-        <Marker
-          size={7 * vw}
-          color={colors.blue}
-          style={{marginRight: 3 * vw}}
-        />
+        <Marker size={28} color={colors.blue} style={{marginRight: 12}} />
         <Text style={styles.placeName}>{location.place_name}</Text>
       </View>
       <View style={styles.buttonsContainer}>
@@ -34,7 +30,7 @@ const LocationSheet = ({_onSelect, _onGoBack, location}) => {
     </View>
   );
 
-  const _renderHeader = () => <View style={styles.header}></View>;
+  const _renderHeader = () => <View style={styles.header} />;
 
   return (
     <BottomSheet
@@ -53,14 +49,14 @@ const styles = StyleSheet.create({
     height: '100%',
     paddingTop: 1 * vh,
     paddingBottom: 6 * vh,
-    paddingHorizontal: 8 * vw,
+    paddingHorizontal: 32,
     justifyContent: 'space-between',
   },
   placeName: {
     ...sheet.textMedium,
     flex: 1,
     flexWrap: 'wrap',
-    fontSize: 4.5 * vw,
+    fontSize: 14,
     color: colors.grayVeryDark,
   },
   buttonsContainer: {
@@ -92,8 +88,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     alignItems: 'center',
-    borderTopRightRadius: 20 * vw,
-    borderTopLeftRadius: 20 * vw,
+    borderTopRightRadius: 80,
+    borderTopLeftRadius: 80,
     height: 2.5 * vh,
   },
 });

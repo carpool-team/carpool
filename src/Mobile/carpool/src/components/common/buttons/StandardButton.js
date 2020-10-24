@@ -2,11 +2,11 @@ import React from 'react';
 import {Text} from 'react-native';
 import {UpView} from '../';
 import {colors, sheet} from '../../../styles';
-import {vw, vh} from '../../../utils/constants';
+import {vh} from '../../../utils/constants';
 
 const StandardButton = ({
   title,
-  width = 65 * vw,
+  width = 270,
   height = 6 * vh,
   color = colors.blue,
   style,

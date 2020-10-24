@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {SafeAreaView, TouchableOpacity, View, Text} from 'react-native';
-import {vw, vh} from '../../../utils/constants';
+import {vh} from '../../../utils/constants';
 import sheet from '../../../styles/sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../../styles/colors';
@@ -39,18 +39,18 @@ const Groups = ({navigation}) => {
             ...sheet.rowCenterSplit,
             width: '100%',
             marginBottom: 4 * vh,
-            paddingHorizontal: 4 * vw,
+            paddingHorizontal: 8,
           }}
           onPress={() => navigation.navigate('Invitations')}>
           <Text
             style={{
               ...sheet.textSemiBold,
-              fontSize: 4 * vw,
+              fontSize: 8,
               color: colors.blue,
             }}>
             {`${number} new invitation${number > 1 ? 's' : ''}`}
           </Text>
-          <Icon name="group-add" size={8 * vw} color={colors.grayDark} />
+          <Icon name="group-add" size={32} color={colors.grayDark} />
         </TouchableOpacity>
       );
     }

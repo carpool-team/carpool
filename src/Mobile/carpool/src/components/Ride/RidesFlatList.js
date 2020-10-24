@@ -5,7 +5,7 @@ import {
   StyleSheet,
   RefreshControl,
 } from 'react-native';
-import {vw, vh} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {colors} from '../../styles';
 import DriverInfo from './DriverInfo';
 import Waypoints from './Waypoints';
@@ -33,7 +33,7 @@ const RidesFlatList = ({data, loading, onRefresh}) => {
           <Waypoints
             ride={item}
             start={parseCoords(item.startingLocation.coordinates)}
-            style={{paddingHorizontal: 2 * vw}}
+            style={{paddingHorizontal: 8}}
           />
         </TouchableOpacity>
       )}
@@ -51,12 +51,12 @@ const RidesFlatList = ({data, loading, onRefresh}) => {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    paddingHorizontal: 6 * vw,
+    paddingHorizontal: 24,
     paddingVertical: 4 * vh,
   },
   wrapper: {
     marginBottom: 4 * vh,
-    borderBottomWidth: 0.2 * vw,
+    borderBottomWidth: 1,
     borderColor: colors.grayDark,
     paddingBottom: 4 * vh,
   },

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {sheet, colors} from '../../styles';
-import {vh, vw} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {Marker} from '../common';
 
 const LocationsListItem = ({item, onPress = () => null}) => {
@@ -9,11 +9,7 @@ const LocationsListItem = ({item, onPress = () => null}) => {
     <TouchableOpacity
       style={[sheet.rowCenter, styles.container]}
       onPress={onPress}>
-      <Marker
-        color={colors.green}
-        size={5 * vw}
-        style={{marginRight: 3 * vw}}
-      />
+      <Marker color={colors.green} size={20} style={{marginRight: 12}} />
       <Text style={styles.address}>{item.place_name}</Text>
     </TouchableOpacity>
   );
@@ -26,7 +22,7 @@ const styles = StyleSheet.create({
   },
   address: {
     ...sheet.textMedium,
-    fontSize: 4 * vw,
+    fontSize: 16,
     marginBottom: 0.5 * vh,
     color: colors.grayVeryDark,
     flexWrap: 'wrap',

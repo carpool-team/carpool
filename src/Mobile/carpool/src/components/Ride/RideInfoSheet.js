@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {colors, sheet} from '../../styles';
-import {vw, vh} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {UpView} from '../common';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -111,13 +111,9 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
               <UpView
                 borderRadius={20}
                 contentContainerStyle={sheet.center}
-                style={{marginRight: 8 * vw}}>
+                style={{marginRight: 64}}>
                 <View style={styles.leftCard}>
-                  <MaterialIcon
-                    name="star"
-                    size={10 * vw}
-                    color={colors.yellow}
-                  />
+                  <MaterialIcon name="star" size={40} color={colors.yellow} />
                   <Text style={styles.rating}>{4.7}</Text>
                 </View>
               </UpView>
@@ -135,8 +131,8 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
               <Ionicon
                 name="ios-car"
                 color={colors.grayVeryDark}
-                size={20 * vw}
-                style={{marginRight: 4 * vw}}
+                size={80}
+                style={{marginRight: 16}}
               />
               <Text style={styles.car}>{'Opel Astra'}</Text>
             </View>
@@ -190,14 +186,14 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     alignItems: 'center',
     backgroundColor: colors.background,
-    paddingHorizontal: 4 * vw,
+    paddingHorizontal: 16,
     paddingVertical: 4 * vh,
-    borderTopRightRadius: 4 * vw,
-    borderTopLeftRadius: 4 * vw,
+    borderTopRightRadius: 16,
+    borderTopLeftRadius: 16,
   },
   upperContainer: {
     flex: 1,
-    paddingHorizontal: 3 * vw,
+    paddingHorizontal: 12,
     paddingVertical: 2 * vh,
     ...sheet.rowCenter,
   },
@@ -205,24 +201,24 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: 16 * vw,
+    height: 64,
     paddingVertical: 0.5 * vh,
   },
   username: {
     ...sheet.textBold,
-    fontSize: 4 * vw,
+    fontSize: 16,
     color: colors.grayDark,
     flex: 1,
-    marginRight: 1 * vw,
+    marginRight: 4,
   },
   distance: {
     ...sheet.textBold,
-    fontSize: 4 * vw,
+    fontSize: 16,
     color: colors.blue,
   },
   leavingIn: {
     ...sheet.textBold,
-    fontSize: 4 * vw,
+    fontSize: 16,
   },
   button: {
     width: '65%',
@@ -232,7 +228,7 @@ const styles = StyleSheet.create({
   buttonText: {
     ...sheet.textBold,
     color: colors.green,
-    fontSize: 4 * vw,
+    fontSize: 16,
   },
   detailsRow: {
     ...sheet.rowCenterSplit,
@@ -241,31 +237,31 @@ const styles = StyleSheet.create({
   },
   leftCard: {
     paddingVertical: 3 * vh,
-    paddingHorizontal: 4 * vw,
-    width: 32 * vw,
+    paddingHorizontal: 16,
+    width: 128,
     ...sheet.rowCenter,
     justifyContent: 'center',
   },
   rating: {
     ...sheet.textBold,
-    fontSize: 6 * vw,
+    fontSize: 24,
     color: colors.grayDark,
   },
   rightCard: {
     paddingVertical: 3 * vh,
-    paddingHorizontal: 4 * vw,
-    width: 32 * vw,
+    paddingHorizontal: 16,
+    width: 128,
     alignItems: 'center',
     justifyContent: 'center',
   },
   price: {
     ...sheet.textBold,
-    fontSize: 6 * vw,
+    fontSize: 24,
     color: colors.green,
   },
   free: {
     ...sheet.textBold,
-    fontSize: 6 * vw,
+    fontSize: 24,
     color: colors.blue,
   },
   carWrapper: {
@@ -274,13 +270,13 @@ const styles = StyleSheet.create({
   },
   car: {
     ...sheet.textBold,
-    fontSize: 7 * vw,
+    fontSize: 28,
     color: colors.grayDark,
   },
   success: {
     ...sheet.textSemiBold,
     color: colors.green,
-    fontSize: 5 * vw,
+    fontSize: 20,
     textAlign: 'center',
     marginBottom: 4 * vh,
   },

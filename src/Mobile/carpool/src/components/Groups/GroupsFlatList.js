@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, RefreshControl} from 'react-native';
-import {vh, vw} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import GroupListItem from './GroupListItem';
 import colors from '../../styles/colors';
 
@@ -13,7 +13,7 @@ const GroupsFlatList = ({data, loading, onItemPress, onRefresh}) => {
         paddingTop: 2 * vh,
       }}
       contentContainerStyle={{
-        paddingHorizontal: 4 * vw,
+        paddingHorizontal: 16,
       }}
       keyExtractor={item => Math.random().toString()}
       renderItem={({item}) => (

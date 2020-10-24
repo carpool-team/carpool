@@ -4,7 +4,7 @@ import {
 } from '@react-navigation/drawer';
 import React, {useState, useEffect, useContext} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {vw, vh} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {colors, sheet} from '../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -19,7 +19,7 @@ import {DriverContext} from '../../context/DriverContext';
 import {AccountContext} from '../../context/AccountContext';
 import DriversRideInfo from '../Ride/DriversRideInfo';
 
-export default CustomDrawer = props => {
+export default (CustomDrawer = props => {
   const [ride, setRide] = useState(null);
   const [driversRide, setDriversRide] = useState(null);
   const navigation = useNavigation();
@@ -75,13 +75,9 @@ export default CustomDrawer = props => {
         <View style={{flex: 1}}>
           <View style={styles.userInfoContainer}>
             <CircleButton
-              size={18 * vw}
+              size={72}
               icon={
-                <Ionicon
-                  name="md-person"
-                  color={colors.grayDark}
-                  size={11 * vw}
-                />
+                <Ionicon name="md-person" color={colors.grayDark} size={44} />
               }
             />
             <View style={styles.userDataWrapper}>
@@ -90,9 +86,9 @@ export default CustomDrawer = props => {
                 <Text style={styles.rating}>5.00</Text>
                 <Icon
                   name="star"
-                  size={8 * vw}
+                  size={32}
                   color={colors.yellow}
-                  style={{marginLeft: 2 * vw}}
+                  style={{marginLeft: 8}}
                 />
               </View>
             </View>
@@ -127,7 +123,7 @@ export default CustomDrawer = props => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   userInfoContainer: {
@@ -140,9 +136,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.1 * vh,
   },
   userDataWrapper: {
-    height: 18 * vw,
+    height: 72,
     flex: 1,
-    paddingLeft: 4 * vw,
+    paddingLeft: 8,
     flexDirection: 'column',
     justifyContent: 'space-between',
   },
@@ -175,7 +171,7 @@ const styles = StyleSheet.create({
   },
   rideCardContent: {
     paddingVertical: 1.5 * vh,
-    paddingHorizontal: 4 * vw,
+    paddingHorizontal: 16,
     justifyContent: 'space-between',
   },
   driversName: {

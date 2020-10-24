@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
 import {Marker} from '../../components/common';
-import {vw, vh} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import RideInfoSheet from '../../components/Ride/RideInfoSheet';
 import {getBoundsForRoutes} from '../../utils/bounds';
 import {RouteInfoSheet} from '../../components/FindRoute';
@@ -74,8 +74,8 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
         ...bds,
         paddingTop: 20 * vh,
         paddingBottom: 20 * vh,
-        paddingLeft: 20 * vw,
-        paddingRight: 20 * vw,
+        paddingLeft: 80,
+        paddingRight: 80,
       });
     }
   }, [routes]);
@@ -128,7 +128,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
             onDeselected={onCleanState}>
             <Marker
               color={getColor(ride.date)}
-              size={6 * vw}
+              size={24}
               style={styles.marker}
             />
           </MapboxGL.PointAnnotation>
@@ -197,9 +197,9 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       ) : null}
       {ride || visible ? null : (
         <CircleButton
-          style={{position: 'absolute', bottom: 8 * vh, right: 5 * vw}}
+          style={{position: 'absolute', bottom: 8 * vh, right: 20}}
           onPress={() => navigation.navigate('FindRide')}
-          icon={<Icon name="search" color={colors.grayDark} size={6 * vw} />}
+          icon={<Icon name="search" color={colors.grayDark} size={24} />}
         />
       )}
     </>
@@ -208,15 +208,15 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
 
 const styles = StyleSheet.create({
   marker: {
-    marginTop: -6 * vw,
-    padding: 2.5 * vw,
+    marginTop: -24,
+    padding: 10,
   },
   button: {
-    height: 16 * vw,
-    width: 16 * vw,
+    height: 64,
+    width: 64,
     position: 'absolute',
     bottom: 8 * vh,
-    right: 5 * vw,
+    right: 20,
   },
 });
 

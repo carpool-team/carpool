@@ -13,7 +13,7 @@ import GroupsFlatlist from '../../../components/Locations/GroupsFlatlist';
 import Geolocation from '@react-native-community/geolocation';
 import {BlueMarker} from '../../../components/common';
 import {colors, sheet} from '../../../styles';
-import {vh, vw} from '../../../utils/constants';
+import {vh} from '../../../utils/constants';
 import {geocodingClient} from '../../../maps/mapbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {StandardButton} from '../../../components/common/buttons';
@@ -175,7 +175,7 @@ const ChooseRoute = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.topPanel}>
         <View style={styles.inputWrapper}>
-          <BlueMarker size={5 * vw} />
+          <BlueMarker size={20} />
           <View style={styles.inputContainer}>
             <TextInput
               value={start}
@@ -194,13 +194,13 @@ const ChooseRoute = ({navigation}) => {
                   setStart(null);
                   setStartGeo(null);
                 }}>
-                <Icon name="close" color={colors.grayVeryDark} size={6 * vw} />
+                <Icon name="close" color={colors.grayVeryDark} size={24} />
               </TouchableOpacity>
             ) : null}
           </View>
         </View>
         <View style={styles.inputWrapper}>
-          <BlueMarker size={5 * vw} />
+          <BlueMarker size={20} />
           <View style={styles.inputContainer}>
             <TextInput
               ref={_destination}
@@ -219,7 +219,7 @@ const ChooseRoute = ({navigation}) => {
                   setDestination(null);
                   setDestinationGeo(null);
                 }}>
-                <Icon name="close" color={colors.grayVeryDark} size={6 * vw} />
+                <Icon name="close" color={colors.grayVeryDark} size={24} />
               </TouchableOpacity>
             ) : null}
           </View>
@@ -252,12 +252,12 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     paddingVertical: 1 * vh,
-    paddingHorizontal: 4 * vw,
+    paddingHorizontal: 16,
     alignItems: 'flex-end',
   },
   inputWrapper: {
     width: '100%',
-    paddingHorizontal: 8 * vw,
+    paddingHorizontal: 32,
     alignItems: 'center',
     paddingBottom: 2 * vh,
     marginVertical: 0.5 * vh,
@@ -267,15 +267,15 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 0.2 * vh,
     borderColor: colors.grayDark,
-    marginLeft: 2 * vw,
+    marginLeft: 8,
     ...sheet.rowCenter,
   },
   input: {
     flex: 1,
     ...sheet.textMedium,
-    fontSize: 4 * vw,
+    fontSize: 16,
     paddingVertical: 0.3 * vh,
-    paddingHorizontal: 1 * vw,
+    paddingHorizontal: 4,
     color: colors.grayVeryDark,
   },
   resultsContainer: {

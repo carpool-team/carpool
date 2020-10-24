@@ -1,13 +1,13 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {vh, vw} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {sheet, colors} from '../../styles';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {AccountContext, AccountActions} from '../../context/AccountContext';
 import {CircleButton} from '../common/buttons';
 
-const activeSize = 10 * vw;
-const inactiveSize = 7 * vw;
+const activeSize = 40;
+const inactiveSize = 28;
 
 const AccountSwitch = () => {
   const {accountState, dispatch} = useContext(AccountContext);
@@ -36,8 +36,8 @@ const AccountSwitch = () => {
           ...sheet.rowCenter,
         }}>
         <CircleButton
-          style={{marginRight: 4 * vw}}
-          size={activeAccount === 'driver' ? 16 * vw : 12 * vw}
+          style={{marginRight: 16}}
+          size={activeAccount === 'driver' ? 64 : 48}
           onPress={onDriverPress}
           icon={
             <Ionicon
@@ -48,7 +48,7 @@ const AccountSwitch = () => {
           }
         />
         <CircleButton
-          size={activeAccount === 'passenger' ? 16 * vw : 12 * vw}
+          size={activeAccount === 'passenger' ? 64 : 48}
           onPress={onPassengerPress}
           icon={
             <Ionicon
@@ -67,16 +67,16 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 2 * vh,
-    right: 5 * vw,
+    right: 20,
     zIndex: 40,
   },
   active: {
-    width: 16 * vw,
-    height: 16 * vw,
+    width: 64,
+    height: 64,
   },
   inactive: {
-    width: 12 * vw,
-    height: 12 * vw,
+    width: 48,
+    height: 48,
   },
 });
 

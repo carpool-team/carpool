@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh, vw} from '../../../utils/constants';
+import {vh} from '../../../utils/constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 import {BlueMarker} from '../../../components/common';
@@ -65,11 +65,11 @@ const SearchLocation = () => {
       <View style={styles.topPanel}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="close" color={colors.grayVeryDark} size={8 * vw} />
+            <Icon name="close" color={colors.grayVeryDark} size={32} />
           </TouchableOpacity>
         </View>
         <View style={styles.inputWrapper}>
-          <BlueMarker size={5 * vw} />
+          <BlueMarker size={20} />
           <TextInput
             value={place}
             onChangeText={setPlace}
@@ -113,12 +113,12 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     paddingVertical: 1 * vh,
-    paddingHorizontal: 4 * vw,
+    paddingHorizontal: 16,
     alignItems: 'flex-end',
   },
   inputWrapper: {
     width: '100%',
-    paddingHorizontal: 8 * vw,
+    paddingHorizontal: 32,
     alignItems: 'center',
     paddingBottom: 2 * vh,
     ...sheet.rowCenter,
@@ -126,12 +126,12 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     ...sheet.textMedium,
-    marginLeft: 2 * vw,
+    marginLeft: 8,
     borderBottomWidth: 0.2 * vh,
     borderColor: colors.grayDark,
-    fontSize: 4 * vw,
+    fontSize: 16,
     paddingVertical: 0.3 * vh,
-    paddingHorizontal: 1 * vw,
+    paddingHorizontal: 4,
     color: colors.grayVeryDark,
   },
   resultsContainer: {

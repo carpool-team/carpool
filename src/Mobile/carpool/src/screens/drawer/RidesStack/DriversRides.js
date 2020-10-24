@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh, vw} from '../../../utils/constants';
+import {vh} from '../../../utils/constants';
 import {StandardButton} from '../../../components/common/buttons';
 import {
   DriverContext,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   topRow: {
     width: '100%',
-    paddingHorizontal: 4 * vw,
+    paddingHorizontal: 16,
   },
   flatlistWrapper: {
     flex: 1,

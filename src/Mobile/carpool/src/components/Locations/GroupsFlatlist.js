@@ -1,6 +1,6 @@
 import React from 'react';
 import {RefreshControl, FlatList} from 'react-native';
-import {vw, vh} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import {colors} from '../../styles';
 import LocationsListItem from '../Locations/LocationsListItem';
 
@@ -12,7 +12,7 @@ const GroupsFlatlist = ({data, loading, onItemPress}) => {
         width: '100%',
       }}
       contentContainerStyle={{
-        paddingHorizontal: 8 * vw,
+        paddingHorizontal: 32,
         paddingTop: 2 * vh,
       }}
       data={data}

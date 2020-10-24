@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView} from 'react-native';
 import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {vw, vh} from '../../../utils/constants';
+import {vh} from '../../../utils/constants';
 import {RouteInfoSheet, RouteTopSheet} from '../../../components/FindRoute';
 import {Marker} from '../../../components/common';
 import {multiPoint} from '@turf/helpers';
@@ -16,8 +16,8 @@ const getBounds = routesArray => {
   const [ne1, ne2, sw1, sw2] = boundingBox;
 
   return {
-    paddingLeft: 8 * vw,
-    paddingRight: 8 * vw,
+    paddingLeft: 32,
+    paddingRight: 32,
     paddingTop: 18 * vh,
     paddingBottom: 18 * vh,
     ne: [ne1, ne2],
@@ -27,12 +27,12 @@ const getBounds = routesArray => {
 
 const activeStyle = {
   lineColor: colors.blue,
-  lineWidth: 1.5 * vw,
+  lineWidth: 6,
   lineCap: 'round',
 };
 const inactiveStyle = {
   lineColor: colors.gray,
-  lineWidth: 1.5 * vw,
+  lineWidth: 6,
   lineCap: 'round',
 };
 
@@ -82,11 +82,7 @@ const ShowRoute = props => {
               key={finishCoords.toString()}
               id="selected"
               coordinate={finishCoords}>
-              <Marker
-                color={colors.green}
-                size={5 * vw}
-                style={{marginTop: -6 * vw}}
-              />
+              <Marker color={colors.green} size={20} style={{marginTop: -24}} />
             </MapboxGL.PointAnnotation>
           </MapboxGL.MapView>
         </View>

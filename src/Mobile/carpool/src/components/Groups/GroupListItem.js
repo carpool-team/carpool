@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import UpView from '../common/UpView';
-import {vw, vh} from '../../utils/constants';
+import {vh} from '../../utils/constants';
 import sheet from '../../styles/sheet';
 import colors from '../../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -11,7 +11,7 @@ const GroupListItem = ({item, onItemPress}) => {
   return (
     <UpView
       onPress={() => onItemPress(item)}
-      borderRadius={4 * vw}
+      borderRadius={16}
       style={styles.card}>
       <View style={styles.container}>
         <View
@@ -28,19 +28,15 @@ const GroupListItem = ({item, onItemPress}) => {
         </View>
         <View style={{...sheet.rowCenterSplit, width: '100%'}}>
           <View style={sheet.rowCenter}>
-            <Icon name="group" size={10 * vw} color={colors.grayDark} />
+            <Icon name="group" size={40} color={colors.grayDark} />
             <Text style={styles.members}>{item.userCount}</Text>
           </View>
           <View style={sheet.rowCenter}>
-            <Ionicon name="ios-car" size={10 * vw} color={colors.grayDark} />
+            <Ionicon name="ios-car" size={40} color={colors.grayDark} />
             <Text style={styles.rides}>{item.rideCount}</Text>
           </View>
           <View style={sheet.rowCenter}>
-            <Ionicon
-              name="md-git-branch"
-              size={10 * vw}
-              color={colors.grayDark}
-            />
+            <Ionicon name="md-git-branch" size={40} color={colors.grayDark} />
             <Text style={styles.distance}>{`123 km`}</Text>
           </View>
         </View>
@@ -59,36 +55,36 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 2 * vh,
     paddingBottom: 3 * vh,
-    paddingHorizontal: 5 * vw,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   name: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
+    fontSize: 20,
     color: colors.grayVeryDark,
   },
   since: {
     ...sheet.textRegular,
-    fontSize: 3.5 * vw,
+    fontSize: 14,
     color: colors.grayDark,
   },
   members: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
-    marginLeft: 2 * vw,
+    fontSize: 20,
+    marginLeft: 8,
     color: colors.blue,
   },
   rides: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
-    marginLeft: 2 * vw,
+    fontSize: 20,
+    marginLeft: 8,
     color: colors.green,
   },
   distance: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
-    marginLeft: 2 * vw,
+    fontSize: 20,
+    marginLeft: 8,
     color: colors.orange,
   },
 });

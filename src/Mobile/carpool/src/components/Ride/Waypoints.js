@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {sheet, colors} from '../../styles';
 import {Marker} from '../common';
-import {vw} from '../../utils/constants';
 import {geocodingClient} from '../../maps/mapbox';
 import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';
@@ -59,11 +58,7 @@ const Waypoints = ({style, ride, start}) => {
 
   return (
     <View style={[styles.container, style]}>
-      <Marker
-        size={8 * vw}
-        color={getColor(ride.date)}
-        style={{marginRight: 3 * vw}}
-      />
+      <Marker size={32} color={getColor(ride.date)} style={{marginRight: 12}} />
       {loading ? null : (
         <View style={styles.column}>
           <Text numberOfLines={1}>
@@ -89,21 +84,21 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    height: 13 * vw,
+    height: 52,
   },
   from: {
     ...sheet.textBold,
     color: colors.blue,
-    fontSize: 4 * vw,
+    fontSize: 16,
   },
   to: {
     ...sheet.textBold,
     color: colors.green,
-    fontSize: 4 * vw,
+    fontSize: 16,
   },
   placeName: {
     ...sheet.textSemiBold,
-    fontSize: 4 * vw,
+    fontSize: 16,
     color: colors.grayDark,
   },
 });

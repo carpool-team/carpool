@@ -1,7 +1,7 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, SafeAreaView, Switch, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vw, vh} from '../../../utils/constants';
+import {vh} from '../../../utils/constants';
 import DatePicker from 'react-native-date-picker';
 import PickDays from '../../../components/Driver/AddRide/PickDays';
 import {StandardButton} from '../../../components/common/buttons';
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 6 * vw,
+    paddingHorizontal: 24,
     paddingTop: 4 * vh,
     paddingBottom: 6 * vh,
   },
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   regularRide: {
     ...sheet.textSemiBold,
-    fontSize: 4.5 * vw,
+    fontSize: 18,
     color: colors.grayVeryDark,
   },
 });
