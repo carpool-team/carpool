@@ -11,26 +11,30 @@ interface IButtonLinkProps {
 	type: ButtonType;
 	shape?: ButtonShape;
 	label: string;
+	active: boolean;
+	onClick: (newValue: boolean) => void;
 }
 
 const ButtonCheckBox: FunctionComponent<IButtonLinkProps> = (props) => {
 	const baseCssClass: string = "button button--checkbox";
-	const cssClasses: string = [
+	const activeCssClass: string = "button--checkbox_active";
+	const labelCssClass: string = "button--checkbox-label";
+	const cssClasses: string[] = [
 		baseCssClass,
 		getShapeClass(props.shape),
 		getSizeClass(props.size),
 		getTypeClass(props.type),
-	].join(" ");
-
-	const [active, setActive] = useState(false);
-
+	];
+	if (props.active) {
+		cssClasses.push(activeCssClass);
+	}
 	return (
 		<>
 			<button
-				className={cssClasses + (!active ? "button--checkbox_active" : "")}
-				onClick={!active ? () => setActive(true) : () => setActive(false)}
+				className={cssClasses.join(" ")}
+				onClick={() => props.onClick(!props.active)}
 			></button>
-			<div className={"button--checkbox-label"}>{props.label}</div>
+			<div className={labelCssClass}>{props.label}</div>
 		</>
 	);
 };

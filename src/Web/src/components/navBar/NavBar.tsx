@@ -3,9 +3,11 @@ import "./NavBar.scss";
 import Button from "../ui/Button/Button";
 import { ButtonSize } from "../ui/Button/enums/ButtonSize";
 import { ButtonType } from "../ui/Button/enums/ButtonType";
+import { ButtonShape } from "../ui/Button/enums//ButtonShape";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import App from "../../App";
+
 
 interface INavBarProps extends IReactI18nProps { }
 
@@ -78,6 +80,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 					</nav>
 					<nav className={this.cssClasses.navAccount}>
 						<Button
+							shape={ButtonShape.NavBar}
 							size={ButtonSize.Large}
 							type={ButtonType.Success}
 							onClick={() => { }}
@@ -85,6 +88,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 							{t(this.resources.login)}
 						</Button>
 						<Button
+							shape={ButtonShape.NavBar}
 							size={ButtonSize.Large}
 							type={ButtonType.Info}
 							onClick={() => { }}

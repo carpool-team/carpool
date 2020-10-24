@@ -25,6 +25,8 @@
 
 .groupList {
   &__buttons {
+    display: flex;
+    flex-direction: row;
     & > button,
     > a {
       margin: 16px;
@@ -37,6 +39,7 @@
     flex-direction: column;
     width: 80%;
     & > li {
+      display: flex;
       height: 40px;
       margin-bottom: 10px;
     }

@@ -9,6 +9,7 @@ import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import { IFormData, initialFormData } from "./interfaces/IFormData";
 import { IGroup } from "../../interfaces/IGroup";
 import LayoutRouter from "../../../layout/components/LayoutRouter";
+import { tempUserId } from "../../../../api/useRequest";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {
 	callbacks: IGroupCallbacks;
@@ -62,11 +63,23 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 	private createGroup = () => {
 		let group: IGroup = {
 			name: this.state.formData.group.groupName,
-			users: this.state.formData.users.map(user => ({
-				name: user.name,
-				surname: user.surname,
-				email: user.email,
-			})),
+			code: this.state.formData.group.code,
+			owner: tempUserId,
+			location: {
+				coordinates: { // TODO: legit lat,lng
+					latitude: 0,
+					longtitude: 0,
+				},
+				name: this.state.formData.group.address
+			},
+			rideCount: 0,
+			userCount: this.state.formData.users.length,
+			// users: this.state.formData.users.map(user => ({
+			// 	name: user.name,
+			// 	surname: user.surname,
+			// 	email: user.email,
+			// })),
+			id: "",
 		};
 		this.props.callbacks.addGroup(group);
 		this.props.callbacks.redirect("/" + LayoutRouter.routes.groups); // make path absolute
