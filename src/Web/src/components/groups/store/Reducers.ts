@@ -2,7 +2,6 @@ import { IGroupsState } from "./State";
 import { Reducer } from "redux";
 import { produce } from "immer";
 import { GroupsAction, GroupsActionTypes, InviteAction, InvitesActionTypes, RideAction, RidesActionTypes } from "./Types";
-import { IGroup } from "../interfaces/IGroup";
 
 const initialState: IGroupsState = {
 	groups: [],

@@ -46,7 +46,7 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 					ownerId: tempUserId,
 				},
 			});
-			return response;
+			return response.result;
 		}),
 		mergeMap((response) => {
 			return [
@@ -82,7 +82,7 @@ const getGroupsEpic: Epic<GroupsAction> = (action$) =>
 				};
 			}
 			const response = await apiRequest(requestBody);
-			return response;
+			return response.result;
 		}),
 		mergeMap((response) => {
 			return [
@@ -119,7 +119,7 @@ const getInvitesEpic: Epic<InviteAction> = (action$) =>
 				};
 			}
 			const response = await apiRequest(requestBody);
-			return response;
+			return response.result;
 		}),
 		mergeMap((response) => {
 			return [
@@ -152,7 +152,7 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 			};
 			const response = await apiRequest(requestBody);
 			return {
-				response,
+				response: response.result,
 				id: action.inviteId,
 			};
 		}),
@@ -191,7 +191,7 @@ const getRidesEpic: Epic<RideAction> = (action$) =>
 				userId: action.userOnly ? tempUserId : null,
 			};
 			const response = await apiRequest(requestBody);
-			return response;
+			return response.result;
 		}),
 		mergeMap((response) => {
 			return [
