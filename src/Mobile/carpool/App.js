@@ -14,6 +14,7 @@ import createSagaMiddleware from 'redux-saga';
 import {promiseMiddleware} from '@adobe/redux-saga-promise';
 import {createStore, applyMiddleware} from 'redux';
 import {rootReducer} from './src/store/reducers';
+import rootSaga from './src/store/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [promiseMiddleware, sagaMiddleware];
@@ -34,7 +35,9 @@ const App = () => {
         <PassengerStore>
           <DriverStore>
             <AddRideStore>
-              <MainStackNavigator />
+              <Provider store={store}>
+                <MainStackNavigator />
+              </Provider>
             </AddRideStore>
           </DriverStore>
         </PassengerStore>

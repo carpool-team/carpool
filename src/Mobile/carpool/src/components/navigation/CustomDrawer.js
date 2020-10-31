@@ -17,6 +17,7 @@ import {
 import {DriverContext} from '../../context/DriverContext';
 import {AccountContext} from '../../context/AccountContext';
 import DriversRideInfo from '../Ride/DriversRideInfo';
+import {useSelector} from 'react-redux';
 
 export default (CustomDrawer = props => {
   const [ride, setRide] = useState(null);
@@ -32,10 +33,10 @@ export default (CustomDrawer = props => {
     driverState: {driversRides},
     dispatch: driverDispatch,
   } = useContext(DriverContext);
-  const {
-    accountState: {activeAccount},
-    dispatch: accountDispatch,
-  } = React.useContext(AccountContext);
+
+  const activeAccount = useSelector(
+    state => state.accountReducer.activeAccount,
+  );
 
   useEffect(() => {
     if (!ride) {

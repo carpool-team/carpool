@@ -9,6 +9,12 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.ToggleActiveAccount.Trigger:
+      return {
+        ...state,
+        activeAccount:
+          state.activeAccount === 'passenger' ? 'driver' : 'passenger',
+      };
     case actions.GetGroups.Success:
       return {
         ...state,

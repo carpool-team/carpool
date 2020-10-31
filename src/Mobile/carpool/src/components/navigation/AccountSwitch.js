@@ -4,19 +4,23 @@ import {sheet, colors} from '../../styles';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {AccountContext, AccountActions} from '../../context/AccountContext';
 import {CircleButton} from '../common/buttons';
+import {useDispatch, useSelector} from 'react-redux';
+import * as actions from '../../store/actions';
 
 const activeSize = 40;
 const inactiveSize = 28;
 
 const AccountSwitch = () => {
-  const {accountState, dispatch} = useContext(AccountContext);
-  const {activeAccount} = accountState;
+  const rdispatch = useDispatch();
+  const activeAccount = useSelector(
+    state => state.accountReducer.activeAccount,
+  );
 
   const onDriverPress = () => {
     if (activeAccount === 'driver') {
       return;
     } else {
-      dispatch({type: AccountActions.TOGGLE_ACTIVE_ACCOUNT});
+      rdispatch(actions.toggleActiveAccount());
     }
   };
 
@@ -24,7 +28,7 @@ const AccountSwitch = () => {
     if (activeAccount === 'passenger') {
       return;
     } else {
-      dispatch({type: AccountActions.TOGGLE_ACTIVE_ACCOUNT});
+      rdispatch(actions.toggleActiveAccount());
     }
   };
 

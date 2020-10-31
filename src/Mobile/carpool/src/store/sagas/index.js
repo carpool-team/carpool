@@ -1,4 +1,4 @@
-import {all} from 'redux-saga/effect';
+import {all} from 'redux-saga/effects';
 import account from './account';
 import driver from './driver';
 import passenger from './passenger';

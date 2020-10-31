@@ -20,6 +20,7 @@ import {
   createGetDriversRides,
   createGetDriversPastRides,
 } from '../../context/DriverContext';
+import {useSelector, useDispatch} from 'react-redux';
 
 const requestLocationPermission = async () => {
   try {
@@ -51,7 +52,12 @@ const Home = () => {
   );
   const {dispatch} = React.useContext(PassengerContext);
   const {dispatch: driverDispatch} = React.useContext(DriverContext);
-  const {activeAccount} = accountState;
+
+  const store = useSelector(state => state);
+  const rdispatch = useDispatch();
+  const activeAccount = useSelector(
+    state => state.accountReducer.activeAccount,
+  );
 
   const [coordinates, setCoordinates] = useState([]);
 

@@ -4,7 +4,6 @@ import {METHODS, ENDPOINTS} from '../../hooks';
 const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
 
 const initialState = {
-  activeAccount: 'passenger',
   groups: {
     data: [],
     loading: false,
@@ -18,7 +17,6 @@ const initialState = {
 };
 
 export const AccountActions = {
-  TOGGLE_ACTIVE_ACCOUNT: 'TOGGLE_ACTIVE_ACCOUNT',
   GET_GROUPS_SUCCESS: 'GET_GROUPS_SUCCESS',
   GET_GROUPS_LOADING: 'GET_GROUPS_LOADING',
   GET_GROUPS_ERROR: 'GET_GROUPS_ERROR',
@@ -30,7 +28,6 @@ export const AccountActions = {
 const reducer = (state, action) => {
   switch (action.type) {
     case AccountActions.TOGGLE_ACTIVE_ACCOUNT:
-      return toggleActive(state);
     case AccountActions.GET_GROUPS_SUCCESS:
       return {
         ...state,
@@ -85,20 +82,6 @@ const reducer = (state, action) => {
       };
     default:
       return state;
-  }
-};
-
-const toggleActive = state => {
-  if (state.activeAccount === 'driver') {
-    return {
-      ...state,
-      activeAccount: 'passenger',
-    };
-  } else {
-    return {
-      ...state,
-      activeAccount: 'driver',
-    };
   }
 };
 
