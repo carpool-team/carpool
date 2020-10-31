@@ -21,6 +21,7 @@ export function* getDriversRidesAsync() {
     // TODO
     // Token refreshing
     yield put(actions.getDriversRidesError(err));
+    console.log('ERROR', err);
   }
 }
 
@@ -41,6 +42,7 @@ export function* getDriversPastRidesAsync() {
     // TODO
     // Token refreshing
     yield put(actions.getDriversPastRidesError(err));
+    console.log('ERROR', err);
   }
 }
 

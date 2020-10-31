@@ -23,6 +23,7 @@ export function* getAllRidesAsync() {
     // TODO
     // Token refreshing
     yield put(actions.getAllRidesError(err));
+    console.log('ERROR', err);
   }
 }
 
@@ -43,6 +44,7 @@ export function* getUsersRidesAsync() {
     // TODO
     // Token refreshing
     yield put(actions.getUsersRidesError(err));
+    console.log('ERROR', err);
   }
 }
 

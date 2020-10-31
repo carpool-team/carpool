@@ -15,7 +15,6 @@ import {
   PassengerContext,
 } from '../../context/PassengerContext';
 import {DriverContext} from '../../context/DriverContext';
-import {AccountContext} from '../../context/AccountContext';
 import DriversRideInfo from '../Ride/DriversRideInfo';
 import {useSelector} from 'react-redux';
 

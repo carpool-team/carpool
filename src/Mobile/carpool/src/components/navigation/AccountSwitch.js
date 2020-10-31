@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {sheet, colors} from '../../styles';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import {AccountContext, AccountActions} from '../../context/AccountContext';
 import {CircleButton} from '../common/buttons';
 import {useDispatch, useSelector} from 'react-redux';
 import * as actions from '../../store/actions';

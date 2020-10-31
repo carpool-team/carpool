@@ -21,6 +21,7 @@ export function* getGroupsAsync() {
     // TODO
     // Token refreshing
     yield put(actions.getGroupsError(err));
+    console.log('ERROR', err);
   }
 }
 
@@ -41,6 +42,7 @@ export function* getInvitationsAsync() {
     // TODO
     // Token refreshing
     yield put(actions.getInvitationsError(err));
+    console.log('ERROR', err);
   }
 }
 

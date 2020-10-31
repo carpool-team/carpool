@@ -3,10 +3,6 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {SafeAreaView, View, PermissionsAndroid, Platform} from 'react-native';
 import {colors} from '../../styles';
 import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
-import {
-  AccountContext,
-  createGetUserGroups,
-} from '../../context/AccountContext';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
 import {
@@ -21,6 +17,7 @@ import {
   createGetDriversPastRides,
 } from '../../context/DriverContext';
 import {useSelector, useDispatch} from 'react-redux';
+import * as actions from '../../store/actions';
 
 const requestLocationPermission = async () => {
   try {
@@ -47,9 +44,6 @@ const requestLocationPermission = async () => {
 };
 
 const Home = () => {
-  const {accountState, dispatch: accountDispatch} = React.useContext(
-    AccountContext,
-  );
   const {dispatch} = React.useContext(PassengerContext);
   const {dispatch: driverDispatch} = React.useContext(DriverContext);
 
@@ -66,7 +60,8 @@ const Home = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    createGetUserGroups(accountDispatch);
+    // createGetUserGroups(accountDispatch);
+    rdispatch(actions.getGroups());
     if (Platform.OS === 'android') {
       requestLocationPermission();
     }
