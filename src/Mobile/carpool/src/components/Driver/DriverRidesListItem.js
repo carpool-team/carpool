@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {UpView} from '../common';
-import {vh} from '../../utils/constants';
 import {sheet, colors} from '../../styles';
 import {CircleButton} from '../common/buttons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -60,13 +59,13 @@ const DriverRidesListItem = ({item, onItemPress}) => {
 const styles = StyleSheet.create({
   upview: {
     width: '100%',
-    height: 26 * vh,
-    marginBottom: 4 * vh,
+    height: 230,
+    marginBottom: 36,
   },
   container: {
     flex: 1,
-    paddingTop: 2 * vh,
-    paddingBottom: 3 * vh,
+    paddingTop: 18,
+    paddingBottom: 27,
     paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',

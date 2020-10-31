@@ -13,7 +13,6 @@ import GroupsFlatlist from '../../../components/Locations/GroupsFlatlist';
 import Geolocation from '@react-native-community/geolocation';
 import {BlueMarker} from '../../../components/common';
 import {colors, sheet} from '../../../styles';
-import {vh} from '../../../utils/constants';
 import {geocodingClient} from '../../../maps/mapbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {StandardButton} from '../../../components/common/buttons';
@@ -160,7 +159,7 @@ const ChooseRoute = ({navigation}) => {
         <View style={styles.mapContainer}>
           <RouteMinimap start={startGeo} destination={destinationGeo} />
           <StandardButton
-            style={{marginTop: 4 * vh}}
+            style={{marginTop: 36}}
             width="65%"
             onPress={onSubmit}
             title="Next"
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   topPanel: {
-    paddingTop: 4 * vh,
+    paddingTop: 36,
     width: '100%',
     backgroundColor: colors.background,
     shadowColor: '#000',
@@ -251,7 +250,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    paddingVertical: 1 * vh,
+    paddingVertical: 9,
     paddingHorizontal: 16,
     alignItems: 'flex-end',
   },
@@ -259,13 +258,13 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 32,
     alignItems: 'center',
-    paddingBottom: 2 * vh,
-    marginVertical: 0.5 * vh,
+    paddingBottom: 18,
+    marginVertical: 5,
     ...sheet.rowCenter,
   },
   inputContainer: {
     flex: 1,
-    borderBottomWidth: 0.2 * vh,
+    borderBottomWidth: 2,
     borderColor: colors.grayDark,
     marginLeft: 8,
     ...sheet.rowCenter,
@@ -274,7 +273,7 @@ const styles = StyleSheet.create({
     flex: 1,
     ...sheet.textMedium,
     fontSize: 16,
-    paddingVertical: 0.3 * vh,
+    paddingVertical: 3,
     paddingHorizontal: 4,
     color: colors.grayVeryDark,
   },
@@ -292,7 +291,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'center',
-    paddingBottom: 4 * vh,
+    paddingBottom: 36,
   },
 });
 

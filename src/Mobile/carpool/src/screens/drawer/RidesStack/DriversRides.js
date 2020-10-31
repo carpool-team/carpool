@@ -1,7 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh} from '../../../utils/constants';
 import {StandardButton} from '../../../components/common/buttons';
 import {
   DriverContext,
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     alignItems: 'center',
-    paddingTop: 4 * vh,
+    paddingTop: 36,
   },
   topRow: {
     width: '100%',
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
   flatlistWrapper: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 4 * vh,
+    paddingTop: 36,
     width: '100%',
   },
 });

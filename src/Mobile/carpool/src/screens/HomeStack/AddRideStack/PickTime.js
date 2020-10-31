@@ -1,7 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, SafeAreaView, Switch, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh} from '../../../utils/constants';
 import DatePicker from 'react-native-date-picker';
 import PickDays from '../../../components/Driver/AddRide/PickDays';
 import {StandardButton} from '../../../components/common/buttons';
@@ -90,8 +89,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 24,
-    paddingTop: 4 * vh,
-    paddingBottom: 6 * vh,
+    paddingTop: 36,
+    paddingBottom: 54,
   },
   switchRow: {
     ...sheet.rowCenterSplit,

@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {vh} from '../../utils/constants';
 import {sheet, colors} from '../../styles';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {AccountContext, AccountActions} from '../../context/AccountContext';
@@ -66,7 +65,7 @@ const AccountSwitch = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 2 * vh,
+    top: 18,
     right: 20,
     zIndex: 40,
   },

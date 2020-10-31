@@ -1,6 +1,5 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {vh} from '../../utils/constants';
 import {colors, sheet} from '../../styles';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {useNavigation} from '@react-navigation/core';
@@ -67,7 +66,7 @@ const RouteInfoSheet = ({route, onGoBack}) => {
 
   return (
     <BottomSheet
-      snapPoints={[0, 15 * vh]}
+      snapPoints={[0, 135]}
       initialSnap={1}
       renderContent={_renderContent}
       renderHeader={_renderHeader}
@@ -79,8 +78,8 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: colors.background,
     height: '100%',
-    paddingTop: 2 * vh,
-    paddingBottom: 5 * vh,
+    paddingTop: 18,
+    paddingBottom: 45,
     paddingHorizontal: 32,
     flexDirection: 'row',
     alignItems: 'center',
@@ -118,15 +117,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopRightRadius: 80,
     borderTopLeftRadius: 80,
-    height: 2.5 * vh,
+    height: 22,
   },
   button: {
     width: 100,
-    height: 6 * vh,
+    height: 54,
   },
   goBack: {
     color: colors.red,
-    fontSize: 2.25 * vh,
+    fontSize: 20,
     ...sheet.textBold,
   },
 });

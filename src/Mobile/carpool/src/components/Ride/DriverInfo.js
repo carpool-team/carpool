@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {UpView} from '../common';
-import {vh} from '../../utils/constants';
 import {sheet, colors} from '../../styles';
 import {CircleButton} from '../common/buttons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -63,7 +62,7 @@ const styles = StyleSheet.create({
   upperContainer: {
     flex: 1,
     paddingHorizontal: 12,
-    paddingVertical: 2 * vh,
+    paddingVertical: 18,
     ...sheet.rowCenter,
   },
   userInfoContainer: {
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     height: 64,
-    paddingVertical: 0.5 * vh,
+    paddingVertical: 5,
   },
   username: {
     ...sheet.textBold,

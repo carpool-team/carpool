@@ -1,6 +1,5 @@
 import React, {useContext, useEffect} from 'react';
 import {SafeAreaView, TouchableOpacity, View, Text} from 'react-native';
-import {vh} from '../../../utils/constants';
 import sheet from '../../../styles/sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../../styles/colors';
@@ -38,7 +37,7 @@ const Groups = ({navigation}) => {
           style={{
             ...sheet.rowCenterSplit,
             width: '100%',
-            marginBottom: 4 * vh,
+            marginBottom: 36,
             paddingHorizontal: 8,
           }}
           onPress={() => navigation.navigate('Invitations')}>
@@ -62,7 +61,7 @@ const Groups = ({navigation}) => {
         style={{
           flex: 1,
           alignItems: 'center',
-          paddingTop: 4 * vh,
+          paddingTop: 36,
         }}>
         {getInvitations(invitations.length)}
         <GroupsFlatList

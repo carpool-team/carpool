@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import {sheet, colors} from '../styles';
-import {vh} from '../utils/constants';
 
 const OnBoarding = () => {
   const navigation = useNavigation();
@@ -30,9 +29,9 @@ const styles = StyleSheet.create({
   },
   title: {
     ...sheet.textSemiBold,
-    fontSize: 6 * vh,
+    fontSize: 54,
     color: colors.blue,
-    marginBottom: 10 * vh,
+    marginBottom: 90,
   },
 });
 

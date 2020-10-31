@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import UpView from '../common/UpView';
-import {vh} from '../../utils/constants';
 import sheet from '../../styles/sheet';
 import colors from '../../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -48,13 +47,13 @@ const GroupListItem = ({item, onItemPress}) => {
 const styles = StyleSheet.create({
   card: {
     width: '100%',
-    height: 20 * vh,
-    marginBottom: 4 * vh,
+    height: 180,
+    marginBottom: 36,
   },
   container: {
     flex: 1,
-    paddingTop: 2 * vh,
-    paddingBottom: 3 * vh,
+    paddingTop: 18,
+    paddingBottom: 27,
     paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',

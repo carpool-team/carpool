@@ -1,7 +1,6 @@
 import React from 'react';
 import {Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../styles';
-import {vh} from '../../utils/constants';
 import {Marker} from '../common';
 
 const CurrentLocationListItem = ({onPress = () => null}) => {
@@ -17,13 +16,13 @@ const CurrentLocationListItem = ({onPress = () => null}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 0.5 * vh,
-    paddingVertical: 1 * vh,
+    marginVertical: 5,
+    paddingVertical: 9,
   },
   address: {
     ...sheet.textSemiBold,
     fontSize: 16,
-    marginBottom: 0.5 * vh,
+    marginBottom: 5,
     color: colors.grayVeryDark,
     flexWrap: 'wrap',
     flex: 1,

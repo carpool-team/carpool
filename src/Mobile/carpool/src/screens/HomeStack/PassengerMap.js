@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
 import {Marker} from '../../components/common';
-import {vh} from '../../utils/constants';
 import RideInfoSheet from '../../components/Ride/RideInfoSheet';
 import {getBoundsForRoutes} from '../../utils/bounds';
 import {RouteInfoSheet} from '../../components/FindRoute';
@@ -72,8 +71,8 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       const bds = getBoundsForRoutes(routes);
       setBounds({
         ...bds,
-        paddingTop: 20 * vh,
-        paddingBottom: 20 * vh,
+        paddingTop: 180,
+        paddingBottom: 180,
         paddingLeft: 80,
         paddingRight: 80,
       });
@@ -197,7 +196,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       ) : null}
       {ride || visible ? null : (
         <CircleButton
-          style={{position: 'absolute', bottom: 8 * vh, right: 20}}
+          style={{position: 'absolute', bottom: 72, right: 20}}
           onPress={() => navigation.navigate('FindRide')}
           icon={<Icon name="search" color={colors.grayDark} size={24} />}
         />
@@ -215,7 +214,7 @@ const styles = StyleSheet.create({
     height: 64,
     width: 64,
     position: 'absolute',
-    bottom: 8 * vh,
+    bottom: 72,
     right: 20,
   },
 });

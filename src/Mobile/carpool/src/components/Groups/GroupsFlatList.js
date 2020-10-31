@@ -1,6 +1,5 @@
 import React from 'react';
 import {FlatList, RefreshControl} from 'react-native';
-import {vh} from '../../utils/constants';
 import GroupListItem from './GroupListItem';
 import colors from '../../styles/colors';
 
@@ -10,7 +9,7 @@ const GroupsFlatList = ({data, loading, onItemPress, onRefresh}) => {
       data={data}
       style={{
         width: '100%',
-        paddingTop: 2 * vh,
+        paddingTop: 18,
       }}
       contentContainerStyle={{
         paddingHorizontal: 16,

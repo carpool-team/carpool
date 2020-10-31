@@ -8,7 +8,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh} from '../../../utils/constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 import {BlueMarker} from '../../../components/common';
@@ -264,7 +263,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    paddingVertical: 1 * vh,
+    paddingVertical: 9,
     paddingHorizontal: 16,
     alignItems: 'flex-end',
   },
@@ -272,13 +271,13 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 32,
     alignItems: 'center',
-    paddingBottom: 2 * vh,
-    marginVertical: 0.5 * vh,
+    paddingBottom: 18,
+    marginVertical: 5,
     ...sheet.rowCenter,
   },
   inputContainer: {
     flex: 1,
-    borderBottomWidth: 0.2 * vh,
+    borderBottomWidth: 2,
     borderColor: colors.grayDark,
     marginLeft: 8,
     ...sheet.rowCenter,
@@ -287,7 +286,7 @@ const styles = StyleSheet.create({
     flex: 1,
     ...sheet.textMedium,
     fontSize: 16,
-    paddingVertical: 0.3 * vh,
+    paddingVertical: 3,
     paddingHorizontal: 4,
     color: colors.grayVeryDark,
   },

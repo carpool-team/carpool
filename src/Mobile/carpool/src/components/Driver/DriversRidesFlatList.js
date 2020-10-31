@@ -1,7 +1,6 @@
 import React from 'react';
 import {FlatList, RefreshControl, StyleSheet} from 'react-native';
 import DriverRidesListItem from './DriverRidesListItem';
-import {vh} from '../../utils/constants';
 import {colors} from '../../styles';
 
 const DriversRidesFlatList = ({data, loading, onRefresh, onItemPress}) => {
@@ -29,11 +28,11 @@ const DriversRidesFlatList = ({data, loading, onRefresh, onItemPress}) => {
 const styles = StyleSheet.create({
   flatlist: {
     width: '100%',
-    paddingTop: 2 * vh,
+    paddingTop: 18,
   },
   contentContainer: {
     paddingHorizontal: 16,
-    paddingBottom: 8 * vh,
+    paddingBottom: 72,
   },
 });
 

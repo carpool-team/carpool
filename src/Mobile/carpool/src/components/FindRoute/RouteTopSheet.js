@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../styles';
-import {vh} from '../../utils/constants';
 import {BlueMarker, Marker} from '../common';
 
 const RouteTopSheet = ({start, destination}) => {
@@ -14,7 +13,7 @@ const RouteTopSheet = ({start, destination}) => {
             {start.place_name}
           </Text>
         </View>
-        <View style={[sheet.rowCenter, {marginTop: 2 * vh}]}>
+        <View style={[sheet.rowCenter, {marginTop: 18}]}>
           <Marker color={colors.green} size={16} style={{marginRight: 12}} />
           <Text style={styles.placeName} numberOfLines={1}>
             {destination.place_name}
@@ -48,8 +47,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: 32,
-    paddingTop: 2 * vh,
-    paddingBottom: 3 * vh,
+    paddingTop: 18,
+    paddingBottom: 27,
   },
   from: {
     ...sheet.textSemiBold,

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView} from 'react-native';
 import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {vh} from '../../../utils/constants';
 import {RouteInfoSheet, RouteTopSheet} from '../../../components/FindRoute';
 import {Marker} from '../../../components/common';
 import {multiPoint} from '@turf/helpers';
@@ -18,8 +17,8 @@ const getBounds = routesArray => {
   return {
     paddingLeft: 32,
     paddingRight: 32,
-    paddingTop: 18 * vh,
-    paddingBottom: 18 * vh,
+    paddingTop: 160,
+    paddingBottom: 160,
     ne: [ne1, ne2],
     sw: [sw1, sw2],
   };

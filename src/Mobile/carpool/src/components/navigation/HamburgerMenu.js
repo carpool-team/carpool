@@ -2,7 +2,6 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {colors} from '../../styles';
-import {vh} from '../../utils/constants';
 import {useNavigation} from '@react-navigation/core';
 
 const HamburgerMenu = () => {
@@ -12,7 +11,7 @@ const HamburgerMenu = () => {
     <TouchableOpacity
       style={{
         position: 'absolute',
-        top: 2 * vh,
+        top: 18,
         left: 20,
         zIndex: 40,
       }}

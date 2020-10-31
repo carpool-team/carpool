@@ -1,6 +1,5 @@
 import React from 'react';
 import {FlatList, RefreshControl} from 'react-native';
-import {vh} from '../../utils/constants';
 import InvitationListItem from './InvitationListItem';
 import colors from '../../styles/colors';
 
@@ -12,7 +11,7 @@ const InvitationsFlatList = ({data, loading, onAccept, onDecline}) => {
         width: '100%',
       }}
       contentContainerStyle={{
-        paddingTop: 6 * vh,
+        paddingTop: 54,
         paddingHorizontal: 16,
       }}
       keyExtractor={item => item.id}

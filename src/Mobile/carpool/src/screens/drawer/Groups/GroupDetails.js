@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {vh} from '../../../utils/constants';
 import sheet from '../../../styles/sheet';
 import colors from '../../../styles/colors';
 import UpView from '../../../components/common/UpView';
@@ -60,7 +59,7 @@ const GroupDetails = ({navigation, route}) => {
         <View style={styles.cardGrid}>
           <UpView
             borderRadius={8}
-            style={{width: 168, height: 15 * vh}}
+            style={{width: 168, height: 135}}
             onPress={() => null}>
             <View style={styles.cardContent}>
               <MaterialIcon name="group" size={40} color={colors.blue} />
@@ -69,7 +68,7 @@ const GroupDetails = ({navigation, route}) => {
           </UpView>
           <UpView
             borderRadius={8}
-            style={{width: 168, height: 15 * vh}}
+            style={{width: 168, height: 135}}
             onPress={() => null}>
             <View style={styles.cardContent}>
               <MaterialIcon name="settings" size={40} color={colors.blue} />
@@ -78,7 +77,7 @@ const GroupDetails = ({navigation, route}) => {
           </UpView>
           <UpView
             borderRadius={8}
-            style={{width: 168, height: 15 * vh}}
+            style={{width: 168, height: 135}}
             onPress={() => null}>
             <View style={styles.cardContent}>
               <Ionicon name="ios-car" size={40} color={colors.blue} />
@@ -87,7 +86,7 @@ const GroupDetails = ({navigation, route}) => {
           </UpView>
           <UpView
             borderRadius={8}
-            style={{width: 168, height: 15 * vh}}
+            style={{width: 168, height: 135}}
             onPress={() => navigation.navigate('FindRide')}>
             <View style={styles.cardContent}>
               <MaterialIcon name="search" size={40} color={colors.blue} />
@@ -131,7 +130,7 @@ const GroupDetails = ({navigation, route}) => {
 const styles = StyleSheet.create({
   upperContainer: {
     flex: 1,
-    paddingTop: 2 * vh,
+    paddingTop: 18,
   },
   name: {
     ...sheet.textBold,
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
   },
   statsRow: {
     ...sheet.rowCenterSplit,
-    marginTop: 2 * vh,
+    marginTop: 18,
     paddingHorizontal: 16,
   },
   totalRides: {
@@ -174,14 +173,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   cardGrid: {
-    marginTop: 3 * vh,
+    marginTop: 27,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignContent: 'space-between',
-    height: 34 * vh,
+    height: 300,
     paddingHorizontal: 16,
-    marginBottom: 3 * vh,
+    marginBottom: 27,
   },
   cardContent: {
     flex: 1,

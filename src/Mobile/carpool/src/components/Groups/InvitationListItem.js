@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import UpView from '../common/UpView';
-import {vh} from '../../utils/constants';
 import sheet from '../../styles/sheet';
 import colors from '../../styles/colors';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -47,13 +46,13 @@ const InvitationListItem = ({item, onAccept, onDecline}) => {
 const styles = StyleSheet.create({
   card: {
     width: '100%',
-    height: 22 * vh,
-    marginBottom: 4 * vh,
+    height: 200,
+    marginBottom: 36,
   },
   container: {
     flex: 1,
-    paddingTop: 2 * vh,
-    paddingBottom: 4 * vh,
+    paddingTop: 18,
+    paddingBottom: 36,
     paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -4,7 +4,6 @@ import Rides from '../screens/drawer/Rides';
 import Settings from '../screens/drawer/Settings';
 import Help from '../screens/drawer/Help';
 import {CustomDrawer} from '../components/navigation';
-import {vh} from '../utils/constants';
 import {sheet, colors} from '../styles';
 import PreferencesStack from './PreferencesStack';
 import HomeStack from './HomeStack';
@@ -13,12 +12,12 @@ import RidesStack from './RidesStack';
 
 const Drawer = createDrawerNavigator();
 
-export default DrawerNavigator = () => (
+export default (DrawerNavigator = () => (
   <Drawer.Navigator
     drawerContent={props => <CustomDrawer {...props} />}
     drawerContentOptions={{
       labelStyle: {
-        fontSize: 2.25 * vh,
+        fontSize: 20,
         ...sheet.textBold,
       },
       activeBackgroundColor: colors.background,
@@ -54,4 +53,4 @@ export default DrawerNavigator = () => (
     />
     <Drawer.Screen name="Settings" component={Settings} />
   </Drawer.Navigator>
-);
+));

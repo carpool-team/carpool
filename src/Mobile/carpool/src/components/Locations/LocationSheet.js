@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {colors, sheet} from '../../styles';
-import {vh} from '../../utils/constants';
 import {Marker} from '../common';
 import {StandardButton} from '../common/buttons';
 
@@ -34,7 +33,7 @@ const LocationSheet = ({_onSelect, _onGoBack, location}) => {
 
   return (
     <BottomSheet
-      snapPoints={[0, 25 * vh]}
+      snapPoints={[0, 225]}
       initialSnap={1}
       renderContent={_renderContent}
       renderHeader={_renderHeader}
@@ -47,8 +46,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.background,
     height: '100%',
-    paddingTop: 1 * vh,
-    paddingBottom: 6 * vh,
+    paddingTop: 9,
+    paddingBottom: 54,
     paddingHorizontal: 32,
     justifyContent: 'space-between',
   },
@@ -66,16 +65,16 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '45%',
-    height: 6 * vh,
+    height: 54,
   },
   goBack: {
     color: colors.red,
-    fontSize: 2.25 * vh,
+    fontSize: 20,
     ...sheet.textBold,
   },
   select: {
     color: colors.green,
-    fontSize: 2.25 * vh,
+    fontSize: 20,
     ...sheet.textBold,
   },
   header: {
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderTopRightRadius: 80,
     borderTopLeftRadius: 80,
-    height: 2.5 * vh,
+    height: 22,
   },
 });
 

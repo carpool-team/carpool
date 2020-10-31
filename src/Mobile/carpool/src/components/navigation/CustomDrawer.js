@@ -4,7 +4,6 @@ import {
 } from '@react-navigation/drawer';
 import React, {useState, useEffect, useContext} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
-import {vh} from '../../utils/constants';
 import {colors, sheet} from '../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
@@ -131,9 +130,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 3 * vh,
+    paddingVertical: 27,
     borderBottomColor: colors.gray,
-    borderBottomWidth: 0.1 * vh,
+    borderBottomWidth: 1,
   },
   userDataWrapper: {
     height: 72,
@@ -143,55 +142,55 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   username: {
-    fontSize: 2.5 * vh,
+    fontSize: 22,
     color: colors.blue,
     ...sheet.textSemiBold,
   },
   rating: {
     color: colors.grayDark,
-    fontSize: 2.5 * vh,
+    fontSize: 22,
     ...sheet.textSemiBold,
   },
   rideInfoContainer: {
     paddingHorizontal: 16,
-    paddingTop: 2 * vh,
-    paddingBottom: 4 * vh,
+    paddingTop: 18,
+    paddingBottom: 36,
     borderBottomColor: colors.gray,
-    borderBottomWidth: 0.1 * vh,
+    borderBottomWidth: 1,
   },
   upcomingRide: {
-    fontSize: 2 * vh,
+    fontSize: 18,
     color: colors.green,
     ...sheet.textMedium,
-    marginBottom: 2 * vh,
+    marginBottom: 18,
   },
   rideCard: {
     width: '100%',
-    height: 10 * vh,
+    height: 90,
   },
   rideCardContent: {
-    paddingVertical: 1.5 * vh,
+    paddingVertical: 15,
     paddingHorizontal: 16,
     justifyContent: 'space-between',
   },
   driversName: {
     ...sheet.textBold,
-    fontSize: 1.8 * vh,
+    fontSize: 16,
     color: colors.grayDark,
   },
   leaving: {
     ...sheet.textBold,
-    fontSize: 1.8 * vh,
+    fontSize: 16,
     color: colors.red,
   },
   bottomContainer: {
     width: '100%',
     alignItems: 'center',
-    paddingBottom: 5 * vh,
+    paddingBottom: 45,
   },
   logout: {
     color: colors.red,
-    fontSize: 2.25 * vh,
+    fontSize: 20,
     ...sheet.textBold,
   },
 });

@@ -7,7 +7,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh} from '../../../utils/constants';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 import {BlueMarker} from '../../../components/common';
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    paddingVertical: 1 * vh,
+    paddingVertical: 9,
     paddingHorizontal: 16,
     alignItems: 'flex-end',
   },
@@ -120,17 +119,17 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 32,
     alignItems: 'center',
-    paddingBottom: 2 * vh,
+    paddingBottom: 18,
     ...sheet.rowCenter,
   },
   input: {
     flex: 1,
     ...sheet.textMedium,
     marginLeft: 8,
-    borderBottomWidth: 0.2 * vh,
+    borderBottomWidth: 2,
     borderColor: colors.grayDark,
     fontSize: 16,
-    paddingVertical: 0.3 * vh,
+    paddingVertical: 3,
     paddingHorizontal: 4,
     color: colors.grayVeryDark,
   },

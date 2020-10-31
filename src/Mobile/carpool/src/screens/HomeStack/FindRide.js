@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
-import {vh} from '../../utils/constants';
 import {colors} from '../../styles';
 import {CircleButton} from '../../components/common/buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    bottom: 8 * vh,
+    bottom: 72,
     right: 20,
   },
 });

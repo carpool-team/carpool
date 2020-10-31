@@ -7,7 +7,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh} from '../../../utils/constants';
 import {RouteMinimap} from '../../../components/Route';
 import Waypoints from '../../../components/Ride/Waypoints';
 import {parseCoords} from '../../../utils/coords';
@@ -87,10 +86,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingVertical: 3 * vh,
+    paddingVertical: 27,
   },
   topRow: {
-    marginBottom: 3 * vh,
+    marginBottom: 27,
     marginHorizontal: 16,
     ...sheet.rowCenterSplit,
   },
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     fontSize: 20,
     color: colors.green,
-    marginBottom: 1 * vh,
+    marginBottom: 10,
   },
   date: {
     ...sheet.textMedium,
@@ -107,19 +106,19 @@ const styles = StyleSheet.create({
   },
   moreIcon: {
     paddingHorizontal: 16,
-    paddingVertical: 1 * vh,
+    paddingVertical: 10,
   },
   mapWrapper: {
-    height: 50 * vh,
+    height: 450,
   },
   bottomWrapper: {
     flex: 1,
-    paddingTop: 3 * vh,
+    paddingTop: 27,
     paddingHorizontal: 16,
   },
   bottomRow: {
     ...sheet.rowCenterSplit,
-    marginTop: 3 * vh,
+    marginTop: 27,
     flex: 1,
   },
   upView: {

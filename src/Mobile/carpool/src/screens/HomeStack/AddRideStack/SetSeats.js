@@ -1,6 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
-import {vh} from '../../../utils/constants';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {colors, sheet} from '../../../styles';
@@ -96,8 +95,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     paddingHorizontal: 24,
-    paddingTop: 4 * vh,
-    paddingBottom: 6 * vh,
+    paddingTop: 36,
+    paddingBottom: 54,
   },
   seats: {
     ...sheet.textSemiBold,

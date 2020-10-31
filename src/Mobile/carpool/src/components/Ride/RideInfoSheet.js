@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import {colors, sheet} from '../../styles';
-import {vh} from '../../utils/constants';
 import {UpView} from '../common';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -101,7 +100,7 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
         ) : null}
         <DriverInfo ride={ride} distance={distance} />
         <Waypoints
-          style={{marginTop: 3 * vh}}
+          style={{marginTop: 27}}
           ride={ride}
           start={parseCoords(ride.startingLocation.coordinates)}
         />
@@ -143,7 +142,7 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
         ) : success ? (
           <StandardButton
             width="65%"
-            style={{marginTop: 3 * vh}}
+            style={{marginTop: 27}}
             color={colors.blue}
             title="Go back"
             onPress={onClose}
@@ -151,7 +150,7 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
         ) : (
           <StandardButton
             width="65%"
-            style={{marginTop: 3 * vh}}
+            style={{marginTop: 27}}
             color={ride.isUserParticipant ? colors.blue : colors.green}
             title={ride.isUserParticipant ? 'Show way' : 'Select'}
             onPress={
@@ -187,14 +186,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.background,
     paddingHorizontal: 16,
-    paddingVertical: 4 * vh,
+    paddingVertical: 36,
     borderTopRightRadius: 16,
     borderTopLeftRadius: 16,
   },
   upperContainer: {
     flex: 1,
     paddingHorizontal: 12,
-    paddingVertical: 2 * vh,
+    paddingVertical: 18,
     ...sheet.rowCenter,
   },
   userInfoContainer: {
@@ -202,7 +201,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     height: 64,
-    paddingVertical: 0.5 * vh,
+    paddingVertical: 5,
   },
   username: {
     ...sheet.textBold,
@@ -222,8 +221,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '65%',
-    height: 6 * vh,
-    marginTop: 3 * vh,
+    height: 54,
+    marginTop: 27,
   },
   buttonText: {
     ...sheet.textBold,
@@ -232,11 +231,11 @@ const styles = StyleSheet.create({
   },
   detailsRow: {
     ...sheet.rowCenterSplit,
-    marginTop: 3 * vh,
-    marginBottom: 3 * vh,
+    marginTop: 27,
+    marginBottom: 27,
   },
   leftCard: {
-    paddingVertical: 3 * vh,
+    paddingVertical: 27,
     paddingHorizontal: 16,
     width: 128,
     ...sheet.rowCenter,
@@ -248,7 +247,7 @@ const styles = StyleSheet.create({
     color: colors.grayDark,
   },
   rightCard: {
-    paddingVertical: 3 * vh,
+    paddingVertical: 27,
     paddingHorizontal: 16,
     width: 128,
     alignItems: 'center',
@@ -266,7 +265,7 @@ const styles = StyleSheet.create({
   },
   carWrapper: {
     ...sheet.rowCenter,
-    marginBottom: 3 * vh,
+    marginBottom: 27,
   },
   car: {
     ...sheet.textBold,
@@ -278,7 +277,7 @@ const styles = StyleSheet.create({
     color: colors.green,
     fontSize: 20,
     textAlign: 'center',
-    marginBottom: 4 * vh,
+    marginBottom: 36,
   },
 });
 

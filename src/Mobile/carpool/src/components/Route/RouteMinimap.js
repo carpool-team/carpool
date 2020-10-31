@@ -4,7 +4,6 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import config from '../../../config';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
-import {vh} from '../../utils/constants';
 import {activeRouteStyle, colors, sheet} from '../../styles';
 import {Marker, BlueMarker} from '../common';
 import {useGetDirections} from '../../hooks';
@@ -199,11 +198,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     left: 0,
-    bottom: 10 * vh,
+    bottom: 90,
   },
   routeDetailsWrapper: {
     position: 'absolute',
-    top: 1 * vh,
+    top: 9,
     left: 0,
     right: 0,
     flexDirection: 'row',

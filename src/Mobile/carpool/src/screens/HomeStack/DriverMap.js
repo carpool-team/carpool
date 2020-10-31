@@ -4,7 +4,6 @@ import config from '../../../config';
 import {CircleButton} from '../../components/common/buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {colors} from '../../styles';
-import {vh} from '../../utils/constants';
 import {useNavigation} from '@react-navigation/core';
 import {DriverContext} from '../../context/DriverContext';
 
@@ -31,7 +30,7 @@ const DriverMap = ({coordinates, _onLocateUser}) => {
         <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
       </MapboxGL.MapView>
       <CircleButton
-        style={{position: 'absolute', bottom: 8 * vh, right: 20}}
+        style={{position: 'absolute', bottom: 72, right: 20}}
         onPress={() => navigation.navigate('AddRide')}
         icon={<Icon name="plus" color={colors.grayDark} size={24} />}
       />
