@@ -9,6 +9,18 @@ import {PassengerStore} from './src/context/PassengerContext';
 import {DriverStore} from './src/context/DriverContext';
 import {AddRideStore} from './src/screens/HomeStack/AddRideStack/context';
 
+import {Provider} from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
+import {promiseMiddleware} from '@adobe/redux-saga-promise';
+import {createStore, applyMiddleware} from 'redux';
+import {rootReducer} from './src/store/reducers';
+
+const sagaMiddleware = createSagaMiddleware();
+const middleware = [promiseMiddleware, sagaMiddleware];
+const store = createStore(rootReducer, {}, applyMiddleware(...middleware));
+
+sagaMiddleware.run(rootSaga);
+
 MapboxGL.setAccessToken(config.mapboxKey);
 
 const App = () => {

@@ -46,7 +46,7 @@ export function* getInvitationsAsync() {
 
 const accountSagas = [
   takeLatest(actions.GetGroups.Trigger, getGroupsAsync),
-  takeLatest(actions.getInvitations.Trigger, getInvitationsAsync),
+  takeLatest(actions.GetInvitations.Trigger, getInvitationsAsync),
 ];
 
 export default accountSagas;

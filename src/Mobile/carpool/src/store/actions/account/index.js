@@ -1,57 +1,57 @@
 export const ToggleActiveAccount = {
-  Trigger = "TOGGLE_ACTIVE_ACCOUNT"
-}
+  Trigger: 'TOGGLE_ACTIVE_ACCOUNT',
+};
 
 export const GetGroups = {
-  Trigger = "GET_GROUPS",
-  Success: "GET_GROUPS_SUCCESS",
-  Loading: "GET_GROUPS_LOADING",
-  Error: "GET_GROUPS_ERROR",
-}
+  Trigger: 'GET_GROUPS',
+  Success: 'GET_GROUPS_SUCCESS',
+  Loading: 'GET_GROUPS_LOADING',
+  Error: 'GET_GROUPS_ERROR',
+};
 
 export const GetInvitations = {
-  Trigger: "GET_INVITATIONS",
-  Success: "GET_INVITATIONS_SUCCESS",
-  Loading: "GET_INVITATIONS_LOADING",
-  Error: "GET_INVITATIONS_ERROR",
-}
+  Trigger: 'GET_INVITATIONS',
+  Success: 'GET_INVITATIONS_SUCCESS',
+  Loading: 'GET_INVITATIONS_LOADING',
+  Error: 'GET_INVITATIONS_ERROR',
+};
 
 export const toggleActiveAccount = () => ({
-  type: ToggleActiveAccount.Trigger
-})
+  type: ToggleActiveAccount.Trigger,
+});
 
 export const getGroups = () => ({
-  type: GetGroups.Trigger
-})
+  type: GetGroups.Trigger,
+});
 
-export const getGroupsSuccess = (payload) => ({
+export const getGroupsSuccess = payload => ({
   type: GetGroups.Success,
-  payload
-})
+  payload,
+});
 
-export const getGroupsError = (payload) => ({
+export const getGroupsError = payload => ({
   type: GetGroups.Error,
-  payload
-})
+  payload,
+});
 
 export const getGroupsLoading = () => ({
   type: GetGroups.Error,
-})
+});
 
 export const getInvitations = () => ({
-  type: GetInvitations.Trigger
-})
+  type: GetInvitations.Trigger,
+});
 
-export const getInvitationsSuccess = (payload) => ({
+export const getInvitationsSuccess = payload => ({
   type: GetInvitations.Success,
-  payload
-})
+  payload,
+});
 
-export const getInvitationsError = (payload) => ({
+export const getInvitationsError = payload => ({
   type: GetInvitations.Error,
-  payload
-})
+  payload,
+});
 
 export const getInvitationsLoading = () => ({
-  type: GetInvitations.Loading
-})
+  type: GetInvitations.Loading,
+});
