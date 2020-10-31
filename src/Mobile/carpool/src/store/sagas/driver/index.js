@@ -31,7 +31,7 @@ export function* getDriversPastRidesAsync() {
     if (token) {
       yield put(actions.getDriversPastRidesLoading());
 
-      const res = yield instance.get(ENDPOINTS.GET_DRIVERS_RIDES(userId));
+      const res = yield instance.get(ENDPOINTS.GET_DRIVERS_PAST_RIDES(userId));
 
       console.log('RES', res);
 
