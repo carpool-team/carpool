@@ -15,7 +15,7 @@ export function* getDriversRidesAsync() {
 
       console.log('RES', res);
 
-      yield put(actions.getDriversRidesSuccess(res.data));
+      yield put(actions.getDriversRidesSuccess(res.data.result));
     }
   } catch (err) {
     // TODO
@@ -36,7 +36,7 @@ export function* getDriversPastRidesAsync() {
 
       console.log('RES', res);
 
-      yield put(actions.getDriversPastRidesSuccess(res.data));
+      yield put(actions.getDriversPastRidesSuccess(res.data.result));
     }
   } catch (err) {
     // TODO

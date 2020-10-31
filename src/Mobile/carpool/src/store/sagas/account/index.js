@@ -15,7 +15,7 @@ export function* getGroupsAsync() {
 
       console.log('RES', res);
 
-      yield put(actions.getGroupsSuccess(res.data));
+      yield put(actions.getGroupsSuccess(res.data.result));
     }
   } catch (err) {
     // TODO
@@ -36,7 +36,7 @@ export function* getInvitationsAsync() {
 
       console.log('RES', res);
 
-      yield put(actions.getInvitationsSuccess(res.data));
+      yield put(actions.getInvitationsSuccess(res.data.result));
     }
   } catch (err) {
     // TODO

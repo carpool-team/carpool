@@ -17,7 +17,7 @@ export function* getAllRidesAsync() {
 
       console.log('RES', res);
 
-      yield put(actions.getAllRidesSuccess(res.data));
+      yield put(actions.getAllRidesSuccess(res.data.result));
     }
   } catch (err) {
     // TODO
@@ -38,7 +38,7 @@ export function* getUsersRidesAsync() {
 
       console.log('RES', res);
 
-      yield put(actions.getUsersRidesSuccess(res.data));
+      yield put(actions.getUsersRidesSuccess(res.data.result));
     }
   } catch (err) {
     // TODO
