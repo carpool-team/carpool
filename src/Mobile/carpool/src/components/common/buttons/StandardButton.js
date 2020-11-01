@@ -24,7 +24,7 @@ const StandardButton = ({
       borderRadius={100}
       contentContainerStyle={contentContainerStyle}
       onPress={onPress}>
-      <Text style={{color, fontSize: 0.375 * height, ...sheet.textBold}}>
+      <Text style={{color, fontSize: 0.33 * height, ...sheet.textBold}}>
         {title}
       </Text>
     </UpView>
