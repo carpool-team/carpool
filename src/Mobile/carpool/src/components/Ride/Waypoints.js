@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {sheet, colors} from '../../styles';
-import {Marker} from '../common';
+import {Marker} from '../common/map';
 import {geocodingClient} from '../../maps/mapbox';
 import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';

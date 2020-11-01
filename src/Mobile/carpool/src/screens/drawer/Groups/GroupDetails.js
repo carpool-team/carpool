@@ -12,9 +12,9 @@ import UpView from '../../../components/common/UpView';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import Marker from '../../../components/common/Marker';
 import config from '../../../../config';
 import {parseCoords} from '../../../utils/coords';
+import {Marker} from '../../../components/common/map';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);

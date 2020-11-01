@@ -5,8 +5,8 @@ import config from '../../../config';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
 import {activeRouteStyle, colors, sheet} from '../../styles';
-import {Marker, BlueMarker} from '../common';
 import {useGetDirections} from '../../hooks';
+import {BlueMarker, Marker} from '../common/map';
 
 const dirConfig = {
   profile: 'driving',

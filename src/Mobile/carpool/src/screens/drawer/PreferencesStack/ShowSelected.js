@@ -3,7 +3,7 @@ import {View, SafeAreaView} from 'react-native';
 import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {useNavigation} from '@react-navigation/core';
-import {Marker} from '../../../components/common';
+import {Marker} from '../../../components/common/map';
 import LocationSheet from '../../../components/Locations/LocationSheet';
 import config from '../../../../config';
 

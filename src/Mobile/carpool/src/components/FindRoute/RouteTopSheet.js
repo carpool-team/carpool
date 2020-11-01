@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../styles';
-import {BlueMarker, Marker} from '../common';
+import {BlueMarker, Marker} from '../common/map';
 
 const RouteTopSheet = ({start, destination}) => {
   return (

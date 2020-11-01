@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {colors} from '../../styles';
+import {colors} from '../../../../styles';
 
 const BlueMarker = ({size, style}) => {
   const bigCircleStyle = {
@@ -22,7 +22,7 @@ const BlueMarker = ({size, style}) => {
 
   return (
     <View style={bigCircleStyle}>
-      <View style={smallCircleStyle}></View>
+      <View style={smallCircleStyle} />
     </View>
   );
 };

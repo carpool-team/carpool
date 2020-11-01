@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {colors} from '../../styles';
+import {colors} from '../../../../styles';
 
 const Marker = ({size = 100, color = colors.grayDark, children, style}) => {
   const bigCircleStyle = {
@@ -27,7 +27,7 @@ const Marker = ({size = 100, color = colors.grayDark, children, style}) => {
       <View style={[styles.bigCircle, bigCircleStyle]}>
         <View style={[styles.smallCircle, smallCircleStyle]}>{children}</View>
       </View>
-      <View style={[styles.triangle, triangleStyle]}></View>
+      <View style={[styles.triangle, triangleStyle]} />
     </View>
   );
 };

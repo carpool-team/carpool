@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, useContext} from 'react';
 import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
-import {Marker} from '../../components/common';
+import {Marker} from '../../components/common/map';
 import RideInfoSheet from '../../components/Ride/RideInfoSheet';
 import {getBoundsForRoutes} from '../../utils/bounds';
 import {RouteInfoSheet} from '../../components/FindRoute';

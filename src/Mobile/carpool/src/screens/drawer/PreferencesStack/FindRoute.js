@@ -10,7 +10,7 @@ import {
 import {colors, sheet} from '../../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
-import {BlueMarker} from '../../../components/common';
+import {BlueMarker} from '../../../components/common/map';
 import {geocodingClient, directionsClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {colors, sheet} from '../../styles';
-import {Marker} from '../common';
+import {Marker} from '../common/map';
 import {StandardButton} from '../common/buttons';
 
 const LocationSheet = ({_onSelect, _onGoBack, location}) => {

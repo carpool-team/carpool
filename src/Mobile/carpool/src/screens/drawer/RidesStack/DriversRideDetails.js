@@ -11,7 +11,8 @@ import {RouteMinimap} from '../../../components/Route';
 import Waypoints from '../../../components/Ride/Waypoints';
 import {parseCoords} from '../../../utils/coords';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import {UpView, Marker} from '../../../components/common';
+import {UpView} from '../../../components/common';
+import {Marker} from '../../../components/common/map';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride} = route.params;

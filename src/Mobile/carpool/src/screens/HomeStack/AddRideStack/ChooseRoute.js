@@ -11,7 +11,7 @@ import {AccountContext} from '../../../context/AccountContext';
 import {StartLocationsFlatList} from '../../../components/FindRoute';
 import GroupsFlatlist from '../../../components/Locations/GroupsFlatlist';
 import Geolocation from '@react-native-community/geolocation';
-import {BlueMarker} from '../../../components/common';
+import {BlueMarker} from '../../../components/common/map';
 import {colors, sheet} from '../../../styles';
 import {geocodingClient} from '../../../maps/mapbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';

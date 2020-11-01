@@ -3,7 +3,7 @@ import {View, SafeAreaView} from 'react-native';
 import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {RouteInfoSheet, RouteTopSheet} from '../../../components/FindRoute';
-import {Marker} from '../../../components/common';
+import {Marker} from '../../../components/common/map';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
 import config from '../../../../config';
