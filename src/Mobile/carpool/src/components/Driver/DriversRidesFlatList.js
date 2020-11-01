@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, RefreshControl, StyleSheet} from 'react-native';
 import DriverRidesListItem from './DriverRidesListItem';
 import {colors} from '../../styles';
+import {ListEmptyComponent} from '../common/lists';
 
 const DriversRidesFlatList = ({data, loading, onRefresh, onItemPress}) => {
   return (
@@ -20,6 +21,9 @@ const DriversRidesFlatList = ({data, loading, onRefresh, onItemPress}) => {
           refreshing={loading}
           onRefresh={onRefresh}
         />
+      }
+      ListEmptyComponent={
+        <ListEmptyComponent title="no rides found" onRefresh={onRefresh} />
       }
     />
   );

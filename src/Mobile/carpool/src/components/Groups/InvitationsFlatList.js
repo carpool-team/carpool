@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, RefreshControl} from 'react-native';
 import InvitationListItem from './InvitationListItem';
 import colors from '../../styles/colors';
+import {ListEmptyComponent} from '../common/lists';
 
 const InvitationsFlatList = ({data, loading, onAccept, onDecline}) => {
   return (
@@ -27,6 +28,12 @@ const InvitationsFlatList = ({data, loading, onAccept, onDecline}) => {
           colors={[colors.green]}
           tintColor={colors.green}
           refreshing={loading}
+        />
+      }
+      ListEmptyComponent={
+        <ListEmptyComponent
+          title="You don't have any invitations"
+          onRefresh={() => null}
         />
       }
     />

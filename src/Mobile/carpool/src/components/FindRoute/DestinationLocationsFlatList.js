@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, RefreshControl} from 'react-native';
 import {colors} from '../../styles';
 import LocationsListItem from '../Locations/LocationsListItem';
+import {ListEmptyComponent} from '../common/lists';
 
 const DestinationLocationsFlatList = ({data, loading, onItemPress}) => {
   return (
@@ -25,6 +26,9 @@ const DestinationLocationsFlatList = ({data, loading, onItemPress}) => {
           tintColor={colors.green}
           refreshing={loading}
         />
+      }
+      ListEmptyComponent={
+        <ListEmptyComponent title="No locations found" onRefresh={() => null} />
       }
     />
   );

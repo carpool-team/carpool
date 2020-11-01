@@ -18,6 +18,8 @@ const FindRide = ({navigation, route}) => {
     createGetAllRides(dispatch);
   };
 
+  console.log('ALL RIDES', allRides);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.wrapper}>

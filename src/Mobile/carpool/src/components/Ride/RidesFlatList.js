@@ -10,6 +10,7 @@ import DriverInfo from './DriverInfo';
 import Waypoints from './Waypoints';
 import {parseCoords} from '../../utils/coords';
 import {useNavigation} from '@react-navigation/native';
+import {ListEmptyComponent} from '../common/lists';
 
 const RidesFlatList = ({data, loading, onRefresh}) => {
   const navigation = useNavigation();
@@ -44,6 +45,9 @@ const RidesFlatList = ({data, loading, onRefresh}) => {
           onRefresh={onRefresh}
         />
       }
+      ListEmptyComponent={
+        <ListEmptyComponent onRefresh={onRefresh} title="No rides found" />
+      }
     />
   );
 };
@@ -52,6 +56,8 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: 24,
     paddingVertical: 36,
+    // NEW
+    flex: 1,
   },
   wrapper: {
     marginBottom: 36,

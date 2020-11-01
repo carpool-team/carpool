@@ -47,7 +47,6 @@ const Home = () => {
   const {dispatch} = React.useContext(PassengerContext);
   const {dispatch: driverDispatch} = React.useContext(DriverContext);
 
-  const store = useSelector(state => state);
   const rdispatch = useDispatch();
   const activeAccount = useSelector(
     state => state.accountReducer.activeAccount,
@@ -91,24 +90,6 @@ const Home = () => {
       setCoordinates([longitude, latitude]);
     }
   };
-
-  const renderDriver = () => (
-    <MapboxGL.MapView
-      ref={_driverMap}
-      style={{flex: 1}}
-      styleURL={config.mapLight}
-      contentInset={10}
-      compassEnabled={false}>
-      <MapboxGL.Camera
-        zoomLevel={14}
-        maxZoomLevel={19}
-        animationMode="flyTo"
-        animationDuration={500}
-        centerCoordinate={[coordinates[0], coordinates[1] - 0.0015]}
-      />
-      <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
-    </MapboxGL.MapView>
-  );
 
   return (
     <View style={{flex: 1}}>
