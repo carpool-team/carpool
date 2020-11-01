@@ -4,7 +4,7 @@ import { ButtonType } from "../../../../ui/Button/enums/ButtonType";
 import { ButtonShape } from "../../../../ui/Button/enums/ButtonShape";
 import { IRide } from "../../../interfaces/IRide";
 import ButtonJoin from "../../../../ui/Button/ButtonJoin";
-import { tempUserId } from "../../../../../api/useRequest";
+import { tempUserId } from "../../../../../api/requests/RequestCore";
 
 interface IRidesListProps {
 	getRidesCallback: () => IRide[];

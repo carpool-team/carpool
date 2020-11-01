@@ -13,7 +13,6 @@ insert_final_newline = true
 [*.{js,tsx,ts,scss}]
 charset = utf-8
 indent_style = tab
-indent_size = 2
 
 # Tab indentation (no size specified)
 [Makefile]

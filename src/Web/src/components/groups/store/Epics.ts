@@ -21,12 +21,13 @@ import {
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
 } from "./Types";
-import { apiRequest, IRequestProps } from "../../../api/apiRequest";
 import { RequestType } from "../../../api/enum/RequestType";
 import { RequestEndpoint } from "../../../api/enum/RequestEndpoint";
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { tempUserId } from "../../../api/useRequest";
+import { IRequestProps } from "../../../api/interfaces/IRequestProperties";
+import { GetGroupsRequest } from "../api/GetGroupsRequest";
+import { GetGroupsResponse } from "../api/GetGroupsResponse";
 
 const tempCoords: Object = {
 	"longitude": 0,
@@ -68,20 +69,8 @@ const getGroupsEpic: Epic<GroupsAction> = (action$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.GetGroups),
 		switchMap(async (action: IGetGroupsAction) => {
-			let requestBody: IRequestProps;
-			if (action.userOnly) {
-				requestBody = {
-					method: RequestType.GET,
-					endpoint: RequestEndpoint.GET_USER_GROUPS,
-					userId: tempUserId,
-				};
-			} else {
-				requestBody = {
-					method: RequestType.GET,
-					endpoint: RequestEndpoint.GET_ALL_GROUPS,
-				};
-			}
-			const response = await apiRequest(requestBody);
+			const request: GetGroupsRequest = new GetGroupsRequest(action.userOnly);
+			const response: GetGroupsResponse = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
