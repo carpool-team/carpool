@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import {colors} from '../../../../styles';
+import styles from './index.styles';
 
 const Marker = ({size = 100, color = colors.grayDark, children, style}) => {
   const bigCircleStyle = {
@@ -31,26 +32,5 @@ const Marker = ({size = 100, color = colors.grayDark, children, style}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  bigCircle: {
-    zIndex: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  smallCircle: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  triangle: {
-    width: 0,
-    height: 0,
-    borderStyle: 'solid',
-    backgroundColor: 'transparent',
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-  },
-});
 
 export default Marker;
