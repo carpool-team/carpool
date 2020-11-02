@@ -3,146 +3,126 @@
 @import "~scss_path/images";
 
 .navBarContainer {
-  position: relative;
-  top: 0;
-  left: 0;
-  background-color: $background;
-  width: 100%;
-  height: 90px;
-  display: grid;
-
-  grid-template-columns: auto 300px auto auto;
-  grid-template-areas: " . logo navButtons . ";
-  //background: linear-gradient(145deg, #ffffff, #d7d6d6);
-  //box-shadow: 4px 4px 20px #8f8f8f, -8px -8px 12px #ffffff;
-  box-shadow: 1px 1px 10px #8f8f8f;
-}
-.navButtons {
-  display: grid;
-  grid-area: navButtons;
-  grid-template-columns: 300px auto auto auto 300px;
-  grid-template-areas: "navPlain . . . navAccount";
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	background-color: $background;
+	width: 100%;
+	height: 60px;
 }
 
-.logoContainer {
-  grid-area: logo;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 300px;
-  height: 90px;
-  background-image: $logo_small;
+.navBarTabContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
 }
-
-.navPlain {
-  grid-area: navPlain;
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  align-items: center;
-  justify-items: center;
-}
-
-.navButtonPlain {
-  font-size: 18px;
-  font-weight: $semi-bold;
-  color: $grayDark;
-  text-decoration: none;
-}
-
-.navAccount {
-  grid-area: navAccount;
-  display: grid;
-  grid-template-columns: repeat(2, auto);
-  align-items: center;
-  justify-items: center;
-  grid-column-gap: 10px;
+	.logoContainer {
+		display: flex;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-image: $logo_small;
+		width: 300px;
+		height: 50px;
+	}
+	.navBarTabButton {
+		font-size: 18px;
+		font-weight: $semi-bold;
+		color: $grayDark;
+		text-decoration: none;
+		padding:10px;
+	}
+	.navBarTabButton:hover {
+		background-color: $backgroundOnHover;
+		border-radius: 25px;
+	}
+	
+.navBarAccountContainer{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
 }
 
 .hamburgerIcon {
-  width: auto;
+  width: 40px;
+  height: 40px;
   border-radius: 20px;
-  background: #efeeee;
-  box-shadow: 8px 8px 12px #8f8f8f, -8px -8px 12px #ffffff;
-  grid-area: burger;
+  background: $background;
   display: none;
   cursor: pointer;
+  margin: 10px;
 }
-
 .bar1,
-.bar2,
-.bar3 {
-  width: 35px;
-  height: 5px;
+.bar2 {
+  width: 20px;
+  height: 4px;
   background-color: $grayDark;
-  margin: 10px 10px;
   transition: 0.4s;
-  border-radius: 20px;
+  border-radius: 2px;
+  margin: 10px;
 }
-
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(0px, 6px);
-  transform: rotate(-45deg) translate(-9px, 12px);
-}
-
+	-webkit-transform: rotate(-45deg) translate(10px, 632px);
+	transform: rotate(-45deg) translate(-5px, 5px);
+  }
 .change .bar2 {
-  opacity: 0;
-}
-
-.change .bar3 {
   -webkit-transform: rotate(45deg) translate(-8px, -8px);
-  transform: rotate(45deg) translate(-9px, -12px);
+  transform: rotate(45deg) translate(-5px, -5px);
 }
 
 @media only screen and (max-width: 900px) {
-  .navBarContainer {
-    background: $background;
-    box-shadow: none;
-    grid-template-columns: 70% 30%;
-    grid-template-areas: "logo burger" "navButtons navButtons";
-  }
-  .logoContainer {
-    background-size: 200px auto !important;
-  }
+	.navBarContainer {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		background-color: $background;
+	}
+	.logoContainer {
+		display: flex;
+		background-size: 120px auto !important;
+		width: 120px;
+		margin-left: 10px;
+	}
+	.navBarAccountContainer{
+		display: flex;
+		flex-direction: row;
+		justify-content: right;
+		align-items: center;
+		gap: 0px;
+		margin-right: 60px;
+	}
 
-  .hamburgerIcon {
-    display: block;
-    position: absolute;
-    right: 0;
-    margin-top: 18px;
-    margin-right: 10px;
-  }
-  .navButtons {
-    float: right;
-    z-index:1;
-    grid-template-rows: repeat(4, auto);
-    grid-template-columns: none;
-    grid-template-areas: "." "navPlain" "navAccount" ".";
-    grid-row-gap: 15px;
-    background-color: $backgroundTransparent;
-  }
-  .navPlain {
-    grid-row-gap: 15px;
-    grid-template-columns: none;
-  }
-  .navButtonPlain {
-    background-color: $background;
-    border-radius: 20px;
-    box-shadow: 8px 8px 12px #8f8f8f, -8px -8px 12px #ffffff;
-    width: 80%;
-    height: 45px;
-    border: none;
-    right: 5px;
-    text-align: center;
-    line-height: 45px;
-  }
-  .navButtonNeomorphism {
-    width: 80%;
-    grid-gap: 15px;
-  }
-  .navAccount {
-    grid-row-gap: 15px;
-    grid-template-columns: none;
-  }
-  .hamburgerToogle {
-    display: none;
-  }
+	.hamburgerIcon {
+		display: block;
+		position: absolute;
+		right: 0;
+	}
+	.hamburgerToogle {
+		-webkit-transform:  translate(0px, -1000px);
+		transform:  translate(0px, -1000px);
+	}
+	
+	.hamburgerMenuButtons{
+		transition: 0.3s;
+		position: absolute;
+		display: grid;
+		grid-template-rows: 70px 70px 70px auto;
+		justify-content: left;
+		background-color: $backgroundOnHover;
+		padding-left: 10px;
+		padding-top: 20px;
+		left: 0;
+		right: 0;
+		top: 60px;
+		bottom: 0;
+	}
+
+	.navBarTabButton {
+		font-size: 25px;
+	}
 }

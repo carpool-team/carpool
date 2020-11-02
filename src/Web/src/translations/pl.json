@@ -29,10 +29,11 @@
       "login": "Zaloguj się"
     },
     "common": {
-      "business": "Firma",
+      "groups": "Grupy",
       "passenger": "Pasażer",
       "driver": "Kierowca"
     },
+    
     "prevBtn": "Wstecz",
     "createBtn": "Utwórz",
     "addBtn": "Dodaj",
