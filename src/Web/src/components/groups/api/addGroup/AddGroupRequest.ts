@@ -22,7 +22,7 @@ export class AddGroupRequest extends RequestBase<IAddGroupRequestBody> {
 			body: init.body
 		});
 	}
-	send = async () => {
+	async send() {
 		return await super.fetch<AddGroupResponse>();
 	}
 }

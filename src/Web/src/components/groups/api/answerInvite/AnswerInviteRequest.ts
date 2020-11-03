@@ -27,7 +27,7 @@ export class AnswerInviteRequest extends RequestBase<IAnswerInviteRequestBody> {
 			}
 		});
 	}
-	send = async () => {
+	async send() {
 		return await super.fetch<AnswerInviteResponse>();
 	}
 }

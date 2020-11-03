@@ -17,7 +17,7 @@ export class GetInvitesRequest extends RequestCore {
 			}
 		});
 	}
-	send = async () => {
+	async send() {
 		return await super.fetch<GetInvitesResponse>();
 	}
 }

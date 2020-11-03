@@ -17,7 +17,7 @@ export class GetRidesRequest extends RequestCore {
 			}
 		});
 	}
-	send = async () => {
+	async send() {
 		return await super.fetch<GetRidesResponse>();
 	}
 }

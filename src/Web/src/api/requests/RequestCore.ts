@@ -21,7 +21,7 @@ export default abstract class RequestCore {
 	};
 	//#endregion
 
-	abstract send: () => any;
+	abstract send(): Promise<any>;
 
 	constructor(init: {
 		properties: IRequestProperties
@@ -29,25 +29,27 @@ export default abstract class RequestCore {
 		this.requestProperties = init.properties;
 	}
 
-	protected fetch = async<R extends ResponseCore>() => {
+	protected async fetch<R extends ResponseCore>(): Promise<R> {
 		const method = getRequestType(this.requestProperties.method);
 		const endpoint = getRequestEndpoint(
 			this.requestProperties.endpoint,
 			this.requestProperties.queries
 		);
-		let request: IRequest = {
+		const request: IRequest = {
 			method,
 			headers: RequestCore.headers,
 		};
 		if (this.requestBody) {
 			request.body = JSON.stringify(this.requestBody);
 		}
-
-		console.log("URL: ", `${RequestCore.proxyUrl}${RequestCore.config.devUrl}${endpoint}`);
-		console.log("REQ: ", request);
-		const res = await fetch(`${RequestCore.proxyUrl}${RequestCore.config.devUrl}${endpoint}`, request);
-
+		const url: string = `${RequestCore.proxyUrl}${RequestCore.config.devUrl}${endpoint}`;
+		const res = await fetch(url, request);
 		const json = await res.json();
+		console.log("RESPONSE: ", {
+			request,
+			url,
+			json
+		});
 		return json as R;
 	}
 

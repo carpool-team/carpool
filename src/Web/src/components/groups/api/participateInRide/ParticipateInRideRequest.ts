@@ -27,7 +27,7 @@ export class ParticipateInRideRequest extends RequestBase<IParticipateInRideRequ
 			}
 		});
 	}
-	send = async () => {
+	async send() {
 		return await super.fetch<ParticipateInRideResponse>();
 	}
 }
