@@ -23,8 +23,10 @@ export default abstract class RequestCore {
 
 	abstract send: () => any;
 
-	constructor(properties: IRequestProperties) {
-		this.requestProperties = properties;
+	constructor(init: {
+		properties: IRequestProperties
+	}) {
+		this.requestProperties = init.properties;
 	}
 
 	protected fetch = async<R extends ResponseCore>() => {

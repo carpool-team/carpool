@@ -25,9 +25,10 @@ import { RequestType } from "../../../api/enum/RequestType";
 import { RequestEndpoint } from "../../../api/enum/RequestEndpoint";
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { IRequestProps } from "../../../api/interfaces/IRequestProperties";
-import { GetGroupsRequest } from "../api/GetGroupsRequest";
-import { GetGroupsResponse } from "../api/GetGroupsResponse";
+import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
+import { GetGroupsResponse } from "../api/getGroups/GetGroupsResponse";
+import { tempUserId } from "../../../api/requests/RequestCore";
+import { AddGroupRequest } from "../api/addGroup/AddGroupRequest";
 
 const tempCoords: Object = {
 	"longitude": 0,
@@ -38,15 +39,14 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.AddGroup),
 		switchMap(async (action: IAddGroupAction) => {
-			const response = await apiRequest({
-				method: RequestType.POST,
-				endpoint: RequestEndpoint.POST_ADD_GROUP,
+			const request: AddGroupRequest = new AddGroupRequest({
 				body: {
 					name: action.group.name,
 					code: action.group.code,
 					ownerId: tempUserId,
-				},
+				}
 			});
+			const response = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
