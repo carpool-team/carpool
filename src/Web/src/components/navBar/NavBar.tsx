@@ -6,7 +6,7 @@ import { ButtonBackground } from "./NavButton/enums/ButtonBackground";
 import {ButtonIcon} from "./NavButton/enums/ButtonIcon"
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import App from "../../App";
+import LayoutRouter from "../layout/components/LayoutRouter";
 import { from } from "rxjs";
 
 
@@ -66,33 +66,36 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		return (
 			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
 				<div className={this.cssClasses.navBarTabContainer}>
-				<div className={this.cssClasses.logoContainer}></div>
+					<a href={`/${LayoutRouter.routes.default}`}>
+						<div className={this.cssClasses.logoContainer}></div>
+					</a>
 					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
-					<Button
-							color={ButtonColor.Gray}
-							background ={ButtonBackground.None}
-							onClick={() => { }}
-							>
-									{t(this.resources.passenger)}
-						</Button>
 						<Button
-							color={ButtonColor.Gray}
-							background ={ButtonBackground.None}
-							onClick={() => { }}
-							>
-									{t(this.resources.driver)}
-						</Button>
-						<Button
-							color={ButtonColor.Gray}
-							background ={ButtonBackground.None}
-							onClick={() => { }}
-							>
-									{t(this.resources.groups)}
-						</Button>
+								color={ButtonColor.Gray}
+								background ={ButtonBackground.None}
+								onClick={() => { }}
+								>
+										{t(this.resources.passenger)}
+							</Button>
+							<Button
+								color={ButtonColor.Gray}
+								background ={ButtonBackground.None}
+								onClick={() => { }}
+								>
+										{t(this.resources.driver)}
+							</Button>
+							<Button
+								color={ButtonColor.Gray}
+								background ={ButtonBackground.None}
+								onClick={() => { }}
+								to={`/${LayoutRouter.routes.groups}`}
+								>
+										{t(this.resources.groups)}
+							</Button>
+						</div>
 					</div>
-				</div>
 
-				<div className={this.cssClasses.navBarAccountContainer}>
+					<div className={this.cssClasses.navBarAccountContainer}>
 						<Button
 							color={ButtonColor.Gray}
 							background ={ButtonBackground.None}
@@ -117,8 +120,8 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						className={this.cssClasses.hamburgerIcon}
 						onClick={this.handleHamburgerClick.bind(this)}
 					>
-						<div className={this.cssClasses.bar1}></div>
-						<div className={this.cssClasses.bar2}></div>
+					<div className={this.cssClasses.bar1}></div>
+					<div className={this.cssClasses.bar2}></div>
 					</div>
 			</div>
 		);

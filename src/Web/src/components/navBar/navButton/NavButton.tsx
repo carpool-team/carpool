@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import { ButtonColor } from "./enums/ButtonColor";
 import {ButtonBackground} from "./enums/ButtonBackground"
 import {ButtonIcon} from "./enums/ButtonIcon"
+import { Link } from "react-router-dom";
 import { getBackgroundClass, getColorClass, getIconClass } from "./Helpers";
 
 import "./NavButton.scss";
@@ -12,6 +13,7 @@ interface IButtonProps {
 	background?:ButtonBackground;
 	icon?:ButtonIcon
 	onClick?: () => void;
+	to?:string;
 }
 
 const Button: FunctionComponent<IButtonProps> = (props) => {
@@ -32,9 +34,9 @@ const Button: FunctionComponent<IButtonProps> = (props) => {
 	].join(" ");
 
 	return (
-		<button className={cssClasses} onClick={btnClick}>
+		<Link to={props.to}  className={cssClasses} onClick={btnClick}>
 			{props.children}
-		</button>
+		</Link>
 	);
 };
 
