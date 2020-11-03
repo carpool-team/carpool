@@ -29,6 +29,7 @@ import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
 import { GetGroupsResponse } from "../api/getGroups/GetGroupsResponse";
 import { tempUserId } from "../../../api/requests/RequestCore";
 import { AddGroupRequest } from "../api/addGroup/AddGroupRequest";
+import { GetInvitesRequest } from "../api/getInvites/GetInvitesRequest";
 
 const tempCoords: Object = {
 	"longitude": 0,
@@ -69,7 +70,7 @@ const getGroupsEpic: Epic<GroupsAction> = (action$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.GetGroups),
 		switchMap(async (action: IGetGroupsAction) => {
-			const request: GetGroupsRequest = new GetGroupsRequest(action.userOnly);
+			const request: GetGroupsRequest = new GetGroupsRequest({ userOnly: action.userOnly });
 			const response: GetGroupsResponse = await request.send();
 			return response.result;
 		}),
@@ -93,21 +94,8 @@ const getInvitesEpic: Epic<InviteAction> = (action$) =>
 	action$.pipe(
 		ofType(InvitesActionTypes.GetInvites),
 		switchMap(async (action: IGetInvitesAction) => {
-			let requestBody: IRequestProps;
-			if (action.userOnly) {
-				requestBody = {
-					// TODO
-					method: RequestType.GET,
-					endpoint: RequestEndpoint.GET_INVITES_BY_USER_ID,
-					userId: tempUserId,
-				};
-			} else {
-				requestBody = {
-					method: RequestType.GET,
-					endpoint: RequestEndpoint.GET_ALL_INVITES,
-				};
-			}
-			const response = await apiRequest(requestBody);
+			const request: GetInvitesRequest = new GetInvitesRequest({ userOnly: action.userOnly });
+			const response = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
