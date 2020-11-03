@@ -20,9 +20,8 @@ import {
 	IGetRidesActionSuccess,
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
+	IParticipateInRideActionError
 } from "./Types";
-import { RequestType } from "../../../api/enum/RequestType";
-import { RequestEndpoint } from "../../../api/enum/RequestEndpoint";
 import _ from "lodash";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -36,6 +35,8 @@ import { GetInvitesResponse } from "../api/getInvites/GetInvitesResponse";
 import { AddGroupResponse } from "../api/addGroup/AddGroupResponse";
 import { GetRidesResponse } from "../api/getRides/GetRidesResponse";
 import { GetRidesRequest } from "../api/getRides/GetRidesRequest";
+import { ParticipateInRideResponse } from "../api/participateInRide/ParticipateInRideResponse";
+import { ParticipateInRideRequest } from "../api/participateInRide/ParticipateInRideRequest";
 
 const tempCoords: Object = {
 	"longitude": 0,
@@ -188,34 +189,38 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 	action$.pipe(
 		ofType(RidesActionTypes.ParticipateInRide),
 		switchMap(async (action: IParticipateInRideAction) => {
-			let requestBody: IRequestProps = {
-				// TODO
-				method: RequestType.POST,
-				endpoint: RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT,
+			const request: ParticipateInRideRequest = new ParticipateInRideRequest({
 				rideId: action.rideId,
-				body: {
-					participantId: tempUserId,
-					coordinates: tempCoords,
-				}
-			};
-			const response = await apiRequest(requestBody);
-			// return response;
+				participantId: tempUserId,
+			});
+			const response: ParticipateInRideResponse = await request.send();
 			return {
 				id: action.rideId,
+				isSuccess: response.statusCode === 200,
 			};
 		}),
 		mergeMap(response => {
-			toast.success("Succesfully participated in ride!");
-			return [
-				<IGetRidesAction>{
-					type: RidesActionTypes.GetRides,
-					userOnly: true,
-				},
-				<IParticipateInRideActionSuccess>{
-					type: RidesActionTypes.ParticipateInRideSuccess,
-					rideId: response.id,
-				}
-			];
+			if (response.isSuccess) {
+				toast.success("Succesfully participated in ride!");
+				return [
+					<IGetRidesAction>{
+						type: RidesActionTypes.GetRides,
+						userOnly: true,
+					},
+					<IParticipateInRideActionSuccess>{
+						type: RidesActionTypes.ParticipateInRideSuccess,
+						rideId: response.id,
+					}
+				];
+			} else {
+				toast.error("Error while participating in ride, try again...");
+				return [
+					<IParticipateInRideActionError>{
+						type: RidesActionTypes.ParticipateInRideError,
+						error: null,
+					}
+				];
+			}
 		}),
 		catchError((err: Error) => {
 			toast.error("Could not participate in ride :(");
