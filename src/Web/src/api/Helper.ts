@@ -40,6 +40,8 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 			return `/users/${queries.userId}/rides/owned`;
 		case RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT:
 			return `/rides/${queries.rideId}/users`;
+		case RequestEndpoint.GET_ALL_RIDES:
+			return "/rides";
 		default:
 			throw "Unhandled endpoint";
 	}

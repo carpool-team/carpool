@@ -34,6 +34,8 @@ import { AnswerInviteRequest } from "../api/answerInvite/AnswerInviteRequest";
 import { AnswerInviteResponse } from "../api/answerInvite/AnswerInviteResponse";
 import { GetInvitesResponse } from "../api/getInvites/GetInvitesResponse";
 import { AddGroupResponse } from "../api/addGroup/AddGroupResponse";
+import { GetRidesResponse } from "../api/getRides/GetRidesResponse";
+import { GetRidesRequest } from "../api/getRides/GetRidesRequest";
 
 const tempCoords: Object = {
 	"longitude": 0,
@@ -160,13 +162,10 @@ const getRidesEpic: Epic<RideAction> = (action$) =>
 	action$.pipe(
 		ofType(RidesActionTypes.GetRides),
 		switchMap(async (action: IGetRidesAction) => {
-			let requestBody: IRequestProps = {
-				// TODO
-				method: RequestType.GET,
-				endpoint: RequestEndpoint.GET_RIDES_AVAILABLE_BY_USER_ID,
-				userId: action.userOnly ? tempUserId : null,
-			};
-			const response = await apiRequest(requestBody);
+			const request: GetRidesRequest = new GetRidesRequest({
+				userOnly: action.userOnly
+			});
+			const response: GetRidesResponse = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
