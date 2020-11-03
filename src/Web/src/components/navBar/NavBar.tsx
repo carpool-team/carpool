@@ -68,15 +68,27 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 				<div className={this.cssClasses.navBarTabContainer}>
 				<div className={this.cssClasses.logoContainer}></div>
 					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
-						<a className={this.cssClasses.navBarTabButton} href={App.rootRoute}>
-							{t(this.resources.passenger)}
-						</a>
-						<a className={this.cssClasses.navBarTabButton} href={App.rootRoute}>
-							{t(this.resources.driver)}
-						</a>
-						<a className={this.cssClasses.navBarTabButton} href={App.rootRoute}>
-							{t(this.resources.groups)}
-						</a>
+					<Button
+							color={ButtonColor.Gray}
+							background ={ButtonBackground.None}
+							onClick={() => { }}
+							>
+									{t(this.resources.passenger)}
+						</Button>
+						<Button
+							color={ButtonColor.Gray}
+							background ={ButtonBackground.None}
+							onClick={() => { }}
+							>
+									{t(this.resources.driver)}
+						</Button>
+						<Button
+							color={ButtonColor.Gray}
+							background ={ButtonBackground.None}
+							onClick={() => { }}
+							>
+									{t(this.resources.groups)}
+						</Button>
 					</div>
 				</div>
 

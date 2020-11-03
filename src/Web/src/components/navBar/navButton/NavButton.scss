@@ -52,7 +52,7 @@
 }
 @media only screen and (max-width: 900px) {
 	.navButton {
-		font-size: 13px;
+		
 		&--backgroundBlue{
 			background-color: $background;
 			&:hover{
@@ -61,12 +61,16 @@
 		  }
 		&--textWhite {
 			color: $grayDark;
+			font-size: 13px;
 		} 
 		&--userIcon span{
 			font-size: 0;
 		}
 		&--userIcon:before{
 			padding-right: 0px;
+		}
+		&--backgroundNone{
+			background-color: transparent;
 		}
 	}
 	

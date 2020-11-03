@@ -24,7 +24,9 @@
 		background-position: center;
 		background-repeat: no-repeat;
 		background-image: $logo_small;
-		width: 300px;
+		background-size: 200px auto !important;
+		margin-right: 10px;
+		width: 200px;
 		height: 50px;
 	}
 	.navBarTabButton {
