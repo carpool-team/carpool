@@ -73,21 +73,21 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						<Button
 								color={ButtonColor.Gray}
 								background ={ButtonBackground.None}
-								onClick={() => { }}
+								onClick={this.handleHamburgerClick.bind(this)}
 								>
 										{t(this.resources.passenger)}
 							</Button>
 							<Button
 								color={ButtonColor.Gray}
 								background ={ButtonBackground.None}
-								onClick={() => { }}
+								onClick={this.handleHamburgerClick.bind(this)}
 								>
 										{t(this.resources.driver)}
 							</Button>
 							<Button
 								color={ButtonColor.Gray}
 								background ={ButtonBackground.None}
-								onClick={() => { }}
+								onClick={this.handleHamburgerClick.bind(this)}
 								to={`/${LayoutRouter.routes.groups}`}
 								>
 										{t(this.resources.groups)}
