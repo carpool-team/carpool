@@ -4,13 +4,15 @@ import RequestCore, { tempUserId } from "../../../../api/requests/RequestCore";
 import { GetGroupsResponse } from "./GetGroupsResponse";
 
 export class GetGroupsRequest extends RequestCore {
-	constructor(userOnly: boolean) {
+	constructor(init: {
+		userOnly: boolean
+	}) {
 		super({
 			properties: {
 				method: RequestType.GET,
-				endpoint: userOnly ? RequestEndpoint.GET_USER_GROUPS : RequestEndpoint.GET_ALL_GROUPS,
+				endpoint: init.userOnly ? RequestEndpoint.GET_USER_GROUPS : RequestEndpoint.GET_ALL_GROUPS,
 				queries: {
-					userId: userOnly ? tempUserId : undefined
+					userId: init.userOnly ? tempUserId : undefined
 				},
 			}
 		});

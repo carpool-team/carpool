@@ -30,6 +30,10 @@ import { GetGroupsResponse } from "../api/getGroups/GetGroupsResponse";
 import { tempUserId } from "../../../api/requests/RequestCore";
 import { AddGroupRequest } from "../api/addGroup/AddGroupRequest";
 import { GetInvitesRequest } from "../api/getInvites/GetInvitesRequest";
+import { AnswerInviteRequest } from "../api/answerInvite/AnswerInviteRequest";
+import { AnswerInviteResponse } from "../api/answerInvite/AnswerInviteResponse";
+import { GetInvitesResponse } from "../api/getInvites/GetInvitesResponse";
+import { AddGroupResponse } from "../api/addGroup/AddGroupResponse";
 
 const tempCoords: Object = {
 	"longitude": 0,
@@ -47,7 +51,7 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 					ownerId: tempUserId,
 				}
 			});
-			const response = await request.send();
+			const response: AddGroupResponse = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
@@ -95,7 +99,7 @@ const getInvitesEpic: Epic<InviteAction> = (action$) =>
 		ofType(InvitesActionTypes.GetInvites),
 		switchMap(async (action: IGetInvitesAction) => {
 			const request: GetInvitesRequest = new GetInvitesRequest({ userOnly: action.userOnly });
-			const response = await request.send();
+			const response: GetInvitesResponse = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
@@ -118,23 +122,18 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 	action$.pipe(
 		ofType(InvitesActionTypes.AnswerInvite),
 		switchMap(async (action: IAnswerInviteAction) => {
-			let requestBody: IRequestProps = {
-				method: RequestType.PUT,
-				endpoint: RequestEndpoint.PUT_CHANGE_INVITE,
-				inviteId: action.inviteId,
-				body: {
-					groupInviteId: action.inviteId,
-					isAccepted: action.accepted,
-				},
-			};
-			const response = await apiRequest(requestBody);
+			const request: AnswerInviteRequest = new AnswerInviteRequest({
+				groupInviteId: action.inviteId,
+				isAccepted: action.accepted
+			});
+			const response: AnswerInviteResponse = await request.send();
 			return {
-				response: response.result,
+				response: response.statusCode,
 				id: action.inviteId,
 			};
 		}),
 		mergeMap((result) => {
-			if (result.response === "ok") {
+			if (result.response === 200) {
 				return [
 					<IAnswerInviteActionSuccess>{
 						type: InvitesActionTypes.AnswerInviteSuccess,
