@@ -9,7 +9,7 @@ import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import { IFormData, initialFormData } from "./interfaces/IFormData";
 import { IGroup } from "../../interfaces/IGroup";
 import LayoutRouter from "../../../layout/components/LayoutRouter";
-import { tempUserId } from "../../../../api/useRequest";
+import { tempUserId } from "../../../../api/requests/RequestCore";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {
 	callbacks: IGroupCallbacks;

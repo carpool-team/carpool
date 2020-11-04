@@ -20,13 +20,23 @@ import {
 	IGetRidesActionSuccess,
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
+	IParticipateInRideActionError
 } from "./Types";
-import { apiRequest, IRequestProps } from "../../../api/apiRequest";
-import { RequestType } from "../../../api/enum/RequestType";
-import { RequestEndpoint } from "../../../api/enum/RequestEndpoint";
 import _ from "lodash";
 import { toast } from "react-toastify";
-import { tempUserId } from "../../../api/useRequest";
+import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
+import { GetGroupsResponse } from "../api/getGroups/GetGroupsResponse";
+import { tempUserId } from "../../../api/requests/RequestCore";
+import { AddGroupRequest } from "../api/addGroup/AddGroupRequest";
+import { GetInvitesRequest } from "../api/getInvites/GetInvitesRequest";
+import { AnswerInviteRequest } from "../api/answerInvite/AnswerInviteRequest";
+import { AnswerInviteResponse } from "../api/answerInvite/AnswerInviteResponse";
+import { GetInvitesResponse } from "../api/getInvites/GetInvitesResponse";
+import { AddGroupResponse } from "../api/addGroup/AddGroupResponse";
+import { GetRidesResponse } from "../api/getRides/GetRidesResponse";
+import { GetRidesRequest } from "../api/getRides/GetRidesRequest";
+import { ParticipateInRideResponse } from "../api/participateInRide/ParticipateInRideResponse";
+import { ParticipateInRideRequest } from "../api/participateInRide/ParticipateInRideRequest";
 
 const tempCoords: Object = {
 	"longitude": 0,
@@ -37,15 +47,14 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.AddGroup),
 		switchMap(async (action: IAddGroupAction) => {
-			const response = await apiRequest({
-				method: RequestType.POST,
-				endpoint: RequestEndpoint.POST_ADD_GROUP,
+			const request: AddGroupRequest = new AddGroupRequest({
 				body: {
 					name: action.group.name,
 					code: action.group.code,
 					ownerId: tempUserId,
-				},
+				}
 			});
+			const response: AddGroupResponse = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
@@ -68,20 +77,8 @@ const getGroupsEpic: Epic<GroupsAction> = (action$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.GetGroups),
 		switchMap(async (action: IGetGroupsAction) => {
-			let requestBody: IRequestProps;
-			if (action.userOnly) {
-				requestBody = {
-					method: RequestType.GET,
-					endpoint: RequestEndpoint.GET_USER_GROUPS,
-					userId: tempUserId,
-				};
-			} else {
-				requestBody = {
-					method: RequestType.GET,
-					endpoint: RequestEndpoint.GET_ALL_GROUPS,
-				};
-			}
-			const response = await apiRequest(requestBody);
+			const request: GetGroupsRequest = new GetGroupsRequest({ userOnly: action.userOnly });
+			const response: GetGroupsResponse = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
@@ -104,21 +101,8 @@ const getInvitesEpic: Epic<InviteAction> = (action$) =>
 	action$.pipe(
 		ofType(InvitesActionTypes.GetInvites),
 		switchMap(async (action: IGetInvitesAction) => {
-			let requestBody: IRequestProps;
-			if (action.userOnly) {
-				requestBody = {
-					// TODO
-					method: RequestType.GET,
-					endpoint: RequestEndpoint.GET_INVITES_BY_USER_ID,
-					userId: tempUserId,
-				};
-			} else {
-				requestBody = {
-					method: RequestType.GET,
-					endpoint: RequestEndpoint.GET_ALL_INVITES,
-				};
-			}
-			const response = await apiRequest(requestBody);
+			const request: GetInvitesRequest = new GetInvitesRequest({ userOnly: action.userOnly });
+			const response: GetInvitesResponse = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
@@ -141,23 +125,18 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 	action$.pipe(
 		ofType(InvitesActionTypes.AnswerInvite),
 		switchMap(async (action: IAnswerInviteAction) => {
-			let requestBody: IRequestProps = {
-				method: RequestType.PUT,
-				endpoint: RequestEndpoint.PUT_CHANGE_INVITE,
-				inviteId: action.inviteId,
-				body: {
-					groupInviteId: action.inviteId,
-					isAccepted: action.accepted,
-				},
-			};
-			const response = await apiRequest(requestBody);
+			const request: AnswerInviteRequest = new AnswerInviteRequest({
+				groupInviteId: action.inviteId,
+				isAccepted: action.accepted
+			});
+			const response: AnswerInviteResponse = await request.send();
 			return {
-				response: response.result,
+				response: response.statusCode,
 				id: action.inviteId,
 			};
 		}),
 		mergeMap((result) => {
-			if (result.response === "ok") {
+			if (result.response === 200) {
 				return [
 					<IAnswerInviteActionSuccess>{
 						type: InvitesActionTypes.AnswerInviteSuccess,
@@ -184,13 +163,10 @@ const getRidesEpic: Epic<RideAction> = (action$) =>
 	action$.pipe(
 		ofType(RidesActionTypes.GetRides),
 		switchMap(async (action: IGetRidesAction) => {
-			let requestBody: IRequestProps = {
-				// TODO
-				method: RequestType.GET,
-				endpoint: RequestEndpoint.GET_RIDES_AVAILABLE_BY_USER_ID,
-				userId: action.userOnly ? tempUserId : null,
-			};
-			const response = await apiRequest(requestBody);
+			const request: GetRidesRequest = new GetRidesRequest({
+				userOnly: action.userOnly
+			});
+			const response: GetRidesResponse = await request.send();
 			return response.result;
 		}),
 		mergeMap((response) => {
@@ -213,34 +189,38 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 	action$.pipe(
 		ofType(RidesActionTypes.ParticipateInRide),
 		switchMap(async (action: IParticipateInRideAction) => {
-			let requestBody: IRequestProps = {
-				// TODO
-				method: RequestType.POST,
-				endpoint: RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT,
+			const request: ParticipateInRideRequest = new ParticipateInRideRequest({
 				rideId: action.rideId,
-				body: {
-					participantId: tempUserId,
-					coordinates: tempCoords,
-				}
-			};
-			const response = await apiRequest(requestBody);
-			// return response;
+				participantId: tempUserId,
+			});
+			const response: ParticipateInRideResponse = await request.send();
 			return {
 				id: action.rideId,
+				isSuccess: response.statusCode === 200,
 			};
 		}),
 		mergeMap(response => {
-			toast.success("Succesfully participated in ride!");
-			return [
-				<IGetRidesAction>{
-					type: RidesActionTypes.GetRides,
-					userOnly: true,
-				},
-				<IParticipateInRideActionSuccess>{
-					type: RidesActionTypes.ParticipateInRideSuccess,
-					rideId: response.id,
-				}
-			];
+			if (response.isSuccess) {
+				toast.success("Succesfully participated in ride!");
+				return [
+					<IGetRidesAction>{
+						type: RidesActionTypes.GetRides,
+						userOnly: true,
+					},
+					<IParticipateInRideActionSuccess>{
+						type: RidesActionTypes.ParticipateInRideSuccess,
+						rideId: response.id,
+					}
+				];
+			} else {
+				toast.error("Error while participating in ride, try again...");
+				return [
+					<IParticipateInRideActionError>{
+						type: RidesActionTypes.ParticipateInRideError,
+						error: null,
+					}
+				];
+			}
 		}),
 		catchError((err: Error) => {
 			toast.error("Could not participate in ride :(");
