@@ -1,8 +1,8 @@
 import React from "react";
-import ButtonCheckBox from "../../../../ui/Button/ButtonCheckBox";
-import { ButtonSize } from "../../../../ui/Button/enums/ButtonSize";
-import { ButtonType } from "../../../../ui/Button/enums/ButtonType";
-import { ButtonShape } from "../../../../ui/Button/enums/ButtonShape";
+import ButtonCheckBox from "../../../../ui/_oldButton/ButtonCheckBox";
+import { ButtonSize } from "../../../../ui/_oldButton/enums/ButtonSize";
+import { ButtonType } from "../../../../ui/_oldButton/enums/ButtonType";
+import { ButtonShape } from "../../../../ui/_oldButton/enums/ButtonShape";
 import { IGroup } from "../../../interfaces/IGroup";
 
 interface IGroupsListProps {

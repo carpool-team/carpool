@@ -1,9 +1,9 @@
 import React from "react";
-import { ButtonSize } from "../../../../ui/Button/enums/ButtonSize";
-import { ButtonType } from "../../../../ui/Button/enums/ButtonType";
-import { ButtonShape } from "../../../../ui/Button/enums/ButtonShape";
+import { ButtonSize } from "../../../../ui/_oldButton/enums/ButtonSize";
+import { ButtonType } from "../../../../ui/_oldButton/enums/ButtonType";
+import { ButtonShape } from "../../../../ui/_oldButton/enums/ButtonShape";
 import { IRide } from "../../../interfaces/IRide";
-import ButtonJoin from "../../../../ui/Button/ButtonJoin";
+import ButtonJoin from "../../../../ui/_oldButton/ButtonJoin";
 import { tempUserId } from "../../../../../api/useRequest";
 
 interface IRidesListProps {

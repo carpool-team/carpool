@@ -1,7 +1,7 @@
 import React from "react";
 import MediaQuery from "react-responsive";
 import Input from "../../../ui/input/Input";
-import Button from "../../../ui/Button/Button";
+import Button from "../../../ui/_oldButton/Button";
 import { IFormData } from "./interfaces/IFormData";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";

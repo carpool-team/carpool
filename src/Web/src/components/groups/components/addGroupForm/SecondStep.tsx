@@ -3,11 +3,11 @@ import { withTranslation } from "react-i18next";
 import { IFormData } from "./interfaces/IFormData";
 import Input from "../../../ui/input/Input";
 import { InputType } from "../../../ui/input/enums/InputType";
-import Button from "../../../ui/Button/Button";
+import Button from "../../../ui/_oldButton/Button";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
-import { ButtonType } from "../../../ui/Button/enums/ButtonType";
+import { ButtonType } from "../../../ui/_oldButton/enums/ButtonType";
 
-import userIco from "assets_path/img/user_ico.png";
+import userIco from "components/ui/_oldButton/node_modules/assets_path/img/user_ico.png";
 
 interface ISecondStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;

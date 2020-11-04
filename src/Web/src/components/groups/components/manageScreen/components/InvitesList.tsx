@@ -1,8 +1,8 @@
 import React from "react";
-import ButtonAcceptDecline from "../../../../ui/Button/ButtonAcceptDecline";
-import { ButtonSize } from "../../../../ui/Button/enums/ButtonSize";
-import { ButtonType } from "../../../../ui/Button/enums/ButtonType";
-import { ButtonShape } from "../../../../ui/Button/enums/ButtonShape";
+import ButtonAcceptDecline from "../../../../ui/_oldButton/ButtonAcceptDecline";
+import { ButtonSize } from "../../../../ui/_oldButton/enums/ButtonSize";
+import { ButtonType } from "../../../../ui/_oldButton/enums/ButtonType";
+import { ButtonShape } from "../../../../ui/_oldButton/enums/ButtonShape";
 import { IInvite } from "../../../interfaces/IInvite";
 
 interface IInvitesListProps {
