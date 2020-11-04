@@ -1,0 +1,116 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.button {
+  font-weight: $semi-bold;
+  border: none;
+  right: 5px;
+  background: $background;
+  margin-left: 5px;
+  margin-right: 5px;
+  box-shadow: 6px 6px 16px #a7a7a7, -6px -6px 16px #ffffff;
+  color: $grayDark;
+  cursor: pointer;
+
+  &--link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    text-align: center;
+    line-height: 28px;
+  }
+  &--checkbox-label {
+    font-size: 18px;
+    font-weight: $semi-bold;
+    border: none;
+    right: 5px;
+    background: $background;
+    height: inherit;
+    vertical-align: middle;
+    line-height: 40px;
+    color: $grayDark;
+  }
+  &--checkbox {
+    &_noContent {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      content: none !important;
+      float: left;
+      font-size: 18px;
+      padding: 20px;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    float: left;
+    font-size: 18px;
+    padding: 20px;
+    position: relative;
+    transition: all 0.25s ease;
+  }
+  &--checkbox::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid $gray;
+    background: transparent;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.25s ease;
+  }
+
+  &--checkbox_active {
+    box-shadow: inset 4px 4px 8px #bfbebe, inset -4px -4px 8px #ffffff !important;
+  }
+
+  &--checkbox_active::after {
+    background-color: $gray;
+  }
+  &--large {
+    font-size: 18px;
+  }
+  &--standard {
+    font-size: 18px;
+  }
+  &--success {
+    color: $green;
+  }
+  &--info {
+    color: $blue;
+  }
+  &--circle {
+    border-radius: 50px;
+    width: 25px;
+    height: 25px;
+  }
+  &--rectangle {
+    border-radius: 20px;
+    width: 145px;
+    height: 45px;
+    }
+  &--navbar {
+    border-radius: 20px;
+    width: 145px;
+    height: 45px;
+    @media only screen and (max-width: 900px){
+      width: 80%;
+
+  }
+  }
+  &--userIco {
+    height: 40px;
+    margin-right: 5px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .button {
+    &--large {
+      width: 80%;
+    }
+  }
+}

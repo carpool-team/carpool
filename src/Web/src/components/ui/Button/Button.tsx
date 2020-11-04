@@ -1,19 +1,20 @@
 import React, { FunctionComponent } from "react";
-import { ButtonSize } from "./enums/ButtonSize";
-import { ButtonType } from "./enums/ButtonType";
-import { ButtonShape } from "./enums/ButtonShape";
-import { getSizeClass, getTypeClass, getShapeClass } from "./Helpers";
-
+import { ButtonColor } from "./enums/ButtonColor";
+import {ButtonBackground} from "./enums/ButtonBackground"
+import {ButtonIcon} from "./enums/ButtonIcon"
+import { getBackgroundClass, getColorClass, getIconClass } from "./Helpers";
+import { from } from "rxjs";
 import "./Button.scss";
 
-interface IButtonProps {
-	size?: ButtonSize;
-	type?: ButtonType;
-	shape?: ButtonShape;
+interface IButtonLinkProps {
+	color?:ButtonColor;
+	background?:ButtonBackground;
+	icon?:ButtonIcon;
 	onClick?: () => void;
 }
 
-const Button: FunctionComponent<IButtonProps> = (props) => {
+const Button: FunctionComponent<IButtonLinkProps> = (props) => {
+
 	const btnClick = (event: React.MouseEvent) => {
 		if (props.onClick) {
 			props.onClick();
@@ -22,16 +23,16 @@ const Button: FunctionComponent<IButtonProps> = (props) => {
 		}
 	};
 
-	const baseCssClass: string = "button";
+	const baseCssClass: string = "buttonLink";
 	const cssClasses: string = [
 		baseCssClass,
-		getSizeClass(props.size),
-		getTypeClass(props.type),
-		getShapeClass(props.shape),
+		getColorClass(props.color),
+		getBackgroundClass(props.background),
+		getIconClass(props.icon),
 	].join(" ");
 
 	return (
-		<button className={cssClasses} onClick={btnClick}>
+		<button  className={cssClasses} onClick={btnClick}>
 			{props.children}
 		</button>
 	);
