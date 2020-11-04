@@ -3,122 +3,86 @@
 @import "~scss_path/images";
 
 .footerContainer {
-  position: relative;
-  height: 350px;
-  width: 100%;
-  background-color: $background;
-  left: 0px;
-  right: 0px;
-  display: grid;
-  grid-template-columns: auto 260px auto 213px 213px 213px auto;
-  grid-template-areas: ". socials . services about language .";
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: center;
+	background-color: $background;
+	height: auto;
+	padding-top: 30px;
+    left: 0;
+    right: 0;
+}
+.footerSubContainer{
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 200px;
+	height: 200px;
+	background-color: $background;
+}
+.footerSocialsGoogle{
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: $google_store;
+	background-size: 120px auto !important;
+	width: 120px;
+	height: 60px;
+	margin-top: 15px;
+}
+.footerSocials{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 120px;
+	height: 60px;
+	background-position: center;
+	
+	&--facebook{
+		width: 30%;
+		background-image: $facebook_ico;
+		background-size: 100% auto !important;
+		background-repeat: no-repeat;
+	}
+	&--twitter{
+		width: 30%;
+		background-image: $twitter_ico;
+		background-size: 100% auto !important;
+		background-repeat: no-repeat;
+	}
+	&--instagram{
+		width: 30%;
+		background-image: $instagram_ico;
+		background-size: 100% auto !important;
+		background-repeat: no-repeat;
+	}
+}
+.footerTitle{
+	padding-top: 15px;
+	font-size: 22px;
+	font-weight: $semi-bold;
+	color: $grayDark;
 }
 
-.footerLinks {
-  grid-area: socials;
-  display: grid;
-  width: 260px;
-  margin-top: 30px;
-  margin-bottom: 70px;
-  grid-template-areas: "logo" "ios" "android" "socials";
-  grid-template-rows: 70px 60px 60px 60px;
-}
 
-.footerBox {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: auto 50px;
-  width: 260px;
-}
-.logo {
-  grid-area: logo;
-  background-image: $logo_small;
-  background-size: auto 30px !important;
-}
-.android {
-  grid-area: android;
-  background-image: $android-img;
-}
-.ios {
-  grid-area: ios;
-  background-image: $ios-img;
-}
-
-.footerSocials {
-  width: 260px;
-  grid-area: socials;
-  display: grid;
-  grid-template-areas: ". fb . ig . tw .";
-  grid-template-columns: 55px 48px 3px 48px 3px 48px 55px;
-}
-.social {
-  background-repeat: no-repeat;
-  background-size: 48px 48px;
-  background-position: center;
-}
-.fb {
-  background-image: $facebook_ico;
-  grid-area: fb;
-}
-.ig {
-  grid-area: ig;
-  background-image: $instagram_ico;
-}
-.tw {
-  background-image: $twitter_ico;
-  grid-area: tw;
-}
-.footerGroup {
-  margin-top: 50px;
-  margin-bottom: 100px;
-  width: 213px;
-  text-align: left;
-  display: grid;
-  grid-template-rows: 48px 38px 38px 38px 38px;
-}
-.footerGroupTitle {
-  font-size: 30px;
-  font-weight: $bold;
-  color: $grayDark;
-}
-.footerGroupElement {
-  font-size: 24px;
-  font-weight: $light;
-  color: $grayDark;
-}
-.g1 {
-  grid-area: services;
-}
-.g2 {
-  grid-area: about;
-}
-.g3 {
-  grid-area: language;
-}
 
 @media only screen and (max-width: 900px) {
-  .footerContainer {
-    margin: 0px;
-    height: 672px;
-    background-color: $background;
-    display: grid;
-    grid-template-rows: 250px 200px 124px 48px;
-    grid-template-areas: "socials" "services" "about" "language";
-    grid-template-columns: none;
-  }
-  .footerLinks {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-  .footerGroup {
-    margin-top: 20px;
-    margin-bottom: 0px;
-    margin-left: 20px;
-  }
-  .g2 {
-    grid-template-rows: 48px 38px 38px;
-  }
-  .g3 {
-    grid-template-rows: 48px;
+	.footerContainer {
+		padding-top: 5%;
+		padding-bottom: 5%;
+	}
+	.footerSubContainer{
+		margin-bottom: 5%;
+		//background-color: lawngreen;
+		height: auto;
+	}
+	.footerSocialsGoogle{
+		background-size: 100% auto !important;
+		width:100%;
+		height: 60px;
+	}
+	.footerSocials{
+		width: 100%;
+		height: 60px;
   }
 }
