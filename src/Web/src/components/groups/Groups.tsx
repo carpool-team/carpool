@@ -13,7 +13,7 @@ import {
 } from "./store/PropsTypes";
 
 import "./Groups.scss";
-import { tempUserId } from "../../api/useRequest";
+import { tempUserId } from "../../api/requests/RequestCore";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
