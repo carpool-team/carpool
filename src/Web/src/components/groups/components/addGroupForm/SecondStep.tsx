@@ -7,7 +7,7 @@ import Button from "../../../ui/_oldButton/Button";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { ButtonType } from "../../../ui/_oldButton/enums/ButtonType";
 
-import userIco from "components/ui/_oldButton/node_modules/assets_path/img/user_ico.png";
+import userIco from "../../../../assets/img/user_ico.png";
 
 interface ISecondStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
