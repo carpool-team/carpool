@@ -20,7 +20,7 @@ import {
 	IGetRidesActionSuccess,
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
-	IParticipateInRideActionError
+	IParticipateInRideActionError, IAddGroupActionError
 } from "./Types";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -55,15 +55,25 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 				}
 			});
 			const response: AddGroupResponse = await request.send();
-			return response.result;
+			return response;
 		}),
 		mergeMap((response) => {
-			return [
-				<IAddGroupActionSuccess>{
-					type: GroupsActionTypes.AddGroupSuccess,
-					newGroup: response,
-				},
-			];
+			if (response.status > 200) {
+				toast.error("Error while adding group: " + response.title);
+				return [
+					<IAddGroupActionError>{
+						type: GroupsActionTypes.AddGroupError,
+						error: new Error(response.title)
+					}
+				];
+			} else {
+				return [
+					<IAddGroupActionSuccess>{
+						type: GroupsActionTypes.AddGroupSuccess,
+						newGroup: response.result
+					},
+				];
+			}
 		}),
 		catchError((err: Error) =>
 			of(<any>{
@@ -131,7 +141,7 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 			});
 			const response: AnswerInviteResponse = await request.send();
 			return {
-				response: response.statusCode,
+				response: response.status,
 				id: action.inviteId,
 			};
 		}),
@@ -196,7 +206,7 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 			const response: ParticipateInRideResponse = await request.send();
 			return {
 				id: action.rideId,
-				isSuccess: response.statusCode === 200,
+				isSuccess: response.status === 200,
 			};
 		}),
 		mergeMap(response => {

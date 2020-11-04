@@ -1,7 +1,8 @@
 export default abstract class ResponseCore {
 	version: string;
-	statusCode: number;
+	status: number;
 	message: string;
 	isError: boolean;
 	responseException?: any;
+	title: string;
 }
