@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "components/system/resources/IReactI18nProps";
 import LayoutRouter from "../layout/components/LayoutRouter";
-import ButtonLink from "../ui/ButtonLink/ButtonLink"
-import { ButtonColor } from "../ui/ButtonLink/enums/ButtonColor";
-import { ButtonBackground } from "../ui/ButtonLink/enums/ButtonBackground";
-import {ButtonIcon} from "../ui/ButtonLink/enums/ButtonIcon"
-import {ButtonUnderline} from "../ui/ButtonLink/enums/ButtonUndeline"
+import ButtonLink from "../ui/buttonLink/ButtonLink"
+import { ButtonColor } from "../ui/buttonLink/enums/ButtonColor";
+import { ButtonBackground } from "../ui/buttonLink/enums/ButtonBackground";
+import {ButtonIcon} from "../ui/buttonLink/enums/ButtonIcon"
+import {ButtonUnderline} from "../ui/buttonLink/enums/ButtonUndeline"
 import "./HomeScreen.scss";
 import { from } from "rxjs";
 
@@ -69,6 +69,8 @@ class HomeScreen extends Component<IReactI18nProps> {
 									color={ButtonColor.Gray}
 									background ={ButtonBackground.Tansparent}
 									undeline = {ButtonUnderline.Solid}
+									to={`/${LayoutRouter.routes.groups}`}
+									onClick={()=>{}}
 									>
 											{t(this.resources.btnGroups)}
 							</ButtonLink>
@@ -111,6 +113,8 @@ class HomeScreen extends Component<IReactI18nProps> {
 						</div>
 					</div>
 				</div>
+
+				
 			</div>
 		);
 	}
