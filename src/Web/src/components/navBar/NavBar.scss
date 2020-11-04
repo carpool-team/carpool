@@ -130,3 +130,13 @@
 		font-size: 25px;
 	}
 }
+//for iphone 5, SE nad mini
+@media only screen and (max-width: 330px) {
+	.logoContainer {
+		display: flex;
+		background-size: 95px auto !important;
+		width: 95px;
+		margin-left: 10px;
+	}
+
+}

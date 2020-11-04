@@ -34,7 +34,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 
 	private ids = {
 		hamburgeIcon: "hamburgerIcon",
-		container: "container",
+		container: "navBarContainer",
 		hamburgerMenuButtons: "hamburgerMenuButtons",
 	};
 
