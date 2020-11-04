@@ -28,6 +28,19 @@
       "register": "Zarejestruj się",
       "login": "Zaloguj się"
     },
+    "homeScreen": {
+        "quote": "Nie jedź\n sam!",
+        "join": "Dołącz do grupy",
+        "helpRides": "Wspólne przejazdy pomagają zmniejszyć ilośc samochodów na drogach i ograniczyć ilość emitowanych zanieczyszczeń.",
+        "helpGroups": "Stwórz grupę lub dołącz do już istniejącej w celu znalezienia kompanów podróży.",
+        "helpReports": "Rywalizuj w obrębie swich grup o najwięcej kilometrów przejachych razem.",
+        "btnRides": "Dowiedz się więcej o przejazdach",
+        "btnReports": "Dowiedz się więcej o raportach",
+        "btnGroups": "Dowiedz się więcej o grupach",
+        "groups": "Grupy",
+        "reports":"Raporty",
+        "rides": "Przejazdy"
+    },
     "common": {
       "groups": "Grupy",
       "passenger": "Pasażer",
