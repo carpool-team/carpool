@@ -5,7 +5,7 @@ import {ButtonBackground} from "./enums/ButtonBackground"
 import {ButtonIcon} from "./enums/ButtonIcon"
 import {ButtonUnderline} from "./enums/ButtonUndeline"
 import { getBackgroundClass, getColorClass, getIconClass, getUnderlineClass } from "./Helpers";
-
+import { from } from "rxjs";
 import "./ButtonLink.scss";
 
 interface IButtonLinkProps {
@@ -23,7 +23,7 @@ const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
 		if (props.onClick) {
 			props.onClick();
 		} else {
-			event.preventDefault();
+			// event.preventDefault();
 		}
 	};
 

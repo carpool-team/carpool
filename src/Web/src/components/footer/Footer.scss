@@ -63,7 +63,12 @@
 	font-weight: $semi-bold;
 	color: $grayDark;
 }
-
+.footerLink{
+	font-weight: $medium;
+	font-size: 16px;
+	text-decoration: none;
+	color: $grayDark;
+}
 
 
 @media only screen and (max-width: 900px) {

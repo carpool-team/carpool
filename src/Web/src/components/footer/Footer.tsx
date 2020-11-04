@@ -1,13 +1,12 @@
 import React from "react";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import LayoutRouter from "../layout/components/LayoutRouter";
-import ButtonLink from "../ui/ButtonLink/ButtonLink"
-import { ButtonColor } from "../ui/ButtonLink/enums/ButtonColor";
-import { ButtonBackground } from "../ui/ButtonLink/enums/ButtonBackground";
-import {ButtonIcon} from "../ui/ButtonLink/enums/ButtonIcon"
-import {ButtonUnderline} from "../ui/ButtonLink/enums/ButtonUndeline"
+import ButtonLink from "../ui/buttonLink/ButtonLink"
+import { ButtonColor } from "../ui/buttonLink/enums/ButtonColor";
+import { ButtonBackground } from "../ui/buttonLink/enums/ButtonBackground";
+import {ButtonIcon} from "../ui/buttonLink/enums/ButtonIcon"
+import {ButtonUnderline} from "../ui/buttonLink/enums/ButtonUndeline"
 import { from } from "rxjs";
 import "./Footer.scss";
 
@@ -23,7 +22,8 @@ class Footer extends React.Component<IFooterProps> {
 		footerFacebook: "footerSocials--facebook",
 		footerTwitter: "footerSocials--twitter",
 		footerInstagram: "footerSocials--instagram",
-		footerTitle: "footerTitle"
+		footerTitle: "footerTitle",
+		footerLink: "footerLink"
 	};
 
 	private resources = {
@@ -34,6 +34,7 @@ class Footer extends React.Component<IFooterProps> {
 		groups: "homeScreen.groups",
 		reports: "homeScreen.reports",
 		rides: "homeScreen.rides",
+		credits: "footer.credits"
 	};
 	private ids = {
 		container: "footerContainer",
@@ -60,6 +61,7 @@ class Footer extends React.Component<IFooterProps> {
 					<ButtonLink
 						color={ButtonColor.Gray}
 						background ={ButtonBackground.Gray}
+						onClick={()=>{}}
 						>
 						{t(this.resources.idea)}
 					</ButtonLink>
@@ -78,6 +80,7 @@ class Footer extends React.Component<IFooterProps> {
 					<ButtonLink
 						color={ButtonColor.Gray}
 						background ={ButtonBackground.Gray}
+						to={`/${LayoutRouter.routes.groups}`}
 						>
 						{t(this.resources.groups)}
 					</ButtonLink>
@@ -90,11 +93,22 @@ class Footer extends React.Component<IFooterProps> {
 					<ButtonLink
 						color={ButtonColor.Gray}
 						background ={ButtonBackground.Gray}
+						onClick={()=>{}}
 						>
 						{t(this.resources.reports)}
 					</ButtonLink>
 				</div>
-				<div className={this.cssClasses.footerSubContainer}></div>
+				<div className={this.cssClasses.footerSubContainer}>
+					<div className={this.cssClasses.footerTitle}>
+							{t(this.resources.credits)}
+					</div>
+					<a className= {this.cssClasses.footerLink} href="https://www.freepik.com/vectors" target="_blank" rel="noopener noreferrer">
+					Freepic
+					</a>
+					<a className= {this.cssClasses.footerLink} href="https://www.flaticon.com/packs/social-media-87" target="_blank" rel="noopener noreferrer">
+					Flaticon
+					</a>
+				</div>
 			</div>
 		);
 	}
