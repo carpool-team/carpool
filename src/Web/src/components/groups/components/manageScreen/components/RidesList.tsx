@@ -3,13 +3,8 @@ import { ButtonSize } from "../../../../ui/_oldButton/enums/ButtonSize";
 import { ButtonType } from "../../../../ui/_oldButton/enums/ButtonType";
 import { ButtonShape } from "../../../../ui/_oldButton/enums/ButtonShape";
 import { IRide } from "../../../interfaces/IRide";
-<<<<<<< HEAD
-import ButtonJoin from "../../../../ui/_oldButton/ButtonJoin";
-import { tempUserId } from "../../../../../api/useRequest";
-=======
 import ButtonJoin from "../../../../ui/_oldButton/ButtonJoin";
 import { tempUserId } from "../../../../../api/requests/RequestCore";
->>>>>>> development
 
 interface IRidesListProps {
 	getRidesCallback: () => IRide[];
