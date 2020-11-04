@@ -1,13 +1,23 @@
 @import "~scss_path/colors";
 @import "~scss_path/fonts";
 
-.buttonLink {
-  font-weight: $medium;
-  font-size: 16px;
-  text-decoration: none;
-  color: $grayDark;
-  z-index: inherit;
-  cursor: pointer;
+.button {
+
+	font-size: 18px;
+	font-weight: $medium;
+	color: $grayDark;
+	text-decoration: none;
+	padding:10px;
+	border: none;
+	outline:none;
+	z-index: inherit;
+	cursor: pointer;
+	border-radius: 25px;
+	&:hover {
+		background-color: $backgroundOnHover;
+		border-radius: 25px;
+	}
+
 	&__text {
 		&--green {
 			color: $green;
