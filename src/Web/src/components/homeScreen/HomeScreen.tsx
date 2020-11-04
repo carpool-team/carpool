@@ -24,6 +24,7 @@ class HomeScreen extends Component<IReactI18nProps> {
 		homeScreenGroupsHelp: "homeScreenGroupsHelp",
 		homeScreenGroupsBtn: "homeScreenGroupsBtn",
 		homeScreenGroupsTitle: "homeScreenGroupsTitle",
+		homeScreenOverlap: "homeScreenOverlap",
 		homeScreenGroupsImgGroup: "homeScreenGroupsImg homeScreenGroupsImg--group",
 		homeScreenGroupsImgRides: "homeScreenGroupsImg homeScreenGroupsImg--rides",
 		homeScreenGroupsImgReports: "homeScreenGroupsImg homeScreenGroupsImg--reports"
@@ -48,6 +49,7 @@ class HomeScreen extends Component<IReactI18nProps> {
 		const { t } = this.props;
 		return (
 			<div className={this.cssClasses.homeScreenContainer}>
+				<div className = {this.cssClasses.homeScreenOverlap}></div>
 				<div className={this.cssClasses.homeScreenMap}>
 					<div className={this.cssClasses.homeScreenQuote}>
 						{t(this.resources.quote)}
