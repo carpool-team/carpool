@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOs\Company\**" />
+    <Compile Remove="Queries\Company\**" />
+    <Content Remove="DTOs\Company\**" />
+    <Content Remove="Queries\Company\**" />
+    <EmbeddedResource Remove="DTOs\Company\**" />
+    <EmbeddedResource Remove="Queries\Company\**" />
+    <None Remove="DTOs\Company\**" />
+    <None Remove="Queries\Company\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoWrapper.Core" Version="4.3.1" />
     <PackageReference Include="FluentValidation" Version="9.2.2" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="5.1.1" />

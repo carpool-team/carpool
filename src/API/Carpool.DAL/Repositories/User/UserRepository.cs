@@ -18,10 +18,10 @@ namespace Carpool.DAL.Repositories.User
 		public async Task<List<Core.Models.User>> GetGroupUsersByGroupIdAsync(Guid id)
 		{
 			var users = await _context.Users
-			                       .AsNoTracking()
-			                       .Include(user => user.UserGroups)
-			                       .Where(user => user.UserGroups.Any(group => group.GroupId == id))
-			                       .ToListAsync().ConfigureAwait(false);
+			                          .AsNoTracking()
+			                          //.Include(user => user.UserGroups)
+			                          //.Where(user => user.UserGroups.Any(group => group.GroupId == id))
+			                          .ToListAsync().ConfigureAwait(false);
 
 			return users;
 		}

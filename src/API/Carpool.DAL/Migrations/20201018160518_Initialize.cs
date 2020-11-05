@@ -3,435 +3,439 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Carpool.DAL.Migrations
 {
-    public partial class Initialize : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.CreateTable(
-                name: "Companies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Companies", x => x.Id);
-                });
+	public partial class Initialize : Migration
+	{
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.CreateTable(
+				"Companies",
+				table => new
+				{
+					Id = table.Column<int>(nullable: false)
+					          .Annotation("SqlServer:Identity", "1, 1"),
+					Name = table.Column<string>(nullable: true)
+				},
+				constraints: table => { table.PrimaryKey("PK_Companies", x => x.Id); });
 
-            migrationBuilder.CreateTable(
-                name: "Vehicles",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Vehicles", x => x.Id);
-                });
+			migrationBuilder.CreateTable(
+				"Vehicles",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					Name = table.Column<string>(nullable: true)
+				},
+				constraints: table => { table.PrimaryKey("PK_Vehicles", x => x.Id); });
 
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserName = table.Column<string>(nullable: true),
-                    NormalizedUserName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    NormalizedEmail = table.Column<string>(nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    VehicleId = table.Column<Guid>(nullable: true),
-                    CompanyId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Users_Vehicles_VehicleId",
-                        column: x => x.VehicleId,
-                        principalTable: "Vehicles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+			migrationBuilder.CreateTable(
+				"Users",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					UserName = table.Column<string>(nullable: true),
+					NormalizedUserName = table.Column<string>(nullable: true),
+					Email = table.Column<string>(nullable: true),
+					NormalizedEmail = table.Column<string>(nullable: true),
+					EmailConfirmed = table.Column<bool>(nullable: false),
+					PasswordHash = table.Column<string>(nullable: true),
+					SecurityStamp = table.Column<string>(nullable: true),
+					ConcurrencyStamp = table.Column<string>(nullable: true),
+					PhoneNumber = table.Column<string>(nullable: true),
+					PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+					TwoFactorEnabled = table.Column<bool>(nullable: false),
+					LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+					LockoutEnabled = table.Column<bool>(nullable: false),
+					AccessFailedCount = table.Column<int>(nullable: false),
+					FirstName = table.Column<string>(nullable: true),
+					LastName = table.Column<string>(nullable: true),
+					VehicleId = table.Column<Guid>(nullable: true),
+					CompanyId = table.Column<int>(nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Users", x => x.Id);
+					table.ForeignKey(
+						"FK_Users_Companies_CompanyId",
+						x => x.CompanyId,
+						"Companies",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.CreateTable(
-                name: "GroupInvites",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    IsPending = table.Column<bool>(nullable: false),
-                    GroupId = table.Column<Guid>(nullable: false),
-                    InvitedUserId = table.Column<Guid>(nullable: false),
-                    InviterId = table.Column<Guid>(nullable: false),
-                    IsAccepted = table.Column<bool>(nullable: false),
-                    DateAdded = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupInvites", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GroupInvites_Users_InvitedUserId",
-                        column: x => x.InvitedUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_GroupInvites_Users_InviterId",
-                        column: x => x.InviterId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
+					table.ForeignKey(
+						"FK_Users_Vehicles_VehicleId",
+						x => x.VehicleId,
+						"Vehicles",
+						"Id",
+						onDelete: ReferentialAction.Restrict);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "Locations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Longitude = table.Column<double>(nullable: false),
-                    Latitude = table.Column<double>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Locations_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+			migrationBuilder.CreateTable(
+				"GroupInvites",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					IsPending = table.Column<bool>(nullable: false),
+					GroupId = table.Column<Guid>(nullable: false),
+					InvitedUserId = table.Column<Guid>(nullable: false),
+					InviterId = table.Column<Guid>(nullable: false),
+					IsAccepted = table.Column<bool>(nullable: false),
+					DateAdded = table.Column<DateTime>(nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_GroupInvites", x => x.Id);
+					table.ForeignKey(
+						"FK_GroupInvites_Users_InvitedUserId",
+						x => x.InvitedUserId,
+						"Users",
+						"Id");
 
-            migrationBuilder.CreateTable(
-                name: "Ratings",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    Value = table.Column<byte>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ratings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Ratings_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+					table.ForeignKey(
+						"FK_GroupInvites_Users_InviterId",
+						x => x.InviterId,
+						"Users",
+						"Id");
+				});
 
-            migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    LocationId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    Code = table.Column<string>(nullable: true),
-                    OwnerId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Groups_Locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Groups_Users_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+			migrationBuilder.CreateTable(
+				"Locations",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					Longitude = table.Column<double>(nullable: false),
+					Latitude = table.Column<double>(nullable: false),
+					Name = table.Column<string>(nullable: true),
+					UserId = table.Column<Guid>(nullable: true)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Locations", x => x.Id);
+					table.ForeignKey(
+						"FK_Locations_Users_UserId",
+						x => x.UserId,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Restrict);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "RideRequests",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    DestinationId = table.Column<Guid>(nullable: false),
-                    StartingLocationId = table.Column<Guid>(nullable: false),
-                    RequesterId = table.Column<Guid>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RideRequests", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RideRequests_Locations_DestinationId",
-                        column: x => x.DestinationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_RideRequests_Users_RequesterId",
-                        column: x => x.RequesterId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RideRequests_Locations_StartingLocationId",
-                        column: x => x.StartingLocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id");
-                });
+			migrationBuilder.CreateTable(
+				"Ratings",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					UserId = table.Column<Guid>(nullable: false),
+					Value = table.Column<byte>(nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Ratings", x => x.Id);
+					table.ForeignKey(
+						"FK_Ratings_Users_UserId",
+						x => x.UserId,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "Rides",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    DestinationId = table.Column<Guid>(nullable: false),
-                    StartingLocationId = table.Column<Guid>(nullable: false),
-                    OwnerId = table.Column<Guid>(nullable: false),
-                    GroupId = table.Column<Guid>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
-                    Price = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rides", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Rides_Locations_DestinationId",
-                        column: x => x.DestinationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Rides_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Rides_Users_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Rides_Locations_StartingLocationId",
-                        column: x => x.StartingLocationId,
-                        principalTable: "Locations",
-                        principalColumn: "Id");
-                });
+			migrationBuilder.CreateTable(
+				"Groups",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					LocationId = table.Column<Guid>(nullable: false),
+					Name = table.Column<string>(nullable: false),
+					Code = table.Column<string>(nullable: true),
+					OwnerId = table.Column<Guid>(nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Groups", x => x.Id);
+					table.ForeignKey(
+						"FK_Groups_Locations_LocationId",
+						x => x.LocationId,
+						"Locations",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.CreateTable(
-                name: "UserGroups",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(nullable: false),
-                    GroupId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserGroups", x => new { x.GroupId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_UserGroups_Groups_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_UserGroups_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
+					table.ForeignKey(
+						"FK_Groups_Users_OwnerId",
+						x => x.OwnerId,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+				});
 
-            migrationBuilder.CreateTable(
-                name: "Stops",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    LocationId = table.Column<Guid>(nullable: false),
-                    RideId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stops", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Stops_Rides_RideId",
-                        column: x => x.RideId,
-                        principalTable: "Rides",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+			migrationBuilder.CreateTable(
+				"RideRequests",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					DestinationId = table.Column<Guid>(nullable: false),
+					StartingLocationId = table.Column<Guid>(nullable: false),
+					RequesterId = table.Column<Guid>(nullable: false),
+					Date = table.Column<DateTime>(nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_RideRequests", x => x.Id);
+					table.ForeignKey(
+						"FK_RideRequests_Locations_DestinationId",
+						x => x.DestinationId,
+						"Locations",
+						"Id");
 
-            migrationBuilder.CreateTable(
-                name: "UserParticipatedRides",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(nullable: false),
-                    RideId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserParticipatedRides", x => new { x.RideId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_UserParticipatedRides_Rides_RideId",
-                        column: x => x.RideId,
-                        principalTable: "Rides",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserParticipatedRides_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
+					table.ForeignKey(
+						"FK_RideRequests_Users_RequesterId",
+						x => x.RequesterId,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupInvites_InvitedUserId",
-                table: "GroupInvites",
-                column: "InvitedUserId");
+					table.ForeignKey(
+						"FK_RideRequests_Locations_StartingLocationId",
+						x => x.StartingLocationId,
+						"Locations",
+						"Id");
+				});
 
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupInvites_InviterId",
-                table: "GroupInvites",
-                column: "InviterId");
+			migrationBuilder.CreateTable(
+				"Rides",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					DestinationId = table.Column<Guid>(nullable: false),
+					StartingLocationId = table.Column<Guid>(nullable: false),
+					OwnerId = table.Column<Guid>(nullable: false),
+					GroupId = table.Column<Guid>(nullable: false),
+					Date = table.Column<DateTime>(nullable: false),
+					Price = table.Column<double>(nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Rides", x => x.Id);
+					table.ForeignKey(
+						"FK_Rides_Locations_DestinationId",
+						x => x.DestinationId,
+						"Locations",
+						"Id");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Groups_LocationId",
-                table: "Groups",
-                column: "LocationId");
+					table.ForeignKey(
+						"FK_Rides_Groups_GroupId",
+						x => x.GroupId,
+						"Groups",
+						"Id");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Groups_OwnerId",
-                table: "Groups",
-                column: "OwnerId",
-                unique: true);
+					table.ForeignKey(
+						"FK_Rides_Users_OwnerId",
+						x => x.OwnerId,
+						"Users",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Locations_UserId",
-                table: "Locations",
-                column: "UserId");
+					table.ForeignKey(
+						"FK_Rides_Locations_StartingLocationId",
+						x => x.StartingLocationId,
+						"Locations",
+						"Id");
+				});
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Ratings_UserId",
-                table: "Ratings",
-                column: "UserId");
+			migrationBuilder.CreateTable(
+				"UserGroups",
+				table => new
+				{
+					UserId = table.Column<Guid>(nullable: false),
+					GroupId = table.Column<Guid>(nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_UserGroups", x => new {x.GroupId, x.UserId});
+					table.ForeignKey(
+						"FK_UserGroups_Groups_GroupId",
+						x => x.GroupId,
+						"Groups",
+						"Id",
+						onDelete: ReferentialAction.Restrict);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_RideRequests_DestinationId",
-                table: "RideRequests",
-                column: "DestinationId");
+					table.ForeignKey(
+						"FK_UserGroups_Users_UserId",
+						x => x.UserId,
+						"Users",
+						"Id");
+				});
 
-            migrationBuilder.CreateIndex(
-                name: "IX_RideRequests_RequesterId",
-                table: "RideRequests",
-                column: "RequesterId");
+			migrationBuilder.CreateTable(
+				"Stops",
+				table => new
+				{
+					Id = table.Column<Guid>(nullable: false),
+					UserId = table.Column<Guid>(nullable: false),
+					LocationId = table.Column<Guid>(nullable: false),
+					RideId = table.Column<Guid>(nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_Stops", x => x.Id);
+					table.ForeignKey(
+						"FK_Stops_Rides_RideId",
+						x => x.RideId,
+						"Rides",
+						"Id",
+						onDelete: ReferentialAction.Cascade);
+				});
 
-            migrationBuilder.CreateIndex(
-                name: "IX_RideRequests_StartingLocationId",
-                table: "RideRequests",
-                column: "StartingLocationId");
+			migrationBuilder.CreateTable(
+				"UserParticipatedRides",
+				table => new
+				{
+					UserId = table.Column<Guid>(nullable: false),
+					RideId = table.Column<Guid>(nullable: false)
+				},
+				constraints: table =>
+				{
+					table.PrimaryKey("PK_UserParticipatedRides", x => new {x.RideId, x.UserId});
+					table.ForeignKey(
+						"FK_UserParticipatedRides_Rides_RideId",
+						x => x.RideId,
+						"Rides",
+						"Id");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Rides_DestinationId",
-                table: "Rides",
-                column: "DestinationId");
+					table.ForeignKey(
+						"FK_UserParticipatedRides_Users_UserId",
+						x => x.UserId,
+						"Users",
+						"Id");
+				});
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Rides_GroupId",
-                table: "Rides",
-                column: "GroupId");
+			migrationBuilder.CreateIndex(
+				"IX_GroupInvites_InvitedUserId",
+				"GroupInvites",
+				"InvitedUserId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Rides_OwnerId",
-                table: "Rides",
-                column: "OwnerId");
+			migrationBuilder.CreateIndex(
+				"IX_GroupInvites_InviterId",
+				"GroupInvites",
+				"InviterId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Rides_StartingLocationId",
-                table: "Rides",
-                column: "StartingLocationId");
+			migrationBuilder.CreateIndex(
+				"IX_Groups_LocationId",
+				"Groups",
+				"LocationId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Stops_RideId",
-                table: "Stops",
-                column: "RideId");
+			migrationBuilder.CreateIndex(
+				"IX_Groups_OwnerId",
+				"Groups",
+				"OwnerId",
+				unique: true);
 
-            migrationBuilder.CreateIndex(
-                name: "IX_UserGroups_UserId",
-                table: "UserGroups",
-                column: "UserId");
+			migrationBuilder.CreateIndex(
+				"IX_Locations_UserId",
+				"Locations",
+				"UserId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_UserParticipatedRides_UserId",
-                table: "UserParticipatedRides",
-                column: "UserId");
+			migrationBuilder.CreateIndex(
+				"IX_Ratings_UserId",
+				"Ratings",
+				"UserId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_CompanyId",
-                table: "Users",
-                column: "CompanyId");
+			migrationBuilder.CreateIndex(
+				"IX_RideRequests_DestinationId",
+				"RideRequests",
+				"DestinationId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_VehicleId",
-                table: "Users",
-                column: "VehicleId",
-                unique: true,
-                filter: "[VehicleId] IS NOT NULL");
-        }
+			migrationBuilder.CreateIndex(
+				"IX_RideRequests_RequesterId",
+				"RideRequests",
+				"RequesterId");
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "GroupInvites");
+			migrationBuilder.CreateIndex(
+				"IX_RideRequests_StartingLocationId",
+				"RideRequests",
+				"StartingLocationId");
 
-            migrationBuilder.DropTable(
-                name: "Ratings");
+			migrationBuilder.CreateIndex(
+				"IX_Rides_DestinationId",
+				"Rides",
+				"DestinationId");
 
-            migrationBuilder.DropTable(
-                name: "RideRequests");
+			migrationBuilder.CreateIndex(
+				"IX_Rides_GroupId",
+				"Rides",
+				"GroupId");
 
-            migrationBuilder.DropTable(
-                name: "Stops");
+			migrationBuilder.CreateIndex(
+				"IX_Rides_OwnerId",
+				"Rides",
+				"OwnerId");
 
-            migrationBuilder.DropTable(
-                name: "UserGroups");
+			migrationBuilder.CreateIndex(
+				"IX_Rides_StartingLocationId",
+				"Rides",
+				"StartingLocationId");
 
-            migrationBuilder.DropTable(
-                name: "UserParticipatedRides");
+			migrationBuilder.CreateIndex(
+				"IX_Stops_RideId",
+				"Stops",
+				"RideId");
 
-            migrationBuilder.DropTable(
-                name: "Rides");
+			migrationBuilder.CreateIndex(
+				"IX_UserGroups_UserId",
+				"UserGroups",
+				"UserId");
 
-            migrationBuilder.DropTable(
-                name: "Groups");
+			migrationBuilder.CreateIndex(
+				"IX_UserParticipatedRides_UserId",
+				"UserParticipatedRides",
+				"UserId");
 
-            migrationBuilder.DropTable(
-                name: "Locations");
+			migrationBuilder.CreateIndex(
+				"IX_Users_CompanyId",
+				"Users",
+				"CompanyId");
 
-            migrationBuilder.DropTable(
-                name: "Users");
+			migrationBuilder.CreateIndex(
+				"IX_Users_VehicleId",
+				"Users",
+				"VehicleId",
+				unique: true,
+				filter: "[VehicleId] IS NOT NULL");
+		}
 
-            migrationBuilder.DropTable(
-                name: "Companies");
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropTable(
+				"GroupInvites");
 
-            migrationBuilder.DropTable(
-                name: "Vehicles");
-        }
-    }
+			migrationBuilder.DropTable(
+				"Ratings");
+
+			migrationBuilder.DropTable(
+				"RideRequests");
+
+			migrationBuilder.DropTable(
+				"Stops");
+
+			migrationBuilder.DropTable(
+				"UserGroups");
+
+			migrationBuilder.DropTable(
+				"UserParticipatedRides");
+
+			migrationBuilder.DropTable(
+				"Rides");
+
+			migrationBuilder.DropTable(
+				"Groups");
+
+			migrationBuilder.DropTable(
+				"Locations");
+
+			migrationBuilder.DropTable(
+				"Users");
+
+			migrationBuilder.DropTable(
+				"Companies");
+
+			migrationBuilder.DropTable(
+				"Vehicles");
+		}
+	}
 }

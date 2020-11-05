@@ -14,6 +14,7 @@ namespace Carpool.RestAPI.Commands.Ride
 			ParticipantsIds = participantsIds;
 			GroupId = groupId;
 			Date = date;
+			Date = date;
 			Price = price;
 		}
 

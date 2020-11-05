@@ -12,24 +12,23 @@ namespace Carpool.Core.Models
 
 		public string LastName { get; set; }
 
-		public List<Location> Locations { get; set; }
+		//public List<Location> Locations { get; set; }
 
-		public List<UserGroup> UserGroups { get; set; }
+		//public List<UserGroup> UserGroups { get; set; }
 
-		public List<RideRequest> RideRequests { get; set; }
+		//public List<RideRequest> RideRequests { get; set; }
 
-		public List<Ride> CreatedRides { get; set; }
+		//public List<Ride> CreatedRides { get; set; }
 
-		public List<UserParticipatedRide> ParticipatedRides { get; set; }
+        //public ICollection<UserParticipatedRide> ParticipatedRides { get; set; }
 
-		public List<Rating> Ratings { get; set; }
+        public List<Rating> Ratings { get; set; }
 
 		public Guid? VehicleId { get; set; }
 		public Vehicle Vehicle { get; set; }
+		
+		//public virtual ICollection<GroupInvite> ReceivedGroupInvites { get; set; }
 
-		public List<GroupInvite> GroupInvites { get; set; }
-
-		public List<GroupInvite> SentGroupInvites { get; set; }
-		public int? CompanyId { get; set; }
-	}
+		//public virtual ICollection<GroupInvite> SentGroupInvites { get; set; }
+    }
 }

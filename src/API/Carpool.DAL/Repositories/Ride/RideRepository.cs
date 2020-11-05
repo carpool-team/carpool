@@ -50,15 +50,16 @@ namespace Carpool.DAL.Repositories.Ride
 			                     .OrderBy(ride => ride.Date).ToListAsync(cancellationToken).ConfigureAwait(false);
 		}
 
-		public async Task<IEnumerable<Core.Models.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(
-			Guid userId,
+		public async Task<IEnumerable<Core.Models.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(Guid userId,
 			bool past = false,
 			CancellationToken cancellationToken = default)
 			=> await _context.Rides.Include(x => x.Participants).AsNoTracking()
-			                 .Where(x => x.Participants.Any(y => y.UserId == userId) && past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now).ToListAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+			                 .Where(x => x.Participants.Any(y => y.UserId == userId) && past ?
+				                             x.Date <= DateTime.Now :
+				                             x.Date >= DateTime.Now).ToListAsync(cancellationToken)
+			                 .ConfigureAwait(false);
 
-		public async Task<IEnumerable<Core.Models.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(
-			Guid userId,
+		public async Task<IEnumerable<Core.Models.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(Guid userId,
 			bool past,
 			CancellationToken cancellationToken)
 			=> await _context.Rides.AsNoTracking()

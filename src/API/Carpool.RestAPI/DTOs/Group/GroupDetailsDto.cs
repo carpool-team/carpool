@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Carpool.Core.Models;
 using Carpool.RestAPI.DTOs.RideDTOs;
 using Carpool.RestAPI.DTOs.UserDTOs;
@@ -9,7 +8,12 @@ namespace Carpool.RestAPI.DTOs.GroupDTOs
 {
 	public class GroupDetailsDto
 	{
-		public GroupDetailsDto(Guid groupId, Location location, List<RideMinimalDto> rides, string name, string code, User owner)
+		public GroupDetailsDto(Guid groupId,
+		                       Location location,
+		                       List<RideMinimalDto> rides,
+		                       string name,
+		                       string code,
+		                       User owner)
 		{
 			GroupId = groupId;
 			Location = location;
@@ -25,6 +29,5 @@ namespace Carpool.RestAPI.DTOs.GroupDTOs
 		public string Name { get; set; }
 		public string Code { get; set; }
 		public IndexUserDto Owner { get; set; }
-		
 	}
 }

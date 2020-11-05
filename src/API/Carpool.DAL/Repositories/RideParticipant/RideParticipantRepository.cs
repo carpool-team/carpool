@@ -16,9 +16,9 @@ namespace Carpool.DAL.Repositories.RideParticipant
 		public RideParticipantRepository(CarpoolDbContext context)
 			=> _context = context;
 
-		public async Task<List<UserParticipatedRide>> GetParticipantsByRideId(
-			Guid rideId,
-			CancellationToken cancellationToken = default)
+		public async Task<List<UserParticipatedRide>> GetParticipantsByRideId(Guid rideId,
+		                                                                      CancellationToken cancellationToken =
+			                                                                      default)
 			=> await _context.UserParticipatedRides.Where(x => x.RideId == rideId).ToListAsync(cancellationToken)
 			                 .ConfigureAwait(false);
 

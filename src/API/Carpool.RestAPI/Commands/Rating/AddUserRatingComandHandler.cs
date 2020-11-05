@@ -22,9 +22,9 @@ namespace Carpool.RestAPI.Commands.Rating
 		public async Task<Core.Models.Rating> Handle(AddUserRatingCommand request, CancellationToken cancellationToken)
 		{
 			var userId = (Guid) request.UserId;
-			var user = await _userRepository.GetByIdAsNoTrackingAsync((Guid) userId, cancellationToken).ConfigureAwait(false);
+			var user = await _userRepository.GetByIdAsNoTrackingAsync(userId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));
-			var userRating = new Core.Models.Rating()
+			var userRating = new Core.Models.Rating
 			{
 				UserId = userId,
 				Value = request.Value

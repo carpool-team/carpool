@@ -7,12 +7,12 @@ namespace Carpool.Core.Models
 {
 	public class Group : BaseEntity<Guid>
 	{
-		public List<UserGroup> UserGroups { get; set; }
+		//public List<UserGroup> UserGroups { get; set; }
 
-		public Guid LocationId { get; set; }
+		public Guid? LocationId { get; set; }
 		public Location Location { get; set; }
 
-		public List<Ride> Rides { get; set; }
+		//public List<Ride> Rides { get; set; }
 
 		public string Name { get; set; }
 

@@ -14,7 +14,10 @@ namespace Carpool.DAL.Repositories.Rating
 		{
 		}
 
-		public async Task<IEnumerable<Core.Models.Rating>> GetUserRatingsByUserIdAsNoTrackingAsync(Guid userId, CancellationToken cancellationToken)
-			=> await _context.Ratings.AsNoTracking().Where(x => x.UserId == userId).ToListAsync(cancellationToken).ConfigureAwait(false);
+		public async Task<IEnumerable<Core.Models.Rating>> GetUserRatingsByUserIdAsNoTrackingAsync(
+			Guid userId,
+			CancellationToken cancellationToken)
+			=> await _context.Ratings.AsNoTracking().Where(x => x.UserId == userId).ToListAsync(cancellationToken)
+			                 .ConfigureAwait(false);
 	}
 }

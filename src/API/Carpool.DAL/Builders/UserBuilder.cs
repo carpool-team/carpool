@@ -17,42 +17,33 @@ namespace Carpool.DAL.Builders
 
 			builder.HasMany(x => x.Ratings)
 			       .WithOne()
-			       .HasForeignKey(r => r.UserId).OnDelete(DeleteBehavior.ClientNoAction);
-
-
-			builder.HasMany(x => x.CreatedRides)
-			       .WithOne()
-			       .HasForeignKey(r => r.OwnerId).OnDelete(DeleteBehavior.ClientNoAction);
-
-
-			builder.HasMany(x => x.GroupInvites)
-			       .WithOne()
-			       .HasForeignKey(i => i.InvitedUserId)
-			       .OnDelete(DeleteBehavior.ClientNoAction);
-
-			builder.HasMany(x => x.ParticipatedRides)
-			       .WithOne()
 			       .HasForeignKey(r => r.UserId)
-			       .OnDelete(DeleteBehavior.ClientNoAction);
+			       .OnDelete(DeleteBehavior.Cascade);
 
-			builder.HasMany(x => x.RideRequests)
+          //  builder.HasMany(x => x.CreatedRides)
+			       //.WithOne()
+			       //.HasForeignKey(r => r.OwnerId)
+          //         .OnDelete(DeleteBehavior.Cascade);
+
+          //  builder.HasMany(x => x.ParticipatedRides)
+			       //.WithOne()
+			       //.HasForeignKey(r => r.UserId)
+			       //.OnDelete(DeleteBehavior.Cascade);
+
+			//builder.HasMany(x => x.RideRequests)
+			//       .WithOne()
+			//       .HasForeignKey(r => r.RequesterId)
+			//       .OnDelete(DeleteBehavior.Cascade);
+
+          //  builder.HasMany(x => x.UserGroups)
+			       //.WithOne()
+			       //.HasForeignKey(ug => ug.UserId)
+			       //.OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.Vehicle)
 			       .WithOne()
-			       .HasForeignKey(r => r.RequesterId).OnDelete(DeleteBehavior.ClientNoAction);
-
-
-			builder.HasMany(x => x.UserGroups)
-			       .WithOne()
-			       .HasForeignKey(ug => ug.UserId)
-			       .OnDelete(DeleteBehavior.ClientNoAction);
-
-			builder.HasMany(x => x.SentGroupInvites)
-			       .WithOne()
-			       .HasForeignKey(i => i.InviterId)
-			       .OnDelete(DeleteBehavior.ClientNoAction);
-
-			builder.HasOne(x => x.Vehicle)
-			       .WithOne()
-			       .HasForeignKey<User>(v => v.VehicleId).OnDelete(DeleteBehavior.ClientNoAction);
+			       .HasForeignKey<User>(v => v.VehicleId)
+			       .OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

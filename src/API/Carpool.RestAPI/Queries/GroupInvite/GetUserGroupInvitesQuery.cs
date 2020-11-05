@@ -9,9 +9,7 @@ namespace Carpool.RestAPI.Queries.GroupInvite
 	{
 		[JsonConstructor]
 		public GetUserGroupInvitesQuery(Guid userId)
-		{
-			UserId = userId;
-		}
+			=> UserId = userId;
 
 		public Guid UserId { get; set; }
 	}

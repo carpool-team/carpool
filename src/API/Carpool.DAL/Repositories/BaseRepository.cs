@@ -55,7 +55,7 @@ namespace Carpool.DAL.Repositories
 			var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(x => id.Equals(x.Id)).ConfigureAwait(false);
 			_context.Set<TEntity>().Remove(entity);
 		}
-		
+
 		public async Task SaveAsync(CancellationToken cancellationToken = default)
 		{
 			await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

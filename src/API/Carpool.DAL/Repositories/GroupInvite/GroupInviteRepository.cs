@@ -33,9 +33,9 @@ namespace Carpool.DAL.Repositories.GroupInvite
 		public async Task<List<Core.Models.GroupInvite>> GetPartAsync(CancellationToken cancellationToken)
 			=> await _context.GroupInvites.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-		public async Task<List<Core.Models.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(
-			Guid userId,
+		public async Task<List<Core.Models.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(Guid userId,
 			CancellationToken cancellationToken)
-			=> await _context.GroupInvites.AsNoTracking().Where(x => x.InvitedUserId == userId).OrderByDescending(x => x.DateAdded).ToListAsync(cancellationToken).ConfigureAwait(false);
+			=> await _context.GroupInvites.AsNoTracking().Where(x => x.InvitedUserId == userId)
+			                 .OrderByDescending(x => x.DateAdded).ToListAsync(cancellationToken).ConfigureAwait(false);
 	}
 }

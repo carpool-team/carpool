@@ -8,7 +8,7 @@ namespace Carpool.RestAPI.Controllers
 	public class HomeController : ControllerBase
 	{
 		[HttpGet]
-		public async Task<ActionResult> Get()
+		public ActionResult Get()
 			=> Ok("Server is running");
 	}
 }

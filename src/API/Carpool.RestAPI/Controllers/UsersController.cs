@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Carpool.Core.Models;
@@ -9,7 +8,6 @@ using Carpool.RestAPI.Commands.Rating;
 using Carpool.RestAPI.Commands.User;
 using Carpool.RestAPI.DTOs.GroupDTOs;
 using Carpool.RestAPI.DTOs.RideDTOs;
-using Carpool.RestAPI.DTOs.UserDTOs;
 using Carpool.RestAPI.Queries.Group;
 using Carpool.RestAPI.Queries.GroupInvite;
 using Carpool.RestAPI.Queries.Rating;
@@ -17,7 +15,6 @@ using Carpool.RestAPI.Queries.Ride;
 using Carpool.RestAPI.Queries.User;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.RestAPI.Controllers
 {
@@ -49,7 +46,7 @@ namespace Carpool.RestAPI.Controllers
 		{
 			var request = new GetUserByIdQuery(id);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
-			
+
 			return Ok(response);
 		}
 
@@ -115,7 +112,7 @@ namespace Carpool.RestAPI.Controllers
 			var request = new GetUserGroupsQuery(userId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
-			
+
 			return Ok(response);
 		}
 
@@ -138,7 +135,7 @@ namespace Carpool.RestAPI.Controllers
 		{
 			request.UserId = userId;
 			var response = await _mediator.Send(request).ConfigureAwait(false);
-			
+
 			return Ok(response);
 		}
 
@@ -147,8 +144,7 @@ namespace Carpool.RestAPI.Controllers
 		#region Rides
 
 		[HttpGet("{userId}/rides/participated")]
-		public async Task<ActionResult<List<IndexRideDTO>>> GetUserParticipatedRides(
-			[FromRoute] Guid userId,
+		public async Task<ActionResult<List<IndexRideDTO>>> GetUserParticipatedRides([FromRoute] Guid userId,
 			[FromQuery] bool past = false)
 		{
 			var request = new GetUserParticipatedRidesQuery(userId, past);
@@ -158,16 +154,15 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		[HttpGet("{userId}/rides/owned")]
-		public async Task<IActionResult> GetUserOwnedRides(
-			[FromRoute] Guid userId,
-			[FromQuery] bool past = false)
+		public async Task<IActionResult> GetUserOwnedRides([FromRoute] Guid userId,
+		                                                   [FromQuery] bool past = false)
 		{
 			var request = new GetUserOwnedRidesQuery(userId, past);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return Ok(response);
 		}
-		
+
 		#endregion Rides
 	}
 }

@@ -10,17 +10,14 @@ namespace Carpool.RestAPI.Commands.User
 		private readonly IUserRepository _repository;
 
 		public AddUserCommandHandler(IUserRepository repository)
-		{
-			_repository = repository;
-		}
+			=> _repository = repository;
 
 		public async Task<Core.Models.User> Handle(AddUserCommand request, CancellationToken cancellationToken)
 		{
-			var user = new Core.Models.User()
+			var user = new Core.Models.User
 			{
 				FirstName = request.FirstName,
 				LastName = request.LastName,
-				CompanyId = request.CompanyId
 			};
 
 			await _repository.AddAsync(user, cancellationToken).ConfigureAwait(false);
