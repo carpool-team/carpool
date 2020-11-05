@@ -14,11 +14,11 @@ namespace Carpool.RestAPI.Commands.GroupInvite
 			=> _repository = repository;
 
 		public async Task<Guid> Handle(AddGroupInviteCommand request,
-		                                                  CancellationToken cancellationToken)
+		                               CancellationToken cancellationToken)
 		{
 			var groupInvite = new Core.Models.GroupInvite
 			{
-				InviterId = request.InviterId,
+				InvitingUserId = request.InviterId,
 				InvitedUserId = request.InvitedUserId,
 				IsAccepted = false,
 				DateAdded = DateTime.Now,

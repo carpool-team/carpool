@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Carpool.DAL.Repositories.GroupInvite;
-using Carpool.RestAPI.DTOs.GroupDTOs;
 using Carpool.RestAPI.DTOs.GroupInvitesDTOs;
 using MediatR;
 
@@ -20,7 +19,7 @@ namespace Carpool.RestAPI.Queries.GroupInvite
 			=> _repository = repository;
 
 		public async Task<IEnumerable<IndexGroupInviteDTO>> Handle(GetGroupInvitesQuery request,
-		                                                                       CancellationToken cancellationToken)
+		                                                           CancellationToken cancellationToken)
 		{
 			var groupInvites = await _repository.GetPartAsync(cancellationToken).ConfigureAwait(false);
 			try
@@ -34,6 +33,6 @@ namespace Carpool.RestAPI.Queries.GroupInvite
 			{
 				throw new ApiException(ex);
 			}
-		}	
+		}
 	}
 }

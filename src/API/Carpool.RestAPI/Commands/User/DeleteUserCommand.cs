@@ -8,9 +8,7 @@ namespace Carpool.RestAPI.Commands.User
 	{
 		[JsonConstructor]
 		public DeleteUserCommand(Guid userId)
-		{
-			UserId = userId;
-		}
+			=> UserId = userId;
 
 
 		public Guid UserId { get; set; }

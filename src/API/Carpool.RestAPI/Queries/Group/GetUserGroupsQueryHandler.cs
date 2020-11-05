@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Carpool.DAL.Repositories.Group;
@@ -12,14 +11,14 @@ namespace Carpool.RestAPI.Queries.Group
 		private readonly IGroupRepository _repository;
 
 		public GetUserGroupsQueryHandler(IGroupRepository repository)
-		{
-			_repository = repository;
-		}
+			=> _repository = repository;
 
 		public async Task<IEnumerable<Core.Models.Group>> Handle(GetUserGroupsQuery request,
-		                                                   CancellationToken cancellationToken)
+		                                                         CancellationToken cancellationToken)
 		{
-			var userGroups = await _repository.GetGroupsByUserIdAsNoTrackingAsync(request.UserId, cancellationToken).ConfigureAwait(false);
+			var userGroups = await _repository.GetGroupsByUserIdAsNoTrackingAsync(request.UserId, cancellationToken)
+			                                  .ConfigureAwait(false);
+
 			return userGroups;
 		}
 	}

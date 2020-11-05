@@ -1,11 +1,16 @@
 ﻿using System;
-using Carpool.RestAPI.DTOs.GroupDTOs;
 
 namespace Carpool.RestAPI.DTOs.GroupInvitesDTOs
 {
 	public class IndexGroupInviteDTO
 	{
-		public IndexGroupInviteDTO(Guid id, bool isPending, bool isAccepted, Guid groupId, string groupName, Guid invitedUserId, DateTime dateAdded)
+		public IndexGroupInviteDTO(Guid id,
+		                           bool isPending,
+		                           bool isAccepted,
+		                           Guid groupId,
+		                           string groupName,
+		                           Guid invitedUserId,
+		                           DateTime dateAdded)
 		{
 			Id = id;
 			IsPending = isPending;

@@ -13,8 +13,6 @@ namespace Carpool.RestAPI.Tests.Fixtures
 	public class DatabaseFixture : IDisposable
 	{
 		//Repeat count has to be even, because odd values cause one user to invite himself to group owned by him
-		private const int repeatCount = 4;
-		private const int iterRepeatCount = repeatCount - 1;
 		public readonly CarpoolDbContextFactory ContextFactory;
 		private readonly DbContextOptions<CarpoolDbContext> _options;
 		public CarpoolDbContext DbContext;
@@ -27,7 +25,6 @@ namespace Carpool.RestAPI.Tests.Fixtures
 			ContextFactory = new CarpoolDbContextFactory(_options);
 			DbContext = ContextFactory.GetNewDbContext();
 
-			var companies = fixture.CreateMany<Company>().ToList();
 
 			var locations = fixture.CreateMany<Location>().ToList();
 
@@ -40,7 +37,6 @@ namespace Carpool.RestAPI.Tests.Fixtures
 			var users = new List<User>();
 			for (var i = 0; i <= iterRepeatCount; i++)
 				users.Add(fixture.Build<User>().With(x => x.VehicleId, vehicles[i].Id)
-				                 .With(x => x.CompanyId, companies[i].Id)
 				                 .Create());
 
 			var groups = new List<Group>();
@@ -54,7 +50,7 @@ namespace Carpool.RestAPI.Tests.Fixtures
 				                        .With(x => x.InvitedUserId, users[i].Id)
 				                        .With(x => x.InvitedUserId, groups[iterRepeatCount - i].OwnerId)
 				                        .With(x => x.GroupId, groups[iterRepeatCount - i].Id)
-				                        .With(x => x.IsAccepted, i%2 < 1).Create());
+				                        .With(x => x.IsAccepted, i % 2 < 1).Create());
 
 			var userGroups = new List<UserGroup>();
 			for (var i = 0; i < iterRepeatCount; i++)
@@ -63,7 +59,7 @@ namespace Carpool.RestAPI.Tests.Fixtures
 
 			foreach (var groupInvite in groupInvites)
 				if (!groupInvite.IsPending && groupInvite.IsAccepted)
-					userGroups.Add(new UserGroup() {UserId = groupInvite.InvitedUserId, GroupId = groupInvite.GroupId});
+					userGroups.Add(new UserGroup {UserId = groupInvite.InvitedUserId, GroupId = groupInvite.GroupId});
 
 			var ratings = new List<Rating>();
 			for (var i = 0; i < 2 * repeatCount; i++)
@@ -105,9 +101,6 @@ namespace Carpool.RestAPI.Tests.Fixtures
 				                            .Create());
 
 
-			companies.ForEach(x => x.Users = null);
-			DbContext.Companies.AddRange(companies);
-
 			DbContext.Locations.AddRange(locations);
 
 			DbContext.Vehicles.AddRange(vehicles);
@@ -118,18 +111,18 @@ namespace Carpool.RestAPI.Tests.Fixtures
 			users.ForEach(x => x.CreatedRides = null);
 			users.ForEach(x => x.ParticipatedRides = null);
 			users.ForEach(x => x.RideRequests = null);
-			users.ForEach(x => x.UserGroups = null);
-			users.ForEach(x => x.SentGroupInvites = null);
+			//users.ForEach(x => x.UserGroups = null);
+			//users.ForEach(x => x.SentGroupInvites = null);
 			DbContext.Users.AddRange(users);
 
 			groups.ForEach(x => x.Location = null);
 			groups.ForEach(x => x.Owner = null);
-			groups.ForEach(x => x.Rides = null);
+			//groups.ForEach(x => x.Rides = null);
 			groups.ForEach(x => x.UserGroups = null);
 			DbContext.Groups.AddRange(groups);
 			DbContext.GroupInvites.AddRange(groupInvites);
 			DbContext.UserGroups.AddRange(userGroups);
-			
+
 			DbContext.Ratings.AddRange(ratings);
 
 			rides.ForEach(x => x.Participants = null);
@@ -141,9 +134,9 @@ namespace Carpool.RestAPI.Tests.Fixtures
 			rideRequests.ForEach(x => x.Destination = null);
 			rideRequests.ForEach(x => x.StartingLocation = null);
 			DbContext.RideRequests.AddRange(rideRequests);
-			
+
 			DbContext.Stops.AddRange(stops);
-			
+
 			DbContext.UserParticipatedRides.AddRange(rideParticipants);
 			DbContext.SaveChanges();
 			var x = DbContext.UserGroups.ToList();
@@ -163,8 +156,11 @@ namespace Carpool.RestAPI.Tests.Fixtures
 			DbContext.RemoveRange(DbContext.Users);
 			DbContext.RemoveRange(DbContext.Vehicles);
 			DbContext.RemoveRange(DbContext.Locations);
-			DbContext.RemoveRange(DbContext.Companies);
 			DbContext.SaveChanges();
 		}
+
+		//Repeat count has to be even, because odd values cause one user to invite himself to group owned by him
+		private const int repeatCount = 4;
+		private const int iterRepeatCount = repeatCount - 1;
 	}
 }

@@ -1,15 +1,13 @@
 ﻿using System;
 using Carpool.Core.Models;
-using Carpool.RestAPI.DTOs.UserDTOs;
 
 namespace Carpool.RestAPI.DTOs.RideDTOs
 {
 	public class RideMinimalDto
 	{
-		public RideMinimalDto(Guid rideId, bool isUserParticipant, DateTime date, Location destination) : this(rideId, date, destination)
-		{
-			IsUserParticipant = isUserParticipant;
-		}
+		public RideMinimalDto(Guid rideId, bool isUserParticipant, DateTime date, Location destination) : this(rideId,
+			date, destination)
+			=> IsUserParticipant = isUserParticipant;
 
 		public RideMinimalDto(Guid rideId, DateTime date, Location destination)
 		{
@@ -22,6 +20,5 @@ namespace Carpool.RestAPI.DTOs.RideDTOs
 		public bool IsUserParticipant { get; set; }
 		public DateTime Date { get; set; }
 		public Location Destination { get; set; }
-
 	}
 }

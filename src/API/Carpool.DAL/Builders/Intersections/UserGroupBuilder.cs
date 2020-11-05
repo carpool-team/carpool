@@ -12,6 +12,16 @@ namespace Carpool.DAL.Builders.Intersections
 			_ = builder ?? throw new NullReferenceException(nameof(builder));
 
 			builder.HasKey(x => new {x.GroupId, x.UserId});
-		}
+
+            builder.HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(x => x.Group)
+                .WithMany()
+                .HasForeignKey(x => x.GroupId)
+                .OnDelete(DeleteBehavior.NoAction);
+        }
 	}
 }

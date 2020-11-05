@@ -11,9 +11,7 @@ namespace Carpool.RestAPI.Commands.User
 		private readonly IUserRepository _repository;
 
 		public DeleteUserCommandHandler(IUserRepository repository)
-		{
-			_repository = repository;
-		}
+			=> _repository = repository;
 
 		public async Task<Core.Models.User> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
 		{

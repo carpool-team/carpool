@@ -17,6 +17,6 @@ namespace Carpool.DAL.Builders
 
 			builder.Property(x => x.Latitude).IsRequired();
 			builder.Property(x => x.Longitude).IsRequired();
-        }
+		}
 	}
 }

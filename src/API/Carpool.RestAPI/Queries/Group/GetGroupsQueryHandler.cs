@@ -15,11 +15,12 @@ namespace Carpool.RestAPI.Queries.Group
 		public GetGroupsQueryHandler(IGroupRepository repository)
 			=> _repository = repository;
 
-		public async Task<IEnumerable<IndexGroupDTO>> Handle(GetGroupsQuery request, CancellationToken cancellationToken)
+		public async Task<IEnumerable<IndexGroupDTO>> Handle(GetGroupsQuery request,
+		                                                     CancellationToken cancellationToken)
 		{
 			var groups = await _repository.GetRangeAsNoTrackingAsync(request.Count, request.Page).ConfigureAwait(false);
 			var groupDtos = groups.Select(x
-				=> new IndexGroupDTO(x.Id, x.Location, x.Name, x.Rides.Count, x.UserGroups.Count));
+				=> new IndexGroupDTO(x.Id, x.Location, x.Name, 1));
 
 			return groupDtos;
 		}
