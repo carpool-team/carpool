@@ -3,10 +3,10 @@ import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import LayoutRouter from "../layout/components/LayoutRouter";
 import ButtonLink from "../ui/buttonLink/ButtonLink"
-import { ButtonColor } from "../ui/buttonLink/enums/ButtonColor";
-import { ButtonBackground } from "../ui/buttonLink/enums/ButtonBackground";
-import {ButtonIcon} from "../ui/buttonLink/enums/ButtonIcon"
-import {ButtonUnderline} from "../ui/buttonLink/enums/ButtonUndeline"
+import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
+import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
+import {ButtonLinkIcon} from "../ui/buttonLink/enums/ButtonLinkIcon"
+import {ButtonLinkUnderline} from "../ui/buttonLink/enums/ButtonLinkUndeline"
 import { from } from "rxjs";
 import "./Footer.scss";
 
@@ -59,15 +59,15 @@ class Footer extends React.Component<IFooterProps> {
 						{t(this.resources.about)}
 					</div>
 					<ButtonLink
-						color={ButtonColor.Gray}
-						background ={ButtonBackground.Gray}
+						color={ButtonLinkColor.Gray}
+						background ={ButtonLinkBackground.Gray}
 						onClick={()=>{}}
 						>
 						{t(this.resources.idea)}
 					</ButtonLink>
 					<ButtonLink
-						color={ButtonColor.Gray}
-						background ={ButtonBackground.Gray}
+						color={ButtonLinkColor.Gray}
+						background ={ButtonLinkBackground.Gray}
 						>
 						{t(this.resources.environment)}
 					</ButtonLink>
@@ -78,21 +78,21 @@ class Footer extends React.Component<IFooterProps> {
 						{t(this.resources.services)}
 					</div>
 					<ButtonLink
-						color={ButtonColor.Gray}
-						background ={ButtonBackground.Gray}
+						color={ButtonLinkColor.Gray}
+						background ={ButtonLinkBackground.Gray}
 						to={`/${LayoutRouter.routes.groups}`}
 						>
 						{t(this.resources.groups)}
 					</ButtonLink>
 					<ButtonLink
-						color={ButtonColor.Gray}
-						background ={ButtonBackground.Gray}
+						color={ButtonLinkColor.Gray}
+						background ={ButtonLinkBackground.Gray}
 						>
 						{t(this.resources.rides)}
 					</ButtonLink>
 					<ButtonLink
-						color={ButtonColor.Gray}
-						background ={ButtonBackground.Gray}
+						color={ButtonLinkColor.Gray}
+						background ={ButtonLinkBackground.Gray}
 						onClick={()=>{}}
 						>
 						{t(this.resources.reports)}

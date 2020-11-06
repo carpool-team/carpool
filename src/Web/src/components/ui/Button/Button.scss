@@ -10,8 +10,10 @@
 	padding:10px;
 	border: none;
 	outline:none;
+	width: 140px;
 	z-index: inherit;
 	cursor: pointer;
+	text-align: center;
 	border-radius: 25px;
 	&:hover {
 		background-color: $backgroundOnHover;
@@ -31,6 +33,9 @@
 		&--white {
 			color: $white;
 		}
+		&--black{
+			color: $black;
+		}
 	}
 	&__background{
 		&--transparent{
@@ -41,6 +46,9 @@
 		}
 		&--blue {
 			background-color: $blue;
+			&:hover {
+				background-color: $blueOnHover;
+			}
 		}
 		&--green {
 			background-color: $green;

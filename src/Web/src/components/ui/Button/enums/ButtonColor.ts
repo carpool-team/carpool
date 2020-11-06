@@ -3,5 +3,6 @@ export enum ButtonColor {
   Green,
 	Blue,
 	Gray,
-	White
+	White,
+	Black
 }

@@ -7,13 +7,15 @@ export const getColorClass: (type?: ButtonColor) => string = (color) => {
 		case ButtonColor.Green:
 			return "button__text--green";
 		case ButtonColor.Blue:
-			return "button__background--blue";
+			return "button__text--blue";
 		case ButtonColor.Gray:
-			return "button__background--gray";
+			return "button__text--gray";
 		case ButtonColor.White:
-			return "button__background--white"
+			return "button__text--white"
+		case ButtonColor.Black:
+				return "button__text--black"
 		default:
-			return "button__background--gray";
+			return "button__text--gray";
 	}
 };
 

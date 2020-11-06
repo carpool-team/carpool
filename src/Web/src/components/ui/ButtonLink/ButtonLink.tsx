@@ -1,20 +1,22 @@
 import React, { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
-import { ButtonColor } from "./enums/ButtonColor";
-import {ButtonBackground} from "./enums/ButtonBackground"
-import {ButtonIcon} from "./enums/ButtonIcon"
-import {ButtonUnderline} from "./enums/ButtonUndeline"
-import { getBackgroundClass, getColorClass, getIconClass, getUnderlineClass } from "./Helpers";
+import { ButtonLinkColor } from "./enums/ButtonLinkColor";
+import {ButtonLinkBackground} from "./enums/ButtonLinkBackground"
+import {ButtonLinkIcon} from "./enums/ButtonLinkIcon"
+import {ButtonLinkUnderline} from "./enums/ButtonLinkUndeline"
+import {ButtonLinkStyle} from "./enums/ButtonLinkStyle"
+import { getBackgroundClass, getColorClass, getIconClass, getUnderlineClass,getStyleClass } from "./Helpers";
 import { from } from "rxjs";
 import "./ButtonLink.scss";
 
 interface IButtonLinkProps {
-	color?:ButtonColor;
-	background?:ButtonBackground;
-	icon?:ButtonIcon;
-	undeline?:ButtonUnderline;
+	color?:ButtonLinkColor;
+	background?:ButtonLinkBackground;
+	icon?:ButtonLinkIcon;
+	undeline?:ButtonLinkUnderline;
 	onClick?: () => void;
 	to?:string;
+	style?:ButtonLinkStyle;
 }
 
 const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
@@ -33,7 +35,8 @@ const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
 		getColorClass(props.color),
 		getBackgroundClass(props.background),
 		getIconClass(props.icon),
-		getUnderlineClass(props.undeline)
+		getUnderlineClass(props.undeline),
+		getStyleClass(props.style)
 	].join(" ");
 
 	return (

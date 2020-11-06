@@ -1,51 +1,62 @@
 import { from } from "rxjs";
-import { ButtonColor } from "./enums/ButtonColor";
-import {ButtonBackground} from "./enums/ButtonBackground"
-import {ButtonIcon} from "./enums/ButtonIcon"
-import {ButtonUnderline} from "./enums/ButtonUndeline"
+import { ButtonLinkColor } from "./enums/ButtonLinkColor";
+import {ButtonLinkBackground} from "./enums/ButtonLinkBackground"
+import {ButtonLinkIcon} from "./enums/ButtonLinkIcon"
+import {ButtonLinkUnderline} from "./enums/ButtonLinkUndeline"
+import {ButtonLinkStyle} from "./enums/ButtonLinkStyle"
 
-export const getColorClass: (type?: ButtonColor) => string = (color) => {
+export const getColorClass: (type?: ButtonLinkColor) => string = (color) => {
 	switch (color) {
-		case ButtonColor.Green:
+		case ButtonLinkColor.Green:
 			return "buttonLink__text--green";
-		case ButtonColor.Blue:
-			return "buttonLink__background--blue";
-		case ButtonColor.Gray:
-			return "buttonLink__background--gray";
-		case ButtonColor.White:
-			return "buttonLink__background--white"
+		case ButtonLinkColor.Blue:
+			return "buttonLink__text--blue";
+		case ButtonLinkColor.Gray:
+			return "buttonLink__text--gray";
+		case ButtonLinkColor.White:
+			return "buttonLink__text--white"
 		default:
-			return "buttonLink__background--gray";
+			return "buttonLink__text--gray";
 	}
 };
 
-export const getBackgroundClass: (type?: ButtonBackground) => string = (background) => {
+export const getBackgroundClass: (type?: ButtonLinkBackground) => string = (background) => {
 	switch (background) {
-		case ButtonBackground.Tansparent:
+		case ButtonLinkBackground.Tansparent:
 			return "buttonLink__background--white";
-		case ButtonBackground.Gray:
+		case ButtonLinkBackground.Gray:
 			return "buttonLink__background--gray";
-		case ButtonBackground.Blue:
+		case ButtonLinkBackground.Blue:
 			return "buttonLink__background--blue";
-		case ButtonBackground.Green:
+		case ButtonLinkBackground.Green:
 			return "buttonLink__background--green";
 		default:
 			return "buttonLink__background--transparent";
 	}
 };
-export const getIconClass: (type?: ButtonIcon) => string = (icon) => {
+export const getIconClass: (type?: ButtonLinkIcon) => string = (icon) => {
 	switch (icon) {
-		case ButtonIcon.User:
+		case ButtonLinkIcon.User:
 			return "buttonLink__icon--user";
 		default:
 			return "buttonLink__icon--none";
 	}
 }
-export const getUnderlineClass: (type?: ButtonUnderline) => string = (underline) => {
+export const getUnderlineClass: (type?: ButtonLinkUnderline) => string = (underline) => {
 	switch (underline) {
-		case ButtonUnderline.Solid:
+		case ButtonLinkUnderline.Solid:
 			return "buttonLink__underline--solid";
 		default:
 			return "buttonLink__underline--none";
 	}
 };
+export const getStyleClass: (type?: ButtonLinkStyle) => string = (style) => {
+	switch (style) {
+		case ButtonLinkStyle.Link:
+			return "buttonLink";
+		case ButtonLinkStyle.Button:
+			return "button"
+		default:
+			return "buttonLink";
+	}
+}

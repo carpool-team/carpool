@@ -3,10 +3,9 @@ import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "components/system/resources/IReactI18nProps";
 import LayoutRouter from "../layout/components/LayoutRouter";
 import ButtonLink from "../ui/buttonLink/ButtonLink"
-import { ButtonColor } from "../ui/buttonLink/enums/ButtonColor";
-import { ButtonBackground } from "../ui/buttonLink/enums/ButtonBackground";
-import {ButtonIcon} from "../ui/buttonLink/enums/ButtonIcon"
-import {ButtonUnderline} from "../ui/buttonLink/enums/ButtonUndeline"
+import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
+import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
+import {ButtonLinkUnderline} from "../ui/buttonLink/enums/ButtonLinkUndeline"
 import "./HomeScreen.scss";
 import { from } from "rxjs";
 
@@ -66,9 +65,9 @@ class HomeScreen extends Component<IReactI18nProps> {
 						</div>
 						<div className = {this.cssClasses.homeScreenGroupsBtn}>
 							<ButtonLink
-									color={ButtonColor.Gray}
-									background ={ButtonBackground.Tansparent}
-									undeline = {ButtonUnderline.Solid}
+									color={ButtonLinkColor.Gray}
+									background ={ButtonLinkBackground.Tansparent}
+									undeline = {ButtonLinkUnderline.Solid}
 									to={`/${LayoutRouter.routes.groups}`}
 									onClick={()=>{}}
 									>
@@ -86,9 +85,9 @@ class HomeScreen extends Component<IReactI18nProps> {
 						</div>
 						<div className = {this.cssClasses.homeScreenGroupsBtn}>
 							<ButtonLink
-									color={ButtonColor.Gray}
-									background ={ButtonBackground.Tansparent}
-									undeline = {ButtonUnderline.Solid}
+									color={ButtonLinkColor.Gray}
+									background ={ButtonLinkBackground.Tansparent}
+									undeline = {ButtonLinkUnderline.Solid}
 									>
 											{t(this.resources.btnRides)}
 							</ButtonLink>
@@ -104,9 +103,9 @@ class HomeScreen extends Component<IReactI18nProps> {
 						</div>
 						<div className = {this.cssClasses.homeScreenGroupsBtn}>
 							<ButtonLink
-									color={ButtonColor.Gray}
-									background ={ButtonBackground.Tansparent}
-									undeline = {ButtonUnderline.Solid}
+									color={ButtonLinkColor.Gray}
+									background ={ButtonLinkBackground.Tansparent}
+									undeline = {ButtonLinkUnderline.Solid}
 									>
 											{t(this.resources.btnRaports)}
 							</ButtonLink>

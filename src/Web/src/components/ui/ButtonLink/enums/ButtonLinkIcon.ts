@@ -1,4 +1,4 @@
 /** Button types interface */
-export enum ButtonIcon {
+export enum ButtonLinkIcon {
   User
 }

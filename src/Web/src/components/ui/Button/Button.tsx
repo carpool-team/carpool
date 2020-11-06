@@ -11,6 +11,8 @@ interface IButtonLinkProps {
 	background?:ButtonBackground;
 	icon?:ButtonIcon;
 	onClick?: () => void;
+	id?:string;
+	className?:string;
 }
 
 const Button: FunctionComponent<IButtonLinkProps> = (props) => {
@@ -23,16 +25,17 @@ const Button: FunctionComponent<IButtonLinkProps> = (props) => {
 		}
 	};
 
-	const baseCssClass: string = "buttonLink";
+	const baseCssClass: string = "button";
 	const cssClasses: string = [
 		baseCssClass,
+		props.className,
 		getColorClass(props.color),
 		getBackgroundClass(props.background),
 		getIconClass(props.icon),
 	].join(" ");
 
 	return (
-		<button  className={cssClasses} onClick={btnClick}>
+		<button id={props.id} className={cssClasses} onClick={btnClick}>
 			{props.children}
 		</button>
 	);
