@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import produce from "immer";
+import MapBox from "../../../map/map"
 import { withTranslation } from "react-i18next";
 import MediaQuery from "react-responsive";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -32,6 +33,7 @@ interface IManageScreenState {
 	selectedScreen: Lists;
 }
 
+
 class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	private resources = {
 		addGroupBtn: "groups.addGroupBtn",
@@ -59,6 +61,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			selectedScreen: Lists.Groups
 		};
 	}
+
 
 	setCurrentList = (list: Lists) => {
 		if(list != this.state.selectedScreen){
@@ -112,9 +115,6 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 					<Button id={this.ids.invitesBtn} background={ButtonBackground.Gray} color={ButtonColor.Gray} onClick={() => this.setCurrentList(Lists.Invites)}>
 						{t(this.resources.invitesBtn)}
 					</Button>
-					{/* <Button id={this.ids.invitesBtn} background={ButtonBackground.Gray} color={ButtonColor.Black} onClick={() => this.setCurrentList(Lists.Invites)}>
-						{t(this.resources.addGroupBtn)}
-					</Button> */}
 					<ButtonLink
 						style={ButtonLinkStyle.Button}
 						color={ButtonLinkColor.Gray}
@@ -137,6 +137,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 					{this.renderGroups()}
 					<MediaQuery query="(min-width: 900px)">
 						<div className={this.cssClasses.mapBox}>
+						<MapBox />
 						</div>
 					</MediaQuery>
 				</div>
