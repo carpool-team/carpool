@@ -1,50 +1,132 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+@import "~scss_path/images";
+
 .groupsManagement {
   display: flex;
-  padding: 48px;
-  flex: 1 1 auto;
-  &__listPanel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 16px 0;
-    align-items: center;
-    justify-content: center;
-    & > hr {
-      margin: 16px 0;
-      width: 75%;
-    }
-  }
-  &__map {
-    flex: 2;
-    align-self: center;
-    & > img {
-      width: 100%;
-    }
-  }
+  background-color: $white;
+  width: 100%;
+  height: 900px;
+  justify-content: space-between;
+}
+.groupsManagementMapBox {
+	background-color: orange;
+	width: 65%;
+	margin-top: 7px;
+	height: 900px;
 }
 
-.groupList {
-  &__buttons {
-    display: flex;
-    flex-direction: row;
-    & > button,
-    > a {
-      margin: 16px;
-    }
-  }
-  &__list {
-    list-style-type: none;
-    flex: 1 1 auto;
+.groupsManagementListContainer{
+	padding-top: 15px;
+	margin-top: 7px;
+	margin-bottom: 7px;
+	background-color: $background;
+	width: 35%;
+	& > hr {
+		color: $grayDark;
+		border-width:2px;
+		margin-left: 5%;
+		margin-right: 5%;
+
+	}
+}
+.groupsManagementButtonsContainer{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: row;
+	padding-left: 5%;
+	padding-bottom: 2%;
+	gap:3%;
+	&--outline{
+		background-color: $white;
+		height: 7px;
+	}
+}
+.groupsManagementButtonActive{
+	background-color: $blue;
+	color: $white;
+	&:hover{
+		background-color: $blueOnHover;
+	}
+}
+.groupsManagementList {
+	list-style-type: none;
+	//flex: 1 1 auto;
+	// margin-left: 5%;
+	// margin-right: 5%;
+	padding-left: 0;
     display: flex;
     flex-direction: column;
-    width: 80%;
+	width: auto;
     & > li {
       display: flex;
-      height: 40px;
-      margin-bottom: 10px;
+	  height: 50px;
+	//   border-radius: 15px;
+	  padding-left: 15px;;
+	  padding-right: 15px;
+	  margin-bottom: 7px;
     }
     & > li:first-child {
       margin-top: 10px;
-    }
+	}
+	& > li:nth-child(even){
+		background: $white;
+		color: $grayDark;
+	}
+	& > li:nth-child(odd){
+		background: $white;
+		color: $grayDark;
+	}
+	&--label{
+		font-size: 19px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-decoration: none;
+		padding-left: 25px;
+		color: inherit;
+		height: 100%;
+		display: flex;
+		align-items: center;
+	}
+	&--button{
+		border: none;
+		width: 100%;
+		background-color: inherit;
+		padding-left: 0;
+		padding-right: 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: left;
+	}
+
+	&--pin:before{
+		display: flex;
+		align-items: center;
+		float: right;
+		font-family: FontAwesome;
+		font-size: 33px;
+		content:"\f041";
+		padding-left: 10px;
+		padding-top: 7px;
+	}
   }
-}
+  @media only screen and (max-width: 900px) {
+	.groupsManagement {
+		display: flex;
+		background-color: $white;
+	}	
+	.groupsManagementListContainer{
+		padding-top: 10px;
+		width: 100%;
+		margin-top: 5px;
+	}
+	.groupsManagementButtonsContainer{
+		justify-content: center;
+		padding-left: 0;
+		gap:3%;
+		&--outline{
+			height: 5px;
+		}
+	}
+  }

@@ -5,21 +5,23 @@ import MediaQuery from "react-responsive";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import GroupsRouter from "../GroupsRouter";
+import Button from "../../../ui/button/Button"
+import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
+import {ButtonIcon} from "../../../ui/button/enums/ButtonIcon"
+import ButtonLink from "../../../ui/buttonLink/ButtonLink"
+import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
+import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
+import {ButtonLinkIcon} from "../../../ui/buttonLink/enums/ButtonLinkIcon";
+import {ButtonLinkStyle} from "../../../ui/buttonLink/enums/ButtonLinkStyle"
 import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
-import { ButtonSize } from "../../../ui/_oldButton/enums/ButtonSize";
-import { ButtonType } from "../../../ui/_oldButton/enums/ButtonType";
-import ButtonLink from "../../../ui/_oldButton/ButtonLink";
-import Button from "../../../ui/_oldButton/Button";
 import GroupsList from "./components/GroupsList";
 import InvitesList from "./components/InvitesList";
-import RidesList from "./components/RidesList";
-
-import mapImage from "assets_path/img/loadingMap.png";
+import { DRAFTABLE } from "immer/dist/internal";
 
 enum Lists {
 	Invites = "INVITES",
 	Groups = "GROUPS",
-	Rides = "RIDES",
 }
 
 interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
@@ -33,17 +35,22 @@ interface IManageScreenState {
 class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	private resources = {
 		addGroupBtn: "groups.addGroupBtn",
-		groupsBtn: "groups.groupsBtn",
-		ridesBtn: "groups.ridesBtn",
+		groupsBtn: "common.groups",
 		invitesBtn: "groups.invitesBtn",
 	};
 
 	private cssClasses = {
 		container: "groupsManagement",
-		listPanel: "groupsManagement__listPanel",
-		map: "groupsManagement__map",
-		buttonsPanel: "groupList__buttons",
-		list: "groupList__list",
+		listContainer: "groupsManagementListContainer",
+		buttonsContainer: "groupsManagementButtonsContainer",
+		buttonsOutline: "groupsManagementButtonsContainer--outline",
+		buttonActive: "groupsManagementButtonActive",
+		mapBox: "groupsManagementMapBox",
+	};
+
+	private ids = {
+		groupsBtn: "groupsBtn",
+		invitesBtn: "invitesBtn",
 	};
 
 	constructor(props: IManageScreenProps) {
@@ -54,9 +61,16 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	}
 
 	setCurrentList = (list: Lists) => {
+		if(list != this.state.selectedScreen){
+			let groupsBtn = document.getElementById(this.ids.groupsBtn);
+			groupsBtn?.classList.toggle(this.cssClasses.buttonActive);
+			let invitesBtn = document.getElementById(this.ids.invitesBtn);
+			invitesBtn?.classList.toggle(this.cssClasses.buttonActive);	
+		}
 		this.setState(produce((draft: IManageScreenState) => {
 			draft.selectedScreen = list;
 		}));
+			
 	}
 
 	renderInvitesList = () => (
@@ -73,13 +87,6 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		/>
 	)
 
-	renderRidesList = () => (
-		<RidesList
-			getRidesCallback={this.props.callbacks.getRides}
-			participateCallback={this.props.callbacks.participateInRide}
-		/>
-	)
-
 	renderGroups = () => {
 		const { t } = this.props;
 		const { url } = this.props.match;
@@ -90,9 +97,6 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			case Lists.Invites:
 				list = this.renderInvitesList();
 				break;
-			case Lists.Rides:
-				list = this.renderRidesList();
-				break;
 			case Lists.Groups:
 			default:
 				list = this.renderGroupsList();
@@ -100,30 +104,28 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		}
 
 		return (
-			<div className={this.cssClasses.listPanel}>
-				<div className={this.cssClasses.buttonsPanel}>
-					<Button size={ButtonSize.Standard} type={ButtonType.Info} onClick={() => this.setCurrentList(Lists.Groups)}>
+			<div className={this.cssClasses.listContainer}>
+				<div className={this.cssClasses.buttonsContainer}>
+					<Button id={this.ids.groupsBtn} background={ButtonBackground.Gray} className={this.cssClasses.buttonActive} color={ButtonColor.Gray} onClick={() => this.setCurrentList(Lists.Groups)}>
 						{t(this.resources.groupsBtn)}
 					</Button>
-					<Button size={ButtonSize.Standard} type={ButtonType.Success} onClick={() => this.setCurrentList(Lists.Rides)}>
-						{t(this.resources.ridesBtn)}
-					</Button>
-					<Button size={ButtonSize.Standard} type={ButtonType.Standard} onClick={() => this.setCurrentList(Lists.Invites)}>
+					<Button id={this.ids.invitesBtn} background={ButtonBackground.Gray} color={ButtonColor.Gray} onClick={() => this.setCurrentList(Lists.Invites)}>
 						{t(this.resources.invitesBtn)}
 					</Button>
-				</div>
-				<hr />
-				{list}
-				<hr />
-				<div className={this.cssClasses.buttonsPanel}>
-					<ButtonLink
-						size={ButtonSize.Standard}
-						type={ButtonType.Standard}
-						to={`${url}${GroupsRouter.routes.addGroup}`}
-					>
+					{/* <Button id={this.ids.invitesBtn} background={ButtonBackground.Gray} color={ButtonColor.Black} onClick={() => this.setCurrentList(Lists.Invites)}>
 						{t(this.resources.addGroupBtn)}
+					</Button> */}
+					<ButtonLink
+						style={ButtonLinkStyle.Button}
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						to={`/${GroupsRouter.routes.addGroup}`}
+						>
+								{t(this.resources.addGroupBtn)}
 					</ButtonLink>
 				</div>
+				<div className={this.cssClasses.buttonsOutline}></div>
+				{list}
 			</div>
 		);
 	}
@@ -134,8 +136,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 				<div className={this.cssClasses.container}>
 					{this.renderGroups()}
 					<MediaQuery query="(min-width: 900px)">
-						<div className={this.cssClasses.map}>
-							<img src={mapImage} alt={""} />
+						<div className={this.cssClasses.mapBox}>
 						</div>
 					</MediaQuery>
 				</div>
