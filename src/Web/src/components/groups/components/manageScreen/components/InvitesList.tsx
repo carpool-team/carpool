@@ -11,7 +11,7 @@ interface IInvitesListProps {
 }
 
 const InvitesList = (props: IInvitesListProps) => {
-	const listCssClass: string = "groupList__list";
+	const listCssClass: string = "groupsManagementList";
 
 	const invites: IInvite[] = props.getInvitesCallback().filter(i => i.isPending);
 
