@@ -137,7 +137,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 					{this.renderGroups()}
 					<MediaQuery query="(min-width: 900px)">
 						<div className={this.cssClasses.mapBox}>
-						<MapBox />
+						<MapBox longitude= {52.455688} latitude={16.859060}/>
 						</div>
 					</MediaQuery>
 				</div>

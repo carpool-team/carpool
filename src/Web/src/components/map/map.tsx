@@ -20,7 +20,7 @@ class MapBox extends React.Component<Props> {
         this.mapContainer === undefined || this.mapContainer === null
           ? ""
           : this.mapContainer,
-      center: [50, 35],
+      center: [this.props.latitude, this.props.longitude],
       style: mapConfig.mapLight,
       zoom: 13
     });
