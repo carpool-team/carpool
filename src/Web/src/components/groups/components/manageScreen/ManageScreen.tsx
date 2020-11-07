@@ -9,12 +9,12 @@ import GroupsRouter from "../GroupsRouter";
 import Button from "../../../ui/button/Button"
 import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
-import {ButtonIcon} from "../../../ui/button/enums/ButtonIcon"
+import { ButtonIcon } from "../../../ui/button/enums/ButtonIcon"
 import ButtonLink from "../../../ui/buttonLink/ButtonLink"
 import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
-import {ButtonLinkIcon} from "../../../ui/buttonLink/enums/ButtonLinkIcon";
-import {ButtonLinkStyle} from "../../../ui/buttonLink/enums/ButtonLinkStyle"
+import { ButtonLinkIcon } from "../../../ui/buttonLink/enums/ButtonLinkIcon";
+import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle"
 import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import GroupsList from "./components/GroupsList";
 import InvitesList from "./components/InvitesList";
@@ -64,16 +64,16 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 
 
 	setCurrentList = (list: Lists) => {
-		if(list != this.state.selectedScreen){
+		if (list != this.state.selectedScreen) {
 			let groupsBtn = document.getElementById(this.ids.groupsBtn);
 			groupsBtn?.classList.toggle(this.cssClasses.buttonActive);
 			let invitesBtn = document.getElementById(this.ids.invitesBtn);
-			invitesBtn?.classList.toggle(this.cssClasses.buttonActive);	
+			invitesBtn?.classList.toggle(this.cssClasses.buttonActive);
 		}
 		this.setState(produce((draft: IManageScreenState) => {
 			draft.selectedScreen = list;
 		}));
-			
+
 	}
 
 	renderInvitesList = () => (
@@ -119,9 +119,9 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 						style={ButtonLinkStyle.Button}
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
-						to={`/${GroupsRouter.routes.addGroup}`}
-						>
-								{t(this.resources.addGroupBtn)}
+						to={`${url}${GroupsRouter.routes.addGroup}`}
+					>
+						{t(this.resources.addGroupBtn)}
 					</ButtonLink>
 				</div>
 				<div className={this.cssClasses.buttonsOutline}></div>
@@ -137,7 +137,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 					{this.renderGroups()}
 					<MediaQuery query="(min-width: 900px)">
 						<div className={this.cssClasses.mapBox}>
-						<MapBox longitude= {52.455688} latitude={16.859060}/>
+							<MapBox longitude={52.455688} latitude={16.859060} />
 						</div>
 					</MediaQuery>
 				</div>

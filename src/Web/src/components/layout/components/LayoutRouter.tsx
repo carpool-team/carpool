@@ -16,7 +16,7 @@ class LayoutRouter extends Component<RouteComponentProps> {
 			<Suspense fallback={<LoaderSpinner />}>
 				<Switch>
 					<Route exact path={path} component={HomeScreen} />
-					<Route exact path={path + LayoutRouter.routes.groups} component={Groups} />
+					<Route path={path + LayoutRouter.routes.groups} component={Groups} />
 				</Switch>
 			</Suspense>
 		);
