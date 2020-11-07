@@ -2,7 +2,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, View, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -10,12 +10,9 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/core';
 import {CircleButton, StandardButton} from '../common/buttons';
 import DriverInfo from '../Ride/DriverInfo';
-import {
-  createGetUserRides,
-  PassengerContext,
-} from '../../context/PassengerContext';
 import DriversRideInfo from '../Ride/DriversRideInfo';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import * as actions from '../../store/actions';
 
 export default (CustomDrawer = props => {
   const [ride, setRide] = useState(null);
@@ -23,36 +20,34 @@ export default (CustomDrawer = props => {
   const navigation = useNavigation();
 
   // Store
-  const {
-    passengerState: {userRides},
-    dispatch,
-  } = useContext(PassengerContext);
-
-  const rdriversRides = useSelector(state => state.driverReducer.driversRides);
-
+  const driversRides = useSelector(state => state.driverReducer.driversRides);
+  const userRides = useSelector(state => state.passengerReducer.userRides);
   const activeAccount = useSelector(
     state => state.accountReducer.activeAccount,
   );
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (!ride) {
-      createGetUserRides(dispatch);
-    }
+    !ride && dispatch(actions.getUsersRides());
+    !driversRide && dispatch(actions.getDriversRides());
   }, []);
 
   useEffect(() => {
-    if (userRides.data.length) {
-      setRide(userRides.data[0]);
+    if (userRides.data) {
+      if (userRides.data.length) {
+        setRide(userRides.data[0]);
+      }
     }
   }, [userRides]);
 
   useEffect(() => {
-    if (rdriversRides.data) {
-      if (rdriversRides.data.length) {
-        setDriversRide(rdriversRides.data[0]);
+    if (driversRides.data) {
+      if (driversRides.data.length) {
+        setDriversRide(driversRides.data[0]);
       }
     }
-  }, [rdriversRides]);
+  }, [driversRides]);
 
   const onRidePress = () => {
     navigation.navigate('Home', {ride});
@@ -87,10 +82,17 @@ export default (CustomDrawer = props => {
     }
   };
 
+  const renderCard = () =>
+    isPassenger ? (
+      <DriverInfo ride={ride} onPress={onRidePress} />
+    ) : (
+      <DriversRideInfo ride={driversRide} onPress={onDriversRidePress} />
+    );
+
   return (
-    <View style={{flex: 1}}>
-      <DrawerContentScrollView {...props} style={{flex: 1}}>
-        <View style={{flex: 1}}>
+    <View style={styles.flexed}>
+      <DrawerContentScrollView {...props} style={styles.flexed}>
+        <View style={styles.flexed}>
           <View style={styles.userInfoContainer}>
             <CircleButton
               size={72}
@@ -113,14 +115,7 @@ export default (CustomDrawer = props => {
           </View>
           <View style={styles.rideInfoContainer}>
             {renderTitle()}
-            {isPassenger ? (
-              <DriverInfo ride={ride} onPress={onRidePress} />
-            ) : (
-              <DriversRideInfo
-                ride={driversRide}
-                onPress={onDriversRidePress}
-              />
-            )}
+            {renderCard()}
           </View>
           <DrawerItemList {...props} />
         </View>
@@ -138,6 +133,9 @@ export default (CustomDrawer = props => {
 });
 
 const styles = StyleSheet.create({
+  flexed: {
+    flex: 1,
+  },
   userInfoContainer: {
     flex: 1,
     paddingHorizontal: 16,

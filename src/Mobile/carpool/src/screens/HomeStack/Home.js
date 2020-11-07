@@ -1,15 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
-import MapboxGL from '@react-native-mapbox-gl/maps';
 import {SafeAreaView, View, PermissionsAndroid, Platform} from 'react-native';
 import {colors} from '../../styles';
 import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
-import {
-  PassengerContext,
-  createGetAllRides,
-} from '../../context/PassengerContext';
-import config from '../../../config';
 import DriverMap from './DriverMap';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../store/actions';
@@ -39,9 +33,7 @@ const requestLocationPermission = async () => {
 };
 
 const Home = () => {
-  const {dispatch} = React.useContext(PassengerContext);
-
-  const rdispatch = useDispatch();
+  const dispatch = useDispatch();
   const activeAccount = useSelector(
     state => state.accountReducer.activeAccount,
   );
@@ -53,7 +45,7 @@ const Home = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    rdispatch(actions.getGroups());
+    dispatch(actions.getGroups());
 
     if (Platform.OS === 'android') {
       requestLocationPermission();
@@ -63,8 +55,8 @@ const Home = () => {
   useEffect(() => {
     // Delete ride from params
     if (activeAccount === 'driver') {
-      rdispatch(actions.getDriversRides());
-      rdispatch(actions.getDriversPastRides());
+      dispatch(actions.getDriversRides());
+      dispatch(actions.getDriversPastRides());
 
       if (route.params) {
         let params = route.params;
@@ -73,7 +65,7 @@ const Home = () => {
       }
     }
     if (activeAccount === 'passenger') {
-      createGetAllRides(dispatch);
+      dispatch(actions.getAllRides());
     }
   }, [activeAccount]);
 

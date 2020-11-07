@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
@@ -11,9 +11,9 @@ import {useNavigation, useRoute} from '@react-navigation/core';
 import {CircleButton} from '../../components/common/buttons';
 import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';
-import {PassengerContext} from '../../context/PassengerContext';
 import config from '../../../config';
 import {useGetDirections} from '../../hooks';
+import {useSelector} from 'react-redux';
 
 const dirConfig = {
   profile: 'walking',
@@ -31,9 +31,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
   const [activeRoute, setActiveRoute] = useState(0);
 
   // Store
-  const {
-    passengerState: {allRides},
-  } = useContext(PassengerContext);
+  const allRides = useSelector(state => state.passengerReducer.allRides);
 
   // Directions
   const [results, loading, error, _getDirections] = useGetDirections(dirConfig);
@@ -117,22 +115,25 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
   };
 
   const renderPassengerPoints = () => {
-    return allRides.data.length
-      ? allRides.data.map(ride => (
-          <MapboxGL.PointAnnotation
-            key={ride.id}
-            id="selected"
-            coordinate={parseCoords(ride.startingLocation.coordinates)}
-            onSelected={() => onSelected(ride)}
-            onDeselected={onCleanState}>
-            <Marker
-              color={getColor(ride.date)}
-              size={24}
-              style={styles.marker}
-            />
-          </MapboxGL.PointAnnotation>
-        ))
-      : null;
+    if (allRides.data) {
+      return allRides.data.length
+        ? allRides.data.map(ride => (
+            <MapboxGL.PointAnnotation
+              key={ride.id}
+              id="selected"
+              coordinate={parseCoords(ride.startingLocation.coordinates)}
+              onSelected={() => onSelected(ride)}
+              onDeselected={onCleanState}>
+              <Marker
+                color={getColor(ride.date)}
+                size={24}
+                style={styles.marker}
+              />
+            </MapboxGL.PointAnnotation>
+          ))
+        : null;
+    }
+    return null;
   };
 
   const renderRoutes = () => {

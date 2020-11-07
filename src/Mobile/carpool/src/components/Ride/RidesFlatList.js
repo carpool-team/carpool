@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 36,
     // NEW
-    flex: 1,
+    // flex: 1,
   },
   wrapper: {
     marginBottom: 36,

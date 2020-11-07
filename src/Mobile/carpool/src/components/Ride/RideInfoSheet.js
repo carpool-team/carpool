@@ -10,11 +10,9 @@ import {parseDistance} from '../../utils/parse';
 import {parseCoords} from '../../utils/coords';
 import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
 import DriverInfo from './DriverInfo';
-import {
-  PassengerContext,
-  createGetAllRides,
-} from '../../context/PassengerContext';
 import {useGetDirections} from '../../hooks';
+import {useDispatch} from 'react-redux';
+import * as actions from '../../store/actions';
 
 const dirConfig = {
   profile: 'walking',
@@ -29,7 +27,7 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
   const [success, setSuccess] = useState(false);
 
   // Store
-  const {dispatch} = useContext(PassengerContext);
+  const dispatch = useDispatch();
 
   // Requests
   const participantId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
@@ -52,7 +50,7 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
     if (!visible) {
       setRideId(null);
       setSuccess(false);
-      createGetAllRides(dispatch);
+      dispatch(actions.getAllRides());
     }
   }, [visible]);
 
