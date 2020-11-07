@@ -17,11 +17,12 @@ namespace Carpool.RestAPI.Commands.Group
 		public async Task<Guid> Handle(UpdateGroupCommand request, CancellationToken cancellationToken = default)
 		{
 			var group = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
-			group.LocationId = request.LocationId;
+			group.LocationId = request.LocationId ?? group.LocationId;
 			group.Name = request.Name ?? group.Name;
 			group.Code = request.Code ?? group.Code;
 			group.OwnerId = request.OwnerId ?? group.OwnerId;
 			await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+			
 			return group.Id;
 		}
 	}

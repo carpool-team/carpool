@@ -40,10 +40,10 @@ namespace Carpool.RestAPI.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{id}")]
-		public async Task<ApiResponse> PutGroup(Guid id, UpdateGroupCommand updateGroupCommand)
+		public async Task<ApiResponse> PutGroup([FromRoute]Guid id, [FromBody] UpdateGroupCommand updateGroupCommand)
 		{
 			var response = await _mediator.Send(updateGroupCommand).ConfigureAwait(false);
-			return new ApiResponse($"Group with id: {response} has been deleted");
+			return new ApiResponse($"Group with id: {response} has been updated", response);
 		}
 
 		[HttpPut("{groupId}/locations")]

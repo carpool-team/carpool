@@ -31,12 +31,6 @@ namespace Carpool.RestAPI.Queries.Group
 		public async Task<GroupDetailsDto> Handle(GetGroupQuery request, CancellationToken cancellationToken)
 		{
 			var group = await _repository.GetByIdAsNoTrackingAsync(request.Id, cancellationToken).ConfigureAwait(false);
-			var userClaimsPrincipal = _httpContextAccessor.HttpContext.User;
-			var userId = _userManager.GetUserId(userClaimsPrincipal);
-			//var rideDtos = group.Rides
-			//                    .Select(x
-			//	                    => new RideMinimalDto(x.Id, x.OwnerId != Guid.Parse(userId), x.Date, x.Destination))
-			//                    .ToList();
 
 			var groupDto = new GroupDetailsDto(
 				group.Id,
