@@ -10,13 +10,12 @@
   justify-content: space-between;
 }
 .groupsManagementMapBox {
-	background-color: orange;
+	background-color:$background;
 	width: 65%;
 	margin-left: 7px;
 	margin-top: 7px;
 	margin-bottom: 7px;
 }
-
 .groupsManagementListContainer{
 	padding-top: 15px;
 	margin-top: 7px;
@@ -28,7 +27,6 @@
 		border-width:2px;
 		margin-left: 5%;
 		margin-right: 5%;
-
 	}
 }
 .groupsManagementButtonsContainer{
@@ -53,9 +51,6 @@
 }
 .groupsManagementList {
 	list-style-type: none;
-	//flex: 1 1 auto;
-	// margin-left: 5%;
-	// margin-right: 5%;
 	padding-left: 0;
     display: flex;
     flex-direction: column;
@@ -63,7 +58,6 @@
     & > li {
       display: flex;
 	  height: 50px;
-	//   border-radius: 15px;
 	  padding-left: 15px;;
 	  padding-right: 15px;
 	  margin-bottom: 7px;
@@ -100,7 +94,6 @@
 		flex-direction: row;
 		justify-content: left;
 	}
-
 	&--pin:before{
 		display: flex;
 		align-items: center;
@@ -112,6 +105,7 @@
 		padding-top: 7px;
 	}
   }
+
   @media only screen and (max-width: 900px) {
 	.groupsManagement {
 		display: flex;

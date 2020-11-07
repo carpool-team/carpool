@@ -23,7 +23,6 @@ const GroupsList = (props: IGroupsListProps) => {
 		<ul className={listCssClass}>
 			{props.getGroupsCallback().map((group) => {
 				++colorIndex;
-				console.log(group.name)
 				const color = {
 					color: colorList[colorIndex%colorList.length]
 				};
