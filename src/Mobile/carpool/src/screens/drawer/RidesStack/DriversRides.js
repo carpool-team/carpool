@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {StandardButton} from '../../../components/common/buttons';
-import DriversRidesFlatList from '../../../components/Driver/DriversRidesFlatList';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
+import {RidesList} from '../../../components/Driver';
 
 const DriversRides = ({navigation}) => {
   const [isUpcoming, setIsUpcoming] = useState(true);
@@ -60,7 +60,7 @@ const DriversRides = ({navigation}) => {
           />
         </View>
         <View style={styles.flatlistWrapper}>
-          <DriversRidesFlatList
+          <RidesList
             data={data}
             loading={driversRides.loading || driversPastRides.loading}
             onRefresh={onRefresh}
