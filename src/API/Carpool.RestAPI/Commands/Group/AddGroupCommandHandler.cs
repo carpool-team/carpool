@@ -23,6 +23,8 @@ namespace Carpool.RestAPI.Commands.Group
                 && await _repository.GroupCodeExists(request.Code).ConfigureAwait(false))
                 throw new ApiException($"Group code {request.Code} already exists", StatusCodes.Status409Conflict);
 
+            
+            
             var group = new Core.Models.Group()
             {
                 Name = request.Name,
