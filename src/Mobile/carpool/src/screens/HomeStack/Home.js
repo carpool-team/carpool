@@ -59,7 +59,6 @@ const Home = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    // createGetUserGroups(accountDispatch);
     rdispatch(actions.getGroups());
     if (Platform.OS === 'android') {
       requestLocationPermission();
