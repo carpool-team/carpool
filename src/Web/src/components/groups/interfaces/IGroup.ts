@@ -2,16 +2,13 @@
 export interface IGroup {
 	id: string;
 	location: {
-		coordinates: {
-			latitude: number;
-			longtitude: number;
-		};
-		name: string;
+		longtitude: number;
+		latitude: number;
+		rideCount: number;
 	};
-	code: string;
-	name: string;
-	owner: string;
-	rideCount: number;
-	userCount: number;
+	code?: string;
+	name?: string;
+	owner?: string;
+	userCount?: number;
 	selected?: boolean;
 }

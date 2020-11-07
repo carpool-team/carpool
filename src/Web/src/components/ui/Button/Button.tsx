@@ -13,6 +13,7 @@ interface IButtonLinkProps {
 	onClick?: () => void;
 	id?:string;
 	className?:string;
+	style?:string
 }
 
 const Button: FunctionComponent<IButtonLinkProps> = (props) => {
@@ -35,7 +36,7 @@ const Button: FunctionComponent<IButtonLinkProps> = (props) => {
 	].join(" ");
 
 	return (
-		<button id={props.id} className={cssClasses} onClick={btnClick}>
+		<button id={props.id} className={[cssClasses,props.style].join(" ")} onClick={btnClick}>
 			{props.children}
 		</button>
 	);

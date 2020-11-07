@@ -1,9 +1,11 @@
 import React from "react";
-import ButtonAcceptDecline from "../../../../ui/_oldButton/ButtonAcceptDecline";
-import { ButtonSize } from "../../../../ui/_oldButton/enums/ButtonSize";
-import { ButtonType } from "../../../../ui/_oldButton/enums/ButtonType";
-import { ButtonShape } from "../../../../ui/_oldButton/enums/ButtonShape";
 import { IInvite } from "../../../interfaces/IInvite";
+import Button from "../../../../ui/button/Button"
+import { ButtonIcon } from "../../../../ui/button/enums/ButtonIcon"
+import { ButtonColor } from "../../../../ui/button/enums/ButtonColor"
+import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground"
+
+import exampleInvites from "../../../../../examples/exampleInvites"
 
 interface IInvitesListProps {
 	getInvitesCallback: () => IInvite[];
@@ -12,30 +14,37 @@ interface IInvitesListProps {
 
 const InvitesList = (props: IInvitesListProps) => {
 	const listCssClass: string = "groupsManagementList";
+	const labelCssClass:string = "groupsManagementList--label"
+	const buttonAcceptCssClass:string = "listSmallButton--accept"
+	const buttonDeclineCssClass:string = "listSmallButton--decline"
+	const pinCssClass:string = "groupsManagementList--pin"
 
-	const invites: IInvite[] = props.getInvitesCallback().filter(i => i.isPending);
+	{/* TODO zmienić z mockupów na api jak zacznie działać */}
+	// const invites: IInvite[] = props.getInvitesCallback().filter(i => i.isPending);
+	const invites: IInvite[] = exampleInvites
 
-	const renderInvite = (invite: IInvite) => {
-		let key: string = invite.group?.name ?? invite.id;
-		return (
-			<li key={key}>
-				<ButtonAcceptDecline
-					additionalAcceptOnClick={() => props.answerInviteCallback(true, invite.id)}
-					additionalDeclineOnClick={() => props.answerInviteCallback(false, invite.id)}
-					size={ButtonSize.Standard}
-					type={ButtonType.Standard}
-					shape={ButtonShape.Circle}
-					label={key}
-				></ButtonAcceptDecline>
-			</li>
-		);
-	};
-
-	const renderInvites = (invites: IInvite[]) => invites.map(i => renderInvite(i));
+	let colorList:string[] = ["#C39BD3", "#7FB3D5","#48C9B0","#F9E79F"]
+	let colorIndex:number = 0;
 
 	return (
 		<ul className={listCssClass}>
-			{renderInvites(invites)}
+			{invites.map((invite) => {
+				++colorIndex;
+				const color = {
+					color: colorList[colorIndex%colorList.length]
+				};
+				return (
+					<li key={invite.group.id}>
+							<div className={pinCssClass} style={color}>	
+							</div>			
+							<div className={labelCssClass}>
+								{invite.group.name}
+							</div>
+						<button className={buttonAcceptCssClass} onClick={() => props.answerInviteCallback(true, invite.id)}></button>
+						<button className={buttonDeclineCssClass} onClick={() => props.answerInviteCallback(false, invite.id)}></button>
+					</li>
+				);
+			})}
 		</ul>
 	);
 };
