@@ -5,7 +5,6 @@ import {LightTheme} from './src/styles';
 import MainStackNavigator from './src/navigation/MainStackNavigator';
 import config from './config';
 import {PassengerStore} from './src/context/PassengerContext';
-import {DriverStore} from './src/context/DriverContext';
 import {AddRideStore} from './src/screens/HomeStack/AddRideStack/context';
 
 import {Provider} from 'react-redux';
@@ -31,13 +30,11 @@ const App = () => {
   return (
     <NavigationContainer theme={LightTheme}>
       <PassengerStore>
-        <DriverStore>
-          <AddRideStore>
-            <Provider store={store}>
-              <MainStackNavigator />
-            </Provider>
-          </AddRideStore>
-        </DriverStore>
+        <AddRideStore>
+          <Provider store={store}>
+            <MainStackNavigator />
+          </Provider>
+        </AddRideStore>
       </PassengerStore>
     </NavigationContainer>
   );
