@@ -2,7 +2,59 @@ import {takeLatest, put} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
-const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
+const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
+import faker from 'faker';
+
+const exampleGroups = [
+  {
+    id: faker.random.alphaNumeric(32),
+    location: {
+      coordinates: {
+        longitude: 52.40656926303501,
+        latitude: 16.86633729745128,
+      },
+    },
+    name: faker.random.word(),
+    rideCount: faker.random.number({min: 0, max: 100}),
+    userCount: faker.random.number({min: 10, max: 1000}),
+  },
+  {
+    id: faker.random.alphaNumeric(32),
+    location: {
+      coordinates: {
+        longitude: 52.40656926303501,
+        latitude: 16.86633729745128,
+      },
+    },
+    name: faker.random.word(),
+    rideCount: faker.random.number({min: 0, max: 100}),
+    userCount: faker.random.number({min: 10, max: 1000}),
+  },
+  {
+    id: faker.random.alphaNumeric(32),
+    location: {
+      coordinates: {
+        longitude: 52.40656926303501,
+        latitude: 16.86633729745128,
+      },
+    },
+    name: faker.random.word(),
+    rideCount: faker.random.number({min: 0, max: 100}),
+    userCount: faker.random.number({min: 10, max: 1000}),
+  },
+  {
+    id: faker.random.alphaNumeric(32),
+    location: {
+      coordinates: {
+        longitude: 52.40656926303501,
+        latitude: 16.86633729745128,
+      },
+    },
+    name: faker.random.word(),
+    rideCount: faker.random.number({min: 0, max: 100}),
+    userCount: faker.random.number({min: 10, max: 1000}),
+  },
+];
 
 export function* getGroupsAsync() {
   try {
@@ -11,11 +63,13 @@ export function* getGroupsAsync() {
     if (token) {
       yield put(actions.getGroupsLoading());
 
-      const res = yield instance.get(ENDPOINTS.GET_USER_GROUPS(userId));
+      // const res = yield instance.get(ENDPOINTS.GET_USER_GROUPS(userId));
+      // const res = yield instance.get('/Groups');
 
-      console.log('RES', res);
+      // console.log('GROUPS RES', res);
 
-      yield put(actions.getGroupsSuccess(res.data.result));
+      // yield put(actions.getGroupsSuccess(res.data.result));
+      yield put(actions.getGroupsSuccess(exampleGroups));
     }
   } catch (err) {
     // TODO
@@ -25,6 +79,30 @@ export function* getGroupsAsync() {
   }
 }
 
+const exampleInvitations = [
+  {
+    id: faker.random.alphaNumeric(32),
+    group: {
+      name: faker.random.word(),
+      userCount: faker.random.number({min: 0, max: 100}),
+    },
+  },
+  {
+    id: faker.random.alphaNumeric(32),
+    group: {
+      name: faker.random.word(),
+      userCount: faker.random.number({min: 0, max: 100}),
+    },
+  },
+  {
+    id: faker.random.alphaNumeric(32),
+    group: {
+      name: faker.random.word(),
+      userCount: faker.random.number({min: 0, max: 100}),
+    },
+  },
+];
+
 export function* getInvitationsAsync() {
   try {
     const token = '123';
@@ -32,11 +110,12 @@ export function* getInvitationsAsync() {
     if (token) {
       yield put(actions.getInvitationsLoading());
 
-      const res = yield instance.get(ENDPOINTS.GET_USER_INVITATIONS(userId));
+      // const res = yield instance.get(ENDPOINTS.GET_USER_INVITATIONS(userId));
 
-      console.log('RES', res);
+      // console.log('RES', res);
 
-      yield put(actions.getInvitationsSuccess(res.data.result));
+      // yield put(actions.getInvitationsSuccess(res.data.result));
+      yield put(actions.getInvitationsSuccess(exampleInvitations));
     }
   } catch (err) {
     // TODO

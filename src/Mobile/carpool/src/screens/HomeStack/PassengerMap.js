@@ -164,6 +164,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
         contentInset={10}
         compassEnabled={false}
         rotateEnabled={false}
+        // onPress={console.log}
         onPress={onCleanState}>
         <MapboxGL.Camera
           ref={_passengerCamera}

@@ -1,17 +1,14 @@
-import React, {useContext} from 'react';
-import {SafeAreaView, Alert} from 'react-native';
+import React from 'react';
+import {SafeAreaView} from 'react-native';
 import InvitationsFlatList from '../../../components/Groups/InvitationsFlatList';
-import {
-  AccountContext,
-  createGetUserInvitations,
-  createGetUserGroups,
-} from '../../../context/AccountContext';
 import {apiRequest} from '../../../utils/apiRequest';
 import {METHODS, ENDPOINTS} from '../../../hooks';
+import {useSelector, useDispatch} from 'react-redux';
+import * as actions from '../../../store/actions';
 
 const Invitations = ({navigation}) => {
-  const {accountState, dispatch} = useContext(AccountContext);
-  const {data: invitations, loading} = accountState.invitations;
+  const invitations = useSelector(store => store.accountReducer.invitations);
+  const dispatch = useDispatch();
 
   const onAccept = async item => {
     try {
@@ -25,9 +22,8 @@ const Invitations = ({navigation}) => {
         },
       );
 
-      // console.log(response);
-      createGetUserInvitations(dispatch);
-      createGetUserGroups(dispatch);
+      dispatch(actions.getInvitations());
+      dispatch(actions.getGroups());
     } catch (err) {
       console.log('ERROR', err);
     }
@@ -44,8 +40,7 @@ const Invitations = ({navigation}) => {
         },
       );
 
-      //console.log(response);
-      createGetUserInvitations(dispatch);
+      dispatch(actions.getInvitations());
     } catch (err) {
       console.log('ERROR', err);
     }
@@ -54,8 +49,8 @@ const Invitations = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <InvitationsFlatList
-        data={invitations}
-        loading={loading}
+        data={invitations.data}
+        loading={invitations.loading}
         onDecline={onDecline}
         onAccept={onAccept}
       />

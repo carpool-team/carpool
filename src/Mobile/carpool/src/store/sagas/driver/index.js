@@ -2,7 +2,7 @@ import {takeLatest, put} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
-const userId = '8151a9b2-52ee-4ce0-a2dd-08d7f7744d91';
+const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 
 export function* getDriversRidesAsync() {
   try {

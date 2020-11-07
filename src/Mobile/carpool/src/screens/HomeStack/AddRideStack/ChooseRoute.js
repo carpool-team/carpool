@@ -7,7 +7,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {AccountContext} from '../../../context/AccountContext';
 import {StartLocationsFlatList} from '../../../components/FindRoute';
 import GroupsFlatlist from '../../../components/Locations/GroupsFlatlist';
 import Geolocation from '@react-native-community/geolocation';
@@ -18,6 +17,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {StandardButton} from '../../../components/common/buttons';
 import {RouteMinimap} from '../../../components/Route';
 import {AddRideContext, AddRideContextActions} from './context';
+import {useSelector} from 'react-redux';
 
 const config = {
   autocomplete: false,
@@ -40,12 +40,12 @@ const ChooseRoute = ({navigation}) => {
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
 
   // Store
-  const {
-    accountState: {
-      groups: {data: groups, loading: groupsLoading},
-    },
-  } = useContext(AccountContext);
-  let grps = groups.map(group => ({...group, place_name: group.name}));
+  const groups = useSelector(state => state.accountReducer.groups);
+
+  let grps = groups.data
+    ? groups.data.map(group => ({...group, place_name: group.name}))
+    : [];
+
   const {addRideState, dispatch: addRideDispatch} = useContext(AddRideContext);
 
   useEffect(() => {
@@ -146,7 +146,7 @@ const ChooseRoute = ({navigation}) => {
       return (
         <GroupsFlatlist
           data={grps}
-          loaidng={groupsLoading}
+          loaidng={groups.loading}
           onItemPress={onDestinationItemPress}
         />
       );

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   SafeAreaView,
@@ -20,7 +20,8 @@ import GroupsFlatlist from '../../components/Locations/GroupsFlatlist';
 import DatePicker from 'react-native-date-picker';
 import {StandardButton} from '../../components/common/buttons';
 import useRequest, {METHODS, ENDPOINTS} from '../../hooks/useRequest';
-import {AccountContext} from '../../context/AccountContext';
+import {useSelector, useDispatch} from 'react-redux';
+import * as actions from '../../store/actions';
 
 const config = {
   autocomplete: false,
@@ -44,12 +45,12 @@ const AskForRide = () => {
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
 
   // Store
-  const {
-    accountState: {
-      groups: {data: groups},
-    },
-  } = useContext(AccountContext);
-  let grps = groups.map(group => ({...group, place_name: group.name}));
+  const groups = useSelector(state => state.accountReducer.groups);
+  let grps = groups.data
+    ? groups.data.map(group => ({...group, place_name: group.name}))
+    : [];
+
+  const dispatch = useDispatch();
 
   //Requests
   const [response, loading, error, _sendRideRequest] = useRequest(
@@ -67,6 +68,7 @@ const AskForRide = () => {
       const {longitude, latitude} = info.coords;
       setCurrentPosition([longitude, latitude]);
     });
+    dispatch(actions.getGroups());
   }, []);
 
   useEffect(() => {

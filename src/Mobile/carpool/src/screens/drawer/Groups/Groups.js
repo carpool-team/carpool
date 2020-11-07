@@ -1,31 +1,28 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {SafeAreaView, TouchableOpacity, View, Text} from 'react-native';
 import sheet from '../../../styles/sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../../styles/colors';
 import GroupsFlatList from '../../../components/Groups/GroupsFlatList';
-import {
-  AccountContext,
-  createGetUserGroups,
-  createGetUserInvitations,
-} from '../../../context/AccountContext';
+import {useSelector, useDispatch} from 'react-redux';
+import * as actions from '../../../store/actions';
 
 const Groups = ({navigation}) => {
-  const {accountState, dispatch} = useContext(AccountContext);
-  const {data: groups, loading} = accountState.groups;
-  const {data: invitations, loading: invLoading} = accountState.invitations;
+  const groups = useSelector(store => store.accountReducer.groups);
+  const invitations = useSelector(store => store.accountReducer.invitations);
+  const dispatch = useDispatch();
 
   const onItemPress = item => {
     navigation.navigate('GroupDetails', {group: item});
   };
 
   const onRefresh = () => {
-    createGetUserGroups(dispatch);
-    createGetUserInvitations(dispatch);
+    dispatch(actions.getGroups());
+    dispatch(actions.getInvitations());
   };
 
   useEffect(() => {
-    createGetUserInvitations(dispatch);
+    onRefresh();
   }, []);
 
   const getInvitations = number => {
@@ -38,13 +35,13 @@ const Groups = ({navigation}) => {
             ...sheet.rowCenterSplit,
             width: '100%',
             marginBottom: 36,
-            paddingHorizontal: 8,
+            paddingHorizontal: 16,
           }}
           onPress={() => navigation.navigate('Invitations')}>
           <Text
             style={{
               ...sheet.textSemiBold,
-              fontSize: 8,
+              fontSize: 14,
               color: colors.blue,
             }}>
             {`${number} new invitation${number > 1 ? 's' : ''}`}
@@ -63,10 +60,10 @@ const Groups = ({navigation}) => {
           alignItems: 'center',
           paddingTop: 36,
         }}>
-        {getInvitations(invitations.length)}
+        {getInvitations(invitations.data ? invitations.data.length : 0)}
         <GroupsFlatList
-          data={groups}
-          loading={loading}
+          data={groups.data}
+          loading={groups.loading}
           onItemPress={onItemPress}
           onRefresh={onRefresh}
         />
