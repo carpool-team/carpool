@@ -29,6 +29,12 @@ namespace Carpool.RestAPI.Commands.Group
                 Code = request.Code,
                 OwnerId = request.OwnerId
             };
+
+            group.Location = request.Longitude is null || request.Latitude is null ?
+                                 null :
+                                 new Core.Models.Location()
+                                     {Latitude = (double) request.Latitude, Longitude = (double) request.Longitude};
+            
             try
             {
                 await _repository.AddAsync(group, cancellationToken).ConfigureAwait(false);
