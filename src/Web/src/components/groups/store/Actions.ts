@@ -47,10 +47,12 @@ export function addGroupError(error: Error): IAddGroupActionError {
 	};
 }
 
-export function getGroups(userOnly: boolean): IGetGroupsAction {
+export function getGroups(userOnly: boolean, count?: number, page?: number): IGetGroupsAction {
 	return {
 		type: GroupsActionTypes.GetGroups,
 		userOnly,
+		count,
+		page
 	};
 }
 

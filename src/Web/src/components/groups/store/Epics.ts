@@ -26,7 +26,7 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
 import { GetGroupsResponse } from "../api/getGroups/GetGroupsResponse";
-import { tempUserId } from "../../../api/requests/RequestCore";
+import { tempCoords, tempUserId } from "../../../api/requests/RequestCore";
 import { AddGroupRequest } from "../api/addGroup/AddGroupRequest";
 import { GetInvitesRequest } from "../api/getInvites/GetInvitesRequest";
 import { AnswerInviteRequest } from "../api/answerInvite/AnswerInviteRequest";
@@ -38,11 +38,6 @@ import { GetRidesRequest } from "../api/getRides/GetRidesRequest";
 import { ParticipateInRideResponse } from "../api/participateInRide/ParticipateInRideResponse";
 import { ParticipateInRideRequest } from "../api/participateInRide/ParticipateInRideRequest";
 
-const tempCoords: Object = {
-	"longitude": 0,
-	"latitude": 0
-}; // TODO: ZAORAĆ< POIBIERAC LAT,LNG
-
 const addGroupEpic: Epic<GroupsAction> = (action$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.AddGroup),
@@ -52,6 +47,8 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 					name: action.group.name,
 					code: action.group.code,
 					ownerId: tempUserId,
+					latitude: tempCoords.latitude,
+					longitude: tempCoords.longitude,
 				}
 			});
 			const response: AddGroupResponse = await request.send();
@@ -68,10 +65,10 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 				];
 			} else {
 				return [
-					<IAddGroupActionSuccess>{
-						type: GroupsActionTypes.AddGroupSuccess,
-						newGroup: response.result
-					},
+					<IGetGroupsAction>{
+						type: GroupsActionTypes.GetGroups,
+						userOnly: false,
+					}
 				];
 			}
 		}),
