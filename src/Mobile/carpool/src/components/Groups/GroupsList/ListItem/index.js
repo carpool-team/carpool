@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import UpView from '../common/UpView';
-import sheet from '../../styles/sheet';
-import colors from '../../styles/colors';
+import UpView from '../../../common/UpView';
+import sheet from '../../../../styles/sheet';
+import colors from '../../../../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 
-const GroupListItem = ({item, onItemPress}) => (
+const ListItem = ({item, onItemPress}) => (
   <UpView
     onPress={() => onItemPress(item)}
     borderRadius={16}
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GroupListItem;
+export default ListItem;

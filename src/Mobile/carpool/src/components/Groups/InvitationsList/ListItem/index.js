@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import UpView from '../common/UpView';
-import sheet from '../../styles/sheet';
-import colors from '../../styles/colors';
+import {View, Text} from 'react-native';
+import UpView from '../../../common/UpView';
+import colors from '../../../../styles/colors';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import {CircleButton} from '../common/buttons';
+import {CircleButton} from '../../../common/buttons';
+import {styles} from './index.styles';
 
-const InvitationListItem = ({item, onAccept, onDecline}) => {
+const ListItem = ({item, onAccept, onDecline}) => {
   return (
     <UpView borderRadius={16} style={styles.card}>
       <View style={styles.container}>
@@ -40,49 +40,4 @@ const InvitationListItem = ({item, onAccept, onDecline}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    width: '100%',
-    height: 160,
-    marginBottom: 36,
-  },
-  container: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  name: {
-    ...sheet.textSemiBold,
-    fontSize: 20,
-    color: colors.grayVeryDark,
-  },
-  author: {
-    ...sheet.textRegular,
-    fontSize: 14,
-    color: colors.grayDark,
-  },
-  members: {
-    ...sheet.textSemiBold,
-    fontSize: 20,
-    marginLeft: 8,
-    color: colors.blue,
-  },
-  bottomRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    flex: 1,
-  },
-  header: {
-    width: '100%',
-  },
-  content: {
-    ...sheet.rowCenter,
-  },
-  circleButton: {
-    marginRight: 16,
-  },
-});
-
-export default InvitationListItem;
+export default ListItem;

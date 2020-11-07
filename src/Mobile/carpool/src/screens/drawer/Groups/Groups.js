@@ -3,9 +3,9 @@ import {SafeAreaView, TouchableOpacity, View, Text} from 'react-native';
 import sheet from '../../../styles/sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../../styles/colors';
-import GroupsFlatList from '../../../components/Groups/GroupsFlatList';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
+import {GroupsList} from '../../../components/Groups';
 
 const Groups = ({navigation}) => {
   const groups = useSelector(store => store.accountReducer.groups);
@@ -61,7 +61,7 @@ const Groups = ({navigation}) => {
           paddingTop: 36,
         }}>
         {getInvitations(invitations.data ? invitations.data.length : 0)}
-        <GroupsFlatList
+        <GroupsList
           data={groups.data}
           loading={groups.loading}
           onItemPress={onItemPress}

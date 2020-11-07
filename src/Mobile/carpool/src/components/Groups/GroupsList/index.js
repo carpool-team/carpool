@@ -1,17 +1,15 @@
 import React from 'react';
 import {FlatList, RefreshControl, StyleSheet} from 'react-native';
-import GroupListItem from './GroupListItem';
-import colors from '../../styles/colors';
+import colors from '../../../styles/colors';
+import ListItem from './ListItem';
 
-const GroupsFlatList = ({data, loading, onItemPress, onRefresh}) => (
+const GroupsList = ({data, loading, onItemPress, onRefresh}) => (
   <FlatList
     data={data}
     style={styles.flatlist}
     contentContainerStyle={styles.contentContainer}
     keyExtractor={item => Math.random().toString()}
-    renderItem={({item}) => (
-      <GroupListItem item={item} onItemPress={onItemPress} />
-    )}
+    renderItem={({item}) => <ListItem item={item} onItemPress={onItemPress} />}
     refreshControl={
       <RefreshControl
         colors={[colors.green]}
@@ -33,4 +31,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GroupsFlatList;
+export default GroupsList;

@@ -1,10 +1,10 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native';
-import InvitationsFlatList from '../../../components/Groups/InvitationsFlatList';
 import {apiRequest} from '../../../utils/apiRequest';
 import {METHODS, ENDPOINTS} from '../../../hooks';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
+import {InvitationsList} from '../../../components/Groups';
 
 const Invitations = ({navigation}) => {
   const invitations = useSelector(store => store.accountReducer.invitations);
@@ -48,7 +48,7 @@ const Invitations = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <InvitationsFlatList
+      <InvitationsList
         data={invitations.data}
         loading={invitations.loading}
         onDecline={onDecline}
