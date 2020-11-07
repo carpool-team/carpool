@@ -4,7 +4,6 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {LightTheme} from './src/styles';
 import MainStackNavigator from './src/navigation/MainStackNavigator';
 import config from './config';
-import {PassengerStore} from './src/context/PassengerContext';
 import {AddRideStore} from './src/screens/HomeStack/AddRideStack/context';
 
 import {Provider} from 'react-redux';
@@ -29,13 +28,11 @@ const App = () => {
 
   return (
     <NavigationContainer theme={LightTheme}>
-      <PassengerStore>
-        <AddRideStore>
-          <Provider store={store}>
-            <MainStackNavigator />
-          </Provider>
-        </AddRideStore>
-      </PassengerStore>
+      <AddRideStore>
+        <Provider store={store}>
+          <MainStackNavigator />
+        </Provider>
+      </AddRideStore>
     </NavigationContainer>
   );
 };
