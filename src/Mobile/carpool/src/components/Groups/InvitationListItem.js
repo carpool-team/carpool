@@ -10,23 +10,20 @@ const InvitationListItem = ({item, onAccept, onDecline}) => {
   return (
     <UpView borderRadius={16} style={styles.card}>
       <View style={styles.container}>
-        <View
-          style={{
-            width: '100%',
-          }}>
+        <View style={styles.header}>
           <Text style={styles.name} numberOfLines={1}>
             {item.group.name}
           </Text>
           <Text style={styles.author}>John Doe invited you</Text>
         </View>
-        <View style={{...sheet.rowCenter}}>
+        <View style={styles.content}>
           <MaterialIcon name="group" size={40} color={colors.grayDark} />
           <Text style={styles.members}>{item.group.userCount}</Text>
           <View style={styles.bottomRow}>
             <CircleButton
               size={56}
               icon={<MaterialIcon name="close" size={32} color={colors.red} />}
-              style={{marginRight: 16}}
+              style={styles.circleButton}
               onPress={() => onDecline(item)}
             />
             <CircleButton
@@ -46,14 +43,12 @@ const InvitationListItem = ({item, onAccept, onDecline}) => {
 const styles = StyleSheet.create({
   card: {
     width: '100%',
-    height: 200,
+    height: 160,
     marginBottom: 36,
   },
   container: {
     flex: 1,
-    paddingTop: 18,
-    paddingBottom: 36,
-    paddingHorizontal: 20,
+    padding: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -78,6 +73,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     flex: 1,
+  },
+  header: {
+    width: '100%',
+  },
+  content: {
+    ...sheet.rowCenter,
+  },
+  circleButton: {
+    marginRight: 16,
   },
 });
 

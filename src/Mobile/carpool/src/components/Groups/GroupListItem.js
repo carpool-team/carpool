@@ -12,10 +12,7 @@ const GroupListItem = ({item, onItemPress}) => (
     borderRadius={16}
     style={styles.card}>
     <View style={styles.container}>
-      <View
-        style={{
-          width: '100%',
-        }}>
+      <View style={styles.topWrapper}>
         <Text style={styles.name} numberOfLines={1}>
           {item.name}
         </Text>
@@ -24,7 +21,7 @@ const GroupListItem = ({item, onItemPress}) => (
             styles.since
           }>{`Since ${new Date().toLocaleDateString()}`}</Text>
       </View>
-      <View style={{...sheet.rowCenterSplit, width: '100%'}}>
+      <View style={styles.bottomRow}>
         <View style={sheet.rowCenter}>
           <Icon name="group" size={40} color={colors.grayDark} />
           <Text style={styles.members}>{item.userCount}</Text>
@@ -82,6 +79,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 8,
     color: colors.orange,
+  },
+  topWrapper: {
+    width: '100%',
+  },
+  bottomRow: {
+    ...sheet.rowCenterSplit,
+    width: '100%',
   },
 });
 
