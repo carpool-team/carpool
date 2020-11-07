@@ -32,7 +32,7 @@ const DriversRideDetails = ({navigation, route}) => {
           </View>
           <TouchableOpacity>
             <Ionicon
-              name="md-more"
+              name="ellipsis-vertical"
               size={32}
               color={colors.grayDark}
               style={styles.moreIcon}

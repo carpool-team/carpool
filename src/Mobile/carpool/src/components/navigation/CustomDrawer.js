@@ -14,7 +14,6 @@ import {
   createGetUserRides,
   PassengerContext,
 } from '../../context/PassengerContext';
-import {DriverContext} from '../../context/DriverContext';
 import DriversRideInfo from '../Ride/DriversRideInfo';
 import {useSelector} from 'react-redux';
 
@@ -28,10 +27,8 @@ export default (CustomDrawer = props => {
     passengerState: {userRides},
     dispatch,
   } = useContext(PassengerContext);
-  const {
-    driverState: {driversRides},
-    dispatch: driverDispatch,
-  } = useContext(DriverContext);
+
+  const rdriversRides = useSelector(state => state.driverReducer.driversRides);
 
   const activeAccount = useSelector(
     state => state.accountReducer.activeAccount,
@@ -50,10 +47,12 @@ export default (CustomDrawer = props => {
   }, [userRides]);
 
   useEffect(() => {
-    if (driversRides.data.length) {
-      setDriversRide(driversRides.data[0]);
+    if (rdriversRides.data) {
+      if (rdriversRides.data.length) {
+        setDriversRide(rdriversRides.data[0]);
+      }
     }
-  }, [driversRides]);
+  }, [rdriversRides]);
 
   const onRidePress = () => {
     navigation.navigate('Home', {ride});
@@ -67,6 +66,26 @@ export default (CustomDrawer = props => {
   };
 
   const isPassenger = activeAccount === 'passenger';
+
+  const renderTitle = () => {
+    if (isPassenger) {
+      return ride ? (
+        <Text style={styles.upcomingRide}>Upcoming ride</Text>
+      ) : (
+        <Text style={styles.upcomingRide}>
+          You don't have any upcoming rides
+        </Text>
+      );
+    } else {
+      return driversRide ? (
+        <Text style={styles.upcomingRide}>Upcoming ride</Text>
+      ) : (
+        <Text style={styles.upcomingRide}>
+          You don't have any upcoming rides
+        </Text>
+      );
+    }
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -93,13 +112,7 @@ export default (CustomDrawer = props => {
             </View>
           </View>
           <View style={styles.rideInfoContainer}>
-            {ride ? (
-              <Text style={styles.upcomingRide}>Upcoming ride</Text>
-            ) : (
-              <Text style={styles.upcomingRide}>
-                You don't have ant upcoming rides
-              </Text>
-            )}
+            {renderTitle()}
             {isPassenger ? (
               <DriverInfo ride={ride} onPress={onRidePress} />
             ) : (

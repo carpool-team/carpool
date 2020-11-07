@@ -11,11 +11,6 @@ import {
 } from '../../context/PassengerContext';
 import config from '../../../config';
 import DriverMap from './DriverMap';
-import {
-  DriverContext,
-  createGetDriversRides,
-  createGetDriversPastRides,
-} from '../../context/DriverContext';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../store/actions';
 
@@ -45,7 +40,6 @@ const requestLocationPermission = async () => {
 
 const Home = () => {
   const {dispatch} = React.useContext(PassengerContext);
-  const {dispatch: driverDispatch} = React.useContext(DriverContext);
 
   const rdispatch = useDispatch();
   const activeAccount = useSelector(
@@ -60,6 +54,7 @@ const Home = () => {
 
   useEffect(() => {
     rdispatch(actions.getGroups());
+
     if (Platform.OS === 'android') {
       requestLocationPermission();
     }
@@ -68,8 +63,9 @@ const Home = () => {
   useEffect(() => {
     // Delete ride from params
     if (activeAccount === 'driver') {
-      createGetDriversRides(driverDispatch);
-      createGetDriversPastRides(driverDispatch);
+      rdispatch(actions.getDriversRides());
+      rdispatch(actions.getDriversPastRides());
+
       if (route.params) {
         let params = route.params;
         delete params.ride;

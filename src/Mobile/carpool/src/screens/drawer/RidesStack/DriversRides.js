@@ -1,34 +1,39 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {StandardButton} from '../../../components/common/buttons';
-import {
-  DriverContext,
-  createGetDriversRides,
-  createGetDriversPastRides,
-} from '../../../context/DriverContext';
 import DriversRidesFlatList from '../../../components/Driver/DriversRidesFlatList';
+import {useSelector, useDispatch} from 'react-redux';
+import * as actions from '../../../store/actions';
 
 const DriversRides = ({navigation}) => {
   const [isUpcoming, setIsUpcoming] = useState(true);
   const [data, setData] = useState([]);
 
-  const {
-    driverState: {driversRides, driversPastRides},
-    dispatch,
-  } = useContext(DriverContext);
+  const driversRides = useSelector(state => state.driverReducer.driversRides);
+  const driversPastRides = useSelector(
+    state => state.driverReducer.driversPastRides,
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isUpcoming) {
-      setData([...driversRides.data]);
-    } else {
-      setData([...driversPastRides.data]);
+    onRefresh();
+  }, []);
+
+  useEffect(() => {
+    if (driversRides.data && driversPastRides.data) {
+      if (isUpcoming) {
+        setData([...driversRides.data]);
+      } else {
+        setData([...driversPastRides.data]);
+      }
     }
-  }, [isUpcoming]);
+  }, [isUpcoming, driversRides, driversPastRides]);
 
   const onRefresh = () => {
-    createGetDriversRides(dispatch);
-    createGetDriversPastRides(dispatch);
+    dispatch(actions.getDriversRides());
+    dispatch(actions.getDriversPastRides());
   };
 
   const onItemPress = ride => {

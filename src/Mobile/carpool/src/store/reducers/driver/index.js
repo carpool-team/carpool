@@ -37,7 +37,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         driversPastRides: {
           ...initialStoreItem,
-          data: actions.payload,
+          data: action.payload,
         },
       };
     case actions.GetDriversPastRides.Error:

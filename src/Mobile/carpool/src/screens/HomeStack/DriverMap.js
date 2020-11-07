@@ -5,12 +5,10 @@ import {CircleButton} from '../../components/common/buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {colors} from '../../styles';
 import {useNavigation} from '@react-navigation/core';
-import {DriverContext} from '../../context/DriverContext';
 
 const DriverMap = ({coordinates, _onLocateUser}) => {
   const _driverMap = useRef(null);
   const navigation = useNavigation();
-  const {driverState} = useContext(DriverContext);
 
   return (
     <>
