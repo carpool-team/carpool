@@ -9,6 +9,6 @@ namespace Carpool.RestAPI.Controllers
 	{
 		[HttpGet]
 		public ActionResult Get()
-			=> Ok("Server is running TEST TEST TEST");
+			=> Ok("Server is running");
 	}
 }
