@@ -8,9 +8,11 @@
         "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie",
         "email": "Adres e-mail",
         "emailComment": "Na ten adres zostanie wysłane zaproszenie",
-        "createBtn": "Utwórz grupę",
+        "createBtn": "Utwórz",
         "name": "Imię",
-        "surname": "Nazwisko"
+        "surname": "Nazwisko",
+        "basicInfo": "Podstawowe informacje",
+        "basicInfo2": "Zaproś użytkowników"
       },
       "addGroupBtn": "Dodaj grupę",
       "ridesBtn": "Przejazdy",
