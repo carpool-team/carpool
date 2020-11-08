@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Carpool.DAL.Repositories.Group;
+using Carpool.DAL.Repositories.User;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace Carpool.RestAPI.Commands.Group
 	public class AddGroupCommandHandler : IRequestHandler<AddGroupCommand, Guid>
 	{
 		private readonly IGroupRepository _repository;
+        private readonly IUserRepository _userRepository;
 
 		public AddGroupCommandHandler(IGroupRepository repository)
 			=> _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -23,7 +25,8 @@ namespace Carpool.RestAPI.Commands.Group
                 && await _repository.GroupCodeExists(request.Code).ConfigureAwait(false))
                 throw new ApiException($"Group code {request.Code} already exists", StatusCodes.Status409Conflict);
 
-            
+            if (!await _userRepository.ExistsWithId(request.OwnerId, cancellationToken))
+                throw new ApiException($"User with id {request.OwnerId} does not exist.", StatusCodes.Status400BadRequest);
             
             var group = new Core.Models.Group()
             {

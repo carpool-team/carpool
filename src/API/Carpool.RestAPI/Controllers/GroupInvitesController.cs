@@ -70,5 +70,15 @@ namespace Carpool.RestAPI.Controllers
 
 			return new ApiResponse($"Group Invite with id: {response} has been deleted");
 		}
+		
+		[HttpGet("~/api/users/{userId}/groupInvites")]
+		public async Task<ApiResponse> GetUserGroupInvites([FromRoute] Guid userId)
+		{
+			var request = new GetUserGroupInvitesQuery(userId);
+
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+
+			return new ApiResponse(response);
+		}
 	}
 }
