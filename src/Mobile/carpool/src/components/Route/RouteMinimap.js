@@ -62,7 +62,7 @@ const RouteMinimap = ({start, destination}) => {
   }, [results]);
 
   const parseCoords = coords => {
-    return [coords.latitude, coords.longitude];
+    return [coords.longitude, coords.latitude];
   };
 
   const renderPoints = () => {

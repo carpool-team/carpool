@@ -11,14 +11,14 @@ const exampleRides = [
     date: new Date(faker.date.future()).toISOString(),
     startingLocation: {
       coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
       },
     },
     destination: {
       coordinates: {
-        longitude: 53.30656926303501,
-        latitude: 16.76633729745128,
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
       },
     },
     participants: [
@@ -37,14 +37,14 @@ const exampleRides = [
     date: new Date(faker.date.future()).toISOString(),
     startingLocation: {
       coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
       },
     },
     destination: {
       coordinates: {
-        longitude: 53.30656926303501,
-        latitude: 16.76633729745128,
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
       },
     },
     participants: [
@@ -63,14 +63,14 @@ const exampleRides = [
     date: new Date(faker.date.future()).toISOString(),
     startingLocation: {
       coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
       },
     },
     destination: {
       coordinates: {
-        longitude: 53.30656926303501,
-        latitude: 16.76633729745128,
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
       },
     },
     participants: [
@@ -92,14 +92,14 @@ const examplePastRides = [
     date: new Date(faker.date.past()).toISOString(),
     startingLocation: {
       coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
       },
     },
     destination: {
       coordinates: {
-        longitude: 53.30656926303501,
-        latitude: 16.76633729745128,
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
       },
     },
     participants: [
@@ -118,14 +118,14 @@ const examplePastRides = [
     date: new Date(faker.date.past()).toISOString(),
     startingLocation: {
       coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
       },
     },
     destination: {
       coordinates: {
-        longitude: 53.30656926303501,
-        latitude: 16.76633729745128,
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
       },
     },
     participants: [
@@ -144,14 +144,14 @@ const examplePastRides = [
     date: new Date(faker.date.past()).toISOString(),
     startingLocation: {
       coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
       },
     },
     destination: {
       coordinates: {
-        longitude: 53.30656926303501,
-        latitude: 16.76633729745128,
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
       },
     },
     participants: [
