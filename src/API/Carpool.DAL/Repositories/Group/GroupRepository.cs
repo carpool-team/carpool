@@ -18,7 +18,6 @@ namespace Carpool.DAL.Repositories.Group
 		public async Task<Core.Models.Group> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
-			                     .AsNoTracking()
 			                     //.Include(group => group.Rides)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
@@ -29,6 +28,7 @@ namespace Carpool.DAL.Repositories.Group
 		                                                              CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
+			                     .AsNoTracking()
 			                     .Include(group => group.Rides)
 			                     .Include(group => group.UserGroups)
 			                     .Include(group => group.Location)

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Carpool.DAL.Repositories.Group;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.RestAPI.Commands.Group
 {
@@ -24,7 +25,7 @@ namespace Carpool.RestAPI.Commands.Group
 			{
 				await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
 			}
-			catch (DbException ex)
+			catch (DbUpdateException ex)
 			{
 				throw new ApiException(ex);
 			}
