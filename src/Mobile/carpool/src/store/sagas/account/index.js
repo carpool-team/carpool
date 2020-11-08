@@ -5,14 +5,25 @@ import {ENDPOINTS} from '../../../hooks';
 const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 import faker from 'faker';
 
+const ex = {
+  id: '0f56e3eb-4aa5-4f55-eca8-08d8831020c0',
+  location: {
+    longitude: 0.0,
+    latitude: 0.0,
+    name: null,
+    id: '6e1b7ecb-1d0e-4aa0-b359-08d8831020c3',
+  },
+  name: 'TestingTest',
+  rideCount: 0,
+  userCount: 0,
+};
+
 const exampleGroups = [
   {
     id: faker.random.alphaNumeric(32),
     location: {
-      coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
-      },
+      longitude: 52.40656926303501,
+      latitude: 16.86633729745128,
     },
     name: faker.random.word(),
     rideCount: faker.random.number({min: 0, max: 100}),
@@ -21,10 +32,8 @@ const exampleGroups = [
   {
     id: faker.random.alphaNumeric(32),
     location: {
-      coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
-      },
+      longitude: 52.40656926303501,
+      latitude: 16.86633729745128,
     },
     name: faker.random.word(),
     rideCount: faker.random.number({min: 0, max: 100}),
@@ -33,10 +42,8 @@ const exampleGroups = [
   {
     id: faker.random.alphaNumeric(32),
     location: {
-      coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
-      },
+      longitude: 52.40656926303501,
+      latitude: 16.86633729745128,
     },
     name: faker.random.word(),
     rideCount: faker.random.number({min: 0, max: 100}),
@@ -45,10 +52,8 @@ const exampleGroups = [
   {
     id: faker.random.alphaNumeric(32),
     location: {
-      coordinates: {
-        longitude: 52.40656926303501,
-        latitude: 16.86633729745128,
-      },
+      longitude: 52.40656926303501,
+      latitude: 16.86633729745128,
     },
     name: faker.random.word(),
     rideCount: faker.random.number({min: 0, max: 100}),

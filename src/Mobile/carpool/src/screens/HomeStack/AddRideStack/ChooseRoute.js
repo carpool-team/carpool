@@ -113,7 +113,7 @@ const ChooseRoute = ({navigation}) => {
   const onDestinationItemPress = item => {
     setDestination(item.place_name);
     const dstGeo = {
-      coordinates: item.location.coordinates,
+      coordinates: item.location,
       locationName: null,
     };
     setGroupId(item.id);

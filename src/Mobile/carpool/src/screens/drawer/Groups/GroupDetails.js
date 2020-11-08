@@ -111,12 +111,12 @@ const GroupDetails = ({navigation, route}) => {
               maxZoomLevel={19}
               animationMode="flyTo"
               animationDuration={500}
-              centerCoordinate={parseCoords(group.location.coordinates)}
+              centerCoordinate={parseCoords(group.location)}
             />
             <MapboxGL.PointAnnotation
-              key={group.location.coordinates.toString()}
+              key={group.id}
               id="selected"
-              coordinate={parseCoords(group.location.coordinates)}>
+              coordinate={parseCoords(group.location)}>
               <Marker color={colors.green} size={24} />
             </MapboxGL.PointAnnotation>
             <MapboxGL.UserLocation visible />
