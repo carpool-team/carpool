@@ -7,7 +7,7 @@ namespace Carpool.RestAPI.DTOs.UserDTOs
 	{
 		public IndexUserDto(Guid userId, string firstName, string lastName, Core.Models.Vehicle vehicle) : this(userId,
 			firstName, lastName)
-			=> Vehicle = new IndexVehicleDto(vehicle.Name);
+			=> Vehicle = vehicle is null ? null : new IndexVehicleDto(vehicle.Name);
 
 		public IndexUserDto(Guid userId, string firstName, string lastName) : this(userId)
 		{
@@ -25,6 +25,6 @@ namespace Carpool.RestAPI.DTOs.UserDTOs
 		public Guid UserId { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public IndexVehicleDto Vehicle { get; set; }
+		public IndexVehicleDto? Vehicle { get; set; }
 	}
 }

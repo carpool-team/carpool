@@ -1,14 +1,9 @@
+import { IGroupBase } from "./IGroupBase";
+
 /** Group interface */
-export interface IGroup {
-	id: string;
-	location: {
-		longtitude: number;
-		latitude: number;
-		rideCount: number;
-	};
-	code?: string;
-	name?: string;
-	owner?: string;
-	userCount?: number;
+export interface IGroup extends IGroupBase {
+	code: string;
+	owner: string;
+	userCount: number;
 	selected?: boolean;
 }

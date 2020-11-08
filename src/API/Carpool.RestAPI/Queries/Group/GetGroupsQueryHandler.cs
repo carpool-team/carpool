@@ -20,7 +20,7 @@ namespace Carpool.RestAPI.Queries.Group
 		{
 			var groups = await _repository.GetRangeAsNoTrackingAsync(request.Count, request.Page).ConfigureAwait(false);
 			var groupDtos = groups.Select(x
-				=> new IndexGroupDTO(x.Id, x.Location, x.Name, 1));
+				=> new IndexGroupDTO(x.Id, x.Location, x.Name, x.Rides.Count, x.UserGroups.Count));
 
 			return groupDtos;
 		}

@@ -19,5 +19,7 @@ namespace Carpool.DAL.Repositories
 		Task DeleteByIdAsync(T id);
 		Task SaveAsync(CancellationToken cancellationToken = default);
 		void Save();
+
+		Task<bool> AnyWithId(T id);
 	}
 }

@@ -65,5 +65,8 @@ namespace Carpool.DAL.Repositories
 		{
 			_context.SaveChanges();
 		}
+
+		public async Task<bool> AnyWithId(T id)
+			=> await _context.Set<TEntity>().AnyAsync(x => x.Id.Equals(id)).ConfigureAwait(false);
 	}
 }
