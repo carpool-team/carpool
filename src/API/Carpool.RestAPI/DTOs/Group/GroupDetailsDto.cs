@@ -24,7 +24,7 @@ namespace Carpool.RestAPI.DTOs.GroupDTOs
 		}
 
 		public Guid GroupId { get; set; }
-		public Location Location { get; set; }
+		public Location? Location { get; set; }
 		public List<RideMinimalDto> Rides { get; set; }
 		public string Name { get; set; }
 		public string Code { get; set; }

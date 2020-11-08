@@ -64,7 +64,8 @@ namespace Carpool.DAL.Repositories.Group
 		{
 			var groups = await _context.Groups
 			                           .AsNoTracking()
-			                           //.Include(group => group.Rides)
+			                           .Include(group => group.Rides)
+			                           .Include(group => group.UserGroups)
 			                           .Include(group => group.Location)
 			                           .Skip(pagesToSkip * pageCount)
 			                           .Take(pageCount)

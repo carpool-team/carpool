@@ -60,11 +60,13 @@
     <Compile Remove="Migrations\20201103220032_RemovedCompanyModel.Designer.cs" />
     <Compile Remove="Migrations\20201103220721_RemovedCompanyModel.cs" />
     <Compile Remove="Migrations\20201103220721_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201108133647_test.cs" />
+    <Compile Remove="Migrations\20201108133647_test.Designer.cs" />
+    <Compile Remove="Migrations\20201108133936_test.cs" />
+    <Compile Remove="Migrations\20201108133936_test.Designer.cs" />
+    <Compile Remove="Migrations\20201108134045_test.cs" />
+    <Compile Remove="Migrations\20201108134045_test.Designer.cs" />
     <Compile Remove="Repositories\Company\ICompanyRepository.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Repositories\Company" />
   </ItemGroup>
 
 </Project>

@@ -38,7 +38,7 @@ namespace Carpool.DAL.Builders
 			       .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(x => x.Group)
-                .WithMany()
+                .WithMany(x => x.Rides)
                 .HasForeignKey(x => x.GroupId)
                 .OnDelete(DeleteBehavior.NoAction);
 
