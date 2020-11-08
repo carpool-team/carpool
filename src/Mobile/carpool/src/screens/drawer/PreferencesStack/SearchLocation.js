@@ -10,10 +10,10 @@ import {colors, sheet} from '../../../styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/core';
 import {BlueMarker} from '../../../components/common/map';
-import LocationsFlatList from '../../../components/Locations/LocationsFlatList';
 import {geocodingClient} from '../../../maps/mapbox';
 import Geolocation from '@react-native-community/geolocation';
 import useForwardGeocoding from '../../../hooks/useForwardGeocoding';
+import {LocationsFlatList} from '../../../components/Locations';
 
 const SearchLocation = () => {
   const [currentPosition, setCurrentPosition] = useState([]);

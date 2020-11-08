@@ -1,22 +1,18 @@
 import React from 'react';
-import {FlatList, RefreshControl, Text, View} from 'react-native';
-import LocationsListItem from '../Locations/LocationsListItem';
-import {colors} from '../../styles';
+import {FlatList, RefreshControl} from 'react-native';
+import {colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/core';
-import CurrentLocationListItem from './CurrentLocationListItem';
+import CurrentLocationListItem from '../CurrentLocationListItem';
+import {styles} from './index.styles';
+import LocationsListItem from '../LocationsListItem';
 
 const LocationsFlatList = ({data, loading, _onCurrentClick}) => {
   const navigation = useNavigation();
 
   return (
     <FlatList
-      style={{
-        width: '100%',
-      }}
-      contentContainerStyle={{
-        paddingHorizontal: 32,
-        paddingTop: 18,
-      }}
+      style={styles.flatlist}
+      contentContainerStyle={styles.contentContainer}
       data={data}
       keyExtractor={item => item.id}
       renderItem={({item}) => (

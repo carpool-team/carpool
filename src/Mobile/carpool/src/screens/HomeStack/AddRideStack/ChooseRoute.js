@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {StartLocationsFlatList} from '../../../components/FindRoute';
-import GroupsFlatlist from '../../../components/Locations/GroupsFlatlist';
 import Geolocation from '@react-native-community/geolocation';
 import {BlueMarker} from '../../../components/common/map';
 import {colors, sheet} from '../../../styles';
@@ -18,6 +17,7 @@ import {StandardButton} from '../../../components/common/buttons';
 import {RouteMinimap} from '../../../components/Route';
 import {AddRideContext, AddRideContextActions} from './context';
 import {useSelector} from 'react-redux';
+import {GroupsFlatlist} from '../../../components/Locations';
 
 const config = {
   autocomplete: false,
