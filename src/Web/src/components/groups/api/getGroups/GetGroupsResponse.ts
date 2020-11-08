@@ -1,6 +1,6 @@
 import ResponseBase from "../../../../api/responses/ResponseBase";
-import { IGroup } from "../../interfaces/IGroup";
+import { IGroupBase } from "../../interfaces/IGroupBase";
 
-export class GetGroupsResponse extends ResponseBase<Array<IGroup>> {
+export class GetGroupsResponse extends ResponseBase<Array<IGroupBase>> {
 
 }

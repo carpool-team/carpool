@@ -7,6 +7,8 @@ export interface IAddGroupRequestBody {
 	name: string;
 	code: string;
 	ownerId: string;
+	latitude: number;
+	longitude: number;
 }
 
 export class AddGroupRequest extends RequestBase<IAddGroupRequestBody> {

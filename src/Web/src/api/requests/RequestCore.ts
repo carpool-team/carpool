@@ -4,7 +4,12 @@ import { IRequestProperties } from "../interfaces/IRequestProperties";
 import ResponseCore from "../responses/ResponseCore";
 import RequestBody from "./RequestBody";
 
-export const tempUserId: string = "8151a9b2-52ee-4ce0-a2dd-08d7f7744d91";
+export const tempUserId: string = "ba5c33df-0c92-4324-19c7-08d8778cb545";
+
+export const tempCoords = {
+	longitude: 0,
+	latitude: 0
+}; // TODO: ZAORAĆ< POIBIERAC LAT,LNG
 
 export default abstract class RequestCore {
 	//#region class fields

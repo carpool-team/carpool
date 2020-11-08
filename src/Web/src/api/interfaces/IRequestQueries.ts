@@ -3,4 +3,6 @@ export interface IRequestQueries {
 	groupId?: string;
 	inviteId?: string;
 	rideId?: string;
+	count?: number;
+	page?: number;
 }

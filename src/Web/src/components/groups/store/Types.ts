@@ -55,6 +55,8 @@ export interface IAddGroupActionError
 /** Action for getting groups */
 export interface IGetGroupsAction extends Action<GroupsActionTypes.GetGroups> {
 	userOnly: boolean;
+	count?: number;
+	page?: number;
 }
 
 /** Action for getting groups success */
