@@ -12,7 +12,7 @@ export class GetGroupsRequest extends RequestCore {
 		super({
 			properties: {
 				method: RequestType.GET,
-				endpoint: init.userOnly ? RequestEndpoint.GET_USER_GROUPS : RequestEndpoint.GET_ALL_GROUPS,
+				endpoint: init.userOnly ? RequestEndpoint.GET_ALL_GROUPS : RequestEndpoint.GET_ALL_GROUPS,
 				queries: {
 					userId: init.userOnly ? tempUserId : undefined,
 					page: init.page ? init.page : 0,
