@@ -84,8 +84,8 @@ const ChooseRoute = ({navigation}) => {
         setStart(result.place_name);
         const stGeo = {
           coordinates: {
-            longitude: result.center[1],
-            latitude: result.center[0],
+            longitude: result.center[0],
+            latitude: result.center[1],
           },
           locationName: null,
         };
@@ -101,8 +101,8 @@ const ChooseRoute = ({navigation}) => {
     setStart(item.place_name);
     const stGeo = {
       coordinates: {
-        longitude: item.center[1],
-        latitude: item.center[0],
+        longitude: item.center[0],
+        latitude: item.center[1],
       },
       locationName: null,
     };
