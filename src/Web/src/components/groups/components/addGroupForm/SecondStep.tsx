@@ -1,4 +1,5 @@
 import React from "react";
+import MediaQuery from "react-responsive";
 import { withTranslation } from "react-i18next";
 import { IFormData } from "./interfaces/IFormData";
 import Input from "../../../ui/input/Input";
@@ -111,7 +112,10 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 				return (
 					<li	key={idx}>
 						<div className={cssClasses.userListItem} style={color}>
-							<div className={cssClasses.userListItemName}>{user.name} {user.surname}</div>  <span>{user.email}</span>     
+							<div className={cssClasses.userListItemName}>{user.name} {user.surname}</div> 
+							<MediaQuery query="(min-width: 900px)">
+								<span>{user.email}</span>     
+							</MediaQuery> 
 						</div>
 					</li>
 				);
