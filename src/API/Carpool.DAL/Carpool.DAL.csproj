@@ -66,6 +66,18 @@
     <Compile Remove="Migrations\20201108133936_test.Designer.cs" />
     <Compile Remove="Migrations\20201108134045_test.cs" />
     <Compile Remove="Migrations\20201108134045_test.Designer.cs" />
+    <Compile Remove="Migrations\20201108203215_test.cs" />
+    <Compile Remove="Migrations\20201108203215_test.Designer.cs" />
+    <Compile Remove="Migrations\20201108203403_test.cs" />
+    <Compile Remove="Migrations\20201108203403_test.Designer.cs" />
+    <Compile Remove="Migrations\20201108203532_UserGroupOnDeleteIsNowCascade.cs" />
+    <Compile Remove="Migrations\20201108203532_UserGroupOnDeleteIsNowCascade.Designer.cs" />
+    <Compile Remove="Migrations\20201108203652_UserGroupOnDeleteIsNowCascade.cs" />
+    <Compile Remove="Migrations\20201108203652_UserGroupOnDeleteIsNowCascade.Designer.cs" />
+    <Compile Remove="Migrations\20201108203723_UserGroupOnDeleteIsNowCascade.cs" />
+    <Compile Remove="Migrations\20201108203723_UserGroupOnDeleteIsNowCascade.Designer.cs" />
+    <Compile Remove="Migrations\20201108204023_UserGroupOnDeleteIsNowCascade.cs" />
+    <Compile Remove="Migrations\20201108204023_UserGroupOnDeleteIsNowCascade.Designer.cs" />
     <Compile Remove="Repositories\Company\ICompanyRepository.cs" />
   </ItemGroup>
 

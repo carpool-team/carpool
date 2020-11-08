@@ -29,8 +29,7 @@ namespace Carpool.RestAPI.Commands.Group
 		{
 			var groupId = request.GroupId ?? throw new ApiException($"Group id cannot be null.");
 			var group = await _repository.GetByIdAsync(groupId, cancellationToken).ConfigureAwait(false);
-			_ = group ?? throw new ApiException($"Group with id: {groupId} does not exist",
-				    StatusCodes.Status400BadRequest);
+			_ = group ?? throw new ApiException($"Group with id: {groupId} does not exist");
 
 			var userGroup = new UserGroup(request.UserId, groupId);
 

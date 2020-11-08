@@ -8,6 +8,7 @@ using Carpool.DAL.Repositories.User;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.RestAPI.Commands.Group
 {
@@ -43,12 +44,13 @@ namespace Carpool.RestAPI.Commands.Group
                                  new Core.Models.Location()
                                      {Latitude = (double) request.Latitude, Longitude = (double) request.Longitude};
             
+
+            await _repository.AddAsync(group, cancellationToken).ConfigureAwait(false);
             try
             {
-                await _repository.AddAsync(group, cancellationToken).ConfigureAwait(false);
                 await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
                 throw new ApiException(ex);
             }
