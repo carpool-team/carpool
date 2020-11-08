@@ -8,7 +8,7 @@ namespace Carpool.RestAPI.Commands.Ride
 	public class AddRideCommand : IRequest<Core.Models.Ride>
 	{
 		[JsonConstructor]
-		public AddRideCommand(Guid ownerId, List<Guid> participantsIds, Guid groupId, DateTime date, double price)
+		public AddRideCommand(Guid ownerId, List<Guid> participantsIds, Guid groupId, DateTime date, double price, Guid? startingLocationId, double? startingLocationLongitude, double? startingLocationLatitude, Guid? destinationId, double? destinationLongitude, double? destinationLatitude)
 		{
 			OwnerId = ownerId;
 			ParticipantsIds = participantsIds;
@@ -16,6 +16,12 @@ namespace Carpool.RestAPI.Commands.Ride
 			Date = date;
 			Date = date;
 			Price = price;
+			StartingLocationId = startingLocationId;
+			StartingLocationLongitude = startingLocationLongitude;
+			StartingLocationLatitude = startingLocationLatitude;
+			DestinationId = destinationId;
+			DestinationLongitude = destinationLongitude;
+			DestinationLatitude = destinationLatitude;
 		}
 
 		public Guid OwnerId { get; set; }
@@ -26,5 +32,13 @@ namespace Carpool.RestAPI.Commands.Ride
 		public DateTime Date { get; set; }
 
 		public double Price { get; set; }
+		
+		public Guid? DestinationId { get; set; }
+		public double? DestinationLongitude { get; set; }
+		public double? DestinationLatitude { get; set; }
+
+		public Guid? StartingLocationId { get; set; }
+		public double? StartingLocationLongitude { get; set; }
+		public double? StartingLocationLatitude { get; set; }
 	}
 }

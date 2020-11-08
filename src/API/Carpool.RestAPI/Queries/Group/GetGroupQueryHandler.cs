@@ -35,7 +35,7 @@ namespace Carpool.RestAPI.Queries.Group
 			var groupDto = new GroupDetailsDto(
 				group.Id,
 				group.Location,
-				new List<RideMinimalDto>(), 
+				group.Rides.Select(x => new RideMinimalDto(x.Id, x.Date, x.Destination )).ToList(), 
 				group.Name, 
 				group.Code, 
 				group.Owner,

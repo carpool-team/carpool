@@ -65,6 +65,9 @@ namespace Carpool.DAL.Repositories.User
 		public void Save()
 			=> _context.SaveChanges();
 
+		public async Task<bool> AnyWithId(Guid id)
+			=> await _context.Users.AnyAsync(x => x.Id.Equals(id)).ConfigureAwait(false);
+
 		public async Task<bool> ExistsWithId(Guid id, CancellationToken cancellationToken)
 			=> await _context.Users.AnyAsync(x => x.Id == id, cancellationToken).ConfigureAwait(false);
 	}
