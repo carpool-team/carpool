@@ -3,11 +3,13 @@ import { withTranslation } from "react-i18next";
 import { IFormData } from "./interfaces/IFormData";
 import Input from "../../../ui/input/Input";
 import { InputType } from "../../../ui/input/enums/InputType";
-import Button from "../../../ui/Button/Button";
+import { InputIcon } from "../../../ui/input/enums/InputIcon";
+import Button from "../../../ui/button/Button";
+import {ButtonColor} from "../../../ui/button/enums/ButtonColor";
+import {ButtonBackground} from "../../../ui/button/enums/ButtonBackground";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
-import { ButtonType } from "../../../ui/Button/enums/ButtonType";
 
-import userIco from "assets_path/img/user_ico.png";
+
 
 interface ISecondStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
@@ -23,13 +25,12 @@ interface ISecondStepProps extends IReactI18nProps {
 
 const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 	const cssClasses = {
-		container: "formSecondSide__container",
-		inputs: "formSecondSide__inputs",
-		userIco: "formSecondSide__userIco",
-		userList: "formSecondSide__userList",
-		userListItem: "formSecondSide__userListItem",
-		buttonsGroup: "formSecondSide__buttonsGroup"
-
+		container: "addGroupContainerSecond",
+		inputs: "addGroupSecondSide__inputs",
+		userList: "addGroupSecondSide__userList",
+		userListItem: "addGroupSecondSide__userListItem",
+		userListItemName: "addGroupSecondSide__userListItemName",
+		buttonsGroup: "addGroupSecondSide__buttonsGroup"
 	};
 
 	const dataKeys = {
@@ -46,35 +47,39 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 		emailInputComment: "groups.addGroupForm.emailComment",
 		nameInput: "groups.addGroupForm.name",
 		surnameInput: "groups.addGroupForm.surname",
+		basicInfo: "groups.addGroupForm.basicInfo2",
 	};
 
 	const { t } = props;
 
 	const renderInputs = () => (
 		<div className={cssClasses.inputs}>
+			<span> {t(resources.basicInfo)}</span>
 			<Input
 				type={InputType.Text}
 				changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.name)}
 				placeholder={t(resources.nameInput)}
+				icon = {InputIcon.User}
 				value={props.data.user.name}
 			/>
 			<Input
 				type={InputType.Text}
 				changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.surname)}
 				placeholder={t(resources.surnameInput)}
+				icon = {InputIcon.User}
 				value={props.data.user.surname}
 			/>
 			<Input
 				type={InputType.Text}
 				changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.email)}
 				placeholder={t(resources.emailInput)}
-				commment={t(resources.emailInputComment)}
+				icon = {InputIcon.Mail}
+				// commment={t(resources.emailInputComment)}
 				value={props.data.user.email}
 			/>
 			<div className={cssClasses.buttonsGroup}>
 				<Button
 					onClick={props.callbacks.decrementStep}
-					type={ButtonType.Danger}
 				>
 					{t(resources.prevBtn)}
 				</Button>
@@ -83,7 +88,8 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 				</Button>
 				<Button
 					onClick={props.callbacks.createGroup}
-					type={ButtonType.Success}
+					color = {ButtonColor.White}
+					background = {ButtonBackground.Blue}
 				>
 					{t(resources.createBtn)}
 				</Button>
@@ -92,18 +98,24 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 	);
 
 	const renderUserList = () => {
-		const createListItems = () => props.data.users.map((user, idx) => (
-			<li
-				className={cssClasses.userListItem}
-				key={idx}
-			>
-				<img className={cssClasses.userIco} src={userIco} alt={""} />
-				{user.name + " " + user.surname}
-			</li>
-		));
+		let colorList:string[] = ["#C39BD3", "#7FB3D5","#48C9B0","#F9E79F"]
+		let colorIndex:number = 0;
+		
 		return (
 			<ul className={cssClasses.userList}>
-				{createListItems()}
+				{props.data.users.map((user, idx) => {
+				++colorIndex;
+				const color = {
+					color: colorList[colorIndex%colorList.length]
+				};
+				return (
+					<li	key={idx}>
+						<div className={cssClasses.userListItem} style={color}>
+							<div className={cssClasses.userListItemName}>{user.name} {user.surname}</div>  <span>{user.email}</span>     
+						</div>
+					</li>
+				);
+			})}
 			</ul>
 		);
 	};

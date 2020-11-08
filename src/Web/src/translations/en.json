@@ -4,7 +4,7 @@
         "groups": {
             "addGroupBtn": "Add group"
         },
-        "loadingScreen": {
+        "homeScreen": {
             "quote": "Share a ride",
             "join": "Join group"
         }
