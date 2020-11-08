@@ -7,6 +7,7 @@ using Carpool.RestAPI.Commands.Group;
 using Carpool.RestAPI.DTOs.GroupDTOs;
 using Carpool.RestAPI.Queries.Group;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carpool.RestAPI.Controllers
@@ -76,12 +77,13 @@ namespace Carpool.RestAPI.Controllers
 			return new ApiResponse($"Created group with id: {groupId}", groupId);
 		}
 
-		[HttpPut("{groupId}/users")]
+		[HttpPost("{groupId}/users")]
 		public async Task<ApiResponse> AddUserToGroup([FromRoute] Guid groupId,
 		                                               [FromBody] AddUserToGroupCommand addUserToGroupCommand)
 		{
+			addUserToGroupCommand.GroupId = groupId;
 			var response = await _mediator.Send(addUserToGroupCommand).ConfigureAwait(false);
-			return new ApiResponse();
+			return new ApiResponse($"User with id: {addUserToGroupCommand.UserId} has been added to group with id: {groupId}.");
 		}
 
 		// DELETE: api/Groups/5
@@ -89,7 +91,7 @@ namespace Carpool.RestAPI.Controllers
 		public async Task<ApiResponse> DeleteGroup(Guid id)
 		{
 			var response = await _mediator.Send(new DeleteGroupCommand(id)).ConfigureAwait(false);
-			return new ApiResponse();
+			return new ApiResponse($"Group with id: {id} has been deleted", StatusCodes.Status200OK);
 		}
 		
 		

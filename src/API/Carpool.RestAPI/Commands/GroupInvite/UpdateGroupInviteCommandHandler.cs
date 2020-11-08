@@ -33,11 +33,7 @@ namespace Carpool.RestAPI.Commands.GroupInvite
 
 			if (groupInvite.IsAccepted)
 			{
-				var userGroup = new UserGroup
-				{
-					UserId = groupInvite.InvitedUserId,
-					GroupId = groupInvite.GroupId
-				};
+				var userGroup = new UserGroup(groupInvite.InvitedUserId, groupInvite.GroupId);
 
 				await _groupRepository.AddUserToGroupAsync(userGroup,
 					cancellationToken).ConfigureAwait(false);

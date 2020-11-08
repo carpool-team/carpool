@@ -19,7 +19,7 @@ namespace Carpool.DAL.Builders.Intersections
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(x => x.Group)
-                .WithMany()
+                .WithMany(x => x.UserGroups)
                 .HasForeignKey(x => x.GroupId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
