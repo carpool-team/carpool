@@ -3,9 +3,9 @@ import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {colors} from '../../styles';
 import {CircleButton} from '../../components/common/buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import RidesFlatList from '../../components/Ride/RidesFlatList';
 import {useDispatch, useSelector} from 'react-redux';
 import * as actions from '../../store/actions';
+import {RidesFlatList} from '../../components/Ride';
 
 const FindRide = ({navigation, route}) => {
   const dispatch = useDispatch();

@@ -9,10 +9,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/core';
 import {CircleButton, StandardButton} from '../common/buttons';
-import DriverInfo from '../Ride/DriverInfo';
-import DriversRideInfo from '../Ride/DriversRideInfo';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../store/actions';
+import {DriverInfo, DriversRideInfo} from '../Ride';
 
 export default (CustomDrawer = props => {
   const [ride, setRide] = useState(null);

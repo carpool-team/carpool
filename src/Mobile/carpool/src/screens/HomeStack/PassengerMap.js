@@ -3,7 +3,6 @@ import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
 import {Marker} from '../../components/common/map';
-import RideInfoSheet from '../../components/Ride/RideInfoSheet';
 import {getBoundsForRoutes} from '../../utils/bounds';
 import {RouteInfoSheet} from '../../components/FindRoute';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,6 +13,7 @@ import {getColor} from '../../utils/getColor';
 import config from '../../../config';
 import {useGetDirections} from '../../hooks';
 import {useSelector} from 'react-redux';
+import {RideInfoSheet} from '../../components/Ride';
 
 const dirConfig = {
   profile: 'walking',

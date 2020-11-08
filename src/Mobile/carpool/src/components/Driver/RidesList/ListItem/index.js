@@ -5,9 +5,9 @@ import {colors} from '../../../../styles';
 import {CircleButton} from '../../../common/buttons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {parseCoords} from '../../../../utils/coords';
-import Waypoints from '../../../Ride/Waypoints';
 import {styles} from './index.styles';
 import {getLeavingIn} from './utils';
+import {Waypoints} from '../../../Ride';
 
 const ListItem = ({item, onItemPress}) => (
   <UpView

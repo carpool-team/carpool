@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {RouteMinimap} from '../../../components/Route';
-import Waypoints from '../../../components/Ride/Waypoints';
 import {parseCoords} from '../../../utils/coords';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {UpView} from '../../../components/common';
 import {Marker} from '../../../components/common/map';
+import {Waypoints} from '../../../components/Ride';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride} = route.params;
