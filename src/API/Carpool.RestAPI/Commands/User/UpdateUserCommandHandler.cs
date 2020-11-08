@@ -11,9 +11,7 @@ namespace Carpool.RestAPI.Commands.User
 		private readonly IUserRepository _repository;
 
 		public UpdateUserCommandHandler(IUserRepository repository)
-		{
-			_repository = repository;
-		}
+			=> _repository = repository;
 
 		protected override async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
 		{
@@ -21,7 +19,6 @@ namespace Carpool.RestAPI.Commands.User
 			_ = user ?? throw new NullReferenceException(nameof(user));
 			user.FirstName = request.FirstName ?? user.FirstName;
 			user.LastName = request.LastName ?? user.LastName;
-			user.CompanyId = request.CompanyId ?? user.CompanyId;
 
 			await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
 		}

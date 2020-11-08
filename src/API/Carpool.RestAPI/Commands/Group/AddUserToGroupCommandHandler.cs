@@ -22,7 +22,7 @@ namespace Carpool.RestAPI.Commands.Group
 				UserId = request.UserId
 			};
 
-			group.UserGroups.Add(userGroup);
+			//group.UserGroups.Add(userGroup);
 			await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
 		}
 	}

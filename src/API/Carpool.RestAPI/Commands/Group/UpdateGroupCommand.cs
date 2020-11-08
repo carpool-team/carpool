@@ -7,7 +7,7 @@ namespace Carpool.RestAPI.Commands.Group
 	public class UpdateGroupCommand : IRequest<Guid>
 	{
 		[JsonConstructor]
-		public UpdateGroupCommand(Guid id, Guid locationId, string name, string code, Guid? ownerId)
+		public UpdateGroupCommand(Guid id, Guid? locationId, string name, string code, Guid? ownerId)
 		{
 			Id = id;
 			LocationId = locationId;
@@ -18,7 +18,7 @@ namespace Carpool.RestAPI.Commands.Group
 
 		public Guid Id { get; set; }
 
-		public Guid LocationId { get; set; }
+		public Guid? LocationId { get; set; }
 
 		public string Name { get; set; }
 

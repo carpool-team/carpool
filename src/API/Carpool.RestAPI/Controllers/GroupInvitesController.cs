@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using Carpool.Core.Models;
 using Carpool.RestAPI.Commands.GroupInvite;
 using Carpool.RestAPI.Queries.GroupInvite;
 using MediatR;
@@ -17,9 +16,7 @@ namespace Carpool.RestAPI.Controllers
 		private readonly IMediator _mediator;
 
 		public GroupInvitesController(IMediator mediator)
-		{
-			_mediator = mediator;
-		}
+			=> _mediator = mediator;
 
 		// GET: api/GroupInvites
 		[HttpGet]
@@ -44,7 +41,7 @@ namespace Carpool.RestAPI.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{groupInviteId}")]
 		public async Task<ApiResponse> PutGroupInvite([FromBody] UpdateGroupInviteCommand request,
-		                                                [FromRoute] Guid groupInviteId)
+		                                              [FromRoute] Guid groupInviteId)
 		{
 			request.GroupInviteId = groupInviteId;
 
@@ -60,7 +57,8 @@ namespace Carpool.RestAPI.Controllers
 		public async Task<ApiResponse> PostGroupInvite(AddGroupInviteCommand request)
 		{
 			var response = await _mediator.Send(request).ConfigureAwait(false);
-			return new ApiResponse($"Group Invite was created with id: {response}",response, StatusCodes.Status201Created);
+			return new ApiResponse($"Group Invite was created with id: {response}", response,
+				StatusCodes.Status201Created);
 		}
 
 		// DELETE: api/GroupInvites/5

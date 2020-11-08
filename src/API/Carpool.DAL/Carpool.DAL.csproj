@@ -28,4 +28,43 @@
     <ProjectReference Include="..\Carpool.Core\Carpool.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Builders\CompanyBuilder.cs" />
+    <Compile Remove="Migrations\20201103184324_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103184324_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103184609_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103184609_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103191937_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103191937_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103192615_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103192615_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103192942_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103192942_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103193046_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103193046_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103203156_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103203156_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103203458_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103203458_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103203840_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103203840_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103204556_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103204556_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103210025_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103210025_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103213622_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103213622_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103215733_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103215733_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103220032_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103220032_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Migrations\20201103220721_RemovedCompanyModel.cs" />
+    <Compile Remove="Migrations\20201103220721_RemovedCompanyModel.Designer.cs" />
+    <Compile Remove="Repositories\Company\ICompanyRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Repositories\Company" />
+  </ItemGroup>
+
 </Project>

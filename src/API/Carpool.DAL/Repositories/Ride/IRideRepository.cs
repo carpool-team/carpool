@@ -15,11 +15,12 @@ namespace Carpool.DAL.Repositories.Ride
 
 		Task<IEnumerable<Core.Models.Ride>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken);
 
-		Task<IEnumerable<Core.Models.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(
-			Guid userId, bool past,
+		Task<IEnumerable<Core.Models.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(Guid userId,
+			bool past,
 			CancellationToken cancellationToken);
-		
-		Task<IEnumerable<Core.Models.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(
-			Guid userId, bool past,
-			CancellationToken cancellationToken);	}
+
+		Task<IEnumerable<Core.Models.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(Guid userId,
+			bool past,
+			CancellationToken cancellationToken);
+	}
 }

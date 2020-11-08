@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,17 +31,11 @@ namespace Carpool.RestAPI.Queries.Group
 		public async Task<GroupDetailsDto> Handle(GetGroupQuery request, CancellationToken cancellationToken)
 		{
 			var group = await _repository.GetByIdAsNoTrackingAsync(request.Id, cancellationToken).ConfigureAwait(false);
-			var userClaimsPrincipal = _httpContextAccessor.HttpContext.User;
-			var userId = _userManager.GetUserId(userClaimsPrincipal);
-			var rideDtos = group.Rides
-			                    .Select(x
-				                    => new RideMinimalDto(x.Id, x.OwnerId != Guid.Parse(userId), x.Date, x.Destination))
-			                    .ToList();
 
 			var groupDto = new GroupDetailsDto(
 				group.Id,
 				group.Location,
-				rideDtos, group.Name, group.Code, group.Owner
+				new List<RideMinimalDto>(), group.Name, group.Code, group.Owner
 			);
 
 			return groupDto;

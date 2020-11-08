@@ -15,8 +15,7 @@ namespace Carpool.DAL.Repositories.GroupInvite
 
 		Task<List<Core.Models.GroupInvite>> GetPartAsync(CancellationToken cancellationToken);
 
-		Task<List<Core.Models.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(
-			Guid userId,
+		Task<List<Core.Models.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(Guid userId,
 			CancellationToken cancellationToken);
 	}
 }

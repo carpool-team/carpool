@@ -8,7 +8,14 @@ namespace Carpool.RestAPI.DTOs.RideDTOs
 {
 	public class IndexRideDTO
 	{
-		public IndexRideDTO(Guid rideId, IndexUserDto owner, List<IndexUserDto> participants, List<IndexStopDTO> stops, Location destination, Location startingLocation, DateTime date, bool isUserParticipant)
+		public IndexRideDTO(Guid rideId,
+		                    IndexUserDto owner,
+		                    List<IndexUserDto> participants,
+		                    List<IndexStopDTO> stops,
+		                    Location destination,
+		                    Location startingLocation,
+		                    DateTime date,
+		                    bool isUserParticipant)
 		{
 			RideId = rideId;
 			Owner = owner;

@@ -19,10 +19,9 @@ namespace Carpool.DAL.Repositories.Group
 		{
 			return await _context.Groups
 			                     .AsNoTracking()
-			                     .Include(group => group.Rides)
+			                     //.Include(group => group.Rides)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
-			                     .Include(group => group.UserGroups)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken).ConfigureAwait(false);
 		}
 
@@ -30,10 +29,9 @@ namespace Carpool.DAL.Repositories.Group
 		                                                              CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
-			                     .Include(group => group.Rides)
+			                     //.Include(group => group.Rides)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
-			                     .Include(group => group.UserGroups)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken).ConfigureAwait(false);
 		}
 
@@ -41,20 +39,18 @@ namespace Carpool.DAL.Repositories.Group
 		{
 			return _context.Groups
 			               .AsNoTracking()
-			               .Include(group => group.Rides)
+			               //.Include(group => group.Rides)
 			               .Include(group => group.Location)
 			               .Include(group => group.Owner)
-			               .Include(group => group.UserGroups)
 			               .FirstOrDefault(group => group.Id == id);
 		}
 
 		public Core.Models.Group GetByIdAsNoTracking(Guid id)
 		{
 			return _context.Groups
-			               .Include(group => group.Rides)
+			               //.Include(group => group.Rides)
 			               .Include(group => group.Location)
 			               .Include(group => group.Owner)
-			               .Include(group => group.UserGroups)
 			               .FirstOrDefault(group => group.Id == id);
 		}
 
@@ -67,23 +63,26 @@ namespace Carpool.DAL.Repositories.Group
 		public async Task<IEnumerable<Core.Models.Group>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip)
 		{
 			var groups = await _context.Groups
-			                       .AsNoTracking()
-			                       .Include(group => group.Rides)
-			                       .Include(group => group.UserGroups)
-			                       .Include(group => group.Location)
-			                       .Skip(pagesToSkip * pageCount)
-			                       .Take(pageCount)
-			                       .ToListAsync().ConfigureAwait(false);
+			                           .AsNoTracking()
+			                           //.Include(group => group.Rides)
+			                           .Include(group => group.Location)
+			                           .Skip(pagesToSkip * pageCount)
+			                           .Take(pageCount)
+			                           .ToListAsync().ConfigureAwait(false);
 
 			return groups;
 		}
 
-		public async Task<List<Core.Models.Group>> GetGroupsByUserIdAsNoTrackingAsync(Guid userId, CancellationToken cancellationToken)
+		public async Task<List<Core.Models.Group>> GetGroupsByUserIdAsNoTrackingAsync(
+			Guid userId,
+			CancellationToken cancellationToken)
 		{
 			var groupIds = await _context.UserGroups.AsNoTracking().Where(x => x.UserId == userId)
-				.Select(x => x.GroupId).ToListAsync(cancellationToken).ConfigureAwait(false);
+			                             .Select(x => x.GroupId).ToListAsync(cancellationToken).ConfigureAwait(false);
 
-			var groups = await _context.Groups.Where(x => groupIds.Contains(x.Id)).ToListAsync(cancellationToken).ConfigureAwait(false);
+			var groups = await _context.Groups.Where(x => groupIds.Contains(x.Id)).ToListAsync(cancellationToken)
+			                           .ConfigureAwait(false);
+
 			return groups;
 		}
 

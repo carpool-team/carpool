@@ -13,13 +13,20 @@ namespace Carpool.RestAPI.Commands.GroupInvite
 	{
 		private readonly IGroupInviteRepository _repository;
 
+		public DeleteGroupInviteCommandHandler(IGroupInviteRepository repository)
+		{
+			_repository = repository;
+		}
+
 		public async Task<Guid> Handle(DeleteGroupInviteCommand request,
-		                                                  CancellationToken cancellationToken)
+		                               CancellationToken cancellationToken)
 		{
 			var groupInvite = await _repository.GetByIdAsync(request.GroupInviteId, cancellationToken)
 			                                   .ConfigureAwait(false);
 
-			if (groupInvite == null) throw new ApiException($"Group Invite with id:{request.GroupInviteId} does not exist", StatusCodes.Status404NotFound);
+			if (groupInvite == null)
+				throw new ApiException($"Group Invite with id:{request.GroupInviteId} does not exist",
+					StatusCodes.Status404NotFound);
 
 			_repository.Delete(groupInvite);
 			try
