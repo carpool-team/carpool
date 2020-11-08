@@ -56,12 +56,12 @@ export function* getGroupsAsync() {
       yield put(actions.getGroupsLoading());
 
       // const res = yield instance.get(ENDPOINTS.GET_USER_GROUPS(userId));
-      // const res = yield instance.get('/Groups');
+      const res = yield instance.get('/Groups');
 
-      // console.log('GROUPS RES', res);
+      console.log('GROUPS RES', res);
 
-      // yield put(actions.getGroupsSuccess(res.data.result));
-      yield put(actions.getGroupsSuccess(exampleGroups));
+      yield put(actions.getGroupsSuccess(res.data.result));
+      // yield put(actions.getGroupsSuccess(exampleGroups));
     }
   } catch (err) {
     // TODO
