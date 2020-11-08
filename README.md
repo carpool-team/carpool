@@ -5,4 +5,4 @@
 The main purpose of our project is to create a mobile app for sharing short-distance rides. 
 
 Web app development build status: 
-![dev build status](https://dev.azure.com/carpool-team/Carpool/_apis/build/status/WebApp-DEVELOPMENT?branchName=development)
+[dev build status](https://dev.azure.com/carpool-team/Carpool/_apis/build/status/WebApp-DEVELOPMENT "web app dev build status")
