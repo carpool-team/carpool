@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {LightTheme} from './src/styles';
-import MainStackNavigator from './src/navigation/MainStackNavigator';
+import MainStackNavigator from './src/navigation/MainStackNavigator/index';
 import config from './config';
 import {AddRideStore} from './src/screens/HomeStack/AddRideStack/context';
 

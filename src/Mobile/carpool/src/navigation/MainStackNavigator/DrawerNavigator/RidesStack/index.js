@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import DriversRides from '../screens/drawer/RidesStack/DriversRides';
-import DriversRideDetails from '../screens/drawer/RidesStack/DriversRideDetails';
-import {CloseButton} from '../components/navigation';
+import DriversRides from '../../../../screens/drawer/RidesStack/DriversRides';
+import DriversRideDetails from '../../../../screens/drawer/RidesStack/DriversRideDetails';
+import {CloseButton} from '../../../../components/navigation';
 
 const Stack = createStackNavigator();
 

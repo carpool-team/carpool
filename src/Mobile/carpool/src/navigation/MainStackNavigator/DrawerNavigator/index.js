@@ -1,18 +1,16 @@
 import * as React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import Rides from '../screens/drawer/Rides';
-import Settings from '../screens/drawer/Settings';
-import Help from '../screens/drawer/Help';
-import {CustomDrawer} from '../components/navigation';
-import {sheet, colors} from '../styles';
-import PreferencesStack from './PreferencesStack';
+import Settings from '../../../screens/drawer/Settings';
+import {CustomDrawer} from '../../../components/navigation';
+import {sheet, colors} from '../../../styles';
 import HomeStack from './HomeStack';
 import GroupsStack from './GroupsStack';
 import RidesStack from './RidesStack';
+import PreferencesStack from './PreferencesStack';
 
 const Drawer = createDrawerNavigator();
 
-export default (DrawerNavigator = () => (
+const DrawerNavigator = () => (
   <Drawer.Navigator
     drawerContent={props => <CustomDrawer {...props} />}
     drawerContentOptions={{
@@ -22,7 +20,6 @@ export default (DrawerNavigator = () => (
       },
       activeBackgroundColor: colors.background,
     }}>
-    {/* <Drawer.Screen name="Home" component={Home} /> */}
     <Drawer.Screen
       name="HomeStack"
       component={HomeStack}
@@ -53,4 +50,6 @@ export default (DrawerNavigator = () => (
     />
     <Drawer.Screen name="Settings" component={Settings} />
   </Drawer.Navigator>
-));
+);
+
+export default DrawerNavigator;
