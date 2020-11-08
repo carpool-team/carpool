@@ -1,10 +1,11 @@
-import React, {useContext} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {sheet, colors} from '../../styles';
+import React from 'react';
+import {View} from 'react-native';
+import {sheet, colors} from '../../../styles';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import {CircleButton} from '../common/buttons';
+import {CircleButton} from '../../common/buttons';
 import {useDispatch, useSelector} from 'react-redux';
-import * as actions from '../../store/actions';
+import * as actions from '../../../store/actions';
+import {styles} from './index.styles';
 
 const activeSize = 40;
 const inactiveSize = 28;
@@ -33,12 +34,9 @@ const AccountSwitch = () => {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          ...sheet.rowCenter,
-        }}>
+      <View style={sheet.rowCenter}>
         <CircleButton
-          style={{marginRight: 16}}
+          style={styles.circleButton}
           size={activeAccount === 'driver' ? 64 : 48}
           onPress={onDriverPress}
           icon={
@@ -64,22 +62,5 @@ const AccountSwitch = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 18,
-    right: 20,
-    zIndex: 40,
-  },
-  active: {
-    width: 64,
-    height: 64,
-  },
-  inactive: {
-    width: 48,
-    height: 48,
-  },
-});
 
 export default AccountSwitch;

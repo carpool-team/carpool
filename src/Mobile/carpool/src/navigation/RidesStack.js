@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import DriversRides from '../screens/drawer/RidesStack/DriversRides';
-import CloseButton from '../components/navigation/CloseButton';
 import DriversRideDetails from '../screens/drawer/RidesStack/DriversRideDetails';
+import {CloseButton} from '../components/navigation';
 
 const Stack = createStackNavigator();
 
-export default RidesStack = props => {
+export default (RidesStack = props => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -26,4 +26,4 @@ export default RidesStack = props => {
       />
     </Stack.Navigator>
   );
-};
+});

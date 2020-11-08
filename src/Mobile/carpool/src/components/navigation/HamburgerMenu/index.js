@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {colors} from '../../styles';
+import {colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/core';
 
 const HamburgerMenu = () => {

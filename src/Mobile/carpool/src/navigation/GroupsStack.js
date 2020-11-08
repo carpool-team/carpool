@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Groups, Invitations, GroupDetails} from '../screens/drawer/Groups';
-import CloseButton from '../components/navigation/CloseButton';
+import {CloseButton} from '../components/navigation';
 
 const Stack = createStackNavigator();
 
-export default GroupsStack = props => {
+export default (GroupsStack = props => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -26,4 +26,4 @@ export default GroupsStack = props => {
       />
     </Stack.Navigator>
   );
-};
+});
