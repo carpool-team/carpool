@@ -14,5 +14,7 @@ namespace Carpool.DAL.Repositories.User
 		Task<Core.Models.User> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
 		Task<List<Core.Models.User>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken);
+
+		Task<bool> ExistsWithId(Guid id, CancellationToken cancellationToken);
 	}
 }

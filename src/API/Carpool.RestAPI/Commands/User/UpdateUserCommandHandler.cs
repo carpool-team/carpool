@@ -6,14 +6,14 @@ using MediatR;
 
 namespace Carpool.RestAPI.Commands.User
 {
-	public class UpdateUserCommandHandler : AsyncRequestHandler<UpdateUserCommand>
+	public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Guid>
 	{
 		private readonly IUserRepository _repository;
 
 		public UpdateUserCommandHandler(IUserRepository repository)
 			=> _repository = repository;
 
-		protected override async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+		public async Task<Guid> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
 		{
 			var user = await _repository.GetByIdAsync((Guid) request.UserId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));
@@ -21,6 +21,8 @@ namespace Carpool.RestAPI.Commands.User
 			user.LastName = request.LastName ?? user.LastName;
 
 			await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+
+			return user.Id;
 		}
 	}
 }
