@@ -29,7 +29,8 @@ namespace Carpool.DAL.Repositories.Group
 		                                                              CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
-			                     //.Include(group => group.Rides)
+			                     .Include(group => group.Rides)
+			                     .Include(group => group.UserGroups)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken).ConfigureAwait(false);

@@ -16,8 +16,11 @@ namespace Carpool.RestAPI.Commands.Group
 		private readonly IGroupRepository _repository;
         private readonly IUserRepository _userRepository;
 
-		public AddGroupCommandHandler(IGroupRepository repository)
-			=> _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+		public AddGroupCommandHandler(IGroupRepository repository, IUserRepository userRepository)
+        {
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _userRepository = userRepository;
+        }
 
         public async Task<Guid> Handle(AddGroupCommand request, CancellationToken cancellationToken)
         {
@@ -25,7 +28,7 @@ namespace Carpool.RestAPI.Commands.Group
                 && await _repository.GroupCodeExists(request.Code).ConfigureAwait(false))
                 throw new ApiException($"Group code {request.Code} already exists", StatusCodes.Status409Conflict);
 
-            if (!await _userRepository.ExistsWithId(request.OwnerId, cancellationToken))
+            if (!await _userRepository.ExistsWithId(request.OwnerId, cancellationToken).ConfigureAwait(false))
                 throw new ApiException($"User with id {request.OwnerId} does not exist.", StatusCodes.Status400BadRequest);
             
             var group = new Core.Models.Group()
