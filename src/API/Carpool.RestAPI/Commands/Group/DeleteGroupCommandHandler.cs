@@ -27,7 +27,7 @@ namespace Carpool.RestAPI.Commands.Group
 			}
 			catch (DbUpdateException ex)
 			{
-				throw new ApiException(ex);
+				throw new ApiException(ex.InnerException);
 			}
 		}
 	}
