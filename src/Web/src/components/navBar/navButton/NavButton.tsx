@@ -1,19 +1,18 @@
 import React, { FunctionComponent } from "react";
 import { ButtonColor } from "./enums/ButtonColor";
-import {ButtonBackground} from "./enums/ButtonBackground"
-import {ButtonIcon} from "./enums/ButtonIcon"
+import { ButtonBackground } from "./enums/ButtonBackground";
+import { ButtonIcon } from "./enums/ButtonIcon";
 import { Link } from "react-router-dom";
 import { getBackgroundClass, getColorClass, getIconClass } from "./Helpers";
 
 import "./NavButton.scss";
-import { from } from "rxjs";
 
 interface IButtonProps {
-	color?:ButtonColor;
-	background?:ButtonBackground;
-	icon?:ButtonIcon
+	color?: ButtonColor;
+	background?: ButtonBackground;
+	icon?: ButtonIcon;
 	onClick?: () => void;
-	to?:string;
+	to?: string;
 }
 
 const Button: FunctionComponent<IButtonProps> = (props) => {
@@ -34,7 +33,7 @@ const Button: FunctionComponent<IButtonProps> = (props) => {
 	].join(" ");
 
 	return (
-		<Link to={props.to}  className={cssClasses} onClick={btnClick}>
+		<Link to={props.to ?? "#"} className={cssClasses} onClick={btnClick}>
 			{props.children}
 		</Link>
 	);

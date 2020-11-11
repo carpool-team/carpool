@@ -5,11 +5,10 @@ import ResponseCore from "../responses/ResponseCore";
 import RequestBody from "./RequestBody";
 
 export const tempUserId: string = "ba5c33df-0c92-4324-19c7-08d8778cb545";
-
 export const tempCoords = {
+	latitude: 0,
 	longitude: 0,
-	latitude: 0
-}; // TODO: ZAORAĆ< POIBIERAC LAT,LNG
+};
 
 export default abstract class RequestCore {
 	//#region class fields

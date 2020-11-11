@@ -1,33 +1,36 @@
 {
-  "compilerOptions": {
-    "outDir": "./dist/",
-    "baseUrl": "./src",
-    "jsx": "react",
-    "noImplicitAny": false,
-    "module": "esnext",
-    "typeRoots": [
-      "node_modules/@types"
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "baseUrl": "./src",
+        "jsx": "react",
+        "noImplicitAny": false,
+        "module": "esnext",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "noEmitOnError": true,
+        "allowJs": false,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "target": "ES6",
+        "lib": [
+            "ES6",
+            "DOM"
+        ],
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+    },
+    "include": [
+        "./**/*"
     ],
-    "noEmitOnError": true,
-    "allowJs": false,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "removeComments": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
-    "target": "ES6",
-    "lib": [
-      "ES6",
-      "DOM"
-    ],
-    "esModuleInterop": true,
-    "skipLibCheck": true
-  },
-  "plugins": [
-    {
-      "name": "typescript-tslint-plugin"
-    }
-  ]
+    "plugins": [
+        {
+            "name": "typescript-tslint-plugin"
+        }
+    ]
 }

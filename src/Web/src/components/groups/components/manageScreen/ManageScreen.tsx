@@ -80,6 +80,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		<InvitesList
 			answerInviteCallback={this.props.callbacks.answerInvite}
 			getInvitesCallback={this.props.callbacks.getInvites}
+			getGroupsCallback={this.props.callbacks.getGroups}
 		/>
 	)
 

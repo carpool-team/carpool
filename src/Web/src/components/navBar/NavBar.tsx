@@ -3,12 +3,10 @@ import "./NavBar.scss";
 import Button from "./NavButton/NavButton";
 import { ButtonColor } from "./NavButton/enums/ButtonColor";
 import { ButtonBackground } from "./NavButton/enums/ButtonBackground";
-import {ButtonIcon} from "./NavButton/enums/ButtonIcon"
+import { ButtonIcon } from "./NavButton/enums/ButtonIcon";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import LayoutRouter from "../layout/components/LayoutRouter";
-import { from } from "rxjs";
-
 
 interface INavBarProps extends IReactI18nProps { }
 
@@ -71,58 +69,58 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 					</a>
 					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
 						<Button
-								color={ButtonColor.Gray}
-								background ={ButtonBackground.None}
-								onClick={this.handleHamburgerClick.bind(this)}
-								>
-										{t(this.resources.passenger)}
-							</Button>
-							<Button
-								color={ButtonColor.Gray}
-								background ={ButtonBackground.None}
-								onClick={this.handleHamburgerClick.bind(this)}
-								>
-										{t(this.resources.driver)}
-							</Button>
-							<Button
-								color={ButtonColor.Gray}
-								background ={ButtonBackground.None}
-								onClick={this.handleHamburgerClick.bind(this)}
-								to={`/${LayoutRouter.routes.groups}`}
-								>
-										{t(this.resources.groups)}
-							</Button>
-						</div>
-					</div>
-
-					<div className={this.cssClasses.navBarAccountContainer}>
+							color={ButtonColor.Gray}
+							background={ButtonBackground.None}
+							onClick={this.handleHamburgerClick.bind(this)}
+						>
+							{t(this.resources.passenger)}
+						</Button>
 						<Button
 							color={ButtonColor.Gray}
-							background ={ButtonBackground.None}
-							icon ={ButtonIcon.User}
-							onClick={() => { }}
-							>
-								<span>		
-									{t(this.resources.login)}
-								</span>
-						</Button>
-						
-						<Button
-							color={ButtonColor.White}
-							background ={ButtonBackground.Blue}
-							onClick={() => { }}
+							background={ButtonBackground.None}
+							onClick={this.handleHamburgerClick.bind(this)}
 						>
-							{t(this.resources.register)}
+							{t(this.resources.driver)}
+						</Button>
+						<Button
+							color={ButtonColor.Gray}
+							background={ButtonBackground.None}
+							onClick={this.handleHamburgerClick.bind(this)}
+							to={`/${LayoutRouter.routes.groups}`}
+						>
+							{t(this.resources.groups)}
 						</Button>
 					</div>
-					<div
-						id={this.ids.hamburgeIcon}
-						className={this.cssClasses.hamburgerIcon}
-						onClick={this.handleHamburgerClick.bind(this)}
+				</div>
+
+				<div className={this.cssClasses.navBarAccountContainer}>
+					<Button
+						color={ButtonColor.Gray}
+						background={ButtonBackground.None}
+						icon={ButtonIcon.User}
+						onClick={() => { }}
 					>
+						<span>
+							{t(this.resources.login)}
+						</span>
+					</Button>
+
+					<Button
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}
+						onClick={() => { }}
+					>
+						{t(this.resources.register)}
+					</Button>
+				</div>
+				<div
+					id={this.ids.hamburgeIcon}
+					className={this.cssClasses.hamburgerIcon}
+					onClick={this.handleHamburgerClick.bind(this)}
+				>
 					<div className={this.cssClasses.bar1}></div>
 					<div className={this.cssClasses.bar2}></div>
-					</div>
+				</div>
 			</div>
 		);
 	}
