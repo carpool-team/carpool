@@ -3,8 +3,9 @@ import { IGroup } from "./IGroup";
 export interface IInvite {
 	id: string;
 	isPending: boolean;
-	group: IGroup;
+	groupId: string;
 	invitedUserId: string;
+	invitingUserId: string;
 	isAccepted: boolean;
 	dateAdded: string;
 }

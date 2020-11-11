@@ -4,19 +4,22 @@ import { ButtonSize } from "../../../../ui/Button/enums/ButtonSize";
 import { ButtonType } from "../../../../ui/Button/enums/ButtonType";
 import { ButtonShape } from "../../../../ui/Button/enums/ButtonShape";
 import { IInvite } from "../../../interfaces/IInvite";
+import { IGroup } from "../../../interfaces/IGroup";
 
 interface IInvitesListProps {
 	getInvitesCallback: () => IInvite[];
+	getGroupsCallback: () => IGroup[];
 	answerInviteCallback: (accepted: boolean, id: string) => void;
 }
 
 const InvitesList = (props: IInvitesListProps) => {
 	const listCssClass: string = "groupList__list";
 
+	const groups: IGroup[] = props.getGroupsCallback();
 	const invites: IInvite[] = props.getInvitesCallback().filter(i => i.isPending);
 
 	const renderInvite = (invite: IInvite) => {
-		let key: string = invite.group?.name ?? invite.id;
+		let key: string = invite.id;
 		return (
 			<li key={key}>
 				<ButtonAcceptDecline
