@@ -29,8 +29,8 @@ class Layout extends Component<RouteComponentProps> {
 						history={this.props.history}
 						location={this.props.location}
 					/>
-				</main>
-				{this.mainPaths.includes(pathname) ? <Footer /> : null}
+				</main>	
+				<Footer />
 			</React.Fragment>
 		);
 	}

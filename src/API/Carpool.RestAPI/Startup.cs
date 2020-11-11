@@ -3,10 +3,12 @@ using System.Reflection;
 using System.Text;
 using AutoWrapper;
 using Carpool.Core.Models;
+using Carpool.Core.Models.Intersections;
 using Carpool.DAL.DatabaseContexts;
+using Carpool.DAL.Repositories;
 using Carpool.DAL.Repositories.Group;
 using Carpool.DAL.Repositories.GroupInvite;
-using Carpool.DAL.Repositories.Location;
+using Carpool.DAL.Repositories.Intersections.UserGroup;
 using Carpool.DAL.Repositories.Rating;
 using Carpool.DAL.Repositories.Ride;
 using Carpool.DAL.Repositories.RideParticipant;
@@ -85,7 +87,8 @@ namespace Carpool.RestAPI
 			services.AddScoped<IGroupInviteRepository, GroupInviteRepository>();
 			services.AddScoped<IRatingRepository, RatingRepository>();
 			services.AddScoped<IRideParticipantRepository, RideParticipantRepository>();
-			services.AddScoped<ILocationRepository, LocationRepository>();
+			services.AddScoped<IUserGroupRepository, UserGroupRepository>();
+			services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 			services.AddMediatR(Assembly.GetExecutingAssembly());
 

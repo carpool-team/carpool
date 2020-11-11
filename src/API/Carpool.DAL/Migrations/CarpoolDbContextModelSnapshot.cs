@@ -327,13 +327,13 @@ namespace Carpool.DAL.Migrations
             modelBuilder.Entity("Carpool.Core.Models.Intersections.UserGroup", b =>
                 {
                     b.HasOne("Carpool.Core.Models.Group", "Group")
-                        .WithMany()
+                        .WithMany("UserGroups")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Carpool.Core.Models.User", "User")
-                        .WithMany()
+                        .WithMany("UserGroups")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -376,7 +376,7 @@ namespace Carpool.DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("Carpool.Core.Models.Group", "Group")
-                        .WithMany()
+                        .WithMany("Rides")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();

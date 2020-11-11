@@ -8,31 +8,46 @@
         "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie",
         "email": "Adres e-mail",
         "emailComment": "Na ten adres zostanie wysłane zaproszenie",
-        "createBtn": "Utwórz grupę",
+        "createBtn": "Utwórz",
         "name": "Imię",
-        "surname": "Nazwisko"
+        "surname": "Nazwisko",
+        "basicInfo": "Podstawowe informacje",
+        "basicInfo2": "Zaproś użytkowników"
       },
       "addGroupBtn": "Dodaj grupę",
-      "groupsBtn": "Grupy",
       "ridesBtn": "Przejazdy",
       "invitesBtn": "Zaproszenia"
     },
     "footer": {
-      "groups": "Grupy",
       "services": "Usługi",
       "environment": "Środowisko",
       "about": "O nas",
-      "idea": "Idea"
+      "idea": "Idea",
+      "credits": "Grafiki"
     },
     "navBar": {
       "register": "Zarejestruj się",
       "login": "Zaloguj się"
     },
+    "homeScreen": {
+        "quote": "Nie jedź\n sam!",
+        "join": "Dołącz do grupy",
+        "helpRides": "Wspólne przejazdy pomagają zmniejszyć ilośc samochodów na drogach i ograniczyć ilość emitowanych zanieczyszczeń.",
+        "helpGroups": "Stwórz grupę lub dołącz do już istniejącej w celu znalezienia kompanów podróży.",
+        "helpReports": "Rywalizuj w obrębie swich grup o najwięcej kilometrów przejachych razem.",
+        "btnRides": "Dowiedz się więcej o przejazdach",
+        "btnReports": "Dowiedz się więcej o raportach",
+        "btnGroups": "Dowiedz się więcej o grupach",
+        "groups": "Grupy",
+        "reports":"Raporty",
+        "rides": "Przejazdy"
+    },
     "common": {
-      "business": "Firma",
+      "groups": "Grupy",
       "passenger": "Pasażer",
       "driver": "Kierowca"
     },
+    
     "prevBtn": "Wstecz",
     "createBtn": "Utwórz",
     "addBtn": "Dodaj",

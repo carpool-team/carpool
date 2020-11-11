@@ -1,7 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using AutoWrapper.Wrappers;
 using Carpool.DAL.Repositories.Ride;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.RestAPI.Commands.Group
 {
@@ -17,7 +19,14 @@ namespace Carpool.RestAPI.Commands.Group
 		{
 			var ride = await _repository.GetByIdAsync(request.RideId, cancellationToken).ConfigureAwait(false);
 			ride.GroupId = request.RideId;
-			await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+			try
+			{
+				await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+			}
+			catch (DbUpdateException ex)
+			{
+				throw new ApiException(ex);
+			}
 		}
 	}
 }

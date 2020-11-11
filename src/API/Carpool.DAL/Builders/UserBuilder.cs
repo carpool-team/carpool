@@ -20,25 +20,25 @@ namespace Carpool.DAL.Builders
 			       .HasForeignKey(r => r.UserId)
 			       .OnDelete(DeleteBehavior.Cascade);
 
-          //  builder.HasMany(x => x.CreatedRides)
-			       //.WithOne()
-			       //.HasForeignKey(r => r.OwnerId)
-          //         .OnDelete(DeleteBehavior.Cascade);
+            //  builder.HasMany(x => x.CreatedRides)
+            //.WithOne()
+            //.HasForeignKey(r => r.OwnerId)
+            //         .OnDelete(DeleteBehavior.Cascade);
 
-          //  builder.HasMany(x => x.ParticipatedRides)
-			       //.WithOne()
-			       //.HasForeignKey(r => r.UserId)
-			       //.OnDelete(DeleteBehavior.Cascade);
+            //  builder.HasMany(x => x.ParticipatedRides)
+            //.WithOne()
+            //.HasForeignKey(r => r.UserId)
+            //.OnDelete(DeleteBehavior.Cascade);
 
-			//builder.HasMany(x => x.RideRequests)
-			//       .WithOne()
-			//       .HasForeignKey(r => r.RequesterId)
-			//       .OnDelete(DeleteBehavior.Cascade);
+            //builder.HasMany(x => x.RideRequests)
+            //       .WithOne()
+            //       .HasForeignKey(r => r.RequesterId)
+            //       .OnDelete(DeleteBehavior.Cascade);
 
-          //  builder.HasMany(x => x.UserGroups)
-			       //.WithOne()
-			       //.HasForeignKey(ug => ug.UserId)
-			       //.OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(x => x.UserGroups)
+                   .WithOne(x => x.User)
+                   .HasForeignKey(ug => ug.UserId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Vehicle)
 			       .WithOne()

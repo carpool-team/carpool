@@ -1,36 +1,44 @@
-import { ButtonSize } from "./enums/ButtonSize";
-import { ButtonType } from "./enums/ButtonType";
-import { ButtonShape } from "./enums/ButtonShape";
+import { ButtonColor } from "./enums/ButtonColor";
+import {ButtonBackground} from "./enums/ButtonBackground"
+import {ButtonIcon} from "./enums/ButtonIcon"
 
-export const getSizeClass: (size?: ButtonSize) => string = (size) => {
-	switch (size) {
-		case ButtonSize.Large:
-			return "button--large";
+export const getColorClass: (type?: ButtonColor) => string = (color) => {
+	switch (color) {
+		case ButtonColor.Green:
+			return "button__text--green";
+		case ButtonColor.Blue:
+			return "button__text--blue";
+		case ButtonColor.Gray:
+			return "button__text--gray";
+		case ButtonColor.White:
+			return "button__text--white"
+		case ButtonColor.Black:
+				return "button__text--black"
 		default:
-			return "button--standard";
+			return "button__text--gray";
 	}
 };
-export const getTypeClass: (type?: ButtonType) => string = (type) => {
-	switch (type) {
-		case ButtonType.Danger:
-			return "button--danger";
-		case ButtonType.Info:
-			return "button--info";
-		case ButtonType.Success:
-			return "button--success";
+
+export const getBackgroundClass: (type?: ButtonBackground) => string = (background) => {
+	switch (background) {
+		case ButtonBackground.Tansparent:
+			return "button__background--white";
+		case ButtonBackground.Gray:
+			return "button__background--gray";
+		case ButtonBackground.Blue:
+			return "button__background--blue";
+		case ButtonBackground.Green:
+			return "button__background--green";
 		default:
-			return "";
+			return "button__background--transparent";
 	}
 };
-export const getShapeClass: (type?: ButtonShape) => string = (shape) => {
-	switch (shape) {
-		case ButtonShape.Rectangle:
-			return "button--rectangle";
-		case ButtonShape.Circle:
-			return "button--circle";
-		case ButtonShape.NavBar:
-			return "button--navbar";
+export const getIconClass: (type?: ButtonIcon) => string = (icon) => {
+	switch (icon) {
+		case ButtonIcon.User:
+			return "button__icon--user";
 		default:
-			return "button--rectangle";
+			return "button__icon--none";
 	}
-};
+}
+

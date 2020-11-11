@@ -12,13 +12,13 @@ namespace Carpool.Core.Models
 
 		public string LastName { get; set; }
 
-		//public List<Location> Locations { get; set; }
+        //public List<Location> Locations { get; set; }
 
-		//public List<UserGroup> UserGroups { get; set; }
+        public IReadOnlyList<UserGroup> UserGroups { get; set; }
 
-		//public List<RideRequest> RideRequests { get; set; }
+        //public List<RideRequest> RideRequests { get; set; }
 
-		//public List<Ride> CreatedRides { get; set; }
+        //public List<Ride> CreatedRides { get; set; }
 
         //public ICollection<UserParticipatedRide> ParticipatedRides { get; set; }
 

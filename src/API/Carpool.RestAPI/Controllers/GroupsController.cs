@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Carpool.Core.Models;
 using Carpool.RestAPI.Commands.Group;
+using Carpool.RestAPI.DTOs.GroupDTOs;
 using Carpool.RestAPI.Queries.Group;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carpool.RestAPI.Controllers
@@ -57,11 +60,11 @@ namespace Carpool.RestAPI.Controllers
 		}
 
 		[HttpPut("{groupId}/rides")]
-		public async Task<ActionResult> AddRideToGroup([FromRoute] Guid groupId,
+		public async Task<ApiResponse> AddRideToGroup([FromRoute] Guid groupId,
 		                                               [FromBody] AddRideToGroupCommand addRideToGroupCommand)
 		{
 			var response = await _mediator.Send(addRideToGroupCommand).ConfigureAwait(false);
-			return Ok(response);
+			return new ApiResponse(response);
 		}
 
 		// POST: api/Groups
@@ -74,20 +77,32 @@ namespace Carpool.RestAPI.Controllers
 			return new ApiResponse($"Created group with id: {groupId}", groupId);
 		}
 
-		[HttpPut("{groupId}/users")]
-		public async Task<ActionResult> AddUserToGroup([FromRoute] Guid groupId,
+		[HttpPost("{groupId}/users")]
+		public async Task<ApiResponse> AddUserToGroup([FromRoute] Guid groupId,
 		                                               [FromBody] AddUserToGroupCommand addUserToGroupCommand)
 		{
+			addUserToGroupCommand.GroupId = groupId;
 			var response = await _mediator.Send(addUserToGroupCommand).ConfigureAwait(false);
-			return Ok();
+			return new ApiResponse($"User with id: {addUserToGroupCommand.UserId} has been added to group with id: {groupId}.");
 		}
 
 		// DELETE: api/Groups/5
 		[HttpDelete("{id}")]
-		public async Task<ActionResult<Group>> DeleteGroup(Guid id)
+		public async Task<ApiResponse> DeleteGroup(Guid id)
 		{
 			var response = await _mediator.Send(new DeleteGroupCommand(id)).ConfigureAwait(false);
-			return Ok();
+			return new ApiResponse($"Group with id: {id} has been deleted", StatusCodes.Status200OK);
+		}
+		
+		
+		[HttpGet("~/api/users/{userId}/groups")]
+		public async Task<ApiResponse> GetUserGroups([FromRoute] Guid userId)
+		{
+			var request = new GetUserGroupsQuery(userId);
+
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+
+			return new ApiResponse(response);
 		}
 	}
 }

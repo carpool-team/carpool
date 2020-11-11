@@ -1,9 +1,7 @@
 import React from "react";
-import ButtonCheckBox from "../../../../ui/Button/ButtonCheckBox";
-import { ButtonSize } from "../../../../ui/Button/enums/ButtonSize";
-import { ButtonType } from "../../../../ui/Button/enums/ButtonType";
-import { ButtonShape } from "../../../../ui/Button/enums/ButtonShape";
 import { IGroup } from "../../../interfaces/IGroup";
+
+import exampleGroups from "../../../../../examples/exampleGroups"
 
 interface IGroupsListProps {
 	getGroupsCallback: () => IGroup[];
@@ -11,21 +9,33 @@ interface IGroupsListProps {
 }
 
 const GroupsList = (props: IGroupsListProps) => {
-	const listCssClass: string = "groupList__list";
+	const listCssClass: string = "groupsManagementList";
+	const labelCssClass:string = "groupsManagementList--label"
+	const buttonCssClass:string = "groupsManagementList--button"
+	const pinCssClass:string = "groupsManagementList--pin"
+
+	{/* TODO zmienić z mockupów na api jak zacznie działać */}
+	{/* const groups:IGroup[] = props.getGroupsCallback(); */}
+	const groups:IGroup[] = exampleGroups
+
+	let colorList:string[] = ["#C39BD3", "#7FB3D5","#48C9B0","#F9E79F"]
+	let colorIndex:number = 0;
 
 	return (
 		<ul className={listCssClass}>
-			{props.getGroupsCallback().map((group) => {
+			{groups.map((group) => {
+				++colorIndex;
+				const color = {
+					color: colorList[colorIndex%colorList.length]
+				};
 				return (
 					<li key={group.name}>
-						<ButtonCheckBox
-							size={ButtonSize.Standard}
-							type={ButtonType.Standard}
-							shape={ButtonShape.Circle}
-							label={group.name}
-							active={group.selected}
-							onClick={(newValue) => props.setGroupChecked(group.id, newValue)}
-						></ButtonCheckBox>
+						<button className={buttonCssClass}>	
+						<div className={pinCssClass} style={color}>	</div>			
+							<div className={labelCssClass}>
+								{group.name}
+							</div>
+						</button>
 					</li>
 				);
 			})}

@@ -1,0 +1,112 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+@import "~scss_path/images";
+
+.homeScreenContainer{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	z-index: 5;
+}
+.homeScreenOverlap{
+	width: 100%;
+	background-color: $white;
+	height: 30px;
+}
+.homeScreenMap{
+	background-image: $map;
+	background-size: auto auto;
+	height: 500px;
+    left: 0;
+    right: 0;
+}
+.homeScreenQuote{
+	float: right;
+	padding-right: 5%;
+	padding-top: 3%;
+	text-align: right;
+	font-size: 90px;
+	font-weight: $bold;
+	color: $blue;
+	white-space: pre-line;
+}
+.homeScreenGroups{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: center;
+	gap: 5%;
+	background-color: $white;
+	height: auto;
+	padding-top: 100px;
+	padding-bottom: 100px;
+    left: 0;
+    right: 0;
+}
+.homeScreenGroupsRectangle{
+	width: 300px;
+	height: 410px;
+	background-color: $white;
+	position: relative;
+}
+.homeScreenGroupsBtn{
+	position: absolute;
+	bottom: 0;
+	padding-bottom: 15px;
+	padding-left: 15px;
+}
+.homeScreenGroupsHelp{
+	position: absolute;
+	font-size: 16px;
+	font-weight: $regular;
+	color: $grayDark;
+	padding-top: 30px;
+	padding-left: 15px;
+	padding-right: 15px;
+	line-height: 20px;
+	//text-align: justify;
+}
+.homeScreenGroupsTitle{
+	padding-left: 15px;
+	padding-top: 15px;
+	font-size: 22px;
+	font-weight: $semi-bold;
+	color: $grayDark;
+}
+.homeScreenGroupsImg{
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 280px auto !important;
+	margin-right: 10px;
+	width: 100%;
+	height: 200px;
+	&--group{
+		background-image: $groups_flat_people;
+	}
+	&--reports{
+		background-image: $reports_flat_people;
+	}
+	&--rides{
+		background-image: $rides_flat_people;
+	}
+}
+
+
+@media only screen and (max-width: 900px) {
+	.homeScreenQuote{
+		padding-top: 7%;
+		padding-right: 7%;
+		font-size: 50px;
+	}
+	.homeScreenOverlap{
+		height: 15px;
+	}
+	.homeScreenMap{
+		height: 280px;
+	}
+	.homeScreenGroups{
+		gap: 50px;
+		padding-top: 50px;
+		padding-bottom: 50px;
+	}
+  }

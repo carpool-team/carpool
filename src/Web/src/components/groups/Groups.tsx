@@ -24,7 +24,7 @@ class Groups extends Component<IGroupsProps> {
 
 	constructor(props: IGroupsProps) {
 		super(props);
-		this.props.getGroups(true);
+		this.props.getGroups(false);
 		this.props.getInvites(true);
 		this.props.getRides(false);
 	}

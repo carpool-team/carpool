@@ -14,12 +14,12 @@ namespace Carpool.DAL.Builders.Intersections
 			builder.HasKey(x => new {x.GroupId, x.UserId});
 
             builder.HasOne(x => x.User)
-                .WithMany()
+                .WithMany(x => x.UserGroups)
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(x => x.Group)
-                .WithMany()
+                .WithMany(x => x.UserGroups)
                 .HasForeignKey(x => x.GroupId)
                 .OnDelete(DeleteBehavior.NoAction);
         }
