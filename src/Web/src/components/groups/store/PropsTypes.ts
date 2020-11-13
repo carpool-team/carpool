@@ -28,7 +28,7 @@ interface IDispatchPropsType {
 	answerInvite: (accepted: boolean, inviteId: string) => IAnswerInviteAction;
 	getRides: (userOnly: boolean) => IGetRidesAction;
 	participateInRide: (rideId: string) => IParticipateInRideAction;
-	setGroupSelected: (id: string, selected: boolean) => ISetGroupSelectedAction;
+	setGroupSelected: (id: string) => ISetGroupSelectedAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {

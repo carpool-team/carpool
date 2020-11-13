@@ -3,7 +3,7 @@ import { IGroup } from "../../../interfaces/IGroup";
 
 interface IGroupsListProps {
 	getGroupsCallback: () => IGroup[];
-	setGroupChecked: (id: string, checked: boolean) => void;
+	setGroupSelected: (id: string) => void;
 }
 
 const GroupsList = (props: IGroupsListProps) => {
@@ -26,7 +26,10 @@ const GroupsList = (props: IGroupsListProps) => {
 				};
 				return (
 					<li key={group.name}>
-						<button className={buttonCssClass} onClick={()=>{}}>
+						<button
+							onClick={() => props.setGroupSelected(group.id)}
+							className={buttonCssClass}
+						>
 							<div className={pinCssClass} style={color}>	</div>
 							<div className={labelCssClass}>
 								{group.name}
