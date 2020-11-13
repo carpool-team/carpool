@@ -26,7 +26,7 @@ const GroupsList = (props: IGroupsListProps) => {
 				};
 				return (
 					<li key={group.name}>
-						<button className={buttonCssClass}>
+						<button className={buttonCssClass} onClick={()=>{}}>
 							<div className={pinCssClass} style={color}>	</div>
 							<div className={labelCssClass}>
 								{group.name}
