@@ -1,5 +1,5 @@
-import React from 'react'
-import { IGroup } from "../../../interfaces/IGroup"
+import React from "react";
+import { IGroup } from "../../../interfaces/IGroup";
 
 interface IGroupDetailsProps {
 	group: IGroup;
@@ -16,4 +16,4 @@ const GroupDetails = (props: IGroupDetailsProps) => {
 	);
 };
 
-export default GroupDetails
+export default GroupDetails;

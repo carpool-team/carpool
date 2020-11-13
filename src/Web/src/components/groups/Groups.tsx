@@ -52,7 +52,7 @@ class Groups extends Component<IGroupsProps> {
 			redirect: (route) => this.props.history.push(route),
 			getRides: this.getRidesHandler,
 			participateInRide: this.props.participateInRide,
-			setGroupSelected: (id) => this.props.setGroupSelected(id),
+			setGroupSelected: (id, unselectOthers) => this.props.setGroupSelected(id, unselectOthers),
 		};
 
 		return (

@@ -40,16 +40,7 @@ const reducer: Reducer<IGroupsState> = (
 				draft.rides = action.rides;
 				break;
 			case GroupsActionTypes.SetGroupSelected:
-				if (action.id === null) {
-					draft.groups.forEach(g =>
-						g.selected = false
-					);
-				} else {
-					idx = draft.groups.findIndex(g => g.id === action.id);
-					if (idx > -1) {
-						draft.groups[idx].selected = !draft.groups[idx].selected;
-					}
-				}
+				setGroupsSelected(draft, action.id, action.unselectOthers);
 				break;
 			case RidesActionTypes.ParticipateInRideSuccess:
 				idx = draft.rides.findIndex(r => r.id === action.rideId);
@@ -63,5 +54,26 @@ const reducer: Reducer<IGroupsState> = (
 		return;
 	});
 };
+
+function setGroupsSelected(draft: IGroupsState, id: string, unselectOthers: boolean): IGroupsState {
+	if (id === null) {
+		draft.groups.forEach(g =>
+			g.selected = false
+		);
+	} else {
+		if (unselectOthers) {
+			draft.groups.forEach(g =>
+				g.selected = g.id === id
+			);
+		} else {
+			draft.groups.forEach(g => {
+				if (g.id === id) {
+					g.selected = true;
+				}
+			});
+		}
+	}
+	return draft;
+}
 
 export { reducer as groupsReducer };

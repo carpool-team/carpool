@@ -74,6 +74,7 @@ export interface IGetGroupsActionError
 /** Action for setting group (un)selected */
 export interface ISetGroupSelectedAction extends Action<GroupsActionTypes.SetGroupSelected> {
 	id: string;
+	unselectOthers: boolean;
 }
 //#endregion
 

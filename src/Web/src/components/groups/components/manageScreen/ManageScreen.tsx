@@ -87,7 +87,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	renderGroupsList = () => (
 		<GroupsList
 			getGroupsCallback={this.props.callbacks.getGroups}
-			setGroupSelected={this.props.callbacks.setGroupSelected}
+			setGroupSelected={(id) => this.props.callbacks.setGroupSelected(id, true)}
 		/>
 	)
 
@@ -137,7 +137,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			return (
 				<GroupDetails
 					group={group}
-					unselectGroup={() => this.props.callbacks.setGroupSelected(null)}
+					unselectGroup={() => this.props.callbacks.setGroupSelected(null, true)}
 				/>
 			);
 		} else {

@@ -70,10 +70,11 @@ export function getGroupsError(error: Error): IGetGroupsActionError {
 	};
 }
 
-export function setGroupSelected(id: string): ISetGroupSelectedAction {
+export function setGroupSelected(id: string, unselectOthers: boolean): ISetGroupSelectedAction {
 	return {
 		type: GroupsActionTypes.SetGroupSelected,
 		id,
+		unselectOthers,
 	};
 }
 //#endregion
