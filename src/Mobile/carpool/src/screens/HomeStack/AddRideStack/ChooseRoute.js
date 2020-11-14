@@ -7,18 +7,17 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {AccountContext} from '../../../context/AccountContext';
 import {StartLocationsFlatList} from '../../../components/FindRoute';
-import GroupsFlatlist from '../../../components/Locations/GroupsFlatlist';
 import Geolocation from '@react-native-community/geolocation';
-import {BlueMarker} from '../../../components/common';
+import {BlueMarker} from '../../../components/common/map';
 import {colors, sheet} from '../../../styles';
-import {vh, vw} from '../../../utils/constants';
 import {geocodingClient} from '../../../maps/mapbox';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {StandardButton} from '../../../components/common/buttons';
 import {RouteMinimap} from '../../../components/Route';
 import {AddRideContext, AddRideContextActions} from './context';
+import {useSelector} from 'react-redux';
+import {GroupsFlatlist} from '../../../components/Locations';
 
 const config = {
   autocomplete: false,
@@ -41,12 +40,12 @@ const ChooseRoute = ({navigation}) => {
   const [startResults, startLoading] = useForwardGeocoding(start, config, true);
 
   // Store
-  const {
-    accountState: {
-      groups: {data: groups, loading: groupsLoading},
-    },
-  } = useContext(AccountContext);
-  let grps = groups.map(group => ({...group, place_name: group.name}));
+  const groups = useSelector(state => state.accountReducer.groups);
+
+  let grps = groups.data
+    ? groups.data.map(group => ({...group, place_name: group.name}))
+    : [];
+
   const {addRideState, dispatch: addRideDispatch} = useContext(AddRideContext);
 
   useEffect(() => {
@@ -85,8 +84,8 @@ const ChooseRoute = ({navigation}) => {
         setStart(result.place_name);
         const stGeo = {
           coordinates: {
-            longitude: result.center[1],
-            latitude: result.center[0],
+            longitude: result.center[0],
+            latitude: result.center[1],
           },
           locationName: null,
         };
@@ -102,8 +101,8 @@ const ChooseRoute = ({navigation}) => {
     setStart(item.place_name);
     const stGeo = {
       coordinates: {
-        longitude: item.center[1],
-        latitude: item.center[0],
+        longitude: item.center[0],
+        latitude: item.center[1],
       },
       locationName: null,
     };
@@ -114,7 +113,7 @@ const ChooseRoute = ({navigation}) => {
   const onDestinationItemPress = item => {
     setDestination(item.place_name);
     const dstGeo = {
-      coordinates: item.location.coordinates,
+      coordinates: item.location,
       locationName: null,
     };
     setGroupId(item.id);
@@ -147,7 +146,7 @@ const ChooseRoute = ({navigation}) => {
       return (
         <GroupsFlatlist
           data={grps}
-          loaidng={groupsLoading}
+          loaidng={groups.loading}
           onItemPress={onDestinationItemPress}
         />
       );
@@ -160,7 +159,7 @@ const ChooseRoute = ({navigation}) => {
         <View style={styles.mapContainer}>
           <RouteMinimap start={startGeo} destination={destinationGeo} />
           <StandardButton
-            style={{marginTop: 4 * vh}}
+            style={{marginTop: 36}}
             width="65%"
             onPress={onSubmit}
             title="Next"
@@ -175,7 +174,7 @@ const ChooseRoute = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.topPanel}>
         <View style={styles.inputWrapper}>
-          <BlueMarker size={5 * vw} />
+          <BlueMarker size={20} />
           <View style={styles.inputContainer}>
             <TextInput
               value={start}
@@ -194,13 +193,13 @@ const ChooseRoute = ({navigation}) => {
                   setStart(null);
                   setStartGeo(null);
                 }}>
-                <Icon name="close" color={colors.grayVeryDark} size={6 * vw} />
+                <Icon name="close" color={colors.grayVeryDark} size={24} />
               </TouchableOpacity>
             ) : null}
           </View>
         </View>
         <View style={styles.inputWrapper}>
-          <BlueMarker size={5 * vw} />
+          <BlueMarker size={20} />
           <View style={styles.inputContainer}>
             <TextInput
               ref={_destination}
@@ -219,7 +218,7 @@ const ChooseRoute = ({navigation}) => {
                   setDestination(null);
                   setDestinationGeo(null);
                 }}>
-                <Icon name="close" color={colors.grayVeryDark} size={6 * vw} />
+                <Icon name="close" color={colors.grayVeryDark} size={24} />
               </TouchableOpacity>
             ) : null}
           </View>
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   topPanel: {
-    paddingTop: 4 * vh,
+    paddingTop: 36,
     width: '100%',
     backgroundColor: colors.background,
     shadowColor: '#000',
@@ -251,31 +250,31 @@ const styles = StyleSheet.create({
   },
   header: {
     width: '100%',
-    paddingVertical: 1 * vh,
-    paddingHorizontal: 4 * vw,
+    paddingVertical: 9,
+    paddingHorizontal: 16,
     alignItems: 'flex-end',
   },
   inputWrapper: {
     width: '100%',
-    paddingHorizontal: 8 * vw,
+    paddingHorizontal: 32,
     alignItems: 'center',
-    paddingBottom: 2 * vh,
-    marginVertical: 0.5 * vh,
+    paddingBottom: 18,
+    marginVertical: 5,
     ...sheet.rowCenter,
   },
   inputContainer: {
     flex: 1,
-    borderBottomWidth: 0.2 * vh,
+    borderBottomWidth: 2,
     borderColor: colors.grayDark,
-    marginLeft: 2 * vw,
+    marginLeft: 8,
     ...sheet.rowCenter,
   },
   input: {
     flex: 1,
     ...sheet.textMedium,
-    fontSize: 4 * vw,
-    paddingVertical: 0.3 * vh,
-    paddingHorizontal: 1 * vw,
+    fontSize: 16,
+    paddingVertical: 3,
+    paddingHorizontal: 4,
     color: colors.grayVeryDark,
   },
   resultsContainer: {
@@ -292,7 +291,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'center',
-    paddingBottom: 4 * vh,
+    paddingBottom: 36,
   },
 });
 

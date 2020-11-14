@@ -1,10 +1,8 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
-import {Marker} from '../../components/common';
-import {vw, vh} from '../../utils/constants';
-import RideInfoSheet from '../../components/Ride/RideInfoSheet';
+import {Marker} from '../../components/common/map';
 import {getBoundsForRoutes} from '../../utils/bounds';
 import {RouteInfoSheet} from '../../components/FindRoute';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -12,9 +10,10 @@ import {useNavigation, useRoute} from '@react-navigation/core';
 import {CircleButton} from '../../components/common/buttons';
 import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';
-import {PassengerContext} from '../../context/PassengerContext';
 import config from '../../../config';
 import {useGetDirections} from '../../hooks';
+import {useSelector} from 'react-redux';
+import {RideInfoSheet} from '../../components/Ride';
 
 const dirConfig = {
   profile: 'walking',
@@ -32,9 +31,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
   const [activeRoute, setActiveRoute] = useState(0);
 
   // Store
-  const {
-    passengerState: {allRides},
-  } = useContext(PassengerContext);
+  const allRides = useSelector(state => state.passengerReducer.allRides);
 
   // Directions
   const [results, loading, error, _getDirections] = useGetDirections(dirConfig);
@@ -72,10 +69,10 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       const bds = getBoundsForRoutes(routes);
       setBounds({
         ...bds,
-        paddingTop: 20 * vh,
-        paddingBottom: 20 * vh,
-        paddingLeft: 20 * vw,
-        paddingRight: 20 * vw,
+        paddingTop: 180,
+        paddingBottom: 180,
+        paddingLeft: 80,
+        paddingRight: 80,
       });
     }
   }, [routes]);
@@ -118,22 +115,25 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
   };
 
   const renderPassengerPoints = () => {
-    return allRides.data.length
-      ? allRides.data.map(ride => (
-          <MapboxGL.PointAnnotation
-            key={ride.id}
-            id="selected"
-            coordinate={parseCoords(ride.startingLocation.coordinates)}
-            onSelected={() => onSelected(ride)}
-            onDeselected={onCleanState}>
-            <Marker
-              color={getColor(ride.date)}
-              size={6 * vw}
-              style={styles.marker}
-            />
-          </MapboxGL.PointAnnotation>
-        ))
-      : null;
+    if (allRides.data) {
+      return allRides.data.length
+        ? allRides.data.map(ride => (
+            <MapboxGL.PointAnnotation
+              key={ride.id}
+              id="selected"
+              coordinate={parseCoords(ride.startingLocation.coordinates)}
+              onSelected={() => onSelected(ride)}
+              onDeselected={onCleanState}>
+              <Marker
+                color={getColor(ride.date)}
+                size={24}
+                style={styles.marker}
+              />
+            </MapboxGL.PointAnnotation>
+          ))
+        : null;
+    }
+    return null;
   };
 
   const renderRoutes = () => {
@@ -165,6 +165,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
         contentInset={10}
         compassEnabled={false}
         rotateEnabled={false}
+        // onPress={console.log}
         onPress={onCleanState}>
         <MapboxGL.Camera
           ref={_passengerCamera}
@@ -197,9 +198,9 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       ) : null}
       {ride || visible ? null : (
         <CircleButton
-          style={{position: 'absolute', bottom: 8 * vh, right: 5 * vw}}
+          style={{position: 'absolute', bottom: 72, right: 20}}
           onPress={() => navigation.navigate('FindRide')}
-          icon={<Icon name="search" color={colors.grayDark} size={6 * vw} />}
+          icon={<Icon name="search" color={colors.grayDark} size={24} />}
         />
       )}
     </>
@@ -208,15 +209,15 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
 
 const styles = StyleSheet.create({
   marker: {
-    marginTop: -6 * vw,
-    padding: 2.5 * vw,
+    marginTop: -24,
+    padding: 10,
   },
   button: {
-    height: 16 * vw,
-    width: 16 * vw,
+    height: 64,
+    width: 64,
     position: 'absolute',
-    bottom: 8 * vh,
-    right: 5 * vw,
+    bottom: 72,
+    right: 20,
   },
 });
 

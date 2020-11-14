@@ -3,7 +3,6 @@ import {View} from 'react-native';
 import {colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/core';
 import {StandardButton} from '../../../components/common/buttons';
-import {vh} from '../../../utils/constants';
 
 const Preferences = () => {
   const navigation = useNavigation();
@@ -27,7 +26,7 @@ const Preferences = () => {
         onPress={() => navigation.navigate('FindRoute')}
         color={colors.blue}
         title="Find route"
-        style={{marginTop: 6 * vh}}
+        style={{marginTop: 54}}
       />
     </View>
   );

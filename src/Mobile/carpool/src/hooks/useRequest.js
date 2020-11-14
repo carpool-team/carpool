@@ -9,25 +9,26 @@ export const METHODS = {
 
 export const ENDPOINTS = {
   // GET
-  // GET_ALL_RIDES: '/Rides',
-  GET_ALL_RIDES: '/rides',
-  // GET_USERS_RIDES: id => `/Rides/GetUserRides/${id}`,
-  GET_USERS_RIDES: id => `/users/${id}/rides/participated`,
-  // GET_USER_GROUPS: id => `/groups/GetUserGroups/${id}`,
-  GET_USER_GROUPS: id => `/users/${id}/groups`,
-  // GET_USER_INVITATIONS: id => `/GroupInvites/GetUserInvites/${id}`,
-  GET_USER_INVITATIONS: id => `/users/${id}/groupInvites`,
+  GET_ALL_RIDES: '/Rides',
+  GET_USERS_RIDES: id => `/Users/${id}/rides/participated`,
+  GET_USER_GROUPS: id => `/Users/${id}/groups`,
+  GET_USER_INVITATIONS: id => `/Users/${id}/groupInvites`,
+
   // POST
-  // SEND_RIDE_REQUEST: '/RideRequests',
-  SEND_RIDE_REQUEST: id => `/users/${id}/rideRequests`,
-  CREATE_NEW_RIDE: id => `/users/${id}/rides`,
+  // SEND_RIDE_REQUEST: id => `/users/${id}/rideRequests`,
+  SEND_RIDE_REQUEST: id => `/RideRequests`,
+  // CREATE_NEW_RIDE: id => `/users/${id}/rides`,
+  CREATE_NEW_RIDE: id => `/Rides`,
+
   // PUT
-  // ADD_PARTICIPANT: '/Rides/AddParticipant',
-  ADD_PARTICIPANT: id => `/rides/${id}/users`,
-  // CHANGE_INVITATION_STATE: '/GroupInvites',
-  CHANGE_INVITATION_STATE: id => `/groupinvites/${id}`,
-  GET_DRIVERS_RIDES: id => `/users/${id}/rides/owned`,
-  GET_DRIVERS_PAST_RIDES: id => `/users/${id}/rides/owned?past=true`,
+  // ADD_PARTICIPANT: id => `/rides/${id}/users`,
+  ADD_PARTICIPANT: id => `/Rises/${id}/users`,
+  // CHANGE_INVITATION_STATE: id => `/groupinvites/${id}`,
+  CHANGE_INVITATION_STATE: id => `/Groupinvites/${id}`,
+  // GET_DRIVERS_RIDES: id => `/users/${id}/rides/owned`,
+  GET_DRIVERS_RIDES: id => `/Users/${id}/rides/owned`,
+  // GET_DRIVERS_PAST_RIDES: id => `/users/${id}/rides/owned?past=true`,
+  GET_DRIVERS_PAST_RIDES: id => `/Users/${id}/rides/owned?past=true`,
 };
 
 /**

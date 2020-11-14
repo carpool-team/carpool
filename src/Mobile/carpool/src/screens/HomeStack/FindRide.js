@@ -1,37 +1,34 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
-import {vw, vh} from '../../utils/constants';
 import {colors} from '../../styles';
 import {CircleButton} from '../../components/common/buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import RidesFlatList from '../../components/Ride/RidesFlatList';
-import {
-  PassengerContext,
-  createGetAllRides,
-} from '../../context/PassengerContext';
+import {useDispatch, useSelector} from 'react-redux';
+import * as actions from '../../store/actions';
+import {RidesFlatList} from '../../components/Ride';
 
 const FindRide = ({navigation, route}) => {
-  const {passengerState, dispatch} = useContext(PassengerContext);
-  const {data: allRides, loading} = passengerState.allRides;
+  const dispatch = useDispatch();
+  const allRides = useSelector(state => state.passengerReducer.allRides);
 
   const onPress = () => navigation.navigate('AskForRide');
   const onRefresh = () => {
-    createGetAllRides(dispatch);
+    dispatch(actions.getAllRides());
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.wrapper}>
         <RidesFlatList
-          data={allRides}
+          data={allRides.data}
           onRefresh={onRefresh}
-          loading={loading}
+          loading={allRides.loading}
         />
       </View>
       <CircleButton
         style={styles.button}
         onPress={onPress}
-        icon={<Icon name="plus" color={colors.grayDark} size={6 * vw} />}
+        icon={<Icon name="plus" color={colors.grayDark} size={24} />}
       />
     </SafeAreaView>
   );
@@ -45,8 +42,8 @@ const styles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    bottom: 8 * vh,
-    right: 5 * vw,
+    bottom: 72,
+    right: 20,
   },
 });
 

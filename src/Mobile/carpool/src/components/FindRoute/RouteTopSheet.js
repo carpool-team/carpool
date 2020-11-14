@@ -1,25 +1,20 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../styles';
-import {vw, vh} from '../../utils/constants';
-import {BlueMarker, Marker} from '../common';
+import {BlueMarker, Marker} from '../common/map';
 
 const RouteTopSheet = ({start, destination}) => {
   return (
     <View style={styles.topSheet}>
       <View style={styles.contentContainer}>
         <View style={sheet.rowCenter}>
-          <BlueMarker size={4 * vw} style={{marginRight: 3 * vw}} />
+          <BlueMarker size={16} style={{marginRight: 12}} />
           <Text style={styles.placeName} numberOfLines={1}>
             {start.place_name}
           </Text>
         </View>
-        <View style={[sheet.rowCenter, {marginTop: 2 * vh}]}>
-          <Marker
-            color={colors.green}
-            size={4 * vw}
-            style={{marginRight: 3 * vw}}
-          />
+        <View style={[sheet.rowCenter, {marginTop: 18}]}>
+          <Marker color={colors.green} size={16} style={{marginRight: 12}} />
           <Text style={styles.placeName} numberOfLines={1}>
             {destination.place_name}
           </Text>
@@ -37,8 +32,8 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: colors.background,
     zIndex: 10,
-    borderBottomLeftRadius: 4 * vw,
-    borderBottomRightRadius: 4 * vw,
+    borderBottomLeftRadius: 16,
+    borderBottomRightRadius: 16,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -51,25 +46,25 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 8 * vw,
-    paddingTop: 2 * vh,
-    paddingBottom: 3 * vh,
+    paddingHorizontal: 32,
+    paddingTop: 18,
+    paddingBottom: 27,
   },
   from: {
     ...sheet.textSemiBold,
-    fontSize: 4.5 * vw,
+    fontSize: 18,
     color: colors.blue,
   },
   to: {
     ...sheet.textSemiBold,
-    fontSize: 4.5 * vw,
+    fontSize: 18,
     color: colors.green,
   },
   placeName: {
     ...sheet.textMedium,
     flex: 1,
     flexWrap: 'wrap',
-    fontSize: 4.5 * vw,
+    fontSize: 18,
     color: colors.grayVeryDark,
   },
 });
