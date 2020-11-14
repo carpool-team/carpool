@@ -1,13 +1,20 @@
-﻿using Carpool.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
+using Carpool.Core.Models;
 
 namespace Carpool.Core.Abstract
 {
-	public abstract class Route : ParentModel
+	public abstract class Route : BaseEntity<Guid>
 	{
-		public Location Destination { get; set; }
-		public Location StartingLocation { get; set; }
-	}
+		[ForeignKey("DestinationId")] public Location Destination { get; set; }
+
+		public Guid DestinationId { get; set; }
+
+		[ForeignKey("StartingLocationId")] public Location StartingLocation { get; set; }
+
+		public Guid StartingLocationId { get; set; }
+
+        public List<Stop> Stops { get; set; }
+    }
 }

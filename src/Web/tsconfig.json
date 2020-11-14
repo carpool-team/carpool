@@ -1,35 +1,36 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "outDir": "./dist/",
-    "strictNullChecks": true,
-    "moduleResolution": "node",
-    "allowJs": false,
-    "noEmit": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "baseUrl": "./src",
-    "lib": [
-      "es2015",
-      "dom.iterable",
-      "es2016.array.include",
-      "es2017.object",
-      "dom"
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "baseUrl": "./src",
+        "jsx": "react",
+        "noImplicitAny": false,
+        "module": "esnext",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "noEmitOnError": true,
+        "allowJs": false,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "target": "ES6",
+        "lib": [
+            "ES6",
+            "DOM"
+        ],
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+    },
+    "include": [
+        "./**/*"
     ],
-    "module": "ESNext",
-    "removeComments": true,
-    "alwaysStrict": true,
-    "allowUnreachableCode": false,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true,
-    "importHelpers": true,
-    "pretty": true,
-    "resolveJsonModule": true
-  }
+    "plugins": [
+        {
+            "name": "typescript-tslint-plugin"
+        }
+    ]
 }

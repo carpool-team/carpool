@@ -4,9 +4,16 @@ import GroupsRouter from "./components/GroupsRouter";
 import { withRouter, RouteComponentProps } from "react-router";
 import { IGroupCallbacks } from "./interfaces/IGroupCallbacks";
 import { IGroup } from "./interfaces/IGroup";
-import { StateProps, DispatchProps, mapStateToProps, mapDispatchToProps } from "./store/PropsTypes";
+
+import {
+	StateProps,
+	DispatchProps,
+	mapStateToProps,
+	mapDispatchToProps,
+} from "./store/PropsTypes";
 
 import "./Groups.scss";
+import { tempUserId } from "../../api/requests/RequestCore";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
@@ -15,20 +22,39 @@ class Groups extends Component<IGroupsProps> {
 		container: "groupsContainer",
 	};
 
-	/** Handles adding group */
-	addGroupHandler = (group: IGroup) => {
-		this.props.groupsAddGroup(group);
+	constructor(props: IGroupsProps) {
+		super(props);
+		this.props.getGroups(false);
+		this.props.getInvites(true);
+		this.props.getRides(false);
 	}
 
-	/** Gets groups */
+	/** Handles adding group */
+	addGroupHandler = (group: IGroup) => {
+		this.props.addGroup(group);
+	}
+
 	getGroupsHandler = () => this.props.groups;
+
+	getInvitesHandler = () => this.props.invites;
+
+	getRidesHandler = () => {
+		let groupIds: string[] = this.props.groups.filter(g => g.selected).map(g => g.id);
+		return this.props.rides.filter(r => groupIds.includes(r.group?.id) && (!r.isUserParticipant || r.owner.userId === tempUserId));
+	}
 
 	render() {
 		let callbacks: IGroupCallbacks = {
 			addGroup: this.addGroupHandler,
 			getGroups: this.getGroupsHandler,
-			redirect: route => this.props.history.push(route),
+			getInvites: this.getInvitesHandler,
+			answerInvite: (answer, id) => this.props.answerInvite(answer, id),
+			redirect: (route) => this.props.history.push(route),
+			getRides: this.getRidesHandler,
+			participateInRide: this.props.participateInRide,
+			setGroupSelected: (id, selected) => this.props.setGroupSelected(id, selected),
 		};
+
 		return (
 			<section className={this.cssClasses.container}>
 				<GroupsRouter

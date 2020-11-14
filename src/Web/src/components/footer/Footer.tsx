@@ -1,100 +1,113 @@
 import React from "react";
-import "./Footer.scss";
-import { Link } from "react-router-dom";
-import LayoutRouter from "../layout/components/LayoutRouter";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
+import LayoutRouter from "../layout/components/LayoutRouter";
+import ButtonLink from "../ui/buttonLink/ButtonLink";
+import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
+import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
+import "./Footer.scss";
 
 interface IFooterProps extends IReactI18nProps { }
 
-const Footer: (props: IFooterProps) => JSX.Element = props => {
-	const containerId: string = "footerContainer";
+class Footer extends React.Component<IFooterProps> {
+	private cssClasses = {
+		footerContainer: "footerContainer",
+		footerSubContainer: "footerSubContainer",
+		footerGoogle: "footerSocialsGoogle",
+		footerSocials: "footerSocials",
+		footerFacebook: "footerSocials--facebook",
+		footerTwitter: "footerSocials--twitter",
+		footerInstagram: "footerSocials--instagram",
+		footerTitle: "footerTitle",
+		footerLink: "footerLink"
+	};
 
-	const resources = {
-		groups: "footer.groups",
+	private resources = {
 		services: "footer.services",
 		environment: "footer.environment",
-		business: "common.business",
-		passenger: "common.passenger",
-		driver: "common.driver",
 		about: "footer.about",
 		idea: "footer.idea",
+		groups: "homeScreen.groups",
+		reports: "homeScreen.reports",
+		rides: "homeScreen.rides",
+		credits: "footer.credits"
 	};
-
-	const languageSelectItems = {
-		pl: "PL-PL",
-	};
-
-	const cssClasses = {
+	private ids = {
 		container: "footerContainer",
-		linksContainer: "footerLinks",
-		boxBase: "footerBox",
-		logo: "logo",
-		android: "android",
-		ios: "ios",
-		socialsContainer: "footerSocials",
-		socialIconBase: "social",
-		fb: "fb",
-		ig: "ig",
-		tw: "tw",
-		group: "footerGroup",
-		groupTitle: "footerGroupTitle",
-		element: "footerGroupElement",
-		group1: "g1",
-		group2: "g2",
-		group3: "g3",
 	};
 
-	const { t } = props;
+	render() {
+		const { t } = this.props;
+		return (
+			<div id={this.ids.container} className={this.cssClasses.footerContainer}>
+				<div className={this.cssClasses.footerSubContainer}>
+					<a href="link to google play download">
+						<div className={this.cssClasses.footerGoogle}></div>
+					</a>
+					<div className={this.cssClasses.footerSocials}>
+						<div className={this.cssClasses.footerFacebook}></div>
+						<div className={this.cssClasses.footerTwitter}></div>
+						<div className={this.cssClasses.footerInstagram}></div>
+					</div>
+				</div>
+				<div className={this.cssClasses.footerSubContainer}>
+					<div className={this.cssClasses.footerTitle}>
+						{t(this.resources.about)}
+					</div>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						onClick={() => { }}
+					>
+						{t(this.resources.idea)}
+					</ButtonLink>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+					>
+						{t(this.resources.environment)}
+					</ButtonLink>
 
-	return (
-		<footer id={containerId} className={cssClasses.container}>
-			<div className={cssClasses.linksContainer}>
-				<div className={[cssClasses.boxBase, cssClasses.logo].join(" ")}></div>
-				<a className={[cssClasses.boxBase, cssClasses.android].join(" ")}></a>
-				<a className={[cssClasses.boxBase, cssClasses.ios].join(" ")}></a>
-				<div className={[cssClasses.boxBase, cssClasses.socialsContainer].join(" ")}>
-					<a className={[cssClasses.socialIconBase, cssClasses.fb].join(" ")}></a>
-					<a className={[cssClasses.socialIconBase, cssClasses.ig].join(" ")}></a>
-					<a className={[cssClasses.socialIconBase, cssClasses.tw].join(" ")}></a>
+				</div>
+				<div className={this.cssClasses.footerSubContainer}>
+					<div className={this.cssClasses.footerTitle}>
+						{t(this.resources.services)}
+					</div>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						to={`/${LayoutRouter.routes.groups}`}
+					>
+						{t(this.resources.groups)}
+					</ButtonLink>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+					>
+						{t(this.resources.rides)}
+					</ButtonLink>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						onClick={() => { }}
+					>
+						{t(this.resources.reports)}
+					</ButtonLink>
+				</div>
+				<div className={this.cssClasses.footerSubContainer}>
+					<div className={this.cssClasses.footerTitle}>
+						{t(this.resources.credits)}
+					</div>
+					<a className={this.cssClasses.footerLink} href="https://www.freepik.com/vectors" target="_blank" rel="noopener noreferrer">
+						Freepic
+					</a>
+					<a className={this.cssClasses.footerLink} href="https://www.flaticon.com/packs/social-media-87" target="_blank" rel="noopener noreferrer">
+						Flaticon
+					</a>
 				</div>
 			</div>
-			<div className={[cssClasses.group, cssClasses.group1].join(" ")}>
-				<a className={cssClasses.groupTitle}>
-					{t(resources.services)}
-				</a>
-				<a className={cssClasses.element}>
-					{t(resources.passenger)}
-				</a>
-				<a className={cssClasses.element}>
-					{t(resources.driver)}
-				</a>
-				<a className={cssClasses.element}>
-					{t(resources.business)}
-				</a>
-				<Link
-					className={cssClasses.element}
-					to={`/${LayoutRouter.routes.groups}`}
-				>
-					{t(resources.groups)}
-				</Link>
-			</div>
-			<div className={[cssClasses.group, cssClasses.group2].join(" ")}>
-				<a className={cssClasses.groupTitle}>
-					{t(resources.about)}
-				</a>
-				<a className={cssClasses.element}>
-					{t(resources.idea)}
-				</a>
-				<a className={cssClasses.element}>
-					{t(resources.environment)}
-				</a>
-			</div>
-			<div className={[cssClasses.group, cssClasses.group3].join(" ")}>
-				<a className={cssClasses.groupTitle}>{languageSelectItems.pl}</a>
-			</div>
-		</footer>
-	);
-};
+		);
+	}
+}
 
 export default withTranslation()(Footer);

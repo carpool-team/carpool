@@ -1,13 +1,13 @@
-﻿using Carpool.Core.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Carpool.Core.Abstract;
 
 namespace Carpool.Core.Models
 {
-	public class Stop : ParentModel
+	public class Stop : BaseEntity<Guid>
 	{
-		public User User { get; set; }
-		public Coordinates Coordinates { get; set; }
+		public Guid UserId { get; set; }
+		public Guid LocationId { get; set; }
+        public Location Location { get; set; }
+		public Guid RideId { get; set; }
 	}
 }

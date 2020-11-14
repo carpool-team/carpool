@@ -1,5 +1,5 @@
 import React, { Component, Suspense } from "react";
-import ManageScreen from "./ManageScreen";
+import ManageScreen from "./manageScreen/ManageScreen";
 import AddGroupForm from "./addGroupForm/AddGroupForm";
 import { Switch, Route, RouteComponentProps } from "react-router";
 import { LoaderSpinner } from "../../ui/loaderSpinner/LoaderSpinner";

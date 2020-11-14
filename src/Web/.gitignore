@@ -18,5 +18,6 @@ dist
 psd
 thumb
 sketch
-
+#editor config
+.editorconfig
 # End of https://www.gitignore.io/api/react

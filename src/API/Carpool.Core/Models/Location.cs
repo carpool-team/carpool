@@ -1,16 +1,23 @@
-﻿using Carpool.Core.Abstract;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Json;
+using Carpool.Core.Abstract;
 
 namespace Carpool.Core.Models
 {
-	public class Location : ParentModel
+	public class Location : BaseEntity<Guid>
 	{
-		public Coordinates Coordinates { get; set; }
+		public Location()
+		{
+		}
 
-		public LocationName LocationName { get; set; }
+		public Location(double longitude, double latitude)
+		{
+			Longitude = longitude;
+			Latitude = latitude;
+		}
+
+		[Required] public double Longitude { get; set; }
+
+		[Required] public double Latitude { get; set; }
 	}
 }

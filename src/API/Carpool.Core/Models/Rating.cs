@@ -1,12 +1,11 @@
-﻿using Carpool.Core.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Carpool.Core.Abstract;
 
 namespace Carpool.Core.Models
 {
-	public class Rating : ParentModel
+	public class Rating : BaseEntity<Guid>
 	{
-		public int Value { get; set; }
+		public Guid UserId { get; set; }
+		public byte Value { get; set; }
 	}
 }

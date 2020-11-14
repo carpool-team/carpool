@@ -1,208 +1,108 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using AutoWrapper.Wrappers;
+using Carpool.Core.Models;
+using Carpool.RestAPI.Commands.Group;
+using Carpool.RestAPI.DTOs.GroupDTOs;
+using Carpool.RestAPI.Queries.Group;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Carpool.Core.Models;
-using Carpool.DAL.DatabaseContexts;
-using Carpool.Core.DTOs.GroupDTOs;
-using Carpool.Core.Models.Intersections;
-using Carpool.Core.DTOs.LocationDTOs;
-using Carpool.Core.DTOs.UserDTOs;
 
 namespace Carpool.RestAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class GroupsController : Controller
+	public class GroupsController : ControllerBase
 	{
-		private readonly CarpoolDbContext _context;
+		private readonly IMediator _mediator;
 
-		public GroupsController(CarpoolDbContext context)
-		{
-			_context = context;
-		}
+		public GroupsController(IMediator mediator)
+			=> _mediator = mediator;
 
-		// GET: api/Groups
+		//// GET: api/Groups
 		[HttpGet]
-		public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
+		public async Task<ApiResponse> GetGroups([FromQuery] int page = 0, [FromQuery] int count = 5)
 		{
-			return await _context.Groups.ToListAsync();
+			var request = new GetGroupsQuery(page, count);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse(response);
 		}
 
 		// GET: api/Groups/5
 		[HttpGet("{groupId}")]
-		public async Task<ActionResult<Group>> GetGroup(Guid groupId)
+		public async Task<ApiResponse> GetGroup([FromRoute] Guid groupId)
 		{
-			var @group = await _context.Groups.FindAsync(groupId);
-
-			if (@group == null)
-			{
-				return NotFound();
-			}
-
-			return @group;
-		}
-
-		[HttpGet("{groupId}/users")]
-		public async Task<ActionResult<List<User>>> GetGroupUsers([FromRoute]Guid groupId)
-        {
-			var group = await _context.Groups
-				.Include(group => group.UserGroups)
-				.ThenInclude(member => member.User)
-				.FirstOrDefaultAsync(group => group.Id == groupId);
-			if(group == null)
-            {
-				return NotFound(groupId);
-            }
-			var users = group.UserGroups.Select(userGroup => IndexUserDTO.FromUser(userGroup.User)).ToList();
-			return Ok(users);
-
+			var request = new GetGroupQuery(groupId);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse(response);
 		}
 
 		// PUT: api/Groups/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{id}")]
-		public async Task<IActionResult> PutGroup(Guid id, Group @group)
+		public async Task<ApiResponse> PutGroup([FromRoute]Guid id, [FromBody] UpdateGroupCommand updateGroupCommand)
 		{
-			if (id != @group.Id)
-			{
-				return BadRequest();
-			}
-
-			_context.Entry(@group).State = EntityState.Modified;
-
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!GroupExists(id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-
-			return NoContent();
+			var response = await _mediator.Send(updateGroupCommand).ConfigureAwait(false);
+			return new ApiResponse($"Group with id: {response} has been updated", response);
 		}
 
 		[HttpPut("{groupId}/locations")]
-		public async Task<ActionResult> ChangeGroupLocation([FromRoute]Guid groupId, [FromBody] ChangeGroupLocationDTO changeGroupLocationDTO)
+		public async Task<ApiResponse> ChangeGroupLocation([FromRoute] Guid groupId,
+		                                                   [FromBody]
+		                                                   ChangeGroupLocationCommand changeGroupLocationCommand)
 		{
-			if (groupId != changeGroupLocationDTO.GroupId)
-			{
-				return BadRequest();
-			}
-			var group = await _context.Groups.FirstOrDefaultAsync(group => group.Id == groupId);
-			var location = await _context.Locations.FirstOrDefaultAsync(location => location.Id == changeGroupLocationDTO.LocationId);
-			group.Location = location;
-
-			await _context.SaveChangesAsync();
-
-			return NoContent();
+			changeGroupLocationCommand.GroupId = groupId;
+			var response = await _mediator.Send(changeGroupLocationCommand).ConfigureAwait(false);
+			return new ApiResponse($"Location of a group with id: {groupId} has ben changed");
 		}
 
 		[HttpPut("{groupId}/rides")]
-		public async Task<ActionResult> AddRideToGroup([FromRoute]Guid groupId, [FromBody]AddRideToGroupDTO addRideToGroupDTO)
+		public async Task<ApiResponse> AddRideToGroup([FromRoute] Guid groupId,
+		                                               [FromBody] AddRideToGroupCommand addRideToGroupCommand)
 		{
-			if (groupId != addRideToGroupDTO.GroupId)
-			{
-				return BadRequest();
-			}
-			var group = await _context.Groups.Include(group => group.Rides).FirstOrDefaultAsync(group => group.Id == addRideToGroupDTO.GroupId);
-			var ride = await _context.Rides.FirstOrDefaultAsync(ride => ride.Id == addRideToGroupDTO.RideId);
-			group.Rides.Add(ride);
-
-			await _context.SaveChangesAsync();
-
-			return NoContent();
+			var response = await _mediator.Send(addRideToGroupCommand).ConfigureAwait(false);
+			return new ApiResponse(response);
 		}
 
 		// POST: api/Groups
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		public async Task<ActionResult<Group>> PostGroup(AddGroupDTO groupDTO)
+		public async Task<ApiResponse> PostGroup([FromBody] AddGroupCommand addGroupCommand)
 		{
-			if (groupDTO.OwnerId == null)
-				return BadRequest("No ownerId");
-			if (groupDTO.Code != "")
-			{
-				if (_context.Groups.Any(group => group.Code == groupDTO.Code))
-					return Conflict();
-			}
-			var group = new Group()
-			{
-				Name = groupDTO.Name,
-				Owner = await _context.Users.FindAsync(groupDTO.OwnerId),
-				Code = groupDTO.Code,
-			};
-			_context.Groups.Add(group);
-			await _context.SaveChangesAsync();
-			groupDTO.Id = group.Id;
-			return CreatedAtAction("GetGroup", new { groupId = group.Id }, groupDTO);
+			var groupId = await _mediator.Send(addGroupCommand).ConfigureAwait(false);
+			return new ApiResponse($"Created group with id: {groupId}", groupId);
 		}
 
-		[HttpPut("{groupId}/users")]
-		public async Task<ActionResult> AddUserToGroup([FromRoute]Guid groupId, [FromBody]AddUserToGroupDTO addUserToGroupDTO)
+		[HttpPost("{groupId}/users")]
+		public async Task<ApiResponse> AddUserToGroup([FromRoute] Guid groupId,
+		                                               [FromBody] AddUserToGroupCommand addUserToGroupCommand)
 		{
-			if (groupId != addUserToGroupDTO.GroupId)
-			{
-				return BadRequest();
-			}
-			var group = await _context.Groups.Include(group => group.UserGroups).FirstOrDefaultAsync(group => group.Id == addUserToGroupDTO.GroupId);
-			var userGroup = new UserGroup()
-			{
-				Group = group,
-				GroupId = addUserToGroupDTO.GroupId,
-				UserId = addUserToGroupDTO.UserId
-			};
-			group.UserGroups.Add(userGroup);
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!GroupExists(groupId))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
-			return NoContent();
+			addUserToGroupCommand.GroupId = groupId;
+			var response = await _mediator.Send(addUserToGroupCommand).ConfigureAwait(false);
+			return new ApiResponse($"User with id: {addUserToGroupCommand.UserId} has been added to group with id: {groupId}.");
 		}
 
 		// DELETE: api/Groups/5
 		[HttpDelete("{id}")]
-		public async Task<ActionResult<Group>> DeleteGroup(Guid id)
+		public async Task<ApiResponse> DeleteGroup(Guid id)
 		{
-			var @group = await _context.Groups.FindAsync(id);
-			if (@group == null)
-			{
-				return NotFound();
-			}
-
-			_context.Groups.Remove(@group);
-			await _context.SaveChangesAsync();
-
-			return @group;
+			var response = await _mediator.Send(new DeleteGroupCommand(id)).ConfigureAwait(false);
+			return new ApiResponse($"Group with id: {id} has been deleted", StatusCodes.Status200OK);
 		}
-
-		private bool GroupExists(Guid id)
+		
+		
+		[HttpGet("~/api/users/{userId}/groups")]
+		public async Task<ApiResponse> GetUserGroups([FromRoute] Guid userId)
 		{
-			return _context.Groups.Any(e => e.Id == id);
+			var request = new GetUserGroupsQuery(userId);
+
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+
+			return new ApiResponse(response);
 		}
 	}
 }

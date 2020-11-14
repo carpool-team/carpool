@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carpool.RestAPI.Controllers
@@ -12,9 +8,7 @@ namespace Carpool.RestAPI.Controllers
 	public class HomeController : ControllerBase
 	{
 		[HttpGet]
-		public async Task<ActionResult> Get()
-		{
-			return Ok("Server is running");
-		}
+		public ActionResult Get()
+			=> Ok("Server is running");
 	}
 }

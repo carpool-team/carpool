@@ -1,11 +1,9 @@
-﻿using Carpool.Core.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using Carpool.Core.Abstract;
 
 namespace Carpool.Core.Models
 {
-	public class Vehicle : ParentModel
+	public class Vehicle : BaseEntity<Guid>
 	{
 		public string Name { get; set; }
 	}

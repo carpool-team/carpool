@@ -1,7 +1,9 @@
-import { IGroupUser } from "./IGroupUser";
+import { IGroupBase } from "./IGroupBase";
 
 /** Group interface */
-export interface IGroup {
-	name: string;
-	users: IGroupUser[];
+export interface IGroup extends IGroupBase {
+	code: string;
+	owner: string;
+	userCount: number;
+	selected?: boolean;
 }

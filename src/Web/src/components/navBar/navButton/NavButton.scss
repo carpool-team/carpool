@@ -1,0 +1,78 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.navButton {
+	font-size: 18px;
+	font-weight: $medium;
+	color: $grayDark;
+	text-decoration: none;
+	padding:10px;
+	border: none;
+	outline:none;
+	cursor: pointer;
+	border-radius: 25px;
+	&:hover {
+		background-color: $backgroundOnHover;
+		border-radius: 25px;
+	}
+
+  &--textGreen {
+    color: $green;
+  }
+  &--textBlue {
+    color: $blue;
+  }
+  &--textGray {
+    color: $grayDark;
+  }
+  &--textWhite {
+	  color: $white;
+  }
+  &--backgroundGray{
+	background-color: $grayDark;
+  }
+  &--backgroundNone{
+	background-color: $background;
+  }
+  &--backgroundTransparent{
+	background-color: transparent;
+  }
+  &--backgroundBlue{
+	background-color: $blue;
+	&:hover{
+		background-color: $blueOnHover;
+	}
+  }
+  &--userIcon:before{
+	font-family: FontAwesome;
+	font-size: 15px;
+	content:"\f007";
+	padding-right: 10px;
+}
+}
+@media only screen and (max-width: 900px) {
+	.navButton {
+		
+		&--backgroundBlue{
+			background-color: $background;
+			&:hover{
+				background-color: $backgroundOnHover;
+			}
+		  }
+		&--textWhite {
+			color: $grayDark;
+			font-size: 13px;
+		} 
+		&--userIcon span{
+			font-size: 0;
+		}
+		&--userIcon:before{
+			padding-right: 0px;
+		}
+		&--backgroundNone{
+			background-color: transparent;
+		}
+	}
+	
+}
+

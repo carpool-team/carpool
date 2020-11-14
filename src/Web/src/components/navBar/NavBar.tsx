@@ -1,11 +1,12 @@
 import React from "react";
 import "./NavBar.scss";
-import Button from "../ui/Button/Button";
-import { ButtonSize } from "../ui/Button/enums/ButtonSize";
-import { ButtonType } from "../ui/Button/enums/ButtonType";
+import Button from "./NavButton/NavButton";
+import { ButtonColor } from "./NavButton/enums/ButtonColor";
+import { ButtonBackground } from "./NavButton/enums/ButtonBackground";
+import { ButtonIcon } from "./NavButton/enums/ButtonIcon";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import App from "../../App";
+import LayoutRouter from "../layout/components/LayoutRouter";
 
 interface INavBarProps extends IReactI18nProps { }
 
@@ -16,30 +17,29 @@ interface INavBarState {
 
 class NavBar extends React.Component<INavBarProps, INavBarState> {
 	private cssClasses = {
+		navBarContainer: "navBarContainer",
+		logoContainer: "logoContainer",
+		navBarTabContainer: "navBarTabContainer",
+		navBarTabButton: "navBarTabButton",
+		navBarAccountContainer: "navBarAccountContainer",
+		hamburgerMenuButtons: "hamburgerMenuButtons",
 		hamburgerIcon: "hamburgerIcon",
-		change: "change",
-		navButtons: "navButtons",
 		hamburgerToggle: "hamburgerToogle",
+		change: "change",
 		bar1: "bar1",
 		bar2: "bar2",
-		bar3: "bar3",
-		logoContainer: "logoContainer",
-		navBarContainer: "navBarContainer",
-		navAccount: "navAccount",
-		navButtonPlain: "navButtonPlain",
-		navPlain: "navPlain",
 	};
 
 	private ids = {
 		hamburgeIcon: "hamburgerIcon",
-		container: "container",
-		navButtons: "navButtons",
+		container: "navBarContainer",
+		hamburgerMenuButtons: "hamburgerMenuButtons",
 	};
 
 	private resources = {
 		passenger: "common.passenger",
 		driver: "common.driver",
-		business: "common.business",
+		groups: "common.groups",
 		login: "navBar.login",
 		register: "navBar.register",
 	};
@@ -55,7 +55,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 	private handleHamburgerClick = () => {
 		let elem = document.getElementById(this.cssClasses.hamburgerIcon);
 		elem?.classList.toggle(this.cssClasses.change);
-		let menu = document.getElementById(this.cssClasses.navButtons);
+		let menu = document.getElementById(this.cssClasses.hamburgerMenuButtons);
 		menu?.classList.toggle(this.cssClasses.hamburgerToggle);
 	}
 
@@ -63,35 +63,55 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		const { t } = this.props;
 		return (
 			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
-				<div className={this.cssClasses.logoContainer}></div>
-				<div className={[this.cssClasses.navButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.navButtons}>
-					<nav className={this.cssClasses.navPlain}>
-						<a className={this.cssClasses.navButtonPlain} href={App.rootRoute}>
+				<div className={this.cssClasses.navBarTabContainer}>
+					<a href={`/${LayoutRouter.routes.default}`}>
+						<div className={this.cssClasses.logoContainer}></div>
+					</a>
+					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
+						<Button
+							color={ButtonColor.Gray}
+							background={ButtonBackground.None}
+							onClick={this.handleHamburgerClick.bind(this)}
+						>
 							{t(this.resources.passenger)}
-						</a>
-						<a className={this.cssClasses.navButtonPlain} href={App.rootRoute}>
+						</Button>
+						<Button
+							color={ButtonColor.Gray}
+							background={ButtonBackground.None}
+							onClick={this.handleHamburgerClick.bind(this)}
+						>
 							{t(this.resources.driver)}
-						</a>
-						<a className={this.cssClasses.navButtonPlain} href={App.rootRoute}>
-							{t(this.resources.business)}
-						</a>
-					</nav>
-					<nav className={this.cssClasses.navAccount}>
+						</Button>
 						<Button
-							size={ButtonSize.Large}
-							type={ButtonType.Success}
-							onClick={() => { }}
+							color={ButtonColor.Gray}
+							background={ButtonBackground.None}
+							onClick={this.handleHamburgerClick.bind(this)}
+							to={`/${LayoutRouter.routes.groups}`}
 						>
+							{t(this.resources.groups)}
+						</Button>
+					</div>
+				</div>
+
+				<div className={this.cssClasses.navBarAccountContainer}>
+					<Button
+						color={ButtonColor.Gray}
+						background={ButtonBackground.None}
+						icon={ButtonIcon.User}
+						onClick={() => { }}
+					>
+						<span>
 							{t(this.resources.login)}
-						</Button>
-						<Button
-							size={ButtonSize.Large}
-							type={ButtonType.Info}
-							onClick={() => { }}
-						>
-							{t(this.resources.register)}
-						</Button>
-					</nav>
+						</span>
+					</Button>
+
+					<Button
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}
+						onClick={() => { }}
+					>
+						{t(this.resources.register)}
+					</Button>
 				</div>
 				<div
 					id={this.ids.hamburgeIcon}
@@ -100,7 +120,6 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 				>
 					<div className={this.cssClasses.bar1}></div>
 					<div className={this.cssClasses.bar2}></div>
-					<div className={this.cssClasses.bar3}></div>
 				</div>
 			</div>
 		);

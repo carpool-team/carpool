@@ -1,7 +1,4 @@
-﻿using Carpool.Core.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace Carpool.Core.Models.Intersections
 {
@@ -9,7 +6,6 @@ namespace Carpool.Core.Models.Intersections
 	{
 		public Guid UserId { get; set; }
 		public User User { get; set; }
-
 		public Guid RideId { get; set; }
 		public Ride Ride { get; set; }
 	}
