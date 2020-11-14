@@ -13,9 +13,7 @@ namespace Carpool.DAL.Builders
 
 			builder.HasKey(x => x.Id);
 
-            builder.HasOne(x => x.Location)
-                .WithMany()
-                .HasForeignKey(x => x.LocationId);
-        }
+			builder.OwnsOne(x => x.Location);
+		}
 	}
 }

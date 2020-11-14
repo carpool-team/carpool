@@ -1,5 +1,5 @@
 ﻿using System;
-using Carpool.RestAPI.DTOs.GroupDTOs;
+using Carpool.RestAPI.DTOs.Group;
 using MediatR;
 using Newtonsoft.Json;
 

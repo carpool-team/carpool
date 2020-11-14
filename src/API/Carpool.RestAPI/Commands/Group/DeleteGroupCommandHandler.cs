@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Carpool.DAL.Repositories.Group;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.RestAPI.Commands.Group
@@ -18,7 +19,7 @@ namespace Carpool.RestAPI.Commands.Group
 		protected override async Task Handle(DeleteGroupCommand request, CancellationToken cancellationToken)
 		{
 			var group = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
-			_ = group ?? throw new ApiException($"Group with id: {request.Id} does not exist so it cannot be deleted.");
+			_ = group ?? throw new ApiProblemDetailsException($"Group with id: {request.Id} does not exist so it cannot be deleted.", StatusCodes.Status400BadRequest);
 			_repository.Delete(group);
 
 			try

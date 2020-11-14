@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Carpool.Core.Abstract;
+using Carpool.Core.Contracts;
 using Carpool.Core.Models.Intersections;
+using Carpool.Core.ValueObjects;
 using Microsoft.AspNetCore.Identity;
 
 namespace Carpool.Core.Models
@@ -25,7 +27,7 @@ namespace Carpool.Core.Models
         public List<Rating> Ratings { get; set; }
 
 		public Guid? VehicleId { get; set; }
-		public Vehicle Vehicle { get; set; }
+		public Vehicle? Vehicle { get; set; }
 		
 		//public virtual ICollection<GroupInvite> ReceivedGroupInvites { get; set; }
 

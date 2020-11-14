@@ -1,26 +1,24 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Carpool.DAL.Repositories.Rating;
+using Carpool.DAL.Repositories.User;
 using MediatR;
 
 namespace Carpool.RestAPI.Queries.Rating
 {
 	public class GetUserRatingQueryHandler : IRequestHandler<GetUserRatingQuery, double>
 	{
-		private readonly IRatingRepository _repository;
+		private readonly IUserRepository _repository;
 
-		public GetUserRatingQueryHandler(IRatingRepository repository)
+		public GetUserRatingQueryHandler(IUserRepository repository)
 			=> _repository = repository;
 
 		public async Task<double> Handle(GetUserRatingQuery request, CancellationToken cancellationToken)
 		{
-			var ratings = await _repository.GetUserRatingsByUserIdAsNoTrackingAsync(request.UserId, cancellationToken)
+			var rating = await _repository.GetUserRatingAsync(request.UserId, cancellationToken)
 			                               .ConfigureAwait(false);
 
-			var userRating = ratings.Sum(x => x.Value) / ratings.Count();
-
-			return userRating;
+			return rating;
 		}
 	}
 }
