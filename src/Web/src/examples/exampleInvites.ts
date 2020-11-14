@@ -1,4 +1,4 @@
-import * as faker from "faker"
+import * as faker from "faker";
 import { IInvite } from "../components/groups/interfaces/IInvite";
 
 const exampleInvites: IInvite[] = [
@@ -16,7 +16,7 @@ const exampleInvites: IInvite[] = [
     	},
 		},
 		invitedUserId: faker.random.alphaNumeric(32),
-		dateAdded: "2020-11-07T18:10:46.1252449" 
+		dateAdded: "2020-11-07T18:10:46.1252449"
   },
   {
 		id: faker.random.alphaNumeric(32),
@@ -32,7 +32,7 @@ const exampleInvites: IInvite[] = [
     	},
 		},
 		invitedUserId: faker.random.alphaNumeric(32),
-		dateAdded: "2020-11-07T18:10:46.1252449" 
+		dateAdded: "2020-11-07T18:10:46.1252449"
   },
   {
 		id: faker.random.alphaNumeric(32),
@@ -48,7 +48,7 @@ const exampleInvites: IInvite[] = [
     	},
 		},
 		invitedUserId: faker.random.alphaNumeric(32),
-		dateAdded: "2020-11-07T18:10:46.1252449" 
+		dateAdded: "2020-11-07T18:10:46.1252449"
   },
   {
 		id: faker.random.alphaNumeric(32),
@@ -64,7 +64,7 @@ const exampleInvites: IInvite[] = [
     	},
 		},
 		invitedUserId: faker.random.alphaNumeric(32),
-		dateAdded: "2020-11-07T18:10:46.1252449" 
+		dateAdded: "2020-11-07T18:10:46.1252449"
   },
 ];
 

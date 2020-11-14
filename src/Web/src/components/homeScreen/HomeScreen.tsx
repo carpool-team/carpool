@@ -2,16 +2,14 @@ import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "components/system/resources/IReactI18nProps";
 import LayoutRouter from "../layout/components/LayoutRouter";
-import ButtonLink from "../ui/buttonLink/ButtonLink"
+import ButtonLink from "../ui/buttonLink/ButtonLink";
 import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
-import {ButtonLinkUnderline} from "../ui/buttonLink/enums/ButtonLinkUndeline"
+import {ButtonLinkUnderline} from "../ui/buttonLink/enums/ButtonLinkUndeline";
 import "./HomeScreen.scss";
 import { from } from "rxjs";
 
-//import groupImg from "assets_path/img/groups_baner.png";
-
-
+// import groupImg from "assets_path/img/groups_baner.png";
 
 class HomeScreen extends Component<IReactI18nProps> {
 	private cssClasses = {
@@ -39,10 +37,9 @@ class HomeScreen extends Component<IReactI18nProps> {
     btnRaports: "homeScreen.btnReports",
 		btnGroups: "homeScreen.btnGroups",
 		groups: "homeScreen.groups",
-		reports:"homeScreen.reports",
+		reports: "homeScreen.reports",
 		rides: "homeScreen.rides"
 	};
-	
 
 	render: () => JSX.Element = () => {
 		const { t } = this.props;
@@ -69,7 +66,7 @@ class HomeScreen extends Component<IReactI18nProps> {
 									background ={ButtonLinkBackground.Tansparent}
 									undeline = {ButtonLinkUnderline.Solid}
 									to={`/${LayoutRouter.routes.groups}`}
-									onClick={()=>{}}
+									onClick={() => {}}
 									>
 											{t(this.resources.btnGroups)}
 							</ButtonLink>
@@ -113,7 +110,6 @@ class HomeScreen extends Component<IReactI18nProps> {
 					</div>
 				</div>
 
-				
 			</div>
 		);
 	}

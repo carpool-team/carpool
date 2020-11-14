@@ -32,7 +32,6 @@ const ButtonCheckBox: FunctionComponent<IButtonLinkProps> = (props) => {
 	const [activeAccept, setActiveAccept] = useState(true);
 	const [activeDecline, setActiveDecline] = useState(true);
 
-
 	const acceptOnClick = () => {
 		setActiveAccept(!activeAccept);
 		if (props.additionalAcceptOnClick) {

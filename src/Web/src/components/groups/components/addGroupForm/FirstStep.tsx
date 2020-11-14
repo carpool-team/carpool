@@ -2,16 +2,14 @@ import React from "react";
 import MediaQuery from "react-responsive";
 import Input from "../../../ui/input/Input";
 import Button from "../../../ui/button/Button";
-import {ButtonBackground} from "../../../ui/button/enums/ButtonBackground"
-import {ButtonColor} from "../../../ui/button/enums/ButtonColor"
-import MapBox from "../../../map/map"
+import {ButtonBackground} from "../../../ui/button/enums/ButtonBackground";
+import {ButtonColor} from "../../../ui/button/enums/ButtonColor";
+import MapBox from "../../../map/map";
 import { IFormData } from "./interfaces/IFormData";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { InputType } from "../../../ui/input/enums/InputType";
 import { InputIcon } from "../../../ui/input/enums/InputIcon";
-
-
 
 interface IFirstStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;

@@ -1,4 +1,4 @@
-import * as faker from "faker"
+import * as faker from "faker";
 import { IGroup } from "../components/groups/interfaces/IGroup";
 
 const exampleGroups: IGroup[] = [

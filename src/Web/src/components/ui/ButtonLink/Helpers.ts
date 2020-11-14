@@ -1,9 +1,9 @@
 import { from } from "rxjs";
 import { ButtonLinkColor } from "./enums/ButtonLinkColor";
-import {ButtonLinkBackground} from "./enums/ButtonLinkBackground"
-import {ButtonLinkIcon} from "./enums/ButtonLinkIcon"
-import {ButtonLinkUnderline} from "./enums/ButtonLinkUndeline"
-import {ButtonLinkStyle} from "./enums/ButtonLinkStyle"
+import {ButtonLinkBackground} from "./enums/ButtonLinkBackground";
+import {ButtonLinkIcon} from "./enums/ButtonLinkIcon";
+import {ButtonLinkUnderline} from "./enums/ButtonLinkUndeline";
+import {ButtonLinkStyle} from "./enums/ButtonLinkStyle";
 
 export const getColorClass: (type?: ButtonLinkColor) => string = (color) => {
 	switch (color) {
@@ -14,7 +14,7 @@ export const getColorClass: (type?: ButtonLinkColor) => string = (color) => {
 		case ButtonLinkColor.Gray:
 			return "buttonLink__text--gray";
 		case ButtonLinkColor.White:
-			return "buttonLink__text--white"
+			return "buttonLink__text--white";
 		default:
 			return "buttonLink__text--gray";
 	}
@@ -41,7 +41,7 @@ export const getIconClass: (type?: ButtonLinkIcon) => string = (icon) => {
 		default:
 			return "buttonLink__icon--none";
 	}
-}
+};
 export const getUnderlineClass: (type?: ButtonLinkUnderline) => string = (underline) => {
 	switch (underline) {
 		case ButtonLinkUnderline.Solid:
@@ -55,8 +55,8 @@ export const getStyleClass: (type?: ButtonLinkStyle) => string = (style) => {
 		case ButtonLinkStyle.Link:
 			return "buttonLink";
 		case ButtonLinkStyle.Button:
-			return "button"
+			return "button";
 		default:
 			return "buttonLink";
 	}
-}
+};

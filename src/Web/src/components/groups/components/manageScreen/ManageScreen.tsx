@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import produce from "immer";
-import MapBox from "../../../map/map"
+import MapBox from "../../../map/map";
 import { withTranslation } from "react-i18next";
 import MediaQuery from "react-responsive";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import GroupsRouter from "../GroupsRouter";
-import Button from "../../../ui/button/Button"
+import Button from "../../../ui/button/Button";
 import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
-import { ButtonIcon } from "../../../ui/button/enums/ButtonIcon"
-import ButtonLink from "../../../ui/buttonLink/ButtonLink"
+import { ButtonIcon } from "../../../ui/button/enums/ButtonIcon";
+import ButtonLink from "../../../ui/buttonLink/ButtonLink";
 import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
 import { ButtonLinkIcon } from "../../../ui/buttonLink/enums/ButtonLinkIcon";
-import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle"
+import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle";
 import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import GroupsList from "./components/GroupsList";
 import InvitesList from "./components/InvitesList";
@@ -32,7 +32,6 @@ interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
 interface IManageScreenState {
 	selectedScreen: Lists;
 }
-
 
 class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	private resources = {
@@ -62,9 +61,8 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		};
 	}
 
-
 	setCurrentList = (list: Lists) => {
-		if (list != this.state.selectedScreen) {
+		if (list !== this.state.selectedScreen) {
 			let groupsBtn = document.getElementById(this.ids.groupsBtn);
 			groupsBtn?.classList.toggle(this.cssClasses.buttonActive);
 			let invitesBtn = document.getElementById(this.ids.invitesBtn);

@@ -29,7 +29,7 @@ class Layout extends Component<RouteComponentProps> {
 						history={this.props.history}
 						location={this.props.location}
 					/>
-				</main>	
+				</main>
 				<Footer />
 			</React.Fragment>
 		);

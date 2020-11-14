@@ -1,7 +1,7 @@
 import React from "react";
 import mapboxgl, { Map } from "mapbox-gl";
-import mapConfig from "./mapConfig"
-import "./map.scss"
+import mapConfig from "./mapConfig";
+import "./map.scss";
 
 type Props = {
   longitude: number;
