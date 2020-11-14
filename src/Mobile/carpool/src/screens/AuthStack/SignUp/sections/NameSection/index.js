@@ -29,6 +29,7 @@ const NameSection = ({onSubmitName}) => {
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       <StandardInput
+        returnKeyType="next"
         wrapperStyle={styles.inputWrapper}
         placeholder="First name"
         value={values.first_name}
@@ -39,6 +40,7 @@ const NameSection = ({onSubmitName}) => {
         }
       />
       <StandardInput
+        returnKeyType="next"
         wrapperStyle={styles.inputWrapper}
         placeholder="Last name"
         value={values.last_name}
@@ -46,12 +48,15 @@ const NameSection = ({onSubmitName}) => {
         error={touched.last_name && errors.last_name ? errors.last_name : null}
       />
       <StandardInput
+        returnKeyType="done"
         wrapperStyle={styles.inputWrapper}
         placeholder="Email address"
+        keyboardType="email-address"
         autoCapitalize={false}
         value={values.email}
         onChangeText={handleChange('email')}
         error={touched.email && errors.email ? errors.email : null}
+        onSubmitEditing={handleSubmit}
       />
       <StandardButton
         color={colors.blue}

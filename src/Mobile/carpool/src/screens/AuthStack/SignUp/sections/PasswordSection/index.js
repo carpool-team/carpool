@@ -12,7 +12,7 @@ const ValidationSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
   password_confirmation: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords do not match')
-    .required('Password confirm is required'),
+    .required('Password confirmation is required'),
 });
 
 const PasswordSection = ({onSubmtiPassword}) => {
@@ -22,12 +22,14 @@ const PasswordSection = ({onSubmtiPassword}) => {
       password_confirmation: '',
     },
     validationSchema: ValidationSchema,
-    onSubmit: vals => onSubmtiPassword(vals.password),
+    onSubmit: vals => onSubmtiPassword(vals),
   });
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       <StandardInput
+        autoFocus
+        returnKeyType="next"
         secureTextEntry
         wrapperStyle={styles.inputWrapper}
         placeholder="Password"
@@ -38,6 +40,7 @@ const PasswordSection = ({onSubmtiPassword}) => {
       />
       <StandardInput
         secureTextEntry
+        returnKeyType="done"
         wrapperStyle={styles.inputWrapper}
         placeholder="Confirm password"
         autoCapitalize={false}
@@ -48,6 +51,7 @@ const PasswordSection = ({onSubmtiPassword}) => {
             ? errors.password_confirmation
             : null
         }
+        onSubmitEditing={handleSubmit}
       />
       <StandardButton
         color={colors.blue}
