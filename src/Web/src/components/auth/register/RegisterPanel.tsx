@@ -10,7 +10,7 @@ import { ButtonColor } from "../../ui/button/enums/ButtonColor";
 import { InputIcon } from "../../ui/input/enums/InputIcon";
 import { InputType } from "../../ui/input/enums/InputType";
 import Input from "../../ui/input/Input";
-import usePassword from "../passwordInput/PasswordInput";
+import usePassword from "./hooks/PasswordInput";
 import {
 	StateProps,
 	DispatchProps,
@@ -71,7 +71,6 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 		}
 	};
 
-	console.log(isPasswordValid);
 	return (
 		<div className={cssClasses.container}>
 			<div className={cssClasses.inputs}>

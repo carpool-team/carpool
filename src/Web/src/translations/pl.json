@@ -6,6 +6,10 @@
                 "surname": "Nazwisko",
                 "email": "Adres e-mail"
             },
+            "loginPanel": {
+                "email": "Adres e-mail",
+                "password": "Hasło"
+            },
             "passwordInput": {
                 "password": "Hasło",
                 "confirmPassword": "Potwierdź hasło",

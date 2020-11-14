@@ -1,3 +1,4 @@
+import { ILoginFormData } from "../login/LoginPanel";
 import { IRegisterFormData } from "../register/RegisterPanel";
 import { login, register } from "./Actions";
 import { IAuthState } from "./State";
@@ -14,7 +15,7 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = () =
 });
 
 interface IDispatchPropsType {
-	login: () => ILoginAction;
+	login: (data: ILoginFormData) => ILoginAction;
 	register: (data: IRegisterFormData) => IRegisterAction;
 }
 

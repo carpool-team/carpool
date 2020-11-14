@@ -1,3 +1,4 @@
+import { ILoginFormData } from "../login/LoginPanel";
 import { IRegisterFormData } from "../register/RegisterPanel";
 import {
 	ILoginAction,
@@ -11,9 +12,10 @@ import {
 } from "./Types";
 
 //#region Login
-export function login(): ILoginAction {
+export function login(data: ILoginFormData): ILoginAction {
 	return {
-		type: LoginActionTypes.Login
+		type: LoginActionTypes.Login,
+		data
 	};
 }
 

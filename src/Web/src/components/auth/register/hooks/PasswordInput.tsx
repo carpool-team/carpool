@@ -1,9 +1,8 @@
 import { TFunction } from "i18next";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { InputIcon } from "../../ui/input/enums/InputIcon";
-import { InputType } from "../../ui/input/enums/InputType";
-import Input from "../../ui/input/Input";
+import { InputType } from "../../../ui/input/enums/InputType";
+import Input from "../../../ui/input/Input";
 import PasswordStrengthBar from "react-password-strength-bar";
 
 const resources = {

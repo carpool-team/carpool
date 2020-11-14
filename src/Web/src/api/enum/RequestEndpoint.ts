@@ -23,4 +23,5 @@ export enum RequestEndpoint {
 	GET_ALL_RIDES,
 	// USERS
 	REGISTER_USER,
+	LOGIN_USER
 }

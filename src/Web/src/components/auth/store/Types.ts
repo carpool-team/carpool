@@ -1,4 +1,5 @@
 import { Action } from "redux";
+import { ILoginFormData } from "../login/LoginPanel";
 import { IRegisterFormData } from "../register/RegisterPanel";
 
 /** Enum of login actions */
@@ -19,6 +20,7 @@ export enum RegisterActionTypes {
 
 /** Action for login */
 export interface ILoginAction extends Action<LoginActionTypes.Login> {
+	data: ILoginFormData;
 }
 
 /** Action for login success */
