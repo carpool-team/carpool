@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using Carpool.Core.Models;
-using Carpool.RestAPI.DTOs.RideDTOs;
-using Carpool.RestAPI.DTOs.UserDTOs;
+using Carpool.Core.ValueObjects;
+using Carpool.RestAPI.DTOs.Ride;
+using Carpool.RestAPI.DTOs.User;
 
-namespace Carpool.RestAPI.DTOs.GroupDTOs
+namespace Carpool.RestAPI.DTOs.Group
 {
-	public class GroupDetailsDto
+    public class GroupDetailsDto
 	{
 		public GroupDetailsDto(Guid groupId,
 		                       Location location,
 		                       List<RideMinimalDto> rides,
 		                       string name,
 		                       string code,
-		                       User owner,
+		                       Core.Models.User owner,
 		                       int userCount,
 		                       int rideCount)
 		{

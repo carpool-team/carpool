@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Carpool.Core.ValueObjects;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,5 +17,6 @@ namespace Carpool.DAL.Repositories.User
 		Task<List<Core.Models.User>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken);
 
 		Task<bool> ExistsWithId(Guid id, CancellationToken cancellationToken);
+		Task<double> GetUserRatingAsync(Guid userId, CancellationToken cancellationToken);
 	}
 }

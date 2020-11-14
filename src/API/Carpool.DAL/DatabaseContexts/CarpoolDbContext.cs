@@ -2,6 +2,7 @@
 using System.Reflection;
 using Carpool.Core.Models;
 using Carpool.Core.Models.Intersections;
+using Carpool.Core.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.DAL.DatabaseContexts
@@ -31,8 +32,6 @@ namespace Carpool.DAL.DatabaseContexts
 		#endregion Intersections
 
 		#region Models
-
-		public DbSet<Location> Locations { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Group> Groups { get; set; }
 		public DbSet<Ride> Rides { get; set; }

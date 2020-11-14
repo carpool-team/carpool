@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Carpool.DAL.Repositories.GroupInvite;
-using Carpool.RestAPI.DTOs.GroupInvitesDTOs;
+using Carpool.RestAPI.DTOs.GroupInvites;
 using MediatR;
 
 namespace Carpool.RestAPI.Queries.GroupInvite

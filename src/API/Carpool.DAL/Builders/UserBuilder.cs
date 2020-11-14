@@ -15,10 +15,10 @@ namespace Carpool.DAL.Builders
 			builder.Property(x => x.FirstName);
 			builder.Property(x => x.LastName);
 
-			builder.HasMany(x => x.Ratings)
-			       .WithOne()
-			       .HasForeignKey(r => r.UserId)
-			       .OnDelete(DeleteBehavior.Cascade);
+            builder.OwnsMany(x => x.Ratings)
+                .WithOwner()
+                .HasForeignKey(x => x.UserId);
+
 
             //  builder.HasMany(x => x.CreatedRides)
             //.WithOne()

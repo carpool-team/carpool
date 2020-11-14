@@ -5,7 +5,6 @@ using AutoWrapper.Wrappers;
 using Carpool.Core.Models;
 using Carpool.DAL.DatabaseContexts;
 using Carpool.RestAPI.Commands.Ride;
-using Carpool.RestAPI.DTOs.RideDTOs;
 using Carpool.RestAPI.Queries.Ride;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Carpool.Core.ValueObjects;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -8,22 +9,15 @@ namespace Carpool.RestAPI.Commands.Group
 	public class AddGroupCommand : IRequest<Guid>
 	{
 		[JsonConstructor]
-		public AddGroupCommand(string name, string code, Guid ownerId, double? longitude, double? latitude)
-		{
-			Name = name;
-			Code = code;
-			OwnerId = ownerId;
-			Longitude = longitude;
-			Latitude = latitude;
-		}
+		public AddGroupCommand(string name, string code, Guid ownerId, Location location) => (Name, Code, OwnerId, Location) = (name, code, ownerId, location);
 
-		[Required] public string Name { get; set; }
 
-		public string Code { get; set; }
+		[Required] public string Name { get; init; }
 
-		[Required] public Guid OwnerId { get; set; }
+		public string Code { get; init; }
 
-		[Required] public double? Longitude { get; set; }
-		[Required] public double? Latitude { get; set; }
+		public Guid OwnerId { get; init; }
+
+		public Location Location { get; init; }
 	}
 }
