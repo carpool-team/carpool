@@ -7,6 +7,7 @@ import { ButtonIcon } from "./NavButton/enums/ButtonIcon";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import LayoutRouter from "../layout/components/LayoutRouter";
+import { AuthRoutes } from "../auth/AuthRouter";
 
 interface INavBarProps extends IReactI18nProps { }
 
@@ -99,6 +100,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						background={ButtonBackground.None}
 						icon={ButtonIcon.User}
 						onClick={() => { }}
+						to={`/${AuthRoutes.main}${AuthRoutes.login}`}
 					>
 						<span>
 							{t(this.resources.login)}
@@ -109,6 +111,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}
 						onClick={() => { }}
+						to={`/${AuthRoutes.main}${AuthRoutes.register}`}
 					>
 						{t(this.resources.register)}
 					</Button>
