@@ -1,60 +1,75 @@
 {
-  "defaultNamespace": {
-    "groups": {
-      "addGroupForm": {
-        "code": "Kod grupy",
-        "groupName": "Nazwa grupy",
-        "address": "Adres",
-        "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie",
-        "email": "Adres e-mail",
-        "emailComment": "Na ten adres zostanie wysłane zaproszenie",
+    "defaultNamespace": {
+        "auth": {
+            "registerPanel": {
+                "name": "Imię",
+                "surname": "Nazwisko",
+                "email": "Adres e-mail"
+            },
+            "passwordInput": {
+                "password": "Hasło",
+                "confirmPassword": "Potwierdź hasło",
+                "passwordsMismatch": "Hasła się nie zgadzają",
+                "passwordTooWeak": "Hasło jest za słabe"
+            },
+            "submit": "Wyślij",
+            "register": "Zarejestruj się",
+            "login": "Zaloguj się"
+        },
+        "groups": {
+            "addGroupForm": {
+                "code": "Kod grupy",
+                "groupName": "Nazwa grupy",
+                "address": "Adres",
+                "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie",
+                "email": "Adres e-mail",
+                "emailComment": "Na ten adres zostanie wysłane zaproszenie",
+                "createBtn": "Utwórz",
+                "name": "Imię",
+                "surname": "Nazwisko",
+                "basicInfo": "Podstawowe informacje",
+                "basicInfo2": "Zaproś użytkowników"
+            },
+            "addGroupBtn": "Dodaj grupę",
+            "ridesBtn": "Przejazdy",
+            "invitesBtn": "Zaproszenia"
+        },
+        "footer": {
+            "services": "Usługi",
+            "environment": "Środowisko",
+            "about": "O nas",
+            "idea": "Idea",
+            "credits": "Grafiki"
+        },
+        "navBar": {
+            "register": "Zarejestruj się",
+            "login": "Zaloguj się"
+        },
+        "homeScreen": {
+            "quote": "Nie jedź\n sam!",
+            "join": "Dołącz do grupy",
+            "helpRides": "Wspólne przejazdy pomagają zmniejszyć ilośc samochodów na drogach i ograniczyć ilość emitowanych zanieczyszczeń.",
+            "helpGroups": "Stwórz grupę lub dołącz do już istniejącej w celu znalezienia kompanów podróży.",
+            "helpReports": "Rywalizuj w obrębie swich grup o najwięcej kilometrów przejachych razem.",
+            "btnRides": "Dowiedz się więcej o przejazdach",
+            "btnReports": "Dowiedz się więcej o raportach",
+            "btnGroups": "Dowiedz się więcej o grupach",
+            "groups": "Grupy",
+            "reports": "Raporty",
+            "rides": "Przejazdy"
+        },
+        "common": {
+            "groups": "Grupy",
+            "passenger": "Pasażer",
+            "driver": "Kierowca"
+        },
+        "prevBtn": "Wstecz",
         "createBtn": "Utwórz",
-        "name": "Imię",
-        "surname": "Nazwisko",
-        "basicInfo": "Podstawowe informacje",
-        "basicInfo2": "Zaproś użytkowników"
-      },
-      "addGroupBtn": "Dodaj grupę",
-      "ridesBtn": "Przejazdy",
-      "invitesBtn": "Zaproszenia"
-    },
-    "footer": {
-      "services": "Usługi",
-      "environment": "Środowisko",
-      "about": "O nas",
-      "idea": "Idea",
-      "credits": "Grafiki"
-    },
-    "navBar": {
-      "register": "Zarejestruj się",
-      "login": "Zaloguj się"
-    },
-    "homeScreen": {
-        "quote": "Nie jedź\n sam!",
-        "join": "Dołącz do grupy",
-        "helpRides": "Wspólne przejazdy pomagają zmniejszyć ilośc samochodów na drogach i ograniczyć ilość emitowanych zanieczyszczeń.",
-        "helpGroups": "Stwórz grupę lub dołącz do już istniejącej w celu znalezienia kompanów podróży.",
-        "helpReports": "Rywalizuj w obrębie swich grup o najwięcej kilometrów przejachych razem.",
-        "btnRides": "Dowiedz się więcej o przejazdach",
-        "btnReports": "Dowiedz się więcej o raportach",
-        "btnGroups": "Dowiedz się więcej o grupach",
-        "groups": "Grupy",
-        "reports":"Raporty",
-        "rides": "Przejazdy"
-    },
-    "common": {
-      "groups": "Grupy",
-      "passenger": "Pasażer",
-      "driver": "Kierowca"
-    },
-    
-    "prevBtn": "Wstecz",
-    "createBtn": "Utwórz",
-    "addBtn": "Dodaj",
-    "nextBtn": "Dalej",
-    "loadingScreen": {
-      "quote": "Share a ride",
-      "join": "Grupy"
+        "addBtn": "Dodaj",
+        "nextBtn": "Dalej",
+        "loadingScreen": {
+            "quote": "Share a ride",
+            "join": "Grupy"
+        }
     }
-  }
 }

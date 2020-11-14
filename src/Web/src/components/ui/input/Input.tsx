@@ -1,10 +1,9 @@
 import React from "react";
 import { InputType } from "./enums/InputType";
-import {InputIcon} from "./enums/InputIcon";
-import {getIconClass} from "./Helpers";
+import { InputIcon } from "./enums/InputIcon";
+import { getIconClass } from "./Helpers";
 
 import "./Input.scss";
-import { from } from "rxjs";
 
 interface IINputProps {
 	changeHandler: (newValue: string) => void;
@@ -26,14 +25,27 @@ const Input = (props: IINputProps) => {
 	};
 
 	const renderTextInput = () => (
-		<div className ={inputBaseClassContainer}>
-		<div className = {getIconClass(props.icon)}></div>
-		<input
-			className={inputBaseClassName}
-			placeholder={props.placeholder}
-			onChange={generalChangeHandler}
-			value={props.value}
-		/>
+		<div className={inputBaseClassContainer}>
+			<div className={getIconClass(props.icon)}></div>
+			<input
+				className={inputBaseClassName}
+				placeholder={props.placeholder}
+				onChange={generalChangeHandler}
+				value={props.value}
+			/>
+		</div>
+	);
+
+	const renderPasswordInput = () => (
+		<div className={inputBaseClassContainer}>
+			<div className={getIconClass(props.icon)}></div>
+			<input
+				className={inputBaseClassName}
+				placeholder={props.placeholder}
+				onChange={generalChangeHandler}
+				value={props.value}
+				type={"password"}
+			/>
 		</div>
 	);
 
@@ -41,6 +53,8 @@ const Input = (props: IINputProps) => {
 		switch (props.type) {
 			case InputType.Text:
 				return renderTextInput();
+			case InputType.Password:
+				return renderPasswordInput();
 			default:
 				throw "Unhandled input type";
 		}

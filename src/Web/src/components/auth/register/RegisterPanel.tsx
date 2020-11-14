@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { compose } from "redux";
 import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
+import Button from "../../ui/button/Button";
+import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../ui/button/enums/ButtonColor";
 import { InputIcon } from "../../ui/input/enums/InputIcon";
 import { InputType } from "../../ui/input/enums/InputType";
 import Input from "../../ui/input/Input";
+import usePassword from "../passwordInput/PasswordInput";
 import {
 	StateProps,
 	DispatchProps,
@@ -20,57 +23,65 @@ import "./RegisterPanel.scss";
 interface IRegisterPanelProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps { }
 
 const RegisterPanel = (props: IRegisterPanelProps) => {
+	const { t } = props;
+	const [email, setEmail] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [password, isPasswordValid, renderPasswordInputs] = usePassword(t);
+
 	const cssClasses = {
 		container: "form__container",
 		inputs: "form__inputs"
 	};
 
-	const dataKeys = {
-		groupName: "group.groupName",
-		code: "group.code",
-		address: "group.address"
-	};
-
 	const resources = {
-		nextBtn: "nextBtn",
-		groupNameInput: "groups.addGroupForm.groupName",
-		groupCodeInput: "groups.addGroupForm.code",
-		groupCodeInputComment: "groups.addGroupForm.codeInputComment",
-		addressInput: "groups.addGroupForm.address",
-		basicInfo: "groups.addGroupForm.basicInfo"
+		register: "auth.register",
+		email: "auth.registerPanel.email",
+		firstName: "auth.registerPanel.name",
+		lastName: "auth.registerPanel.surname",
+		submit: "auth.submit",
 	};
 
-	const { t } = props;
+	const onClickSubmit = () => {
+		if (isPasswordValid) {
+			alert("OK!");
+		}
+	};
 
+	console.log(isPasswordValid);
 	return (
 		<div className={cssClasses.container}>
 			<div className={cssClasses.inputs}>
-				<span>{t(resources.basicInfo)}</span>
+				<span>{t(resources.register)}</span>
 				<Input
 					type={InputType.Text}
-					changeHandler={newValue => { }}
-					placeholder={t(resources.groupNameInput)}
-					value={null}
+					changeHandler={newValue => { setFirstName(newValue); }}
+					placeholder={t(resources.firstName)}
+					value={firstName}
 					icon={InputIcon.Globe}
 				/>
 				<Input
 					type={InputType.Text}
-					changeHandler={newValue => { }}
-					placeholder={t(resources.groupCodeInput)}
-					// commment={t(resources.groupCodeInputComment)}
-					value={null}
+					changeHandler={newValue => { setLastName(newValue); }}
+					placeholder={t(resources.lastName)}
+					value={lastName}
 					icon={InputIcon.Code}
 				/>
 				<Input
 					type={InputType.Text}
-					changeHandler={newValue => { }}
-					placeholder={t(resources.addressInput)}
-					value={null}
+					changeHandler={newValue => { setEmail(newValue); }}
+					placeholder={t(resources.email)}
+					value={email}
 					icon={InputIcon.Location}
 				/>
-				{/* <Button onClick={props.callbacks.incrementStep} color={ButtonColor.White} background = {ButtonBackground.Blue}>
-					{t(resources.nextBtn)}
-				</Button> */}
+				{renderPasswordInputs()}
+				<Button
+					onClick={onClickSubmit}
+					color={ButtonColor.White}
+					background={ButtonBackground.Blue}
+				>
+					{t(resources.submit)}
+				</Button>
 			</div>
 		</div>
 	);
