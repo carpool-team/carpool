@@ -87,8 +87,9 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	renderGroupsList = () => (
 		<GroupsList
 			getGroupsCallback={this.props.callbacks.getGroups}
-			setGroupSelected={(id) => this.props.callbacks.setGroupSelected(id, true)}
-		/>
+			setGroupSelected={(id, unselect) => this.props.callbacks.setGroupSelected(id, unselect)}
+			groupSelected = {this.props.callbacks.getGroups()?.find(g => g.selected)}
+		/ >
 	)
 
 	renderLeftPanel = () => {
@@ -133,14 +134,14 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 
 	renderRightPanel = () => {
 		const group = this.props.callbacks.getGroups()?.find(g => g.selected);
-		if (group) {
-			return (
-				<GroupDetails
-					group={group}
-					unselectGroup={() => this.props.callbacks.setGroupSelected(null, true)}
-				/>
-			);
-		} else {
+		// if (group) {
+		// 	return (
+		// 		<GroupDetails
+		// 			group={group}
+		// 			unselectGroup={() => this.props.callbacks.setGroupSelected(null, true)}
+		// 		/>
+		// 	);
+		// } else {
 			return (
 				<MediaQuery query="(min-width: 900px)">
 					<div className={this.cssClasses.mapBox}>
@@ -148,7 +149,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 					</div>
 				</MediaQuery>
 			);
-		}
+		// }
 	}
 
 	render() {
