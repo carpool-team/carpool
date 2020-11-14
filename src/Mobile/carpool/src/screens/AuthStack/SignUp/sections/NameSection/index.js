@@ -15,13 +15,9 @@ const ValidationSchema = Yup.object().shape({
     .required('Email is required'),
 });
 
-const NameSection = ({onSubmitName}) => {
+const NameSection = ({onSubmitName, initialValues, apiError}) => {
   const {values, handleChange, handleSubmit, touched, errors} = useFormik({
-    initialValues: {
-      first_name: '',
-      last_name: '',
-      email: '',
-    },
+    initialValues,
     validationSchema: ValidationSchema,
     onSubmit: vals => onSubmitName(vals),
   });
@@ -52,10 +48,16 @@ const NameSection = ({onSubmitName}) => {
         wrapperStyle={styles.inputWrapper}
         placeholder="Email address"
         keyboardType="email-address"
-        autoCapitalize={false}
+        autoCapitalize="none"
         value={values.email}
         onChangeText={handleChange('email')}
-        error={touched.email && errors.email ? errors.email : null}
+        error={
+          touched.email && errors.email
+            ? errors.email
+            : apiError
+            ? apiError
+            : null
+        }
         onSubmitEditing={handleSubmit}
       />
       <StandardButton

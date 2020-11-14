@@ -15,12 +15,9 @@ const ValidationSchema = Yup.object().shape({
     .required('Password confirmation is required'),
 });
 
-const PasswordSection = ({onSubmtiPassword}) => {
+const PasswordSection = ({onSubmtiPassword, initialValues}) => {
   const {values, handleChange, handleSubmit, touched, errors} = useFormik({
-    initialValues: {
-      password: '',
-      password_confirmation: '',
-    },
+    initialValues,
     validationSchema: ValidationSchema,
     onSubmit: vals => onSubmtiPassword(vals),
   });
@@ -33,7 +30,7 @@ const PasswordSection = ({onSubmtiPassword}) => {
         secureTextEntry
         wrapperStyle={styles.inputWrapper}
         placeholder="Password"
-        autoCapitalize={false}
+        autoCapitalize="none"
         value={values.password}
         onChangeText={handleChange('password')}
         error={touched.password && errors.password ? errors.password : null}
@@ -43,7 +40,7 @@ const PasswordSection = ({onSubmtiPassword}) => {
         returnKeyType="done"
         wrapperStyle={styles.inputWrapper}
         placeholder="Confirm password"
-        autoCapitalize={false}
+        autoCapitalize="none"
         value={values.password_confirmation}
         onChangeText={handleChange('password_confirmation')}
         error={
