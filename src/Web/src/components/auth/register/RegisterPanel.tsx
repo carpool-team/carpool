@@ -20,13 +20,20 @@ import {
 
 import "./RegisterPanel.scss";
 
+export interface IRegisterFormData {
+	name: string;
+	surname: string;
+	password: string;
+	email: string;
+}
+
 interface IRegisterPanelProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps { }
 
 const RegisterPanel = (props: IRegisterPanelProps) => {
 	const { t } = props;
 	const [email, setEmail] = useState("");
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
+	const [name, setName] = useState("");
+	const [surname, setSurname] = useState("");
 	const [password, isPasswordValid, renderPasswordInputs] = usePassword(t);
 
 	const cssClasses = {
@@ -37,14 +44,30 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 	const resources = {
 		register: "auth.register",
 		email: "auth.registerPanel.email",
-		firstName: "auth.registerPanel.name",
-		lastName: "auth.registerPanel.surname",
+		name: "auth.registerPanel.name",
+		surname: "auth.registerPanel.surname",
 		submit: "auth.submit",
 	};
 
+	const validateForm = () => {
+		let isFormValid: boolean = true;
+		if (!isPasswordValid) {
+			isFormValid = false;
+		}
+		return isFormValid;
+	};
+
 	const onClickSubmit = () => {
-		if (isPasswordValid) {
+		if (validateForm()) {
+			const data: IRegisterFormData = {
+				name,
+				surname,
+				password,
+				email,
+			};
 			alert("OK!");
+			// commented until API is ready
+			// props.register(data);
 		}
 	};
 
@@ -55,16 +78,16 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 				<span>{t(resources.register)}</span>
 				<Input
 					type={InputType.Text}
-					changeHandler={newValue => { setFirstName(newValue); }}
-					placeholder={t(resources.firstName)}
-					value={firstName}
+					changeHandler={newValue => { setName(newValue); }}
+					placeholder={t(resources.name)}
+					value={name}
 					icon={InputIcon.Globe}
 				/>
 				<Input
 					type={InputType.Text}
-					changeHandler={newValue => { setLastName(newValue); }}
-					placeholder={t(resources.lastName)}
-					value={lastName}
+					changeHandler={newValue => { setSurname(newValue); }}
+					placeholder={t(resources.surname)}
+					value={surname}
 					icon={InputIcon.Code}
 				/>
 				<Input

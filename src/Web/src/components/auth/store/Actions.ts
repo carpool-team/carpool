@@ -1,3 +1,4 @@
+import { IRegisterFormData } from "../register/RegisterPanel";
 import {
 	ILoginAction,
 	ILoginErrorAction,
@@ -30,9 +31,10 @@ export function loginError(): ILoginErrorAction {
 //#endregion
 
 //#region Register
-export function register(): IRegisterAction {
+export function register(data: IRegisterFormData): IRegisterAction {
 	return {
-		type: RegisterActionTypes.Register
+		type: RegisterActionTypes.Register,
+		data
 	};
 }
 

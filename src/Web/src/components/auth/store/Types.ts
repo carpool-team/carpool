@@ -1,4 +1,5 @@
 import { Action } from "redux";
+import { IRegisterFormData } from "../register/RegisterPanel";
 
 /** Enum of login actions */
 export enum LoginActionTypes {
@@ -34,6 +35,7 @@ export interface ILoginErrorAction extends Action<LoginActionTypes.LoginError> {
 
 /** Action for register */
 export interface IRegisterAction extends Action<RegisterActionTypes.Register> {
+	data: IRegisterFormData;
 }
 
 /** Action for register success */
