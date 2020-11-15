@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const devMode = process.env.NODE_ENV !== 'production'
+const devMode = process.env.NODE_ENV !== "production";
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
 	entry: path.resolve(__dirname, "src/index"),
@@ -60,5 +61,6 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: "./src/index.html",
 		}),
+		new ForkTsCheckerWebpackPlugin(),
 	],
 };

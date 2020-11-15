@@ -1,11 +1,9 @@
 import React, { CSSProperties, useState } from "react";
 import mapConfig from "./mapConfig";
 import "./map.scss";
-import {IMapPoint} from "./interfaces/IMapPoint";
-import {IGroup} from "./../groups/interfaces/IGroup";
-import ReactMapboxGl, { Layer, Feature, Marker, Source, Popup } from "react-mapbox-gl";
-import { render } from "react-dom";
-import {colorList} from "../../scss/colorList";
+import { IGroup } from "./../groups/interfaces/IGroup";
+import ReactMapboxGl, { Marker, Popup } from "react-mapbox-gl";
+import { colorList } from "../../scss/colorList";
 
 type IMapProps = {
 	groups?: IGroup[]
@@ -24,20 +22,20 @@ const MapBox = (props: IMapProps) => {
 	const [group, setGroup] = useState(undefined);
 
 	const onDrag = () => {
-	if (group) {
-		setGroup(undefined);
+		if (group) {
+			setGroup(undefined);
 		}
 	};
 	const onZoom = () => {
 		if (group) {
 			setGroup(undefined);
-			}
-		};
+		}
+	};
 
 	const markerClick = (group: IGroup) => {
 		setGroup(group);
 		setCenter([group.location.latitude, group.location.longitude]),
-		setZoom([14]);
+			setZoom([14]);
 	};
 
 	const flyToOptions = {
@@ -55,33 +53,25 @@ const MapBox = (props: IMapProps) => {
 		border: "2px"
 	};
 
-		let colorIndex = 0;
-		return (
-			<>
-			<Map
-				style= {mapConfig.mapLight}
-				containerStyle={containerStyle}
-				center={center}
-				onDrag={onDrag}
-				onZoom={onZoom}
-				zoom={zoom}
-				flyToOptions={flyToOptions}
-			>
-				{groups.map((g) => {
-					++colorIndex;
-					const color = colorList[colorIndex % colorList.length];
-					
-					const markerStyle: CSSProperties = {
-						fontSize: "40px",
-						color: color
-					};
+	let colorIndex = 0;
 
-					return(
+	const renderGroups = () => (
+		<>
+			{groups.map((g) => {
+				++colorIndex;
+				const color = colorList[colorIndex % colorList.length];
+
+				const markerStyle: CSSProperties = {
+					fontSize: "40px",
+					color: color
+				};
+
+				return (
 					<Marker
 						key={g.id}
-						coordinates={[g.location.latitude , g.location.longitude]}
-						anchor="bottom" onClick = {markerClick.bind(this, g)}>
-						<i className={"fa fa-map-marker"} style ={markerStyle}></i>
+						coordinates={[g.location.latitude, g.location.longitude]}
+						anchor="bottom" onClick={markerClick.bind(this, g)}>
+						<i className={"fa fa-map-marker"} style={markerStyle}></i>
 					</Marker>
 				);
 			})}
@@ -90,10 +80,25 @@ const MapBox = (props: IMapProps) => {
 				<Popup key={group.id} coordinates={[group.location.latitude, group.location.longitude]}>
 					<div style={popupStyle}> {group.name}</div>
 				</Popup>
-				)}
+			)}
+		</>
+	);
+
+	return (
+		<>
+			<Map
+				style={mapConfig.mapLight}
+				containerStyle={containerStyle}
+				center={center as [number, number]}
+				onDrag={onDrag}
+				onZoom={onZoom}
+				zoom={zoom as [number]}
+				flyToOptions={flyToOptions}
+			>
+				{renderGroups()}
 			</Map>
-			</>
-		);
+		</>
+	);
 };
 
 export default MapBox;

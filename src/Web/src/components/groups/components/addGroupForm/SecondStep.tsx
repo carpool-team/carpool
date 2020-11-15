@@ -10,8 +10,6 @@ import {ButtonColor} from "../../../ui/button/enums/ButtonColor";
 import {ButtonBackground} from "../../../ui/button/enums/ButtonBackground";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 
-
-
 interface ISecondStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
 	decrementStep: () => void;
@@ -99,23 +97,23 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 	);
 
 	const renderUserList = () => {
-		let colorList:string[] = ["#C39BD3", "#7FB3D5","#48C9B0","#F9E79F"]
-		let colorIndex:number = 0;
-		
+		let colorList: string[] = ["#C39BD3", "#7FB3D5", "#48C9B0", "#F9E79F"];
+		let colorIndex: number = 0;
+
 		return (
 			<ul className={cssClasses.userList}>
 				{props.data.users.map((user, idx) => {
 				++colorIndex;
 				const color = {
-					color: colorList[colorIndex%colorList.length]
+					color: colorList[colorIndex % colorList.length]
 				};
 				return (
 					<li	key={idx}>
 						<div className={cssClasses.userListItem} style={color}>
-							<div className={cssClasses.userListItemName}>{user.name} {user.surname}</div> 
+							<div className={cssClasses.userListItemName}>{user.name} {user.surname}</div>
 							<MediaQuery query="(min-width: 900px)">
-								<span>{user.email}</span>     
-							</MediaQuery> 
+								<span>{user.email}</span>
+							</MediaQuery>
 						</div>
 					</li>
 				);
