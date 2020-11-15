@@ -22,6 +22,9 @@ namespace Carpool.RestAPI.Controllers
         [HttpPost("login")]
         public async Task<ApiResponse> Login([FromBody] LoginUser request)
         {
+            if (!ModelState.IsValid)
+                throw new ApiProblemDetailsException(ModelState);
+            
             var response = await _mediator.Send(request).ConfigureAwait(false);
             return new ApiResponse(new
             {
