@@ -19,6 +19,17 @@ namespace Carpool.RestAPI.Controllers
         public AuthController(IMediator mediator)
             => _mediator = mediator;
 
+        [HttpPost("login")]
+        public async Task<ApiResponse> Login([FromBody] LoginUser request)
+        {
+            var response = await _mediator.Send(request).ConfigureAwait(false);
+            return new ApiResponse(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(response),
+                expiration = response.ValidTo
+            });
+        }
+        
         [HttpPost("register")]
         public async Task<ApiResponse> Register([FromBody] RegisterUser request)
         {
