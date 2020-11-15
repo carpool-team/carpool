@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Carpool.Core.Models;
+using Carpool.Core.ValueObjects;
 
 namespace Carpool.Core.Abstract
 {
-	public abstract class Route : BaseEntity<Guid>
+    public abstract class Route : BaseEntity<Guid>
 	{
 		[ForeignKey("DestinationId")] public Location Destination { get; set; }
 

@@ -1,9 +1,9 @@
 ﻿using System;
-using Carpool.Core.Models;
+using Carpool.Core.ValueObjects;
 
-namespace Carpool.RestAPI.DTOs.GroupDTOs
+namespace Carpool.RestAPI.DTOs.Group
 {
-	public class IndexGroupDTO
+    public class IndexGroupDTO
 	{
 		public IndexGroupDTO(Guid id, Location location, string name, int rideCount, int userCount) : this(id, name,
 			rideCount, userCount)
@@ -16,7 +16,7 @@ namespace Carpool.RestAPI.DTOs.GroupDTOs
 			RideCount = rideCount;
 			UserCount = userCount;
 		}
-
+		
 		public IndexGroupDTO()
 		{
 		}

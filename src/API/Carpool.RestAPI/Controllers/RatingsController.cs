@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using Carpool.RestAPI.Commands.Rating;
+using Carpool.RestAPI.Commands.User;
 using Carpool.RestAPI.Queries.Rating;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Carpool.RestAPI.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class RatingsController : Controller
 	{

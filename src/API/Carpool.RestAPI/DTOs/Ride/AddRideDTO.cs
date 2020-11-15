@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
-using Carpool.Core.Models;
-using Carpool.RestAPI.DTOs.StopDTOs;
+using Carpool.Core.ValueObjects;
+using Carpool.RestAPI.DTOs.Stop;
 
-namespace Carpool.RestAPI.DTOs.RideDTOs
+namespace Carpool.RestAPI.DTOs.Ride
 {
-	public class AddRideDTO
+    public class AddRideDTO
 	{
 		private AddRideDTO()
 		{

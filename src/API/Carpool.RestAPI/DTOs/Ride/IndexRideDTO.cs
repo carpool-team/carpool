@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Carpool.Core.Models;
-using Carpool.RestAPI.DTOs.StopDTOs;
-using Carpool.RestAPI.DTOs.UserDTOs;
+using Carpool.Core.ValueObjects;
+using Carpool.RestAPI.DTOs.Stop;
+using Carpool.RestAPI.DTOs.User;
 
-namespace Carpool.RestAPI.DTOs.RideDTOs
+namespace Carpool.RestAPI.DTOs.Ride
 {
-	public class IndexRideDTO
+    public class IndexRideDTO
 	{
 		public IndexRideDTO(Guid rideId,
 		                    IndexUserDto owner,

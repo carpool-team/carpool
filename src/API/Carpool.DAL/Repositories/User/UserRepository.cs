@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Carpool.Core.ValueObjects;
 using Carpool.DAL.DatabaseContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -70,5 +71,11 @@ namespace Carpool.DAL.Repositories.User
 
 		public async Task<bool> ExistsWithId(Guid id, CancellationToken cancellationToken)
 			=> await _context.Users.AnyAsync(x => x.Id == id, cancellationToken).ConfigureAwait(false);
-	}
+
+		public async Task<double> GetUserRatingAsync(Guid userId, CancellationToken cancellationToken)
+		{
+			var user = await _context.Users.Include(x => x.Ratings).SingleOrDefaultAsync(x => x.Id == userId, cancellationToken).ConfigureAwait(false);
+			return user.Ratings.Sum(x => x.Value)/user.Ratings.Count;
+		}
+    }
 }

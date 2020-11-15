@@ -7,12 +7,10 @@ namespace Carpool.RestAPI.Commands.Group
 	public class ChangeGroupLocationCommand : IRequest
 	{
 		[JsonConstructor]
-		public ChangeGroupLocationCommand(Guid? locationId)
-			=> LocationId = locationId;
+		public ChangeGroupLocationCommand(double longitude, double latitude) => (Longitude, Latitude) = (longitude, latitude);
 
-		public Guid? LocationId { get; set; }
-		public double? Longitude { get; set; }
-		public double? Latitude { get; set; }
+		public double Longitude { get; set; }
+		public double Latitude { get; set; }
 		public Guid GroupId { get; set; }
 	}
 }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Carpool.DAL.Repositories.User;
-using Carpool.RestAPI.DTOs.UserDTOs;
+using Carpool.RestAPI.DTOs.User;
 using MediatR;
 
 namespace Carpool.RestAPI.Queries.User

@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using Carpool.Core.ValueObjects;
 using Carpool.DAL.Repositories.Group;
 using Carpool.DAL.Repositories.User;
 using MediatR;
@@ -27,10 +28,11 @@ namespace Carpool.RestAPI.Commands.Group
         {
             if (!string.IsNullOrEmpty(request.Code)
                 && await _repository.GroupCodeExists(request.Code).ConfigureAwait(false))
-                throw new ApiException($"Group code {request.Code} already exists", StatusCodes.Status409Conflict);
+                throw new ApiProblemDetailsException($"Group code {request.Code} already exists", StatusCodes.Status409Conflict);
 
             if (!await _userRepository.ExistsWithId(request.OwnerId, cancellationToken).ConfigureAwait(false))
-                throw new ApiException($"User with id {request.OwnerId} does not exist.", StatusCodes.Status400BadRequest);
+                throw new ApiProblemDetailsException($"User with id {request.OwnerId} does not exist.", StatusCodes.Status404NotFound);
+            
             
             var group = new Core.Models.Group()
             {
@@ -39,10 +41,7 @@ namespace Carpool.RestAPI.Commands.Group
                 OwnerId = request.OwnerId
             };
 
-            group.Location = request.Longitude is null || request.Latitude is null ?
-                                 null :
-                                 new Core.Models.Location()
-                                     {Latitude = (double) request.Latitude, Longitude = (double) request.Longitude};
+            group.Location = request.Location ?? throw new ApiException($"Group location cannot be empty", StatusCodes.Status400BadRequest);
             
 
             await _repository.AddAsync(group, cancellationToken).ConfigureAwait(false);

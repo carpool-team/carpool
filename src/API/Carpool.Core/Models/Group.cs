@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using Carpool.Core.Abstract;
 using Carpool.Core.Models.Intersections;
+using Carpool.Core.ValueObjects;
 
 namespace Carpool.Core.Models
 {
-	public class Group : BaseEntity<Guid>
+    public class Group : BaseEntity<Guid>
 	{
 		public IReadOnlyList<UserGroup> UserGroups { get; set; }
 
-		public Guid? LocationId { get; set; }
 		public Location Location { get; set; }
 
 		public IReadOnlyList<Ride> Rides { get; set; }
