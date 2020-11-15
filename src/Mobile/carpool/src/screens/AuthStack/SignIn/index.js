@@ -5,6 +5,7 @@ import {
   StyleSheet,
   SafeAreaView,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
@@ -45,7 +46,7 @@ const SignIn = ({navigation}) => {
         <StandardInput
           returnKeyType="done"
           secureTextEntry
-          wrapperStyle={styles.inputWrapper}
+          wrapperStyle={styles.passwordInputWrapper}
           placeholder="Password"
           autoCapitalize="none"
           value={values.password}
@@ -53,6 +54,11 @@ const SignIn = ({navigation}) => {
           error={touched.password && errors.password ? errors.password : null}
           onSubmitEditing={handleSubmit}
         />
+        <View style={styles.forgotWrapper}>
+          <TouchableOpacity>
+            <Text style={styles.signUp}>Forgot your password?</Text>
+          </TouchableOpacity>
+        </View>
         <StandardButton
           color={colors.blue}
           onPress={handleSubmit}
@@ -89,6 +95,13 @@ const styles = StyleSheet.create({
   inputWrapper: {
     width: '100%',
     marginBottom: 40,
+  },
+  passwordInputWrapper: {
+    width: '100%',
+    marginBottom: 10,
+  },
+  forgotWrapper: {
+    width: '100%',
   },
   button: {
     marginTop: 20,
