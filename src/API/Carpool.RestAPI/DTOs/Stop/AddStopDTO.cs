@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using Carpool.Core.Models;
+using Carpool.Core.ValueObjects;
 
-namespace Carpool.RestAPI.DTOs.StopDTOs
+namespace Carpool.RestAPI.DTOs.Stop
 {
-	public class AddStopDTO
+    public class AddStopDTO
 	{
 		[Required] public Guid ParticipantId { get; set; }
 

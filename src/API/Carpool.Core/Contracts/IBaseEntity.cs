@@ -1,4 +1,4 @@
-﻿namespace Carpool.Core.Abstract
+﻿namespace Carpool.Core.Contracts
 {
 	public interface IBaseEntity<T>
 	{

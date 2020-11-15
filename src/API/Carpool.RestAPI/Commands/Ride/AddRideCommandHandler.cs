@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Carpool.DAL.Repositories.Ride;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Carpool.RestAPI.Commands.Ride
@@ -24,22 +25,10 @@ namespace Carpool.RestAPI.Commands.Ride
 				OwnerId = request.OwnerId,
 				GroupId = request.GroupId,
 				Date = request.Date,
-				Price = request.Price
-			};
-
-
-			if (request.StartingLocationLongitude != null && request.StartingLocationLatitude != null)
-					ride.StartingLocation = new Core.Models.Location((double) request.StartingLocationLongitude,
-						(double) request.StartingLocationLatitude);
-			else
-				throw new ApiException($"Starting locations longitude and/or latitude must have a value");
-			
-			if (request.DestinationLongitude != null && request.DestinationLatitude != null)
-				ride.Destination = new Core.Models.Location((double) request.DestinationLongitude,
-					(double) request.DestinationLatitude);
-			else
-				throw new ApiException($"Destinations longitude and/or latitude must have a value");
-			
+				Price = request.Price,
+				Destination = request.Destination ?? throw new ApiProblemDetailsException($"Ride must have a destination", StatusCodes.Status400BadRequest),
+				StartingLocation = request.StartingLocation ?? throw new ApiProblemDetailsException($"Ride must have a starting location", StatusCodes.Status400BadRequest)
+			};			
 			
 			await _rideRepository.AddAsync(ride, cancellationToken).ConfigureAwait(false);
 			try

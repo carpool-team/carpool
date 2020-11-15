@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Carpool.RestAPI.DTOs.GroupInvitesDTOs;
+using Carpool.RestAPI.DTOs.GroupInvites;
 using MediatR;
 
 namespace Carpool.RestAPI.Queries.GroupInvite

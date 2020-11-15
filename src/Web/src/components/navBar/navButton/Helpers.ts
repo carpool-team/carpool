@@ -1,7 +1,6 @@
-import { from } from "rxjs";
 import { ButtonColor } from "./enums/ButtonColor";
-import {ButtonBackground} from "./enums/ButtonBackground"
-import {ButtonIcon} from "./enums/ButtonIcon"
+import { ButtonBackground } from "./enums/ButtonBackground";
+import { ButtonIcon } from "./enums/ButtonIcon";
 
 export const getColorClass: (type?: ButtonColor) => string = (color) => {
 	switch (color) {
@@ -12,7 +11,7 @@ export const getColorClass: (type?: ButtonColor) => string = (color) => {
 		case ButtonColor.Gray:
 			return "navButton--textGray";
 		case ButtonColor.White:
-			return "navButton--textWhite"
+			return "navButton--textWhite";
 		default:
 			return "navButton--textGray";
 	}
@@ -27,7 +26,7 @@ export const getBackgroundClass: (type?: ButtonBackground) => string = (backgrou
 		case ButtonBackground.None:
 			return "navButton--backgroundNone";
 		case ButtonBackground.Blue:
-				return "navButton--backgroundBlue";
+			return "navButton--backgroundBlue";
 		default:
 			return "navButton--backgroundNone";
 	}

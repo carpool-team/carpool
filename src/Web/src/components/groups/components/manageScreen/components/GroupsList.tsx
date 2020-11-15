@@ -1,8 +1,7 @@
-import { difference, String } from "lodash";
 import React from "react";
 import { IGroup } from "../../../interfaces/IGroup";
-import ButtonLink from "../../../../ui/ButtonLink/ButtonLink";
-import {colorList} from "../../../../../scss/colorList";
+import ButtonLink from "../../../../ui/buttonLink/ButtonLink";
+import { colorList } from "../../../../../scss/colorList";
 
 interface IGroupsListProps {
 	getGroupsCallback: () => IGroup[];
@@ -35,32 +34,32 @@ const GroupsList = (props: IGroupsListProps) => {
 		const color = {
 			color: props.color
 		};
-		return(
-			<li className= {activeListItemCssClass} key={props.group.id}>
-			<button
-				onClick={() => props.setGroupSelected()}
-				className={activeButtonCssClass}
-				style= {color}
-			>
-				<div className={pinCssClass} style={color}>	</div>
-				<div className={activeLabelCssClass}>
-					{props.group.name}
-				</div>
-			</button>
-			<div className= {activeMenuCssClass}>
-				<ButtonLink>
-					Przejazdy
+		return (
+			<li className={activeListItemCssClass} key={props.group.id}>
+				<button
+					onClick={() => props.setGroupSelected()}
+					className={activeButtonCssClass}
+					style={color}
+				>
+					<div className={pinCssClass} style={color}>	</div>
+					<div className={activeLabelCssClass}>
+						{props.group.name}
+					</div>
+				</button>
+				<div className={activeMenuCssClass}>
+					<ButtonLink>
+						Przejazdy
 				</ButtonLink>
-				{/* TODO Sprawdzać czy użytkownik ma prawa jest ownerem grupy, inaczej nie wyświetlać tego. */}
-				<ButtonLink>
-					Edytuj grupę
+					{/* TODO Sprawdzać czy użytkownik ma prawa jest ownerem grupy, inaczej nie wyświetlać tego. */}
+					<ButtonLink>
+						Edytuj grupę
 				</ButtonLink>
 
-				<ButtonLink>
-					Zaproś do grupy
+					<ButtonLink>
+						Zaproś do grupy
 				</ButtonLink>
-			</div>
-		</li>
+				</div>
+			</li>
 		);
 	};
 
@@ -68,18 +67,18 @@ const GroupsList = (props: IGroupsListProps) => {
 		const color = {
 			color: props.color
 		};
-		return(
+		return (
 			<li key={props.group.id}>
-			<button
-				onClick={() => props.setGroupSelected()}
-				className={buttonCssClass}
-			>
-				<div className={pinCssClass} style={color}>	</div>
-				<div className={labelCssClass}>
-					{props.group.name}
-				</div>
-			</button>
-		</li>
+				<button
+					onClick={() => props.setGroupSelected()}
+					className={buttonCssClass}
+				>
+					<div className={pinCssClass} style={color}>	</div>
+					<div className={labelCssClass}>
+						{props.group.name}
+					</div>
+				</button>
+			</li>
 		);
 	};
 
@@ -90,23 +89,23 @@ const GroupsList = (props: IGroupsListProps) => {
 				const color = colorList[colorIndex % colorList.length];
 				return (
 					<>
-					{(() => {
-						if (props.groupSelected && props.groupSelected.id === group.id) {
-							return(
+						{(() => {
+							if (props.groupSelected && props.groupSelected.id === group.id) {
+								return (
 									<ActiveItem
-									group = {group}
-									color = {color}
-									setGroupSelected = {() => props.setGroupSelected(null, true)}
-								/>);
-						} else {
+										group={group}
+										color={color}
+										setGroupSelected={() => props.setGroupSelected(null, true)}
+									/>);
+							} else {
 								return (
 									<DefaultItem
-									group = {group}
-									color = {color}
-									setGroupSelected = {() => props.setGroupSelected(group.id, true)}
-								/>);
-						}
-					})()}
+										group={group}
+										color={color}
+										setGroupSelected={() => props.setGroupSelected(group.id, true)}
+									/>);
+							}
+						})()}
 					</>
 				);
 			})}

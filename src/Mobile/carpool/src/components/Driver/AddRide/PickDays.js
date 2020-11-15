@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {UpView} from '../../common';
-import {vw} from '../../../utils/constants';
 
 const weekDays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Ndz'];
 
@@ -68,12 +67,12 @@ const PickDays = () => {
 
 const styles = StyleSheet.create({
   circle: {
-    width: 10 * vw,
-    height: 10 * vw,
+    width: 40,
+    height: 40,
   },
   circleLabel: {
     ...sheet.textMedium,
-    fontSize: 3 * vw,
+    fontSize: 12,
   },
 });
 

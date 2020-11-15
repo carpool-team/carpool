@@ -7,12 +7,12 @@ import {
   StyleSheet,
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh, vw} from '../../../utils/constants';
 import {RouteMinimap} from '../../../components/Route';
-import Waypoints from '../../../components/Ride/Waypoints';
 import {parseCoords} from '../../../utils/coords';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import {UpView, Marker} from '../../../components/common';
+import {UpView} from '../../../components/common';
+import {Marker} from '../../../components/common/map';
+import {Waypoints} from '../../../components/Ride';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride} = route.params;
@@ -32,8 +32,8 @@ const DriversRideDetails = ({navigation, route}) => {
           </View>
           <TouchableOpacity>
             <Ionicon
-              name="md-more"
-              size={8 * vw}
+              name="ellipsis-vertical"
+              size={32}
               color={colors.grayDark}
               style={styles.moreIcon}
             />
@@ -55,9 +55,9 @@ const DriversRideDetails = ({navigation, route}) => {
               contentContainerStyle={sheet.center}
               style={styles.upView}
               onPress={() => null}
-              borderRadius={2 * vw}>
+              borderRadius={8}>
               <View style={styles.upviewContent}>
-                <Ionicon name="md-person" color={colors.blue} size={10 * vw} />
+                <Ionicon name="md-person" color={colors.blue} size={40} />
                 <Text style={styles.upviewCount}>
                   {ride.participants.length}
                 </Text>
@@ -67,9 +67,9 @@ const DriversRideDetails = ({navigation, route}) => {
               contentContainerStyle={sheet.center}
               style={styles.upView}
               onPress={() => null}
-              borderRadius={2 * vw}>
+              borderRadius={8}>
               <View style={styles.upviewContent}>
-                <Marker color={colors.blue} size={6 * vw} />
+                <Marker color={colors.blue} size={24} />
                 <Text style={styles.upviewCount}>{ride.stops.length}</Text>
               </View>
             </UpView>
@@ -87,53 +87,53 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingVertical: 3 * vh,
+    paddingVertical: 27,
   },
   topRow: {
-    marginBottom: 3 * vh,
-    marginHorizontal: 4 * vw,
+    marginBottom: 27,
+    marginHorizontal: 16,
     ...sheet.rowCenterSplit,
   },
   singleRide: {
     ...sheet.textSemiBold,
-    fontSize: 5 * vw,
+    fontSize: 20,
     color: colors.green,
-    marginBottom: 1 * vh,
+    marginBottom: 10,
   },
   date: {
     ...sheet.textMedium,
-    fontSize: 4 * vw,
+    fontSize: 16,
     color: colors.grayDark,
   },
   moreIcon: {
-    paddingHorizontal: 4 * vw,
-    paddingVertical: 1 * vh,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   mapWrapper: {
-    height: 50 * vh,
+    height: 450,
   },
   bottomWrapper: {
     flex: 1,
-    paddingTop: 3 * vh,
-    paddingHorizontal: 4 * vw,
+    paddingTop: 27,
+    paddingHorizontal: 16,
   },
   bottomRow: {
     ...sheet.rowCenterSplit,
-    marginTop: 3 * vh,
+    marginTop: 27,
     flex: 1,
   },
   upView: {
     width: '46%',
   },
   upviewContent: {
-    padding: 4 * vw,
+    padding: 16,
     ...sheet.rowCenter,
   },
   upviewCount: {
     ...sheet.textSemiBold,
-    fontSize: 7 * vw,
+    fontSize: 28,
     color: colors.grayDark,
-    marginLeft: 4 * vw,
+    marginLeft: 16,
   },
 });
 

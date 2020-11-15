@@ -2,11 +2,10 @@ import React, {useState} from 'react';
 import {View, SafeAreaView} from 'react-native';
 import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import {vw} from '../../../utils/constants';
 import {useNavigation} from '@react-navigation/core';
-import {Marker} from '../../../components/common';
-import LocationSheet from '../../../components/Locations/LocationSheet';
+import {Marker} from '../../../components/common/map';
 import config from '../../../../config';
+import {LocationSheet} from '../../../components/Locations';
 
 const ShowSelected = props => {
   const navigation = useNavigation();
@@ -34,11 +33,7 @@ const ShowSelected = props => {
               key={coordinates.toString()}
               id="selected"
               coordinate={coordinates}>
-              <Marker
-                color={colors.blue}
-                size={6 * vw}
-                style={{marginTop: -6 * vw}}
-              />
+              <Marker color={colors.blue} size={24} style={{marginTop: -24}} />
             </MapboxGL.PointAnnotation>
             <MapboxGL.UserLocation />
           </MapboxGL.MapView>

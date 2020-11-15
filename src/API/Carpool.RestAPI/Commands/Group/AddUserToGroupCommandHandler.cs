@@ -27,9 +27,9 @@ namespace Carpool.RestAPI.Commands.Group
 
 		protected override async Task Handle(AddUserToGroupCommand request, CancellationToken cancellationToken)
 		{
-			var groupId = request.GroupId ?? throw new ApiException($"Group id cannot be null.");
+			var groupId = request.GroupId ?? throw new ApiProblemDetailsException($"Group id cannot be null.", StatusCodes.Status400BadRequest);
 			var group = await _repository.GetByIdAsync(groupId, cancellationToken).ConfigureAwait(false);
-			_ = group ?? throw new ApiException($"Group with id: {groupId} does not exist");
+			_ = group ?? throw new ApiProblemDetailsException($"Group with id: {groupId} does not exist", StatusCodes.Status404NotFound);
 
 			var userGroup = new UserGroup(request.UserId, groupId);
 

@@ -6,16 +6,15 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {vw, vh} from '../../../utils/constants';
 import sheet from '../../../styles/sheet';
 import colors from '../../../styles/colors';
 import UpView from '../../../components/common/UpView';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import Marker from '../../../components/common/Marker';
 import config from '../../../../config';
 import {parseCoords} from '../../../utils/coords';
+import {Marker} from '../../../components/common/map';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
@@ -31,14 +30,14 @@ const GroupDetails = ({navigation, route}) => {
       <View style={styles.upperContainer}>
         <View style={sheet.rowCenterSplit}>
           <Text
-            style={{...styles.name, paddingHorizontal: 4 * vw}}
+            style={{...styles.name, paddingHorizontal: 16}}
             numberOfLines={1}>
             {group.name}
           </Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <MaterialIcon
               name="chevron-left"
-              size={10 * vw}
+              size={40}
               color={colors.grayVeryDark}
             />
           </TouchableOpacity>
@@ -59,42 +58,38 @@ const GroupDetails = ({navigation, route}) => {
         </View>
         <View style={styles.cardGrid}>
           <UpView
-            borderRadius={2 * vw}
-            style={{width: 42 * vw, height: 15 * vh}}
+            borderRadius={8}
+            style={{width: 168, height: 135}}
             onPress={() => null}>
             <View style={styles.cardContent}>
-              <MaterialIcon name="group" size={10 * vw} color={colors.blue} />
+              <MaterialIcon name="group" size={40} color={colors.blue} />
               <Text style={styles.cardLabel}>Members</Text>
             </View>
           </UpView>
           <UpView
-            borderRadius={2 * vw}
-            style={{width: 42 * vw, height: 15 * vh}}
+            borderRadius={8}
+            style={{width: 168, height: 135}}
             onPress={() => null}>
             <View style={styles.cardContent}>
-              <MaterialIcon
-                name="settings"
-                size={10 * vw}
-                color={colors.blue}
-              />
+              <MaterialIcon name="settings" size={40} color={colors.blue} />
               <Text style={styles.cardLabel}>Settings</Text>
             </View>
           </UpView>
           <UpView
-            borderRadius={2 * vw}
-            style={{width: 42 * vw, height: 15 * vh}}
+            borderRadius={8}
+            style={{width: 168, height: 135}}
             onPress={() => null}>
             <View style={styles.cardContent}>
-              <Ionicon name="ios-car" size={10 * vw} color={colors.blue} />
+              <Ionicon name="ios-car" size={40} color={colors.blue} />
               <Text style={styles.cardLabel}>Your rides</Text>
             </View>
           </UpView>
           <UpView
-            borderRadius={2 * vw}
-            style={{width: 42 * vw, height: 15 * vh}}
+            borderRadius={8}
+            style={{width: 168, height: 135}}
             onPress={() => navigation.navigate('FindRide')}>
             <View style={styles.cardContent}>
-              <MaterialIcon name="search" size={10 * vw} color={colors.blue} />
+              <MaterialIcon name="search" size={40} color={colors.blue} />
               <Text style={styles.cardLabel}>Find a ride</Text>
             </View>
           </UpView>
@@ -116,13 +111,13 @@ const GroupDetails = ({navigation, route}) => {
               maxZoomLevel={19}
               animationMode="flyTo"
               animationDuration={500}
-              centerCoordinate={parseCoords(group.location.coordinates)}
+              centerCoordinate={parseCoords(group.location)}
             />
             <MapboxGL.PointAnnotation
-              key={group.location.coordinates.toString()}
+              key={group.id}
               id="selected"
-              coordinate={parseCoords(group.location.coordinates)}>
-              <Marker color={colors.green} size={6 * vw} />
+              coordinate={parseCoords(group.location)}>
+              <Marker color={colors.green} size={24} />
             </MapboxGL.PointAnnotation>
             <MapboxGL.UserLocation visible />
           </MapboxGL.MapView>
@@ -135,68 +130,68 @@ const GroupDetails = ({navigation, route}) => {
 const styles = StyleSheet.create({
   upperContainer: {
     flex: 1,
-    paddingTop: 2 * vh,
+    paddingTop: 18,
   },
   name: {
     ...sheet.textBold,
     color: colors.grayDark,
-    fontSize: 8 * vw,
+    fontSize: 32,
   },
   statsRow: {
     ...sheet.rowCenterSplit,
-    marginTop: 2 * vh,
-    paddingHorizontal: 4 * vw,
+    marginTop: 18,
+    paddingHorizontal: 16,
   },
   totalRides: {
     ...sheet.textBold,
     color: colors.green,
-    fontSize: 10 * vw,
+    fontSize: 40,
   },
   rides: {
     ...sheet.textBold,
     color: colors.green,
-    fontSize: 4.5 * vw,
+    fontSize: 18,
   },
   totalMembers: {
     ...sheet.textBold,
     color: colors.blue,
-    fontSize: 10 * vw,
+    fontSize: 40,
   },
   members: {
     ...sheet.textBold,
     color: colors.blue,
-    fontSize: 4.5 * vw,
+    fontSize: 18,
   },
   totalDistance: {
     ...sheet.textBold,
     color: colors.orange,
-    fontSize: 10 * vw,
+    fontSize: 40,
   },
   distance: {
     ...sheet.textBold,
     color: colors.orange,
-    fontSize: 4.5 * vw,
+    fontSize: 18,
   },
   cardGrid: {
-    marginTop: 3 * vh,
+    marginTop: 27,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignContent: 'space-between',
-    height: 34 * vh,
-    paddingHorizontal: 4 * vw,
-    marginBottom: 3 * vh,
+    height: 300,
+    paddingHorizontal: 16,
+    marginBottom: 27,
   },
   cardContent: {
     flex: 1,
-    padding: 4 * vw,
+    padding: 16,
     justifyContent: 'space-between',
   },
   cardLabel: {
     ...sheet.textSemiBold,
     //color: colors.blue,
     color: colors.grayDark,
-    fontSize: 5 * vw,
+    fontSize: 20,
   },
 });
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Carpool.RestAPI.DTOs.RatingDTOs
+namespace Carpool.RestAPI.DTOs.Rating
 {
 	public class AddRatingDTO
 	{

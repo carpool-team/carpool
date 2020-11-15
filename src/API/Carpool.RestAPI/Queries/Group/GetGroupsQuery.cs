@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Carpool.RestAPI.DTOs.GroupDTOs;
+using Carpool.RestAPI.DTOs.Group;
 using MediatR;
 
 namespace Carpool.RestAPI.Queries.Group

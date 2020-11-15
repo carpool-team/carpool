@@ -1,9 +1,9 @@
-﻿using Carpool.Core.Models;
-using Carpool.RestAPI.DTOs.UserDTOs;
+﻿using Carpool.Core.ValueObjects;
+using Carpool.RestAPI.DTOs.User;
 
-namespace Carpool.RestAPI.DTOs.StopDTOs
+namespace Carpool.RestAPI.DTOs.Stop
 {
-	public class IndexStopDTO
+    public class IndexStopDTO
 	{
 		private IndexStopDTO()
 		{

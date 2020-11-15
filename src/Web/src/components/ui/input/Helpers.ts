@@ -1,5 +1,4 @@
-import { ButtonIcon } from "../Button/enums/ButtonIcon";
-import {InputIcon} from "./enums/InputIcon"
+import { InputIcon } from "./enums/InputIcon";
 
 export const getIconClass: (type?: InputIcon) => string = (icon) => {
 	switch (icon) {
