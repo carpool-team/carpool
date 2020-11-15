@@ -6,8 +6,7 @@ import { ButtonBackground } from "./NavButton/enums/ButtonBackground";
 import { ButtonIcon } from "./NavButton/enums/ButtonIcon";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import LayoutRouter from "../layout/components/LayoutRouter";
-import { AuthRoutes } from "../auth/AuthRouter";
+import LayoutRouter, { mainRoutes } from "../layout/components/LayoutRouter";
 
 interface INavBarProps extends IReactI18nProps { }
 
@@ -65,7 +64,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		return (
 			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
 				<div className={this.cssClasses.navBarTabContainer}>
-					<a href={`/${LayoutRouter.routes.default}`}>
+					<a href={`/${mainRoutes.default}`}>
 						<div className={this.cssClasses.logoContainer}></div>
 					</a>
 					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
@@ -87,7 +86,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 							color={ButtonColor.Gray}
 							background={ButtonBackground.None}
 							onClick={this.handleHamburgerClick.bind(this)}
-							to={`/${LayoutRouter.routes.groups}`}
+							to={`/${mainRoutes.groups}`}
 						>
 							{t(this.resources.groups)}
 						</Button>
@@ -100,7 +99,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						background={ButtonBackground.None}
 						icon={ButtonIcon.User}
 						onClick={() => { }}
-						to={`/${AuthRoutes.main}${AuthRoutes.login}`}
+						to={`/${mainRoutes.login}`}
 					>
 						<span>
 							{t(this.resources.login)}
@@ -111,7 +110,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}
 						onClick={() => { }}
-						to={`/${AuthRoutes.main}${AuthRoutes.register}`}
+						to={`/${mainRoutes.register}`}
 					>
 						{t(this.resources.register)}
 					</Button>

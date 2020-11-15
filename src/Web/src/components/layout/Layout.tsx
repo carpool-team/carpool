@@ -23,12 +23,7 @@ class Layout extends Component<RouteComponentProps> {
 				<NavBar />
 				<ToastContainer />
 				<main className={this.cssClasses.main}>
-					<LayoutRouter
-						match={this.props.match}
-						staticContext={this.props.staticContext}
-						history={this.props.history}
-						location={this.props.location}
-					/>
+					<LayoutRouter />
 				</main>
 				<Footer />
 			</React.Fragment>

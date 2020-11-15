@@ -8,6 +8,14 @@
         "typeRoots": [
             "node_modules/@types"
         ],
+        "paths": {
+            "assets_path": [
+                "./assets"
+            ],
+            "scss_path": [
+                "./scss"
+            ]
+        },
         "noEmitOnError": true,
         "allowJs": false,
         "moduleResolution": "node",

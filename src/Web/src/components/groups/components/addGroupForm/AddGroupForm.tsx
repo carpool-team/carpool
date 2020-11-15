@@ -8,7 +8,7 @@ import { IReactI18nProps } from "../../../../components/system/resources/IReactI
 import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import { IFormData, initialFormData } from "./interfaces/IFormData";
 import { IGroup } from "../../interfaces/IGroup";
-import LayoutRouter from "../../../layout/components/LayoutRouter";
+import { mainRoutes } from "../../../layout/components/LayoutRouter";
 import { tempUserId } from "../../../../api/requests/RequestCore";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {
@@ -67,11 +67,19 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 			code: this.state.formData.group.code,
 			owner: tempUserId,
 			location: {
-			 // TODO: legit lat,lng
+				coordinates: {
+					// TODO: legit lat,lng
 					latitude: 0,
-					longtitude: 0,
-					rideCount: 0,
+					longitude: 0,
+					coordinatesId: "",
 				},
+				locationName: {
+					name: "",
+					id: "",
+				},
+				id: "",
+			},
+			rideCount: 0,
 			userCount: this.state.formData.users.length,
 			// users: this.state.formData.users.map(user => ({
 			// 	name: user.name,
@@ -80,7 +88,7 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 			// })),
 		};
 		this.props.callbacks.addGroup(group);
-		this.props.callbacks.redirect("/" + LayoutRouter.routes.groups); // make path absolute
+		this.props.callbacks.redirect("/" + mainRoutes.groups); // make path absolute
 	}
 
 	private renderFirstStep = () => (
