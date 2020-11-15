@@ -2,6 +2,7 @@ import { difference, String } from "lodash";
 import React from "react";
 import { IGroup } from "../../../interfaces/IGroup";
 import ButtonLink from "../../../../ui/ButtonLink/ButtonLink";
+import {colorList} from "../../../../../scss/colorList";
 
 interface IGroupsListProps {
 	getGroupsCallback: () => IGroup[];
@@ -28,7 +29,6 @@ const GroupsList = (props: IGroupsListProps) => {
 
 	const groups: IGroup[] = props.getGroupsCallback();
 
-	let colorList: string[] = ["#C39BD3", "#7FB3D5", "#48C9B0", "#F9E79F"];
 	let colorIndex: number = 0;
 
 	const ActiveItem = (props: IListItemProps) => {

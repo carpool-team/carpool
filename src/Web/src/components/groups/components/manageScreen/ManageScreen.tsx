@@ -133,19 +133,11 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	}
 
 	renderRightPanel = () => {
-		//const group = this.props.callbacks.getGroups()?.find(g => g.selected);
-		// if (group) {
-		// 	return (
-		// 		<GroupDetails
-		// 			group={group}
-		// 			unselectGroup={() => this.props.callbacks.setGroupSelected(null, true)}
-		// 		/>
-		// 	);
-		// } else {
+		const groups = this.props.callbacks.getGroups();
 			return (
 				<MediaQuery query="(min-width: 900px)">
 					<div className={this.cssClasses.mapBox}>
-						<MapBox  />
+						<MapBox groups={groups} />
 					</div>
 				</MediaQuery>
 			);
