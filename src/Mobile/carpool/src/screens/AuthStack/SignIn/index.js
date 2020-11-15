@@ -6,12 +6,18 @@ import {colors, sheet} from '../../../styles';
 import StandardInput from '../../../components/common/inputs/StandardInput';
 import {StandardButton} from '../../../components/common/buttons';
 
+const ValidationSchema = Yup.object().shape({
+  email: Yup.string().required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
+
 const SignIn = () => {
   const {values, handleChange, handleSubmit, touched, errors} = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
+    validationSchema: ValidationSchema,
     onSubmit: vals => console.log(vals),
   });
 
