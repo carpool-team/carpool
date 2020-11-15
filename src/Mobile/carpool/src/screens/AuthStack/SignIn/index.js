@@ -1,5 +1,11 @@
 import React from 'react';
-import {Text, ScrollView, StyleSheet, SafeAreaView} from 'react-native';
+import {
+  Text,
+  ScrollView,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {colors, sheet} from '../../../styles';
@@ -11,7 +17,7 @@ const ValidationSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-const SignIn = () => {
+const SignIn = ({navigation}) => {
   const {values, handleChange, handleSubmit, touched, errors} = useFormik({
     initialValues: {
       email: '',
@@ -53,6 +59,10 @@ const SignIn = () => {
           title="Sign in"
           style={styles.button}
         />
+        <Text style={styles.dontHave}>Don't have an account yet?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          <Text style={styles.signUp}>Sign up</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -82,6 +92,18 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
+  },
+  dontHave: {
+    ...sheet.textRegular,
+    fontSize: 16,
+    color: colors.grayDark,
+    marginTop: 24,
+  },
+  signUp: {
+    ...sheet.textSemiBold,
+    fontSize: 16,
+    color: colors.blue,
+    padding: 8,
   },
 });
 
