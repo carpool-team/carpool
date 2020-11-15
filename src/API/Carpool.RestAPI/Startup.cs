@@ -12,6 +12,7 @@ using Carpool.DAL.Repositories.Intersections.UserGroup;
 using Carpool.DAL.Repositories.Ride;
 using Carpool.DAL.Repositories.RideParticipant;
 using Carpool.DAL.Repositories.User;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -77,7 +78,9 @@ namespace Carpool.RestAPI
 					};
 			});
 
-			services.AddMvc(options => options.EnableEndpointRouting = false);
+			services.AddMvc(options => options.EnableEndpointRouting = false)
+			        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+			
 			services.AddSingleton(Configuration);
 
 			services.AddScoped<IGroupRepository, GroupRepository>();

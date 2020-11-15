@@ -15,7 +15,7 @@ namespace Carpool.RestAPI.Commands.Auth
 {
     public class RegisterUserHandler : IRequestHandler<RegisterUser, IdentityResult>
     {
-        private readonly UserManager<Core.Models.ApplicationUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public RegisterUserHandler(UserManager<Core.Models.ApplicationUser> userManager)
         {
