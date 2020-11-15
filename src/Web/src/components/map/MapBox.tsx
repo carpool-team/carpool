@@ -53,30 +53,6 @@ const MapBox = (props: IMapProps) => {
 		border: "2px"
 	};
 
-<<<<<<< HEAD
-		let colorIndex = 0;
-		return (
-			<>
-			<Map
-				style= {mapConfig.mapLight}
-				containerStyle={containerStyle}
-				center={center}
-				onDrag={onDrag}
-				onZoom={onZoom}
-				zoom={zoom}
-				flyToOptions={flyToOptions}
-			>
-				{groups.map((g) => {
-					++colorIndex;
-					const color = colorList[colorIndex % colorList.length];
-
-					const markerStyle: CSSProperties = {
-						fontSize: "40px",
-						color: color
-					};
-
-					return(
-=======
 	let colorIndex = 0;
 
 	const renderGroups = () => (
@@ -91,7 +67,6 @@ const MapBox = (props: IMapProps) => {
 				};
 
 				return (
->>>>>>> 6443ee9cf66f5693c56bbea4c775ee9512cb20c2
 					<Marker
 						key={g.id}
 						coordinates={[g.location.latitude, g.location.longitude]}
