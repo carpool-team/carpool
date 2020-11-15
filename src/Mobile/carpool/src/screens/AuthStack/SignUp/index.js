@@ -1,8 +1,8 @@
 import React, {useReducer, useEffect, useState} from 'react';
-import {Text, SafeAreaView, StyleSheet} from 'react-native';
-import {colors, sheet} from '../../../styles';
+import {Text, SafeAreaView} from 'react-native';
 import {NameSection, PasswordSection} from './sections';
 import {reducer, initialState, SignUpActions} from './reducer';
+import {styles} from './index.styles';
 
 const SignUp = props => {
   const [apiError, setApiError] = useState(null);
@@ -59,20 +59,5 @@ const SignUp = props => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: colors.background,
-  },
-  title: {
-    ...sheet.textSemiBold,
-    fontSize: 45,
-    color: colors.blue,
-    alignSelf: 'center',
-    marginVertical: 25,
-  },
-});
 
 export default SignUp;
