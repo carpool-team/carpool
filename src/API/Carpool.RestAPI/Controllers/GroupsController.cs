@@ -82,7 +82,7 @@ namespace Carpool.RestAPI.Controllers
 		{
 			addUserToGroupCommand.GroupId = groupId;
 			var response = await _mediator.Send(addUserToGroupCommand).ConfigureAwait(false);
-			return new ApiResponse($"User with id: {addUserToGroupCommand.UserId} has been added to group with id: {groupId}.");
+			return new ApiResponse($"ApplicationUser with id: {addUserToGroupCommand.UserId} has been added to group with id: {groupId}.");
 		}
 
 		// DELETE: api/Groups/5

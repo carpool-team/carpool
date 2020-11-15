@@ -31,7 +31,7 @@ namespace Carpool.RestAPI.Commands.Group
                 throw new ApiProblemDetailsException($"Group code {request.Code} already exists", StatusCodes.Status409Conflict);
 
             if (!await _userRepository.ExistsWithId(request.OwnerId, cancellationToken).ConfigureAwait(false))
-                throw new ApiProblemDetailsException($"User with id {request.OwnerId} does not exist.", StatusCodes.Status404NotFound);
+                throw new ApiProblemDetailsException($"ApplicationUser with id {request.OwnerId} does not exist.", StatusCodes.Status404NotFound);
             
             
             var group = new Core.Models.Group()

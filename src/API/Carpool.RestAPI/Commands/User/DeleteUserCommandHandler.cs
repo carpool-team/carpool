@@ -6,14 +6,14 @@ using MediatR;
 
 namespace Carpool.RestAPI.Commands.User
 {
-	public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Core.Models.User>
+	public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Core.Models.ApplicationUser>
 	{
 		private readonly IUserRepository _repository;
 
 		public DeleteUserCommandHandler(IUserRepository repository)
 			=> _repository = repository;
 
-		public async Task<Core.Models.User> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+		public async Task<Core.Models.ApplicationUser> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
 		{
 			var user = await _repository.GetByIdAsync(request.UserId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));

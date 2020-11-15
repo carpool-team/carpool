@@ -13,15 +13,15 @@ namespace Carpool.DAL.Builders.Intersections
 
 			builder.HasKey(x => new {x.RideId, x.UserId});
 
-            builder.HasOne(x => x.User)
-                .WithMany()
-                .HasForeignKey(x => x.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
+			builder.HasOne(x => x.ApplicationUser)
+			       .WithMany()
+			       .HasForeignKey(x => x.UserId)
+			       .OnDelete(DeleteBehavior.NoAction);
 
-            builder.HasOne(x => x.Ride)
-                .WithMany()
-                .HasForeignKey(x => x.RideId)
-                .OnDelete(DeleteBehavior.NoAction);
-        }
+			builder.HasOne(x => x.Ride)
+			       .WithMany()
+			       .HasForeignKey(x => x.RideId)
+			       .OnDelete(DeleteBehavior.NoAction);
+		}
 	}
 }

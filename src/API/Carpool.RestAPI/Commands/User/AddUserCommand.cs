@@ -2,7 +2,7 @@
 
 namespace Carpool.RestAPI.Commands.User
 {
-	public class AddUserCommand : IRequest<Core.Models.User>
+	public class AddUserCommand : IRequest<Core.Models.ApplicationUser>
 	{
 		public AddUserCommand(string firstName, string lastName, int? companyId)
 		{

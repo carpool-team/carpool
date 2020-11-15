@@ -16,11 +16,11 @@ namespace Carpool.RestAPI.Queries.Group
 	{
 		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly IGroupRepository _repository;
-		private readonly UserManager<Core.Models.User> _userManager;
+		private readonly UserManager<Core.Models.ApplicationUser> _userManager;
 
 		public GetGroupQueryHandler(IGroupRepository repository,
 		                            IHttpContextAccessor httpContextAccessor,
-		                            UserManager<Core.Models.User> userManager)
+		                            UserManager<Core.Models.ApplicationUser> userManager)
 		{
 			_repository = repository;
 			_httpContextAccessor = httpContextAccessor;

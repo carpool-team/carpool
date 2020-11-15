@@ -13,7 +13,7 @@ namespace Carpool.RestAPI.DTOs.Group
 		                       List<RideMinimalDto> rides,
 		                       string name,
 		                       string code,
-		                       Core.Models.User owner,
+		                       Core.Models.ApplicationUser owner,
 		                       int userCount,
 		                       int rideCount)
 		{
