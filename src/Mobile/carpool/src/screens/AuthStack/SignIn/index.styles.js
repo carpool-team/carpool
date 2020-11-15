@@ -9,10 +9,10 @@ export const styles = StyleSheet.create({
   },
   title: {
     ...sheet.textSemiBold,
-    fontSize: 54,
+    fontSize: 45,
     color: colors.blue,
     alignSelf: 'center',
-    marginVertical: 40,
+    marginVertical: 25,
   },
   scrollView: {
     alignItems: 'center',
