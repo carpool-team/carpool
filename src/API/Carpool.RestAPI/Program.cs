@@ -9,7 +9,7 @@ namespace Carpool.RestAPI
 		public static void Main(string[] args)
 		{
 			Log.Logger = new LoggerConfiguration()
-			             .MinimumLevel.Information()
+			             .MinimumLevel.Debug()
 			             .WriteTo.Console()
 			             .WriteTo.File("logs\\log.txt",
 				             rollingInterval: RollingInterval.Day,

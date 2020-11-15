@@ -17,6 +17,10 @@
     <EmbeddedResource Remove="Queries\Company\**" />
     <None Remove="DTOs\Company\**" />
     <None Remove="Queries\Company\**" />
+    <Compile Remove="logs\**" />
+    <EmbeddedResource Remove="logs\**" />
+    <None Remove="logs\**" />
+    <Content Remove="logs\**" />
   </ItemGroup>
 
   <ItemGroup>
