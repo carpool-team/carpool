@@ -1,7 +1,7 @@
 ﻿using System;
 using Carpool.RestAPI.DTOs.Vehicle;
 
-namespace Carpool.RestAPI.DTOs.UserDTOs
+namespace Carpool.RestAPI.DTOs.User
 {
 	public class IndexUserDto
 	{

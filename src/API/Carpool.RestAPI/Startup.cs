@@ -9,7 +9,6 @@ using Carpool.DAL.Repositories;
 using Carpool.DAL.Repositories.Group;
 using Carpool.DAL.Repositories.GroupInvite;
 using Carpool.DAL.Repositories.Intersections.UserGroup;
-using Carpool.DAL.Repositories.Rating;
 using Carpool.DAL.Repositories.Ride;
 using Carpool.DAL.Repositories.RideParticipant;
 using Carpool.DAL.Repositories.User;
@@ -85,7 +84,6 @@ namespace Carpool.RestAPI
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IRideRepository, RideRepository>();
 			services.AddScoped<IGroupInviteRepository, GroupInviteRepository>();
-			services.AddScoped<IRatingRepository, RatingRepository>();
 			services.AddScoped<IRideParticipantRepository, RideParticipantRepository>();
 			services.AddScoped<IUserGroupRepository, UserGroupRepository>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();

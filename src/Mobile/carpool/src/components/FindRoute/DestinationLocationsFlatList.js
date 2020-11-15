@@ -1,8 +1,8 @@
 import React from 'react';
 import {FlatList, RefreshControl} from 'react-native';
-import {vw, vh} from '../../utils/constants';
 import {colors} from '../../styles';
-import LocationsListItem from '../Locations/LocationsListItem';
+import {ListEmptyComponent} from '../common/lists';
+import {LocationsListItem} from '../Locations';
 
 const DestinationLocationsFlatList = ({data, loading, onItemPress}) => {
   return (
@@ -12,8 +12,8 @@ const DestinationLocationsFlatList = ({data, loading, onItemPress}) => {
         width: '100%',
       }}
       contentContainerStyle={{
-        paddingHorizontal: 8 * vw,
-        paddingTop: 2 * vh,
+        paddingHorizontal: 32,
+        paddingTop: 18,
       }}
       data={data}
       keyExtractor={item => item.id}
@@ -26,6 +26,9 @@ const DestinationLocationsFlatList = ({data, loading, onItemPress}) => {
           tintColor={colors.green}
           refreshing={loading}
         />
+      }
+      ListEmptyComponent={
+        <ListEmptyComponent title="No locations found" onRefresh={() => null} />
       }
     />
   );

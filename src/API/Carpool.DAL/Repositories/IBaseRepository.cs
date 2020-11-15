@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Carpool.Core.Abstract;
+using Carpool.Core.Contracts;
 
 namespace Carpool.DAL.Repositories
 {

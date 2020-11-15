@@ -1,25 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-import MapboxGL from '@react-native-mapbox-gl/maps';
 import {SafeAreaView, View, PermissionsAndroid, Platform} from 'react-native';
 import {colors} from '../../styles';
 import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
-import {
-  AccountContext,
-  createGetUserGroups,
-} from '../../context/AccountContext';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
-import {
-  PassengerContext,
-  createGetAllRides,
-} from '../../context/PassengerContext';
-import config from '../../../config';
 import DriverMap from './DriverMap';
-import {
-  DriverContext,
-  createGetDriversRides,
-  createGetDriversPastRides,
-} from '../../context/DriverContext';
+import {useSelector, useDispatch} from 'react-redux';
+import * as actions from '../../store/actions';
 
 const requestLocationPermission = async () => {
   try {
@@ -46,12 +33,10 @@ const requestLocationPermission = async () => {
 };
 
 const Home = () => {
-  const {accountState, dispatch: accountDispatch} = React.useContext(
-    AccountContext,
+  const dispatch = useDispatch();
+  const activeAccount = useSelector(
+    state => state.accountReducer.activeAccount,
   );
-  const {dispatch} = React.useContext(PassengerContext);
-  const {dispatch: driverDispatch} = React.useContext(DriverContext);
-  const {activeAccount} = accountState;
 
   const [coordinates, setCoordinates] = useState([]);
 
@@ -60,7 +45,8 @@ const Home = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    createGetUserGroups(accountDispatch);
+    dispatch(actions.getGroups());
+
     if (Platform.OS === 'android') {
       requestLocationPermission();
     }
@@ -69,8 +55,9 @@ const Home = () => {
   useEffect(() => {
     // Delete ride from params
     if (activeAccount === 'driver') {
-      createGetDriversRides(driverDispatch);
-      createGetDriversPastRides(driverDispatch);
+      dispatch(actions.getDriversRides());
+      dispatch(actions.getDriversPastRides());
+
       if (route.params) {
         let params = route.params;
         delete params.ride;
@@ -78,7 +65,7 @@ const Home = () => {
       }
     }
     if (activeAccount === 'passenger') {
-      createGetAllRides(dispatch);
+      dispatch(actions.getAllRides());
     }
   }, [activeAccount]);
 
@@ -90,24 +77,6 @@ const Home = () => {
       setCoordinates([longitude, latitude]);
     }
   };
-
-  const renderDriver = () => (
-    <MapboxGL.MapView
-      ref={_driverMap}
-      style={{flex: 1}}
-      styleURL={config.mapLight}
-      contentInset={10}
-      compassEnabled={false}>
-      <MapboxGL.Camera
-        zoomLevel={14}
-        maxZoomLevel={19}
-        animationMode="flyTo"
-        animationDuration={500}
-        centerCoordinate={[coordinates[0], coordinates[1] - 0.0015]}
-      />
-      <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
-    </MapboxGL.MapView>
-  );
 
   return (
     <View style={{flex: 1}}>

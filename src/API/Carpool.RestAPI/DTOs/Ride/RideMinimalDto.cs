@@ -1,9 +1,9 @@
 ﻿using System;
-using Carpool.Core.Models;
+using Carpool.Core.ValueObjects;
 
-namespace Carpool.RestAPI.DTOs.RideDTOs
+namespace Carpool.RestAPI.DTOs.Ride
 {
-	public class RideMinimalDto
+    public class RideMinimalDto
 	{
 		public RideMinimalDto(Guid rideId, bool isUserParticipant, DateTime date, Location destination) : this(rideId,
 			date, destination)

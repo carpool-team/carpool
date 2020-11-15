@@ -1,35 +1,39 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {vh, vw} from '../../../utils/constants';
 import {StandardButton} from '../../../components/common/buttons';
-import {
-  DriverContext,
-  createGetDriversRides,
-  createGetDriversPastRides,
-} from '../../../context/DriverContext';
-import DriversRidesFlatList from '../../../components/Driver/DriversRidesFlatList';
+import {useSelector, useDispatch} from 'react-redux';
+import * as actions from '../../../store/actions';
+import {RidesList} from '../../../components/Driver';
 
 const DriversRides = ({navigation}) => {
   const [isUpcoming, setIsUpcoming] = useState(true);
   const [data, setData] = useState([]);
 
-  const {
-    driverState: {driversRides, driversPastRides},
-    dispatch,
-  } = useContext(DriverContext);
+  const driversRides = useSelector(state => state.driverReducer.driversRides);
+  const driversPastRides = useSelector(
+    state => state.driverReducer.driversPastRides,
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isUpcoming) {
-      setData([...driversRides.data]);
-    } else {
-      setData([...driversPastRides.data]);
+    onRefresh();
+  }, []);
+
+  useEffect(() => {
+    if (driversRides.data && driversPastRides.data) {
+      if (isUpcoming) {
+        setData([...driversRides.data]);
+      } else {
+        setData([...driversPastRides.data]);
+      }
     }
-  }, [isUpcoming]);
+  }, [isUpcoming, driversRides, driversPastRides]);
 
   const onRefresh = () => {
-    createGetDriversRides(dispatch);
-    createGetDriversPastRides(dispatch);
+    dispatch(actions.getDriversRides());
+    dispatch(actions.getDriversPastRides());
   };
 
   const onItemPress = ride => {
@@ -56,7 +60,7 @@ const DriversRides = ({navigation}) => {
           />
         </View>
         <View style={styles.flatlistWrapper}>
-          <DriversRidesFlatList
+          <RidesList
             data={data}
             loading={driversRides.loading || driversPastRides.loading}
             onRefresh={onRefresh}
@@ -77,16 +81,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
     alignItems: 'center',
-    paddingTop: 4 * vh,
+    paddingTop: 36,
   },
   topRow: {
     width: '100%',
-    paddingHorizontal: 4 * vw,
+    paddingHorizontal: 16,
   },
   flatlistWrapper: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 4 * vh,
+    paddingTop: 36,
     width: '100%',
   },
 });

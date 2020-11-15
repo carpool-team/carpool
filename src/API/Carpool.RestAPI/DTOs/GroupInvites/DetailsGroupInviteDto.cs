@@ -1,4 +1,4 @@
-﻿namespace Carpool.RestAPI.DTOs.GroupInvitesDTOs
+﻿namespace Carpool.RestAPI.DTOs.GroupInvites
 {
 	public class DetailsGroupInviteDto
 	{

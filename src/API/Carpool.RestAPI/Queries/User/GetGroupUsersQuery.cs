@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Carpool.RestAPI.DTOs.UserDTOs;
+using Carpool.RestAPI.DTOs.User;
 using MediatR;
 using Newtonsoft.Json;
 

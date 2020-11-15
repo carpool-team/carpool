@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Carpool.Core.Models;
 using Carpool.RestAPI.Commands.Group;
-using Carpool.RestAPI.DTOs.GroupDTOs;
 using Carpool.RestAPI.Queries.Group;
 using MediatR;
 using Microsoft.AspNetCore.Http;

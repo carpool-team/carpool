@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Carpool.RestAPI.DTOs.GroupInvitesDTOs
+namespace Carpool.RestAPI.DTOs.GroupInvites
 {
 	public class ChangeGroupInviteDTO
 	{
