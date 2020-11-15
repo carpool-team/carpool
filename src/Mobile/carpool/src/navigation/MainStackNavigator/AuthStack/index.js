@@ -17,7 +17,7 @@ const AuthStack = () => (
       name="SignUp"
       component={SignUp}
       options={{
-        headerShown: false,
+        headerTitle: 'Sign up',
       }}
     />
   </Stack.Navigator>
