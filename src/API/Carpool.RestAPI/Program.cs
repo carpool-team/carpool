@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -6,15 +8,25 @@ namespace Carpool.RestAPI
 {
 	public class Program
 	{
+		public static bool IsDebugging = Debugger.IsAttached;
 		public static void Main(string[] args)
 		{
-			Log.Logger = new LoggerConfiguration()
-			             .MinimumLevel.Debug()
-			             .WriteTo.Console()
-			             .WriteTo.File("logs\\log.txt",
-				             rollingInterval: RollingInterval.Day,
-				             rollOnFileSizeLimit: true)
-			             .CreateLogger();
+			if(IsDebugging)
+				Log.Logger = new LoggerConfiguration()
+				             .MinimumLevel.Debug()
+				             .WriteTo.Console()
+				             .WriteTo.File("logs\\log.txt",
+					             rollingInterval: RollingInterval.Day,
+					             rollOnFileSizeLimit: true)
+				             .CreateLogger();
+			else
+				Log.Logger = new LoggerConfiguration()
+				             .MinimumLevel.Information()
+				             .WriteTo.Console()
+				             .WriteTo.File("logs\\log.txt",
+					             rollingInterval: RollingInterval.Day,
+					             rollOnFileSizeLimit: true)
+				             .CreateLogger();
 			
 			Log.Information("Application is starting.");
 			
