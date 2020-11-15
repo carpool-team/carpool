@@ -6,6 +6,7 @@ import ReactMapboxGl, { Marker, Popup } from "react-mapbox-gl";
 import { colorList } from "../../scss/colorList";
 import {multiPoint} from "@turf/helpers";
 import bbox from "@turf/bbox";
+import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 
 type IMapProps = {
 	groups?: IGroup[]
@@ -58,6 +59,10 @@ const MapBox = (props: IMapProps) => {
 
 	const containerStyle: CSSProperties = {
 		height: "100%",
+	};
+
+	const boundsOptions: FitBoundsOptions = {
+		padding: 100
 	};
 
 	const popupStyle: CSSProperties = {
@@ -114,6 +119,7 @@ const MapBox = (props: IMapProps) => {
 				zoom={zoom as [number]}
 				flyToOptions={flyToOptions}
 				fitBounds = {getBounds()}
+				fitBoundsOptions = {boundsOptions}
 			>
 				{renderGroups()}
 			</Map>
