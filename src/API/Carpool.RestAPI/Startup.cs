@@ -50,7 +50,7 @@ namespace Carpool.RestAPI
 			services.AddHttpContextAccessor();
 			services.AddControllers().AddNewtonsoftJson();
 
-			services.AddIdentity<User, IdentityRole<Guid>>()
+			services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
 			        .AddEntityFrameworkStores<CarpoolDbContext>()
 			        .AddDefaultTokenProviders();
 
@@ -119,7 +119,7 @@ namespace Carpool.RestAPI
 
 			app.UseHttpsRedirection();
 
-			app.UseApiResponseAndExceptionWrapper(new AutoWrapperOptions {UseApiProblemDetailsException = true});
+			app.UseApiResponseAndExceptionWrapper();
 
 			app.UseRouting();
 

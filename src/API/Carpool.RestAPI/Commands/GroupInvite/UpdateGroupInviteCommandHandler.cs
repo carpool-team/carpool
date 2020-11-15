@@ -23,7 +23,7 @@ namespace Carpool.RestAPI.Commands.GroupInvite
 		{
 			var groupInvite = await _repository.GetByIdAsync((Guid) request.GroupInviteId, cancellationToken)
 			                                   .ConfigureAwait(false);
-			// _ = await _context.GroupInvites.Include(x => x.InvitedUser)
+			// _ = await _context.GroupInvites.Include(x => x.InvitedApplicationUser)
 			//                                .ThenInclude(user => user.UserGroups)
 			//                                .Include(groupInvite => groupInvite.Group).FirstOrDefaultAsync(groupInvite
 			//                                 => groupInvite.RideId == changeGroupInviteDto.GroupInviteId).ConfigureAwait(false);

@@ -32,7 +32,7 @@ namespace Carpool.DAL.DatabaseContexts
 		#endregion Intersections
 
 		#region Models
-		public DbSet<User> Users { get; set; }
+		public DbSet<ApplicationUser> Users { get; set; }
 		public DbSet<Group> Groups { get; set; }
 		public DbSet<Ride> Rides { get; set; }
 		public DbSet<Stop> Stops { get; set; }

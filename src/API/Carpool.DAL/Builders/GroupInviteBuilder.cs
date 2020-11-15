@@ -19,12 +19,12 @@ namespace Carpool.DAL.Builders
 			builder.Property(x => x.IsPending).IsRequired();
 			builder.Property(x => x.DateAdded).IsRequired();
 
-            builder.HasOne(x => x.InvitedUser)
+            builder.HasOne(x => x.InvitedApplicationUser)
                 .WithMany()
                 .HasForeignKey(x => x.InvitedUserId)
                 .OnDelete(DeleteBehavior.NoAction).IsRequired();
 
-            builder.HasOne(x => x.InvitingUser)
+            builder.HasOne(x => x.InvitingApplicationUser)
                 .WithMany()
                 .HasForeignKey(x => x.InvitingUserId)
                 .OnDelete(DeleteBehavior.NoAction).IsRequired();

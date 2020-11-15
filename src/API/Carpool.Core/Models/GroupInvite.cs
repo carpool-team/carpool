@@ -15,10 +15,10 @@ namespace Carpool.Core.Models
 		//public Group Group { get; set; }
 		
 		public Guid InvitedUserId { get; set; }
-        public virtual User InvitedUser { get; set; }
+        public virtual ApplicationUser InvitedApplicationUser { get; set; }
 
 		public Guid InvitingUserId { get; set; }
-        public virtual User InvitingUser { get; set; }
+        public virtual ApplicationUser InvitingApplicationUser { get; set; }
 
 		public DateTime DateAdded { get; set; }
 	}

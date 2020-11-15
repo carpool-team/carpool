@@ -16,28 +16,28 @@ namespace Carpool.DAL.Builders
 			builder.Property(x => x.Code);
 			builder.Property(x => x.Name).IsRequired();
 
-            //builder.HasMany(x => x.Rides)
-            //       .WithOne()
-            //       .HasForeignKey(x => x.GroupId)
-            //       .OnDelete(DeleteBehavior.Cascade);
+			//builder.HasMany(x => x.Rides)
+			//       .WithOne()
+			//       .HasForeignKey(x => x.GroupId)
+			//       .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x => x.UserGroups)
-                   .WithOne(x => x.Group)
-                   .HasForeignKey(ug => ug.GroupId)
-                   .OnDelete(DeleteBehavior.Cascade);
+			builder.HasMany(x => x.UserGroups)
+			       .WithOne(x => x.Group)
+			       .HasForeignKey(ug => ug.GroupId)
+			       .OnDelete(DeleteBehavior.Cascade);
 
-            // builder.OwnsOne(x => x.Location, o =>
-            // {
-	           //  o.Property(x => x.Latitude).IsRequired();
-	           //  o.Property(x => x.Longitude).IsRequired();
-            // });
+			// builder.OwnsOne(x => x.Location, o =>
+			// {
+			//  o.Property(x => x.Latitude).IsRequired();
+			//  o.Property(x => x.Longitude).IsRequired();
+			// });
 
-            builder.OwnsOne(x => x.Location);
+			builder.OwnsOne(x => x.Location);
 
 
-            // builder.HasOne(x => x.Owner)
-            //        .WithOne()
-            //        .HasForeignKey<Group>(x => x.OwnerId);
+			// builder.HasOne(x => x.Owner)
+			//        .WithOne()
+			//        .HasForeignKey<Group>(x => x.OwnerId);
 		}
 	}
 }

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Carpool.RestAPI.Queries.User
 {
-	public class GetUserQueryHandler : IRequestHandler<GetUsersQuery, List<Core.Models.User>>
+	public class GetUserQueryHandler : IRequestHandler<GetUsersQuery, List<Core.Models.ApplicationUser>>
 	{
 		private readonly IUserRepository _repository;
 
@@ -15,7 +15,7 @@ namespace Carpool.RestAPI.Queries.User
 			_repository = repository;
 		}
 
-		public async Task<List<Core.Models.User>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+		public async Task<List<Core.Models.ApplicationUser>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
 			=> await _repository.GetPartAsNoTrackingAsync(cancellationToken).ConfigureAwait(false);
 	}
 }

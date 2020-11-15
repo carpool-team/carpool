@@ -8,7 +8,7 @@ namespace Carpool.Core.Models
 	public class Ride : Route
 	{
 		public Guid OwnerId { get; set; }
-        public User Owner { get; set; }
+        public ApplicationUser Owner { get; set; }
 
 		public List<UserParticipatedRide> Participants { get; set; }
 
