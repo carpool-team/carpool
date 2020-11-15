@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import produce from "immer";
-import MapBox from "../../../map/map";
+import MapBox from "../../../map/MapBox";
 import { withTranslation } from "react-i18next";
 import MediaQuery from "react-responsive";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -133,7 +133,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	}
 
 	renderRightPanel = () => {
-		const group = this.props.callbacks.getGroups()?.find(g => g.selected);
+		//const group = this.props.callbacks.getGroups()?.find(g => g.selected);
 		// if (group) {
 		// 	return (
 		// 		<GroupDetails
@@ -145,7 +145,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			return (
 				<MediaQuery query="(min-width: 900px)">
 					<div className={this.cssClasses.mapBox}>
-						<MapBox longitude={52.455688} latitude={16.859060} />
+						<MapBox  />
 					</div>
 				</MediaQuery>
 			);
