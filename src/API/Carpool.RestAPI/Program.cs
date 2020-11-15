@@ -8,7 +8,7 @@ namespace Carpool.RestAPI
 {
 	public class Program
 	{
-		public static bool IsDebugging = Debugger.IsAttached;
+		private static readonly bool IsDebugging = Debugger.IsAttached;
 		public static void Main(string[] args)
 		{
 			if(IsDebugging)
