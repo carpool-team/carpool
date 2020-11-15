@@ -1,12 +1,15 @@
-import React, { CSSProperties, useState } from "react";
+import React, { CSSProperties, useState, useEffect } from "react";
 import mapConfig from "./mapConfig";
 import "./map.scss";
 import { IGroup } from "./../groups/interfaces/IGroup";
 import ReactMapboxGl, { Marker, Popup } from "react-mapbox-gl";
 import { colorList } from "../../scss/colorList";
+import {multiPoint} from "@turf/helpers";
+import bbox from "@turf/bbox";
 
 type IMapProps = {
 	groups?: IGroup[]
+	selectedGroup?: IGroup
 };
 
 const MapBox = (props: IMapProps) => {
@@ -16,19 +19,30 @@ const MapBox = (props: IMapProps) => {
 	});
 
 	const groups = props.groups;
-
 	const [center, setCenter] = useState([16.86633729745128, 52.40656926303501]);
 	const [zoom, setZoom] = useState([12]);
-	const [group, setGroup] = useState(undefined);
+	const [group, setGroup] = useState(props.selectedGroup);
+
+	const getBounds = () => {
+		const allCoords = [groups.map(g => g.location.latitude), groups.map(g => g.location.longitude)];
+		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
+		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
+			bbox[0][1] = Math.min.apply(null, allCoords[0]);
+			bbox[1][0] = Math.max.apply(null, allCoords[0]);
+			bbox[0][1] = Math.min.apply(null, allCoords[1]);
+			bbox[1][1] = Math.max.apply(null, allCoords[1]);
+		}
+		return bbox;
+	};
 
 	const onDrag = () => {
 		if (group) {
-			setGroup(undefined);
+			setGroup(null);
 		}
 	};
 	const onZoom = () => {
 		if (group) {
-			setGroup(undefined);
+			setGroup(null);
 		}
 	};
 
@@ -99,6 +113,7 @@ const MapBox = (props: IMapProps) => {
 				onZoom={onZoom}
 				zoom={zoom as [number]}
 				flyToOptions={flyToOptions}
+				fitBounds = {getBounds()}
 			>
 				{renderGroups()}
 			</Map>

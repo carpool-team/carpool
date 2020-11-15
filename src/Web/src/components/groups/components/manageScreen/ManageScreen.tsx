@@ -137,11 +137,10 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			return (
 				<MediaQuery query="(min-width: 900px)">
 					<div className={this.cssClasses.mapBox}>
-						<MapBox groups={groups} />
+						<MapBox groups={groups} selectedGroup= {this.props.callbacks.getGroups()?.find(g => g.selected)} />
 					</div>
 				</MediaQuery>
 			);
-		// }
 	}
 
 	render() {
