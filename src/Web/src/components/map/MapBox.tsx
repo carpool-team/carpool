@@ -20,7 +20,7 @@ const MapBox = (props: IMapProps) => {
 	const groups = props.groups;
 
 	const [center, setCenter] = useState([16.86633729745128, 52.40656926303501]);
-	const [zoom, setZoom] = useState([11]);
+	const [zoom, setZoom] = useState([12]);
 	const [group, setGroup] = useState(undefined);
 
 	const onDrag = () => {
@@ -70,7 +70,7 @@ const MapBox = (props: IMapProps) => {
 				{groups.map((g) => {
 					++colorIndex;
 					const color = colorList[colorIndex % colorList.length];
-					
+
 					const markerStyle: CSSProperties = {
 						fontSize: "40px",
 						color: color
@@ -88,7 +88,12 @@ const MapBox = (props: IMapProps) => {
 
 			{group && (
 				<Popup key={group.id} coordinates={[group.location.latitude, group.location.longitude]}>
-					<div style={popupStyle}> {group.name}</div>
+					<div style={popupStyle}>
+					{group.name}
+					</div>
+					<div style={popupStyle}>
+					Adres:TODO
+					</div>
 				</Popup>
 				)}
 			</Map>
