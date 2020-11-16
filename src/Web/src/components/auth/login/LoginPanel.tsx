@@ -3,9 +3,9 @@ import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { compose } from "redux";
-import { ButtonBackground } from "../../NavBar/NavButton/enums/ButtonBackground";
-import { ButtonColor } from "../../NavBar/NavButton/enums/ButtonColor";
-import Button from "../../NavBar/NavButton/NavButton";
+import Button from "../../ui/button/Button";
+import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
+import { ButtonColor } from "../../ui/button/enums/ButtonColor";
 import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
 import { InputIcon } from "../../ui/input/enums/InputIcon";
 import { InputType } from "../../ui/input/enums/InputType";
@@ -30,8 +30,12 @@ const LoginPanel = (props: ILoginPanelProps) => {
 	const [password, setPassword] = useState("");
 
 	const cssClasses = {
-		container: "form__container",
-		inputs: "form__inputs"
+		container: "auth__container",
+		inputs: "auth__inputs",
+		label: "auth__inputs--label",
+		input: "auth__inputs--input",
+		button: "auth__inputs--button",
+		image: "auth__image--login"
 	};
 
 	const resources = {
@@ -61,29 +65,34 @@ const LoginPanel = (props: ILoginPanelProps) => {
 
 	return (
 		<div className={cssClasses.container}>
-			<div className={cssClasses.inputs}>
-				<span>{t(resources.login)}</span>
-				<Input
-					type={InputType.Text}
-					changeHandler={newValue => { setEmail(newValue); }}
-					placeholder={t(resources.email)}
-					value={email}
-					icon={InputIcon.Code}
-				/>
-				<Input
-					type={InputType.Password}
-					changeHandler={newValue => { setPassword(newValue); }}
-					placeholder={t(resources.password)}
-					value={password}
-					icon={InputIcon.Code}
-				/>
-				<Button
-					onClick={onClickSubmit}
-					color={ButtonColor.White}
-					background={ButtonBackground.Blue}
-				>
-					{t(resources.submit)}
-				</Button>
+			<div className={cssClasses.image}>
+				<div className={cssClasses.inputs}>
+					<span className={cssClasses.label}>{t(resources.login)}</span>
+					<Input
+						style={cssClasses.input}
+						type={InputType.Text}
+						changeHandler={newValue => { setEmail(newValue); }}
+						placeholder={t(resources.email)}
+						value={email}
+						icon={InputIcon.Mail}
+					/>
+					<Input
+						style={cssClasses.input}
+						type={InputType.Password}
+						changeHandler={newValue => { setPassword(newValue); }}
+						placeholder={t(resources.password)}
+						value={password}
+						icon={InputIcon.Password}
+					/>
+					<Button
+						style = {cssClasses.button}
+						onClick={onClickSubmit}
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}
+					>
+						{t(resources.submit)}
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
