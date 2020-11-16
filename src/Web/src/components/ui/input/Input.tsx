@@ -12,6 +12,7 @@ interface IINputProps {
 	placeholder?: string;
 	commment?: string;
 	icon?: InputIcon;
+	style?: string;
 }
 
 const Input = (props: IINputProps) => {
@@ -25,7 +26,7 @@ const Input = (props: IINputProps) => {
 	};
 
 	const renderTextInput = () => (
-		<div className={inputBaseClassContainer}>
+		<div className={[inputBaseClassContainer, props.style].join(" ")}>
 			<div className={getIconClass(props.icon)}></div>
 			<input
 				className={inputBaseClassName}
@@ -37,7 +38,7 @@ const Input = (props: IINputProps) => {
 	);
 
 	const renderPasswordInput = () => (
-		<div className={inputBaseClassContainer}>
+		<div className={[inputBaseClassContainer, props.style].join(" ")}>
 			<div className={getIconClass(props.icon)}></div>
 			<input
 				className={inputBaseClassName}

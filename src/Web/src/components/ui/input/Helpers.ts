@@ -13,6 +13,8 @@ export const getIconClass: (type?: InputIcon) => string = (icon) => {
 			return "input__location";
 		case InputIcon.Globe:
 			return "input__globe";
+		case InputIcon.Password:
+			return "input__password";
 		default:
 			return "";
 	}

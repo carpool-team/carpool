@@ -107,4 +107,19 @@
 		padding-bottom: 10px;
 		padding-left: 15px;
 	}
+	&__password{
+		height: 32px;
+		margin-top: 10px;
+		color: $grayDark;
+	}
+	&__password::before{
+		content:"\f023";
+		font-family: FontAwesome;
+		font-size: 22px;
+		background-color: $white;
+		align-content: center;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		padding-left: 15px;
+	}
 }

@@ -37,8 +37,12 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 	const [password, isPasswordValid, renderPasswordInputs] = usePassword(t);
 
 	const cssClasses = {
-		container: "form__container",
-		inputs: "form__inputs"
+		container: "auth__container",
+		inputs: "auth__inputs",
+		label: "auth__inputs--label",
+		input: "auth__inputs--input",
+		button: "auth__inputs--button",
+		image: "auth__image--register"
 	};
 
 	const resources = {
@@ -73,37 +77,43 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 
 	return (
 		<div className={cssClasses.container}>
-			<div className={cssClasses.inputs}>
-				<span>{t(resources.register)}</span>
-				<Input
-					type={InputType.Text}
-					changeHandler={newValue => { setName(newValue); }}
-					placeholder={t(resources.name)}
-					value={name}
-					icon={InputIcon.Globe}
-				/>
-				<Input
-					type={InputType.Text}
-					changeHandler={newValue => { setSurname(newValue); }}
-					placeholder={t(resources.surname)}
-					value={surname}
-					icon={InputIcon.Code}
-				/>
-				<Input
-					type={InputType.Text}
-					changeHandler={newValue => { setEmail(newValue); }}
-					placeholder={t(resources.email)}
-					value={email}
-					icon={InputIcon.Location}
-				/>
-				{renderPasswordInputs()}
-				<Button
-					onClick={onClickSubmit}
-					color={ButtonColor.White}
-					background={ButtonBackground.Blue}
-				>
-					{t(resources.submit)}
-				</Button>
+			<div className={cssClasses.image}>
+				<div className={cssClasses.inputs}>
+					<span className={cssClasses.label}>{t(resources.register)}</span>
+					<Input
+						style={cssClasses.input}
+						type={InputType.Text}
+						changeHandler={newValue => { setName(newValue); }}
+						placeholder={t(resources.name)}
+						value={name}
+						icon={InputIcon.User}
+					/>
+					<Input
+						style={cssClasses.input}
+						type={InputType.Text}
+						changeHandler={newValue => { setSurname(newValue); }}
+						placeholder={t(resources.surname)}
+						value={surname}
+						icon={InputIcon.User}
+					/>
+					<Input
+						style={cssClasses.input}
+						type={InputType.Text}
+						changeHandler={newValue => { setEmail(newValue); }}
+						placeholder={t(resources.email)}
+						value={email}
+						icon={InputIcon.Mail}
+					/>
+					{renderPasswordInputs()}
+					<Button
+						style = {cssClasses.button}
+						onClick={onClickSubmit}
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}
+					>
+						{t(resources.submit)}
+					</Button>
+				</div>
 			</div>
 		</div>
 	);
