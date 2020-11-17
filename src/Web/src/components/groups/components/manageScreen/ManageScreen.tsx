@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import produce from "immer";
 import MapBoxGroups from "../../../map/MapBoxGroups";
+import MapBoxInvites from "../../../map/MapBoxInvites";
 import { withTranslation } from "react-i18next";
 import MediaQuery from "react-responsive";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -73,7 +74,6 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		this.setState(produce((draft: IManageScreenState) => {
 			draft.selectedScreen = list;
 		}));
-
 	}
 
 	renderInvitesList = () => (
@@ -90,6 +90,14 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			setGroupSelected={(id, unselect) => this.props.callbacks.setGroupSelected(id, unselect)}
 			groupSelected = {this.props.callbacks.getGroups()?.find(g => g.selected)}
 		/ >
+	)
+
+	renderGroupsMap = () => (
+		<MapBoxGroups getGroupsCallback = {this.props.callbacks.getGroups} group= {this.props.callbacks.getGroups()?.find(g => g.selected)} />
+	)
+
+	renderInvitesMap = () => (
+		<MapBoxInvites getInvitesCallback = {this.props.callbacks.getInvites} />
 	)
 
 	renderLeftPanel = () => {
@@ -133,11 +141,22 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	}
 
 	renderRightPanel = () => {
-		const groups = this.props.callbacks.getGroups();
+		let map: JSX.Element;
+
+		switch (this.state.selectedScreen) {
+			case Lists.Invites:
+				map = this.renderInvitesMap();
+				break;
+			case Lists.Groups:
+			default:
+				map = this.renderGroupsMap();
+				break;
+		}
+
 			return (
 				<MediaQuery query="(min-width: 900px)">
 					<div className={this.cssClasses.mapBox}>
-						<MapBoxGroups getGroupsCallback = {this.props.callbacks.getGroups} group= {this.props.callbacks.getGroups()?.find(g => g.selected)} />
+						{map}
 					</div>
 				</MediaQuery>
 			);
