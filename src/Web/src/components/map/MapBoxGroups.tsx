@@ -8,6 +8,7 @@ import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 
 const Mapbox = ReactMapboxGl({
+	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
 	minZoom: 2,
 	maxZoom: 15,
 	accessToken: mapConfig.mapboxKey
@@ -58,6 +59,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					draft.center = [this.props.group.location.latitude, this.props.group.location.longitude];
 					draft.zoom = [14];
 				} else {
+					draft.group = undefined;
 					draft.fitBounds = this.getBounds(this.props.getGroupsCallback());
 				}
 				}));
