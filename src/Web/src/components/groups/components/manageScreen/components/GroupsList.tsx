@@ -2,6 +2,8 @@ import React from "react";
 import { IGroup } from "../../../interfaces/IGroup";
 import ButtonLink from "../../../../ui/buttonLink/ButtonLink";
 import { colorList } from "../../../../../scss/colorList";
+import LayoutRouter from "../../../../layout/components/LayoutRouter";
+import GroupsRouter from "../../GroupsRouter";
 
 interface IGroupsListProps {
 	getGroupsCallback: () => IGroup[];
@@ -47,15 +49,14 @@ const GroupsList = (props: IGroupsListProps) => {
 					</div>
 				</button>
 				<div className={activeMenuCssClass}>
-					<ButtonLink>
+					<ButtonLink to={`/${LayoutRouter.routes.groups}${GroupsRouter.routes.rides}`}>
 						Przejazdy
 				</ButtonLink>
 					{/* TODO Sprawdzać czy użytkownik ma prawa jest ownerem grupy, inaczej nie wyświetlać tego. */}
-					<ButtonLink>
+					<ButtonLink to={`/${LayoutRouter.routes.groups}${GroupsRouter.routes.edit}`}>
 						Edytuj grupę
 				</ButtonLink>
-
-					<ButtonLink>
+					<ButtonLink to={`/${LayoutRouter.routes.groups}${GroupsRouter.routes.invite}`}>
 						Zaproś do grupy
 				</ButtonLink>
 				</div>
@@ -88,7 +89,7 @@ const GroupsList = (props: IGroupsListProps) => {
 				++colorIndex;
 				const color = colorList[colorIndex % colorList.length];
 				return (
-					<>
+					<React.Fragment key={group.id}>
 						{(() => {
 							if (props.groupSelected && props.groupSelected.id === group.id) {
 								return (
@@ -106,7 +107,7 @@ const GroupsList = (props: IGroupsListProps) => {
 									/>);
 							}
 						})()}
-					</>
+					</React.Fragment>
 				);
 			})}
 		</ul>

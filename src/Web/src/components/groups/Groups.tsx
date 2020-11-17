@@ -63,6 +63,7 @@ class Groups extends Component<IGroupsProps> {
 					history={this.props.history}
 					location={this.props.location}
 					callbacks={callbacks}
+					selectedGroupId={this.props.groups.find(g => g.selected)?.id}
 				/>
 			</section>
 		);
