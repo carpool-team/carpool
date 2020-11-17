@@ -5,5 +5,4 @@ export interface IGroup extends IGroupBase {
 	code: string;
 	owner: string;
 	userCount: number;
-	selected?: boolean;
 }
