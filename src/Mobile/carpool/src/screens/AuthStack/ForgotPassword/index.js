@@ -13,13 +13,16 @@ const ValidationSchema = Yup.object().shape({
     .required('Email is required'),
 });
 
-const ForgotPassword = () => {
+const ForgotPassword = ({navigation}) => {
   const {values, handleChange, handleSubmit, touched, errors} = useFormik({
     initialValues: {
       email: '',
     },
     validationSchema: ValidationSchema,
-    onSubmit: vals => console.log(vals),
+    onSubmit: vals => {
+      console.log(vals);
+      navigation.navigate('SignIn');
+    },
   });
 
   return (
