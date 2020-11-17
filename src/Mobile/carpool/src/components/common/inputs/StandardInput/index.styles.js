@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    flex: 1,
+    // flex: 1,
     borderBottomWidth: 2,
     borderColor: colors.grayDark,
     paddingVertical: 8,
