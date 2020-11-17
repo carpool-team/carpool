@@ -4,12 +4,12 @@ import Input from "../../../ui/input/Input";
 import Button from "../../../ui/button/Button";
 import {ButtonBackground} from "../../../ui/button/enums/ButtonBackground";
 import {ButtonColor} from "../../../ui/button/enums/ButtonColor";
-import MapBox from "../../../map/MapBox";
 import { IFormData } from "./interfaces/IFormData";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { InputType } from "../../../ui/input/enums/InputType";
 import { InputIcon } from "../../../ui/input/enums/InputIcon";
+import MapBoxPicker from "../../../map/MapBoxPicker";
 
 interface IFirstStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
@@ -77,7 +77,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 			</div>
 				<MediaQuery query="(min-width: 900px)">
 					<div className={cssClasses.map}>
-						<MapBox />
+						<MapBoxPicker />
 					</div>
 				</MediaQuery>
 		</div>

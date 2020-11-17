@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import produce from "immer";
-import MapBox from "../../../map/MapBox";
+import MapBoxGroups from "../../../map/MapBoxGroups";
 import { withTranslation } from "react-i18next";
 import MediaQuery from "react-responsive";
 import { withRouter, RouteComponentProps } from "react-router-dom";
@@ -137,7 +137,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			return (
 				<MediaQuery query="(min-width: 900px)">
 					<div className={this.cssClasses.mapBox}>
-						<MapBox groups={groups} selectedGroup= {this.props.callbacks.getGroups()?.find(g => g.selected)} />
+						<MapBoxGroups getGroupsCallback = {this.props.callbacks.getGroups} group= {this.props.callbacks.getGroups()?.find(g => g.selected)} />
 					</div>
 				</MediaQuery>
 			);
