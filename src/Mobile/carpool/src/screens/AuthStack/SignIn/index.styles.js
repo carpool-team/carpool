@@ -30,6 +30,12 @@ export const styles = StyleSheet.create({
   forgotWrapper: {
     width: '100%',
   },
+  forgot: {
+    ...sheet.textSemiBold,
+    fontSize: 16,
+    color: colors.yellow,
+    padding: 8,
+  },
   button: {
     marginTop: 20,
   },

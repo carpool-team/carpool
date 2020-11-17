@@ -55,8 +55,9 @@ const SignIn = ({navigation}) => {
           onSubmitEditing={handleSubmit}
         />
         <View style={styles.forgotWrapper}>
-          <TouchableOpacity>
-            <Text style={styles.signUp}>Forgot your password?</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ForgotPassword')}>
+            <Text style={styles.forgot}>Forgot your password?</Text>
           </TouchableOpacity>
         </View>
         <StandardButton
