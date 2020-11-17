@@ -40,7 +40,9 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 							<Route path={path + GroupsRouter.routes.edit}>
 								<GroupEdit selectedGroupId={this.props.selectedGroupId} />
 							</Route>
-
+							<Route path={path + GroupsRouter.routes.invite}>
+								<GroupInvite selectedGroupId={this.props.selectedGroupId} />
+							</Route>
 						</> : null}
 				</Switch>
 			</Suspense >
