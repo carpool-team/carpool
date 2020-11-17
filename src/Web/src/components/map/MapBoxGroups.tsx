@@ -53,9 +53,13 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 		if (this.state.group !== this.props.group) {
 			this.setState(produce((draft: IMapState) => {
+				if (this.props.group !== undefined) {
 					draft.group = this.props.group;
 					draft.center = [this.props.group.location.latitude, this.props.group.location.longitude];
 					draft.zoom = [14];
+				} else {
+					draft.fitBounds = this.getBounds(this.props.getGroupsCallback());
+				}
 				}));
 			}
 		}
