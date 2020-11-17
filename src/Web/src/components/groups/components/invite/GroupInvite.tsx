@@ -1,14 +1,14 @@
 import React from "react";
+import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/GroupDetailedView";
 
-interface IGroupInviteProps {
-	selectedGroupId: string;
+interface IGroupInviteProps extends IGroupDetailedViewProps {
 }
 
 const GroupInvite = (props: IGroupInviteProps) => {
 	return (
-		<div>
-			GROUP INVITE: {props.selectedGroupId}
-		</div>
+		<GroupDetailedView group={props.group}>
+			GROUP INVITE: {props.group.id}
+		</GroupDetailedView>
 	);
 };
 

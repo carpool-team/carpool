@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CSSProperties} from "react";
+import { CSSProperties } from "react";
 import ReactMapboxGl, { Layer, Feature, Popup, Marker } from "react-mapbox-gl";
 import { IGroup } from "../groups/interfaces/IGroup";
 import mapConfig from "./mapConfig";
@@ -17,7 +17,6 @@ export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
 	center?: [number, number];
 	zoom?: [number];
-	group?: IGroup;
 	groups: IGroup[];
 }
 
@@ -25,44 +24,51 @@ const flyToOptions = {
 	speed: 0.8
 };
 
+const defaults = {
+	zoom: [11] as [number],
+	center: [-0.109970527, 51.52916347] as [number, number],
+};
+
 export interface IMapProps {
 	onStyleLoad?: (map: any) => any;
 	getGroupsCallback: () => IGroup[];
+	setSelectedGroupCallback: (id: string) => void;
 	group?: IGroup;
 }
 
 export default class MapBoxGroups extends React.Component<IMapProps, IMapState> {
+	private currentGroupId: string;
 
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
 			fitBounds: undefined,
 			groups: this.props.getGroupsCallback(),
-			zoom: [11],
-			center: [-0.109970527, 51.52916347],
-			group: undefined,
+			...defaults,
 		};
+		this.currentGroupId = undefined;
 	}
 
 	componentDidUpdate() {
-		if (this.state.groups !== this.props.getGroupsCallback()) {
+		const groups: IGroup[] = this.props.getGroupsCallback();
+		if (this.state.groups !== groups) {
 			this.setState(produce((draft: IMapState) => {
-				draft.groups = this.props.getGroupsCallback();
-				draft.fitBounds = this.getBounds(this.props.getGroupsCallback());
+				draft.groups = groups;
+				draft.fitBounds = this.getBounds(groups);
 			}));
-
-		if (this.state.group !== this.props.group) {
+		}
+		if (this.props.group?.id !== this.currentGroupId) {
+			this.currentGroupId = this.props.group?.id ?? undefined;
 			this.setState(produce((draft: IMapState) => {
-				if (this.props.group !== undefined) {
-					draft.group = this.props.group;
+				if (this.props.group) {
 					draft.center = [this.props.group.location.latitude, this.props.group.location.longitude];
 					draft.zoom = [14];
 				} else {
-					draft.fitBounds = this.getBounds(this.props.getGroupsCallback());
+					draft.fitBounds = this.getBounds(groups);
 				}
-				}));
-			}
+			}));
 		}
+
 	}
 
 	private getBounds = (groups: IGroup[]) => {
@@ -80,13 +86,13 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	}
 
 	private onDrag = () => {
-		if (this.state.group) {
-			this.setState({ group: undefined });
+		if (this.props.group) {
+			this.props.setSelectedGroupCallback(undefined);
 		}
 	}
 
 	private onStyleLoad = (map: any) => {
-		const onStyleLoad  = this.props.onStyleLoad;
+		const onStyleLoad = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
 	}
 
@@ -94,12 +100,14 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		this.setState({
 			center: [group.location.latitude, group.location.longitude],
 			zoom: [14],
-			group
 		});
+
+		this.props.setSelectedGroupCallback(group.id);
 	}
 
 	public render() {
-		const { fitBounds, center, zoom, groups, group } = this.state;
+		const { fitBounds, center, zoom, groups } = this.state;
+		const { group } = this.props;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
@@ -119,51 +127,51 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		let colorIndex = 0;
 
 		return (
-		<Mapbox
+			<Mapbox
 				style={mapConfig.mapLight}
 				onStyleLoad={this.onStyleLoad}
 				fitBounds={fitBounds}
-				fitBoundsOptions = {boundsOptions}
+				fitBoundsOptions={boundsOptions}
 				center={center}
 				zoom={zoom}
 				onDrag={this.onDrag}
 				containerStyle={containerStyle}
 				flyToOptions={flyToOptions}
-				>
-			<>
-			{groups.map((g) => {
-				++colorIndex;
-				const color = colorList[colorIndex % colorList.length];
+			>
+				<>
+					{groups.map((g) => {
+						++colorIndex;
+						const color = colorList[colorIndex % colorList.length];
 
-				const markerStyle: CSSProperties = {
-					fontSize: "40px",
-					color: color
-				};
+						const markerStyle: CSSProperties = {
+							fontSize: "40px",
+							color: color
+						};
 
-				return (
-					<Marker
-						key={g.id}
-						coordinates={[g.location.latitude, g.location.longitude]}
-						anchor="bottom"
-						onClick={this.markerClick.bind(this, g)}
-						>
-						<i className={"fa fa-map-marker"} style={markerStyle}></i>
-					</Marker>
-				);
-			})}
+						return (
+							<Marker
+								key={g.id}
+								coordinates={[g.location.latitude, g.location.longitude]}
+								anchor="bottom"
+								onClick={this.markerClick.bind(this, g)}
+							>
+								<i className={"fa fa-map-marker"} style={markerStyle}></i>
+							</Marker>
+						);
+					})}
 
-			{group && (
-				<Popup key={group.id} coordinates={[group.location.latitude, group.location.longitude]}>
-					<div style={popupStyle}>
-					{group.name}
-					</div>
-					<div style={popupStyle}>
-					Adres:TODO
-					</div>
-				</Popup>
-			)}
-			</>
-		</Mapbox>
+					{group && (
+						<Popup key={group.id} coordinates={[group.location.latitude, group.location.longitude]}>
+							<div style={popupStyle}>
+								{group.name}
+							</div>
+							<div style={popupStyle}>
+								{"Adres:TODO"}
+							</div>
+						</Popup>
+					)}
+				</>
+			</Mapbox>
 		);
 	}
 }

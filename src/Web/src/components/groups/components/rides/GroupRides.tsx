@@ -1,14 +1,15 @@
 import React from "react";
+import { IGroup } from "../../interfaces/IGroup";
+import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/GroupDetailedView";
 
-interface IGroupRidesProps {
-	selectedGroupId: string;
+interface IGroupRidesProps extends IGroupDetailedViewProps {
 }
 
 const GroupRides = (props: IGroupRidesProps) => {
 	return (
-		<div>
-			GROUP RIDES: {props.selectedGroupId}
-		</div>
+		<GroupDetailedView group={props.group}>
+			GROUP RIDES: {props.group.id}
+		</GroupDetailedView>
 	);
 };
 

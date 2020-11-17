@@ -18,7 +18,6 @@ import {
 	IGetRidesActionError,
 	RidesActionTypes,
 	IParticipateInRideAction,
-	ISetGroupSelectedAction,
 	IParticipateInRideActionSuccess,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
@@ -67,14 +66,6 @@ export function getGroupsError(error: Error): IGetGroupsActionError {
 	return {
 		type: GroupsActionTypes.GetGroupsError,
 		error,
-	};
-}
-
-export function setGroupSelected(id: string, unselectOthers: boolean): ISetGroupSelectedAction {
-	return {
-		type: GroupsActionTypes.SetGroupSelected,
-		id,
-		unselectOthers,
 	};
 }
 //#endregion

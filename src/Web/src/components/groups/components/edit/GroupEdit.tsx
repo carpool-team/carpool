@@ -1,14 +1,15 @@
 import React from "react";
+import { IGroup } from "../../interfaces/IGroup";
+import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/GroupDetailedView";
 
-interface IGroupEditProps {
-	selectedGroupId: string;
+interface IGroupEditProps extends IGroupDetailedViewProps {
 }
 
 const GroupEdit = (props: IGroupEditProps) => {
 	return (
-		<div>
-			GroupEdit: {props.selectedGroupId}
-		</div>
+		<GroupDetailedView group={props.group}>
+			GroupEdit: {props.group.id}
+		</GroupDetailedView>
 	);
 };
 

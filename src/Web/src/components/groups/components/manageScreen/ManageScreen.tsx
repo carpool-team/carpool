@@ -19,7 +19,6 @@ import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import GroupsList from "./components/GroupsList";
 import InvitesList from "./components/InvitesList";
 import { IGroup } from "../../interfaces/IGroup";
-import GroupDetails from "./components/GroupDetails";
 
 enum Lists {
 	Invites = "INVITES",
@@ -28,6 +27,7 @@ enum Lists {
 
 interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
 	callbacks: IGroupCallbacks;
+	selectedGroup: IGroup;
 }
 
 interface IManageScreenState {
@@ -87,17 +87,21 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	renderGroupsList = () => (
 		<GroupsList
 			getGroupsCallback={this.props.callbacks.getGroups}
-			setGroupSelected={(id, unselect) => this.props.callbacks.setGroupSelected(id, unselect)}
-			groupSelected = {this.props.callbacks.getGroups()?.find(g => g.selected)}
-		/ >
+			setGroupSelected={this.props.callbacks.setGroupSelected}
+			groupSelected={this.props.selectedGroup}
+		/>
 	)
 
 	renderGroupsMap = () => (
-		<MapBoxGroups getGroupsCallback = {this.props.callbacks.getGroups} group= {this.props.callbacks.getGroups()?.find(g => g.selected)} />
+		<MapBoxGroups
+			getGroupsCallback={this.props.callbacks.getGroups}
+			setSelectedGroupCallback={this.props.callbacks.setGroupSelected}
+			group={this.props.selectedGroup}
+		/>
 	)
 
 	renderInvitesMap = () => (
-		<MapBoxInvites getInvitesCallback = {this.props.callbacks.getInvites} />
+		<MapBoxInvites getInvitesCallback={this.props.callbacks.getInvites} />
 	)
 
 	renderLeftPanel = () => {
@@ -153,13 +157,13 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 				break;
 		}
 
-			return (
-				<MediaQuery query="(min-width: 900px)">
-					<div className={this.cssClasses.mapBox}>
-						{map}
-					</div>
-				</MediaQuery>
-			);
+		return (
+			<MediaQuery query="(min-width: 900px)">
+				<div className={this.cssClasses.mapBox}>
+					{map}
+				</div>
+			</MediaQuery>
+		);
 	}
 
 	render() {

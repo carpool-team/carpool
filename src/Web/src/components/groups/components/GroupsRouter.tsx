@@ -7,10 +7,11 @@ import { IGroupCallbacks } from "../interfaces/IGroupCallbacks";
 import GroupInvite from "./invite/GroupInvite";
 import GroupEdit from "./edit/GroupEdit";
 import GroupRides from "./rides/GroupRides";
+import { IGroup } from "../interfaces/IGroup";
 
 interface IGroupsRouterProps extends RouteComponentProps {
 	callbacks: IGroupCallbacks;
-	selectedGroupId?: string;
+	selectedGroup: IGroup;
 }
 
 class GroupsRouter extends Component<IGroupsRouterProps> {
@@ -29,22 +30,22 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 					<Route exact path={path}>
 						<ManageScreen
 							callbacks={this.props.callbacks}
-						//  selectedGroupId={this.props.selectedGroupId}
+							selectedGroup={this.props.selectedGroup}
 						/>
 					</Route>
 					<Route path={path + GroupsRouter.routes.addGroup}>
 						<AddGroupForm callbacks={this.props.callbacks} />
 					</Route>
-					{this.props.selectedGroupId ?
+					{this.props.selectedGroup ?
 						<>
 							<Route path={path + GroupsRouter.routes.edit}>
-								<GroupEdit selectedGroupId={this.props.selectedGroupId} />
+								<GroupEdit group={this.props.selectedGroup} />
 							</Route>
 							<Route path={path + GroupsRouter.routes.invite}>
-								<GroupInvite selectedGroupId={this.props.selectedGroupId} />
+								<GroupInvite group={this.props.selectedGroup} />
 							</Route>
 							<Route path={path + GroupsRouter.routes.rides}>
-								<GroupRides selectedGroupId={this.props.selectedGroupId} />
+								<GroupRides group={this.props.selectedGroup} />
 							</Route>
 						</> : null}
 				</Switch>

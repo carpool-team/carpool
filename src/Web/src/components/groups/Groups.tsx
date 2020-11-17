@@ -14,16 +14,23 @@ import {
 
 import "./Groups.scss";
 import { tempUserId } from "../../api/requests/RequestCore";
+import produce from "immer";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
-class Groups extends Component<IGroupsProps> {
+interface IGroupsState {
+	selectedGroup: IGroup;
+}
+class Groups extends Component<IGroupsProps, IGroupsState> {
 	private cssClasses = {
 		container: "groupsContainer",
 	};
 
 	constructor(props: IGroupsProps) {
 		super(props);
+		this.state = {
+			selectedGroup: undefined,
+		};
 		this.props.getGroups(false);
 		this.props.getInvites(true);
 		this.props.getRides(false);
@@ -39,8 +46,13 @@ class Groups extends Component<IGroupsProps> {
 	getInvitesHandler = () => this.props.invites;
 
 	getRidesHandler = () => {
-		let groupIds: string[] = this.props.groups.filter(g => g.selected).map(g => g.id);
-		return this.props.rides.filter(r => groupIds.includes(r.group?.id) && (!r.isUserParticipant || r.owner.userId === tempUserId));
+		return this.props.rides.filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === tempUserId));
+	}
+
+	setSelectedGroupHandler = (id: string) => {
+		this.setState(produce((draft: IGroupsState) => {
+			draft.selectedGroup = this.props.groups.find(g => g.id === id);
+		}));
 	}
 
 	render() {
@@ -52,7 +64,7 @@ class Groups extends Component<IGroupsProps> {
 			redirect: (route) => this.props.history.push(route),
 			getRides: this.getRidesHandler,
 			participateInRide: this.props.participateInRide,
-			setGroupSelected: (id, unselectOthers) => this.props.setGroupSelected(id, unselectOthers),
+			setGroupSelected: (id) => this.setSelectedGroupHandler(id),
 		};
 
 		return (
@@ -63,7 +75,7 @@ class Groups extends Component<IGroupsProps> {
 					history={this.props.history}
 					location={this.props.location}
 					callbacks={callbacks}
-					selectedGroupId={this.props.groups.find(g => g.selected)?.id}
+					selectedGroup={this.state.selectedGroup}
 				/>
 			</section>
 		);
