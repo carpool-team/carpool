@@ -1,10 +1,11 @@
 import React from 'react';
-import {Text, SafeAreaView, StyleSheet, View} from 'react-native';
+import {Text, SafeAreaView, View} from 'react-native';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import StandardInput from '../../../components/common/inputs/StandardInput';
-import {colors, sheet} from '../../../styles';
+import {colors} from '../../../styles';
 import {StandardButton} from '../../../components/common/buttons';
+import {styles} from './index.styles';
 
 const ValidationSchema = Yup.object().shape({
   email: Yup.string()
@@ -50,40 +51,5 @@ const ForgotPassword = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: colors.background,
-  },
-  title: {
-    ...sheet.textSemiBold,
-    fontSize: 45,
-    color: colors.blue,
-    alignSelf: 'center',
-    marginVertical: 25,
-  },
-  container: {
-    alignItems: 'center',
-    marginVertical: 20,
-    paddingHorizontal: 32,
-    flex: 1,
-  },
-  inputWrapper: {
-    width: '100%',
-    marginBottom: 20,
-  },
-  message: {
-    ...sheet.textRegular,
-    width: '100%',
-    marginBottom: 20,
-    color: colors.grayDark,
-    fontSize: 14,
-  },
-  button: {
-    marginTop: 20,
-  },
-});
 
 export default ForgotPassword;
