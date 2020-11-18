@@ -8,13 +8,19 @@ import { InputIcon } from "../../../ui/input/enums/InputIcon";
 import Button from "../../../ui/button/Button";
 import {ButtonColor} from "../../../ui/button/enums/ButtonColor";
 import {ButtonBackground} from "../../../ui/button/enums/ButtonBackground";
+import {ButtonSmallIcon} from "../../../ui/buttonSmall/enums/ButtonSmallIcon";
+import {ButtonSmallBackground} from "../../../ui/buttonSmall/enums/ButtonSmallBackground";
+import {ButtonSmallColor} from "../../../ui/buttonSmall/enums/ButtonSmallColor";
+import ButtonSmall from "../../../ui/buttonSmall/ButtonSmall";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
+import { IFormUserData } from "./interfaces/IFormUserData";
 
 interface ISecondStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
 	decrementStep: () => void;
 	addUser: () => void;
 	createGroup: () => void;
+	removeUser: (user: IFormUserData) => void;
 }
 
 interface ISecondStepProps extends IReactI18nProps {
@@ -114,6 +120,13 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 							<MediaQuery query="(min-width: 900px)">
 								<span>{user.email}</span>
 							</MediaQuery>
+							<ButtonSmall
+								icon = { ButtonSmallIcon.Close}
+								onClick={() => props.callbacks.removeUser(user)}
+								color={ButtonSmallColor.Gray}
+								background={ButtonSmallBackground.White}
+								>
+								</ButtonSmall>
 						</div>
 					</li>
 				);
