@@ -53,7 +53,8 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	}
 
 	private getBounds = (invites: IInvite[]) => {
-		const allCoords = [invites.map(g => g.location.latitude), invites.map(g => g.location.longitude)];
+		// const allCoords = [invites.map(g => g.location.latitude), invites.map(g => g.location.longitude)];
+		const allCoords = [[0], [0]];
 		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
 
 		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
@@ -79,7 +80,8 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	private markerClick = (invite: IInvite) => {
 		this.setState({
-			center: [invite.location.latitude, invite.location.longitude],
+			// center: [invite.location.latitude, invite.location.longitude],
+			center: [0, 0],
 			zoom: [14],
 			invite
 		});
@@ -130,7 +132,8 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 				return (
 					<Marker
 						key={g.id}
-						coordinates={[g.location.latitude, g.location.longitude]}
+						// coordinates={[g.location.latitude, g.location.longitude]}
+						coordinates={[0, 0]}
 						anchor="bottom"
 						onClick={this.markerClick.bind(this, g)}
 						>
@@ -140,7 +143,8 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			})}
 
 			{invite && (
-				<Popup key={invite.id} coordinates={[invite.location.latitude, invite.location.longitude]}>
+				// <Popup key={invite.id} coordinates={[invite.location.latitude, invite.location.longitude]}>
+				<Popup key={invite.id} coordinates={[0, 0]}>
 					<div style={popupStyle}>
 					{invite.groupId}
 					</div>
