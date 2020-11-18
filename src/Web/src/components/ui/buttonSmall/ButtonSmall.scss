@@ -7,7 +7,6 @@
 	text-decoration: none;
 	padding:7px;
 	margin-right: 10px;
-	margin-left: auto;
 	border: none;
 	outline:none;
 	z-index: inherit;
@@ -66,5 +65,10 @@
 			font-size: 20px;
 			content:"\f00d";
 		}
+	}
+}
+@media only screen and (max-width: 900px) {
+	.buttonSmall {
+		margin-left: auto;
 	}
 }
