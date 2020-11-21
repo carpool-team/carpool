@@ -15,13 +15,13 @@ const MainStackNavigator = () => (
         header: () => null,
       }}
     /> */}
-    <Stack.Screen
+    {/* <Stack.Screen
       name="AuthStack"
       component={AuthStack}
       options={{
         headerShown: false,
       }}
-    />
+    /> */}
     <Stack.Screen
       name="DrawerNavigator"
       component={DrawerNavigator}

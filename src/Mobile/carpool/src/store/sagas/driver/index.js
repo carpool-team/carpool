@@ -4,11 +4,14 @@ import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
 import faker from 'faker';
 const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
+import moment from 'moment';
 
 const exampleRides = [
   {
     id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.future()).toISOString(),
+    date: moment()
+      .add(1, 'days')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,
@@ -34,7 +37,9 @@ const exampleRides = [
   },
   {
     id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.future()).toISOString(),
+    date: moment()
+      .add(2, 'days')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,
@@ -60,7 +65,9 @@ const exampleRides = [
   },
   {
     id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.future()).toISOString(),
+    date: moment()
+      .add(3, 'days')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,
