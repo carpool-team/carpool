@@ -1,7 +1,4 @@
 import React from "react";
-import { useHistory } from "react-router";
-import LayoutRouter from "../../../layout/components/LayoutRouter";
-import Button from "../../../navBar/navButton/NavButton";
 import { IGroup } from "../../interfaces/IGroup";
 
 export interface IGroupDetailedViewProps {
@@ -9,16 +6,10 @@ export interface IGroupDetailedViewProps {
 }
 
 const GroupDetailedView: React.FunctionComponent<IGroupDetailedViewProps> = props => {
-	const history = useHistory();
+	const detailedViewContainer = "detailedViewContainer";
 	return (
-		<div>
+		<div className={detailedViewContainer}>
 			{props.children}
-			<Button onClick={() => {
-				history.push(`/${LayoutRouter.routes.groups}`);
-			}}
-			>
-				{"CLOSE"}
-			</Button>
 		</div>
 	);
 };

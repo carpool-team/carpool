@@ -1,0 +1,206 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+@import "~scss_path/images";
+
+.rides{
+	&--leftPanel{
+		padding-top: 15px;
+		margin-top: 7px;
+		margin-bottom: 7px;
+		background-color: $background;
+		width: 35%;
+		&__list{
+
+		}
+		&__text{
+			font-weight: $medium;
+			font-size: 20px;
+			color: $grayDark;
+			margin-left: auto;
+			margin-right: 20px;
+			padding-top: 8px;
+		}
+		&__text:before{
+			font-family: FontAwesome;
+			font-size: 25px;
+			content:"\f0ac";
+			padding-right: 10px;
+		}
+		
+		&__outline{
+			background-color: $white;
+			height: 7px;
+		}
+		&__label{
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			flex-direction: row;
+			padding-left: 5%;
+			padding-bottom: 2%;
+			background-color: $background;
+			gap:3%;
+			&--outline{
+				background-color: $white;
+				height: 7px;
+			}
+		}
+	}
+	&--rightPanel{
+		background-color: $white;
+		width: 65%;
+		margin-left: 7px;
+		margin-top: 7px;
+		margin-bottom: 7px;
+		display: flex;
+		flex-direction: column;
+		&__top{
+			height: 50%;
+			background-color: $background;
+		}
+		&__bottom{
+			margin-top: 7px;
+			height: 50%;
+			background-color: $background;
+		}
+	}
+}
+
+.ridesList {
+	list-style-type: none;
+	padding-left: 0;
+    display: flex;
+	flex-direction: column;
+	width: auto;
+	background-color: $background;
+    & > li {
+      display: flex;
+	  height:auto;
+	  flex-direction: row;
+	  margin-bottom: 7px;
+    }
+    & > li:first-child {
+      margin-top: 10px;
+	}
+	& > li:nth-child(n){
+		background: $white;
+		color: $grayDark;
+	}
+	&--button{
+		border: none;
+		width: 100%;
+		background-color: inherit;
+		padding-left: 0;
+		padding-right: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: left;
+	}
+	&--button:focus{
+		outline: none;
+	}
+	&--button:hover{
+		background-color: $backgroundOnHover;
+	}
+	&--mainRow{
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		
+		&__label{
+			font-size: 18px;
+			font-weight: $medium;
+			color: $grayDark;
+			text-decoration: none;
+			margin-left: 25px;
+			color: inherit;
+			display: flex;
+			align-items: center;
+			border-bottom: 2px solid;	
+		}
+		&__icon:before{
+			align-items: center;
+			float: left;
+			font-family: FontAwesome;
+			font-size: 30px;
+			content:"\f124";
+			padding-left: 12px;
+			padding-top: 7px;
+		}
+		&__seats{
+			margin-left: auto;
+			padding-right: 10px;
+			align-self: center;
+		}
+		&__seats::before{
+			align-items: center;
+			float: left;
+			font-family: FontAwesome;
+			font-size: 17px;
+			padding-right: 5px;
+			content:"\f007";
+		}
+	}
+	&--bottomRow{
+		// width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		flex-wrap: wrap;
+		padding-top: 10px;
+		margin-left: 60px;
+		padding-bottom: 5px;
+		gap: 5px;
+
+		&__to{
+			padding-right: 10px;
+			font-size: 17px;
+		}
+		&__to::before{
+			align-items: center;
+			float: left;
+			font-family: FontAwesome;
+			font-size: 17px;
+			padding-right: 7px;
+			content:"\f061";
+		}
+		&__from{
+			padding-right: 10px;
+			color: $grayDark;
+		}
+		&__from:before{
+			align-items: center;
+			float: left;
+			font-family: FontAwesome;
+			font-size: 17px;
+			padding-right: 12px;
+			content:"\f041";
+		}
+
+	}
+	
+}
+@media only screen and (max-width: 900px) {
+	.ridesList {
+		padding-top: 10px;
+		width: 100%;
+		margin-top: 5px;
+	}
+	.rides{
+		&--leftPanel{
+			padding-top: 15px;
+			margin-top: 7px;
+			margin-bottom: 7px;
+			background-color: $background;
+			width: 100%;
+		}
+	}
+	.groupsManagementButtonsContainer{
+		justify-content: center;
+		padding-left: 0;
+		gap:3%;
+		&--outline{
+			height: 5px;
+		}
+	}
+}
