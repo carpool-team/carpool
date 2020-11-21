@@ -4,11 +4,16 @@ import {colors, sheet} from '../../../styles';
 import {StandardButton} from '../../../components/common/buttons';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
-import {RidesList} from '../../../components/Driver';
+import {RidesList, WeekPicker} from '../../../components/Driver';
+import {getDates} from '../../../utils/date';
 
 const DriversRides = ({navigation}) => {
   const [isUpcoming, setIsUpcoming] = useState(true);
   const [data, setData] = useState([]);
+
+  const [offset, setOffset] = useState(0);
+  const [dateRange, setDateRange] = useState(getDates(offset).range);
+  const [weekDays, setWeekDays] = useState(getDates(offset).week);
 
   const driversRides = useSelector(state => state.driverReducer.driversRides);
   const driversPastRides = useSelector(
@@ -31,6 +36,17 @@ const DriversRides = ({navigation}) => {
     }
   }, [isUpcoming, driversRides, driversPastRides]);
 
+  useEffect(() => {
+    onRefreshRides();
+  }, [offset]);
+
+  const onRefreshRides = () => {
+    const {firstDay, lastDay, range, week} = getDates(offset);
+    setDateRange(range);
+    setWeekDays([...week]);
+    // dispatch(actions.getShifts({ firstDay, lastDay }));
+  };
+
   const onRefresh = () => {
     dispatch(actions.getDriversRides());
     dispatch(actions.getDriversPastRides());
@@ -39,6 +55,10 @@ const DriversRides = ({navigation}) => {
   const onItemPress = ride => {
     navigation.navigate('DriversRideDetails', {ride});
   };
+
+  const onIncrement = () => setOffset(offset => offset + 1);
+
+  const onDecrement = () => setOffset(offset => offset - 1);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -59,14 +79,20 @@ const DriversRides = ({navigation}) => {
             backgroundColor={!isUpcoming ? colors.blue : undefined}
           />
         </View>
-        <View style={styles.flatlistWrapper}>
+        <WeekPicker
+          onDecrement={onDecrement}
+          onIncrement={onIncrement}
+          dateRange={dateRange}
+          offset={offset}
+        />
+        {/* <View style={styles.flatlistWrapper}>
           <RidesList
             data={data}
             loading={driversRides.loading || driversPastRides.loading}
             onRefresh={onRefresh}
             onItemPress={onItemPress}
           />
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );
