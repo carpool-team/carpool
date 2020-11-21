@@ -1,12 +1,6 @@
 export interface ILocation {
-	coordinates: {
+	location: {
 		longitude: number;
 		latitude: number;
-		coordinatesId: string;
 	};
-	locationName: {
-		id: string;
-		name: string;
-	};
-	id: string;
 }
