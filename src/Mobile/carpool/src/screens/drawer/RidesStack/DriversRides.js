@@ -1,10 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {StandardButton} from '../../../components/common/buttons';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
-import {RidesList, WeekPicker} from '../../../components/Driver';
+import {RidesList, WeekPicker, WeekRidesList} from '../../../components/Driver';
 import {getDates} from '../../../utils/date';
 
 const DriversRides = ({navigation}) => {
@@ -85,6 +91,21 @@ const DriversRides = ({navigation}) => {
           dateRange={dateRange}
           offset={offset}
         />
+        <ScrollView
+          style={{
+            flex: 1,
+            width: '100%',
+          }}
+          refreshControl={
+            <RefreshControl
+              onRefresh={onRefresh}
+              colors={[colors.blue]}
+              refreshing={driversRides.loading}
+              tintColor={colors.blue}
+            />
+          }>
+          <WeekRidesList weekDays={weekDays} rides={driversRides.data} />
+        </ScrollView>
         {/* <View style={styles.flatlistWrapper}>
           <RidesList
             data={data}
