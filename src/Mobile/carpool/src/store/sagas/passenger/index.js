@@ -194,32 +194,6 @@ const examplePastRides = [
       },
     ],
   },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.past()).toISOString(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-      },
-    ],
-    stops: [
-      {
-        id: faker.random.alphaNumeric(32),
-      },
-    ],
-  },
 ];
 
 export function* getAllRidesAsync() {
@@ -273,7 +247,7 @@ export function* getUsersPastRidesAsync() {
     const token = '123';
 
     if (token) {
-      yield put(actions.getUsersPastRidesLoading()());
+      yield put(actions.getUsersPastRidesLoading());
 
       // const res = yield instance.get(ENDPOINTS.GET_USERS_RIDES(userId));
 
