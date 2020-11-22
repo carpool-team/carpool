@@ -15,8 +15,6 @@ import {getDates} from '../../../utils/date';
 
 const DriversRides = ({navigation}) => {
   const [isUpcoming, setIsUpcoming] = useState(true);
-  const [data, setData] = useState([]);
-
   const [offset, setOffset] = useState(0);
   const [dateRange, setDateRange] = useState(getDates(offset).range);
   const [weekDays, setWeekDays] = useState(getDates(offset).week);
@@ -33,30 +31,23 @@ const DriversRides = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    if (driversRides.data && driversPastRides.data) {
-      if (isUpcoming) {
-        setData([...driversRides.data]);
-      } else {
-        setData([...driversPastRides.data]);
-      }
-    }
-  }, [isUpcoming, driversRides, driversPastRides]);
-
-  useEffect(() => {
     onRefreshRides();
   }, [offset]);
+
+  const onRefresh = () => {
+    onRefreshPastRides();
+    onRefreshRides();
+  };
 
   const onRefreshRides = () => {
     const {firstDay, lastDay, range, week} = getDates(offset);
     setDateRange(range);
     setWeekDays([...week]);
+    dispatch(actions.getDriversRides());
     // dispatch(actions.getShifts({ firstDay, lastDay }));
   };
 
-  const onRefresh = () => {
-    dispatch(actions.getDriversRides());
-    dispatch(actions.getDriversPastRides());
-  };
+  const onRefreshPastRides = () => dispatch(actions.getDriversPastRides());
 
   const onItemPress = ride => {
     navigation.navigate('DriversRideDetails', {ride});
@@ -85,35 +76,41 @@ const DriversRides = ({navigation}) => {
             backgroundColor={!isUpcoming ? colors.blue : undefined}
           />
         </View>
-        <WeekPicker
-          onDecrement={onDecrement}
-          onIncrement={onIncrement}
-          dateRange={dateRange}
-          offset={offset}
-        />
-        <ScrollView
-          style={{
-            flex: 1,
-            width: '100%',
-          }}
-          refreshControl={
-            <RefreshControl
-              onRefresh={onRefresh}
-              colors={[colors.blue]}
-              refreshing={driversRides.loading}
-              tintColor={colors.blue}
+        {isUpcoming ? (
+          <>
+            <WeekPicker
+              onDecrement={onDecrement}
+              onIncrement={onIncrement}
+              dateRange={dateRange}
+              offset={offset}
             />
-          }>
-          <WeekRidesList weekDays={weekDays} rides={driversRides.data} />
-        </ScrollView>
-        {/* <View style={styles.flatlistWrapper}>
-          <RidesList
-            data={data}
-            loading={driversRides.loading || driversPastRides.loading}
-            onRefresh={onRefresh}
-            onItemPress={onItemPress}
-          />
-        </View> */}
+            <ScrollView
+              style={styles.scrollView}
+              refreshControl={
+                <RefreshControl
+                  onRefresh={onRefreshRides}
+                  colors={[colors.blue]}
+                  refreshing={driversRides.loading}
+                  tintColor={colors.blue}
+                />
+              }>
+              <WeekRidesList
+                weekDays={weekDays}
+                rides={driversRides.data}
+                onItemPress={onItemPress}
+              />
+            </ScrollView>
+          </>
+        ) : (
+          <View style={styles.flatlistWrapper}>
+            <RidesList
+              data={driversPastRides.data}
+              loading={driversPastRides.loading}
+              onRefresh={onRefreshPastRides}
+              onItemPress={onItemPress}
+            />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -138,6 +135,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingTop: 36,
+    width: '100%',
+  },
+  scrollView: {
+    flex: 1,
     width: '100%',
   },
 });

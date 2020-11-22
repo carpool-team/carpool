@@ -4,7 +4,7 @@ import {getWeekday, isToday} from '../utils';
 import RideItem from './RideItem';
 import {styles} from './index.styles';
 
-const ListItem = ({day, rides}) => {
+const ListItem = ({day, rides, onItemPress}) => {
   const weekday = getWeekday(day);
   const today = isToday(day);
 
@@ -20,7 +20,11 @@ const ListItem = ({day, rides}) => {
         </View>
         <View style={styles.ridesWrapper}>
           {rides.map(ride => (
-            <RideItem key={ride.id} item={ride} onItemPress={console.log} />
+            <RideItem
+              key={ride.id}
+              item={ride}
+              onItemPress={() => onItemPress(ride)}
+            />
           ))}
         </View>
       </View>
