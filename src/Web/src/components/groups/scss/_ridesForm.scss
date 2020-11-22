@@ -16,9 +16,8 @@
 			font-weight: $medium;
 			font-size: 20px;
 			color: $grayDark;
-			margin-left: auto;
-			margin-right: 20px;
-			padding-top: 8px;
+			padding-top: 12px;
+			padding-bottom: 5px;
 		}
 		&__text:before{
 			font-family: FontAwesome;
@@ -55,13 +54,26 @@
 		display: flex;
 		flex-direction: column;
 		&__top{
-			height: 50%;
+			height: 70%;
 			background-color: $background;
 		}
 		&__bottom{
 			margin-top: 7px;
-			height: 50%;
+			height: 30%;
 			background-color: $background;
+			& > a {
+				width: 99,5%;
+				height: 97%;
+				background-color: $white;
+				border: solid $background 4px;
+				border-right: 0;
+				font-size: 21px;
+				color: $grayDark;
+				font-weight: $medium;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
 		}
 	}
 }
@@ -75,7 +87,7 @@
 	background-color: $background;
     & > li {
       display: flex;
-	  height:auto;
+	//   height:auto;
 	  flex-direction: row;
 	  margin-bottom: 7px;
     }
@@ -133,10 +145,12 @@
 			margin-left: auto;
 			padding-right: 10px;
 			padding-top: 10px;
+			font-weight: $medium;
+			font-size: 15px;
 		}
 		&__seats::before{
 			font-family: FontAwesome;
-			font-size: 17px;
+			font-size: 15px;
 			padding-right: 5px;
 			content:"\f007";
 		}
@@ -147,6 +161,7 @@
 		}
 		&__to::before{
 			align-items: center;
+			font-weight: 200;
 			float: left;
 			font-family: FontAwesome;
 			font-size: 15px;
@@ -182,24 +197,212 @@
 			text-decoration: none;
 			margin-left: 25px;
 		}
-
+		&__driver::before{
+			align-items: center;
+			font-family: FontAwesome;
+			font-size: 15px;
+			padding-right: 7px;
+			content:"\f073";
+		}
 	}
-	
 }
+
+.ridesListActive{
+	height: 250px;
+	&--button{
+		border: none;
+		width: 100%;
+		background-color: inherit;
+		padding-left: 0;
+		padding-right: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: left;
+	}
+	&--bottomRow{
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		padding-top: 20px;
+		padding-bottom: 5px;
+	}
+	&--date{
+		font-size: 15px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-decoration: none;
+		margin-left: 50px;
+		padding-bottom: 5px;
+	}
+	&--date::before{
+		align-items: center;
+		font-family: FontAwesome;
+		font-size: 15px;
+		padding-right: 7px;
+		content:"\f073";
+	}
+	&--driver{
+		font-size: 15px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-decoration: none;
+		margin-left: 50px;
+		padding-bottom: 10px;
+	}
+	&--driver::before{
+		align-items: center;
+		font-family: FontAwesome;
+		font-size: 15px;
+		padding-right: 7px;
+		content:"\f10c";
+	}
+	&--car{
+		font-size: 15px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-decoration: none;
+		margin-left: 50px;
+		padding-bottom: 10px;
+	}
+	&--car::before{
+		align-items: center;
+		font-family: FontAwesome;
+		font-size: 15px;
+		padding-right: 7px;
+		content:"\f10c";
+	}
+	&--seats{
+		font-size: 15px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-decoration: none;
+		margin-left: 50px;
+		padding-bottom: 10px;
+	}
+	&--seats::before{
+		align-items: center;
+		font-family: FontAwesome;
+		font-size: 15px;
+		padding-right: 7px;
+		content:"\f10c";
+	}
+	&--joinButton{
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+}
+.ridesDetails{
+	width: 99,5%;
+	height: 97%;
+	display: flex;
+	background-color: $white;
+	border: solid $background 4px;
+	border-right: 0;
+	background-color: $white;
+	flex-direction: column;
+	justify-content: flex-start;
+	gap: 15%;
+	&--firstRow {
+		padding-top: 30px;
+		padding-left: 30px;
+		padding-right: 20px;
+		display: flex;
+		flex-direction: row;
+		align-content: center;
+		justify-content:flex-start;
+		&__address{
+			border-bottom: 2px solid $blue;
+			align-self: center;
+			font-size: 18px;
+			color: $grayDark;
+			font-weight: $medium;
+			margin-left: 20px;
+		}
+	}
+	&--secondRow {
+		display: flex;
+		flex-direction: row;
+		padding-left: 20px;
+		padding-right: 20px;
+		&__date{
+			align-self: center;
+			font-size: 17px;
+			color: $grayDark;
+			font-weight: $medium;
+			padding-left: 20px;
+		}
+		&__date::before{
+			align-items: center;
+			font-family: FontAwesome;
+			font-size: 17px;
+			padding-right: 6px;
+			content:"\f073";
+		}
+		&__driver{
+			align-self: center;
+			font-size: 17px;
+			color: $grayDark;
+			font-weight: $medium;
+			padding-left: 20px;
+		}
+		&__driver::before{
+			align-items: center;
+			font-family: FontAwesome;
+			font-size: 17px;
+			padding-right: 6px;
+			content:"\f10c";
+		}
+	}
+	&--thirdRow {
+		display: flex;
+		flex-direction: row;
+		padding-left: 20px;
+		padding-right: 20px;
+		&__seats{
+			align-self: center;
+			font-size: 17px;
+			color: $grayDark;
+			font-weight: $medium;
+			padding-left: 20px;
+		}
+		&__seats::before{
+			align-items: center;
+			font-family: FontAwesome;
+			font-size: 17px;
+			padding-right: 6px;
+			content:"\f0c0";
+		}
+		&__car{
+			align-self: center;
+			font-size: 17px;
+			color: $grayDark;
+			font-weight: $medium;
+			padding-left: 20px;
+		}
+		&__car::before{
+			align-items: center;
+			font-family: FontAwesome;
+			font-size: 17px;
+			padding-right: 6px;
+			content:"\f1b9";;
+		}
+	}
+}
+
 @media only screen and (max-width: 900px) {
 	.rides{
 		&--leftPanel{
 			width: 100%;
-			margin-top: 7px;
+			margin-top: 5px;
 			padding-top: 7px;
-			&__text{
-				padding-top: 15px;
-				padding-bottom: 5px;
-				width: 100%;
-			}
 			&__label{
-				padding-left: 25px;
-				justify-content: left;
+				padding-left: 10px;
+				padding-right: 10px;
+				justify-content: space-evenly;
+			}
+			&__outline{
+				height: 5px;
 			}
 		}
 	}
