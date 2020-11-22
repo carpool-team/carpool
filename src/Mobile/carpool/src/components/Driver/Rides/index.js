@@ -8,15 +8,22 @@ import {useNavigation} from '@react-navigation/native';
 import {colors} from '../../../styles';
 import WeekRidesList from '../WeekRidesList';
 import {styles} from './index.styles';
+import {useActiveAccount} from '../../../hooks';
 
 const Rides = () => {
   const navigation = useNavigation();
+
+  const {activeAccount} = useActiveAccount();
+  const isPassenger = activeAccount === 'passenger';
 
   const [offset, setOffset] = useState(0);
   const [dateRange, setDateRange] = useState(getDates(offset).range);
   const [weekDays, setWeekDays] = useState(getDates(offset).week);
 
   const driversRides = useSelector(state => state.driverReducer.driversRides);
+  const passengersRides = useSelector(
+    state => state.passengerReducer.userRides,
+  );
 
   const dispatch = useDispatch();
 
@@ -34,6 +41,8 @@ const Rides = () => {
     setWeekDays([...week]);
     dispatch(actions.getDriversRides());
     // dispatch(actions.getShifts({ firstDay, lastDay }));
+
+    dispatch(actions.getUsersRides());
   };
 
   const onItemPress = ride => {
