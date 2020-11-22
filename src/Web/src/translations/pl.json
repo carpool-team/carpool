@@ -59,6 +59,12 @@
         "loadingScreen": {
             "quote": "Share a ride",
             "join": "Grupy"
+        },
+        "input": {
+            "validation": {
+                "emailInvalid": "Nieprawidłowy adres e-mail",
+                "fieldRequired": "Pole wymagane"
+            }
         }
     }
 }

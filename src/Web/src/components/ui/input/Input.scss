@@ -1,14 +1,22 @@
 @import "~scss_path/colors";
 @import "~scss_path/fonts";
 
-
 .input {
-	&__container{
+	&__container {
 		width: 100%;
 		height: 40px;
 		display: flex;
+		&--invalid {
+			border-bottom: 5px solid $red;
+			margin-bottom: 10px;
+		}
 	}
-	&__input{
+	&__groupContainer {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+	&__input {
 		font-size: 17px;
 		border: 0;
 		width: inherit;
@@ -17,28 +25,35 @@
 		font-weight: $medium;
 		background: $white;
 		padding-left: 25px;
+		&--invalid {
+			color: $red;
+		}
 	}
-    &__comment {
-        font-size: 14px;
-        max-width: 80%;
-        text-align: center;
-        text-justify: auto;
+	&__comment {
+		font-size: 14px;
+		max-width: 80%;
+		text-align: center;
+		text-justify: auto;
 	}
-	&__input::placeholder{
+	&__input::placeholder {
 		font-weight: $medium;
 		font-size: 17px;
 		color: $grayDark;
 	}
-	&__input:focus{
+	&__input:focus {
 		outline: none;
 	}
-	&__user{
+	&__invalidText {
+		color: $red;
+		margin: 0 16px 0 16px;
+	}
+	&__user {
 		height: 32px;
-		margin-top: 10px;
+		margin-top: 8px;
 		color: $grayDark;
 	}
-	&__user::before{
-		content:"\f2bc";
+	&__user::before {
+		content: "\f2bc";
 		font-family: FontAwesome;
 		font-size: 22px;
 		background-color: $white;
@@ -47,13 +62,13 @@
 		padding-bottom: 10px;
 		padding-left: 15px;
 	}
-	&__globe{
+	&__globe {
 		height: 32px;
-		margin-top: 10px;
+		margin-top: 8px;
 		color: $grayDark;
 	}
-	&__globe::before{
-		content:"\f0ac";
+	&__globe::before {
+		content: "\f0ac";
 		font-family: FontAwesome;
 		font-size: 22px;
 		background-color: $white;
@@ -62,13 +77,13 @@
 		padding-bottom: 10px;
 		padding-left: 15px;
 	}
-	&__code{
+	&__code {
 		height: 32px;
-		margin-top: 10px;
+		margin-top: 8px;
 		color: $grayDark;
 	}
-	&__code::before{
-		content:"\f1b2";
+	&__code::before {
+		content: "\f1b2";
 		font-family: FontAwesome;
 		font-size: 22px;
 		background-color: $white;
@@ -77,13 +92,13 @@
 		padding-bottom: 10px;
 		padding-left: 15px;
 	}
-	&__location{
+	&__location {
 		height: 32px;
-		margin-top: 10px;
+		margin-top: 8px;
 		color: $grayDark;
 	}
-	&__location::before{
-		content:"\f124";
+	&__location::before {
+		content: "\f124";
 		font-family: FontAwesome;
 		font-size: 22px;
 		background-color: $white;
@@ -92,13 +107,13 @@
 		padding-bottom: 10px;
 		padding-left: 15px;
 	}
-	&__mail{
+	&__mail {
 		height: 32px;
-		margin-top: 10px;
+		margin-top: 8px;
 		color: $grayDark;
 	}
-	&__mail::before{
-		content:"\f003";
+	&__mail::before {
+		content: "\f003";
 		font-family: FontAwesome;
 		font-size: 22px;
 		background-color: $white;
