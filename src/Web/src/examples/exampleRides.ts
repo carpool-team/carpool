@@ -14,8 +14,8 @@ const exampleRides: IRide[] = [
 		participants: null,
 		stops: null,
 		destination: {
-			longitude: 52.40656926303501,
-			latitude: 16.86633729745128
+			longitude: 52.435932,
+			latitude: 17.029413
 		},
 		startingLocation: {
 			longitude: 52.40656926303501,
@@ -43,8 +43,8 @@ const exampleRides: IRide[] = [
 			latitude: 16.86633729745128
 		},
 		startingLocation: {
-			longitude: 52.40656926303501,
-			latitude: 16.86633729745128
+			longitude: 52.403536,
+			latitude: 16.866356
 		},
 		date: "2020-11-07T18:10:46.1252449",
 		isUserParticipant: faker.random.boolean(),

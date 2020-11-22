@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IGroup } from "../../interfaces/IGroup";
 import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/GroupDetailedView";
 import RidesList from "./components/RidesList";
@@ -10,8 +10,10 @@ import LayoutRouter from "../../../layout/components/LayoutRouter";
 import ridesExample from "../../../../examples/exampleRides";
 import { IRide } from "../../../../components/groups/interfaces/IRide";
 import MediaQuery from "react-responsive";
+import MapBoxRides from "../../../map/MapBoxRides";
 
 interface IGroupRidesProps extends IGroupDetailedViewProps {
+
 }
 
 const GroupRides = (props: IGroupRidesProps) => {
@@ -29,6 +31,13 @@ const GroupRides = (props: IGroupRidesProps) => {
 	};
 
 	const rides: IRide[] = ridesExample;
+	const [selectedRide, setSelectedRide] = useState(null);
+
+	const setRide = (ride: IRide) => {
+		if (ride !== null) {
+			setSelectedRide(ride);
+		}
+	};
 
 	return (
 		<GroupDetailedView group={props.group}>
@@ -42,21 +51,19 @@ const GroupRides = (props: IGroupRidesProps) => {
 						>
 							{"Wróć"}
 					</Button>
+					<Button background={ButtonBackground.Blue} color={ButtonColor.White}>
+					Dodaj
+				</Button>
 				<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<div className = {cssClasses.leftList}>
-					<RidesList rides ={rides}/>
+					<RidesList rideSelected={selectedRide} setRide={setRide} rides ={rides}/>
 				</div>
 			</div>
 			<MediaQuery query="(min-width: 900px)">
 				<div className= {cssClasses.rightPanel}>
-					<div className = {cssClasses.rightTopPanel}>
-
-					</div>
-					<div className = {cssClasses.rightBottomPanel}>
-
-					</div>
+						<MapBoxRides ride={selectedRide}></MapBoxRides>
 				</div>
 			</MediaQuery>
 		</GroupDetailedView>
