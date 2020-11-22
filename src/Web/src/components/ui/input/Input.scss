@@ -36,6 +36,35 @@
 		text-align: center;
 		text-justify: auto;
 	}
+	&__icon {
+		height: 32px;
+		margin-top: 10px;
+		color: $grayDark;
+		&::before {
+			font-family: FontAwesome;
+			font-size: 22px;
+			background-color: $transparent;
+			align-content: center;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			padding-left: 15px;
+		}
+		&--user::before {
+			content: "\f2bc";
+		}
+		&--globe::before {
+			content: "\f0ac";
+		}
+		&--code::before {
+			content: "\f1b2";
+		}
+		&--location::before {
+			content: "\f124";
+		}
+		&--mail::before {
+			content: "\f003";
+		}
+	}
 	&__input::placeholder {
 		font-weight: $medium;
 		font-size: 17px;
@@ -47,80 +76,5 @@
 	&__invalidText {
 		color: $red;
 		margin: 0 16px 0 16px;
-	}
-	&__user {
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__user::before {
-		content: "\f2bc";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $transparent;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__globe {
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__globe::before {
-		content: "\f0ac";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $transparent;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__code {
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__code::before {
-		content: "\f1b2";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $transparent;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__location {
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__location::before {
-		content: "\f124";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $transparent;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__mail {
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__mail::before {
-		content: "\f003";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $transparent;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
 	}
 }

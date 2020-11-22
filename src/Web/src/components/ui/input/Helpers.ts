@@ -1,17 +1,19 @@
 import { InputIcon } from "./enums/InputIcon";
 
+const baseIconClass: string = "input__icon";
+
 export const getIconClass: (type?: InputIcon) => string = (icon) => {
 	switch (icon) {
 		case InputIcon.User:
-			return "input__user";
+			return `${baseIconClass} ${baseIconClass}--user`;
 		case InputIcon.Mail:
-			return "input__mail";
+			return `${baseIconClass} ${baseIconClass}--mail`;
 		case InputIcon.Code:
-			return "input__code";
+			return `${baseIconClass} ${baseIconClass}--code`;
 		case InputIcon.Location:
-			return "input__location";
+			return `${baseIconClass} ${baseIconClass}--location`;
 		case InputIcon.Globe:
-			return "input__globe";
+			return `${baseIconClass} ${baseIconClass}--globe`;
 		default:
 			return "";
 	}
