@@ -67,13 +67,15 @@ const Rides = () => {
           <RefreshControl
             onRefresh={onRefreshRides}
             colors={[colors.blue]}
-            refreshing={driversRides.loading}
+            refreshing={
+              isPassenger ? passengersRides.loading : driversRides.loading
+            }
             tintColor={colors.blue}
           />
         }>
         <WeekRidesList
           weekDays={weekDays}
-          rides={driversRides.data}
+          rides={isPassenger ? passengersRides.data : driversRides.data}
           onItemPress={onItemPress}
         />
       </ScrollView>
