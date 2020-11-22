@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   date: {
     ...sheet.textMedium,
     color: colors.grayDark,
-    fontSize: 25,
+    fontSize: 16,
   },
   time: {
     ...sheet.textMedium,

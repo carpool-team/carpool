@@ -15,7 +15,9 @@ const ListItem = ({item, onItemPress}) => (
     contentContainerStyle={styles.container}>
     <View style={sheet.rowCenterSplit}>
       <Text style={styles.time}>{moment(item.date).format('hh:mm')}</Text>
-      <Text style={styles.date}>{moment(item.date).format('D.MM.YYYY')}</Text>
+      <Text style={styles.date}>
+        {moment(item.date).format('Do MMMM YYYY')}
+      </Text>
     </View>
     <Waypoints
       ride={item}
