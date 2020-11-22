@@ -6,10 +6,11 @@ import mapConfig from "./mapConfig";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
+import { IRide } from "components/groups/interfaces/IRide";
 
 const Mapbox = ReactMapboxGl({
 	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
-	minZoom: 2,
+	minZoom: 8,
 	maxZoom: 15,
 	accessToken: mapConfig.mapboxKey
 });
@@ -18,7 +19,7 @@ export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
 	center?: [number, number];
 	zoom?: [number];
-	groups: IGroup[];
+	ride: IRide;
 }
 
 const flyToOptions = {
@@ -32,48 +33,34 @@ const defaults = {
 
 export interface IMapProps {
 	onStyleLoad?: (map: any) => any;
-	getGroupsCallback: () => IGroup[];
-	setSelectedGroupCallback: (id: string) => void;
-	group?: IGroup;
+	ride: IRide;
 }
 
 export default class MapBoxGroups extends React.Component<IMapProps, IMapState> {
-	private currentGroupId: string;
 
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
 			fitBounds: undefined,
-			groups: this.props.getGroupsCallback(),
+			ride: this.props.ride,
 			...defaults,
 		};
-		this.currentGroupId = undefined;
 	}
 
 	componentDidUpdate() {
-		const groups: IGroup[] = this.props.getGroupsCallback();
-		if (this.state.groups !== groups) {
+		if (this.state.ride !== this.props.ride) {
 			this.setState(produce((draft: IMapState) => {
-				draft.groups = groups;
-				draft.fitBounds = this.getBounds(groups);
+				draft.ride = this.props.ride;
+				// TODO  Obliczać prawidłowo zoom
+				draft.zoom = [12];
+				draft.fitBounds = this.getBounds(this.props.ride);
+				draft.center = this.getCenter(draft.fitBounds);
 			}));
 		}
-		if (this.props.group?.id !== this.currentGroupId) {
-			this.currentGroupId = this.props.group?.id ?? undefined;
-			this.setState(produce((draft: IMapState) => {
-				if (this.props.group) {
-					draft.center = [this.props.group.location.latitude, this.props.group.location.longitude];
-					draft.zoom = [14];
-				} else {
-					draft.fitBounds = this.getBounds(groups);
-				}
-			}));
-		}
-
 	}
 
-	private getBounds = (groups: IGroup[]) => {
-		const allCoords = [groups.map(g => g.location.latitude), groups.map(g => g.location.longitude)];
+	private getBounds = (ride: IRide) => {
+		const allCoords = [[ride.destination.latitude, ride.startingLocation.latitude], [ride.destination.longitude, ride.startingLocation.longitude]];
 		console.log(allCoords);
 		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
 
@@ -83,14 +70,15 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);
 			bbox[1][1] = Math.max.apply(null, allCoords[1]);
 		}
+		console.log(bbox);
 
 		return bbox;
 	}
-
-	private onDrag = () => {
-		if (this.props.group) {
-			this.props.setSelectedGroupCallback(undefined);
-		}
+	private getCenter = (bbox: [[number, number], [number, number]]) => {
+		let cords: [number, number] = [0, 0];
+		cords[0] = (bbox[0][0] + bbox[1][0]) / 2;
+		cords[1] = (bbox[0][1] + bbox[1][1]) / 2;
+		return cords;
 	}
 
 	private onStyleLoad = (map: any) => {
@@ -98,35 +86,31 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		return onStyleLoad && onStyleLoad(map);
 	}
 
-	private markerClick = (group: IGroup) => {
-		this.setState({
-			center: [group.location.latitude, group.location.longitude],
-			zoom: [14],
-		});
-
-		this.props.setSelectedGroupCallback(group.id);
-	}
-
 	public render() {
-		const { fitBounds, center, zoom, groups } = this.state;
-		const { group } = this.props;
+		const { fitBounds, center, zoom, ride } = this.state;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
 		};
 
 		const boundsOptions: FitBoundsOptions = {
-			padding: 100
+			padding: 20
 		};
 
 		const popupStyle: CSSProperties = {
 			background: "white",
 			color: "gray",
 			fontWeight: 400,
-			border: "2px"
+			border: "2px",
 		};
-
-		let colorIndex = 0;
+		const fromMarkerStyle: CSSProperties = {
+			fontSize: "40px",
+			color: "#10ac84"
+		};
+		const toMarkerStyle: CSSProperties = {
+			fontSize: "40px",
+			color: "#ee5253"
+		};
 
 		return (
 			<Mapbox
@@ -136,43 +120,37 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 				fitBoundsOptions={boundsOptions}
 				center={center}
 				zoom={zoom}
-				onDrag={this.onDrag}
 				containerStyle={containerStyle}
 				flyToOptions={flyToOptions}
 			>
+				{ride !== null &&
 				<>
-					{groups.map((g) => {
-						++colorIndex;
-						const color = colorList[colorIndex % colorList.length];
-
-						const markerStyle: CSSProperties = {
-							fontSize: "40px",
-							color: color
-						};
-
-						return (
-							<Marker
-								key={g.id}
-								coordinates={[g.location.latitude, g.location.longitude]}
-								anchor="bottom"
-								onClick={this.markerClick.bind(this, g)}
-							>
-								<i className={"fa fa-map-marker"} style={markerStyle}></i>
-							</Marker>
-						);
-					})}
-
-					{group && (
-						<Popup key={group.id} coordinates={[group.location.latitude, group.location.longitude]}>
-							<div style={popupStyle}>
-								{group.name}
-							</div>
-							<div style={popupStyle}>
-								{"Adres:TODO"}
-							</div>
-						</Popup>
-					)}
+				<Marker
+					style= {toMarkerStyle}
+					coordinates={[ride.destination.latitude, ride.destination.longitude]}
+					anchor="bottom"
+					>
+					<i className={"fa fa-map-marker"}></i>
+				</Marker>
+				<Marker
+					style= {fromMarkerStyle}
+					coordinates={[ride.startingLocation.latitude, ride.startingLocation.longitude]}
+					anchor="bottom"
+					>
+					<i className={"fa fa-map-marker"}></i>
+				</Marker>
+				<Popup coordinates={[ride.destination.latitude, ride.destination.longitude]}>
+					<div style={popupStyle}>
+						{"Lokalizacja końcowa."}
+					</div>
+				</Popup>
+				<Popup coordinates={[ride.startingLocation.latitude, ride.startingLocation.longitude]}>
+					<div style={popupStyle}>
+						{"Lokalizacja startowa."}
+					</div>
+				</Popup>
 				</>
+				}
 			</Mapbox>
 		);
 	}
