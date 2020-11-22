@@ -34,16 +34,15 @@ const GroupRides = (props: IGroupRidesProps) => {
 		<GroupDetailedView group={props.group}>
 			<div className = {cssClasses.leftPanel}>
 				<div className ={cssClasses.leftLabels}>
-				<Button onClick={() => {
-					history.push(`/${LayoutRouter.routes.groups}`);
-						}}
-						background={ButtonBackground.Blue}
-						color={ButtonColor.White}
-					>
-						{"Wróć"}
-				</Button>
+					<Button onClick={() => {
+						history.push(`/${LayoutRouter.routes.groups}`);
+							}}
+							background={ButtonBackground.Blue}
+							color={ButtonColor.White}
+						>
+							{"Wróć"}
+					</Button>
 				<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
-
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<div className = {cssClasses.leftList}>

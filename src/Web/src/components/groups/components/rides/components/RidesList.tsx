@@ -22,11 +22,12 @@ const RidesList = (props: IRidesListProps) => {
 		mainRow: "ridesList--mainRow",
 		bottomRow: "ridesList--bottomRow",
 		button: "ridesList--button",
-		mainLabel: "ridesList--mainRow__label",
+		address: "ridesList--mainRow__address",
 		icon: "ridesList--mainRow__icon",
 		seats: "ridesList--mainRow__seats",
-		toLabel: "ridesList--bottomRow__to",
-		fromLabel: "ridesList--bottomRow__from",
+		toLabel: "ridesList--mainRow__to",
+		fromLabel: "ridesList--mainRow__from",
+		driver: "ridesList--bottomRow__driver"
 	};
 
 	let colorIndex: number = 0;
@@ -40,6 +41,7 @@ const RidesList = (props: IRidesListProps) => {
 		const borderColor = {
 			borderColor: props.color
 		};
+
 		return (
 			<li key={props.ride.id}>
 				<button
@@ -47,18 +49,19 @@ const RidesList = (props: IRidesListProps) => {
 				>
 					<div className={cssClasses.mainRow}>
 						<div className={cssClasses.icon} style={color}>	</div>
-						<div className={cssClasses.mainLabel} style={borderColor}>
-							Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
+						<div className={cssClasses.address} style={borderColor}>
+							<div className={cssClasses.fromLabel}>
+								{props.ride.destination.latitude}
+							</div>
+							<div className={cssClasses.toLabel}>
+								{props.ride.startingLocation.latitude}
+							</div>
 						</div>
 						<div className={cssClasses.seats}>2/4</div>
 					</div>
 					<div className={cssClasses.bottomRow}>
-						{/* TODO pobierać adres z mapboxa na podstawie lokalizacji */}
-						<div className={cssClasses.fromLabel}>
-							{props.ride.destination.latitude}
-						</div>
-						<div className={cssClasses.toLabel}>
-							{props.ride.startingLocation.latitude}
+						<div className={cssClasses.driver}>
+							Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
 						</div>
 					</div>
 				</button>
