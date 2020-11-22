@@ -16,6 +16,7 @@ import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { IFormUserData } from "./interfaces/IFormUserData";
 import { ValidationType } from "../../../ui/input/enums/ValidationType";
 import { each } from "../../../../helpers/UniversalHelper";
+import produce from "immer";
 
 interface ISecondStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
@@ -36,6 +37,8 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 		surname: false,
 		email: false,
 	});
+
+	const [validate, setValidate] = useState(false);
 
 	const cssClasses = {
 		container: "addGroupContainerSecond",
@@ -66,6 +69,14 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 	const addBtnClick = () => {
 		if (each(inputsValid, i => i)) {
 			props.callbacks.addUser();
+			setValidate(false);
+			setInputsValid({
+				name: false,
+				email: false,
+				surname: false,
+			});
+		} else {
+			setValidate(true);
 		}
 	};
 
@@ -88,6 +99,7 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 							name: isValid,
 						});
 					},
+					validate,
 				}}
 			/>
 			<Input
@@ -104,6 +116,7 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 							surname: isValid,
 						});
 					},
+					validate,
 				}}
 			/>
 			<Input
@@ -120,6 +133,7 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 							email: isValid,
 						});
 					},
+					validate,
 				}}
 			/>
 			<div className={cssClasses.buttonsGroup}>

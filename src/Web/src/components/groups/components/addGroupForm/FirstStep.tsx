@@ -30,6 +30,8 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		location: false,
 	});
 
+	const [validate, setValidate] = useState(false);
+
 	const cssClasses = {
 		container: "addGroupContainer",
 		map: "addGroupFirstSide__map",
@@ -54,6 +56,14 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 	const incrementStepClick = () => {
 		if (each(inputsValid, i => i)) {
 			props.callbacks.incrementStep();
+			setValidate(false);
+			setInputsValid({
+				name: false,
+				code: false,
+				location: false,
+			});
+		} else {
+			setValidate(true);
 		}
 	};
 
@@ -77,6 +87,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 								name: isValid,
 							});
 						},
+						validate
 					}}
 				/>
 				<Input
@@ -93,6 +104,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 								code: isValid,
 							});
 						},
+						validate
 					}}
 				/>
 				<Input
@@ -109,6 +121,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 								location: isValid,
 							});
 						},
+						validate
 					}}
 				/>
 				<Button onClick={incrementStepClick} color={ButtonColor.White} background={ButtonBackground.Blue}>

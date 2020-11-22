@@ -49,14 +49,14 @@ const Input = (props: IINputProps) => {
 	const [isValid, setIsValid] = useState(true);
 
 	useEffect(() => {
-		if (props.validation) {
+		if (props.validation?.validate) {
 			const valid: boolean = validateInput(props.value, props.validation.type, props.validation.customValidation);
 			setIsValid(valid);
 			if (props.validation.isValidCallback) {
 				props.validation.isValidCallback(valid);
 			}
 		}
-	}, [props.value]);
+	}, [props.value, props.validation?.validate]);
 
 	const inputBaseClassName: string = "input__input";
 	const inputInvalidClassName: string = "input__input--invalid";
