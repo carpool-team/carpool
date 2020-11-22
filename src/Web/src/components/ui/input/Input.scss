@@ -5,9 +5,10 @@
 	&__container {
 		width: 100%;
 		height: 40px;
+		background-color: $white;
 		display: flex;
 		&--invalid {
-			border-bottom: 5px solid $red;
+			border-bottom: 3px solid $red;
 			margin-bottom: 10px;
 		}
 	}
@@ -23,7 +24,7 @@
 		height: 100%;
 		color: $grayDark;
 		font-weight: $medium;
-		background: $white;
+		background: $transparent;
 		padding-left: 25px;
 		&--invalid {
 			color: $red;
@@ -49,14 +50,14 @@
 	}
 	&__user {
 		height: 32px;
-		margin-top: 8px;
+		margin-top: 10px;
 		color: $grayDark;
 	}
 	&__user::before {
 		content: "\f2bc";
 		font-family: FontAwesome;
 		font-size: 22px;
-		background-color: $white;
+		background-color: $transparent;
 		align-content: center;
 		padding-top: 10px;
 		padding-bottom: 10px;
@@ -64,14 +65,14 @@
 	}
 	&__globe {
 		height: 32px;
-		margin-top: 8px;
+		margin-top: 10px;
 		color: $grayDark;
 	}
 	&__globe::before {
 		content: "\f0ac";
 		font-family: FontAwesome;
 		font-size: 22px;
-		background-color: $white;
+		background-color: $transparent;
 		align-content: center;
 		padding-top: 10px;
 		padding-bottom: 10px;
@@ -79,14 +80,14 @@
 	}
 	&__code {
 		height: 32px;
-		margin-top: 8px;
+		margin-top: 10px;
 		color: $grayDark;
 	}
 	&__code::before {
 		content: "\f1b2";
 		font-family: FontAwesome;
 		font-size: 22px;
-		background-color: $white;
+		background-color: $transparent;
 		align-content: center;
 		padding-top: 10px;
 		padding-bottom: 10px;
@@ -94,14 +95,14 @@
 	}
 	&__location {
 		height: 32px;
-		margin-top: 8px;
+		margin-top: 10px;
 		color: $grayDark;
 	}
 	&__location::before {
 		content: "\f124";
 		font-family: FontAwesome;
 		font-size: 22px;
-		background-color: $white;
+		background-color: $transparent;
 		align-content: center;
 		padding-top: 10px;
 		padding-bottom: 10px;
@@ -109,14 +110,14 @@
 	}
 	&__mail {
 		height: 32px;
-		margin-top: 8px;
+		margin-top: 10px;
 		color: $grayDark;
 	}
 	&__mail::before {
 		content: "\f003";
 		font-family: FontAwesome;
 		font-size: 22px;
-		background-color: $white;
+		background-color: $transparent;
 		align-content: center;
 		padding-top: 10px;
 		padding-bottom: 10px;
