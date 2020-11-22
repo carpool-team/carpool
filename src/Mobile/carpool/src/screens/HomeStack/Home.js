@@ -5,8 +5,9 @@ import {AccountSwitch, HamburgerMenu} from '../../components/navigation';
 import {useRoute, useNavigation} from '@react-navigation/core';
 import PassengerMap from './PassengerMap';
 import DriverMap from './DriverMap';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import * as actions from '../../store/actions';
+import {useActiveAccount} from '../../hooks';
 
 const requestLocationPermission = async () => {
   try {
@@ -34,9 +35,8 @@ const requestLocationPermission = async () => {
 
 const Home = () => {
   const dispatch = useDispatch();
-  const activeAccount = useSelector(
-    state => state.accountReducer.activeAccount,
-  );
+
+  const {activeAccount} = useActiveAccount();
 
   const [coordinates, setCoordinates] = useState([]);
 
