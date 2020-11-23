@@ -73,6 +73,10 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 					<ILoginSuccessAction>{
 						type: LoginActionTypes.LoginSuccess,
 					},
+					<IRedirectAction>{
+						type: LayoutActionTypes.Redirect,
+						to: `/${mainRoutes.default}`,
+					}
 				];
 			} else {
 				const msg: string = i18n.t("error." + response.responseException[0]?.code);
