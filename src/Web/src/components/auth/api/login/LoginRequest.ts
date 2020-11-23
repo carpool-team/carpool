@@ -5,6 +5,7 @@ import { ILoginFormData } from "../../login/LoginPanel";
 import { LoginResponse } from "./LoginResponse";
 
 export interface ILoginRequestBody extends ILoginFormData {
+	clientId: string;
 }
 
 export class LoginRequest extends RequestBase<ILoginRequestBody> {

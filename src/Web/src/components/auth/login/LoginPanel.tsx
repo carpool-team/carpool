@@ -22,12 +22,14 @@ interface ILoginPanelProps extends IReactI18nProps, RouteComponentProps, StatePr
 export interface ILoginFormData {
 	email: string;
 	password: string;
+	rememberLogin: boolean;
 }
 
 const LoginPanel = (props: ILoginPanelProps) => {
 	const { t } = props;
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [rememberLogin, setRememberLogin] = useState(false);
 
 	const cssClasses = {
 		container: "auth__container",
@@ -43,6 +45,11 @@ const LoginPanel = (props: ILoginPanelProps) => {
 		email: "auth.loginPanel.email",
 		password: "auth.loginPanel.password",
 		submit: "auth.submit",
+		rememberLogin: "auth.rememberLogin",
+	};
+
+	const inputKeys = {
+		rememberPassword: "rememberPassword",
 	};
 
 	const validateForm = () => {
@@ -56,10 +63,9 @@ const LoginPanel = (props: ILoginPanelProps) => {
 			const data: ILoginFormData = {
 				password,
 				email,
+				rememberLogin
 			};
-			alert("OK!");
-			// commented until API is ready
-			// props.login(data);
+			props.login(data);
 		}
 	};
 
@@ -84,8 +90,17 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						value={password}
 						icon={InputIcon.Password}
 					/>
+					<Input
+						changeHandler={newValue => { setRememberLogin(newValue === "true"); }}
+						value={String(rememberLogin)}
+						type={InputType.Checkbox}
+						label={{
+							text: t(resources.rememberLogin),
+							inputId: inputKeys.rememberPassword,
+						}}
+					/>
 					<Button
-						style = {cssClasses.button}
+						style={cssClasses.button}
 						onClick={onClickSubmit}
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}

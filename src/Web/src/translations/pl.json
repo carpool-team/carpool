@@ -18,7 +18,8 @@
             },
             "submit": "Wyślij",
             "register": "Zarejestruj się",
-            "login": "Zaloguj się"
+            "login": "Zaloguj się",
+            "rememberLogin": "Pamiętaj logowanie"
         },
         "groups": {
             "addGroupForm": {

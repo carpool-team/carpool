@@ -1,4 +1,4 @@
-import { getRequestEndpoint, getRequestType } from "../Helper";
+import { getRequestEndpoint, getRequestType, isAuthEndpoint } from "../Helper";
 import { IRequest } from "../interfaces/IRequest";
 import { IRequestProperties } from "../interfaces/IRequestProperties";
 import ResponseCore from "../responses/ResponseCore";
@@ -9,6 +9,7 @@ export const tempCoords = {
 	latitude: 0,
 	longitude: 0,
 };
+export const tempClientId: string = "TYMCZASOWE_ID_KLIENTA"; // todo: zaorać
 
 export default abstract class RequestCore {
 	//#region class fields
@@ -17,7 +18,8 @@ export default abstract class RequestCore {
 
 	private static config = {
 		devUrl: "https://carpool-rest-api.azurewebsites.net/api",
-		userId: tempUserId
+		devAuthUrl: "https://carpool-auth.azurewebsites.net/api",
+		userId: tempUserId,
 	};
 	private static proxyUrl: string = "https://cors-anywhere.herokuapp.com/";
 	private static headers = {
@@ -46,10 +48,13 @@ export default abstract class RequestCore {
 		if (this.requestBody) {
 			request.body = JSON.stringify(this.requestBody);
 		}
-		const url: string = `${RequestCore.proxyUrl}${RequestCore.config.devUrl}${endpoint}`;
+		const apiUrl: string = isAuthEndpoint(this.requestProperties.endpoint)
+			? RequestCore.config.devAuthUrl
+			: RequestCore.config.devUrl;
+		const url: string = `${RequestCore.proxyUrl}${apiUrl}${endpoint}`;
 		const res = await fetch(url, request);
 		const json = await res.json();
-		console.log("RESPONSE: ", {
+		console.debug("RESPONSE: ", {
 			request,
 			url,
 			json

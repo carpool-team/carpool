@@ -1,6 +1,7 @@
 import { Epic, ofType } from "redux-observable";
 import { of } from "rxjs";
 import { switchMap, mergeMap, catchError } from "rxjs/operators";
+import { tempClientId } from "../../../api/requests/RequestCore";
 import { LoginRequest } from "../api/login/LoginRequest";
 import { LoginResponse } from "../api/login/LoginResponse";
 import { RegisterRequest } from "../api/register/RegisterRequest";
@@ -17,8 +18,6 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 			const response: RegisterResponse = await request.send();
 			return response;
 		}),
-		// Add endpoint
-		// Verify http verb
 		// TODO: FINISH EPIC BEHAVIOR AFTER API READY
 		mergeMap((response) => {
 			if (response.status === 200) {
@@ -42,13 +41,14 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 		ofType(LoginActionTypes.Login),
 		switchMap(async (action: ILoginAction) => {
 			const request: LoginRequest = new LoginRequest({
-				body: { ...action.data }
+				body: {
+					...action.data,
+					clientId: tempClientId
+				}
 			});
 			const response: LoginResponse = await request.send();
 			return response;
 		}),
-		// Add endpoint
-		// Verify http verb
 		// TODO: FINISH EPIC BEHAVIOR AFTER API READY
 		mergeMap((response) => {
 			if (response.status === 200) {
