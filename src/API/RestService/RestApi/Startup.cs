@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Text;
+using AuthShared.Options;
 using AutoWrapper;
 using DataAccessLayer.DatabaseContexts;
 using DataAccessLayer.Repositories;
@@ -50,38 +51,36 @@ namespace RestApi
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
 			services.AddHttpContextAccessor();
-			services.AddControllers().AddNewtonsoftJson();
 
-			services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
-			        .AddEntityFrameworkStores<CarpoolDbContext>()
-			        .AddDefaultTokenProviders();
-
-			services.AddAuthentication(options =>
-			{
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-			}).AddJwtBearer(options =>
-			{
-				options.SaveToken = true;
-				options.RequireHttpsMetadata = false;
-				options.TokenValidationParameters =
-					new TokenValidationParameters
-					{
-						ValidateIssuer = true,
-						ValidateAudience = true,
-						ValidAudience = Configuration["Jwt:Audience"],
-						ValidIssuer = Configuration["Jwt:Issuer"],
-						IssuerSigningKey =
-							new SymmetricSecurityKey(
-								Encoding.UTF8
-								        .GetBytes(Configuration["Jwt:Key"]))
-					};
-			});
-
-			services.AddMvc(options => options.EnableEndpointRouting = false)
+			services.AddControllers()
+			        .AddNewtonsoftJson()
 			        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+			
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+			        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+			        {
+				        options.Authority = JwtOptions.Issuer;
+				        options.Audience = JwtOptions.Audience;
+				        options.SaveToken = true;
+				        options.TokenValidationParameters = new TokenValidationParameters
+				        {
+					        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+					        TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+					        
+					        ValidateLifetime = true,
+					        ValidateIssuer = true
+				        };
+			        });
 
+			services.AddAuthorization(options =>
+			{
+				options.AddPolicy("ApiScope", policy =>
+				{
+					policy.RequireAuthenticatedUser();
+					policy.RequireClaim("scope", "carpool_rest");
+				});
+			});
+			
 			services.AddSingleton(Configuration);
 
 			services.AddScoped<IGroupRepository, GroupRepository>();

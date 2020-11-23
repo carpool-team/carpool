@@ -13,17 +13,11 @@ namespace RestApi.Queries.GroupQueries
 {
 	public class GetGroupQueryHandler : IRequestHandler<GetGroupQuery, GroupDetailsDto>
 	{
-		private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly IGroupRepository _repository;
-		private readonly UserManager<ApplicationUser> _userManager;
 
-		public GetGroupQueryHandler(IGroupRepository repository,
-		                            IHttpContextAccessor httpContextAccessor,
-		                            UserManager<ApplicationUser> userManager)
+		public GetGroupQueryHandler(IGroupRepository repository)
 		{
 			_repository = repository;
-			_httpContextAccessor = httpContextAccessor;
-			_userManager = userManager;
 		}
 
 

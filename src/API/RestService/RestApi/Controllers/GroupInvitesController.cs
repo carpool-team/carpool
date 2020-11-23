@@ -71,7 +71,7 @@ namespace RestApi.Controllers
 			return new ApiResponse($"Group Invite with id: {response} has been deleted");
 		}
 
-		[HttpGet("~/api/users/{userId}/groupInvites")]
+		[HttpGet("~/api/users/{userId}/group-invites")]
 		public async Task<ApiResponse> GetUserGroupInvites([FromRoute] Guid userId)
 		{
 			var request = new GetUserGroupInvitesQuery(userId);
