@@ -18,6 +18,8 @@
             },
             "submit": "Wyślij",
             "register": "Zarejestruj się",
+            "registerSuccess": "Rejestracja pomyślna!",
+            "loginSuccess": "Logowanie pomyślne!",
             "login": "Zaloguj się",
             "rememberLogin": "Pamiętaj logowanie"
         },

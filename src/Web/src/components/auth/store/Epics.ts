@@ -5,12 +5,12 @@ import { switchMap, mergeMap, catchError } from "rxjs/operators";
 import { tempClientId } from "../../../api/requests/RequestCore";
 import i18n from "../../../i18n";
 import LayoutRouter, { mainRoutes } from "../../layout/components/LayoutRouter";
-import { IRedirectAction, LayoutActionTypes } from "../../layout/store/Types";
+import { IRedirectAction, IRedirectedAction, LayoutActionTypes } from "../../layout/store/Types";
 import { LoginRequest } from "../api/login/LoginRequest";
 import { LoginResponse } from "../api/login/LoginResponse";
 import { RegisterRequest } from "../api/register/RegisterRequest";
 import { RegisterResponse } from "../api/register/RegisterResponse";
-import { ILoginAction, ILoginSuccessAction, IRegisterAction, IRegisterErrorAction, IRegisterSuccessAction, LoginAction, LoginActionTypes, RegisterAction, RegisterActionTypes } from "./Types";
+import { ILoginAction, ILoginErrorAction, ILoginSuccessAction, IRegisterAction, IRegisterErrorAction, IRegisterSuccessAction, LoginAction, LoginActionTypes, RegisterAction, RegisterActionTypes } from "./Types";
 
 const registerEpic: Epic<RegisterAction> = (action$) =>
 	action$.pipe(
@@ -24,7 +24,7 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 		}),
 		mergeMap((response) => {
 			if (!response.isError) {
-				toast.success(response.message);
+				toast.success(i18n.t("auth.registerSuccess"));
 				return [
 					<IRegisterSuccessAction>{
 						type: RegisterActionTypes.RegisterSuccess,
@@ -66,12 +66,20 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 			const response: LoginResponse = await request.send();
 			return response;
 		}),
-		// TODO: FINISH EPIC BEHAVIOR AFTER API READY
 		mergeMap((response) => {
-			if (response.status === 200) {
+			if (!response.isError) {
+				toast.success(i18n.t("auth.loginSuccess"));
 				return [
 					<ILoginSuccessAction>{
 						type: LoginActionTypes.LoginSuccess,
+					},
+				];
+			} else {
+				const msg: string = i18n.t("error." + response.responseException[0]?.code);
+				toast.error(msg);
+				return [
+					<ILoginErrorAction>{
+						type: LoginActionTypes.LoginError,
 					}
 				];
 			}
