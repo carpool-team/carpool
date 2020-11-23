@@ -75,6 +75,9 @@
         "loadingScreen": {
             "quote": "Share a ride",
             "join": "Grupy"
+        },
+        "error": {
+            "DuplicateUserName": "Wybrany e-mail jest już zajęty!"
         }
     }
 }

@@ -3,6 +3,9 @@ export default abstract class ResponseCore {
 	status: number;
 	message: string;
 	isError: boolean;
-	responseException?: any;
+	responseException?: Array<{
+		code: string;
+		description: string;
+	}>;
 	title: string;
 }

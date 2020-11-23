@@ -1,7 +1,9 @@
+import { toast } from "react-toastify";
 import { Epic, ofType } from "redux-observable";
 import { of } from "rxjs";
 import { switchMap, mergeMap, catchError } from "rxjs/operators";
 import { tempClientId } from "../../../api/requests/RequestCore";
+import i18n from "../../../i18n";
 import { LoginRequest } from "../api/login/LoginRequest";
 import { LoginResponse } from "../api/login/LoginResponse";
 import { RegisterRequest } from "../api/register/RegisterRequest";
@@ -18,22 +20,29 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 			const response: RegisterResponse = await request.send();
 			return response;
 		}),
-		// TODO: FINISH EPIC BEHAVIOR AFTER API READY
 		mergeMap((response) => {
-			if (response.status === 200) {
+			if (!response.isError) {
+				toast.success(response.message);
 				return [
 					<IRegisterSuccessAction>{
 						type: RegisterActionTypes.RegisterSuccess,
 					}
 				];
+			} else {
+				const msg: string = i18n.t("error." + response.responseException[0]?.code);
+				toast.error(msg);
+				return of(<any>{
+					type: RegisterActionTypes.RegisterError,
+					error: null,
+				});
 			}
 		}),
-		catchError((err: Error) =>
-			of(<any>{
+		catchError((err: Error) => {
+			return of(<any>{
 				type: RegisterActionTypes.RegisterError,
 				error: err,
-			})
-		)
+			});
+		})
 	);
 
 const loginEpic: Epic<LoginAction> = (action$) =>

@@ -21,8 +21,8 @@ import {
 import "./RegisterPanel.scss";
 
 export interface IRegisterFormData {
-	name: string;
-	surname: string;
+	firstName: string;
+	lastName: string;
 	password: string;
 	email: string;
 }
@@ -64,14 +64,12 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 	const onClickSubmit = () => {
 		if (validateForm()) {
 			const data: IRegisterFormData = {
-				name,
-				surname,
+				firstName: name,
+				lastName: surname,
 				password,
 				email,
 			};
-			alert("OK!");
-			// commented until API is ready
-			// props.register(data);
+			props.register(data);
 		}
 	};
 
@@ -106,7 +104,7 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 					/>
 					{renderPasswordInputs()}
 					<Button
-						style = {cssClasses.button}
+						style={cssClasses.button}
 						onClick={onClickSubmit}
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}
