@@ -6,15 +6,19 @@ import { groupEpics } from "../components/groups/store/Epics";
 import { authReducer } from "../components/auth/store/Reducers";
 import { IAuthState } from "../components/auth/store/State";
 import { authEpics } from "../components/auth/store/Epics";
+import { ILayoutState } from "../components/layout/store/State";
+import { layoutReducer } from "../components/layout/store/Reducers";
 
 export type RootReducerType = {
 	groups: Reducer<IGroupsState>,
-	auth: Reducer<IAuthState>
+	auth: Reducer<IAuthState>,
+	layout: Reducer<ILayoutState>,
 };
 
 export const rootReducer: RootReducerType = {
 	groups: groupsReducer,
 	auth: authReducer,
+	layout: layoutReducer,
 };
 
 export function getMainReduxModule(): IEpicModule<any> {

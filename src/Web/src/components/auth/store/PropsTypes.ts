@@ -11,7 +11,7 @@ interface IStatePropsType {
 interface IStateFromProps {
 }
 
-export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = () => ({
+export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = state => ({
 });
 
 interface IDispatchPropsType {

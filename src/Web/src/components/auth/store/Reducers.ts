@@ -9,9 +9,7 @@ import {
 } from "./Types";
 
 const initialState: IAuthState = {
-	groups: [],
-	invites: [],
-	rides: [],
+	redirectTo: null,
 };
 
 /**

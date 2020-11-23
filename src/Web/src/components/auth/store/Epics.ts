@@ -4,11 +4,13 @@ import { of } from "rxjs";
 import { switchMap, mergeMap, catchError } from "rxjs/operators";
 import { tempClientId } from "../../../api/requests/RequestCore";
 import i18n from "../../../i18n";
+import LayoutRouter, { mainRoutes } from "../../layout/components/LayoutRouter";
+import { IRedirectAction, LayoutActionTypes } from "../../layout/store/Types";
 import { LoginRequest } from "../api/login/LoginRequest";
 import { LoginResponse } from "../api/login/LoginResponse";
 import { RegisterRequest } from "../api/register/RegisterRequest";
 import { RegisterResponse } from "../api/register/RegisterResponse";
-import { ILoginAction, ILoginSuccessAction, IRegisterAction, IRegisterSuccessAction, LoginAction, LoginActionTypes, RegisterAction, RegisterActionTypes } from "./Types";
+import { ILoginAction, ILoginSuccessAction, IRegisterAction, IRegisterErrorAction, IRegisterSuccessAction, LoginAction, LoginActionTypes, RegisterAction, RegisterActionTypes } from "./Types";
 
 const registerEpic: Epic<RegisterAction> = (action$) =>
 	action$.pipe(
@@ -26,15 +28,21 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 				return [
 					<IRegisterSuccessAction>{
 						type: RegisterActionTypes.RegisterSuccess,
+					},
+					<IRedirectAction>{
+						type: LayoutActionTypes.Redirect,
+						to: `/${mainRoutes.login}`
 					}
 				];
 			} else {
 				const msg: string = i18n.t("error." + response.responseException[0]?.code);
 				toast.error(msg);
-				return of(<any>{
-					type: RegisterActionTypes.RegisterError,
-					error: null,
-				});
+				return [
+					<IRegisterErrorAction>{
+						type: RegisterActionTypes.RegisterError,
+						error: null,
+					},
+				];
 			}
 		}),
 		catchError((err: Error) => {
