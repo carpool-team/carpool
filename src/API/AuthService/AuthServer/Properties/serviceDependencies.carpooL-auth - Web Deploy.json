@@ -1,16 +1,10 @@
 {
   "dependencies": {
-    "secrets1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/AuthServerVault",
-      "type": "secrets.keyVault",
-      "connectionId": "VaultUri",
-      "secretStore": "AzureAppSettings"
-    },
     "mssql1": {
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/carpool-team/databases/auth-db",
       "type": "mssql.azure",
       "connectionId": "DefaultConnection",
-      "secretStore": "AzureKeyVault"
+      "secretStore": "AzureAppSettings"
     }
   }
 }
