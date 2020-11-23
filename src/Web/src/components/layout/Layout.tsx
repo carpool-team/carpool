@@ -22,21 +22,22 @@ class Layout extends Component<ILayoutProps> {
 	render: () => JSX.Element = () => {
 		// current url
 		const { pathname } = this.props.location;
+		let redirectComponent: JSX.Element = null;
 		if (this.props?.redirectTo) {
+			redirectComponent = <Redirect to={this.props.redirectTo} />;
 			this.props.redirected();
-			return <Redirect to={this.props.redirectTo} />;
-		} else {
-			return (
-				<React.Fragment>
-					<NavBar />
-					<ToastContainer />
-					<main className={this.cssClasses.main}>
-						<LayoutRouter />
-					</main>
-					<Footer />
-				</React.Fragment>
-			);
 		}
+		return (
+			<React.Fragment>
+				<NavBar />
+				<ToastContainer />
+				<main className={this.cssClasses.main}>
+					<LayoutRouter />
+				</main>
+				{redirectComponent}
+				<Footer />
+			</React.Fragment>
+		);
 	}
 }
 
