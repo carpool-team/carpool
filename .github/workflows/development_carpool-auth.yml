@@ -5,6 +5,8 @@ name: Build and deploy ASP.Net Core app to Azure Web App - carpool-auth
 
 on:
   push:
+    paths:
+      - 'src/API/AuthService/**'
     branches:
       - development
 
@@ -22,14 +24,9 @@ jobs:
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
+      working-directory: ./src/API/AuthService/AuthServer	
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      working-directory: ./src/API/AuthService/AuthServer	
 
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'carpool-auth'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_7cc53e2fe2114e54a0cab9513dc4ea32 }}
-        package: ${{env.DOTNET_ROOT}}/myapp 
