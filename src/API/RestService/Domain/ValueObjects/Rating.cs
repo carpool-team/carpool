@@ -14,8 +14,8 @@ namespace Domain.ValueObjects
 		{
 		}
 
-		public Guid Id { get; set; }
-		public Guid UserId { get; set; }
-		public byte Value { get; set; }
+		public Guid Id { get; init; }
+		public Guid UserId { get; init; }
+		public byte Value { get; init; }
 	}
 }

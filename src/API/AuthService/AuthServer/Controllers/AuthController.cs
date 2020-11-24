@@ -84,7 +84,7 @@ namespace AuthServer.Controllers
 					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 					new Claim(JwtRegisteredClaimNames.Sub, user.Id),
 					new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
-					new Claim("scope", "carpool_rest")
+					new Claim("scope", "carpool_rest_api")
 				};
 
 				var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key));

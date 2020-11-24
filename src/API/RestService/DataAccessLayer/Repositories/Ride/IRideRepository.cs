@@ -22,5 +22,7 @@ namespace DataAccessLayer.Repositories.Ride
 		Task<IEnumerable<Domain.Entities.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(Guid userId,
 		                                                               bool past,
 		                                                               CancellationToken cancellationToken);
+
+		Task RemoveUserFromRide(Guid userId, Guid rideId, CancellationToken cancellationToken);
 	}
 }
