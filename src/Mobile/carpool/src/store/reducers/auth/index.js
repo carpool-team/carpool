@@ -1,5 +1,6 @@
 import * as actions from '../../actions/auth';
 import {initialStoreItem} from '../utils';
+import {removeData, STORAGE_KEYS} from '../../../storage';
 
 const initialState = {
   tokens: initialStoreItem,
@@ -29,6 +30,15 @@ const reducer = (state = initialState, action) => {
         tokens: {
           ...state.tokens,
           loading: true,
+        },
+      };
+    case actions.LogoutUser.Trigger:
+      removeData(STORAGE_KEYS.token);
+      removeData(STORAGE_KEYS.refreshToken);
+      return {
+        ...state,
+        tokens: {
+          ...initialStoreItem,
         },
       };
     default:

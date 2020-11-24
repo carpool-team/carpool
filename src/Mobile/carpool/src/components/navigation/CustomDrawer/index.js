@@ -60,6 +60,8 @@ const CustomDrawer = props => {
     });
   };
 
+  const onLogout = () => dispatch(actions.logoutUser());
+
   const isPassenger = activeAccount === 'passenger';
 
   const renderTitle = () => {
@@ -125,7 +127,7 @@ const CustomDrawer = props => {
           width="65%"
           title="Logout"
           color={colors.red}
-          onPress={() => null}
+          onPress={onLogout}
         />
       </View>
     </View>
