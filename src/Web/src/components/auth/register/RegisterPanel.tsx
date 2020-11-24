@@ -104,7 +104,7 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 					/>
 					{renderPasswordInputs()}
 					<Button
-						style={cssClasses.button}
+						additionalCssClass={cssClasses.button}
 						onClick={onClickSubmit}
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}

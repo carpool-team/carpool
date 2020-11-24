@@ -2,7 +2,7 @@ import React from "react";
 import { IGroup } from "../../../interfaces/IGroup";
 import ButtonLink from "../../../../ui/buttonLink/ButtonLink";
 import { colorList } from "../../../../../scss/colorList";
-import LayoutRouter from "../../../../layout/components/LayoutRouter";
+import { mainRoutes } from "../../../../layout/components/LayoutRouter";
 import GroupsRouter from "../../GroupsRouter";
 import { TFunction } from "i18next";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
@@ -61,14 +61,14 @@ const GroupsList = (props: IGroupsListProps) => {
 					</div>
 				</button>
 				<div className={activeMenuCssClass}>
-					<ButtonLink to={`/${LayoutRouter.routes.groups}${GroupsRouter.routes.rides}`}>
+					<ButtonLink to={`/${mainRoutes.groups}${GroupsRouter.routes.rides}`}>
 						{t(resources.ridesInGroup)}
 					</ButtonLink>
 					{/* TODO Sprawdzać czy użytkownik ma prawa jest ownerem grupy, inaczej nie wyświetlać tego. */}
-					<ButtonLink to={`/${LayoutRouter.routes.groups}${GroupsRouter.routes.edit}`}>
+					<ButtonLink to={`/${mainRoutes.groups}${GroupsRouter.routes.edit}`}>
 						{t(resources.editGroup)}
 					</ButtonLink>
-					<ButtonLink to={`/${LayoutRouter.routes.groups}${GroupsRouter.routes.invite}`}>
+					<ButtonLink to={`/${mainRoutes.groups}${GroupsRouter.routes.invite}`}>
 						{t(resources.inviteToGroup)}
 					</ButtonLink>
 				</div>

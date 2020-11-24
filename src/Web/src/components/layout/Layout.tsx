@@ -32,12 +32,7 @@ class Layout extends Component<ILayoutProps> {
 				<NavBar />
 				<ToastContainer />
 				<main className={this.cssClasses.main}>
-					<LayoutRouter
-						match={this.props.match}
-						staticContext={this.props.staticContext}
-						history={this.props.history}
-						location={this.props.location}
-					/>
+					<LayoutRouter />
 				</main>
 				{redirectComponent}
 				<Footer />

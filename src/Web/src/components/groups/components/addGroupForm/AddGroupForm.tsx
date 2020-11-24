@@ -62,9 +62,9 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 	}
 	private removeUser = (user: IFormUserData) => {
 		const users = this.state.formData.users.filter(item => item !== user);
-			this.setState(produce((draft: IAddGroupFormScreenState) => {
-				draft.formData.users = users;
-			}));
+		this.setState(produce((draft: IAddGroupFormScreenState) => {
+			draft.formData.users = users;
+		}));
 	}
 
 	private createGroup = () => {
@@ -74,17 +74,8 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 			code: this.state.formData.group.code,
 			owner: tempUserId,
 			location: {
-				coordinates: {
-					// TODO: legit lat,lng
-					latitude: 0,
-					longitude: 0,
-					coordinatesId: "",
-				},
-				locationName: {
-					name: "",
-					id: "",
-				},
-				id: "",
+				latitude: 0,
+				longitude: 0,
 			},
 			rideCount: 0,
 			userCount: this.state.formData.users.length,

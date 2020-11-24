@@ -100,7 +100,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						}}
 					/>
 					<Button
-						style={cssClasses.button}
+						additionalCssClass={cssClasses.button}
 						onClick={onClickSubmit}
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}

@@ -111,6 +111,7 @@ const Input = (props: IINputProps) => {
 				/>
 			</div>
 			{renderValidationMessage()}
+		</div>
 	);
 
 	const renderPasswordInput = () => (
