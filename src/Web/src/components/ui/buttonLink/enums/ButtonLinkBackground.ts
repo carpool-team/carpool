@@ -1,6 +1,6 @@
 /** Button types interface */
-export enum ButtonBackground {
-  Tansparent,
+export enum ButtonLinkBackground {
+	Tansparent,
 	Gray,
 	Green,
 	Blue
