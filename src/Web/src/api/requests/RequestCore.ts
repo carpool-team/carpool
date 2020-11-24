@@ -46,7 +46,7 @@ export default abstract class RequestCore {
 		const headers: { [key: string]: string } = { ...RequestCore.headers };
 		const state: AppState = getState();
 		if (state.auth?.tokenInfo?.token) {
-			headers["Authorization"] = `Bearer ${state.auth.tokenInfo.token}`;
+			// headers["Authorization"] = `Bearer ${state.auth.tokenInfo.token}`;
 		}
 		const request: IRequest = {
 			method,
