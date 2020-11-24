@@ -1,9 +1,9 @@
 import React from "react";
 import "./NavBar.scss";
-import Button from "./NavButton/NavButton";
-import { ButtonColor } from "./NavButton/enums/ButtonColor";
-import { ButtonBackground } from "./NavButton/enums/ButtonBackground";
-import { ButtonIcon } from "./NavButton/enums/ButtonIcon";
+import Button from "./navButton/NavButton";
+import { ButtonColor } from "./navButton/enums/ButtonColor";
+import { ButtonBackground } from "./navButton/enums/ButtonBackground";
+import { ButtonIcon } from "./navButton/enums/ButtonIcon";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import LayoutRouter, { mainRoutes } from "../layout/components/LayoutRouter";

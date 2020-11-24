@@ -1,35 +1,28 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Text, View} from 'react-native';
 import {UpView} from '../../../common';
-import {colors} from '../../../../styles';
-import {CircleButton} from '../../../common/buttons';
-import Ionicon from 'react-native-vector-icons/Ionicons';
 import {parseCoords} from '../../../../utils/coords';
 import {styles} from './index.styles';
-import {getLeavingIn} from './utils';
 import {Waypoints} from '../../../Ride';
+import moment from 'moment';
+import {sheet} from '../../../../styles';
 
 const ListItem = ({item, onItemPress}) => (
   <UpView
     onPress={() => onItemPress(item)}
     borderRadius={16}
-    style={styles.upview}>
-    <View style={styles.container}>
-      <View style={styles.topRow}>
-        <CircleButton
-          style={styles.circleButton}
-          icon={<Ionicon name="ios-car" color={colors.grayDark} size={32} />}
-        />
-        <View style={styles.column}>
-          <Text style={styles.singleRide}>Single ride</Text>
-          <Text style={styles.leavingIn}>{getLeavingIn(item.date)}</Text>
-        </View>
-      </View>
-      <Waypoints
-        ride={item}
-        start={parseCoords(item.startingLocation.coordinates)}
-      />
+    style={styles.upview}
+    contentContainerStyle={styles.container}>
+    <View style={sheet.rowCenterSplit}>
+      <Text style={styles.time}>{moment(item.date).format('hh:mm')}</Text>
+      <Text style={styles.date}>
+        {moment(item.date).format('Do MMMM YYYY')}
+      </Text>
     </View>
+    <Waypoints
+      ride={item}
+      start={parseCoords(item.startingLocation.coordinates)}
+    />
   </UpView>
 );
 

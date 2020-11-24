@@ -2,7 +2,7 @@ import * as faker from "faker";
 import { IInvite } from "../components/groups/interfaces/IInvite";
 
 const exampleInvites: IInvite[] = [
-	// TODO: legit mocks
+	// TODO: Add legit mocks
 	// {
 	// 	id: faker.random.alphaNumeric(32),
 	// 	isPending: false,

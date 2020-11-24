@@ -1,9 +1,8 @@
-import { from } from "rxjs";
 import { ButtonLinkColor } from "./enums/ButtonLinkColor";
-import {ButtonLinkBackground} from "./enums/ButtonLinkBackground";
-import {ButtonLinkIcon} from "./enums/ButtonLinkIcon";
-import {ButtonLinkUnderline} from "./enums/ButtonLinkUndeline";
-import {ButtonLinkStyle} from "./enums/ButtonLinkStyle";
+import { ButtonLinkBackground } from "./enums/ButtonLinkBackground";
+import { ButtonLinkIcon } from "./enums/ButtonLinkIcon";
+import { ButtonLinkUnderline } from "./enums/ButtonLinkUnderline";
+import { ButtonLinkStyle } from "./enums/ButtonLinkStyle";
 
 export const getColorClass: (type?: ButtonLinkColor) => string = (color) => {
 	switch (color) {

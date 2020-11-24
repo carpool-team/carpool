@@ -37,6 +37,11 @@
                 "basicInfo": "Podstawowe informacje",
                 "basicInfo2": "Zaproś użytkowników"
             },
+            "list": {
+                "editGroup": "Edytuj grupę",
+                "ridesInGroup": "Przejazdy",
+                "inviteToGroup": "Zaproś do grupy"
+            },
             "addGroupBtn": "Dodaj grupę",
             "ridesBtn": "Przejazdy",
             "invitesBtn": "Zaproszenia"
@@ -77,6 +82,12 @@
         "loadingScreen": {
             "quote": "Share a ride",
             "join": "Grupy"
+        },
+        "input": {
+            "validation": {
+                "emailInvalid": "Nieprawidłowy adres e-mail",
+                "fieldRequired": "Pole wymagane"
+            }
         },
         "error": {
             "DuplicateUserName": "Wybrany e-mail jest już zajęty!"

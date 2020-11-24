@@ -3,10 +3,9 @@ import { Link } from "react-router-dom";
 import { ButtonLinkColor } from "./enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "./enums/ButtonLinkBackground";
 import { ButtonLinkIcon } from "./enums/ButtonLinkIcon";
-import { ButtonLinkUnderline } from "./enums/ButtonLinkUndeline";
+import { ButtonLinkUnderline } from "./enums/ButtonLinkUnderline";
 import { ButtonLinkStyle } from "./enums/ButtonLinkStyle";
 import { getBackgroundClass, getColorClass, getIconClass, getUnderlineClass, getStyleClass } from "./Helpers";
-import { from } from "rxjs";
 import "./ButtonLink.scss";
 
 interface IButtonLinkProps {
@@ -21,7 +20,7 @@ interface IButtonLinkProps {
 
 const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
 
-	const btnClick = (event: React.MouseEvent) => {
+	const btnClick = () => {
 		if (props.onClick) {
 			props.onClick();
 		} else {

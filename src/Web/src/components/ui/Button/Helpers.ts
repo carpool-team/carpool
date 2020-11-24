@@ -41,3 +41,4 @@ export const getIconClass: (type?: ButtonIcon) => string = (icon) => {
 			return "button__icon--none";
 	}
 };
+

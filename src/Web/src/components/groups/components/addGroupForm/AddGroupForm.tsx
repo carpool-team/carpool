@@ -10,6 +10,7 @@ import { IFormData, initialFormData } from "./interfaces/IFormData";
 import { IGroup } from "../../interfaces/IGroup";
 import { mainRoutes } from "../../../layout/components/LayoutRouter";
 import { tempUserId } from "../../../../api/requests/RequestCore";
+import { IFormUserData } from "./interfaces/IFormUserData";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {
 	callbacks: IGroupCallbacks;
@@ -59,6 +60,12 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 			draft.formData.user = initialFormData.user;
 		}));
 	}
+	private removeUser = (user: IFormUserData) => {
+		const users = this.state.formData.users.filter(item => item !== user);
+			this.setState(produce((draft: IAddGroupFormScreenState) => {
+				draft.formData.users = users;
+			}));
+	}
 
 	private createGroup = () => {
 		let group: IGroup = {
@@ -83,8 +90,6 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 			userCount: this.state.formData.users.length,
 			// users: this.state.formData.users.map(user => ({
 			// 	name: user.name,
-			// 	surname: user.surname,
-			// 	email: user.email,
 			// })),
 		};
 		this.props.callbacks.addGroup(group);
@@ -109,6 +114,7 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 				decrementStep: this.decrementStep,
 				createGroup: this.createGroup,
 				addUser: this.addUser,
+				removeUser: this.removeUser
 			}}
 		/>
 	)

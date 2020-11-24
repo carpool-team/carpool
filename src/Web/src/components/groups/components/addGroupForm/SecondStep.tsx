@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import MediaQuery from "react-responsive";
 import { withTranslation } from "react-i18next";
 import { IFormData } from "./interfaces/IFormData";
@@ -6,15 +6,24 @@ import Input from "../../../ui/input/Input";
 import { InputType } from "../../../ui/input/enums/InputType";
 import { InputIcon } from "../../../ui/input/enums/InputIcon";
 import Button from "../../../ui/button/Button";
-import {ButtonColor} from "../../../ui/button/enums/ButtonColor";
-import {ButtonBackground} from "../../../ui/button/enums/ButtonBackground";
+import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
+import { ButtonSmallIcon } from "../../../ui/buttonSmall/enums/ButtonSmallIcon";
+import { ButtonSmallBackground } from "../../../ui/buttonSmall/enums/ButtonSmallBackground";
+import { ButtonSmallColor } from "../../../ui/buttonSmall/enums/ButtonSmallColor";
+import ButtonSmall from "../../../ui/buttonSmall/ButtonSmall";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
+import { IFormUserData } from "./interfaces/IFormUserData";
+import { ValidationType } from "../../../ui/input/enums/ValidationType";
+import { each } from "../../../../helpers/UniversalHelper";
+import produce from "immer";
 
 interface ISecondStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
 	decrementStep: () => void;
 	addUser: () => void;
 	createGroup: () => void;
+	removeUser: (user: IFormUserData) => void;
 }
 
 interface ISecondStepProps extends IReactI18nProps {
@@ -23,6 +32,14 @@ interface ISecondStepProps extends IReactI18nProps {
 }
 
 const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
+	const [inputsValid, setInputsValid] = useState({
+		name: false,
+		surname: false,
+		email: false,
+	});
+
+	const [validate, setValidate] = useState(false);
+
 	const cssClasses = {
 		container: "addGroupContainerSecond",
 		inputs: "addGroupSecondSide__inputs",
@@ -49,6 +66,20 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 		basicInfo: "groups.addGroupForm.basicInfo2",
 	};
 
+	const addBtnClick = () => {
+		if (each(inputsValid, i => i)) {
+			props.callbacks.addUser();
+			setValidate(false);
+			setInputsValid({
+				name: false,
+				email: false,
+				surname: false,
+			});
+		} else {
+			setValidate(true);
+		}
+	};
+
 	const { t } = props;
 
 	const renderInputs = () => (
@@ -58,23 +89,52 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 				type={InputType.Text}
 				changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.name)}
 				placeholder={t(resources.nameInput)}
-				icon = {InputIcon.User}
+				icon={InputIcon.User}
 				value={props.data.user.name}
+				validation={{
+					type: ValidationType.Required,
+					isValidCallback: isValid => {
+						setInputsValid({
+							...inputsValid,
+							name: isValid,
+						});
+					},
+					validate,
+				}}
 			/>
 			<Input
 				type={InputType.Text}
 				changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.surname)}
 				placeholder={t(resources.surnameInput)}
-				icon = {InputIcon.User}
+				icon={InputIcon.User}
 				value={props.data.user.surname}
+				validation={{
+					type: ValidationType.Required,
+					isValidCallback: isValid => {
+						setInputsValid({
+							...inputsValid,
+							surname: isValid,
+						});
+					},
+					validate,
+				}}
 			/>
 			<Input
 				type={InputType.Text}
 				changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.email)}
 				placeholder={t(resources.emailInput)}
-				icon = {InputIcon.Mail}
-				// commment={t(resources.emailInputComment)}
+				icon={InputIcon.Mail}
 				value={props.data.user.email}
+				validation={{
+					type: ValidationType.Email,
+					isValidCallback: isValid => {
+						setInputsValid({
+							...inputsValid,
+							email: isValid,
+						});
+					},
+					validate,
+				}}
 			/>
 			<div className={cssClasses.buttonsGroup}>
 				<Button
@@ -82,13 +142,13 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 				>
 					{t(resources.prevBtn)}
 				</Button>
-				<Button onClick={props.callbacks.addUser} >
+				<Button onClick={addBtnClick}>
 					{t(resources.addBtn)}
 				</Button>
 				<Button
 					onClick={props.callbacks.createGroup}
-					color = {ButtonColor.White}
-					background = {ButtonBackground.Blue}
+					color={ButtonColor.White}
+					background={ButtonBackground.Blue}
 				>
 					{t(resources.createBtn)}
 				</Button>
@@ -103,21 +163,28 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 		return (
 			<ul className={cssClasses.userList}>
 				{props.data.users.map((user, idx) => {
-				++colorIndex;
-				const color = {
-					color: colorList[colorIndex % colorList.length]
-				};
-				return (
-					<li	key={idx}>
-						<div className={cssClasses.userListItem} style={color}>
-							<div className={cssClasses.userListItemName}>{user.name} {user.surname}</div>
-							<MediaQuery query="(min-width: 900px)">
-								<span>{user.email}</span>
-							</MediaQuery>
-						</div>
-					</li>
-				);
-			})}
+					++colorIndex;
+					const color = {
+						color: colorList[colorIndex % colorList.length]
+					};
+					return (
+						<li key={idx}>
+							<div className={cssClasses.userListItem} style={color}>
+								<div className={cssClasses.userListItemName}>{user.name} {user.surname}</div>
+								<MediaQuery query="(min-width: 900px)">
+									<span>{user.email}</span>
+								</MediaQuery>
+								<ButtonSmall
+									icon={ButtonSmallIcon.Close}
+									onClick={() => props.callbacks.removeUser(user)}
+									color={ButtonSmallColor.Gray}
+									background={ButtonSmallBackground.White}
+								>
+								</ButtonSmall>
+							</div>
+						</li>
+					);
+				})}
 			</ul>
 		);
 	};

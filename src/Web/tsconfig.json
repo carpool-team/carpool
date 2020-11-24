@@ -26,6 +26,7 @@
         "removeComments": true,
         "resolveJsonModule": true,
         "sourceMap": true,
+        "forceConsistentCasingInFileNames": false,
         "target": "ES6",
         "lib": [
             "ES6",

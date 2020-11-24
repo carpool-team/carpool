@@ -13,6 +13,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
 import {DriverInfo, DriversRideInfo} from '../../Ride';
 import {styles} from './index.styles';
+import {useActiveAccount} from '../../../hooks';
 
 const CustomDrawer = props => {
   const [ride, setRide] = useState(null);
@@ -22,9 +23,8 @@ const CustomDrawer = props => {
   // Store
   const driversRides = useSelector(state => state.driverReducer.driversRides);
   const userRides = useSelector(state => state.passengerReducer.userRides);
-  const activeAccount = useSelector(
-    state => state.accountReducer.activeAccount,
-  );
+
+  const {activeAccount} = useActiveAccount();
 
   const dispatch = useDispatch();
 
@@ -59,6 +59,8 @@ const CustomDrawer = props => {
       params: {ride: driversRide},
     });
   };
+
+  const onLogout = () => dispatch(actions.logoutUser());
 
   const isPassenger = activeAccount === 'passenger';
 
@@ -125,7 +127,7 @@ const CustomDrawer = props => {
           width="65%"
           title="Logout"
           color={colors.red}
-          onPress={() => null}
+          onPress={onLogout}
         />
       </View>
     </View>
