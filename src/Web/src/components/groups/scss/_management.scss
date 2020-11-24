@@ -109,7 +109,59 @@
 		padding-left: 20px;
 		padding-top: 7px;
 	}
-  }
+	.groupsManagementList__active {
+		  display: flex;
+		  height: 150px;
+		  flex-direction: column;
+		  margin-bottom: 7px;
+		  background: $blue;
+		  color: $grayDark;
+		&--label{
+			font-size: 19px;
+			font-weight: $medium;
+			color: $grayDark;
+			text-decoration: none;
+			padding-left: 25px;
+			color: inherit;
+			height: 100%;
+			display: flex;
+			align-items: center;
+		}
+		&--button{
+			height: 50px;
+			border: none;
+			width: 100%;
+			background-color: inherit;
+			padding-left: 0;
+			padding-right: 0;
+			display: flex;
+			flex-direction: row;
+			justify-content: left;
+			border-bottom: 3px solid;
+		}
+		&--button:focus{
+			outline: none;
+		}
+		&--button:hover{
+			background-color: $backgroundOnHover;
+		}
+		&--pin:before{
+			display: flex;
+			align-items: center;
+			float: right;
+			font-family: FontAwesome;
+			font-size: 33px;
+			content:"\f041";
+			padding-left: 20px;
+			padding-top: 7px;
+		}
+		&--menu {
+			display: flex;
+			padding-left: 70px;
+			flex-direction: column;
+		}
+	}
+}
 .listSmallButton {
 	&--accept{
 		height: 40px;

@@ -1,110 +1,80 @@
 @import "~scss_path/colors";
 @import "~scss_path/fonts";
 
-
 .input {
-	&__container{
+	&__container {
 		width: 100%;
 		height: 40px;
+		background-color: $white;
 		display: flex;
+		&--invalid {
+			border-bottom: 3px solid $red;
+			margin-bottom: 10px;
+		}
 	}
-	&__input{
+	&__groupContainer {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+	&__input {
 		font-size: 17px;
 		border: 0;
 		width: inherit;
 		height: 100%;
 		color: $grayDark;
 		font-weight: $medium;
-		background: $white;
+		background: $transparent;
 		padding-left: 25px;
+		&--invalid {
+			color: $red;
+		}
 	}
-    &__comment {
-        font-size: 14px;
-        max-width: 80%;
-        text-align: center;
-        text-justify: auto;
+	&__comment {
+		font-size: 14px;
+		max-width: 80%;
+		text-align: center;
+		text-justify: auto;
 	}
-	&__input::placeholder{
+	&__icon {
+		height: 32px;
+		margin-top: 10px;
+		color: $grayDark;
+		&::before {
+			font-family: FontAwesome;
+			font-size: 22px;
+			background-color: $transparent;
+			align-content: center;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			padding-left: 15px;
+		}
+		&--user::before {
+			content: "\f2bc";
+		}
+		&--globe::before {
+			content: "\f0ac";
+		}
+		&--code::before {
+			content: "\f1b2";
+		}
+		&--location::before {
+			content: "\f124";
+		}
+		&--mail::before {
+			content: "\f003";
+		}
+	}
+	&__input::placeholder {
 		font-weight: $medium;
 		font-size: 17px;
 		color: $grayDark;
 	}
-	&__input:focus{
+	&__input:focus {
 		outline: none;
 	}
-	&__user{
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__user::before{
-		content:"\f2bc";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $white;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__globe{
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__globe::before{
-		content:"\f0ac";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $white;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__code{
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__code::before{
-		content:"\f1b2";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $white;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__location{
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__location::before{
-		content:"\f124";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $white;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__mail{
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__mail::before{
-		content:"\f003";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $white;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
+	&__invalidText {
+		color: $red;
+		margin: 0 16px 0 16px;
 	}
 }

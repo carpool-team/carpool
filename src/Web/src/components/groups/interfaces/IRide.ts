@@ -6,11 +6,19 @@ import { ILocation } from "./ILocation";
 export interface IRide {
 	id: string;
 	owner: IParticipant;
-	participants: IParticipant[];
+	ownerId: string;
+	participants: string[];
 	stops: ILocation[];
-	destination: ILocation;
-	startingLocation: ILocation;
+	destination: {
+			longitude: number,
+			latitude: number
+	};
+	startingLocation: {
+		longitude: number,
+		latitude: number
+	};
 	date: string;
 	isUserParticipant: boolean;
 	group: IGroup;
+	groupId: string;
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import NavBar from "../NavBar/NavBar";
+import NavBar from "../navBar/NavBar";
 import Footer from "../footer/Footer";
 import LayoutRouter from "./components/LayoutRouter";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -29,7 +29,7 @@ class Layout extends Component<RouteComponentProps> {
 						history={this.props.history}
 						location={this.props.location}
 					/>
-				</main>	
+				</main>
 				<Footer />
 			</React.Fragment>
 		);
