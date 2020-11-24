@@ -5,10 +5,12 @@ import {reducer, initialState, SignUpActions} from './reducer';
 import {styles} from './index.styles';
 import * as actions from '../../../store/actions/auth';
 import {useDispatch} from 'react-redux';
+import {FullScreenLoading} from '../../../components/common/loaders';
 
 const SignUp = props => {
   const [apiError, setApiError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [store, dispatch] = useReducer(reducer, initialState);
 
@@ -16,6 +18,7 @@ const SignUp = props => {
 
   useEffect(() => {
     if (store.firstName && store.lastName && store.password && store.email) {
+      setLoading(true);
       rdispatch(actions.registerUser(store))
         .then(() => {
           setSuccess(true);
@@ -23,6 +26,9 @@ const SignUp = props => {
         .catch(err => {
           setApiError(err);
           dispatch({type: SignUpActions.RESET});
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   }, [store]);
@@ -38,6 +44,10 @@ const SignUp = props => {
 
   const renderSection = () => {
     const {firstName, lastName, email, password} = store;
+
+    if (loading) {
+      return <FullScreenLoading />;
+    }
 
     if (success) {
       return <SuccessSection />;
