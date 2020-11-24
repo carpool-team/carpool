@@ -1,12 +1,12 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - carpool-rest-api
+name: Build and deploy ASP.Net Core app to Azure Web App - carpool-auth
 
 on:
   push:
     paths:
-      - 'src/API/RestService/**'
+      - 'src/API/AuthService/**'
     branches:
       - development
 
@@ -24,8 +24,9 @@ jobs:
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
-      working-directory: ./src/API/RestService/RestAPI	
-      
+      working-directory: ./src/API/AuthService/AuthServer	
+
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-      working-directory: ./src/API/RestService/RestAPI
+      working-directory: ./src/API/AuthService/AuthServer	
+
