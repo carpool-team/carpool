@@ -7,6 +7,7 @@ import { ButtonIcon } from "./NavButton/enums/ButtonIcon";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import LayoutRouter, { mainRoutes } from "../layout/components/LayoutRouter";
+import { isAuthorized } from "../../helpers/UniversalHelper";
 
 interface INavBarProps extends IReactI18nProps { }
 
@@ -59,8 +60,42 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		menu?.classList.toggle(this.cssClasses.hamburgerToggle);
 	}
 
+	private renderAccountContainer = () => {
+		const { t } = this.props;
+
+		if (isAuthorized() === false) {
+			return (
+				<div className={this.cssClasses.navBarAccountContainer}>
+					<Button
+						color={ButtonColor.Gray}
+						background={ButtonBackground.None}
+						icon={ButtonIcon.User}
+						onClick={() => { }}
+						to={`/${mainRoutes.login}`}
+					>
+						<span>
+							{t(this.resources.login)}
+						</span>
+					</Button>
+
+					<Button
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}
+						onClick={() => { }}
+						to={`/${mainRoutes.register}`}
+					>
+						{t(this.resources.register)}
+					</Button>
+				</div>
+			);
+		} else {
+			return null;
+		}
+	}
+
 	render() {
 		const { t } = this.props;
+		const accountContainer: JSX.Element = this.renderAccountContainer();
 		return (
 			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
 				<div className={this.cssClasses.navBarTabContainer}>
@@ -93,28 +128,8 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 					</div>
 				</div>
 
-				<div className={this.cssClasses.navBarAccountContainer}>
-					<Button
-						color={ButtonColor.Gray}
-						background={ButtonBackground.None}
-						icon={ButtonIcon.User}
-						onClick={() => { }}
-						to={`/${mainRoutes.login}`}
-					>
-						<span>
-							{t(this.resources.login)}
-						</span>
-					</Button>
+				{accountContainer}
 
-					<Button
-						color={ButtonColor.White}
-						background={ButtonBackground.Blue}
-						onClick={() => { }}
-						to={`/${mainRoutes.register}`}
-					>
-						{t(this.resources.register)}
-					</Button>
-				</div>
 				<div
 					id={this.ids.hamburgeIcon}
 					className={this.cssClasses.hamburgerIcon}
