@@ -18,7 +18,12 @@ export function* getTokenAsync({payload}) {
       clientId: '123',
     });
 
-    yield put(actions.getTokenSuccess(res.data.result));
+    const {
+      token,
+      refreshToken: {token: refreshToken},
+    } = res.data.result;
+
+    yield put(actions.getTokenSuccess({token, refreshToken}));
   } catch (err) {
     console.log('ERR', err);
     yield put(actions.getTokenError(err));
