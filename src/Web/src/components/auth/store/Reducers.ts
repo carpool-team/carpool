@@ -24,6 +24,7 @@ const reducer: Reducer<IAuthState> = (
 	return produce<IAuthState>(state, (draft) => {
 		switch (action.type) {
 			case LoginActionTypes.LoginSuccess:
+				draft.tokenInfo = action.tokenInfo;
 				break;
 			case RegisterActionTypes.RegisterSuccess:
 				break;

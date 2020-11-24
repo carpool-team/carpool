@@ -34,4 +34,8 @@ export function getMainReduxModule(): IEpicModule<any> {
 
 const combinedReducer: Reducer = combineReducers(rootReducer);
 
-export type AppState = ReturnType<typeof combinedReducer>;
+export type AppState = {
+	groups: IGroupsState;
+	auth: IAuthState;
+	layout: ILayoutState;
+};
