@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { colorList } from "../../../../../scss/colorList";
 import { TFunction } from "i18next";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import { IRide } from "components/groups/interfaces/IRide";
 import { from } from "rxjs";
+import mapboxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
+import mapConfig from "../../../../map/mapConfig";
 import Button from "../../../../ui/button/Button";
 import {ButtonBackground} from "../../../../ui/button/enums/ButtonBackground";
 import {ButtonColor} from "../../../../ui/button/enums/ButtonColor";
@@ -16,11 +18,16 @@ interface IRidesListProps extends IReactI18nProps {
 	setRide: (ride: IRide) => void;
 }
 interface IListItemProps {
-	ride: IRide;
+	ride: IRideNames;
 	color: string;
 	t: TFunction;
 	setRide: (ride: IRide) => void;
 }
+interface IRideNames extends IRide {
+	toName?: string;
+	fromName?: string;
+}
+const geocodingClient = mapboxGeocoding({accessToken: mapConfig.mapboxKey});
 
 const RidesList = (props: IRidesListProps) => {
 
@@ -47,7 +54,64 @@ const RidesList = (props: IRidesListProps) => {
 
 	let colorIndex: number = 0;
 
-	const rides: IRide[] = props.rides;
+	const GetNames = (ridesProps: IRide[]) => {
+		const rides: IRideNames[] = ridesProps;
+		if (rides) {
+			rides.map((ride) => {
+				const [loading, setLoading] = useState(null);
+				const [fromName, setfromName] = useState(null);
+				const [toName, setToName] = useState(null);
+
+				const onGetFromName = async (coords: [number, number]) => {
+					try {
+						setLoading(true);
+						const response = await geocodingClient
+							.reverseGeocode({
+								query: coords,
+							})
+							.send();
+						const result = response.body.features[0];
+						setfromName(result.place_name);
+						ride.fromName = result.place_name;
+					} catch (err) {
+						console.log(err);
+					} finally {
+						setLoading(false);
+					}
+				};
+
+				const onGetToName = async (coords: [number, number]) => {
+					try {
+						setLoading(true);
+						const response = await geocodingClient
+							.reverseGeocode({
+								query: coords,
+							})
+							.send();
+						const result = response.body.features[0];
+						setToName(result.place_name);
+						ride.toName = result.place_name;
+					} catch (err) {
+						console.log(err);
+					} finally {
+						setLoading(false);
+					}
+				};
+				useEffect(() => {
+					if (ride) {
+						if (!fromName || !toName) {
+							onGetFromName([ride.startingLocation.latitude, ride.startingLocation.longitude]);
+							onGetToName([ride.destination.latitude, ride.destination.longitude]);
+						}
+					}
+				});
+
+			});
+		}
+		return rides;
+	};
+
+	const rides: IRide[] = GetNames(props.rides);
 
 	const DefaultItem = (props: IListItemProps) => {
 		const color = {
@@ -67,13 +131,12 @@ const RidesList = (props: IRidesListProps) => {
 						<div className={cssClasses.icon} style={color}>	</div>
 						<div className={cssClasses.address}>
 							<div className={cssClasses.fromLabel}>
-								{props.ride.destination.latitude}
+								{props.ride.fromName}
 							</div>
 							<div className={cssClasses.toLabel}>
-								{props.ride.startingLocation.latitude}
+								{props.ride.toName}
 							</div>
 						</div>
-						{/* <div className={cssClasses.seats}>2/4</div> */}
 					</div>
 					<div className={cssClasses.bottomRow}>
 						<div className={cssClasses.driver}>
@@ -103,10 +166,10 @@ const RidesList = (props: IRidesListProps) => {
 						<div className={cssClasses.icon} style={color}>	</div>
 						<div className={cssClasses.address} >
 							<div className={cssClasses.fromLabel}>
-								{props.ride.destination.latitude}
+								{props.ride.fromName}
 							</div>
 							<div className={cssClasses.toLabel}>
-								{props.ride.startingLocation.latitude}
+								{props.ride.toName}
 							</div>
 						</div>
 					</div>
