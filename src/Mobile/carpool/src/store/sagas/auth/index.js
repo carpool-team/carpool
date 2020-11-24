@@ -6,6 +6,7 @@ import {
   resolvePromiseAction,
 } from '@adobe/redux-saga-promise';
 import authInstance from '../../../axios/authInstance';
+import {STORAGE_KEYS, storeData} from '../../../storage';
 
 export function* getTokenAsync({payload}) {
   try {
@@ -22,6 +23,9 @@ export function* getTokenAsync({payload}) {
       token,
       refreshToken: {token: refreshToken},
     } = res.data.result;
+
+    yield call(storeData, STORAGE_KEYS.token, token);
+    yield call(storeData, STORAGE_KEYS.refreshToken, refreshToken);
 
     yield put(actions.getTokenSuccess({token, refreshToken}));
   } catch (err) {
