@@ -111,6 +111,20 @@ const RidesList = (props: IRidesListProps) => {
 		return rides;
 	};
 
+	const convertDate = (date: string) => {
+		if (date) {
+			let d = new Date(date);
+			let dateOutput =
+				d.getUTCFullYear() + "/" +
+				("0" + (d.getUTCMonth() + 1)).slice(-2) + "/" +
+				("0" + d.getUTCDate()).slice(-2) + " " +
+				("0" + d.getUTCHours()).slice(-2) + ":" +
+				("0" + d.getUTCMinutes()).slice(-2) + ":" +
+				("0" + d.getUTCSeconds()).slice(-2);
+			return dateOutput;
+		}
+	};
+
 	const rides: IRide[] = GetNames(props.rides);
 
 	const DefaultItem = (props: IListItemProps) => {
@@ -141,7 +155,7 @@ const RidesList = (props: IRidesListProps) => {
 					</div>
 					<div className={cssClasses.bottomRow}>
 						<div className={cssClasses.driver}>
-							{props.ride.date}
+							{ convertDate(props.ride.date) }
 						</div>
 					</div>
 				</button>
@@ -176,7 +190,7 @@ const RidesList = (props: IRidesListProps) => {
 					</div>
 					<div className={cssClasses.activeBottomRow}>
 						<div className={cssClasses.activeDate}>
-							{props.ride.date}
+							{convertDate(props.ride.date)}
 						</div>
 						<div className={cssClasses.activeDriver}>
 							Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
