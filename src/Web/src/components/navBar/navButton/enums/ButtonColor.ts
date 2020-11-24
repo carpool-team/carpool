@@ -1,6 +1,6 @@
 /** Button types interface */
 export enum ButtonColor {
-  Green,
+	Green,
 	Blue,
 	Gray,
 	White
