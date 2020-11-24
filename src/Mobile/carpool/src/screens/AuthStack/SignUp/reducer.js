@@ -3,11 +3,12 @@ export const SignUpActions = {
   SET_LAST_NAME: 'SET_LAST_NAME',
   SET_EMAIL: 'SET_EMAIL',
   SET_PASSWORD: 'SET_PASSWORD',
+  RESET: 'RESET',
 };
 
 export const initialState = {
-  first_name: '',
-  last_name: '',
+  firstName: '',
+  lastName: '',
   email: '',
   password: '',
 };
@@ -17,12 +18,12 @@ export const reducer = (state, action) => {
     case SignUpActions.SET_FIRST_NAME:
       return {
         ...state,
-        first_name: action.payload,
+        firstName: action.payload,
       };
     case SignUpActions.SET_LAST_NAME:
       return {
         ...state,
-        last_name: action.payload,
+        lastName: action.payload,
       };
     case SignUpActions.SET_EMAIL:
       return {
@@ -34,6 +35,8 @@ export const reducer = (state, action) => {
         ...state,
         password: action.payload,
       };
+    case SignUpActions.RESET:
+      return initialState;
     default:
       return state;
   }

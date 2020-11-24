@@ -1,22 +1,29 @@
 import React, {useReducer, useEffect, useState} from 'react';
 import {Text, SafeAreaView} from 'react-native';
-import {NameSection, PasswordSection} from './sections';
+import {NameSection, PasswordSection, SuccessSection} from './sections';
 import {reducer, initialState, SignUpActions} from './reducer';
 import {styles} from './index.styles';
+import * as actions from '../../../store/actions/auth';
+import {useDispatch} from 'react-redux';
 
 const SignUp = props => {
   const [apiError, setApiError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   const [store, dispatch] = useReducer(reducer, initialState);
 
+  const rdispatch = useDispatch();
+
   useEffect(() => {
-    if (store.first_name && store.last_name && store.password && store.email) {
-      console.log('SUBMIT', store);
-      // if(error) {
-      //   setApiError(error);
-      //   dispatch({type: SignUpActions.SET_PASSWORD, payload: ''});
-      //   dispatch({type: SignUpActions.SET_EMAIL, payload: ''});
-      // }
+    if (store.firstName && store.lastName && store.password && store.email) {
+      rdispatch(actions.registerUser(store))
+        .then(() => {
+          setSuccess(true);
+        })
+        .catch(err => {
+          setApiError(err);
+          dispatch({type: SignUpActions.RESET});
+        });
     }
   }, [store]);
 
@@ -30,14 +37,19 @@ const SignUp = props => {
     dispatch({type: SignUpActions.SET_PASSWORD, payload: password});
 
   const renderSection = () => {
-    const {first_name, last_name, email, password} = store;
-    if (!store.first_name || !store.last_name || !store.email) {
+    const {firstName, lastName, email, password} = store;
+
+    if (success) {
+      return <SuccessSection />;
+    }
+
+    if (!firstName || !lastName || !email) {
       return (
         <NameSection
           onSubmitName={onSubmitName}
           initialValues={{
-            first_name,
-            last_name,
+            firstName,
+            lastName,
             email,
           }}
           apiError={apiError}

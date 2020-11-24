@@ -27,13 +27,9 @@ export function* getTokenAsync({payload}) {
 
 export function* registerUserAsync(action) {
   try {
-    const {payload} = action;
-
-    const res = yield authInstance.post('/auth/register', {
-      ...payload,
+    yield authInstance.post('/auth/register', {
+      ...action.payload,
     });
-
-    console.log('RES', res);
 
     yield call(resolvePromiseAction, action);
   } catch (err) {
