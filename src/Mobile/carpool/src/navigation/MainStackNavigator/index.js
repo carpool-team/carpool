@@ -36,7 +36,7 @@ const MainStackNavigator = () => {
 
   return (
     <Stack.Navigator>
-      {!tokens.data && (
+      {isLoaded && !tokens.data && (
         <Stack.Screen
           name="AuthStack"
           component={AuthStack}
@@ -45,7 +45,7 @@ const MainStackNavigator = () => {
           }}
         />
       )}
-      {tokens.data && (
+      {isLoaded && tokens.data && (
         <Stack.Screen
           name="DrawerNavigator"
           component={DrawerNavigator}

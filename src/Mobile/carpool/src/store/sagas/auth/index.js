@@ -6,7 +6,7 @@ import {
   resolvePromiseAction,
 } from '@adobe/redux-saga-promise';
 import authInstance from '../../../axios/authInstance';
-import {STORAGE_KEYS, storeData} from '../../../storage';
+import {STORAGE_KEYS, storeData, removeData} from '../../../storage';
 
 export function* getTokenAsync({payload}) {
   try {
@@ -47,9 +47,21 @@ export function* registerUserAsync(action) {
   }
 }
 
+export function* logoutUserAsync() {
+  try {
+    yield call(removeData, STORAGE_KEYS.token);
+    yield call(removeData, STORAGE_KEYS.refreshToken);
+
+    yield put(actions.logoutUserSuccess());
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const authSagas = [
   takeLatest(actions.GetToken.Trigger, getTokenAsync),
   takeLatest(actions.RegisterUser.PromiseTrigger, registerUserAsync),
+  takeLatest(actions.LogoutUser.Trigger, logoutUserAsync),
 ];
 
 export default authSagas;

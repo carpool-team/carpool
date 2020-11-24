@@ -32,14 +32,12 @@ const reducer = (state = initialState, action) => {
           loading: true,
         },
       };
-    case actions.LogoutUser.Trigger:
-      removeData(STORAGE_KEYS.token);
-      removeData(STORAGE_KEYS.refreshToken);
+    case actions.LogoutUser.Success:
+      // removeData(STORAGE_KEYS.token);
+      // removeData(STORAGE_KEYS.refreshToken);
       return {
         ...state,
-        tokens: {
-          ...initialStoreItem,
-        },
+        tokens: initialStoreItem,
       };
     default:
       return state;

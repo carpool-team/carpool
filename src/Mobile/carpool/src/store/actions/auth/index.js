@@ -15,6 +15,7 @@ export const RegisterUser = {
 
 export const LogoutUser = {
   Trigger: 'LOGOUT_USER',
+  Success: 'LOGOUT_USER_SUCCESS',
 };
 
 export const getToken = payload => ({type: GetToken.Trigger, payload});
@@ -29,3 +30,5 @@ export const registerUser = payload =>
   createPromiseAction(RegisterUser.Trigger)(payload);
 
 export const logoutUser = () => ({type: LogoutUser.Trigger});
+
+export const logoutUserSuccess = () => ({type: LogoutUser.Success});
