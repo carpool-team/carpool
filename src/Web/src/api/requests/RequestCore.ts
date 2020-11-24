@@ -1,3 +1,5 @@
+import store, { getState } from "../../store/Index";
+import { AppState } from "../../store/Reducers";
 import { getRequestEndpoint, getRequestType, isAuthEndpoint } from "../Helper";
 import { IRequest } from "../interfaces/IRequest";
 import { IRequestProperties } from "../interfaces/IRequestProperties";
@@ -41,9 +43,14 @@ export default abstract class RequestCore {
 			this.requestProperties.endpoint,
 			this.requestProperties.queries
 		);
+		const headers: { [key: string]: string } = { ...RequestCore.headers };
+		const state: AppState = getState();
+		if (state.auth?.tokenInfo?.token) {
+			headers["Authorization"] = `Bearer ${state.auth.tokenInfo.token}`;
+		}
 		const request: IRequest = {
 			method,
-			headers: RequestCore.headers,
+			headers
 		};
 		if (this.requestBody) {
 			request.body = JSON.stringify(this.requestBody);
