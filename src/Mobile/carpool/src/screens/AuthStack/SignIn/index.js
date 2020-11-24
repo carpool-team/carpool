@@ -15,7 +15,6 @@ import {styles} from './index.styles';
 import * as actions from '../../../store/actions/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {FullScreenLoading} from '../../../components/common/loaders';
-import {readData, STORAGE_KEYS} from '../../../storage';
 
 const ValidationSchema = Yup.object().shape({
   email: Yup.string().required('Email is required'),
@@ -52,6 +51,7 @@ const SignIn = ({navigation}) => {
   useEffect(() => {
     if (tokens.error) {
       alert('ERROR');
+      setSubmitting(false);
     }
   }, [tokens.error]);
 
