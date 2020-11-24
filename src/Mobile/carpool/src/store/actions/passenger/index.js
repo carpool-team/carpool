@@ -12,6 +12,13 @@ export const GetUsersRides = {
   Loading: 'GET_USERS_RIDES_LOADING',
 };
 
+export const GetUsersPastRides = {
+  Trigger: 'GET_USERS_PAST_RIDES',
+  Success: 'GET_USERS_PAST_RIDES_SUCCESS',
+  Error: 'GET_USERS_PAST_RIDES_ERROR',
+  Loading: 'GET_USERS_PAST_RIDES_LOADING',
+};
+
 export const getAllRides = () => ({
   type: GetAllRides.Trigger,
 });
@@ -46,4 +53,20 @@ export const getUsersRidesError = payload => ({
 
 export const getUsersRidesLoading = () => ({
   type: GetUsersRides.Loading,
+});
+
+export const getUsersPastRides = () => ({type: GetUsersPastRides.Trigger});
+
+export const getUsersPastRidesSuccess = payload => ({
+  type: GetUsersPastRides.Success,
+  payload,
+});
+
+export const getUsersPastRidesError = payload => ({
+  type: GetUsersPastRides.Error,
+  payload,
+});
+
+export const getUsersPastRidesLoading = () => ({
+  type: GetUsersPastRides.Loading,
 });

@@ -4,11 +4,14 @@ import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
 const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 import faker from 'faker';
+import moment from 'moment';
 
 const exampleRides = [
   {
     id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.future()).toISOString(),
+    date: moment()
+      .subtract(1, 'day')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,
@@ -28,7 +31,9 @@ const exampleRides = [
   },
   {
     id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.future()).toISOString(),
+    date: moment()
+      .add(1, 'days')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,
@@ -48,7 +53,9 @@ const exampleRides = [
   },
   {
     id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.future()).toISOString(),
+    date: moment()
+      .add(2, 'days')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,
@@ -68,7 +75,9 @@ const exampleRides = [
   },
   {
     id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.future()).toISOString(),
+    date: moment()
+      .add(3, 'days')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,
@@ -88,7 +97,9 @@ const exampleRides = [
   },
   {
     id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.future()).toISOString(),
+    date: moment()
+      .add(4, 'days')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,
@@ -105,6 +116,83 @@ const exampleRides = [
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
     },
+  },
+  {
+    id: faker.random.alphaNumeric(32),
+    date: moment()
+      .add(5, 'days')
+      .format(),
+    startingLocation: {
+      coordinates: {
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
+      },
+    },
+    destination: {
+      coordinates: {
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
+      },
+    },
+    owner: {
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+    },
+  },
+];
+
+const examplePastRides = [
+  {
+    id: faker.random.alphaNumeric(32),
+    date: new Date(faker.date.past()).toISOString(),
+    startingLocation: {
+      coordinates: {
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
+      },
+    },
+    destination: {
+      coordinates: {
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
+      },
+    },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
+    stops: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
+  },
+  {
+    id: faker.random.alphaNumeric(32),
+    date: new Date(faker.date.past()).toISOString(),
+    startingLocation: {
+      coordinates: {
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
+      },
+    },
+    destination: {
+      coordinates: {
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
+      },
+    },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
+    stops: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
   },
 ];
 
@@ -144,7 +232,7 @@ export function* getUsersRidesAsync() {
       // console.log('RES', res);
 
       // yield put(actions.getUsersRidesSuccess(res.data.result));
-      yield put(actions.getUsersRidesSuccess(exampleRides.slice(0, 2)));
+      yield put(actions.getUsersRidesSuccess(exampleRides));
     }
   } catch (err) {
     // TODO
@@ -154,9 +242,32 @@ export function* getUsersRidesAsync() {
   }
 }
 
+export function* getUsersPastRidesAsync() {
+  try {
+    const token = '123';
+
+    if (token) {
+      yield put(actions.getUsersPastRidesLoading());
+
+      // const res = yield instance.get(ENDPOINTS.GET_USERS_RIDES(userId));
+
+      // console.log('RES', res);
+
+      // yield put(actions.getUsersRidesSuccess(res.data.result));
+      yield put(actions.getUsersPastRidesSuccess(examplePastRides));
+    }
+  } catch (err) {
+    // TODO
+    // Token refreshing
+    yield put(actions.getUsersPastRidesError(err));
+    console.log('ERROR', err);
+  }
+}
+
 const passengerActions = [
   takeLatest(actions.GetAllRides.Trigger, getAllRidesAsync),
   takeLatest(actions.GetUsersRides.Trigger, getUsersRidesAsync),
+  takeLatest(actions.GetUsersPastRides.Trigger, getUsersPastRidesAsync),
 ];
 
 export default passengerActions;
