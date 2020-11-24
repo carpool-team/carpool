@@ -77,7 +77,7 @@ namespace RestApi
 				options.AddPolicy("ApiScope", policy =>
 				{
 					policy.RequireAuthenticatedUser();
-					policy.RequireClaim("scope", "carpool_rest");
+					policy.RequireClaim("scope", "carpool_rest_api");
 				});
 			});
 			
