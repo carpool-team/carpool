@@ -1,3 +1,4 @@
+import { ITokenInfo } from "../interfaces/ITokenInfo";
 import { ILoginFormData } from "../login/LoginPanel";
 import { IRegisterFormData } from "../register/RegisterPanel";
 import {
@@ -19,9 +20,10 @@ export function login(data: ILoginFormData): ILoginAction {
 	};
 }
 
-export function loginSuccess(): ILoginSuccessAction {
+export function loginSuccess(tokenInfo: ITokenInfo): ILoginSuccessAction {
 	return {
 		type: LoginActionTypes.LoginSuccess,
+		tokenInfo
 	};
 }
 

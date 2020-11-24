@@ -1,4 +1,5 @@
 import { Action } from "redux";
+import { ITokenInfo } from "../interfaces/ITokenInfo";
 import { ILoginFormData } from "../login/LoginPanel";
 import { IRegisterFormData } from "../register/RegisterPanel";
 
@@ -25,6 +26,7 @@ export interface ILoginAction extends Action<LoginActionTypes.Login> {
 
 /** Action for login success */
 export interface ILoginSuccessAction extends Action<LoginActionTypes.LoginSuccess> {
+	tokenInfo: ITokenInfo;
 }
 
 /** Action for login error */

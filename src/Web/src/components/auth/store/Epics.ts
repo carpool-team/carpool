@@ -10,6 +10,7 @@ import { LoginRequest } from "../api/login/LoginRequest";
 import { LoginResponse } from "../api/login/LoginResponse";
 import { RegisterRequest } from "../api/register/RegisterRequest";
 import { RegisterResponse } from "../api/register/RegisterResponse";
+import { ITokenInfo } from "../interfaces/ITokenInfo";
 import { ILoginAction, ILoginErrorAction, ILoginSuccessAction, IRegisterAction, IRegisterErrorAction, IRegisterSuccessAction, LoginAction, LoginActionTypes, RegisterAction, RegisterActionTypes } from "./Types";
 
 const registerEpic: Epic<RegisterAction> = (action$) =>
@@ -64,14 +65,21 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 				}
 			});
 			const response: LoginResponse = await request.send();
+
 			return response;
 		}),
 		mergeMap((response) => {
 			if (!response.isError) {
 				toast.success(i18n.t("auth.loginSuccess"));
+				const tokenInfo: ITokenInfo = {
+					refreshToken: response.result.refreshToken,
+					token: response.result.token,
+					expires: response.result.expires,
+				};
 				return [
 					<ILoginSuccessAction>{
 						type: LoginActionTypes.LoginSuccess,
+						tokenInfo
 					},
 					<IRedirectAction>{
 						type: LayoutActionTypes.Redirect,

@@ -9,7 +9,7 @@ import {
 } from "./Types";
 
 const initialState: IAuthState = {
-	redirectTo: null,
+	tokenInfo: null,
 };
 
 /**
