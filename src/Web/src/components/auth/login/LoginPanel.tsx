@@ -9,7 +9,10 @@ import { ButtonColor } from "../../ui/button/enums/ButtonColor";
 import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
 import { InputIcon } from "../../ui/input/enums/InputIcon";
 import { InputType } from "../../ui/input/enums/InputType";
+import { ValidationType } from "../../ui/input/enums/ValidationType";
 import Input from "../../ui/input/Input";
+import { each } from "../../../helpers/UniversalHelper";
+
 import {
 	StateProps,
 	DispatchProps,
@@ -30,6 +33,12 @@ const LoginPanel = (props: ILoginPanelProps) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [rememberLogin, setRememberLogin] = useState(false);
+	const [inputsValid, setInputsValid] = useState({
+		email: false,
+		password: false,
+	});
+
+	const [validate, setValidate] = useState(false);
 
 	const cssClasses = {
 		container: "auth__container",
@@ -53,9 +62,17 @@ const LoginPanel = (props: ILoginPanelProps) => {
 	};
 
 	const validateForm = () => {
-		let isFormValid: boolean = true;
-		// validation here
-		return isFormValid;
+		if (each(inputsValid , i => i)) {
+			setValidate(false);
+			return true;
+		}	else {
+			setInputsValid({
+				email: false,
+				password: false
+			});
+			setValidate(true);
+			return false;
+		}
 	};
 
 	const onClickSubmit = () => {
@@ -81,6 +98,16 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						placeholder={t(resources.email)}
 						value={email}
 						icon={InputIcon.Mail}
+						validation={{
+							type: ValidationType.Required,
+							isValidCallback: isValid => {
+								setInputsValid({
+									...inputsValid,
+									email: isValid,
+								});
+							},
+							validate
+						}}
 					/>
 					<Input
 						style={cssClasses.input}
@@ -89,6 +116,16 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						placeholder={t(resources.password)}
 						value={password}
 						icon={InputIcon.Password}
+						validation={{
+							type: ValidationType.Required,
+							isValidCallback: isValid => {
+								setInputsValid({
+									...inputsValid,
+									password: isValid,
+								});
+							},
+							validate
+						}}
 					/>
 					<Input
 						changeHandler={newValue => { setRememberLogin(newValue === "true"); }}
