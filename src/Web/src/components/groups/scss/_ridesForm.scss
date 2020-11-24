@@ -107,7 +107,7 @@
 			display: flex;
 			flex-wrap: wrap;
 			align-items: center;
-
+			width: 80%;
 		}
 		&__icon{
 			padding-top: 10px;
@@ -135,6 +135,9 @@
 		&__to{
 			padding-right: 10px;
 			padding-top: 10px;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
 		}
 		&__to::before{
 			align-items: center;
@@ -147,6 +150,10 @@
 		&__from{
 			padding-top: 10px;
 			padding-right: 10px;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+			;
 		}
 		&__from:before{
 			align-items: center;
