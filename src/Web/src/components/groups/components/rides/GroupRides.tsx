@@ -4,8 +4,8 @@ import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/Grou
 import RidesList from "./components/RidesList";
 import { useHistory } from "react-router";
 import Button from "../../../ui/button/Button";
-import {ButtonBackground} from "../../../ui/button/enums/ButtonBackground";
-import {ButtonColor} from "../../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
+import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
 import LayoutRouter from "../../../layout/components/LayoutRouter";
 import ridesExample from "../../../../examples/exampleRides";
 import { IRide } from "../../../../components/groups/interfaces/IRide";
@@ -41,29 +41,29 @@ const GroupRides = (props: IGroupRidesProps) => {
 
 	return (
 		<GroupDetailedView group={props.group}>
-			<div className = {cssClasses.leftPanel}>
-				<div className ={cssClasses.leftLabels}>
+			<div className={cssClasses.leftPanel}>
+				<div className={cssClasses.leftLabels}>
 					<Button onClick={() => {
 						history.push(`/${LayoutRouter.routes.groups}`);
-							}}
-							background={ButtonBackground.Blue}
-							color={ButtonColor.White}
-						>
-							{"Wróć"}
+					}}
+						background={ButtonBackground.Blue}
+						color={ButtonColor.White}
+					>
+						{"Wróć"}
 					</Button>
 					<Button background={ButtonBackground.Blue} color={ButtonColor.White}>
-					Dodaj
+						Dodaj
 				</Button>
-				<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
+					<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
 				</div>
 				<div className={cssClasses.leftOutline}></div>
-				<div className = {cssClasses.leftList}>
-					<RidesList rideSelected={selectedRide} setRide={setRide} rides ={rides}/>
+				<div className={cssClasses.leftList}>
+					<RidesList rideSelected={selectedRide} setRide={setRide} rides={rides} />
 				</div>
 			</div>
 			<MediaQuery query="(min-width: 900px)">
-				<div className= {cssClasses.rightPanel}>
-						<MapBoxRides ride={selectedRide}></MapBoxRides>
+				<div className={cssClasses.rightPanel}>
+					<MapBoxRides ride={selectedRide}></MapBoxRides>
 				</div>
 			</MediaQuery>
 		</GroupDetailedView>
