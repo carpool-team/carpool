@@ -11,6 +11,8 @@ import { InputIcon } from "../../ui/input/enums/InputIcon";
 import { InputType } from "../../ui/input/enums/InputType";
 import Input from "../../ui/input/Input";
 import usePassword from "./hooks/PasswordInput";
+import { ValidationType } from "../../ui/input/enums/ValidationType";
+import { each } from "../../../helpers/UniversalHelper";
 import {
 	StateProps,
 	DispatchProps,
@@ -35,6 +37,13 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 	const [name, setName] = useState("");
 	const [surname, setSurname] = useState("");
 	const [password, isPasswordValid, renderPasswordInputs] = usePassword(t);
+	const [inputsValid, setInputsValid] = useState({
+		name: false,
+		surname: false,
+		email: false,
+	});
+
+	const [validate, setValidate] = useState(false);
 
 	const cssClasses = {
 		container: "auth__container",
@@ -57,7 +66,22 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 		let isFormValid: boolean = true;
 		if (!isPasswordValid) {
 			isFormValid = false;
+			console.log("password");
 		}
+		if (each(inputsValid, i => i)) {
+			isFormValid = true;
+			setValidate(false);
+			console.log("inputs");
+		} else {
+			setInputsValid({
+				name: false,
+				email: false,
+				surname: false,
+			});
+			isFormValid = false;
+			setValidate(true);
+		}
+		console.log(isFormValid);
 		return isFormValid;
 	};
 
@@ -85,6 +109,16 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 						placeholder={t(resources.name)}
 						value={name}
 						icon={InputIcon.User}
+						validation={{
+							type: ValidationType.Required,
+							isValidCallback: isValid => {
+								setInputsValid({
+									...inputsValid,
+									name: isValid,
+								});
+							},
+							validate,
+						}}
 					/>
 					<Input
 						style={cssClasses.input}
@@ -93,6 +127,16 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 						placeholder={t(resources.surname)}
 						value={surname}
 						icon={InputIcon.User}
+						validation={{
+							type: ValidationType.Required,
+							isValidCallback: isValid => {
+								setInputsValid({
+									...inputsValid,
+									surname: isValid,
+								});
+							},
+							validate,
+						}}
 					/>
 					<Input
 						style={cssClasses.input}
@@ -101,6 +145,16 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 						placeholder={t(resources.email)}
 						value={email}
 						icon={InputIcon.Mail}
+						validation={{
+							type: ValidationType.Email,
+							isValidCallback: isValid => {
+								setInputsValid({
+									...inputsValid,
+									email: isValid,
+								});
+							},
+							validate,
+						}}
 					/>
 					{renderPasswordInputs()}
 					<Button

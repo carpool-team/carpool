@@ -99,7 +99,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						value={email}
 						icon={InputIcon.Mail}
 						validation={{
-							type: ValidationType.Required,
+							type: ValidationType.Email,
 							isValidCallback: isValid => {
 								setInputsValid({
 									...inputsValid,
