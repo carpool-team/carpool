@@ -16,9 +16,12 @@ namespace DataAccessLayer.Builders
 			builder.Property(x => x.FirstName);
 			builder.Property(x => x.LastName);
 
-			builder.OwnsMany(x => x.Ratings)
-			       .WithOwner()
-			       .HasForeignKey(x => x.UserId);
+			builder.OwnsMany(x => x.Ratings, x =>
+			{
+				x.WithOwner().HasForeignKey(e => e.UserId);
+				x.Property<Guid>("Id");
+				x.HasKey("UserId", "Id");
+			});
 
 
 			//  builder.HasMany(x => x.CreatedRides)

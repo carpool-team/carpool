@@ -1,21 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using Domain.Abstract;
 
 namespace Domain.ValueObjects
 {
-	public record Rating
+	public class Rating : ValueObject
 	{
-		public Rating(byte value)
-			=> Value = value;
+		public Rating(Guid userId, byte value)
+			=> (UserId, Value) = (userId, value);
+		
 
-		public Rating(Guid userId, byte value) : this(value)
-			=> UserId = userId;
-
-		private Rating()
-		{
-		}
-
-		public Guid Id { get; init; }
 		public Guid UserId { get; init; }
 		public byte Value { get; init; }
+		protected override IEnumerable<object> GetEqualityComponents()
+		{
+			yield return UserId;
+			yield return Value;
+		}
 	}
 }

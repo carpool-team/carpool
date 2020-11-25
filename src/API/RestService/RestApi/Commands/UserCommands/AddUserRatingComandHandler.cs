@@ -21,7 +21,7 @@ namespace RestApi.Commands.UserCommands
 			var user = await _userRepository.GetByIdAsNoTrackingAsync(userId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));
 
-			var rating = new Rating(request.Value);
+			var rating = new Rating(userId, request.Value);
 
 			//user.Rating = new UserRating();
 
