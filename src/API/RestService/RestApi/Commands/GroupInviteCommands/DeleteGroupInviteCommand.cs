@@ -1,5 +1,4 @@
-﻿using System;
-using IdentifiersShared.Identifiers;
+﻿using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 

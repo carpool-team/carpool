@@ -15,7 +15,7 @@ namespace RestApi.Queries.RideQueries
 			=> _repository = repository;
 
 		public async Task<IEnumerable<Ride>> Handle(GetRidesQuery request,
-		                                                                CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 		{
 			var rides = await _repository.GetPartAsNoTrackingAsync(cancellationToken).ConfigureAwait(false);
 			return rides;

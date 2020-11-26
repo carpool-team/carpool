@@ -1,5 +1,4 @@
-﻿using System;
-using Domain.ValueObjects;
+﻿using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 
 namespace RestApi.DTOs.Group
@@ -18,9 +17,7 @@ namespace RestApi.DTOs.Group
 			UserCount = userCount;
 		}
 
-		public IndexGroupDTO()
-		{
-		}
+		public IndexGroupDTO() { }
 
 		public int UserCount { get; }
 

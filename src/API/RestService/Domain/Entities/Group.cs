@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Domain.Abstract;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;

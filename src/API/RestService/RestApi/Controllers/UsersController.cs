@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
 using IdentifiersShared.Identifiers;
@@ -53,7 +52,7 @@ namespace RestApi.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{id}")]
-		public async Task<ApiResponse> PutUser(UserId id, UpdateUserCommand request)
+		public async Task<ApiResponse> PutUser([FromRoute] UserId id, [FromBody] UpdateUserCommand request)
 		{
 			request.UserId = id;
 			var response = await _mediator.Send(request).ConfigureAwait(false);

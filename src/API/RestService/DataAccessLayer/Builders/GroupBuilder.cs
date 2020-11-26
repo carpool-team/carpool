@@ -22,9 +22,9 @@ namespace DataAccessLayer.Builders
 			//       .OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasMany(x => x.UserGroups)
-			       .WithOne(x => x.Group)
-			       .HasForeignKey(ug => ug.GroupId)
-			       .OnDelete(DeleteBehavior.Cascade);
+				.WithOne(x => x.Group)
+				.HasForeignKey(ug => ug.GroupId)
+				.OnDelete(DeleteBehavior.Cascade);
 
 			// builder.OwnsOne(x => x.Location, o =>
 			// {
@@ -33,7 +33,6 @@ namespace DataAccessLayer.Builders
 			// });
 
 			builder.OwnsOne(x => x.Location);
-
 
 			// builder.HasOne(x => x.Owner)
 			//        .WithOne()

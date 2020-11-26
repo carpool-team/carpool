@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Domain.Contracts;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;
@@ -12,7 +11,7 @@ namespace Domain.Entities
 	{
 		public ApplicationUser(string email, string userName, string firstName, string lastName)
 			=> (Email, UserName, FirstName, LastName)
-			   = (email, userName, firstName, lastName);
+				= (email, userName, firstName, lastName);
 
 		public string FirstName { get; set; }
 
@@ -30,7 +29,7 @@ namespace Domain.Entities
 
 		public List<Rating> Ratings { get; set; } = new();
 
-		public Guid? VehicleId { get; set; }
+		public VehicleId? VehicleId { get; set; }
 		public Vehicle? Vehicle { get; set; }
 
 		//public virtual ICollection<GroupInvite> ReceivedGroupInvites { get; set; }

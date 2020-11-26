@@ -1,6 +1,5 @@
 ﻿using System;
 using Domain.Entities;
-using IdentifiersShared.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,12 +18,12 @@ namespace DataAccessLayer.Builders
 
 			builder.OwnsMany(x => x.Ratings, x =>
 			{
-				x.WithOwner().HasForeignKey(e => e.UserId);
+				x.ToTable("Ratings");
+				x.WithOwner().HasForeignKey("UserId");
 				x.Property<Guid>("Id");
-				x.Property(x => x.UserId).HasConversion(new UserIdValueConverter());
-				x.HasKey("UserId", "Id");
+				x.Property(x => x.Value).IsRequired();
+				x.HasKey("Id");
 			});
-
 
 			//  builder.HasMany(x => x.CreatedRides)
 			//.WithOne()
@@ -42,14 +41,14 @@ namespace DataAccessLayer.Builders
 			//       .OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasMany(x => x.UserGroups)
-			       .WithOne(x => x.ApplicationUser)
-			       .HasForeignKey(ug => ug.UserId)
-			       .OnDelete(DeleteBehavior.Cascade);
+				.WithOne(x => x.ApplicationUser)
+				.HasForeignKey(ug => ug.UserId)
+				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasOne(x => x.Vehicle)
-			       .WithOne()
-			       .HasForeignKey<ApplicationUser>(v => v.VehicleId)
-			       .OnDelete(DeleteBehavior.Cascade);
+				.WithOne()
+				.HasForeignKey<ApplicationUser>(v => v.VehicleId)
+				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

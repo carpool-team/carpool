@@ -16,7 +16,7 @@ namespace RestApi.Commands.GroupInviteCommands
 			=> _repository = repository;
 
 		public async Task<GroupInviteId> Handle(AddGroupInviteCommand request,
-		                               CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 		{
 			var groupInvite = new GroupInvite
 			{

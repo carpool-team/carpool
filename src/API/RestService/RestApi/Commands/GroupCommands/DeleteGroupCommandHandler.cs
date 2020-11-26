@@ -18,9 +18,10 @@ namespace RestApi.Commands.GroupCommands
 		protected override async Task Handle(DeleteGroupCommand request, CancellationToken cancellationToken)
 		{
 			var group = await _repository.GetByIdAsync(request.GroupId, cancellationToken).ConfigureAwait(false);
-			_ = group ?? throw new ApiProblemDetailsException(
-				    $"Group with id: {request.GroupId} does not exist so it cannot be deleted.",
-				    StatusCodes.Status400BadRequest);
+			_ = group
+				?? throw new ApiProblemDetailsException(
+					$"Group with id: {request.GroupId} does not exist so it cannot be deleted.",
+					StatusCodes.Status400BadRequest);
 
 			_repository.Delete(group);
 

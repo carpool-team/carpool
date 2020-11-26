@@ -3,7 +3,6 @@ using System.Reflection;
 using DataAccessLayer.Extensions;
 using Domain.Entities;
 using Domain.Entities.Intersections;
-using Domain.ValueObjects;
 using IdentifiersShared.Converters;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,16 +11,14 @@ namespace DataAccessLayer.DatabaseContexts
 	public class CarpoolDbContext : DbContext
 	{
 		public CarpoolDbContext(DbContextOptions<CarpoolDbContext> options)
-			: base(options)
-		{
-		}
+			: base(options) { }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			_ = modelBuilder ?? throw new NullReferenceException(nameof(modelBuilder));
-			
+
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-			
+
 			modelBuilder.UseValueConverter(new UserIdValueConverter());
 			modelBuilder.UseValueConverter(new GroupIdValueConverter());
 			modelBuilder.UseValueConverter(new GroupInviteIdValueConverter());

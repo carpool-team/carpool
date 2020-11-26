@@ -4,7 +4,5 @@ using MediatR;
 
 namespace RestApi.Queries.RideQueries
 {
-	public class GetRidesQuery : IRequest<IEnumerable<Ride>>
-	{
-	}
+	public class GetRidesQuery : IRequest<IEnumerable<Ride>> { }
 }

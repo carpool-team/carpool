@@ -11,8 +11,8 @@ namespace RestApi.Commands.GroupCommands
 {
 	public class AddRideToGroupCommandHandler : AsyncRequestHandler<AddRideToGroupCommand>
 	{
-		private readonly IRideRepository _rideRepository;
 		private readonly IGroupRepository _groupRepository;
+		private readonly IRideRepository _rideRepository;
 
 		public AddRideToGroupCommandHandler(IRideRepository repository, IGroupRepository groupRepository)
 		{
@@ -28,8 +28,9 @@ namespace RestApi.Commands.GroupCommands
 					StatusCodes.Status404NotFound);
 
 			var ride = await _rideRepository.GetByIdAsync(request.RideId, cancellationToken).ConfigureAwait(false);
-			_ = ride ?? throw new ApiProblemDetailsException($"Ride with id: {request.RideId} does not exist.",
-				    StatusCodes.Status404NotFound);
+			_ = ride
+				?? throw new ApiProblemDetailsException($"Ride with id: {request.RideId} does not exist.",
+					StatusCodes.Status404NotFound);
 
 			ride.GroupId = request.GroupId;
 			try

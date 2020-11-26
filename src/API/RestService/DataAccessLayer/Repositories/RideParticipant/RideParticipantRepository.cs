@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,10 +17,11 @@ namespace DataAccessLayer.Repositories.RideParticipant
 			=> _context = context;
 
 		public async Task<List<UserParticipatedRide>> GetParticipantsByRideId(RideId rideId,
-		                                                                      CancellationToken cancellationToken =
-			                                                                      default)
-			=> await _context.UserParticipatedRides.Where(x => x.RideId == rideId).ToListAsync(cancellationToken)
-			                 .ConfigureAwait(false);
+			CancellationToken cancellationToken =
+				default)
+			=> await _context.UserParticipatedRides.Where(x => x.RideId == rideId)
+				.ToListAsync(cancellationToken)
+				.ConfigureAwait(false);
 
 		public async Task SaveAsync(CancellationToken cancellationToken)
 			=> await _context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

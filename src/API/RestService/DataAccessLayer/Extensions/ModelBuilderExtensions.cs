@@ -6,8 +6,7 @@ namespace DataAccessLayer.Extensions
 {
 	public static class ModelBuilderExtensions
 	{
-		public static ModelBuilder UseValueConverter(
-			this ModelBuilder modelBuilder, ValueConverter converter)
+		public static ModelBuilder UseValueConverter(this ModelBuilder modelBuilder, ValueConverter converter)
 		{
 			// The-strongly typed ID type
 			var type = converter.ModelClrType;
@@ -22,13 +21,11 @@ namespace DataAccessLayer.Extensions
 					.Where(p => p.PropertyType == type);
 
 				foreach (var property in properties)
-				{
 					// Use the value converter for the property
 					modelBuilder
 						.Entity(entityType.Name)
 						.Property(property.Name)
 						.HasConversion(converter);
-				}
 			}
 
 			return modelBuilder;

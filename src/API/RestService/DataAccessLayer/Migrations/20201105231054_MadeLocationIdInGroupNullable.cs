@@ -7,8 +7,7 @@ namespace DataAccessLayer.Migrations
 	{
 		protected override void Up(MigrationBuilder migrationBuilder)
 		{
-			migrationBuilder.AlterColumn<Guid>(
-				"LocationId",
+			migrationBuilder.AlterColumn<Guid>("LocationId",
 				"Groups",
 				nullable: true,
 				oldClrType: typeof(Guid),
@@ -17,8 +16,7 @@ namespace DataAccessLayer.Migrations
 
 		protected override void Down(MigrationBuilder migrationBuilder)
 		{
-			migrationBuilder.AlterColumn<Guid>(
-				"LocationId",
+			migrationBuilder.AlterColumn<Guid>("LocationId",
 				"Groups",
 				"uniqueidentifier",
 				nullable: false,

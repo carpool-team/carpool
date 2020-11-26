@@ -4,7 +4,5 @@ using MediatR;
 
 namespace RestApi.Queries.UserQueries
 {
-	public class GetUsersQuery : IRequest<List<ApplicationUser>>
-	{
-	}
+	public class GetUsersQuery : IRequest<List<ApplicationUser>> { }
 }

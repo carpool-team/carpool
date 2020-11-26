@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,22 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.GroupInvite
 {
-	public class GroupInviteRepository : BaseRepository<Domain.Entities.GroupInvite, GroupInviteId>, IGroupInviteRepository
+	public class GroupInviteRepository : BaseRepository<Domain.Entities.GroupInvite, GroupInviteId>,
+		IGroupInviteRepository
 	{
-		public GroupInviteRepository(CarpoolDbContext context) : base(context)
-		{
-		}
+		public GroupInviteRepository(CarpoolDbContext context) : base(context) { }
 
 		public async Task<Domain.Entities.GroupInvite> GetByIdAsync(GroupInviteId id,
-		                                                            CancellationToken cancellationToken = default)
+			CancellationToken cancellationToken = default)
 			=> await _context.GroupInvites.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
-			                 .ConfigureAwait(false);
+				.ConfigureAwait(false);
 
 		public async Task<Domain.Entities.GroupInvite> GetByIdAsNoTrackingAsync(GroupInviteId id,
-		                                                                 CancellationToken cancellationToken =
-			                                                                 default)
-			=> await _context.GroupInvites.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
-			                 .ConfigureAwait(false);
+			CancellationToken cancellationToken =
+				default)
+			=> await _context.GroupInvites.AsNoTracking()
+				.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+				.ConfigureAwait(false);
 
 		public Domain.Entities.GroupInvite GetById(GroupInviteId id)
 			=> _context.GroupInvites.FirstOrDefault(x => x.Id == id);
@@ -37,7 +36,10 @@ namespace DataAccessLayer.Repositories.GroupInvite
 
 		public async Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(UserId userId,
 			CancellationToken cancellationToken)
-			=> await _context.GroupInvites.AsNoTracking().Where(x => x.InvitedUserId == userId)
-			                 .OrderByDescending(x => x.DateAdded).ToListAsync(cancellationToken).ConfigureAwait(false);
+			=> await _context.GroupInvites.AsNoTracking()
+				.Where(x => x.InvitedUserId == userId)
+				.OrderByDescending(x => x.DateAdded)
+				.ToListAsync(cancellationToken)
+				.ConfigureAwait(false);
 	}
 }

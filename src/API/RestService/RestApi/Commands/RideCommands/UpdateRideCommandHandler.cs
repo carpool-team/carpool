@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.Repositories.Ride;
 using Domain.Entities;
@@ -16,7 +15,7 @@ namespace RestApi.Commands.RideCommands
 			=> _repository = repository;
 
 		public async Task<Ride> Handle(UpdateRideCommand request,
-		                                                   CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 		{
 			var ride = await _repository.GetByIdAsync((RideId) request.RideId, cancellationToken).ConfigureAwait(false);
 			ride.Date = request.Date ?? ride.Date;

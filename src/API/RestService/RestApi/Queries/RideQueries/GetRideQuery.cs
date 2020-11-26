@@ -1,5 +1,4 @@
-﻿using System;
-using Domain.Entities;
+﻿using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;

@@ -1,5 +1,4 @@
-﻿using System;
-using IdentifiersShared.Identifiers;
+﻿using IdentifiersShared.Identifiers;
 using RestApi.DTOs.Vehicle;
 
 namespace RestApi.DTOs.User
@@ -20,9 +19,7 @@ namespace RestApi.DTOs.User
 		public IndexUserDto(UserId userId) : this()
 			=> UserId = userId;
 
-		private IndexUserDto()
-		{
-		}
+		private IndexUserDto() { }
 
 		public UserId UserId { get; set; }
 		public string FirstName { get; set; }

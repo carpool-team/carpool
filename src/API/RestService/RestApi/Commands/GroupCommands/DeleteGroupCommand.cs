@@ -1,5 +1,4 @@
-﻿using System;
-using IdentifiersShared.Identifiers;
+﻿using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.GroupCommands

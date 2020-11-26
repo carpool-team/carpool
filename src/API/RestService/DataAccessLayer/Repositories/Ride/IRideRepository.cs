@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using IdentifiersShared.Identifiers;
@@ -17,12 +16,12 @@ namespace DataAccessLayer.Repositories.Ride
 		Task<IEnumerable<Domain.Entities.Ride>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken);
 
 		Task<IEnumerable<Domain.Entities.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(UserId userId,
-		                                                                      bool past,
-		                                                                      CancellationToken cancellationToken);
+			bool past,
+			CancellationToken cancellationToken);
 
 		Task<IEnumerable<Domain.Entities.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(UserId userId,
-		                                                               bool past,
-		                                                               CancellationToken cancellationToken);
+			bool past,
+			CancellationToken cancellationToken);
 
 		Task RemoveUserFromRide(UserId userId, RideId rideId, CancellationToken cancellationToken);
 	}

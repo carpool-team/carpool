@@ -18,10 +18,10 @@ namespace RestApi.Commands.GroupInviteCommands
 			=> _repository = repository;
 
 		public async Task<GroupInviteId> Handle(DeleteGroupInviteCommand request,
-		                               CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 		{
 			var groupInvite = await _repository.GetByIdAsync(request.GroupInviteId, cancellationToken)
-			                                   .ConfigureAwait(false);
+				.ConfigureAwait(false);
 
 			if (groupInvite == null)
 				throw new ApiException($"Group Invite with id:{request.GroupInviteId} does not exist",

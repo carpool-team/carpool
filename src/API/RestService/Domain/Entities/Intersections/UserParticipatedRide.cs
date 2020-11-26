@@ -1,5 +1,4 @@
-﻿using System;
-using IdentifiersShared.Identifiers;
+﻿using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities.Intersections
 {

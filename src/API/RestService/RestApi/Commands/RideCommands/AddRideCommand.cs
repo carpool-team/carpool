@@ -12,14 +12,14 @@ namespace RestApi.Commands.RideCommands
 	{
 		[JsonConstructor]
 		public AddRideCommand(UserId ownerId,
-		                      List<UserId> participantsIds,
-		                      GroupId groupId,
-		                      DateTime date,
-		                      double price,
-		                      Location destination,
-		                      Location startingLocation)
+			List<UserId> participantsIds,
+			GroupId groupId,
+			DateTime date,
+			double price,
+			Location destination,
+			Location startingLocation)
 			=> (OwnerId, ParticipantsIds, GroupId, Date, Price, Destination, StartingLocation) =
-			   (ownerId, participantsIds, groupId, date, price, destination, startingLocation);
+				(ownerId, participantsIds, groupId, date, price, destination, startingLocation);
 
 		public UserId OwnerId { get; set; }
 		public List<UserId> ParticipantsIds { get; set; }

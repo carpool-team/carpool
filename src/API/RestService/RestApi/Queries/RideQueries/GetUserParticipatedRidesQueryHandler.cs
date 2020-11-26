@@ -17,11 +17,12 @@ namespace RestApi.Queries.RideQueries
 			=> _repository = repository;
 
 		public async Task<IEnumerable<Ride>> Handle(GetUserParticipatedRidesQuery request,
-		                                                                CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 		{
 			var userRides =
 				await _repository.GetParticipatedRidesByUserIdAsNoTrackingAsync(request.UserId, request.Past,
-					cancellationToken).ConfigureAwait(false);
+						cancellationToken)
+					.ConfigureAwait(false);
 
 			return userRides;
 		}

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Domain.Entities;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
@@ -11,13 +10,13 @@ namespace RestApi.DTOs.Group
 	public class GroupDetailsDto
 	{
 		public GroupDetailsDto(GroupId groupId,
-		                       Location location,
-		                       List<RideMinimalDto> rides,
-		                       string name,
-		                       string code,
-		                       ApplicationUser owner,
-		                       int userCount,
-		                       int rideCount)
+			Location location,
+			List<RideMinimalDto> rides,
+			string name,
+			string code,
+			ApplicationUser owner,
+			int userCount,
+			int rideCount)
 		{
 			GroupId = groupId;
 			Location = location;

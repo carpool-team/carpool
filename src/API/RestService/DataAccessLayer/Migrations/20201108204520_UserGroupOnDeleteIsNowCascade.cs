@@ -6,12 +6,10 @@ namespace DataAccessLayer.Migrations
 	{
 		protected override void Up(MigrationBuilder migrationBuilder)
 		{
-			migrationBuilder.DropForeignKey(
-				"FK_UserGroups_Groups_GroupId",
+			migrationBuilder.DropForeignKey("FK_UserGroups_Groups_GroupId",
 				"UserGroups");
 
-			migrationBuilder.AddForeignKey(
-				"FK_UserGroups_Groups_GroupId",
+			migrationBuilder.AddForeignKey("FK_UserGroups_Groups_GroupId",
 				"UserGroups",
 				"GroupId",
 				"Groups",
@@ -21,12 +19,10 @@ namespace DataAccessLayer.Migrations
 
 		protected override void Down(MigrationBuilder migrationBuilder)
 		{
-			migrationBuilder.DropForeignKey(
-				"FK_UserGroups_Groups_GroupId",
+			migrationBuilder.DropForeignKey("FK_UserGroups_Groups_GroupId",
 				"UserGroups");
 
-			migrationBuilder.AddForeignKey(
-				"FK_UserGroups_Groups_GroupId",
+			migrationBuilder.AddForeignKey("FK_UserGroups_Groups_GroupId",
 				"UserGroups",
 				"GroupId",
 				"Groups",

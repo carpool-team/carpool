@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -30,8 +29,10 @@ namespace RestApi.Controllers
 
 		// GET: api/GroupInvites/5
 		[HttpGet("{groupInviteId}")]
-		public async Task<ApiResponse> GetGroupInvite([FromRoute] GetGroupInviteQuery request)
+		public async Task<ApiResponse> GetGroupInvite([FromRoute] GroupInviteId groupInviteId)
 		{
+			GetGroupInviteQuery request = new(groupInviteId);
+
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse(response);
@@ -42,7 +43,7 @@ namespace RestApi.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{groupInviteId}")]
 		public async Task<ApiResponse> PutGroupInvite([FromBody] UpdateGroupInviteCommand request,
-		                                              [FromRoute] GroupInviteId groupInviteId)
+			[FromRoute] GroupInviteId groupInviteId)
 		{
 			request.GroupInviteId = groupInviteId;
 

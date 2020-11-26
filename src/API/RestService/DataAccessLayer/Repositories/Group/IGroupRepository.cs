@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Entities.Intersections;
@@ -20,8 +19,8 @@ namespace DataAccessLayer.Repositories.Group
 		Task<IEnumerable<Domain.Entities.Group>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip);
 
 		Task<List<Domain.Entities.Group>> GetGroupsByUserIdAsNoTrackingAsync(UserId userId,
-		                                                                     CancellationToken cancellationToken =
-			                                                                     default);
+			CancellationToken cancellationToken =
+				default);
 
 		Task AddUserToGroupAsync(UserGroup userGroup, CancellationToken cancellationToken = default);
 	}

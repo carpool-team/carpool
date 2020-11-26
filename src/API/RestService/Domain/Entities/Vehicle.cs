@@ -1,5 +1,4 @@
-﻿using System;
-using Domain.Abstract;
+﻿using Domain.Abstract;
 using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities

@@ -15,7 +15,7 @@ namespace RestApi.Queries.RatingQueries
 		public async Task<double> Handle(GetUserRatingQuery request, CancellationToken cancellationToken)
 		{
 			var rating = await _repository.GetUserRatingAsync(request.UserId, cancellationToken)
-			                              .ConfigureAwait(false);
+				.ConfigureAwait(false);
 
 			return rating;
 		}

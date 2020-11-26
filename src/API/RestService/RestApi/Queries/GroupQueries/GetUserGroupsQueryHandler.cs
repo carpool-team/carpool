@@ -15,10 +15,10 @@ namespace RestApi.Queries.GroupQueries
 			=> _repository = repository;
 
 		public async Task<IEnumerable<Group>> Handle(GetUserGroupsQuery request,
-		                                                                 CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 		{
 			var userGroups = await _repository.GetGroupsByUserIdAsNoTrackingAsync(request.UserId, cancellationToken)
-			                                  .ConfigureAwait(false);
+				.ConfigureAwait(false);
 
 			return userGroups;
 		}

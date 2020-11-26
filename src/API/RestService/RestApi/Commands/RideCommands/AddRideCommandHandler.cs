@@ -25,11 +25,11 @@ namespace RestApi.Commands.RideCommands
 				Date = request.Date,
 				Price = request.Price,
 				Destination = request.Destination
-				              ?? throw new ApiProblemDetailsException("Ride must have a destination",
-					              StatusCodes.Status400BadRequest),
+							  ?? throw new ApiProblemDetailsException("Ride must have a destination",
+								  StatusCodes.Status400BadRequest),
 				StartingLocation = request.StartingLocation
-				                   ?? throw new ApiProblemDetailsException("Ride must have a starting location",
-					                   StatusCodes.Status400BadRequest)
+								   ?? throw new ApiProblemDetailsException("Ride must have a starting location",
+									   StatusCodes.Status400BadRequest)
 			};
 
 			await _rideRepository.AddAsync(ride, cancellationToken).ConfigureAwait(false);

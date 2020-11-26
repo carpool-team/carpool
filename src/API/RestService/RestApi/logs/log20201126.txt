@@ -1,0 +1,9 @@
+2020-11-26 20:48:00.453 +01:00 [INF] Application is starting.
+2020-11-26 20:48:03.271 +01:00 [INF] Configuring services...
+2020-11-26 20:48:04.071 +01:00 [INF] Services configured.
+2020-11-26 20:49:31.841 +01:00 [INF] Application is starting.
+2020-11-26 20:49:34.622 +01:00 [INF] Configuring services...
+2020-11-26 20:49:35.416 +01:00 [INF] Services configured.
+2020-11-26 20:55:49.691 +01:00 [INF] Application is starting.
+2020-11-26 20:55:52.461 +01:00 [INF] Configuring services...
+2020-11-26 20:55:53.244 +01:00 [INF] Services configured.

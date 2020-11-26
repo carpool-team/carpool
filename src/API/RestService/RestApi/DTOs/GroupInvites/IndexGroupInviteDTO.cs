@@ -6,12 +6,12 @@ namespace RestApi.DTOs.GroupInvites
 	public class IndexGroupInviteDTO
 	{
 		public IndexGroupInviteDTO(GroupInviteId id,
-		                           bool isPending,
-		                           bool isAccepted,
-		                           GroupId groupId,
-		                           string groupName,
-		                           UserId invitedUserId,
-		                           DateTime dateAdded)
+			bool isPending,
+			bool isAccepted,
+			GroupId groupId,
+			string groupName,
+			UserId invitedUserId,
+			DateTime dateAdded)
 		{
 			Id = id;
 			IsPending = isPending;

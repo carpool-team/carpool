@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.GroupCommands;
+using RestApi.Commands.GroupCommands.AddGroup;
 using RestApi.Queries.GroupQueries;
 
 namespace RestApi.Controllers
@@ -49,8 +50,7 @@ namespace RestApi.Controllers
 
 		[HttpPut("{groupId}/locations")]
 		public async Task<ApiResponse> ChangeGroupLocation([FromRoute] GroupId groupId,
-		                                                   [FromBody]
-		                                                   ChangeGroupLocationCommand changeGroupLocationCommand)
+			[FromBody] ChangeGroupLocationCommand changeGroupLocationCommand)
 		{
 			changeGroupLocationCommand.GroupId = groupId;
 			var response = await _mediator.Send(changeGroupLocationCommand).ConfigureAwait(false);
@@ -59,7 +59,7 @@ namespace RestApi.Controllers
 
 		[HttpPut("{groupId}/rides")]
 		public async Task<ApiResponse> AddRideToGroup([FromRoute] Guid groupId,
-		                                              [FromBody] AddRideToGroupCommand addRideToGroupCommand)
+			[FromBody] AddRideToGroupCommand addRideToGroupCommand)
 		{
 			var response = await _mediator.Send(addRideToGroupCommand).ConfigureAwait(false);
 			return new ApiResponse(response);
@@ -77,7 +77,7 @@ namespace RestApi.Controllers
 
 		[HttpPost("{groupId}/users")]
 		public async Task<ApiResponse> AddUserToGroup([FromRoute] GroupId groupId,
-		                                              [FromBody] AddUserToGroupCommand addUserToGroupCommand)
+			[FromBody] AddUserToGroupCommand addUserToGroupCommand)
 		{
 			addUserToGroupCommand.GroupId = groupId;
 			var response = await _mediator.Send(addUserToGroupCommand).ConfigureAwait(false);

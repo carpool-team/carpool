@@ -14,12 +14,12 @@ namespace RestApi.Commands.GroupCommands
 	public class AddUserToGroupCommandHandler : AsyncRequestHandler<AddUserToGroupCommand>
 	{
 		private readonly IGroupRepository _repository;
-		private readonly IUserGroupRepository _userGroupRepository;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly IUserGroupRepository _userGroupRepository;
 
 		public AddUserToGroupCommandHandler(IGroupRepository repository,
-		                                    IUnitOfWork unitOfWork,
-		                                    IUserGroupRepository userGroupRepository)
+			IUnitOfWork unitOfWork,
+			IUserGroupRepository userGroupRepository)
 		{
 			_repository = repository;
 			_unitOfWork = unitOfWork;
@@ -29,12 +29,13 @@ namespace RestApi.Commands.GroupCommands
 		protected override async Task Handle(AddUserToGroupCommand request, CancellationToken cancellationToken)
 		{
 			var groupId = request.GroupId
-			              ?? throw new ApiProblemDetailsException("Group id cannot be null.",
-				              StatusCodes.Status400BadRequest);
+						  ?? throw new ApiProblemDetailsException("Group id cannot be null.",
+							  StatusCodes.Status400BadRequest);
 
 			var group = await _repository.GetByIdAsync(groupId, cancellationToken).ConfigureAwait(false);
-			_ = group ?? throw new ApiProblemDetailsException($"Group with id: {groupId} does not exist",
-				    StatusCodes.Status404NotFound);
+			_ = group
+				?? throw new ApiProblemDetailsException($"Group with id: {groupId} does not exist",
+					StatusCodes.Status404NotFound);
 
 			var userGroup = new UserGroup(request.UserId, groupId);
 

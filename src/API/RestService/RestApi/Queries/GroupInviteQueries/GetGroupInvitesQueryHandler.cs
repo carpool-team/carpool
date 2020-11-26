@@ -19,7 +19,7 @@ namespace RestApi.Queries.GroupInviteQueries
 			=> _repository = repository;
 
 		public async Task<IEnumerable<IndexGroupInviteDTO>> Handle(GetGroupInvitesQuery request,
-		                                                           CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 		{
 			var groupInvites = await _repository.GetPartAsync(cancellationToken).ConfigureAwait(false);
 			try

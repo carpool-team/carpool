@@ -1,6 +1,4 @@
 ﻿namespace RestApi.DTOs.GroupInvites
 {
-	public class DetailsGroupInviteDto
-	{
-	}
+	public class DetailsGroupInviteDto { }
 }

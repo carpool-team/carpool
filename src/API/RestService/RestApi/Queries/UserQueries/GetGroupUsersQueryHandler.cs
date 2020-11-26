@@ -21,7 +21,8 @@ namespace RestApi.Queries.UserQueries
 			var users = await _repository.GetGroupUsersByGroupIdAsync(request.Id).ConfigureAwait(false);
 
 			var userDtos = users.Select(x
-				=> new IndexUserDto(x.Id, x.FirstName, x.LastName, x.Vehicle)).ToList();
+					=> new IndexUserDto(x.Id, x.FirstName, x.LastName, x.Vehicle))
+				.ToList();
 
 			return userDtos;
 		}

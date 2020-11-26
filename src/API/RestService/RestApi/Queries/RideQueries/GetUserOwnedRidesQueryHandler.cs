@@ -16,8 +16,8 @@ namespace RestApi.Queries.RideQueries
 			=> _repository = repository;
 
 		public async Task<IEnumerable<Ride>> Handle(GetUserOwnedRidesQuery request,
-		                                                                CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 			=> await _repository.GetOwnedRidesByUserIdAsNoTrackingAsync(request.UserId, request.Past, cancellationToken)
-			                    .ConfigureAwait(false);
+				.ConfigureAwait(false);
 	}
 }

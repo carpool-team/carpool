@@ -9,9 +9,7 @@ namespace RestApi.DTOs.Ride
 {
 	public class AddRideDTO
 	{
-		private AddRideDTO()
-		{
-		}
+		private AddRideDTO() { }
 
 		public List<Guid> ParticipantsIds { get; set; }
 

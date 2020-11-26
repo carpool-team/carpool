@@ -16,7 +16,7 @@ namespace RestApi.Queries.GroupQueries
 			=> _repository = repository;
 
 		public async Task<IEnumerable<IndexGroupDTO>> Handle(GetGroupsQuery request,
-		                                                     CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 		{
 			var groups = await _repository.GetRangeAsNoTrackingAsync(request.Count, request.Page).ConfigureAwait(false);
 			var groupDtos = groups.Select(x

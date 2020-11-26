@@ -15,10 +15,10 @@ namespace RestApi.Queries.GroupInviteQueries
 			=> _repository = repository;
 
 		public async Task<GroupInvite> Handle(GetGroupInviteQuery request,
-		                                                          CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 		{
 			var groupInvite = await _repository.GetByIdAsNoTrackingAsync(request.GroupInviteId, cancellationToken)
-			                                   .ConfigureAwait(false);
+				.ConfigureAwait(false);
 
 			if (groupInvite is null)
 				throw new NullReferenceException();

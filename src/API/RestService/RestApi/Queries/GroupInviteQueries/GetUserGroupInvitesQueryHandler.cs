@@ -18,8 +18,8 @@ namespace RestApi.Queries.GroupInviteQueries
 			=> _repository = repository;
 
 		public async Task<IEnumerable<GroupInvite>> Handle(GetUserGroupInvitesQuery request,
-		                                                                       CancellationToken cancellationToken)
+			CancellationToken cancellationToken)
 			=> await _repository.GetUserGroupInvitesByUserIdAsNoTrackingAsync(request.UserId, cancellationToken)
-			                    .ConfigureAwait(false);
+				.ConfigureAwait(false);
 	}
 }
