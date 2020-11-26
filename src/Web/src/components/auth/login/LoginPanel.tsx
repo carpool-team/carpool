@@ -35,7 +35,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 	const [rememberLogin, setRememberLogin] = useState(false);
 	const [inputsValid, setInputsValid] = useState({
 		email: false,
-		password: false,
+		password: false
 	});
 
 	const [validate, setValidate] = useState(false);
@@ -103,14 +103,13 @@ const LoginPanel = (props: ILoginPanelProps) => {
 							isValidCallback: isValid => {
 								setInputsValid({
 									...inputsValid,
-									email: isValid,
+									password: isValid,
 								});
 							},
 							validate
 						}}
 					/>
 					<Input
-						style={cssClasses.input}
 						type={InputType.Password}
 						changeHandler={newValue => { setPassword(newValue); }}
 						placeholder={t(resources.password)}
@@ -121,7 +120,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 							isValidCallback: isValid => {
 								setInputsValid({
 									...inputsValid,
-									password: isValid,
+									email: isValid,
 								});
 							},
 							validate

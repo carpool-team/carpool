@@ -65,7 +65,6 @@ const usePassword = () => {
 	const render = () => (
 		<>
 			<Input
-				style={cssClasses.input}
 				type={InputType.Password}
 				changeHandler={(newValue: string) => { setPassword(newValue); }}
 				placeholder={i18n.t(resources.password)}

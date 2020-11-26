@@ -68,7 +68,6 @@ const Input = (props: IINputProps) => {
 	const inputInvalidTextClassName: string = "input__invalidText";
 	const inputBaseContainerClassName: string = "input__container input__container::before--user";
 	const inputGroupContainerClassName: string = "input__groupContainer";
-	const inputBaseClassContainer: string = "input__container input__container::before--user";
 	const inputCommentClassName: string = "input__comment";
 
 	const generalChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,11 +78,11 @@ const Input = (props: IINputProps) => {
 		}
 	};
 
-	const baseInputClasses = [inputBaseClassName];
-	const baseContainerClasses = [inputBaseContainerClassName];
+	let baseInputClasses = [inputBaseClassName];
+	let baseContainerClasses = [inputBaseContainerClassName];
 	if (!isValid) {
-		baseInputClasses.push(inputInvalidClassName);
-		baseContainerClasses.push(inputInvalidContainerClassName);
+		baseInputClasses = [inputInvalidClassName];
+		baseContainerClasses = [inputInvalidContainerClassName];
 	}
 
 	const renderValidationMessage = () => {
@@ -115,15 +114,18 @@ const Input = (props: IINputProps) => {
 	);
 
 	const renderPasswordInput = () => (
-		<div className={[inputBaseClassContainer, props.style].join(" ")}>
-			<div className={getIconClass(props.icon)}></div>
-			<input
-				className={inputBaseClassName}
-				placeholder={props.placeholder}
-				onChange={generalChangeHandler}
-				value={props.value}
-				type={"password"}
-			/>
+		<div className={[inputGroupContainerClassName, props.style].join(" ")}>
+			<div className={baseContainerClasses.join(" ")}>
+				<div className={getIconClass(props.icon)}></div>
+				<input
+					className={inputBaseClassName}
+					placeholder={props.placeholder}
+					onChange={generalChangeHandler}
+					value={props.value}
+					type={"password"}
+				/>
+			</div>
+			{renderValidationMessage()}
 		</div>
 	);
 
