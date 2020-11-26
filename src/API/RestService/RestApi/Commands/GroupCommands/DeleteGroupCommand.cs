@@ -1,13 +1,14 @@
 ﻿using System;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.GroupCommands
 {
 	public class DeleteGroupCommand : IRequest
 	{
-		public DeleteGroupCommand(Guid id)
-			=> Id = id;
+		public DeleteGroupCommand(GroupId groupId)
+			=> GroupId = groupId;
 
-		public Guid Id { get; set; }
+		public GroupId GroupId { get; set; }
 	}
 }

@@ -1,23 +1,24 @@
 ﻿using System;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
 namespace RestApi.Commands.GroupInviteCommands
 {
-	public class AddGroupInviteCommand : IRequest<Guid>
+	public class AddGroupInviteCommand : IRequest<GroupInviteId>
 	{
 		[JsonConstructor]
-		public AddGroupInviteCommand(Guid groupId, Guid invitedUserId, Guid inviterId)
+		public AddGroupInviteCommand(GroupId groupId, UserId invitedUserId, UserId inviterId)
 		{
 			GroupId = groupId;
 			InvitedUserId = invitedUserId;
 			InviterId = inviterId;
 		}
 
-		public Guid GroupId { get; set; }
+		public GroupId GroupId { get; set; }
 
-		public Guid InvitedUserId { get; set; }
+		public UserId InvitedUserId { get; set; }
 
-		public Guid InviterId { get; set; }
+		public UserId InviterId { get; set; }
 	}
 }

@@ -1,15 +1,16 @@
 ﻿using System;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 
 namespace RestApi.DTOs.Group
 {
 	public class IndexGroupDTO
 	{
-		public IndexGroupDTO(Guid id, Location location, string name, int rideCount, int userCount) : this(id, name,
+		public IndexGroupDTO(GroupId id, Location location, string name, int rideCount, int userCount) : this(id, name,
 			rideCount, userCount)
 			=> Location = location;
 
-		public IndexGroupDTO(Guid id, string name, int rideCount, int userCount) : this()
+		public IndexGroupDTO(GroupId id, string name, int rideCount, int userCount) : this()
 		{
 			Id = id;
 			Name = name;
@@ -23,7 +24,7 @@ namespace RestApi.DTOs.Group
 
 		public int UserCount { get; }
 
-		public Guid Id { get; set; }
+		public GroupId Id { get; set; }
 
 		public Location Location { get; set; }
 

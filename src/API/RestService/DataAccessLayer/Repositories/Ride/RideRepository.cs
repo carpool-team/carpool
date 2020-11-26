@@ -4,35 +4,36 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
+using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.Ride
 {
-    public class RideRepository : BaseRepository<Domain.Entities.Ride, Guid>, IRideRepository
+    public class RideRepository : BaseRepository<Domain.Entities.Ride, RideId>, IRideRepository
     {
         public RideRepository(CarpoolDbContext context) : base(context)
         {
         }
 
-        public async Task<Domain.Entities.Ride> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<Domain.Entities.Ride> GetByIdAsync(RideId id, CancellationToken cancellationToken = default)
         {
             return await _context.Rides.FirstOrDefaultAsync(ride => ride.Id == id, cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public async Task<Domain.Entities.Ride> GetByIdAsNoTrackingAsync(Guid id,
+        public async Task<Domain.Entities.Ride> GetByIdAsNoTrackingAsync(RideId id,
             CancellationToken cancellationToken = default)
         {
             return await _context.Rides.AsNoTracking().FirstOrDefaultAsync(ride => ride.Id == id, cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public Domain.Entities.Ride GetById(Guid id)
+        public Domain.Entities.Ride GetById(RideId id)
         {
             return _context.Rides.FirstOrDefault(ride => ride.Id == id);
         }
 
-        public Domain.Entities.Ride GetByAsNoTrackingId(Guid id)
+        public Domain.Entities.Ride GetByAsNoTrackingId(RideId id)
         {
             return _context.Rides.AsNoTracking().FirstOrDefault(ride => ride.Id == id);
         }
@@ -51,7 +52,7 @@ namespace DataAccessLayer.Repositories.Ride
                 .OrderBy(ride => ride.Date).ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Domain.Entities.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(Guid userId,
+        public async Task<IEnumerable<Domain.Entities.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(UserId userId,
             bool past = false,
             CancellationToken cancellationToken = default)
         {
@@ -62,7 +63,7 @@ namespace DataAccessLayer.Repositories.Ride
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Domain.Entities.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(Guid userId,
+        public async Task<IEnumerable<Domain.Entities.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(UserId userId,
             bool past,
             CancellationToken cancellationToken)
         {
@@ -71,7 +72,7 @@ namespace DataAccessLayer.Repositories.Ride
                 .ToListAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task RemoveUserFromRide(Guid userId, Guid rideId, CancellationToken cancellationToken = default)
+        public async Task RemoveUserFromRide(UserId userId, RideId rideId, CancellationToken cancellationToken = default)
         {
             var rideParticipant = await _context.UserParticipatedRides
                 .FirstOrDefaultAsync(x => x.RideId == rideId && x.UserId == userId, cancellationToken: cancellationToken).ConfigureAwait(false);

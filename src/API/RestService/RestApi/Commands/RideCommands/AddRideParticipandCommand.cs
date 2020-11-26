@@ -1,4 +1,5 @@
 ﻿using System;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -7,13 +8,13 @@ namespace RestApi.Commands.RideCommands
 	public class AddRideParticipandCommand : IRequest
 	{
 		[JsonConstructor]
-		public AddRideParticipandCommand(Guid? rideId, Guid participandId)
+		public AddRideParticipandCommand(RideId? rideId, UserId participantId)
 		{
 			RideId = rideId;
-			ParticipandId = participandId;
+			ParticipantId = participantId;
 		}
 
-		public Guid? RideId { get; set; }
-		public Guid ParticipandId { get; set; }
+		public RideId? RideId { get; set; }
+		public UserId ParticipantId { get; set; }
 	}
 }

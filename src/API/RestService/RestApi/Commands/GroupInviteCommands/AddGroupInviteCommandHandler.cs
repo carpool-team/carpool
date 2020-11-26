@@ -3,18 +3,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.Repositories.GroupInvite;
 using Domain.Entities;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.GroupInviteCommands
 {
-	public class AddGroupInviteCommandHandler : IRequestHandler<AddGroupInviteCommand, Guid>
+	public class AddGroupInviteCommandHandler : IRequestHandler<AddGroupInviteCommand, GroupInviteId>
 	{
 		private readonly IGroupInviteRepository _repository;
 
 		public AddGroupInviteCommandHandler(IGroupInviteRepository repository)
 			=> _repository = repository;
 
-		public async Task<Guid> Handle(AddGroupInviteCommand request,
+		public async Task<GroupInviteId> Handle(AddGroupInviteCommand request,
 		                               CancellationToken cancellationToken)
 		{
 			var groupInvite = new GroupInvite

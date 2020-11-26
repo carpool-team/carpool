@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Domain.Entities;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -10,9 +11,9 @@ namespace RestApi.Commands.RideCommands
 	public class AddRideCommand : IRequest<Ride>
 	{
 		[JsonConstructor]
-		public AddRideCommand(Guid ownerId,
-		                      List<Guid> participantsIds,
-		                      Guid groupId,
+		public AddRideCommand(UserId ownerId,
+		                      List<UserId> participantsIds,
+		                      GroupId groupId,
 		                      DateTime date,
 		                      double price,
 		                      Location destination,
@@ -20,10 +21,10 @@ namespace RestApi.Commands.RideCommands
 			=> (OwnerId, ParticipantsIds, GroupId, Date, Price, Destination, StartingLocation) =
 			   (ownerId, participantsIds, groupId, date, price, destination, startingLocation);
 
-		public Guid OwnerId { get; set; }
-		public List<Guid> ParticipantsIds { get; set; }
+		public UserId OwnerId { get; set; }
+		public List<UserId> ParticipantsIds { get; set; }
 
-		public Guid GroupId { get; set; }
+		public GroupId GroupId { get; set; }
 
 		public DateTime Date { get; set; }
 

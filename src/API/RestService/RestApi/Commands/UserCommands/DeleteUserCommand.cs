@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain.Entities;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -8,10 +9,10 @@ namespace RestApi.Commands.UserCommands
 	public class DeleteUserCommand : IRequest<ApplicationUser>
 	{
 		[JsonConstructor]
-		public DeleteUserCommand(Guid userId)
+		public DeleteUserCommand(UserId userId)
 			=> UserId = userId;
 
 
-		public Guid UserId { get; set; }
+		public UserId UserId { get; set; }
 	}
 }

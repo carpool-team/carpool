@@ -4,17 +4,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Domain.Abstract;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities
 {
-	public class Ride : BaseEntity<Guid>
+	public class Ride : BaseEntity<RideId>
 	{
-		public Guid OwnerId { get; set; }
+		public UserId OwnerId { get; set; }
 		public ApplicationUser Owner { get; set; }
 
 		public List<UserParticipatedRide> Participants { get; set; }
 
-		public Guid GroupId { get; set; }
+		public GroupId GroupId { get; set; }
 
 		public Group Group { get; set; }
 
@@ -22,14 +23,10 @@ namespace Domain.Entities
 
 		public double Price { get; set; }
 		
-		[ForeignKey("DestinationId")] public Location Destination { get; set; }
-
-		public Guid DestinationId { get; set; }
-
-		[ForeignKey("StartingLocationId")] public Location StartingLocation { get; set; }
-
-		public Guid StartingLocationId { get; set; }
-
+		public Location Destination { get; set; }
+		
+		public Location StartingLocation { get; set; }
+		
 		public List<Stop> Stops { get; set; }
 	}
 }

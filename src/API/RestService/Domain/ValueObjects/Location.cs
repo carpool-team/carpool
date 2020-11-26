@@ -8,9 +8,7 @@ namespace Domain.ValueObjects
 		public Location() { }
 
 		public Location(double longitude, double latitude)
-		{
-			(Longitude, Latitude) = (longitude, latitude);
-		}
+			=> (Longitude, Latitude) = (longitude, latitude);
 
 		public double Longitude { get; set; }
 

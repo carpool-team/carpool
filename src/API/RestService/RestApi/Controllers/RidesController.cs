@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.RideCommands;
@@ -34,7 +35,7 @@ namespace RestApi.Controllers
 
         // GET: api/Rides/5
         [HttpGet("{rideId}")]
-        public async Task<ApiResponse> GetRide(Guid rideId)
+        public async Task<ApiResponse> GetRide(RideId rideId)
         {
             var request = new GetRideQuery(rideId);
             var response = await _mediator.Send(request).ConfigureAwait(false);
@@ -46,7 +47,7 @@ namespace RestApi.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<ApiResponse> PutRide(Guid id, UpdateRideCommand request)
+        public async Task<ApiResponse> PutRide(RideId id, UpdateRideCommand request)
         {
             request.RideId = id;
             var response = await _mediator.Send(request).ConfigureAwait(false);
@@ -75,7 +76,7 @@ namespace RestApi.Controllers
         }
 
         [HttpPost("{rideId}/users")]
-        public async Task<ApiResponse> AddParticipant([FromRoute] Guid rideId,
+        public async Task<ApiResponse> AddParticipant([FromRoute] RideId rideId,
             [FromBody] AddRideParticipandCommand request)
         {
             request.RideId = rideId;
@@ -85,7 +86,7 @@ namespace RestApi.Controllers
         }
 
         [HttpGet("~/api/users/{userId}/rides/participated")]
-        public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] Guid userId,
+        public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] UserId userId,
             [FromQuery] bool past = false)
         {
             var request = new GetUserParticipatedRidesQuery(userId, past);
@@ -95,7 +96,7 @@ namespace RestApi.Controllers
         }
 
         [HttpGet("~/api/users/{userId}/rides/owned")]
-        public async Task<ApiResponse> GetUserOwnedRides([FromRoute] Guid userId,
+        public async Task<ApiResponse> GetUserOwnedRides([FromRoute] UserId userId,
             [FromQuery] bool past = false)
         {
             var request = new GetUserOwnedRidesQuery(userId, past);
@@ -105,7 +106,7 @@ namespace RestApi.Controllers
         }
 
         [HttpDelete("{rideId}/users/{userId}")]
-        public async Task<ApiResponse> RemoveUserFromRide([FromRoute] Guid rideId, [FromRoute] Guid userId)
+        public async Task<ApiResponse> RemoveUserFromRide([FromRoute] RideId rideId, [FromRoute] UserId userId)
         {
             var request = new RemoveUserFromRideCommand(rideId, userId);
             var response = await _mediator.Send(request).ConfigureAwait(false);

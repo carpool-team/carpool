@@ -5,17 +5,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
 using Domain.Entities.Intersections;
+using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.Group
 {
-	public class GroupRepository : BaseRepository<Domain.Entities.Group, Guid>, IGroupRepository
+	public class GroupRepository : BaseRepository<Domain.Entities.Group, GroupId>, IGroupRepository
 	{
 		public GroupRepository(CarpoolDbContext context) : base(context)
 		{
 		}
 
-		public async Task<Domain.Entities.Group> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+		public async Task<Domain.Entities.Group> GetByIdAsync(GroupId id, CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
 			                     //.Include(group => group.Rides)
@@ -24,7 +25,7 @@ namespace DataAccessLayer.Repositories.Group
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken).ConfigureAwait(false);
 		}
 
-		public async Task<Domain.Entities.Group> GetByIdAsNoTrackingAsync(Guid id,
+		public async Task<Domain.Entities.Group> GetByIdAsNoTrackingAsync(GroupId id,
 		                                                                  CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
@@ -36,7 +37,7 @@ namespace DataAccessLayer.Repositories.Group
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken).ConfigureAwait(false);
 		}
 
-		public Domain.Entities.Group GetById(Guid id)
+		public Domain.Entities.Group GetById(GroupId id)
 		{
 			return _context.Groups
 			               .AsNoTracking()
@@ -46,7 +47,7 @@ namespace DataAccessLayer.Repositories.Group
 			               .FirstOrDefault(group => group.Id == id);
 		}
 
-		public Domain.Entities.Group GetByIdAsNoTracking(Guid id)
+		public Domain.Entities.Group GetByIdAsNoTracking(GroupId id)
 		{
 			return _context.Groups
 			               //.Include(group => group.Rides)
@@ -75,7 +76,7 @@ namespace DataAccessLayer.Repositories.Group
 			return groups;
 		}
 
-		public async Task<List<Domain.Entities.Group>> GetGroupsByUserIdAsNoTrackingAsync(Guid userId,
+		public async Task<List<Domain.Entities.Group>> GetGroupsByUserIdAsNoTrackingAsync(UserId userId,
 		                                                                  CancellationToken cancellationToken)
 		{
 			var groupIds = await _context.UserGroups.AsNoTracking().Where(x => x.UserId == userId)

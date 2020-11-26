@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace RestApi.Controllers
 
 		// GET: api/Groups/5
 		[HttpGet("{groupId}")]
-		public async Task<ApiResponse> GetGroup([FromRoute] Guid groupId)
+		public async Task<ApiResponse> GetGroup([FromRoute] GroupId groupId)
 		{
 			var request = new GetGroupQuery(groupId);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
@@ -47,7 +48,7 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPut("{groupId}/locations")]
-		public async Task<ApiResponse> ChangeGroupLocation([FromRoute] Guid groupId,
+		public async Task<ApiResponse> ChangeGroupLocation([FromRoute] GroupId groupId,
 		                                                   [FromBody]
 		                                                   ChangeGroupLocationCommand changeGroupLocationCommand)
 		{
@@ -75,7 +76,7 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost("{groupId}/users")]
-		public async Task<ApiResponse> AddUserToGroup([FromRoute] Guid groupId,
+		public async Task<ApiResponse> AddUserToGroup([FromRoute] GroupId groupId,
 		                                              [FromBody] AddUserToGroupCommand addUserToGroupCommand)
 		{
 			addUserToGroupCommand.GroupId = groupId;
@@ -86,7 +87,7 @@ namespace RestApi.Controllers
 
 		// DELETE: api/Groups/5
 		[HttpDelete("{id}")]
-		public async Task<ApiResponse> DeleteGroup(Guid id)
+		public async Task<ApiResponse> DeleteGroup(GroupId id)
 		{
 			var response = await _mediator.Send(new DeleteGroupCommand(id)).ConfigureAwait(false);
 			return new ApiResponse($"Group with id: {id} has been deleted", StatusCodes.Status200OK);
@@ -94,7 +95,7 @@ namespace RestApi.Controllers
 
 
 		[HttpGet("~/api/users/{userId}/groups")]
-		public async Task<ApiResponse> GetUserGroups([FromRoute] Guid userId)
+		public async Task<ApiResponse> GetUserGroups([FromRoute] UserId userId)
 		{
 			var request = new GetUserGroupsQuery(userId);
 

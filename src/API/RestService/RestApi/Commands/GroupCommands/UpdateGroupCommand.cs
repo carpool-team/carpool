@@ -1,23 +1,24 @@
 ﻿using System;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
 namespace RestApi.Commands.GroupCommands
 {
-	public class UpdateGroupCommand : IRequest<Guid>
+	public class UpdateGroupCommand : IRequest<GroupId>
 	{
 		[JsonConstructor]
-		public UpdateGroupCommand(Guid id, Location? location, string name, string code, Guid? ownerId)
+		public UpdateGroupCommand(GroupId groupId, Location? location, string name, string code, UserId? ownerId)
 		{
-			Id = id;
+			GroupId = groupId;
 			Location = location;
 			Name = name;
 			Code = code;
 			OwnerId = ownerId;
 		}
 
-		public Guid Id { get; set; }
+		public GroupId GroupId { get; set; }
 
 		public Location? Location { get; set; }
 
@@ -25,6 +26,6 @@ namespace RestApi.Commands.GroupCommands
 
 		public string Code { get; set; }
 
-		public Guid? OwnerId { get; set; }
+		public UserId? OwnerId { get; set; }
 	}
 }

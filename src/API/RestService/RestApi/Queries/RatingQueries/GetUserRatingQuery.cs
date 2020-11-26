@@ -1,13 +1,14 @@
 ﻿using System;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Queries.RatingQueries
 {
 	public class GetUserRatingQuery : IRequest<double>
 	{
-		public GetUserRatingQuery(Guid userId)
+		public GetUserRatingQuery(UserId userId)
 			=> UserId = userId;
 
-		public Guid UserId { get; set; }
+		public UserId UserId { get; set; }
 	}
 }

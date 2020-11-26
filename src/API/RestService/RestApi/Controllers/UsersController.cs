@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
@@ -33,7 +34,7 @@ namespace RestApi.Controllers
 
 		// GET: api/Users/5
 		[HttpGet("{id}")]
-		public async Task<ApiResponse> GetUser(Guid id)
+		public async Task<ApiResponse> GetUser(UserId id)
 		{
 			var request = new GetUserByIdQuery(id);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
@@ -42,7 +43,7 @@ namespace RestApi.Controllers
 		}
 
 		[HttpGet("~/api/groups/{groupId}/users")]
-		public async Task<ApiResponse> GetGroupUsers([FromRoute] Guid groupId)
+		public async Task<ApiResponse> GetGroupUsers([FromRoute] GroupId groupId)
 		{
 			var result = await _mediator.Send(new GetGroupUsersQuery(groupId)).ConfigureAwait(false);
 			return new ApiResponse(result);
@@ -52,7 +53,7 @@ namespace RestApi.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{id}")]
-		public async Task<ApiResponse> PutUser(Guid id, UpdateUserCommand request)
+		public async Task<ApiResponse> PutUser(UserId id, UpdateUserCommand request)
 		{
 			request.UserId = id;
 			var response = await _mediator.Send(request).ConfigureAwait(false);
@@ -72,7 +73,7 @@ namespace RestApi.Controllers
 
 		// DELETE: api/Users/5
 		[HttpDelete("{userId}")]
-		public async Task<ApiResponse> DeleteUser(Guid userId)
+		public async Task<ApiResponse> DeleteUser(UserId userId)
 		{
 			var request = new DeleteUserCommand(userId);
 

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.Repositories.Ride;
 using Domain.Entities;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.RideCommands
@@ -17,7 +18,7 @@ namespace RestApi.Commands.RideCommands
 		public async Task<Ride> Handle(UpdateRideCommand request,
 		                                                   CancellationToken cancellationToken)
 		{
-			var ride = await _repository.GetByIdAsync((Guid) request.RideId, cancellationToken).ConfigureAwait(false);
+			var ride = await _repository.GetByIdAsync((RideId) request.RideId, cancellationToken).ConfigureAwait(false);
 			ride.Date = request.Date ?? ride.Date;
 			ride.Price = request.Price ?? ride.Price;
 			ride.Date = request.Date ?? ride.Date;

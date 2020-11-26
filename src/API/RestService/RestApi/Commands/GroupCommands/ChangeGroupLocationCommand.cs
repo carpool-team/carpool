@@ -1,4 +1,5 @@
 ﻿using System;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -10,8 +11,8 @@ namespace RestApi.Commands.GroupCommands
 		public ChangeGroupLocationCommand(double longitude, double latitude)
 			=> (Longitude, Latitude) = (longitude, latitude);
 
-		public double Longitude { get; set; }
-		public double Latitude { get; set; }
-		public Guid GroupId { get; set; }
+		public double Longitude { get; }
+		public double Latitude { get; }
+		public GroupId GroupId { get; set; }
 	}
 }

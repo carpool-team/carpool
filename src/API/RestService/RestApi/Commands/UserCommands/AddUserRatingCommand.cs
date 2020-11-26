@@ -1,18 +1,19 @@
 ﻿using System;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.UserCommands
 {
 	public class AddUserRatingCommand : IRequest<Rating>
 	{
-		public AddUserRatingCommand(Guid? userId, byte value)
+		public AddUserRatingCommand(UserId? userId, byte value)
 		{
 			UserId = userId;
 			Value = value;
 		}
 
-		public Guid? UserId { get; set; }
+		public UserId? UserId { get; set; }
 		public byte Value { get; set; }
 	}
 }

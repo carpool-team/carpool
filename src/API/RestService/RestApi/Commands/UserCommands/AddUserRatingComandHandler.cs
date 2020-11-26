@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.Repositories.User;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.UserCommands
@@ -17,7 +18,7 @@ namespace RestApi.Commands.UserCommands
 
 		public async Task<Rating> Handle(AddUserRatingCommand request, CancellationToken cancellationToken)
 		{
-			var userId = (Guid) request.UserId;
+			var userId = (UserId) request.UserId;
 			var user = await _userRepository.GetByIdAsNoTrackingAsync(userId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));
 

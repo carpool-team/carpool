@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
@@ -18,7 +19,7 @@ namespace RestApi.Controllers
 			=> _mediator = mediator;
 
 		[HttpGet("~/api/users/{userId}/rating")]
-		public async Task<ApiResponse> GetUserRatingByUserId([FromRoute] Guid userId)
+		public async Task<ApiResponse> GetUserRatingByUserId([FromRoute] UserId userId)
 		{
 			var request = new GetUserRatingQuery(userId);
 
@@ -28,7 +29,7 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost("~/api/users/{userId}/ratings")]
-		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingCommand request, [FromRoute] Guid userId)
+		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingCommand request, [FromRoute] UserId userId)
 		{
 			request.UserId = userId;
 			var response = await _mediator.Send(request).ConfigureAwait(false);

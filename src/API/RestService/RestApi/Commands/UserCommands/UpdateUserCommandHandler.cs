@@ -2,20 +2,21 @@
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.Repositories.User;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.UserCommands
 {
-	public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Guid>
+	public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserId>
 	{
 		private readonly IUserRepository _repository;
 
 		public UpdateUserCommandHandler(IUserRepository repository)
 			=> _repository = repository;
 
-		public async Task<Guid> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+		public async Task<UserId> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
 		{
-			var user = await _repository.GetByIdAsync((Guid) request.UserId, cancellationToken).ConfigureAwait(false);
+			var user = await _repository.GetByIdAsync((UserId) request.UserId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));
 			user.FirstName = request.FirstName ?? user.FirstName;
 			user.LastName = request.LastName ?? user.LastName;

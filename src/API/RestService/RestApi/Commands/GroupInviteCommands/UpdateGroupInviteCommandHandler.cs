@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DataAccessLayer.Repositories.Group;
 using DataAccessLayer.Repositories.GroupInvite;
 using Domain.Entities.Intersections;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.GroupInviteCommands
@@ -21,7 +22,7 @@ namespace RestApi.Commands.GroupInviteCommands
 
 		protected override async Task Handle(UpdateGroupInviteCommand request, CancellationToken cancellationToken)
 		{
-			var groupInvite = await _repository.GetByIdAsync((Guid) request.GroupInviteId, cancellationToken)
+			var groupInvite = await _repository.GetByIdAsync((GroupInviteId) request.GroupInviteId, cancellationToken)
 			                                   .ConfigureAwait(false);
 			// _ = await _context.GroupInvites.Include(x => x.InvitedApplicationUser)
 			//                                .ThenInclude(user => user.UserGroups)

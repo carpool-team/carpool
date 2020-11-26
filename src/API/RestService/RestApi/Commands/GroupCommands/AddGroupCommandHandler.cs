@@ -5,13 +5,14 @@ using AutoWrapper.Wrappers;
 using DataAccessLayer.Repositories.Group;
 using DataAccessLayer.Repositories.User;
 using Domain.Entities;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace RestApi.Commands.GroupCommands
 {
-	public class AddGroupCommandHandler : IRequestHandler<AddGroupCommand, Guid>
+	public class AddGroupCommandHandler : IRequestHandler<AddGroupCommand, GroupId>
 	{
 		private readonly IGroupRepository _repository;
 		private readonly IUserRepository _userRepository;
@@ -22,7 +23,7 @@ namespace RestApi.Commands.GroupCommands
 			_userRepository = userRepository;
 		}
 
-		public async Task<Guid> Handle(AddGroupCommand request, CancellationToken cancellationToken)
+		public async Task<GroupId> Handle(AddGroupCommand request, CancellationToken cancellationToken)
 		{
 			if (!string.IsNullOrEmpty(request.Code)
 			    && await _repository.GroupCodeExists(request.Code).ConfigureAwait(false))

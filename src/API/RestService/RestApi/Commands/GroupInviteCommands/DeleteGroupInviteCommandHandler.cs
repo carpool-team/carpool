@@ -3,20 +3,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.Repositories.GroupInvite;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace RestApi.Commands.GroupInviteCommands
 {
-	public class DeleteGroupInviteCommandHandler : IRequestHandler<DeleteGroupInviteCommand, Guid>
+	public class DeleteGroupInviteCommandHandler : IRequestHandler<DeleteGroupInviteCommand, GroupInviteId>
 	{
 		private readonly IGroupInviteRepository _repository;
 
 		public DeleteGroupInviteCommandHandler(IGroupInviteRepository repository)
 			=> _repository = repository;
 
-		public async Task<Guid> Handle(DeleteGroupInviteCommand request,
+		public async Task<GroupInviteId> Handle(DeleteGroupInviteCommand request,
 		                               CancellationToken cancellationToken)
 		{
 			var groupInvite = await _repository.GetByIdAsync(request.GroupInviteId, cancellationToken)

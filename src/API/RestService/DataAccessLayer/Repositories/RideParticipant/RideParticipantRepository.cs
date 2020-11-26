@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
 using Domain.Entities.Intersections;
+using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.RideParticipant
@@ -16,7 +17,7 @@ namespace DataAccessLayer.Repositories.RideParticipant
 		public RideParticipantRepository(CarpoolDbContext context)
 			=> _context = context;
 
-		public async Task<List<UserParticipatedRide>> GetParticipantsByRideId(Guid rideId,
+		public async Task<List<UserParticipatedRide>> GetParticipantsByRideId(RideId rideId,
 		                                                                      CancellationToken cancellationToken =
 			                                                                      default)
 			=> await _context.UserParticipatedRides.Where(x => x.RideId == rideId).ToListAsync(cancellationToken)

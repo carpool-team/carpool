@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
 using Domain.Entities;
+using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.User
@@ -16,7 +17,8 @@ namespace DataAccessLayer.Repositories.User
 		public UserRepository(CarpoolDbContext context)
 			=> _context = context;
 
-		public async Task<List<ApplicationUser>> GetGroupUsersByGroupIdAsync(Guid id)
+		//TODO: implement get group users by group id
+		public async Task<List<ApplicationUser>> GetGroupUsersByGroupIdAsync(GroupId id)
 		{
 			var users = await _context.Users
 			                          .AsNoTracking()
@@ -27,11 +29,11 @@ namespace DataAccessLayer.Repositories.User
 			return users;
 		}
 
-		public async Task<ApplicationUser> GetByIdAsNoTrackingAsync(Guid id, CancellationToken cancellationToken)
+		public async Task<ApplicationUser> GetByIdAsNoTrackingAsync(UserId id, CancellationToken cancellationToken)
 			=> await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
 			                 .ConfigureAwait(false);
 
-		public async Task<ApplicationUser> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+		public async Task<ApplicationUser> GetByIdAsync(UserId id, CancellationToken cancellationToken)
 			=> await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken).ConfigureAwait(false);
 
 		public async Task<List<ApplicationUser>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken)
@@ -54,7 +56,7 @@ namespace DataAccessLayer.Repositories.User
 		public void Delete(ApplicationUser entity)
 			=> _context.Users.Remove(entity);
 
-		public async Task DeleteByIdAsync(Guid id)
+		public async Task DeleteByIdAsync(UserId id)
 		{
 			var entity = await _context.Users.FirstOrDefaultAsync(x => id.Equals(x.Id)).ConfigureAwait(false);
 			_context.Users.Remove(entity);
@@ -66,13 +68,13 @@ namespace DataAccessLayer.Repositories.User
 		public void Save()
 			=> _context.SaveChanges();
 
-		public async Task<bool> AnyWithId(Guid id)
+		public async Task<bool> AnyWithId(UserId id)
 			=> await _context.Users.AnyAsync(x => x.Id.Equals(id)).ConfigureAwait(false);
 
-		public async Task<bool> ExistsWithId(Guid id, CancellationToken cancellationToken)
+		public async Task<bool> ExistsWithId(UserId id, CancellationToken cancellationToken)
 			=> await _context.Users.AnyAsync(x => x.Id == id, cancellationToken).ConfigureAwait(false);
 
-		public async Task<double> GetUserRatingAsync(Guid userId, CancellationToken cancellationToken)
+		public async Task<double> GetUserRatingAsync(UserId userId, CancellationToken cancellationToken)
 		{
 			var user = await _context.Users.Include(x => x.Ratings)
 			                         .SingleOrDefaultAsync(x => x.Id == userId, cancellationToken)

@@ -1,18 +1,19 @@
 ﻿using System;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.GroupCommands
 {
 	public class AddUserToGroupCommand : IRequest
 	{
-		public AddUserToGroupCommand(Guid? groupId, Guid userId)
+		public AddUserToGroupCommand(GroupId? groupId, UserId userId)
 		{
 			GroupId = groupId;
 			UserId = userId;
 		}
 
-		public Guid UserId { get; set; }
+		public UserId UserId { get; set; }
 
-		public Guid? GroupId { get; set; }
+		public GroupId? GroupId { get; set; }
 	}
 }

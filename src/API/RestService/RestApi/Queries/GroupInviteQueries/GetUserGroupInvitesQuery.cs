@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domain.Entities;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -9,9 +10,9 @@ namespace RestApi.Queries.GroupInviteQueries
 	public class GetUserGroupInvitesQuery : IRequest<IEnumerable<GroupInvite>>
 	{
 		[JsonConstructor]
-		public GetUserGroupInvitesQuery(Guid userId)
+		public GetUserGroupInvitesQuery(UserId userId)
 			=> UserId = userId;
 
-		public Guid UserId { get; set; }
+		public UserId UserId { get; set; }
 	}
 }

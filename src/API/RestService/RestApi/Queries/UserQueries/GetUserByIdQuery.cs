@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain.Entities;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -8,9 +9,9 @@ namespace RestApi.Queries.UserQueries
 	public class GetUserByIdQuery : IRequest<ApplicationUser>
 	{
 		[JsonConstructor]
-		public GetUserByIdQuery(Guid userId)
+		public GetUserByIdQuery(UserId userId)
 			=> UserId = userId;
 
-		public Guid UserId { get; set; }
+		public UserId UserId { get; set; }
 	}
 }

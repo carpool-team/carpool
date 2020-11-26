@@ -5,6 +5,7 @@ using DataAccessLayer.Repositories.Ride;
 using DataAccessLayer.Repositories.RideParticipant;
 using DataAccessLayer.Repositories.User;
 using Domain.Entities.Intersections;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Commands.RideCommands
@@ -26,22 +27,22 @@ namespace RestApi.Commands.RideCommands
 
 		protected override async Task Handle(AddRideParticipandCommand request, CancellationToken cancellationToken)
 		{
-			var ride = await _rideRepository.GetByIdAsNoTrackingAsync((Guid) request.RideId, cancellationToken)
+			var ride = await _rideRepository.GetByIdAsNoTrackingAsync((RideId) request.RideId, cancellationToken)
 			                                .ConfigureAwait(false);
 
 			_ = ride ?? throw new NullReferenceException(nameof(ride));
-			var user = await _userRepository.GetByIdAsNoTrackingAsync(request.ParticipandId, cancellationToken)
+			var user = await _userRepository.GetByIdAsNoTrackingAsync(request.ParticipantId, cancellationToken)
 			                                .ConfigureAwait(false);
 
 			_ = user ?? throw new NullReferenceException(nameof(user));
 			var rideParticipants =
-				await _participantRepository.GetParticipantsByRideId((Guid) request.RideId, cancellationToken)
+				await _participantRepository.GetParticipantsByRideId((RideId) request.RideId, cancellationToken)
 				                            .ConfigureAwait(false);
 
 			rideParticipants.Add(new UserParticipatedRide
 			{
-				UserId = request.ParticipandId,
-				RideId = (Guid) request.RideId
+				UserId = request.ParticipantId,
+				RideId = (RideId) request.RideId
 			});
 
 			await _participantRepository.SaveAsync(cancellationToken).ConfigureAwait(false);

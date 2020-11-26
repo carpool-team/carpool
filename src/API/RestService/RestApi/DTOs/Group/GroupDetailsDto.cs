@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Domain.Entities;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using RestApi.DTOs.Ride;
 using RestApi.DTOs.User;
 
@@ -9,7 +10,7 @@ namespace RestApi.DTOs.Group
 {
 	public class GroupDetailsDto
 	{
-		public GroupDetailsDto(Guid groupId,
+		public GroupDetailsDto(GroupId groupId,
 		                       Location location,
 		                       List<RideMinimalDto> rides,
 		                       string name,
@@ -28,7 +29,7 @@ namespace RestApi.DTOs.Group
 			Owner = new IndexUserDto(owner.Id, owner.FirstName, owner.LastName, owner.Vehicle);
 		}
 
-		public Guid GroupId { get; }
+		public GroupId GroupId { get; }
 		public Location? Location { get; }
 		public List<RideMinimalDto> Rides { get; }
 		public string Name { get; }

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Domain.Abstract;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities
 {
-	public class Group : BaseEntity<Guid>
+	public class Group : BaseEntity<GroupId>
 	{
 		public IReadOnlyList<UserGroup> UserGroups { get; set; }
 
@@ -18,6 +19,6 @@ namespace Domain.Entities
 
 		public string Code { get; set; }
 		public ApplicationUser Owner { get; set; }
-		public Guid OwnerId { get; set; }
+		public UserId OwnerId { get; set; }
 	}
 }

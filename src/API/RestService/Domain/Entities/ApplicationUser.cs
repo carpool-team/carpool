@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Domain.Contracts;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities
 {
-	public sealed class ApplicationUser : IdentityUser<Guid>, IBaseEntity<Guid>
+	public sealed class ApplicationUser : IdentityUser<UserId>, IBaseEntity<UserId>
 	{
 		public ApplicationUser(string email, string userName, string firstName, string lastName)
 			=> (Email, UserName, FirstName, LastName)

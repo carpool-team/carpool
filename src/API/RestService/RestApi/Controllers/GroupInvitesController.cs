@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,7 @@ namespace RestApi.Controllers
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{groupInviteId}")]
 		public async Task<ApiResponse> PutGroupInvite([FromBody] UpdateGroupInviteCommand request,
-		                                              [FromRoute] Guid groupInviteId)
+		                                              [FromRoute] GroupInviteId groupInviteId)
 		{
 			request.GroupInviteId = groupInviteId;
 
@@ -63,7 +64,7 @@ namespace RestApi.Controllers
 
 		// DELETE: api/GroupInvites/5
 		[HttpDelete("{groupInviteId}")]
-		public async Task<ApiResponse> DeleteGroupInvite(Guid groupInviteId)
+		public async Task<ApiResponse> DeleteGroupInvite(GroupInviteId groupInviteId)
 		{
 			var request = new DeleteGroupInviteCommand(groupInviteId);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
@@ -72,7 +73,7 @@ namespace RestApi.Controllers
 		}
 
 		[HttpGet("~/api/users/{userId}/group-invites")]
-		public async Task<ApiResponse> GetUserGroupInvites([FromRoute] Guid userId)
+		public async Task<ApiResponse> GetUserGroupInvites([FromRoute] UserId userId)
 		{
 			var request = new GetUserGroupInvitesQuery(userId);
 

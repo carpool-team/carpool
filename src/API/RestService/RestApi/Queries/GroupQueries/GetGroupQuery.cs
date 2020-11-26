@@ -1,4 +1,5 @@
 ﻿using System;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 using RestApi.DTOs.Group;
@@ -8,9 +9,9 @@ namespace RestApi.Queries.GroupQueries
 	public class GetGroupQuery : IRequest<GroupDetailsDto>
 	{
 		[JsonConstructor]
-		public GetGroupQuery(Guid id)
+		public GetGroupQuery(GroupId id)
 			=> Id = id;
 
-		public Guid Id { get; set; }
+		public GroupId Id { get; set; }
 	}
 }

@@ -1,13 +1,14 @@
 ﻿using System;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
 namespace RestApi.Commands.UserCommands
 {
-	public class UpdateUserCommand : IRequest<Guid>
+	public class UpdateUserCommand : IRequest<UserId>
 	{
 		[JsonConstructor]
-		public UpdateUserCommand(Guid? userId, string firstName, string lastName, int? companyId)
+		public UpdateUserCommand(UserId? userId, string firstName, string lastName, int? companyId)
 		{
 			UserId = userId;
 			FirstName = firstName;
@@ -15,7 +16,7 @@ namespace RestApi.Commands.UserCommands
 			CompanyId = companyId;
 		}
 
-		public Guid? UserId { get; set; }
+		public UserId? UserId { get; set; }
 		public string FirstName { get; set; }
 
 		public string LastName { get; set; }

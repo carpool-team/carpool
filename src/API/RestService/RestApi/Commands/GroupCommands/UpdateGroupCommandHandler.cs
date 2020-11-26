@@ -3,13 +3,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.Repositories.Group;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace RestApi.Commands.GroupCommands
 {
-	public class UpdateGroupCommandHandler : IRequestHandler<UpdateGroupCommand, Guid>
+	public class UpdateGroupCommandHandler : IRequestHandler<UpdateGroupCommand, GroupId>
 	{
 		private readonly IGroupRepository _repository;
 
@@ -17,10 +18,10 @@ namespace RestApi.Commands.GroupCommands
 			=> _repository = repository;
 
 
-		public async Task<Guid> Handle(UpdateGroupCommand request, CancellationToken cancellationToken = default)
+		public async Task<GroupId> Handle(UpdateGroupCommand request, CancellationToken cancellationToken = default)
 		{
-			var group = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
-			_ = group ?? throw new ApiProblemDetailsException($"Group with id: {request.Id} does not exist.",
+			var group = await _repository.GetByIdAsync(request.GroupId, cancellationToken).ConfigureAwait(false);
+			_ = group ?? throw new ApiProblemDetailsException($"Group with id: {request.GroupId} does not exist.",
 				    StatusCodes.Status400BadRequest);
 
 			group.Location = request.Location ?? group.Location;

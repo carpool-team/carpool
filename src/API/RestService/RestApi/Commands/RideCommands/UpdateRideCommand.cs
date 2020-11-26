@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Domain.Entities;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -16,7 +17,7 @@ namespace RestApi.Commands.RideCommands
 			Price = price;
 		}
 
-		public Guid? RideId { get; set; }
+		public RideId? RideId { get; set; }
 		public List<Guid> ParticipantIds { get; set; }
 
 		public DateTime? Date { get; set; }

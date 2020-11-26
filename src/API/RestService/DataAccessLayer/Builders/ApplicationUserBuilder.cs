@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain.Entities;
+using IdentifiersShared.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -20,6 +21,7 @@ namespace DataAccessLayer.Builders
 			{
 				x.WithOwner().HasForeignKey(e => e.UserId);
 				x.Property<Guid>("Id");
+				x.Property(x => x.UserId).HasConversion(new UserIdValueConverter());
 				x.HasKey("UserId", "Id");
 			});
 

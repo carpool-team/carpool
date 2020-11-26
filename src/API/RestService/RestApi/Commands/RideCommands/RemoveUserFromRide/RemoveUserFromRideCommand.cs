@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.Repositories.Ride;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,14 +11,14 @@ namespace RestApi.Commands.RideCommands.RemoveUserFromRide
 {
     public class RemoveUserFromRideCommand : IRequest
     {
-        public RemoveUserFromRideCommand(Guid rideId, Guid userId)
+        public RemoveUserFromRideCommand(RideId rideId, UserId userId)
         {
             RideId = rideId;
             UserId = userId;
         }
 
-        public Guid RideId { get; }
-        public Guid UserId { get; }
+        public RideId RideId { get; }
+        public UserId UserId { get; }
     }
 
     public class RemoveUserFromRideCommandHandler : AsyncRequestHandler<RemoveUserFromRideCommand>
