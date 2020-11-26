@@ -69,6 +69,8 @@ const Input = (props: IINputProps) => {
 	const inputBaseContainerClassName: string = "input__container input__container::before--user";
 	const inputGroupContainerClassName: string = "input__groupContainer";
 	const inputCommentClassName: string = "input__comment";
+	const checkboxClassName: string = "input__checkbox";
+	const checkboxBoxClassName: string = "input__checkbox--box";
 
 	const generalChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (props.type === InputType.Checkbox) {
@@ -130,16 +132,16 @@ const Input = (props: IINputProps) => {
 	);
 
 	const renderCheckbox = () => (
-		<div>
+		<div className={checkboxClassName}>
 			<input
-				className={inputBaseClassName}
+				className={checkboxBoxClassName}
 				placeholder={props.placeholder}
 				onChange={generalChangeHandler}
 				value={props.value}
 				type={"checkbox"}
 				id={props.label?.inputId}
 			/>
-			{props.label ? <label htmlFor={props.label.inputId}>{props.label.text}</label> : null}
+			{props.label ? <span id={props.label.inputId}>{props.label.text}</span> : null}
 		</div>
 	);
 

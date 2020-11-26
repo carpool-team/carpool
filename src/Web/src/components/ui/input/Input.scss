@@ -48,6 +48,30 @@
 			}
 		}
 	}
+	&__checkbox{
+		font-size: 15px;
+		border: 0;
+		width: inherit;
+		height: 100%;
+		color: $grayDark;
+		font-weight: $regular;
+		background: $transparent;
+		display: flex;
+		justify-content: flex-start;
+		align-content: center;
+		&--box{
+			height: 25px;
+			width: 25px;
+			&:focus{
+				outline: none;
+			}
+		}
+		& > span {
+			padding-left: 10px;
+			margin-top: auto;
+			margin-bottom: auto;
+		}
+	}
 	&__comment {
 		font-size: 14px;
 		max-width: 80%;
