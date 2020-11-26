@@ -1,7 +1,7 @@
 import React from "react";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import LayoutRouter from "../layout/components/LayoutRouter";
+import LayoutRouter, { mainRoutes } from "../layout/components/LayoutRouter";
 import ButtonLink from "../ui/buttonLink/ButtonLink";
 import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
@@ -76,7 +76,7 @@ class Footer extends React.Component<IFooterProps> {
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
-						to={`/${LayoutRouter.routes.groups}`}
+						to={`/${mainRoutes.groups}`}
 					>
 						{t(this.resources.groups)}
 					</ButtonLink>

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { IGroup } from "../../interfaces/IGroup";
 import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/GroupDetailedView";
 import RidesList from "./components/RidesList";
 import { useHistory } from "react-router";
 import Button from "../../../ui/button/Button";
 import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
-import LayoutRouter from "../../../layout/components/LayoutRouter";
+import { mainRoutes } from "../../../layout/components/LayoutRouter";
 import ridesExample from "../../../../examples/exampleRides";
 import { IRide } from "../../../../components/groups/interfaces/IRide";
 import MediaQuery from "react-responsive";
@@ -44,7 +43,7 @@ const GroupRides = (props: IGroupRidesProps) => {
 			<div className={cssClasses.leftPanel}>
 				<div className={cssClasses.leftLabels}>
 					<Button onClick={() => {
-						history.push(`/${LayoutRouter.routes.groups}`);
+						history.push(`/${mainRoutes.groups}`);
 					}}
 						background={ButtonBackground.Blue}
 						color={ButtonColor.White}

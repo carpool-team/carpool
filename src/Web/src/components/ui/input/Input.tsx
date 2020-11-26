@@ -16,6 +16,10 @@ interface IINputProps extends IReactI18nProps {
 	placeholder?: string;
 	icon?: InputIcon;
 	style?: string;
+	label?: {
+		text: string;
+		inputId: string;
+	};
 	validation?: IValidation;
 }
 
@@ -64,16 +68,23 @@ const Input = (props: IINputProps) => {
 	const inputInvalidTextClassName: string = "input__invalidText";
 	const inputBaseContainerClassName: string = "input__container input__container::before--user";
 	const inputGroupContainerClassName: string = "input__groupContainer";
+	const inputCommentClassName: string = "input__comment";
+	const checkboxClassName: string = "input__checkbox";
+	const checkboxBoxClassName: string = "input__checkbox--box";
 
 	const generalChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		props.changeHandler(event.target.value);
+		if (props.type === InputType.Checkbox) {
+			props.changeHandler(String(event.target.checked));
+		} else {
+			props.changeHandler(event.target.value);
+		}
 	};
 
-	const baseInputClasses = [inputBaseClassName];
-	const baseContainerClasses = [inputBaseContainerClassName];
+	let baseInputClasses = [inputBaseClassName];
+	let baseContainerClasses = [inputBaseContainerClassName];
 	if (!isValid) {
-		baseInputClasses.push(inputInvalidClassName);
-		baseContainerClasses.push(inputInvalidContainerClassName);
+		baseInputClasses = [inputInvalidClassName];
+		baseContainerClasses = [inputInvalidContainerClassName];
 	}
 
 	const renderValidationMessage = () => {
@@ -104,10 +115,44 @@ const Input = (props: IINputProps) => {
 		</div>
 	);
 
+	const renderPasswordInput = () => (
+		<div className={[inputGroupContainerClassName, props.style].join(" ")}>
+			<div className={baseContainerClasses.join(" ")}>
+				<div className={getIconClass(props.icon)}></div>
+				<input
+					className={inputBaseClassName}
+					placeholder={props.placeholder}
+					onChange={generalChangeHandler}
+					value={props.value}
+					type={"password"}
+				/>
+			</div>
+			{renderValidationMessage()}
+		</div>
+	);
+
+	const renderCheckbox = () => (
+		<div className={checkboxClassName}>
+			<input
+				className={checkboxBoxClassName}
+				placeholder={props.placeholder}
+				onChange={generalChangeHandler}
+				value={props.value}
+				type={"checkbox"}
+				id={props.label?.inputId}
+			/>
+			{props.label ? <span id={props.label.inputId}>{props.label.text}</span> : null}
+		</div>
+	);
+
 	const renderInput = () => {
 		switch (props.type) {
 			case InputType.Text:
 				return renderTextInput();
+			case InputType.Password:
+				return renderPasswordInput();
+			case InputType.Checkbox:
+				return renderCheckbox();
 			default:
 				throw "Unhandled input type";
 		}
