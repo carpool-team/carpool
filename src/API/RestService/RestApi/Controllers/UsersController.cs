@@ -22,7 +22,6 @@ namespace RestApi.Controllers
 			_mediator = mediator;
 		}
 
-		// GET: api/Users
 		[HttpGet]
 		public async Task<ApiResponse> GetUsers()
 		{
@@ -31,10 +30,10 @@ namespace RestApi.Controllers
 			return new ApiResponse(response);
 		}
 
-		// GET: api/Users/5
-		[HttpGet("{id}")]
-		public async Task<ApiResponse> GetUser(UserId id)
+		[HttpGet("{userId}")]
+		public async Task<ApiResponse> GetUser([FromRoute] long userId)
 		{
+			UserId id = new(userId);
 			var request = new GetUserByIdQuery(id);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
@@ -47,10 +46,7 @@ namespace RestApi.Controllers
 			var result = await _mediator.Send(new GetGroupUsersQuery(groupId)).ConfigureAwait(false);
 			return new ApiResponse(result);
 		}
-
-		// PUT: api/Users/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		
 		[HttpPut("{id}")]
 		public async Task<ApiResponse> PutUser([FromRoute] UserId id, [FromBody] UpdateUserCommand request)
 		{
@@ -59,20 +55,16 @@ namespace RestApi.Controllers
 
 			return new ApiResponse(request);
 		}
-
-		// POST: api/Users
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		
 		[HttpPost]
-		public async Task<ApiResponse> PostUser(AddUserCommand request)
+		public async Task<ApiResponse> PostUser([FromBody] AddUserCommand request)
 		{
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 			return new ApiResponse(response);
 		}
 
-		// DELETE: api/Users/5
 		[HttpDelete("{userId}")]
-		public async Task<ApiResponse> DeleteUser(UserId userId)
+		public async Task<ApiResponse> DeleteUser([FromRoute()] UserId userId)
 		{
 			var request = new DeleteUserCommand(userId);
 

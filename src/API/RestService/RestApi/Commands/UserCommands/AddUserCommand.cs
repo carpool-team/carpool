@@ -1,21 +1,23 @@
-﻿using Domain.Entities;
+﻿using System.Text.Json.Serialization;
+using Domain.Entities;
 using MediatR;
 
 namespace RestApi.Commands.UserCommands
 {
 	public class AddUserCommand : IRequest<ApplicationUser>
 	{
-		public AddUserCommand(string firstName, string lastName, int? companyId)
+		[JsonConstructor]
+		public AddUserCommand(string firstName, string lastName, string email)
 		{
 			FirstName = firstName;
 			LastName = lastName;
-			CompanyId = companyId;
+			Email = email;
 		}
 
 		public string FirstName { get; set; }
 
-		public string LastName { get; set; }
+		public string LastName { get;  set;}
 
-		public int? CompanyId { get; set; }
+		public string Email { get; set;}
 	}
 }

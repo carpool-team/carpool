@@ -7,7 +7,6 @@ namespace RestApi.Queries.GroupInviteQueries
 {
 	public class GetGroupInviteQuery : IRequest<GroupInvite>
 	{
-		[JsonConstructor]
 		public GetGroupInviteQuery(GroupInviteId groupInviteId)
 			=> GroupInviteId = groupInviteId;
 

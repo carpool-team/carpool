@@ -9,12 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.User
 {
-	public class UserRepository : IUserRepository
+	public class UserRepository : BaseRepository<ApplicationUser, UserId>, IUserRepository
 	{
-		private readonly CarpoolDbContext _context;
-
-		public UserRepository(CarpoolDbContext context)
-			=> _context = context;
+		public UserRepository(CarpoolDbContext context) : base(context) { }
 
 		//TODO: implement get group users by group id
 		public async Task<List<ApplicationUser>> GetGroupUsersByGroupIdAsync(GroupId id)

@@ -12,6 +12,7 @@ using DataAccessLayer.Repositories.Ride;
 using DataAccessLayer.Repositories.RideParticipant;
 using DataAccessLayer.Repositories.User;
 using FluentValidation.AspNetCore;
+using IdentifiersShared.Converters;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

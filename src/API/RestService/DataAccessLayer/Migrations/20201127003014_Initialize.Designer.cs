@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(CarpoolDbContext))]
-    [Migration("20201126194004_test")]
-    partial class test
+    [Migration("20201127003014_Initialize")]
+    partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,20 +23,12 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -46,53 +38,15 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("VehicleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("VehicleId")
-                        .IsUnique()
-                        .HasFilter("[VehicleId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Domain.Entities.Group", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -102,8 +56,8 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -114,21 +68,20 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.GroupInvite", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("GroupId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("InvitedUserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("InvitedUserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("InvitingUserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("InvitingUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
@@ -147,11 +100,11 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Intersections.UserGroup", b =>
                 {
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("GroupId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("GroupId", "UserId");
 
@@ -162,14 +115,14 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Intersections.UserParticipatedRide", b =>
                 {
-                    b.Property<Guid>("RideId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("RideId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid?>("RideId1")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long?>("RideId1")
+                        .HasColumnType("bigint");
 
                     b.HasKey("RideId", "UserId");
 
@@ -182,18 +135,17 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Ride", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("GroupId")
+                        .HasColumnType("bigint");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("OwnerId")
+                        .HasColumnType("bigint");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -209,15 +161,14 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Stop", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RideId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("RideId")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -231,34 +182,34 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Vehicle", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("Domain.Entities.Vehicle", "Vehicle")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.ApplicationUser", "VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.OwnsMany("Domain.ValueObjects.Rating", "Ratings", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
 
                             b1.Property<byte>("Value")
                                 .HasColumnType("tinyint");
@@ -274,8 +225,6 @@ namespace DataAccessLayer.Migrations
                         });
 
                     b.Navigation("Ratings");
-
-                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("Domain.Entities.Group", b =>
@@ -288,8 +237,8 @@ namespace DataAccessLayer.Migrations
 
                     b.OwnsOne("Domain.ValueObjects.Location", "Location", b1 =>
                         {
-                            b1.Property<Guid>("GroupId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<long>("GroupId")
+                                .HasColumnType("bigint");
 
                             b1.Property<double>("Latitude")
                                 .HasColumnType("float");
@@ -388,8 +337,8 @@ namespace DataAccessLayer.Migrations
 
                     b.OwnsOne("Domain.ValueObjects.Location", "Destination", b1 =>
                         {
-                            b1.Property<Guid>("RideId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<long>("RideId")
+                                .HasColumnType("bigint");
 
                             b1.Property<double>("Latitude")
                                 .HasColumnType("float");
@@ -407,8 +356,8 @@ namespace DataAccessLayer.Migrations
 
                     b.OwnsOne("Domain.ValueObjects.Location", "StartingLocation", b1 =>
                         {
-                            b1.Property<Guid>("RideId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<long>("RideId")
+                                .HasColumnType("bigint");
 
                             b1.Property<double>("Latitude")
                                 .HasColumnType("float");
@@ -445,8 +394,8 @@ namespace DataAccessLayer.Migrations
 
                     b.OwnsOne("Domain.ValueObjects.Location", "Location", b1 =>
                         {
-                            b1.Property<Guid>("StopId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<long>("StopId")
+                                .HasColumnType("bigint");
 
                             b1.Property<double>("Latitude")
                                 .HasColumnType("float");
@@ -466,9 +415,20 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.Vehicle", b =>
+                {
+                    b.HasOne("Domain.Entities.ApplicationUser", null)
+                        .WithOne("Vehicle")
+                        .HasForeignKey("Domain.Entities.Vehicle", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("UserGroups");
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("Domain.Entities.Group", b =>

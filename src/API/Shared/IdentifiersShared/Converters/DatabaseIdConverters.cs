@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdentifiersShared.Converters
 {
-	public class RideIdValueConverter : ValueConverter<RideId, Guid>
+	public class RideIdValueConverter : ValueConverter<RideId, long>
 	{
 		public RideIdValueConverter(ConverterMappingHints mappingHints = null)
 			: base(id => id.Value,
@@ -12,7 +13,7 @@ namespace IdentifiersShared.Converters
 				mappingHints) { }
 	}
 
-	public class StopIdValueConverter : ValueConverter<StopId, Guid>
+	public class StopIdValueConverter : ValueConverter<StopId, long>
 	{
 		public StopIdValueConverter(ConverterMappingHints mappingHints = null)
 			: base(id => id.Value,
@@ -20,7 +21,7 @@ namespace IdentifiersShared.Converters
 				mappingHints) { }
 	}
 
-	public class UserIdValueConverter : ValueConverter<UserId, Guid>
+	public class UserIdValueConverter : ValueConverter<UserId, long>
 	{
 		public UserIdValueConverter(ConverterMappingHints mappingHints = null)
 			: base(id => id.Value,
@@ -28,7 +29,12 @@ namespace IdentifiersShared.Converters
 				mappingHints) { }
 	}
 
-	public class GroupIdValueConverter : ValueConverter<GroupId, Guid>
+	public class UserIdTypeConverter : TypeConverter
+	{
+		
+	}
+	
+	public class GroupIdValueConverter : ValueConverter<GroupId, long>
 	{
 		public GroupIdValueConverter(ConverterMappingHints mappingHints = null)
 			: base(id => id.Value,
@@ -36,7 +42,7 @@ namespace IdentifiersShared.Converters
 				mappingHints) { }
 	}
 
-	public class VehicleIdValueConverter : ValueConverter<VehicleId, Guid>
+	public class VehicleIdValueConverter : ValueConverter<VehicleId, long>
 	{
 		public VehicleIdValueConverter(ConverterMappingHints mappingHints = null)
 			: base(id => id.Value,
@@ -44,7 +50,7 @@ namespace IdentifiersShared.Converters
 				mappingHints) { }
 	}
 
-	public class GroupInviteIdValueConverter : ValueConverter<GroupInviteId, Guid>
+	public class GroupInviteIdValueConverter : ValueConverter<GroupInviteId, long>
 	{
 		public GroupInviteIdValueConverter(ConverterMappingHints mappingHints = null)
 			: base(id => id.Value,

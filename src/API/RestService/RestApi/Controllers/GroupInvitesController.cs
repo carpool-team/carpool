@@ -29,9 +29,9 @@ namespace RestApi.Controllers
 
 		// GET: api/GroupInvites/5
 		[HttpGet("{groupInviteId}")]
-		public async Task<ApiResponse> GetGroupInvite([FromRoute] GroupInviteId groupInviteId)
+		public async Task<ApiResponse> GetGroupInvite([FromRoute] long groupInviteId)
 		{
-			GetGroupInviteQuery request = new(groupInviteId);
+			GetGroupInviteQuery request = new(new GroupInviteId(groupInviteId));
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
