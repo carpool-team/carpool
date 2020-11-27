@@ -9,7 +9,9 @@ import moment from 'moment';
 const exampleRides = [
   {
     id: faker.random.alphaNumeric(32),
-    date: moment().format(),
+    date: moment()
+      .add(1, 'hours')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,
@@ -35,7 +37,9 @@ const exampleRides = [
   },
   {
     id: faker.random.alphaNumeric(32),
-    date: moment().format(),
+    date: moment()
+      .add(1, 'hours')
+      .format(),
     startingLocation: {
       coordinates: {
         latitude: 52.40656926303501,

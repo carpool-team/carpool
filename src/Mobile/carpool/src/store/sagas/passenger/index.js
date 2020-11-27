@@ -10,28 +10,6 @@ const exampleRides = [
   {
     id: faker.random.alphaNumeric(32),
     date: moment()
-      .subtract(1, 'day')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    owner: {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    },
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
       .add(1, 'days')
       .format(),
     startingLocation: {
@@ -46,6 +24,16 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
+    stops: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -68,6 +56,16 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
+    stops: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -90,6 +88,16 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
+    stops: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -112,6 +120,16 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
+    stops: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -134,6 +152,16 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
+    stops: [
+      {
+        id: faker.random.alphaNumeric(32),
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
