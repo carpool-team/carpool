@@ -19,8 +19,6 @@ const directionsClient = mapboxDirections({accessToken: mapConfig.mapboxKey});
 
 export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
-	center?: [number, number];
-	zoom?: [number];
 	ride: IRide;
 	route: any;
 }
@@ -30,8 +28,6 @@ const flyToOptions = {
 };
 
 const defaults = {
-	zoom: [11] as [number],
-	center: [-77.01239, 38.91275] as [number, number],
 	route: null
 };
 
@@ -66,7 +62,6 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					],
 					overview: "full",
 					geometries: "geojson",
-					// alternatives: true,
 				})
 				.send();
 				this.setState(produce((draft: any) => {
@@ -104,20 +99,13 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		}));
 	}
 
-	private getCenter = (bbox: [[number, number], [number, number]]) => {
-		let cords: [number, number] = [0, 0];
-		cords[0] = (bbox[0][0] + bbox[1][0]) / 2;
-		cords[1] = (bbox[0][1] + bbox[1][1]) / 2;
-		return cords;
-	}
-
 	private onStyleLoad = (map: any) => {
 		const onStyleLoad = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
 	}
 
 	public render() {
-		const { fitBounds, center, zoom, ride, route } = this.state;
+		const { fitBounds, ride, route } = this.state;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
@@ -168,8 +156,6 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 				onStyleLoad={this.onStyleLoad}
 				fitBounds={fitBounds}
 				fitBoundsOptions={boundsOptions}
-				center={center}
-				zoom={zoom}
 				containerStyle={containerStyle}
 				flyToOptions={flyToOptions}
 			>
