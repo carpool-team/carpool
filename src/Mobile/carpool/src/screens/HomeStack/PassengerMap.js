@@ -93,10 +93,10 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
 
   const onShowWay = async () => {
     if (ride) {
-      _getDirections(
+      _getDirections([
         coordinates,
         parseCoords(ride.startingLocation.coordinates),
-      );
+      ]);
     }
   };
 

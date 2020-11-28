@@ -81,10 +81,10 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
   }, [results]);
 
   const onGetDistance = () => {
-    _getDirections(
+    _getDirections([
       userLocation,
       parseCoords(ride.startingLocation.coordinates),
-    );
+    ]);
   };
 
   const onSelectRide = () => {
