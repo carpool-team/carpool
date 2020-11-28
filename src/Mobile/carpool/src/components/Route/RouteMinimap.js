@@ -30,7 +30,11 @@ const getBounds = routesArray => {
   };
 };
 
-const RouteMinimap = ({start, destination}) => {
+const parseCoords = coords => {
+  return [coords.longitude, coords.latitude];
+};
+
+const RouteMinimap = ({stops}) => {
   const [routes, setRoutes] = useState([]);
   const [bounds, setBounds] = useState(null);
 
@@ -39,16 +43,11 @@ const RouteMinimap = ({start, destination}) => {
     ...dirConfig,
   });
 
-  console.log(start, destination);
-
   useEffect(() => {
-    if (start && destination) {
-      _getDirections(
-        parseCoords(start.coordinates),
-        parseCoords(destination.coordinates),
-      );
+    if (stops.length) {
+      _getDirections(stops.map(stop => parseCoords(stop.coordinates)));
     }
-  }, [start, destination]);
+  }, [stops]);
 
   useEffect(() => {
     if (routes.length) {
@@ -63,30 +62,45 @@ const RouteMinimap = ({start, destination}) => {
     }
   }, [results]);
 
-  const parseCoords = coords => {
-    return [coords.longitude, coords.latitude];
-  };
-
   const renderPoints = () => {
     if (routes.length) {
-      const {coordinates} = routes[0].geometry;
-      const start = coordinates[0];
-      const finish = coordinates[coordinates.length - 1];
+      const {waypoints} = results.body;
+      const start = waypoints[0];
+      const finish = waypoints[waypoints.length - 1];
+
+      let stopPoints = [];
+
+      if (waypoints.length > 2) {
+        stopPoints = waypoints.slice(1, waypoints.length - 1);
+      }
 
       return (
         <>
           <MapboxGL.PointAnnotation
-            key={start.toString()}
+            key={start.location.toString()}
             id="selected"
-            coordinate={start}>
+            coordinate={start.location}>
             <BlueMarker size={20} />
           </MapboxGL.PointAnnotation>
           <MapboxGL.PointAnnotation
-            key={finish.toString()}
+            key={finish.location.toString()}
             id="selected"
-            coordinate={finish}>
+            coordinate={finish.location}>
             <Marker color={colors.green} size={20} style={{marginTop: -24}} />
           </MapboxGL.PointAnnotation>
+          {!!stopPoints.length &&
+            stopPoints.map(stop => (
+              <MapboxGL.PointAnnotation
+                key={stop.location.toString()}
+                id="selected"
+                coordinate={stop.location}>
+                <Marker
+                  color={colors.orange}
+                  size={20}
+                  style={{marginTop: -24}}
+                />
+              </MapboxGL.PointAnnotation>
+            ))}
         </>
       );
     } else {

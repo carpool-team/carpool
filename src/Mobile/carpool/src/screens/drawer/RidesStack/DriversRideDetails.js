@@ -14,14 +14,10 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import {UpView} from '../../../components/common';
 import {Marker} from '../../../components/common/map';
 import {Waypoints} from '../../../components/Ride';
+import moment from 'moment';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride} = route.params;
-
-  const date = new Date(ride.date).setSeconds(0, 0);
-  const dt = new Date(date).toLocaleString();
-
-  console.log(ride);
 
   const onDeletePress = () =>
     Alert.alert('Warning!', 'Are you sure you want to delete this ride?', [
@@ -42,7 +38,9 @@ const DriversRideDetails = ({navigation, route}) => {
         <View style={styles.topRow}>
           <View>
             <Text style={styles.singleRide}>Single ride</Text>
-            <Text style={styles.date}>{dt}</Text>
+            <Text style={styles.date}>
+              {moment(ride.date).format('HH:mm DD.MM.YYYY')}
+            </Text>
           </View>
           <TouchableOpacity onPress={onDeletePress}>
             <Ionicon
@@ -55,8 +53,7 @@ const DriversRideDetails = ({navigation, route}) => {
         </View>
         <View style={styles.mapWrapper}>
           <RouteMinimap
-            start={ride.startingLocation}
-            destination={ride.destination}
+            stops={[ride.startingLocation, ...ride.stops, ride.destination]}
           />
         </View>
         <View style={styles.bottomWrapper}>

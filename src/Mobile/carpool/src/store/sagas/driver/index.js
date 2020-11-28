@@ -34,8 +34,8 @@ const exampleRides = [
     stops: [
       {
         coordinates: {
-          latitude: 52.80656926303501,
-          longitude: 16.80633729745128,
+          latitude: 52.55188,
+          longitude: 16.838128,
         },
       },
     ],
@@ -67,8 +67,8 @@ const exampleRides = [
     stops: [
       {
         coordinates: {
-          latitude: 52.80656926303501,
-          longitude: 16.80633729745128,
+          latitude: 52.55188,
+          longitude: 16.838128,
         },
       },
     ],
@@ -100,8 +100,8 @@ const exampleRides = [
     stops: [
       {
         coordinates: {
-          latitude: 52.80656926303501,
-          longitude: 16.80633729745128,
+          latitude: 52.55188,
+          longitude: 16.838128,
         },
       },
     ],
@@ -133,8 +133,8 @@ const exampleRides = [
     stops: [
       {
         coordinates: {
-          latitude: 52.80656926303501,
-          longitude: 16.80633729745128,
+          latitude: 52.55188,
+          longitude: 16.838128,
         },
       },
     ],
@@ -166,8 +166,8 @@ const exampleRides = [
     stops: [
       {
         coordinates: {
-          latitude: 52.80656926303501,
-          longitude: 16.80633729745128,
+          latitude: 52.55188,
+          longitude: 16.838128,
         },
       },
     ],
@@ -199,8 +199,8 @@ const exampleRides = [
     stops: [
       {
         coordinates: {
-          latitude: 52.80656926303501,
-          longitude: 16.80633729745128,
+          latitude: 52.55188,
+          longitude: 16.838128,
         },
       },
     ],
@@ -233,8 +233,8 @@ const examplePastRides = [
     stops: [
       {
         coordinates: {
-          latitude: 52.80656926303501,
-          longitude: 16.80633729745128,
+          latitude: 52.55188,
+          longitude: 16.838128,
         },
       },
     ],
@@ -264,8 +264,8 @@ const examplePastRides = [
     stops: [
       {
         coordinates: {
-          latitude: 52.80656926303501,
-          longitude: 16.80633729745128,
+          latitude: 52.55188,
+          longitude: 16.838128,
         },
       },
     ],
@@ -295,8 +295,8 @@ const examplePastRides = [
     stops: [
       {
         coordinates: {
-          latitude: 52.80656926303501,
-          longitude: 16.80633729745128,
+          latitude: 52.55188,
+          longitude: 16.838128,
         },
       },
     ],
