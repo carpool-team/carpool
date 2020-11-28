@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
 import { ButtonColor } from "./enums/ButtonColor";
-import {ButtonBackground} from "./enums/ButtonBackground";
-import {ButtonIcon} from "./enums/ButtonIcon";
+import { ButtonBackground } from "./enums/ButtonBackground";
+import { ButtonIcon } from "./enums/ButtonIcon";
 import { getBackgroundClass, getColorClass, getIconClass } from "./Helpers";
-import { from } from "rxjs";
+
 import "./Button.scss";
 
 interface IButtonLinkProps {
@@ -14,6 +14,7 @@ interface IButtonLinkProps {
 	id?: string;
 	className?: string;
 	style?: React.CSSProperties;
+	additionalCssClass?: string;
 }
 
 const Button: FunctionComponent<IButtonLinkProps> = (props) => {
@@ -27,16 +28,19 @@ const Button: FunctionComponent<IButtonLinkProps> = (props) => {
 	};
 
 	const baseCssClass: string = "button";
-	const cssClasses: string = [
+	const cssClasses: string[] = [
 		baseCssClass,
 		props.className,
 		getColorClass(props.color),
 		getBackgroundClass(props.background),
 		getIconClass(props.icon),
-	].join(" ");
+	];
+	if (props.additionalCssClass) {
+		cssClasses.push(props.additionalCssClass);
+	}
 
 	return (
-		<button id={props.id} style={props.style} className={cssClasses} onClick={btnClick}>
+		<button id={props.id} style={props.style} className={cssClasses.join(" ")} onClick={btnClick}>
 			{props.children}
 		</button>
 	);

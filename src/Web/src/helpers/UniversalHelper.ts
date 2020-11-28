@@ -1,3 +1,9 @@
+import { getState } from "../store/Index";
+
+export function isAuthorized(): boolean {
+	return Boolean(getState().auth?.tokenInfo?.token);
+}
+
 export function foreach<T>(iterable: { [key: string]: T }, callback: (item: T) => void) {
 	Object.keys(iterable).forEach(key => {
 		callback(iterable[key]);

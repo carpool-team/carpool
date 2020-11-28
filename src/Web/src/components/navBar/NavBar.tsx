@@ -6,7 +6,8 @@ import { ButtonBackground } from "./navButton/enums/ButtonBackground";
 import { ButtonIcon } from "./navButton/enums/ButtonIcon";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import LayoutRouter from "../layout/components/LayoutRouter";
+import LayoutRouter, { mainRoutes } from "../layout/components/LayoutRouter";
+import { isAuthorized } from "../../helpers/UniversalHelper";
 
 interface INavBarProps extends IReactI18nProps { }
 
@@ -59,12 +60,46 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		menu?.classList.toggle(this.cssClasses.hamburgerToggle);
 	}
 
+	private renderAccountContainer = () => {
+		const { t } = this.props;
+
+		if (isAuthorized() === false) {
+			return (
+				<div className={this.cssClasses.navBarAccountContainer}>
+					<Button
+						color={ButtonColor.Gray}
+						background={ButtonBackground.None}
+						icon={ButtonIcon.User}
+						onClick={() => { }}
+						to={`/${mainRoutes.login}`}
+					>
+						<span>
+							{t(this.resources.login)}
+						</span>
+					</Button>
+
+					<Button
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}
+						onClick={() => { }}
+						to={`/${mainRoutes.register}`}
+					>
+						{t(this.resources.register)}
+					</Button>
+				</div>
+			);
+		} else {
+			return null;
+		}
+	}
+
 	render() {
 		const { t } = this.props;
+		const accountContainer: JSX.Element = this.renderAccountContainer();
 		return (
 			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
 				<div className={this.cssClasses.navBarTabContainer}>
-					<a href={`/${LayoutRouter.routes.default}`}>
+					<a href={`/${mainRoutes.default}`}>
 						<div className={this.cssClasses.logoContainer}></div>
 					</a>
 					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
@@ -86,33 +121,15 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 							color={ButtonColor.Gray}
 							background={ButtonBackground.None}
 							onClick={this.handleHamburgerClick.bind(this)}
-							to={`/${LayoutRouter.routes.groups}`}
+							to={`/${mainRoutes.groups}`}
 						>
 							{t(this.resources.groups)}
 						</Button>
 					</div>
 				</div>
 
-				<div className={this.cssClasses.navBarAccountContainer}>
-					<Button
-						color={ButtonColor.Gray}
-						background={ButtonBackground.None}
-						icon={ButtonIcon.User}
-						onClick={() => { }}
-					>
-						<span>
-							{t(this.resources.login)}
-						</span>
-					</Button>
+				{accountContainer}
 
-					<Button
-						color={ButtonColor.White}
-						background={ButtonBackground.Blue}
-						onClick={() => { }}
-					>
-						{t(this.resources.register)}
-					</Button>
-				</div>
 				<div
 					id={this.ids.hamburgeIcon}
 					className={this.cssClasses.hamburgerIcon}

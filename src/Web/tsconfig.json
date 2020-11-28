@@ -9,6 +9,14 @@
             "node_modules/@types",
             "src/types"
         ],
+        "paths": {
+            "assets_path": [
+                "./assets"
+            ],
+            "scss_path": [
+                "./scss"
+            ]
+        },
         "noEmitOnError": true,
         "allowJs": false,
         "moduleResolution": "node",

@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "components/system/resources/IReactI18nProps";
-import LayoutRouter from "../layout/components/LayoutRouter";
+import { mainRoutes } from "../layout/components/LayoutRouter";
 import ButtonLink from "../ui/buttonLink/ButtonLink";
 import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
 import { ButtonLinkUnderline } from "../ui/buttonLink/enums/ButtonLinkUnderline";
 import "./HomeScreen.scss";
-import { from } from "rxjs";
-
-// import groupImg from "assets_path/img/groups_baner.png";
 
 class HomeScreen extends Component<IReactI18nProps> {
 	private cssClasses = {
@@ -65,7 +62,7 @@ class HomeScreen extends Component<IReactI18nProps> {
 								color={ButtonLinkColor.Gray}
 								background={ButtonLinkBackground.Tansparent}
 								undeline={ButtonLinkUnderline.Solid}
-								to={`/${LayoutRouter.routes.groups}`}
+								to={`/${mainRoutes.groups}`}
 								onClick={() => { }}
 							>
 								{t(this.resources.btnGroups)}
