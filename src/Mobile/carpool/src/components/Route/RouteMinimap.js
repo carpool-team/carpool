@@ -39,6 +39,8 @@ const RouteMinimap = ({start, destination}) => {
     ...dirConfig,
   });
 
+  console.log(start, destination);
+
   useEffect(() => {
     if (start && destination) {
       _getDirections(

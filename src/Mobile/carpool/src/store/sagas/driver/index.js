@@ -27,11 +27,16 @@ const exampleRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.80656926303501,
+          longitude: 16.80633729745128,
+        },
       },
     ],
   },
@@ -55,11 +60,16 @@ const exampleRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.80656926303501,
+          longitude: 16.80633729745128,
+        },
       },
     ],
   },
@@ -83,11 +93,16 @@ const exampleRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.80656926303501,
+          longitude: 16.80633729745128,
+        },
       },
     ],
   },
@@ -111,11 +126,16 @@ const exampleRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.80656926303501,
+          longitude: 16.80633729745128,
+        },
       },
     ],
   },
@@ -139,11 +159,16 @@ const exampleRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.80656926303501,
+          longitude: 16.80633729745128,
+        },
       },
     ],
   },
@@ -167,11 +192,16 @@ const exampleRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.80656926303501,
+          longitude: 16.80633729745128,
+        },
       },
     ],
   },
@@ -196,11 +226,16 @@ const examplePastRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.80656926303501,
+          longitude: 16.80633729745128,
+        },
       },
     ],
   },
@@ -222,11 +257,16 @@ const examplePastRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.80656926303501,
+          longitude: 16.80633729745128,
+        },
       },
     ],
   },
@@ -248,11 +288,16 @@ const examplePastRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.80656926303501,
+          longitude: 16.80633729745128,
+        },
       },
     ],
   },
