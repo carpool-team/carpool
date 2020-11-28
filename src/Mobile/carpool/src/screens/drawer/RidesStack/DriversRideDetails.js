@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {RouteMinimap} from '../../../components/Route';
@@ -22,6 +23,19 @@ const DriversRideDetails = ({navigation, route}) => {
 
   console.log(ride);
 
+  const onDeletePress = () =>
+    Alert.alert('Warning!', 'Are you sure you want to delete this ride?', [
+      {
+        text: 'Cancel',
+        style: 'default',
+      },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => console.log('DELETE RIDE'),
+      },
+    ]);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -30,11 +44,11 @@ const DriversRideDetails = ({navigation, route}) => {
             <Text style={styles.singleRide}>Single ride</Text>
             <Text style={styles.date}>{dt}</Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onDeletePress}>
             <Ionicon
-              name="ellipsis-vertical"
+              name="trash"
               size={32}
-              color={colors.grayDark}
+              color={colors.red}
               style={styles.moreIcon}
             />
           </TouchableOpacity>
