@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
 using IdentifiersShared.Identifiers;
@@ -7,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.RideCommands;
 using RestApi.Commands.RideCommands.RemoveUserFromRide;
+using RestApi.DTOs.Ride;
 using RestApi.Queries.RideQueries;
 
 namespace RestApi.Controllers
@@ -46,10 +46,15 @@ namespace RestApi.Controllers
 		// PUT: api/Rides/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPut("{id}")]
-		public async Task<ApiResponse> PutRide([FromRoute] RideId id, [FromBody] UpdateRideCommand request)
+		[HttpPut("{rideId}")]
+		public async Task<ApiResponse> PutRide([FromRoute] long rideId, [FromBody] UpdateRideDto model)
 		{
-			request.RideId = id;
+			RideId typedRideId = new(rideId);
+			var request = new UpdateRideCommand(typedRideId,
+				model.ParticipantIds,
+				model.Date,
+				model.Price);
+
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse(response);
@@ -66,13 +71,14 @@ namespace RestApi.Controllers
 		}
 
 		// DELETE: api/Rides/5
-		[HttpDelete("{id}")]
-		public async Task<ApiResponse> DeleteRide(Guid id)
+		[HttpDelete("{rideId}")]
+		public async Task<ApiResponse> DeleteRide(long rideId)
 		{
-			var request = new DeleteRideCommand(id);
+			RideId typedRideId = new(rideId);
+			var request = new DeleteRideCommand(typedRideId);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			return new ApiResponse(request);
+			return new ApiResponse(response);
 		}
 
 		[HttpPost("{rideId}/users")]
