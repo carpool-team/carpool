@@ -7,11 +7,11 @@ namespace RestApi.Commands.GroupCommands
 	public class ChangeGroupLocationCommand : IRequest
 	{
 		[JsonConstructor]
-		public ChangeGroupLocationCommand(double longitude, double latitude)
-			=> (Longitude, Latitude) = (longitude, latitude);
+		public ChangeGroupLocationCommand(GroupId groupId, double longitude, double latitude)
+			=> (GroupId, Longitude, Latitude) = (groupId, longitude, latitude);
 
 		public double Longitude { get; }
 		public double Latitude { get; }
-		public GroupId GroupId { get; set; }
+		public GroupId GroupId { get; }
 	}
 }

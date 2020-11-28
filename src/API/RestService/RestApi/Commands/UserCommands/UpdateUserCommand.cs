@@ -7,19 +7,17 @@ namespace RestApi.Commands.UserCommands
 	public class UpdateUserCommand : IRequest<UserId>
 	{
 		[JsonConstructor]
-		public UpdateUserCommand(UserId? userId, string firstName, string lastName, int? companyId)
+		public UpdateUserCommand(UserId userId, string firstName, string lastName)
 		{
 			UserId = userId;
 			FirstName = firstName;
 			LastName = lastName;
-			CompanyId = companyId;
 		}
 
-		public UserId? UserId { get; set; }
-		public string FirstName { get; set; }
+		public UserId UserId { get; }
+		public string FirstName { get; }
 
-		public string LastName { get; set; }
+		public string LastName { get; }
 
-		public int? CompanyId { get; set; }
 	}
 }

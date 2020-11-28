@@ -4,6 +4,7 @@ using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
+using RestApi.DTOs.Rating;
 using RestApi.Queries.RatingQueries;
 
 namespace RestApi.Controllers
@@ -18,9 +19,10 @@ namespace RestApi.Controllers
 			=> _mediator = mediator;
 
 		[HttpGet("~/api/users/{userId}/rating")]
-		public async Task<ApiResponse> GetUserRatingByUserId([FromRoute] UserId userId)
+		public async Task<ApiResponse> GetUserRatingByUserId([FromRoute] long userId)
 		{
-			var request = new GetUserRatingQuery(userId);
+			UserId typedUserId = new(userId);
+			var request = new GetUserRatingQuery(typedUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
@@ -28,9 +30,11 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost("~/api/users/{userId}/ratings")]
-		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingCommand request, [FromRoute] UserId userId)
+		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingDto model, [FromRoute] long userId)
 		{
-			request.UserId = userId;
+			UserId typedUserId = new(userId);
+			AddUserRatingCommand request = new(typedUserId, model.Value);
+
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse(response);

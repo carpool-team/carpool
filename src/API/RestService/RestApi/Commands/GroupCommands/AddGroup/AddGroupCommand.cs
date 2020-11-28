@@ -22,13 +22,13 @@ namespace RestApi.Commands.GroupCommands.AddGroup
 			=> (Name, Code, OwnerId, Location) = (name, code, ownerId, location);
 
 
-		[Required] public string Name { get; init; }
+		[Required] public string Name { get; }
 
-		public string Code { get; init; }
+		public string Code { get; }
 
-		public UserId OwnerId { get; init; }
+		public UserId OwnerId { get; }
 
-		public Location Location { get; init; }
+		public Location Location { get; }
 	}
 	
 	public class AddGroupCommandHandler : IRequestHandler<AddGroupCommand, GroupId>

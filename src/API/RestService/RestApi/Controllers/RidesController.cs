@@ -86,29 +86,32 @@ namespace RestApi.Controllers
 		}
 
 		[HttpGet("~/api/users/{userId}/rides/participated")]
-		public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] UserId userId,
+		public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] long userId,
 			[FromQuery] bool past = false)
 		{
-			var request = new GetUserParticipatedRidesQuery(userId, past);
+			UserId typedUserId = new(userId);
+			var request = new GetUserParticipatedRidesQuery(typedUserId, past);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse(response);
 		}
 
 		[HttpGet("~/api/users/{userId}/rides/owned")]
-		public async Task<ApiResponse> GetUserOwnedRides([FromRoute] UserId userId,
+		public async Task<ApiResponse> GetUserOwnedRides([FromRoute] long userId,
 			[FromQuery] bool past = false)
 		{
-			var request = new GetUserOwnedRidesQuery(userId, past);
+			UserId typedUserId = new(userId);
+			var request = new GetUserOwnedRidesQuery(typedUserId, past);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse(response);
 		}
 
 		[HttpDelete("{rideId}/users/{userId}")]
-		public async Task<ApiResponse> RemoveUserFromRide([FromRoute] RideId rideId, [FromRoute] UserId userId)
+		public async Task<ApiResponse> RemoveUserFromRide([FromRoute] long rideId, [FromRoute] UserId userId)
 		{
-			var request = new RemoveUserFromRideCommand(rideId, userId);
+			RideId typedRideId = new(rideId);
+			var request = new RemoveUserFromRideCommand(typedRideId, userId);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse($"User with id {userId} has been deleted from ride with id {rideId}");

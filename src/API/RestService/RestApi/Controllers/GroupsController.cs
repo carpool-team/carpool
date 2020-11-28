@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.GroupCommands;
 using RestApi.Commands.GroupCommands.AddGroup;
+using RestApi.DTOs.Group;
 using RestApi.Queries.GroupQueries;
 
 namespace RestApi.Controllers
@@ -31,9 +32,10 @@ namespace RestApi.Controllers
 
 		// GET: api/Groups/5
 		[HttpGet("{groupId}")]
-		public async Task<ApiResponse> GetGroup([FromRoute] GroupId groupId)
+		public async Task<ApiResponse> GetGroup([FromRoute] long groupId)
 		{
-			var request = new GetGroupQuery(groupId);
+			GroupId typedGroupId = new(groupId);
+			var request = new GetGroupQuery(typedGroupId);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 			return new ApiResponse(response);
 		}
@@ -41,18 +43,25 @@ namespace RestApi.Controllers
 		// PUT: api/Groups/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPut("{id}")]
-		public async Task<ApiResponse> PutGroup([FromRoute] Guid id, [FromBody] UpdateGroupCommand updateGroupCommand)
+		[HttpPut("{groupId}")]
+		public async Task<ApiResponse> PutGroup([FromRoute] long groupId, [FromBody] UpdateGroupDto model)
 		{
-			var response = await _mediator.Send(updateGroupCommand).ConfigureAwait(false);
+			UpdateGroupCommand request = new(new GroupId(groupId),
+				model.Location,
+				model.Name,
+				model.Code,
+				model.OwnerId);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 			return new ApiResponse($"Group with id: {response} has been updated", response);
 		}
 
 		[HttpPut("{groupId}/locations")]
 		public async Task<ApiResponse> ChangeGroupLocation([FromRoute] GroupId groupId,
-			[FromBody] ChangeGroupLocationCommand changeGroupLocationCommand)
+			[FromBody] ChangeGroupLocationDto model)
 		{
-			changeGroupLocationCommand.GroupId = groupId;
+			ChangeGroupLocationCommand changeGroupLocationCommand = new(groupId,
+				model.Latitude,
+				model.Latitude);
 			var response = await _mediator.Send(changeGroupLocationCommand).ConfigureAwait(false);
 			return new ApiResponse($"Location of a group with id: {groupId} has ben changed");
 		}
@@ -76,10 +85,10 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost("{groupId}/users")]
-		public async Task<ApiResponse> AddUserToGroup([FromRoute] GroupId groupId,
+		public async Task<ApiResponse> AddUserToGroup([FromRoute] long groupId,
 			[FromBody] AddUserToGroupCommand addUserToGroupCommand)
 		{
-			addUserToGroupCommand.GroupId = groupId;
+			addUserToGroupCommand.GroupId = new GroupId(groupId);
 			var response = await _mediator.Send(addUserToGroupCommand).ConfigureAwait(false);
 			return new ApiResponse(
 				$"ApplicationUser with id: {addUserToGroupCommand.UserId} has been added to group with id: {groupId}.");
@@ -87,9 +96,9 @@ namespace RestApi.Controllers
 
 		// DELETE: api/Groups/5
 		[HttpDelete("{id}")]
-		public async Task<ApiResponse> DeleteGroup(GroupId id)
+		public async Task<ApiResponse> DeleteGroup(long id)
 		{
-			var response = await _mediator.Send(new DeleteGroupCommand(id)).ConfigureAwait(false);
+			var response = await _mediator.Send(new DeleteGroupCommand(new GroupId(id))).ConfigureAwait(false);
 			return new ApiResponse($"Group with id: {id} has been deleted", StatusCodes.Status200OK);
 		}
 

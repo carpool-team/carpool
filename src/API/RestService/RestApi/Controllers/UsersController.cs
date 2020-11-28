@@ -5,6 +5,7 @@ using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
+using RestApi.DTOs.User;
 using RestApi.Queries.UserQueries;
 
 namespace RestApi.Controllers
@@ -26,47 +27,54 @@ namespace RestApi.Controllers
 		public async Task<ApiResponse> GetUsers()
 		{
 			var request = new GetUsersQuery();
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			var response = await _mediator.Send(request);
 			return new ApiResponse(response);
 		}
 
 		[HttpGet("{userId}")]
 		public async Task<ApiResponse> GetUser([FromRoute] long userId)
 		{
-			UserId id = new(userId);
-			var request = new GetUserByIdQuery(id);
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			UserId typedUserId = new(userId);
+			var request = new GetUserByIdQuery(typedUserId);
+			var response = await _mediator.Send(request);
 
 			return new ApiResponse(response);
 		}
 
 		[HttpGet("~/api/groups/{groupId}/users")]
-		public async Task<ApiResponse> GetGroupUsers([FromRoute] GroupId groupId)
+		public async Task<ApiResponse> GetGroupUsers([FromRoute] long groupId)
 		{
-			var result = await _mediator.Send(new GetGroupUsersQuery(groupId)).ConfigureAwait(false);
+			GroupId typedGroupId = new(groupId);
+			var request = new GetGroupUsersQuery(typedGroupId);
+			var result = await _mediator.Send(request);
 			return new ApiResponse(result);
 		}
-		
-		[HttpPut("{id}")]
-		public async Task<ApiResponse> PutUser([FromRoute] UserId id, [FromBody] UpdateUserCommand request)
-		{
-			request.UserId = id;
-			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			return new ApiResponse(request);
+		[HttpPut("{userId}")]
+		public async Task<ApiResponse> PutUser([FromRoute] long userId, [FromBody] UpdateUserDto model)
+		{
+			UserId typedUserId = new(userId);
+			UpdateUserCommand request = new(typedUserId,
+				model.FirstName,
+				model.LastName);
+
+			var response = await _mediator.Send(request);
+
+			return new ApiResponse(response);
 		}
-		
+
 		[HttpPost]
 		public async Task<ApiResponse> PostUser([FromBody] AddUserCommand request)
 		{
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			var response = await _mediator.Send(request);
 			return new ApiResponse(response);
 		}
 
 		[HttpDelete("{userId}")]
-		public async Task<ApiResponse> DeleteUser([FromRoute()] UserId userId)
+		public async Task<ApiResponse> DeleteUser([FromRoute] long userId)
 		{
-			var request = new DeleteUserCommand(userId);
+			UserId typedUserId = new(userId);
+			var request = new DeleteUserCommand(typedUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 

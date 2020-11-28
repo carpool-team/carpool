@@ -16,10 +16,10 @@ namespace RestApi.Commands.UserCommands
 
 		public async Task<UserId> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
 		{
-			var user = await _repository.GetByIdAsync((UserId) request.UserId, cancellationToken).ConfigureAwait(false);
+			var user = await _repository.GetByIdAsync(request.UserId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));
-			user.FirstName = request.FirstName ?? user.FirstName;
-			user.LastName = request.LastName ?? user.LastName;
+			user.FirstName = request.FirstName;
+			user.LastName = request.LastName;
 
 			await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
 

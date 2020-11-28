@@ -11,10 +11,7 @@ namespace RestApi.DTOs.User
 			=> Vehicle = vehicle is null ? null : new IndexVehicleDto(vehicle.Name);
 
 		public IndexUserDto(UserId userId, string firstName, string lastName) : this(userId)
-		{
-			FirstName = firstName;
-			LastName = lastName;
-		}
+			=> (FirstName, LastName) = (firstName, lastName);
 
 		public IndexUserDto(UserId userId) : this()
 			=> UserId = userId;
