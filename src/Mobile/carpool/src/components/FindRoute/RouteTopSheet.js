@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../styles';
-import {BlueMarker, Marker} from '../common/map';
+import {BlueMarker} from '../common/map';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const RouteTopSheet = ({start, destination}) => {
   return (
@@ -14,7 +15,12 @@ const RouteTopSheet = ({start, destination}) => {
           </Text>
         </View>
         <View style={[sheet.rowCenter, {marginTop: 18}]}>
-          <Marker color={colors.green} size={16} style={{marginRight: 12}} />
+          <Icon
+            name="map-marker"
+            color={colors.green}
+            size={25}
+            style={{marginRight: 12}}
+          />
           <Text style={styles.placeName} numberOfLines={1}>
             {destination.place_name}
           </Text>

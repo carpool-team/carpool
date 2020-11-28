@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
-import {Marker} from '../../common/map';
 import {geocodingClient} from '../../../maps/mapbox';
 import {parseCoords} from '../../../utils/coords';
 import {getColor} from '../../../utils/getColor';
 import {styles} from './index.styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Waypoints = ({style, ride, start}) => {
   const [loading, setLoading] = useState(false);
@@ -58,7 +58,12 @@ const Waypoints = ({style, ride, start}) => {
 
   return (
     <View style={[styles.container, style]}>
-      <Marker size={32} color={getColor(ride.date)} style={styles.marker} />
+      <Icon
+        name="map-marker"
+        size={50}
+        color={getColor(ride.date)}
+        style={styles.marker}
+      />
       {loading ? null : (
         <View style={styles.column}>
           <Text numberOfLines={1}>

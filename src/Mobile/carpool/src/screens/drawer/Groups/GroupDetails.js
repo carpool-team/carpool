@@ -14,7 +14,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import config from '../../../../config';
 import {parseCoords} from '../../../utils/coords';
-import {Marker} from '../../../components/common/map';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
@@ -117,7 +117,7 @@ const GroupDetails = ({navigation, route}) => {
               key={group.id}
               id="selected"
               coordinate={parseCoords(group.location)}>
-              <Marker color={colors.green} size={24} />
+              <Icon name="map-marker" color={colors.green} size={35} />
             </MapboxGL.PointAnnotation>
             <MapboxGL.UserLocation visible />
           </MapboxGL.MapView>

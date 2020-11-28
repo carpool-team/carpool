@@ -3,10 +3,10 @@ import {View, SafeAreaView} from 'react-native';
 import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {RouteInfoSheet, RouteTopSheet} from '../../../components/FindRoute';
-import {Marker} from '../../../components/common/map';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
 import config from '../../../../config';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const getBounds = routesArray => {
   const allCoords = routesArray.map(rt => rt.geometry.coordinates).flat(1);
@@ -81,7 +81,7 @@ const ShowRoute = props => {
               key={finishCoords.toString()}
               id="selected"
               coordinate={finishCoords}>
-              <Marker color={colors.green} size={20} style={{marginTop: -24}} />
+              <Icon name="map-marker" color={colors.green} size={32} />
             </MapboxGL.PointAnnotation>
           </MapboxGL.MapView>
         </View>

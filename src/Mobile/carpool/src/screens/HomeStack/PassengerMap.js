@@ -2,7 +2,6 @@ import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {colors, activeRouteStyle, inactiveRouteStyle} from '../../styles';
-import {Marker} from '../../components/common/map';
 import {getBoundsForRoutes} from '../../utils/bounds';
 import {RouteInfoSheet} from '../../components/FindRoute';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -124,11 +123,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
               coordinate={parseCoords(ride.startingLocation.coordinates)}
               onSelected={() => onSelected(ride)}
               onDeselected={onCleanState}>
-              <Marker
-                color={getColor(ride.date)}
-                size={24}
-                style={styles.marker}
-              />
+              <Icon name="map-marker" color={getColor(ride.date)} size={35} />
             </MapboxGL.PointAnnotation>
           ))
         : null;

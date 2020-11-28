@@ -12,9 +12,9 @@ import {RouteMinimap} from '../../../components/Route';
 import {parseCoords} from '../../../utils/coords';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {UpView} from '../../../components/common';
-import {Marker} from '../../../components/common/map';
 import {Waypoints} from '../../../components/Ride';
 import moment from 'moment';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride} = route.params;
@@ -80,7 +80,7 @@ const DriversRideDetails = ({navigation, route}) => {
               onPress={() => null}
               borderRadius={8}>
               <View style={styles.upviewContent}>
-                <Marker color={colors.blue} size={24} />
+                <Icon name="map-marker" color={colors.blue} size={35} />
                 <Text style={styles.upviewCount}>{ride.stops.length}</Text>
               </View>
             </UpView>
