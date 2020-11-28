@@ -112,7 +112,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		};
 
 		const boundsOptions: FitBoundsOptions = {
-			padding: 50
+			padding: 100
 		};
 
 		const popupStyle: CSSProperties = {
