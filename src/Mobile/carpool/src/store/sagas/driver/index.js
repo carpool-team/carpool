@@ -37,6 +37,11 @@ const exampleRides = [
           latitude: 52.55188,
           longitude: 16.838128,
         },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
       },
     ],
   },
@@ -70,38 +75,10 @@ const exampleRides = [
           latitude: 52.55188,
           longitude: 16.838128,
         },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(1, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         },
       },
     ],
@@ -135,6 +112,49 @@ const exampleRides = [
         coordinates: {
           latitude: 52.55188,
           longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
+      },
+    ],
+  },
+  {
+    id: faker.random.alphaNumeric(32),
+    date: moment()
+      .add(1, 'days')
+      .format(),
+    startingLocation: {
+      coordinates: {
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
+      },
+    },
+    destination: {
+      coordinates: {
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
+      },
+    },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      },
+    ],
+    stops: [
+      {
+        coordinates: {
+          latitude: 52.55188,
+          longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         },
       },
     ],
@@ -169,6 +189,11 @@ const exampleRides = [
           latitude: 52.55188,
           longitude: 16.838128,
         },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
       },
     ],
   },
@@ -201,6 +226,11 @@ const exampleRides = [
         coordinates: {
           latitude: 52.55188,
           longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         },
       },
     ],
@@ -236,36 +266,10 @@ const examplePastRides = [
           latitude: 52.55188,
           longitude: 16.838128,
         },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.past()).toISOString(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         },
       },
     ],
@@ -297,6 +301,47 @@ const examplePastRides = [
         coordinates: {
           latitude: 52.55188,
           longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
+      },
+    ],
+  },
+  {
+    id: faker.random.alphaNumeric(32),
+    date: new Date(faker.date.past()).toISOString(),
+    startingLocation: {
+      coordinates: {
+        latitude: 52.40656926303501,
+        longitude: 16.86633729745128,
+      },
+    },
+    destination: {
+      coordinates: {
+        latitude: 53.30656926303501,
+        longitude: 16.76633729745128,
+      },
+    },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      },
+    ],
+    stops: [
+      {
+        coordinates: {
+          latitude: 52.55188,
+          longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         },
       },
     ],

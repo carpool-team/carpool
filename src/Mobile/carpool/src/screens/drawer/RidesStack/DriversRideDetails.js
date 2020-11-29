@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ScrollView,
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {RouteMinimap} from '../../../components/Route';
@@ -32,14 +33,21 @@ const DriversRideDetails = ({navigation, route}) => {
       },
     ]);
 
+  console.log(ride.stops);
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.container}>
         <View style={styles.topRow}>
           <View>
             <Text style={styles.singleRide}>Single ride</Text>
+            <Text style={styles.time}>
+              {moment(ride.date).format('HH:mm ')}
+            </Text>
             <Text style={styles.date}>
-              {moment(ride.date).format('HH:mm DD.MM.YYYY')}
+              {moment(ride.date).format('Do MMMM YYYY')}
             </Text>
           </View>
           <TouchableOpacity onPress={onDeletePress}>
@@ -57,36 +65,49 @@ const DriversRideDetails = ({navigation, route}) => {
           />
         </View>
         <View style={styles.bottomWrapper}>
-          <Waypoints
-            ride={ride}
-            start={parseCoords(ride.startingLocation.coordinates)}
-          />
-          <View style={styles.bottomRow}>
-            <UpView
-              contentContainerStyle={sheet.center}
-              style={styles.upView}
-              onPress={() => null}
-              borderRadius={8}>
-              <View style={styles.upviewContent}>
-                <Ionicon name="md-person" color={colors.blue} size={40} />
-                <Text style={styles.upviewCount}>
-                  {ride.participants.length}
-                </Text>
-              </View>
-            </UpView>
-            <UpView
-              contentContainerStyle={sheet.center}
-              style={styles.upView}
-              onPress={() => null}
-              borderRadius={8}>
-              <View style={styles.upviewContent}>
-                <Icon name="map-marker" color={colors.blue} size={35} />
-                <Text style={styles.upviewCount}>{ride.stops.length}</Text>
-              </View>
-            </UpView>
+          <View style={styles.waypoints}>
+            <Waypoints
+              ride={ride}
+              start={parseCoords(ride.startingLocation.coordinates)}
+            />
+          </View>
+          <View
+            style={{
+              paddingVertical: 16,
+              borderTopWidth: 1,
+              borderTopColor: colors.gray,
+            }}>
+            <View
+              style={{
+                width: '100%',
+                paddingHorizontal: 16,
+              }}>
+              <Text
+                style={{
+                  ...sheet.textSemiBold,
+                  color: colors.grayVeryDark,
+                  fontSize: 18,
+                }}>
+                Passengers
+              </Text>
+              {ride.stops.map(stop => (
+                <View
+                  key={stop.user.id}
+                  style={{...sheet.rowCenter, paddingVertical: 12}}>
+                  <Icon name="circle" color={colors.orange} size={12} />
+                  <Text
+                    style={{
+                      marginLeft: 8,
+                      ...sheet.textMedium,
+                      color: colors.grayDark,
+                      fontSize: 16,
+                    }}>{`${stop.user.firstName} ${stop.user.lastName}`}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -95,6 +116,10 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: colors.background,
+  },
+  scrollView: {
+    flex: 1,
+    width: '100%',
   },
   container: {
     flex: 1,
@@ -111,40 +136,36 @@ const styles = StyleSheet.create({
     color: colors.green,
     marginBottom: 10,
   },
+  time: {
+    ...sheet.textMedium,
+    fontSize: 20,
+    color: colors.blue,
+  },
   date: {
     ...sheet.textMedium,
     fontSize: 16,
     color: colors.grayDark,
+    marginTop: 5,
   },
   moreIcon: {
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
   mapWrapper: {
-    height: 450,
+    height: 300,
+  },
+  waypoints: {
+    paddingTop: 8,
+    paddingBottom: 16,
+    paddingHorizontal: 16,
   },
   bottomWrapper: {
     flex: 1,
-    paddingTop: 27,
-    paddingHorizontal: 16,
-  },
-  bottomRow: {
-    ...sheet.rowCenterSplit,
-    marginTop: 27,
-    flex: 1,
+    paddingVertical: 8,
   },
   upView: {
     width: '46%',
-  },
-  upviewContent: {
-    padding: 16,
-    ...sheet.rowCenter,
-  },
-  upviewCount: {
-    ...sheet.textSemiBold,
-    fontSize: 28,
-    color: colors.grayDark,
-    marginLeft: 16,
+    height: 100,
   },
 });
 

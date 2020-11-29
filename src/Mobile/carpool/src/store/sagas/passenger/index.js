@@ -37,6 +37,11 @@ const exampleRides = [
           latitude: 52.807428,
           longitude: 17.208917,
         },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
       },
     ],
     owner: {
@@ -73,6 +78,11 @@ const exampleRides = [
         coordinates: {
           latitude: 52.55188,
           longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         },
       },
     ],
@@ -111,6 +121,11 @@ const exampleRides = [
           latitude: 52.55188,
           longitude: 16.838128,
         },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
       },
     ],
     owner: {
@@ -148,6 +163,11 @@ const exampleRides = [
           latitude: 52.55188,
           longitude: 16.838128,
         },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
       },
     ],
     owner: {
@@ -184,6 +204,11 @@ const exampleRides = [
         coordinates: {
           latitude: 52.55188,
           longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         },
       },
     ],
@@ -223,6 +248,11 @@ const examplePastRides = [
           latitude: 52.55188,
           longitude: 16.838128,
         },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
       },
     ],
   },
@@ -253,6 +283,11 @@ const examplePastRides = [
         coordinates: {
           latitude: 52.55188,
           longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
         },
       },
     ],
