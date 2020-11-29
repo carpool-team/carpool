@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {View, ActivityIndicator, Text, StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import config from '../../../config';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
 import {activeRouteStyle, colors, sheet} from '../../styles';
 import {useGetDirections} from '../../hooks';
 import {BlueMarker} from '../common/map';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {MAP_LIGHT} from '@env';
 
 const dirConfig = {
   profile: 'driving',
@@ -181,7 +181,7 @@ const RouteMinimap = ({stops}) => {
     <View style={styles.container}>
       <MapboxGL.MapView
         style={{flex: 1}}
-        styleURL={config.mapLight}
+        styleURL={MAP_LIGHT}
         contentInset={10}
         compassEnabled={false}
         scrollEnabled={false}

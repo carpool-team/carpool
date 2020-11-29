@@ -5,8 +5,8 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {RouteInfoSheet, RouteTopSheet} from '../../../components/FindRoute';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
-import config from '../../../../config';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {MAP_LIGHT} from '@env';
 
 const getBounds = routesArray => {
   const allCoords = routesArray.map(rt => rt.geometry.coordinates).flat(1);
@@ -55,7 +55,7 @@ const ShowRoute = props => {
           <MapboxGL.MapView
             style={{flex: 1}}
             onPress={event => console.log(event)}
-            styleURL={config.mapLight}
+            styleURL={MAP_LIGHT}
             contentInset={10}>
             <MapboxGL.Camera
               maxZoomLevel={19}

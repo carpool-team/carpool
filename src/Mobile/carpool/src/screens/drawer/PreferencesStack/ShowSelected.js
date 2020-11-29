@@ -3,9 +3,9 @@ import {View, SafeAreaView} from 'react-native';
 import {colors} from '../../../styles';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {useNavigation} from '@react-navigation/core';
-import config from '../../../../config';
 import {LocationSheet} from '../../../components/Locations';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {MAP_LIGHT} from '@env';
 
 const ShowSelected = props => {
   const navigation = useNavigation();
@@ -22,7 +22,7 @@ const ShowSelected = props => {
           <MapboxGL.MapView
             style={{flex: 1}}
             onPress={event => console.log(event)}
-            styleURL={config.mapLight}>
+            styleURL={MAP_LIGHT}>
             <MapboxGL.Camera
               zoomLevel={16}
               animationMode="flyTo"

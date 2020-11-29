@@ -1,10 +1,10 @@
-import React, {useRef, useContext} from 'react';
+import React, {useRef} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import config from '../../../config';
 import {CircleButton} from '../../components/common/buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {colors} from '../../styles';
 import {useNavigation} from '@react-navigation/core';
+import {MAP_LIGHT} from '@env';
 
 const DriverMap = ({coordinates, _onLocateUser}) => {
   const _driverMap = useRef(null);
@@ -15,7 +15,7 @@ const DriverMap = ({coordinates, _onLocateUser}) => {
       <MapboxGL.MapView
         ref={_driverMap}
         style={{flex: 1}}
-        styleURL={config.mapLight}
+        styleURL={MAP_LIGHT}
         contentInset={10}
         compassEnabled={false}>
         <MapboxGL.Camera

@@ -9,10 +9,10 @@ import {useNavigation, useRoute} from '@react-navigation/core';
 import {CircleButton} from '../../components/common/buttons';
 import {parseCoords} from '../../utils/coords';
 import {getColor} from '../../utils/getColor';
-import config from '../../../config';
 import {useGetDirections} from '../../hooks';
 import {useSelector} from 'react-redux';
 import {RideInfoSheet} from '../../components/Ride';
+import {MAP_LIGHT} from '@env';
 
 const dirConfig = {
   profile: 'walking',
@@ -156,7 +156,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       <MapboxGL.MapView
         ref={_passengerMap}
         style={{flex: 1}}
-        styleURL={config.mapLight}
+        styleURL={MAP_LIGHT}
         contentInset={10}
         compassEnabled={false}
         rotateEnabled={false}

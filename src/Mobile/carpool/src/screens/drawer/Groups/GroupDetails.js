@@ -12,9 +12,9 @@ import UpView from '../../../components/common/UpView';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import config from '../../../../config';
 import {parseCoords} from '../../../utils/coords';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {MAP_LIGHT} from '@env';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
@@ -100,7 +100,7 @@ const GroupDetails = ({navigation, route}) => {
           }}>
           <MapboxGL.MapView
             style={{flex: 1}}
-            styleURL={config.mapLight}
+            styleURL={MAP_LIGHT}
             contentInset={10}
             compassEnabled={false}
             scrollEnabled={false}
