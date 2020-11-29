@@ -5,13 +5,21 @@ import { useHistory } from "react-router";
 import Button from "../../../ui/button/Button";
 import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
+import ButtonLink from "../../../ui/buttonLink/ButtonLink";
+import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
+import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
+import {ButtonLinkStyle} from "../../../ui/buttonLink/enums/ButtonLinkStyle";
 import { mainRoutes } from "../../../layout/components/LayoutRouter";
 import ridesExample from "../../../../examples/exampleRides";
 import { IRide } from "../../../../components/groups/interfaces/IRide";
 import MediaQuery from "react-responsive";
 import MapBoxRides from "../../../map/MapBoxRides";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withTranslation } from "react-i18next";
+import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
+import GroupsRouter from "../GroupsRouter";
 
-interface IGroupRidesProps extends IGroupDetailedViewProps {
+interface IGroupRidesProps extends IGroupDetailedViewProps, RouteComponentProps, IReactI18nProps {
 
 }
 
@@ -28,6 +36,10 @@ const GroupRides = (props: IGroupRidesProps) => {
 		leftOutline: "rides--leftPanel__outline",
 		leftLabelsText: "rides--leftPanel__text"
 	};
+	const resources = {
+		add: "addBtn",
+		back: "prevBtn"
+	};
 
 	const rides: IRide[] = ridesExample;
 	const [selectedRide, setSelectedRide] = useState(null);
@@ -37,6 +49,8 @@ const GroupRides = (props: IGroupRidesProps) => {
 			setSelectedRide(ride);
 		}
 	};
+	const { url } = props.match;
+	const { t } = props;
 
 	return (
 		<GroupDetailedView group={props.group}>
@@ -48,12 +62,20 @@ const GroupRides = (props: IGroupRidesProps) => {
 						background={ButtonBackground.Blue}
 						color={ButtonColor.White}
 					>
-						{"Wróć"}
+						{t(resources.back)}
 					</Button>
-					<Button background={ButtonBackground.Blue} color={ButtonColor.White}>
-						Dodaj
-				</Button>
+					<ButtonLink
+						style={ButtonLinkStyle.Button}
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						to={`${url}${GroupsRouter.routes.addGroup}`}
+					>
+						{t(resources.add)}
+					</ButtonLink>
 					<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
+				</div>
+				<div>
+
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<div className={cssClasses.leftList}>
@@ -70,4 +92,4 @@ const GroupRides = (props: IGroupRidesProps) => {
 	);
 };
 
-export default GroupRides;
+export default withTranslation()(withRouter(GroupRides));
