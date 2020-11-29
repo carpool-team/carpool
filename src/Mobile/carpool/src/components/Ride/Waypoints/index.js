@@ -5,6 +5,7 @@ import {parseCoords} from '../../../utils/coords';
 import {getColor} from '../../../utils/getColor';
 import {styles} from './index.styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {colors} from '../../../styles';
 
 const Waypoints = ({style, ride, start}) => {
   const [loading, setLoading] = useState(false);
@@ -61,7 +62,7 @@ const Waypoints = ({style, ride, start}) => {
       <Icon
         name="map-marker"
         size={50}
-        color={getColor(ride.date)}
+        color={colors.blue}
         style={styles.marker}
       />
       {loading ? null : (
