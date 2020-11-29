@@ -28,7 +28,7 @@ const DriverMap = ({coordinates, _onLocateUser}) => {
         <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
       </MapboxGL.MapView>
       <CircleButton
-        style={{position: 'absolute', bottom: 72, right: 20}}
+        style={{position: 'absolute', bottom: '6%', right: 20}}
         onPress={() => navigation.navigate('AddRide')}
         icon={<Icon name="plus" color={colors.grayDark} size={24} />}
       />

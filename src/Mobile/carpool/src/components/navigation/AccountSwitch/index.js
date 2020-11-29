@@ -6,7 +6,7 @@ import {CircleButton} from '../../common/buttons';
 import {styles} from './index.styles';
 import {useActiveAccount} from '../../../hooks';
 
-const activeSize = 40;
+const activeSize = 36;
 const inactiveSize = 28;
 
 const AccountSwitch = () => {

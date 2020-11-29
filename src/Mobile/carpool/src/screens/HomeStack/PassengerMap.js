@@ -193,7 +193,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       ) : null}
       {ride || visible ? null : (
         <CircleButton
-          style={{position: 'absolute', bottom: 72, right: 20}}
+          style={{position: 'absolute', bottom: '6%', right: 20}}
           onPress={() => navigation.navigate('FindRide')}
           icon={<Icon name="search" color={colors.grayDark} size={24} />}
         />
