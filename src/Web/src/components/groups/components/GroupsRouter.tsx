@@ -7,7 +7,9 @@ import { IGroupCallbacks } from "../interfaces/IGroupCallbacks";
 import GroupInvite from "./invite/GroupInvite";
 import GroupEdit from "./edit/GroupEdit";
 import GroupRides from "./rides/GroupRides";
+import AddRideForm from "./addRideForm/AddRideForm";
 import { IGroup } from "../interfaces/IGroup";
+import AddRideFormScreen from "./addRideForm/AddRideForm";
 
 interface IGroupsRouterProps extends RouteComponentProps {
 	callbacks: IGroupCallbacks;
@@ -20,6 +22,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 		rides: "rides/",
 		edit: "edit/",
 		invite: "invite/",
+		addRide: "add/"
 	};
 
 	render = () => {
@@ -44,8 +47,11 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 							<Route path={path + GroupsRouter.routes.invite}>
 								<GroupInvite group={this.props.selectedGroup} />
 							</Route>
-							<Route path={path + GroupsRouter.routes.rides}>
+							<Route exact path={path + GroupsRouter.routes.rides}>
 								<GroupRides group={this.props.selectedGroup} />
+							</Route>
+							<Route  path={path + GroupsRouter.routes.rides + GroupsRouter.routes.addRide}>
+								<AddRideFormScreen />
 							</Route>
 						</> : null}
 				</Switch>
