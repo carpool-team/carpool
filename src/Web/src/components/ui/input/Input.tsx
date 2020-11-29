@@ -8,6 +8,8 @@ import { ValidationType } from "./enums/ValidationType";
 import "./Input.scss";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
+import mapboxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
+import mapConfig from "../../map/mapConfig";
 
 interface IINputProps extends IReactI18nProps {
 	changeHandler: (newValue: string) => void;
@@ -32,6 +34,8 @@ const regexes = {
 	[ValidationType.Email]: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 	[ValidationType.PostalCode]: /^\d{2}\-\d{3}$/,
 };
+
+const geocodingClient = mapboxGeocoding({accessToken: mapConfig.mapboxKey});
 
 const validateInput = (value: string, type: ValidationType, customValidation?: (value: string) => boolean) => {
 	if (type === ValidationType.Custom && !customValidation) {
@@ -87,6 +91,36 @@ const Input = (props: IINputProps) => {
 		baseContainerClasses = [inputInvalidContainerClassName];
 	}
 
+	const onAutocompleteName = async (text: string) => {
+		try {
+			const response = await geocodingClient
+				.forwardGeocode({
+					query: text,
+					autocomplete: true,
+					limit: 3
+				})
+				.send();
+			const result = response.body;
+			console.log(result);
+		} catch (err) {
+			console.log(err);
+		} finally {
+		}
+	};
+	const addressChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		props.changeHandler(event.target.value);
+		if ( event.target.value.length > 3) {
+			onAutocompleteName(event.target.value);
+		}
+	};
+
+	const renderAutocompleteAddress = () => {
+		return(
+			<>
+			</>
+		);
+	};
+
 	const renderValidationMessage = () => {
 		const { t } = props;
 		if (!isValid) {
@@ -131,6 +165,23 @@ const Input = (props: IINputProps) => {
 		</div>
 	);
 
+	const renderAddressInput = () => (
+		<div className={[inputGroupContainerClassName, props.style].join(" ")}>
+			<div className={baseContainerClasses.join(" ")}>
+				<div className={getIconClass(props.icon)}></div>
+				<input
+					className={inputBaseClassName}
+					placeholder={props.placeholder}
+					onChange={addressChangeHandler}
+					value={props.value}
+					// onBlur={submitAddressFocusOut}
+					// onKeyDown={submitAdressEnter}
+				/>
+			</div>
+			{renderAutocompleteAddress()}
+		</div>
+	);
+
 	const renderCheckbox = () => (
 		<div className={checkboxClassName}>
 			<input
@@ -153,6 +204,8 @@ const Input = (props: IINputProps) => {
 				return renderPasswordInput();
 			case InputType.Checkbox:
 				return renderCheckbox();
+			case InputType.Address:
+				return renderAddressInput();
 			default:
 				throw "Unhandled input type";
 		}

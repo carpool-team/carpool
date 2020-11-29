@@ -29,7 +29,6 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		code: false,
 		location: false,
 	});
-
 	const [validate, setValidate] = useState(false);
 
 	const cssClasses = {
@@ -66,7 +65,6 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 			setValidate(true);
 		}
 	};
-
 	const { t } = props;
 
 	return (
@@ -108,7 +106,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					}}
 				/>
 				<Input
-					type={InputType.Text}
+					type={InputType.Address}
 					changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.address)}
 					placeholder={t(resources.addressInput)}
 					value={props.data.group.address}
