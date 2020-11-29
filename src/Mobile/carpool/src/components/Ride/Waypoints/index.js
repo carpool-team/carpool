@@ -2,10 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
 import {geocodingClient} from '../../../maps/mapbox';
 import {parseCoords} from '../../../utils/coords';
-import {getColor} from '../../../utils/getColor';
 import {styles} from './index.styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {colors} from '../../../styles';
+import {colors, sheet} from '../../../styles';
 
 const Waypoints = ({style, ride, start}) => {
   const [loading, setLoading] = useState(false);
@@ -59,22 +58,21 @@ const Waypoints = ({style, ride, start}) => {
 
   return (
     <View style={[styles.container, style]}>
-      <Icon
-        name="map-marker"
-        size={50}
-        color={colors.blue}
-        style={styles.marker}
-      />
       {loading ? null : (
-        <View style={styles.column}>
-          <Text numberOfLines={1}>
-            <Text style={styles.from}>From: </Text>
-            <Text style={styles.placeName}>{startName}</Text>
-          </Text>
-          <Text numberOfLines={1}>
-            <Text style={styles.to}>To: </Text>
-            <Text style={styles.placeName}>{destName}</Text>
-          </Text>
+        <View style={styles.wrapper}>
+          <View style={styles.columnLeft}>
+            <Icon name="circle" size={14} color={colors.blue} />
+            <View style={styles.line} />
+            <Icon name="circle" size={14} color={colors.green} />
+          </View>
+          <View style={styles.columnRight}>
+            <Text style={styles.placeName} numberOfLines={1}>
+              {startName}
+            </Text>
+            <Text style={styles.placeName} numberOfLines={1}>
+              {destName}
+            </Text>
+          </View>
         </View>
       )}
     </View>
