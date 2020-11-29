@@ -16,6 +16,5 @@ export const styles = StyleSheet.create({
   },
   marker: {
     marginRight: 12,
-    marginBottom: 32,
   },
 });

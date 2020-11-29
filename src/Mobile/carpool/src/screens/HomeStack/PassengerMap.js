@@ -127,7 +127,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
                 name="map-marker"
                 color={getColor(ride.date)}
                 size={35}
-                style={{marginBottom: 35}}
+                style={styles.marker}
               />
             </MapboxGL.PointAnnotation>
           ))
@@ -198,7 +198,7 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
       ) : null}
       {ride || visible ? null : (
         <CircleButton
-          style={{position: 'absolute', bottom: '6%', right: 20}}
+          style={styles.circleButton}
           onPress={() => navigation.navigate('FindRide')}
           icon={<Icon name="search" color={colors.grayDark} size={24} />}
         />
@@ -209,14 +209,11 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
 
 const styles = StyleSheet.create({
   marker: {
-    marginTop: -24,
-    padding: 10,
+    marginBottom: 35,
   },
-  button: {
-    height: 64,
-    width: 64,
+  circleButton: {
     position: 'absolute',
-    bottom: 72,
+    bottom: '6%',
     right: 20,
   },
 });

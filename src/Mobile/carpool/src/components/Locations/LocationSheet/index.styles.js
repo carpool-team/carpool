@@ -51,4 +51,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 80,
     height: 22,
   },
+  marker: {
+    marginRight: 12,
+  },
 });

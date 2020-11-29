@@ -91,7 +91,7 @@ const RouteMinimap = ({stops}) => {
               name="map-marker"
               color={colors.green}
               size={32}
-              style={{marginBottom: 32}}
+              style={styles.marker}
             />
           </MapboxGL.PointAnnotation>
           {!!stopPoints.length &&
@@ -104,7 +104,7 @@ const RouteMinimap = ({stops}) => {
                   name="map-marker"
                   color={colors.orange}
                   size={32}
-                  style={{marginBottom: 32}}
+                  style={styles.marker}
                 />
               </MapboxGL.PointAnnotation>
             ))}
@@ -251,6 +251,9 @@ const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     fontSize: 32,
     color: colors.orange,
+  },
+  marker: {
+    marginBottom: 32,
   },
 });
 

@@ -26,12 +26,10 @@ const GroupDetails = ({navigation, route}) => {
   }, []);
 
   return group ? (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={styles.flexed}>
       <View style={styles.upperContainer}>
         <View style={sheet.rowCenterSplit}>
-          <Text
-            style={{...styles.name, paddingHorizontal: 16}}
-            numberOfLines={1}>
+          <Text style={styles.name} numberOfLines={1}>
             {group.name}
           </Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -57,28 +55,19 @@ const GroupDetails = ({navigation, route}) => {
           </View>
         </View>
         <View style={styles.cardGrid}>
-          <UpView
-            borderRadius={8}
-            style={{width: 168, height: 135}}
-            onPress={() => null}>
+          <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
             <View style={styles.cardContent}>
               <MaterialIcon name="group" size={40} color={colors.blue} />
               <Text style={styles.cardLabel}>Members</Text>
             </View>
           </UpView>
-          <UpView
-            borderRadius={8}
-            style={{width: 168, height: 135}}
-            onPress={() => null}>
+          <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
             <View style={styles.cardContent}>
               <MaterialIcon name="settings" size={40} color={colors.blue} />
               <Text style={styles.cardLabel}>Settings</Text>
             </View>
           </UpView>
-          <UpView
-            borderRadius={8}
-            style={{width: 168, height: 135}}
-            onPress={() => null}>
+          <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
             <View style={styles.cardContent}>
               <Ionicon name="ios-car" size={40} color={colors.blue} />
               <Text style={styles.cardLabel}>Your rides</Text>
@@ -86,7 +75,7 @@ const GroupDetails = ({navigation, route}) => {
           </UpView>
           <UpView
             borderRadius={8}
-            style={{width: 168, height: 135}}
+            style={styles.upview}
             onPress={() => navigation.navigate('FindRide')}>
             <View style={styles.cardContent}>
               <MaterialIcon name="search" size={40} color={colors.blue} />
@@ -94,12 +83,9 @@ const GroupDetails = ({navigation, route}) => {
             </View>
           </UpView>
         </View>
-        <View
-          style={{
-            flex: 1,
-          }}>
+        <View style={styles.flexed}>
           <MapboxGL.MapView
-            style={{flex: 1}}
+            style={styles.flexed}
             styleURL={MAP_LIGHT}
             contentInset={10}
             compassEnabled={false}
@@ -121,7 +107,7 @@ const GroupDetails = ({navigation, route}) => {
                 name="map-marker"
                 color={colors.green}
                 size={35}
-                style={{marginBottom: 35}}
+                style={styles.marker}
               />
             </MapboxGL.PointAnnotation>
             <MapboxGL.UserLocation visible />
@@ -141,6 +127,7 @@ const styles = StyleSheet.create({
     ...sheet.textBold,
     color: colors.grayDark,
     fontSize: 32,
+    paddingHorizontal: 16,
   },
   statsRow: {
     ...sheet.rowCenterSplit,
@@ -194,9 +181,18 @@ const styles = StyleSheet.create({
   },
   cardLabel: {
     ...sheet.textSemiBold,
-    //color: colors.blue,
     color: colors.grayDark,
     fontSize: 20,
+  },
+  marker: {
+    marginBottom: 35,
+  },
+  upview: {
+    width: 168,
+    height: 135,
+  },
+  flexed: {
+    flex: 1,
   },
 });
 
