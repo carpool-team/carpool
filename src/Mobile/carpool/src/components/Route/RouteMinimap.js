@@ -24,8 +24,8 @@ const getBounds = routesArray => {
   return {
     paddingLeft: 32,
     paddingRight: 32,
-    paddingTop: 72,
-    paddingBottom: 72,
+    paddingTop: 30,
+    paddingBottom: 30,
     ne: [ne1, ne2],
     sw: [sw1, sw2],
   };
@@ -168,12 +168,12 @@ const RouteMinimap = ({stops}) => {
 
   const renderRouteDetails = () => {
     if (routes.length) {
-      const {duration, distance} = routes[0];
+      const {distance, duration} = routes[0];
 
       return (
         <View style={styles.routeDetailsWrapper}>
-          {renderTime(duration)}
           {renderDistance(distance)}
+          {renderTime(duration)}
         </View>
       );
     } else {
@@ -183,6 +183,7 @@ const RouteMinimap = ({stops}) => {
 
   return (
     <View style={styles.container}>
+      {renderRouteDetails()}
       <MapboxGL.MapView
         style={{flex: 1}}
         styleURL={MAP_LIGHT}
@@ -206,7 +207,6 @@ const RouteMinimap = ({stops}) => {
           />
         ) : null}
         {renderPoints()}
-        {renderRouteDetails()}
       </MapboxGL.MapView>
     </View>
   );
@@ -224,13 +224,12 @@ const styles = StyleSheet.create({
     bottom: 90,
   },
   routeDetailsWrapper: {
-    position: 'absolute',
-    top: 9,
-    left: 0,
-    right: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+    paddingVertical: 8,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray,
   },
   time: {
     ...sheet.textSemiBold,
