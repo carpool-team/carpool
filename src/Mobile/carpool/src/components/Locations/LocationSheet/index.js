@@ -14,7 +14,7 @@ const LocationSheet = ({_onSelect, _onGoBack, location}) => {
           name="map-marker"
           size={40}
           color={colors.blue}
-          style={{marginRight: 12}}
+          style={{marginRight: 12, marginBottom: 40}}
         />
         <Text style={styles.placeName}>{location.place_name}</Text>
       </View>

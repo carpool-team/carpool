@@ -4,6 +4,7 @@ import {sheet, colors} from '../../../styles';
 export const styles = StyleSheet.create({
   marker: {
     marginRight: 12,
+    marginBottom: 50,
   },
   container: {
     width: '100%',

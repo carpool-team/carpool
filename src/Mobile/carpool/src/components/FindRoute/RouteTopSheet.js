@@ -19,7 +19,7 @@ const RouteTopSheet = ({start, destination}) => {
             name="map-marker"
             color={colors.green}
             size={25}
-            style={{marginRight: 12}}
+            style={{marginRight: 12, marginBottom: 25}}
           />
           <Text style={styles.placeName} numberOfLines={1}>
             {destination.place_name}

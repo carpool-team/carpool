@@ -87,8 +87,12 @@ const RouteMinimap = ({stops}) => {
             key={finish.location.toString()}
             id="selected"
             coordinate={finish.location}>
-            {/* <Marker color={colors.green} size={20} style={{marginTop: -24}} /> */}
-            <Icon name="map-marker" color={colors.green} size={32} />
+            <Icon
+              name="map-marker"
+              color={colors.green}
+              size={32}
+              style={{marginBottom: 32}}
+            />
           </MapboxGL.PointAnnotation>
           {!!stopPoints.length &&
             stopPoints.map(stop => (
@@ -96,12 +100,12 @@ const RouteMinimap = ({stops}) => {
                 key={stop.location.toString()}
                 id="selected"
                 coordinate={stop.location}>
-                {/* <Marker
+                <Icon
+                  name="map-marker"
                   color={colors.orange}
-                  size={20}
-                  style={{marginTop: -24}}
-                /> */}
-                <Icon name="map-marker" color={colors.orange} size={32} />
+                  size={32}
+                  style={{marginBottom: 32}}
+                />
               </MapboxGL.PointAnnotation>
             ))}
         </>

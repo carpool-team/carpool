@@ -123,7 +123,12 @@ const PassengerMap = ({coordinates, _onLocateUser}) => {
               coordinate={parseCoords(ride.startingLocation.coordinates)}
               onSelected={() => onSelected(ride)}
               onDeselected={onCleanState}>
-              <Icon name="map-marker" color={getColor(ride.date)} size={35} />
+              <Icon
+                name="map-marker"
+                color={getColor(ride.date)}
+                size={35}
+                style={{marginBottom: 35}}
+              />
             </MapboxGL.PointAnnotation>
           ))
         : null;

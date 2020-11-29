@@ -117,7 +117,12 @@ const GroupDetails = ({navigation, route}) => {
               key={group.id}
               id="selected"
               coordinate={parseCoords(group.location)}>
-              <Icon name="map-marker" color={colors.green} size={35} />
+              <Icon
+                name="map-marker"
+                color={colors.green}
+                size={35}
+                style={{marginBottom: 35}}
+              />
             </MapboxGL.PointAnnotation>
             <MapboxGL.UserLocation visible />
           </MapboxGL.MapView>

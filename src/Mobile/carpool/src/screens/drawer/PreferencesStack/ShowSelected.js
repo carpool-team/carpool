@@ -33,7 +33,12 @@ const ShowSelected = props => {
               key={coordinates.toString()}
               id="selected"
               coordinate={coordinates}>
-              <Icon name="map-marker" color={colors.blue} size={35} />
+              <Icon
+                name="map-marker"
+                color={colors.blue}
+                size={35}
+                style={{marginBottom: 35}}
+              />
             </MapboxGL.PointAnnotation>
             <MapboxGL.UserLocation />
           </MapboxGL.MapView>

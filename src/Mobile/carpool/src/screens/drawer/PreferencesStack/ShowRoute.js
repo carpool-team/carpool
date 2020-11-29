@@ -81,7 +81,12 @@ const ShowRoute = props => {
               key={finishCoords.toString()}
               id="selected"
               coordinate={finishCoords}>
-              <Icon name="map-marker" color={colors.green} size={32} />
+              <Icon
+                name="map-marker"
+                color={colors.green}
+                size={32}
+                style={{marginBottom: 32}}
+              />
             </MapboxGL.PointAnnotation>
           </MapboxGL.MapView>
         </View>
