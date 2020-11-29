@@ -26,8 +26,8 @@ const flyToOptions = {
 };
 
 const defaults = {
-	zoom: [11] as [number],
-	center: [-0.109970527, 51.52916347] as [number, number],
+	zoom: undefined as [number],
+	center: undefined as [number, number],
 };
 
 export interface IMapProps {
@@ -53,9 +53,9 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	componentDidUpdate() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
 		if (this.state.groups !== groups) {
+			this.getBounds(groups);
 			this.setState(produce((draft: IMapState) => {
 				draft.groups = groups;
-				draft.fitBounds = this.getBounds(groups);
 			}));
 		}
 		if (this.props.group?.id !== this.currentGroupId) {
@@ -65,7 +65,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					draft.center = [this.props.group.location.latitude, this.props.group.location.longitude];
 					draft.zoom = [14];
 				} else {
-					draft.fitBounds = this.getBounds(groups);
+					this.getBounds(groups);
 				}
 			}));
 		}
@@ -74,7 +74,6 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	private getBounds = (groups: IGroup[]) => {
 		const allCoords = [groups.map(g => g.location.latitude), groups.map(g => g.location.longitude)];
-		console.log(allCoords);
 		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
 
 		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
@@ -83,8 +82,9 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);
 			bbox[1][1] = Math.max.apply(null, allCoords[1]);
 		}
-
-		return bbox;
+		this.setState(produce((draft: IMapState) => {
+			draft.fitBounds = bbox;
+		}));
 	}
 
 	private onDrag = () => {
