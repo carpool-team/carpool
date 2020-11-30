@@ -30,6 +30,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		location: false,
 	});
 	const [validate, setValidate] = useState(false);
+	const [addressCoordinates, setAddressCoordinates] = useState(null);
 
 	const cssClasses = {
 		container: "addGroupContainer",
@@ -111,6 +112,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					placeholder={t(resources.addressInput)}
 					value={props.data.group.address}
 					icon={InputIcon.Location}
+					addressCords={coords => setAddressCoordinates(coords)}
 					validation={{
 						type: ValidationType.Required,
 						isValidCallback: isValid => {

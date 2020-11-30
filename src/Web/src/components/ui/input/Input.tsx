@@ -23,6 +23,11 @@ interface IINputProps extends IReactI18nProps {
 		inputId: string;
 	};
 	validation?: IValidation;
+	addressCords?: (cords: [number, number]) => void;
+}
+interface IAddress {
+	place_name: string;
+	center: [number, number];
 }
 
 const defaultValidationTextKeys = {
@@ -91,6 +96,8 @@ const Input = (props: IINputProps) => {
 		baseContainerClasses = [inputInvalidContainerClassName];
 	}
 
+	const [autocompleteList, setAutocompleteList] = useState(null);
+
 	const onAutocompleteName = async (text: string) => {
 		try {
 			const response = await geocodingClient
@@ -100,25 +107,47 @@ const Input = (props: IINputProps) => {
 					limit: 3
 				})
 				.send();
-			const result = response.body;
-			console.log(result);
+			const result = response.body.features;
+			const addresses: IAddress[] = [];
+			result.map((item) => {
+						addresses.push({place_name: item.place_name, center: item.center});
+				});
+			setAutocompleteList(addresses);
 		} catch (err) {
 			console.log(err);
 		} finally {
 		}
 	};
+
 	const addressChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		props.changeHandler(event.target.value);
 		if ( event.target.value.length > 3) {
 			onAutocompleteName(event.target.value);
+		} else {
+			setAutocompleteList(null);
 		}
 	};
 
+	const onAutocompleteClick = (placeName: string, coords: [number, number]) => {
+		props.addressCords(coords);
+		props.changeHandler(placeName);
+		setAutocompleteList(null);
+	};
+
 	const renderAutocompleteAddress = () => {
-		return(
-			<>
-			</>
-		);
+		if (autocompleteList !== null && autocompleteList.length !== 0) {
+			return(
+				autocompleteList.map((address: IAddress) => {
+					return (
+						<div
+							onClick={() => onAutocompleteClick(address.place_name,  address.center)}
+						>
+								{address.place_name}
+						</div>
+			); }));
+			} else {
+			return null;
+		}
 	};
 
 	const renderValidationMessage = () => {
