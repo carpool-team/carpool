@@ -30,7 +30,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		location: false,
 	});
 	const [validate, setValidate] = useState(false);
-	const [addressCoordinates, setAddressCoordinates] = useState(null);
+	const [addressCoordinates, setAddressCoordinates] = useState(undefined);
 
 	const cssClasses = {
 		container: "addGroupContainer",
@@ -130,7 +130,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 			</div>
 			<MediaQuery query="(min-width: 900px)">
 				<div className={cssClasses.map}>
-					<MapBoxPicker />
+					<MapBoxPicker location={addressCoordinates}/>
 				</div>
 			</MediaQuery>
 		</div>

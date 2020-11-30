@@ -2,9 +2,11 @@ import * as React from "react";
 import {CSSProperties} from "react";
 import ReactMapboxGl from "react-mapbox-gl";
 import mapConfig from "./mapConfig";
+import {  Marker } from "react-mapbox-gl";
+import produce from "immer";
 
 const Mapbox = ReactMapboxGl({
-	minZoom: 2,
+	minZoom: 8,
 	maxZoom: 15,
 	accessToken: mapConfig.mapboxKey
 });
@@ -14,8 +16,13 @@ export interface IMapState {
 	zoom?: [number];
 }
 
+const flyToOptions = {
+	speed: 1
+};
+
 export interface IMapProps {
 	onStyleLoad?: (map: any) => any;
+	location?: [number, number];
 }
 
 export default class MapBoxPicker extends React.Component<IMapProps, IMapState> {
@@ -24,7 +31,7 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 		super(props);
 		this.state = {
 			zoom: [11],
-			center: [-0.109970527, 51.52916347],
+			center: [16.926712, 52.408141]
 		};
 	}
 
@@ -32,12 +39,25 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 		const onStyleLoad  = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
 	}
+	componentDidUpdate() {
+		if (this.props.location !== this.state.center) {
+			this.setState(produce((draft: IMapState) => {
+				draft.zoom = [14];
+				draft.center = this.props.location;
+			}));
+		}
+	}
 
 	public render() {
 		const {center, zoom} = this.state;
+		const location = this.props.location;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
+		};
+		const markerStyle: CSSProperties = {
+			fontSize: "50px",
+			color: "#6b98d1"
 		};
 
 		return (
@@ -47,7 +67,16 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 				center={center}
 				zoom={zoom}
 				containerStyle={containerStyle}
+				flyToOptions={flyToOptions}
 				>
+					{location &&
+						<Marker
+							coordinates={[location[0], location[1]]}
+							anchor="bottom"
+						>
+							<i className={"fa fa-map-marker"} style={markerStyle}></i>
+						</Marker>
+					}
 		</Mapbox>
 		);
 	}

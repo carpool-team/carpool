@@ -10,6 +10,7 @@ import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
 import mapboxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import mapConfig from "../../map/mapConfig";
+import { add } from "lodash";
 
 interface IINputProps extends IReactI18nProps {
 	changeHandler: (newValue: string) => void;
@@ -161,6 +162,7 @@ const Input = (props: IINputProps) => {
 				autocompleteList.map((address: IAddress) => {
 					return (
 						<div
+							key = {address.place_name}
 							className={inputAddressClassName}
 							onClick={() => onAutocompleteClick(address.place_name,  address.center)}
 						>
