@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.Repositories.Ride;
 using Domain.Entities;
+using Domain.Entities.Intersections;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -60,6 +62,13 @@ namespace RestApi.Commands.RideCommands
 			};
 
 			await _rideRepository.AddAsync(ride, cancellationToken).ConfigureAwait(false);
+
+			ride.Participants = request.ParticipantsIds.Select(x =>
+			{
+				UserId userId = new(x.Value);
+				return new UserParticipatedRide(userId, ride.Id);
+			}).ToList();
+				
 			try
 			{
 				await _rideRepository.SaveAsync(cancellationToken).ConfigureAwait(false);

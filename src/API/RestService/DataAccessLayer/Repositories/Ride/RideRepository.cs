@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
+using DataAccessLayer.IdGen;
 using IdentifiersShared.Identifiers;
+using IdGen;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.Ride
@@ -85,6 +87,13 @@ namespace DataAccessLayer.Repositories.Ride
 				.FirstOrDefaultAsync(x => x.RideId == rideId && x.UserId == userId, cancellationToken)
 				.ConfigureAwait(false);
 			_context.UserParticipatedRides.Remove(rideParticipant);
+		}
+		
+		public async Task AddAsync(Domain.Entities.Ride ride, CancellationToken cancellationToken = default)
+		{
+			IdGenerator rideIdGenerator = new IdGenerator(IdGeneratorType.Ride);
+			ride.Id = new RideId(rideIdGenerator.CreateId());
+			await _context.Set<Domain.Entities.Ride>().AddAsync(ride, cancellationToken).ConfigureAwait(false);
 		}
 	}
 }
