@@ -78,6 +78,8 @@ const Input = (props: IINputProps) => {
 	const inputBaseContainerClassName: string = "input__container input__container::before--user";
 	const inputGroupContainerClassName: string = "input__groupContainer";
 	const inputCommentClassName: string = "input__comment";
+	const inputAddressClassName: string = "input__address";
+	const inputAddressContainerClassName: string = "input__container--address";
 	const checkboxClassName: string = "input__checkbox";
 	const checkboxBoxClassName: string = "input__checkbox--box";
 
@@ -89,14 +91,17 @@ const Input = (props: IINputProps) => {
 		}
 	};
 
+	const [autocompleteList, setAutocompleteList] = useState(null);
+
 	let baseInputClasses = [inputBaseClassName];
 	let baseContainerClasses = [inputBaseContainerClassName];
 	if (!isValid) {
 		baseInputClasses = [inputInvalidClassName];
 		baseContainerClasses = [inputInvalidContainerClassName];
 	}
-
-	const [autocompleteList, setAutocompleteList] = useState(null);
+	if (autocompleteList !== null) {
+		baseContainerClasses = [inputAddressContainerClassName];
+	}
 
 	const onAutocompleteName = async (text: string) => {
 		try {
@@ -133,6 +138,22 @@ const Input = (props: IINputProps) => {
 		props.changeHandler(placeName);
 		setAutocompleteList(null);
 	};
+	const submitAddressFocusOut = () => {
+		if (autocompleteList !== null) {
+			props.addressCords(autocompleteList[0].center);
+			props.changeHandler(autocompleteList[0].place_name);
+			setAutocompleteList(null);
+		}
+	};
+	const submitAdressEnter = (e) => {
+		if (e.key === "Enter") {
+			if (autocompleteList !== null) {
+				props.addressCords(autocompleteList[0].center);
+				props.changeHandler(autocompleteList[0].place_name);
+				setAutocompleteList(null);
+			}
+		}
+	};
 
 	const renderAutocompleteAddress = () => {
 		if (autocompleteList !== null && autocompleteList.length !== 0) {
@@ -140,6 +161,7 @@ const Input = (props: IINputProps) => {
 				autocompleteList.map((address: IAddress) => {
 					return (
 						<div
+							className={inputAddressClassName}
 							onClick={() => onAutocompleteClick(address.place_name,  address.center)}
 						>
 								{address.place_name}
@@ -203,8 +225,8 @@ const Input = (props: IINputProps) => {
 					placeholder={props.placeholder}
 					onChange={addressChangeHandler}
 					value={props.value}
-					// onBlur={submitAddressFocusOut}
-					// onKeyDown={submitAdressEnter}
+					onBlur={submitAddressFocusOut}
+					onKeyPress={submitAdressEnter}
 				/>
 			</div>
 			{renderAutocompleteAddress()}
