@@ -27,7 +27,7 @@ namespace RestApi.Queries.GroupInviteQueries
 			try
 			{
 				var groupInviteDtos = groupInvites.Select(x => new IndexGroupInviteDTO(x.Id, x.IsPending, x.IsAccepted,
-					x.GroupId, "x.Group.Name", x.InvitedUserId, x.DateAdded));
+					x.GroupId, "x.Group.Name", x.InvitedAppUserId, x.DateAdded));
 
 				return groupInviteDtos;
 			}

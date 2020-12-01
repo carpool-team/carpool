@@ -12,10 +12,10 @@ namespace RestApi.Queries.GroupQueries
 	public class GetUserGroupsQuery : IRequest<IEnumerable<Group>>
 	{
 		[JsonConstructor]
-		public GetUserGroupsQuery(UserId userId)
-			=> UserId = userId;
+		public GetUserGroupsQuery(AppUserId appUserId)
+			=> AppUserId = appUserId;
 
-		public UserId UserId { get; }
+		public AppUserId AppUserId { get; }
 	}
 	
 	public class GetUserGroupsQueryHandler : IRequestHandler<GetUserGroupsQuery, IEnumerable<Group>>
@@ -28,7 +28,7 @@ namespace RestApi.Queries.GroupQueries
 		public async Task<IEnumerable<Group>> Handle(GetUserGroupsQuery request,
 			CancellationToken cancellationToken)
 		{
-			var userGroups = await _repository.GetGroupsByUserIdAsNoTrackingAsync(request.UserId, cancellationToken)
+			var userGroups = await _repository.GetGroupsByUserIdAsNoTrackingAsync(request.AppUserId, cancellationToken)
 				.ConfigureAwait(false);
 
 			return userGroups;

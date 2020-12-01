@@ -14,13 +14,13 @@ namespace RestApi.Commands.GroupCommands
 {
 	public class AddUserToGroupCommand : IRequest
 	{
-		public AddUserToGroupCommand(GroupId? groupId, UserId userId)
+		public AddUserToGroupCommand(GroupId? groupId, AppUserId appUserId)
 		{
 			GroupId = groupId;
-			UserId = userId;
+			AppUserId = appUserId;
 		}
 
-		public UserId UserId { get; }
+		public AppUserId AppUserId { get; }
 
 		public GroupId? GroupId { get; set; }
 	}
@@ -51,7 +51,7 @@ namespace RestApi.Commands.GroupCommands
 				?? throw new ApiProblemDetailsException($"Group with id: {groupId} does not exist",
 					StatusCodes.Status404NotFound);
 
-			var userGroup = new UserGroup(request.UserId, groupId);
+			var userGroup = new UserGroup(request.AppUserId, groupId);
 
 			await _repository.AddUserToGroupAsync(userGroup, cancellationToken).ConfigureAwait(false);
 			try

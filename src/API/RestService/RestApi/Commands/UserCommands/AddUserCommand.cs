@@ -38,7 +38,7 @@ namespace RestApi.Commands.UserCommands
 		public async Task<ApplicationUser> Handle(AddUserCommand request, CancellationToken cancellationToken)
 		{
 			var generator = new IdGenerator(0);
-			var userId = new UserId(generator.CreateId());
+			var userId = new AppUserId(generator.CreateId());
 			var user = new ApplicationUser(userId, request.Email, request.FirstName, request.LastName);
 			try
 			{

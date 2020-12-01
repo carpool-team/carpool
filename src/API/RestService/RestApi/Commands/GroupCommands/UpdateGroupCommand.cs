@@ -13,7 +13,7 @@ namespace RestApi.Commands.GroupCommands
 {
 	public class UpdateGroupCommand : IRequest<GroupId>
 	{
-		public UpdateGroupCommand(GroupId groupId, Location? location, string name, string code, UserId? ownerId)
+		public UpdateGroupCommand(GroupId groupId, Location? location, string name, string code, AppUserId? ownerId)
 		{
 			GroupId = groupId;
 			Location = location;
@@ -30,7 +30,7 @@ namespace RestApi.Commands.GroupCommands
 
 		public string Code { get; }
 
-		public UserId? OwnerId { get; }
+		public AppUserId? OwnerId { get; }
 	}
 	
 	public class UpdateGroupCommandHandler : IRequestHandler<UpdateGroupCommand, GroupId>

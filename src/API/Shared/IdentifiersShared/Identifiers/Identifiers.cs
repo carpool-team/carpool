@@ -10,5 +10,7 @@
 
 	public sealed record VehicleId(long Value) : StronglyTypedId<long>(Value);
 
-	public sealed record UserId(long Value) : StronglyTypedId<long>(Value);
+	public sealed record AppUserId(long Value) : StronglyTypedId<long>(Value);
+
+	public sealed record IdentityUserId(string Value) : StronglyTypedId<string>(Value);
 }

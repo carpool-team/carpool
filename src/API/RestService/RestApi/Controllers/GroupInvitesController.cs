@@ -76,11 +76,11 @@ namespace RestApi.Controllers
 			return new ApiResponse($"Group Invite with id: {response} has been deleted");
 		}
 
-		[HttpGet("~/api/users/{userId}/group-invites")]
+		[HttpGet("~/api/users/{appUserId}/group-invites")]
 		public async Task<ApiResponse> GetUserGroupInvites([FromRoute] long userId)
 		{
-			UserId typedUserId = new(userId);
-			var request = new GetUserGroupInvitesQuery(typedUserId);
+			AppUserId typedAppUserId = new(userId);
+			var request = new GetUserGroupInvitesQuery(typedAppUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 

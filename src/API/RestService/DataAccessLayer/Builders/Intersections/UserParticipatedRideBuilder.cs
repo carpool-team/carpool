@@ -11,11 +11,11 @@ namespace DataAccessLayer.Builders.Intersections
 		{
 			_ = builder ?? throw new NullReferenceException(nameof(builder));
 
-			builder.HasKey(x => new {x.RideId, x.UserId});
+			builder.HasKey(x => new {x.RideId, UserId = x.AppUserId});
 
 			builder.HasOne(x => x.ApplicationUser)
 				.WithMany()
-				.HasForeignKey(x => x.UserId)
+				.HasForeignKey(x => x.AppUserId)
 				.OnDelete(DeleteBehavior.NoAction);
 
 			builder.HasOne(x => x.Ride)

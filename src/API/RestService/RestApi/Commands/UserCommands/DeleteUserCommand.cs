@@ -12,11 +12,11 @@ namespace RestApi.Commands.UserCommands
 	public class DeleteUserCommand : IRequest<ApplicationUser>
 	{
 		[JsonConstructor]
-		public DeleteUserCommand(UserId userId)
-			=> UserId = userId;
+		public DeleteUserCommand(AppUserId appUserId)
+			=> AppUserId = appUserId;
 
 
-		public UserId UserId { get; }
+		public AppUserId AppUserId { get; }
 	}
 	
 	public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, ApplicationUser>
@@ -28,7 +28,7 @@ namespace RestApi.Commands.UserCommands
 
 		public async Task<ApplicationUser> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
 		{
-			var user = await _repository.GetByIdAsync(request.UserId, cancellationToken).ConfigureAwait(false);
+			var user = await _repository.GetByIdAsync(request.AppUserId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));
 
 			_repository.Delete(user);
