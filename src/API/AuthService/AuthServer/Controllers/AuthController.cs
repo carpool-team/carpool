@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AuthDomain.Entities;
 using AuthServer.Data;
@@ -16,6 +18,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace AuthServer.Controllers
 {
@@ -98,6 +102,55 @@ namespace AuthServer.Controllers
 			{
 				var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 				return new ApiResponse(new {token = jwtToken, expires = token.ValidTo, refreshToken});
+			}
+			catch (Exception ex)
+			{
+				throw new ApiException(ex);
+			}
+		}
+
+		[HttpPost("refresh-token")]
+		public async Task<ApiResponse> RefreshToken([FromBody] string refreshToken)
+		{
+			var refreshTokenBytes = Convert.FromBase64String(refreshToken);
+
+			var deserializedRefreshToken = JsonConvert.DeserializeObject(Encoding.ASCII.GetString(refreshTokenBytes));
+			var authUser = await AsyncEnumerable.SingleOrDefaultAsync(_dbContext.Set<AuthUser>(),
+				x => x.RefreshTokens.Any(a => a == deserializedRefreshToken && a.IsActive));
+
+			_ = authUser ?? throw new ApiException("Provided token is invalid", StatusCodes.Status401Unauthorized);
+
+			// ReSharper disable once PossibleNullReferenceException
+			authUser.RefreshTokens.SingleOrDefault(x => x == deserializedRefreshToken).Revoked = DateTime.Now;
+
+			TokenGenerator tokenGenerator = new();
+
+			var token = tokenGenerator.GenerateJwtToken(new IdentityUserId(authUser.Id));
+
+			var newRefreshToken = tokenGenerator.GenerateRefreshToken();
+
+			authUser.RefreshTokens.Add(newRefreshToken);
+			_dbContext.Set<AuthUser>().Update(authUser);
+			try
+			{
+				await _dbContext.SaveChangesAsync();
+			}
+			catch (DbUpdateException ex)
+			{
+				throw new ApiException(ex);
+			}
+
+			var refreshTokenByteArray = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(newRefreshToken));
+
+			try
+			{
+				var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+				return new ApiResponse(new
+				{
+					token = jwtToken,
+					expires = token.ValidTo,
+					refreshToken = Convert.ToBase64String(refreshTokenByteArray)
+				});
 			}
 			catch (Exception ex)
 			{
