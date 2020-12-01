@@ -51,7 +51,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 								<GroupRides group={this.props.selectedGroup} />
 							</Route>
 							<Route  path={path + GroupsRouter.routes.rides + GroupsRouter.routes.addRide}>
-								<AddRideFormScreen />
+								<AddRideFormScreen group={this.props.selectedGroup} />
 							</Route>
 						</> : null}
 				</Switch>

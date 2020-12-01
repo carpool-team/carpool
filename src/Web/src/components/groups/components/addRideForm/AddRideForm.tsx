@@ -1,21 +1,17 @@
 import React from "react";
-import { render } from "react-dom";
-import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
-import { withTranslation } from "react-i18next";
+import { IGroup } from "../../interfaces/IGroup";
 
-interface IAddRideFormProps extends IReactI18nProps { }
-
-class AddRideFormScreen extends React.Component<IAddRideFormProps> {
-	private cssClasses = {
-
-	};
-	render() {
-		return (
-			<div>
-			fdafdsa
-			</div>
-		);
-	}
+export interface IAddGroupProps {
+	group: IGroup;
 }
 
-export default withTranslation()(AddRideFormScreen);
+const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
+
+	return (
+		<div >
+			{props.group}
+		</div>
+	);
+};
+
+export default AddRideFormScreen;
