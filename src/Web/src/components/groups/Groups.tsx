@@ -15,6 +15,7 @@ import {
 import "./Groups.scss";
 import { tempUserId } from "../../api/requests/RequestCore";
 import produce from "immer";
+import exampleGroups from "../../examples/exampleGroups";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
@@ -41,7 +42,9 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 		this.props.addGroup(group);
 	}
 
-	getGroupsHandler = () => this.props.groups;
+	getGroupsHandler = () => {
+		return this.props.groups ?? exampleGroups;
+	}
 
 	getInvitesHandler = () => this.props.invites;
 
@@ -51,7 +54,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 
 	setSelectedGroupHandler = (id: string) => {
 		this.setState(produce((draft: IGroupsState) => {
-			draft.selectedGroup = this.props.groups.find(g => g.id === id);
+			draft.selectedGroup = this.getGroupsHandler().find(g => g.id === id);
 		}));
 	}
 

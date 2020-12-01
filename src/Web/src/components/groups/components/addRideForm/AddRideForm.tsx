@@ -9,7 +9,7 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 
 	return (
 		<div >
-			{props.group}
+			{props.group.code}
 		</div>
 	);
 };
