@@ -13,20 +13,20 @@ namespace RestApi
 		{
 			if (IsDebugging)
 				Log.Logger = new LoggerConfiguration()
-				             .MinimumLevel.Debug()
-				             .WriteTo.Console()
-				             .WriteTo.File("logs\\log.txt",
-					             rollingInterval: RollingInterval.Day,
-					             rollOnFileSizeLimit: true)
-				             .CreateLogger();
+					.MinimumLevel.Debug()
+					.WriteTo.Console()
+					.WriteTo.File("logs\\log.txt",
+						rollingInterval: RollingInterval.Day,
+						rollOnFileSizeLimit: true)
+					.CreateLogger();
 			else
 				Log.Logger = new LoggerConfiguration()
-				             .MinimumLevel.Information()
-				             .WriteTo.Console()
-				             .WriteTo.File("logs\\log.txt",
-					             rollingInterval: RollingInterval.Day,
-					             rollOnFileSizeLimit: true)
-				             .CreateLogger();
+					.MinimumLevel.Information()
+					.WriteTo.Console()
+					.WriteTo.File("logs\\log.txt",
+						rollingInterval: RollingInterval.Day,
+						rollOnFileSizeLimit: true)
+					.CreateLogger();
 
 			Log.Information("Application is starting.");
 
@@ -38,6 +38,6 @@ namespace RestApi
 
 		public static IHostBuilder CreateHostBuilder(string[] args)
 			=> Host.CreateDefaultBuilder(args)
-			       .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+				.ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 	}
 }

@@ -1,19 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using DataAccessLayer.Repositories.Ride;
 using Domain.Entities;
+using IdentifiersShared.Identifiers;
 using MediatR;
 
 namespace RestApi.Queries.RideQueries
 {
 	public class GetUserOwnedRidesQuery : IRequest<IEnumerable<Ride>>
 	{
-		public GetUserOwnedRidesQuery(Guid userId, bool past)
+		public GetUserOwnedRidesQuery(UserId userId, bool past)
 		{
 			UserId = userId;
 			Past = past;
 		}
 
-		public Guid UserId { get; set; }
-		public bool Past { get; set; }
+		public UserId UserId { get; }
+		public bool Past { get; }
+	}
+	
+	public class GetUserOwnedRidesQueryHandler 
+		: IRequestHandler<GetUserOwnedRidesQuery, IEnumerable<Ride>>
+	{
+		private readonly IRideRepository _repository;
+
+		public GetUserOwnedRidesQueryHandler(IRideRepository repository)
+			=> _repository = repository;
+
+		public async Task<IEnumerable<Ride>> Handle(GetUserOwnedRidesQuery request,
+			CancellationToken cancellationToken)
+			=> await _repository.GetOwnedRidesByUserIdAsNoTrackingAsync(request.UserId, request.Past, cancellationToken)
+				.ConfigureAwait(false);
 	}
 }

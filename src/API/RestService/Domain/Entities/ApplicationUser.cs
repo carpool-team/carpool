@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Domain.Abstract;
 using Domain.Contracts;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities
 {
-	public sealed class ApplicationUser : IdentityUser<Guid>, IBaseEntity<Guid>
+	public sealed class ApplicationUser : BaseEntity<UserId>
 	{
-		public ApplicationUser(string email, string userName, string firstName, string lastName)
-			=> (Email, UserName, FirstName, LastName)
-			   = (email, userName, firstName, lastName);
+		public ApplicationUser(UserId id, string email, string firstName, string lastName)
+			=> (Id, Email, FirstName, LastName)
+				= (id, email, firstName, lastName);
 
+		public string Email { get; set; }
 		public string FirstName { get; set; }
 
 		public string LastName { get; set; }
@@ -29,7 +31,6 @@ namespace Domain.Entities
 
 		public List<Rating> Ratings { get; set; } = new();
 
-		public Guid? VehicleId { get; set; }
 		public Vehicle? Vehicle { get; set; }
 
 		//public virtual ICollection<GroupInvite> ReceivedGroupInvites { get; set; }

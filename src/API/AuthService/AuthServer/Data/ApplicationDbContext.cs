@@ -7,8 +7,6 @@ namespace AuthServer.Data
 	public class ApplicationDbContext : IdentityDbContext<AuthUser>
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-			: base(options)
-		{
-		}
-    }
+			: base(options) { }
+	}
 }

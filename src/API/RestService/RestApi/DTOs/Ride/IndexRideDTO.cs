@@ -9,13 +9,13 @@ namespace RestApi.DTOs.Ride
 	public class IndexRideDTO
 	{
 		public IndexRideDTO(Guid rideId,
-		                    IndexUserDto owner,
-		                    List<IndexUserDto> participants,
-		                    List<IndexStopDTO> stops,
-		                    Location destination,
-		                    Location startingLocation,
-		                    DateTime date,
-		                    bool isUserParticipant)
+			IndexUserDto owner,
+			List<IndexUserDto> participants,
+			List<IndexStopDTO> stops,
+			Location destination,
+			Location startingLocation,
+			DateTime date,
+			bool isUserParticipant)
 		{
 			RideId = rideId;
 			Owner = owner;
@@ -27,9 +27,7 @@ namespace RestApi.DTOs.Ride
 			IsUserParticipant = isUserParticipant;
 		}
 
-		private IndexRideDTO()
-		{
-		}
+		private IndexRideDTO() { }
 
 		public Guid RideId { get; set; }
 		public IndexUserDto Owner { get; set; }
