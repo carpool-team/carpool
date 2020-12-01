@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AuthDomain.Entities;
 using AuthServer.Data;
 using AuthServer.Models;
+using AuthServer.Utilities;
 using AuthShared.Options;
 using AutoWrapper.Extensions;
 using AutoWrapper.Wrappers;
@@ -78,27 +79,9 @@ namespace AuthServer.Controllers
 			{
 				var user = await _userManager.FindByNameAsync(model.Email);
 				await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
-				
-				var authClaims = new[]
-				{
-					new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-					new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-					new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
-					new Claim("scope", "carpool_rest_api")
-				};
 
-				var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key));
-				
-				
-				var token = new JwtSecurityToken(
-					JwtOptions.Issuer,
-					JwtOptions.Audience,
-					expires: DateTime.Now.AddMinutes(5),
-					claims: authClaims,
-					signingCredentials: new SigningCredentials(authSigningKey,
-						SecurityAlgorithms.HmacSha256)
-					
-				);
+				TokenGenerator tokenGenerator = new();
+
 
 				var randomNumber = new byte[32];
 				using (var rng = RandomNumberGenerator.Create())
@@ -138,8 +121,8 @@ namespace AuthServer.Controllers
 			
 			await _events.RaiseAsync(new UserLoginFailureEvent(model.Email, "invalid credentials"));
 			ModelState.AddModelError(string.Empty, "Invalid email or password");
-			
-			return new ApiResponse();
-        }
+
+			throw new ApiException(ModelState);
+		}
 	}
 }
