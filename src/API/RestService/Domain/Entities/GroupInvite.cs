@@ -14,10 +14,10 @@ namespace Domain.Entities
 
 		//public Group Group { get; set; }
 
-		public UserId InvitedUserId { get; set; }
+		public AppUserId InvitedAppUserId { get; set; }
 		public virtual ApplicationUser InvitedApplicationUser { get; set; }
 
-		public UserId InvitingUserId { get; set; }
+		public AppUserId InvitingAppUserId { get; set; }
 		public virtual ApplicationUser InvitingApplicationUser { get; set; }
 
 		public DateTime DateAdded { get; set; }

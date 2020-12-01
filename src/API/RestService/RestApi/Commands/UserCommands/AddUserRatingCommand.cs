@@ -10,13 +10,13 @@ namespace RestApi.Commands.UserCommands
 {
 	public class AddUserRatingCommand : IRequest<Rating>
 	{
-		public AddUserRatingCommand(UserId? userId, byte value)
+		public AddUserRatingCommand(AppUserId? userId, byte value)
 		{
 			UserId = userId;
 			Value = value;
 		}
 
-		public UserId? UserId { get; }
+		public AppUserId? UserId { get; }
 		public byte Value { get; }
 	}
 	
@@ -30,7 +30,7 @@ namespace RestApi.Commands.UserCommands
 
 		public async Task<Rating> Handle(AddUserRatingCommand request, CancellationToken cancellationToken)
 		{
-			var userId = (UserId) request.UserId;
+			var userId = (AppUserId) request.UserId;
 			var user = await _userRepository.GetByIdAsNoTrackingAsync(userId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));
 

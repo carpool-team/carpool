@@ -1,25 +1,21 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using AuthDomain.Entities;
 using AuthServer.Data;
 using AuthServer.Models;
 using AuthServer.Utilities;
-using AuthShared.Options;
 using AutoWrapper.Extensions;
 using AutoWrapper.Wrappers;
+using IdentifiersShared.Identifiers;
 using IdentityServer4.Events;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using RefreshToken = AuthDomain.Entities.RefreshToken;
 
 namespace AuthServer.Controllers
 {
@@ -62,15 +58,13 @@ namespace AuthServer.Controllers
 			var result = await _userManager.CreateAsync(user, model.Password);
 			if (!result.Succeeded)
 				throw new ApiException(result.Errors);
-			return new ApiResponse("Successfully registered");
+			return new ApiResponse("Successfully registered", StatusCodes.Status201Created);
 		}
 
 
 		[HttpPost("login")]
 		public async Task<ApiResponse> Login([FromBody] LoginModel model)
 		{
-			// var context = await _interaction.GetAuthorizationContextAsync(model.ClientId);
-
 			if (!ModelState.IsValid)
 				throw new ApiException(ModelState.AllErrors());
 
@@ -79,46 +73,36 @@ namespace AuthServer.Controllers
 				model.RememberLogin,
 				false);
 
-			if (result.Succeeded)
+			if (!result.Succeeded)
 			{
-				var user = await _userManager.FindByNameAsync(model.Email);
-				await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
+				await _events.RaiseAsync(new UserLoginFailureEvent(model.Email, "invalid credentials"));
+				ModelState.AddModelError(string.Empty, "Invalid email or password");
 
-				TokenGenerator tokenGenerator = new();
-
-
-				var randomNumber = new byte[32];
-				using (var rng = RandomNumberGenerator.Create())
-				{
-					rng.GetBytes(randomNumber);
-				}
-
-				var refreshToken = new RefreshToken
-				{
-					Token = Convert.ToBase64String(randomNumber),
-					Expires = DateTime.UtcNow.AddDays(10),
-					Created = DateTime.UtcNow
-				};
-
-				user.RefreshTokens.Add(refreshToken);
-				_dbContext.Set<AuthUser>().Update(user);
-				await _dbContext.SaveChangesAsync();
-
-				try
-				{
-					var tk = new JwtSecurityTokenHandler().WriteToken(token);
-					return new ApiResponse(new {token = tk, expires = token.ValidTo, refreshToken});
-				}
-				catch (Exception ex)
-				{
-					throw new Exception();
-				}
+				throw new ApiException(ModelState);
 			}
 
-			await _events.RaiseAsync(new UserLoginFailureEvent(model.Email, "invalid credentials"));
-			ModelState.AddModelError(string.Empty, "Invalid email or password");
+			var user = await _userManager.FindByNameAsync(model.Email);
+			await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
 
-			throw new ApiException(ModelState);
+			TokenGenerator tokenGenerator = new();
+
+			var token = tokenGenerator.GenerateJwtToken(new IdentityUserId(user.Id));
+
+			var refreshToken = tokenGenerator.GenerateRefreshToken();
+
+			user.RefreshTokens.Add(refreshToken);
+			_dbContext.Set<AuthUser>().Update(user);
+			await _dbContext.SaveChangesAsync();
+
+			try
+			{
+				var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+				return new ApiResponse(new {token = jwtToken, expires = token.ValidTo, refreshToken});
+			}
+			catch (Exception ex)
+			{
+				throw new ApiException(ex);
+			}
 		}
 	}
 }

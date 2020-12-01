@@ -12,18 +12,18 @@ namespace RestApi.Commands.GroupInviteCommands
 	public class AddGroupInviteCommand : IRequest<GroupInviteId>
 	{
 		[JsonConstructor]
-		public AddGroupInviteCommand(GroupId groupId, UserId invitedUserId, UserId inviterId)
+		public AddGroupInviteCommand(GroupId groupId, AppUserId invitedAppUserId, AppUserId inviterId)
 		{
 			GroupId = groupId;
-			InvitedUserId = invitedUserId;
+			InvitedAppUserId = invitedAppUserId;
 			InviterId = inviterId;
 		}
 
 		public GroupId GroupId { get; set; }
 
-		public UserId InvitedUserId { get; set; }
+		public AppUserId InvitedAppUserId { get; set; }
 
-		public UserId InviterId { get; set; }
+		public AppUserId InviterId { get; set; }
 	}
 	
 	public class AddGroupInviteCommandHandler : IRequestHandler<AddGroupInviteCommand, GroupInviteId>
@@ -38,8 +38,8 @@ namespace RestApi.Commands.GroupInviteCommands
 		{
 			var groupInvite = new GroupInvite
 			{
-				InvitingUserId = request.InviterId,
-				InvitedUserId = request.InvitedUserId,
+				InvitingAppUserId = request.InviterId,
+				InvitedAppUserId = request.InvitedAppUserId,
 				IsAccepted = false,
 				DateAdded = DateTime.Now,
 				GroupId = request.GroupId

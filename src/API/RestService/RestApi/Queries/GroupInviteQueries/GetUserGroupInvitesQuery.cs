@@ -12,10 +12,10 @@ namespace RestApi.Queries.GroupInviteQueries
 	public class GetUserGroupInvitesQuery : IRequest<IEnumerable<GroupInvite>>
 	{
 		[JsonConstructor]
-		public GetUserGroupInvitesQuery(UserId userId)
-			=> UserId = userId;
+		public GetUserGroupInvitesQuery(AppUserId appUserId)
+			=> AppUserId = appUserId;
 
-		public UserId UserId { get; set; }
+		public AppUserId AppUserId { get; set; }
 	}
 	
 	public class GetUserGroupInvitesQueryHandler 
@@ -29,7 +29,7 @@ namespace RestApi.Queries.GroupInviteQueries
 
 		public async Task<IEnumerable<GroupInvite>> Handle(GetUserGroupInvitesQuery request,
 			CancellationToken cancellationToken)
-			=> await _repository.GetUserGroupInvitesByUserIdAsNoTrackingAsync(request.UserId, cancellationToken)
+			=> await _repository.GetUserGroupInvitesByUserIdAsNoTrackingAsync(request.AppUserId, cancellationToken)
 				.ConfigureAwait(false);
 	}
 }

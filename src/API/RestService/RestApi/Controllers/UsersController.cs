@@ -31,11 +31,11 @@ namespace RestApi.Controllers
 			return new ApiResponse(response);
 		}
 
-		[HttpGet("{userId}")]
+		[HttpGet("{appUserId}")]
 		public async Task<ApiResponse> GetUser([FromRoute] long userId)
 		{
-			UserId typedUserId = new(userId);
-			var request = new GetUserByIdQuery(typedUserId);
+			AppUserId typedAppUserId = new(userId);
+			var request = new GetUserByIdQuery(typedAppUserId);
 			var response = await _mediator.Send(request);
 
 			return new ApiResponse(response);
@@ -50,11 +50,11 @@ namespace RestApi.Controllers
 			return new ApiResponse(result);
 		}
 
-		[HttpPut("{userId}")]
+		[HttpPut("{appUserId}")]
 		public async Task<ApiResponse> PutUser([FromRoute] long userId, [FromBody] UpdateUserDto model)
 		{
-			UserId typedUserId = new(userId);
-			UpdateUserCommand request = new(typedUserId,
+			AppUserId typedAppUserId = new(userId);
+			UpdateUserCommand request = new(typedAppUserId,
 				model.FirstName,
 				model.LastName);
 
@@ -70,11 +70,11 @@ namespace RestApi.Controllers
 			return new ApiResponse(response);
 		}
 
-		[HttpDelete("{userId}")]
+		[HttpDelete("{appUserId}")]
 		public async Task<ApiResponse> DeleteUser([FromRoute] long userId)
 		{
-			UserId typedUserId = new(userId);
-			var request = new DeleteUserCommand(typedUserId);
+			AppUserId typedAppUserId = new(userId);
+			var request = new DeleteUserCommand(typedAppUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 

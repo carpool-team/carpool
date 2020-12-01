@@ -7,7 +7,7 @@ namespace RestApi.DTOs.Group
 	public record UpdateGroupDto([property: JsonProperty("location")] Location Location,
 		[property: JsonProperty("name")] string Name,
 		[property: JsonProperty("code")] string Code,
-		[property: JsonProperty("ownerId")] UserId OwnerId);
+		[property: JsonProperty("ownerId")] AppUserId OwnerId);
 
 	public record ChangeGroupLocationDto([property: JsonProperty("longitude")] double Longitude,
 		[property: JsonProperty("latitude")] double Latitude,

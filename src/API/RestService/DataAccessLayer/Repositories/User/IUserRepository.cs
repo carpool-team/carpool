@@ -6,17 +6,17 @@ using IdentifiersShared.Identifiers;
 
 namespace DataAccessLayer.Repositories.User
 {
-	public interface IUserRepository : IBaseRepository<ApplicationUser, UserId>
+	public interface IUserRepository : IBaseRepository<ApplicationUser, AppUserId>
 	{
 		Task<List<ApplicationUser>> GetGroupUsersByGroupIdAsync(GroupId id);
 
-		Task<ApplicationUser> GetByIdAsNoTrackingAsync(UserId id, CancellationToken cancellationToken);
+		Task<ApplicationUser> GetByIdAsNoTrackingAsync(AppUserId id, CancellationToken cancellationToken);
 
-		Task<ApplicationUser> GetByIdAsync(UserId id, CancellationToken cancellationToken);
+		Task<ApplicationUser> GetByIdAsync(AppUserId id, CancellationToken cancellationToken);
 
 		Task<List<ApplicationUser>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken);
 
-		Task<bool> ExistsWithId(UserId id, CancellationToken cancellationToken);
-		Task<double> GetUserRatingAsync(UserId userId, CancellationToken cancellationToken);
+		Task<bool> ExistsWithId(AppUserId id, CancellationToken cancellationToken);
+		Task<double> GetUserRatingAsync(AppUserId appUserId, CancellationToken cancellationToken);
 	}
 }

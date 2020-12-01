@@ -40,14 +40,6 @@ namespace AuthServer
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
-			services.AddIdentityServer()
-				.AddDeveloperSigningCredential()
-				.AddInMemoryPersistedGrants()
-				.AddInMemoryIdentityResources(Config.IdentityResources)
-				.AddInMemoryApiScopes(Config.ApiScopes)
-				.AddInMemoryClients(Config.Clients)
-				.AddAspNetIdentity<AuthUser>();
-
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
@@ -65,9 +57,7 @@ namespace AuthServer
             
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthServer v1"));
-
-			app.UseIdentityServer();
-
+			
 			app.UseHttpsRedirection();
 
 			app.UseRouting();

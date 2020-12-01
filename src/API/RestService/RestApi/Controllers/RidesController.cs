@@ -24,7 +24,7 @@ namespace RestApi.Controllers
 			_mediator = mediator;
 		}
 
-		// GET: api/Rides?userId={id}
+		// GET: api/Rides?appUserId={id}
 		[HttpGet]
 		public async Task<ApiResponse> GetRides()
 		{
@@ -91,36 +91,36 @@ namespace RestApi.Controllers
 			return new ApiResponse("ok");
 		}
 
-		[HttpGet("~/api/users/{userId}/rides/participated")]
+		[HttpGet("~/api/users/{appUserId}/rides/participated")]
 		public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] long userId,
 			[FromQuery] bool past = false)
 		{
-			UserId typedUserId = new(userId);
-			var request = new GetUserParticipatedRidesQuery(typedUserId, past);
+			AppUserId typedAppUserId = new(userId);
+			var request = new GetUserParticipatedRidesQuery(typedAppUserId, past);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse(response);
 		}
 
-		[HttpGet("~/api/users/{userId}/rides/owned")]
+		[HttpGet("~/api/users/{appUserId}/rides/owned")]
 		public async Task<ApiResponse> GetUserOwnedRides([FromRoute] long userId,
 			[FromQuery] bool past = false)
 		{
-			UserId typedUserId = new(userId);
-			var request = new GetUserOwnedRidesQuery(typedUserId, past);
+			AppUserId typedAppUserId = new(userId);
+			var request = new GetUserOwnedRidesQuery(typedAppUserId, past);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse(response);
 		}
 
-		[HttpDelete("{rideId}/users/{userId}")]
-		public async Task<ApiResponse> RemoveUserFromRide([FromRoute] long rideId, [FromRoute] UserId userId)
+		[HttpDelete("{rideId}/users/{appUserId}")]
+		public async Task<ApiResponse> RemoveUserFromRide([FromRoute] long rideId, [FromRoute] AppUserId appUserId)
 		{
 			RideId typedRideId = new(rideId);
-			var request = new RemoveUserFromRideCommand(typedRideId, userId);
+			var request = new RemoveUserFromRideCommand(typedRideId, appUserId);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			return new ApiResponse($"User with id {userId} has been deleted from ride with id {rideId}");
+			return new ApiResponse($"User with id {appUserId} has been deleted from ride with id {rideId}");
 		}
 	}
 }

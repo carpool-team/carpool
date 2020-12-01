@@ -18,7 +18,7 @@ namespace RestApi.Commands.GroupCommands.AddGroup
 	public class AddGroupCommand : IRequest<GroupId>
 	{
 		[JsonConstructor]
-		public AddGroupCommand(string name, string code, UserId ownerId, Location location)
+		public AddGroupCommand(string name, string code, AppUserId ownerId, Location location)
 			=> (Name, Code, OwnerId, Location) = (name, code, ownerId, location);
 
 
@@ -26,7 +26,7 @@ namespace RestApi.Commands.GroupCommands.AddGroup
 
 		public string Code { get; }
 
-		public UserId OwnerId { get; }
+		public AppUserId OwnerId { get; }
 
 		public Location Location { get; }
 	}

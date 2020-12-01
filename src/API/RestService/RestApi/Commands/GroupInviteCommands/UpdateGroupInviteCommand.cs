@@ -48,7 +48,7 @@ namespace RestApi.Commands.GroupInviteCommands
 
 			if (groupInvite.IsAccepted)
 			{
-				var userGroup = new UserGroup(groupInvite.InvitedUserId, groupInvite.GroupId);
+				var userGroup = new UserGroup(groupInvite.InvitedAppUserId, groupInvite.GroupId);
 
 				await _groupRepository.AddUserToGroupAsync(userGroup,
 						cancellationToken)

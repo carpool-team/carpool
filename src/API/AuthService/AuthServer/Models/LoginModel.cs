@@ -5,17 +5,12 @@ namespace AuthServer.Models
 	public class LoginModel
 	{
 		[JsonConstructor]
-		public LoginModel(string email, string password, bool rememberLogin, string clientId)
-		{
-			Email = email;
-			Password = password;
-			RememberLogin = rememberLogin;
-			ClientId = clientId;
-		}
+		public LoginModel(string email, string password, bool rememberLogin)
+			=> (Email, Password, RememberLogin)
+				= (email, password, rememberLogin);
 
 		public string Email { get; }
 		public string Password { get; }
 		public bool RememberLogin { get; }
-		public string ClientId { get; }
 	}
 }

@@ -19,7 +19,7 @@ namespace DataAccessLayer.Builders
 			builder.OwnsMany(x => x.Ratings, x =>
 			{
 				x.ToTable("Ratings");
-				x.WithOwner().HasForeignKey("UserId");
+				x.WithOwner().HasForeignKey("AppUserId");
 				x.Property<Guid>("Id");
 				x.Property(x => x.Value).IsRequired();
 				x.HasKey("Id");
@@ -27,12 +27,12 @@ namespace DataAccessLayer.Builders
 
 			builder.HasMany(x => x.UserGroups)
 				.WithOne(x => x.ApplicationUser)
-				.HasForeignKey(ug => ug.UserId)
+				.HasForeignKey(ug => ug.AppUserId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasOne(x => x.Vehicle)
 				.WithOne()
-				.HasForeignKey<Vehicle>(v => v.UserId)
+				.HasForeignKey<Vehicle>(v => v.AppUserId)
 				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
