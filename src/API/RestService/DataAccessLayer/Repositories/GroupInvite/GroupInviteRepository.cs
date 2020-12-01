@@ -1,42 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
+using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.GroupInvite
 {
-	public class GroupInviteRepository : BaseRepository<Domain.Entities.GroupInvite, Guid>, IGroupInviteRepository
+	public class GroupInviteRepository : BaseRepository<Domain.Entities.GroupInvite, GroupInviteId>,
+		IGroupInviteRepository
 	{
-		public GroupInviteRepository(CarpoolDbContext context) : base(context)
-		{
-		}
+		public GroupInviteRepository(CarpoolDbContext context) : base(context) { }
 
-		public async Task<Domain.Entities.GroupInvite> GetByIdAsync(Guid id,
-		                                                            CancellationToken cancellationToken = default)
+		public async Task<Domain.Entities.GroupInvite> GetByIdAsync(GroupInviteId id,
+			CancellationToken cancellationToken = default)
 			=> await _context.GroupInvites.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
-			                 .ConfigureAwait(false);
+				.ConfigureAwait(false);
 
-		public async Task<Domain.Entities.GroupInvite> GetByIdAsNoTrackingAsync(Guid id,
-		                                                                 CancellationToken cancellationToken =
-			                                                                 default)
-			=> await _context.GroupInvites.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
-			                 .ConfigureAwait(false);
+		public async Task<Domain.Entities.GroupInvite> GetByIdAsNoTrackingAsync(GroupInviteId id,
+			CancellationToken cancellationToken =
+				default)
+			=> await _context.GroupInvites.AsNoTracking()
+				.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
+				.ConfigureAwait(false);
 
-		public Domain.Entities.GroupInvite GetById(Guid id)
+		public Domain.Entities.GroupInvite GetById(GroupInviteId id)
 			=> _context.GroupInvites.FirstOrDefault(x => x.Id == id);
 
-		public Domain.Entities.GroupInvite GetByIdAsNoTracking(Guid id)
+		public Domain.Entities.GroupInvite GetByIdAsNoTracking(GroupInviteId id)
 			=> _context.GroupInvites.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
 		public async Task<List<Domain.Entities.GroupInvite>> GetPartAsync(CancellationToken cancellationToken)
 			=> await _context.GroupInvites.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-		public async Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(Guid userId,
+		public async Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(UserId userId,
 			CancellationToken cancellationToken)
-			=> await _context.GroupInvites.AsNoTracking().Where(x => x.InvitedUserId == userId)
-			                 .OrderByDescending(x => x.DateAdded).ToListAsync(cancellationToken).ConfigureAwait(false);
+			=> await _context.GroupInvites.AsNoTracking()
+				.Where(x => x.InvitedUserId == userId)
+				.OrderByDescending(x => x.DateAdded)
+				.ToListAsync(cancellationToken)
+				.ConfigureAwait(false);
 	}
 }

@@ -14,14 +14,14 @@ namespace DataAccessLayer.Builders.Intersections
 			builder.HasKey(x => new {x.RideId, x.UserId});
 
 			builder.HasOne(x => x.ApplicationUser)
-			       .WithMany()
-			       .HasForeignKey(x => x.UserId)
-			       .OnDelete(DeleteBehavior.NoAction);
+				.WithMany()
+				.HasForeignKey(x => x.UserId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			builder.HasOne(x => x.Ride)
-			       .WithMany()
-			       .HasForeignKey(x => x.RideId)
-			       .OnDelete(DeleteBehavior.NoAction);
+				.WithMany()
+				.HasForeignKey(x => x.RideId)
+				.OnDelete(DeleteBehavior.NoAction);
 		}
 	}
 }

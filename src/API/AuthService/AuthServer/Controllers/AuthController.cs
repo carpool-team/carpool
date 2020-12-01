@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -13,7 +12,6 @@ using AuthShared.Options;
 using AutoWrapper.Extensions;
 using AutoWrapper.Wrappers;
 using IdentityServer4.Events;
-using IdentityServer4.Models;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
@@ -30,15 +28,21 @@ namespace AuthServer.Controllers
 	[ApiController]
 	public class AuthController : ControllerBase
 	{
-		private readonly UserManager<AuthUser> _userManager;
-		private readonly SignInManager<AuthUser> _signInManager;
-		private readonly IIdentityServerInteractionService _interaction;
 		private readonly IClientStore _clientStore;
-		private readonly IAuthenticationSchemeProvider _schemeProvider;
-		private readonly IEventService _events;
 		private readonly ApplicationDbContext _dbContext;
+		private readonly IEventService _events;
+		private readonly IIdentityServerInteractionService _interaction;
+		private readonly IAuthenticationSchemeProvider _schemeProvider;
+		private readonly SignInManager<AuthUser> _signInManager;
+		private readonly UserManager<AuthUser> _userManager;
 
-		public AuthController(UserManager<AuthUser> userManager, SignInManager<AuthUser> signInManager, IIdentityServerInteractionService interaction, IClientStore clientStore, IAuthenticationSchemeProvider schemeProvider, IEventService events, ApplicationDbContext dbContext)
+		public AuthController(UserManager<AuthUser> userManager,
+			SignInManager<AuthUser> signInManager,
+			IIdentityServerInteractionService interaction,
+			IClientStore clientStore,
+			IAuthenticationSchemeProvider schemeProvider,
+			IEventService events,
+			ApplicationDbContext dbContext)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
@@ -66,15 +70,15 @@ namespace AuthServer.Controllers
 		public async Task<ApiResponse> Login([FromBody] LoginModel model)
 		{
 			// var context = await _interaction.GetAuthorizationContextAsync(model.ClientId);
-  
+
 			if (!ModelState.IsValid)
 				throw new ApiException(ModelState.AllErrors());
-  
-			var result = await _signInManager.PasswordSignInAsync(model.Email, 
-				model.Password, 
+
+			var result = await _signInManager.PasswordSignInAsync(model.Email,
+				model.Password,
 				model.RememberLogin,
-				lockoutOnFailure: false);
-  
+				false);
+
 			if (result.Succeeded)
 			{
 				var user = await _userManager.FindByNameAsync(model.Email);
@@ -89,36 +93,28 @@ namespace AuthServer.Controllers
 					rng.GetBytes(randomNumber);
 				}
 
-				var refreshToken = new RefreshToken()
+				var refreshToken = new RefreshToken
 				{
 					Token = Convert.ToBase64String(randomNumber),
 					Expires = DateTime.UtcNow.AddDays(10),
 					Created = DateTime.UtcNow
 				};
 
-				
 				user.RefreshTokens.Add(refreshToken);
 				_dbContext.Set<AuthUser>().Update(user);
 				await _dbContext.SaveChangesAsync();
 
 				try
 				{
-					var tk = new JwtSecurityTokenHandler().WriteToken(token);					
-					return new ApiResponse(new
-					{
-						token = tk,
-						expires = token.ValidTo,
-						refreshToken = refreshToken
-					});
-
+					var tk = new JwtSecurityTokenHandler().WriteToken(token);
+					return new ApiResponse(new {token = tk, expires = token.ValidTo, refreshToken});
 				}
 				catch (Exception ex)
 				{
 					throw new Exception();
 				}
-				
 			}
-			
+
 			await _events.RaiseAsync(new UserLoginFailureEvent(model.Email, "invalid credentials"));
 			ModelState.AddModelError(string.Empty, "Invalid email or password");
 

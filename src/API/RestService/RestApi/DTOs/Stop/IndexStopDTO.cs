@@ -5,9 +5,7 @@ namespace RestApi.DTOs.Stop
 {
 	public class IndexStopDTO
 	{
-		private IndexStopDTO()
-		{
-		}
+		private IndexStopDTO() { }
 
 		public IndexUserDto User { get; set; }
 		public Location Location { get; set; }

@@ -12,6 +12,7 @@ namespace DataAccessLayer.Builders
 			_ = builder ?? throw new NullReferenceException(nameof(builder));
 
 			builder.HasKey(x => x.Id);
+			builder.Property(x => x.Name).IsRequired();
 		}
 	}
 }

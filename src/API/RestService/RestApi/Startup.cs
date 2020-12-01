@@ -11,13 +11,12 @@ using DataAccessLayer.Repositories.Intersections.UserGroup;
 using DataAccessLayer.Repositories.Ride;
 using DataAccessLayer.Repositories.RideParticipant;
 using DataAccessLayer.Repositories.User;
-using Domain.Entities;
 using FluentValidation.AspNetCore;
+using IdentifiersShared.Converters;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,8 +40,7 @@ namespace RestApi
 			Log.Information("Configuring services...");
 			services.AddCors(options =>
 			{
-				options.AddDefaultPolicy(
-					builder => { builder.WithOrigins("http://localhost:8080"); });
+				options.AddDefaultPolicy(builder => { builder.WithOrigins("http://localhost:8080"); });
 			});
 
 			services.AddSingleton(Configuration);
@@ -53,24 +51,23 @@ namespace RestApi
 			services.AddHttpContextAccessor();
 
 			services.AddControllers()
-			        .AddNewtonsoftJson()
-			        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
-			
+				.AddNewtonsoftJson()
+				.AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-			        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-			        {
-				        options.Authority = JwtOptions.Issuer;
-				        options.Audience = JwtOptions.Audience;
-				        options.SaveToken = true;
-				        options.TokenValidationParameters = new TokenValidationParameters
-				        {
-					        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
-					        TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
-					        
-					        ValidateLifetime = true,
-					        ValidateIssuer = true
-				        };
-			        });
+				.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+				{
+					options.Authority = JwtOptions.Issuer;
+					options.Audience = JwtOptions.Audience;
+					options.SaveToken = true;
+					options.TokenValidationParameters = new TokenValidationParameters
+					{
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+						TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+						ValidateLifetime = true,
+						ValidateIssuer = true
+					};
+				});
 
 			services.AddAuthorization(options =>
 			{
@@ -80,7 +77,7 @@ namespace RestApi
 					policy.RequireClaim("scope", "carpool_rest_api");
 				});
 			});
-			
+
 			services.AddSingleton(Configuration);
 
 			services.AddScoped<IGroupRepository, GroupRepository>();
@@ -93,21 +90,21 @@ namespace RestApi
 
 			services.AddMediatR(Assembly.GetExecutingAssembly());
 
-
 			services.AddSwaggerGen(c =>
 			{
-				c.SwaggerDoc("v1", new OpenApiInfo
-				{
-					Title = "Carpool API",
-					Version = "v1",
-					Description = "",
-					Contact = new OpenApiContact
+				c.SwaggerDoc("v1",
+					new OpenApiInfo
 					{
-						Name = "Michał Dulski",
-						Email = "mic.dulski@st.amu.edu.pl",
-						Url = new Uri("https://carpool.pl")
-					}
-				});
+						Title = "Carpool API",
+						Version = "v1",
+						Description = "",
+						Contact = new OpenApiContact
+						{
+							Name = "Michał Dulski",
+							Email = "mic.dulski@st.amu.edu.pl",
+							Url = new Uri("https://carpool.pl")
+						}
+					});
 			});
 
 			Log.Information("Services configured.");

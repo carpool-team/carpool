@@ -14,9 +14,7 @@ namespace DataAccessLayer.Repositories
 		public BaseRepository(CarpoolDbContext context)
 			=> _context = context ?? throw new ArgumentNullException(nameof(context));
 
-		public void Dispose()
-		{
-		}
+		public void Dispose() { }
 
 		// public async Task<TEntity> GetByIdAsync(T id, CancellationToken cancellationToken)
 		// {
