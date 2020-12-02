@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Carpool.RestAPI\Carpool.RestAPI.csproj" />
+    <ProjectReference Include="..\RestApi\RestApi.csproj" />
   </ItemGroup>
 
 </Project>
