@@ -5,8 +5,6 @@ name: Build and deploy ASP.Net Core app to Azure Web App - carpool-rest
 
 on:
   push:
-    paths:
-      - 'src/API/RestService/**'
     branches:
       - development
 
