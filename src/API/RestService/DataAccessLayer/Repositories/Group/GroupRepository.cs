@@ -76,11 +76,11 @@ namespace DataAccessLayer.Repositories.Group
 			return groups;
 		}
 
-		public async Task<List<Domain.Entities.Group>> GetGroupsByUserIdAsNoTrackingAsync(UserId userId,
+		public async Task<List<Domain.Entities.Group>> GetGroupsByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			CancellationToken cancellationToken)
 		{
 			var groupIds = await _context.UserGroups.AsNoTracking()
-				.Where(x => x.UserId == userId)
+				.Where(x => x.AppUserId == appUserId)
 				.Select(x => x.GroupId)
 				.ToListAsync(cancellationToken)
 				.ConfigureAwait(false);

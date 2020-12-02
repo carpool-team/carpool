@@ -18,6 +18,7 @@ namespace Domain.Entities
 
 		public string Code { get; set; }
 		public ApplicationUser Owner { get; set; }
-		public UserId OwnerId { get; set; }
+		
+		public AppUserId OwnerId { get; set; }
 	}
 }

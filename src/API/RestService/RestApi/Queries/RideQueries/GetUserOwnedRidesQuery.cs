@@ -10,13 +10,13 @@ namespace RestApi.Queries.RideQueries
 {
 	public class GetUserOwnedRidesQuery : IRequest<IEnumerable<Ride>>
 	{
-		public GetUserOwnedRidesQuery(UserId userId, bool past)
+		public GetUserOwnedRidesQuery(AppUserId appUserId, bool past)
 		{
-			UserId = userId;
+			AppUserId = appUserId;
 			Past = past;
 		}
 
-		public UserId UserId { get; }
+		public AppUserId AppUserId { get; }
 		public bool Past { get; }
 	}
 	
@@ -30,7 +30,7 @@ namespace RestApi.Queries.RideQueries
 
 		public async Task<IEnumerable<Ride>> Handle(GetUserOwnedRidesQuery request,
 			CancellationToken cancellationToken)
-			=> await _repository.GetOwnedRidesByUserIdAsNoTrackingAsync(request.UserId, request.Past, cancellationToken)
+			=> await _repository.GetOwnedRidesByUserIdAsNoTrackingAsync(request.AppUserId, request.Past, cancellationToken)
 				.ConfigureAwait(false);
 	}
 }

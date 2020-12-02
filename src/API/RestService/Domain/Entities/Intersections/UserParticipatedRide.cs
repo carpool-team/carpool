@@ -4,12 +4,12 @@ namespace Domain.Entities.Intersections
 {
 	public class UserParticipatedRide
 	{
-		public UserParticipatedRide(UserId userId, RideId rideId)
+		public UserParticipatedRide(AppUserId appUserId, RideId rideId)
 		{
-			UserId = userId;
+			AppUserId = appUserId;
 			RideId = rideId;
 		}
-		public UserId UserId { get; set; }
+		public AppUserId AppUserId { get; set; }
 		public ApplicationUser ApplicationUser { get; set; }
 		public RideId RideId { get; set; }
 		public Ride Ride { get; set; }

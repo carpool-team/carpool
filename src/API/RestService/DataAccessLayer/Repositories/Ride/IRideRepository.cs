@@ -15,14 +15,14 @@ namespace DataAccessLayer.Repositories.Ride
 
 		Task<IEnumerable<Domain.Entities.Ride>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken);
 
-		Task<IEnumerable<Domain.Entities.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(UserId userId,
+		Task<IEnumerable<Domain.Entities.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			bool past,
 			CancellationToken cancellationToken);
 
-		Task<IEnumerable<Domain.Entities.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(UserId userId,
+		Task<IEnumerable<Domain.Entities.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			bool past,
 			CancellationToken cancellationToken);
 
-		Task RemoveUserFromRide(UserId userId, RideId rideId, CancellationToken cancellationToken);
+		Task RemoveUserFromRide(AppUserId appUserId, RideId rideId, CancellationToken cancellationToken);
 	}
 }

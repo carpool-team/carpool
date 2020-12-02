@@ -18,7 +18,7 @@ namespace DataAccessLayer.Repositories.Group
 
 		Task<IEnumerable<Domain.Entities.Group>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip);
 
-		Task<List<Domain.Entities.Group>> GetGroupsByUserIdAsNoTrackingAsync(UserId userId,
+		Task<List<Domain.Entities.Group>> GetGroupsByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			CancellationToken cancellationToken =
 				default);
 

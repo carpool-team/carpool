@@ -34,10 +34,10 @@ namespace DataAccessLayer.Repositories.GroupInvite
 		public async Task<List<Domain.Entities.GroupInvite>> GetPartAsync(CancellationToken cancellationToken)
 			=> await _context.GroupInvites.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-		public async Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(UserId userId,
+		public async Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			CancellationToken cancellationToken)
 			=> await _context.GroupInvites.AsNoTracking()
-				.Where(x => x.InvitedUserId == userId)
+				.Where(x => x.InvitedAppUserId == appUserId)
 				.OrderByDescending(x => x.DateAdded)
 				.ToListAsync(cancellationToken)
 				.ConfigureAwait(false);

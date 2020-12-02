@@ -19,8 +19,8 @@ namespace RestApi.Commands.RideCommands
 	public class AddRideCommand : IRequest<Ride>
 	{
 		[JsonConstructor]
-		public AddRideCommand(UserId ownerId,
-			List<UserId> participantsIds,
+		public AddRideCommand(AppUserId ownerId,
+			List<AppUserId> participantsIds,
 			GroupId groupId,
 			DateTime date,
 			double price,
@@ -29,8 +29,8 @@ namespace RestApi.Commands.RideCommands
 			=> (OwnerId, ParticipantsIds, GroupId, Date, Price, Destination, StartingLocation) =
 				(ownerId, participantsIds, groupId, date, price, destination, startingLocation);
 
-		public UserId OwnerId { get; }
-		public List<UserId> ParticipantsIds { get; }
+		public AppUserId OwnerId { get; }
+		public List<AppUserId> ParticipantsIds { get; }
 		public GroupId GroupId { get; }
 		public DateTime Date { get; }
 		public double Price { get; }

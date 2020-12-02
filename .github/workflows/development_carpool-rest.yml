@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - carpool-rest-api
+name: Build and deploy ASP.Net Core app to Azure Web App - carpool-rest
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@master
@@ -24,8 +24,15 @@ jobs:
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
-      working-directory: ./src/API/RestService/RestAPI	
-      
+
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-      working-directory: ./src/API/RestService/RestAPI
+      working-directory: ./src/API/RestService/RestAPI	
+      
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'carpool-rest'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_ece1b7ddd37b43eab1efd1d064595aed }}
+        package: ${{env.DOTNET_ROOT}}/myapp 

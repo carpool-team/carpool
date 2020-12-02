@@ -17,7 +17,7 @@ namespace DataAccessLayer.Repositories.GroupInvite
 
 		Task<List<Domain.Entities.GroupInvite>> GetPartAsync(CancellationToken cancellationToken);
 
-		Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(UserId userId,
+		Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			CancellationToken cancellationToken);
 	}
 }

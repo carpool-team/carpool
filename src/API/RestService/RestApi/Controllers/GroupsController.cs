@@ -91,7 +91,7 @@ namespace RestApi.Controllers
 			addUserToGroupCommand.GroupId = new GroupId(groupId);
 			var response = await _mediator.Send(addUserToGroupCommand).ConfigureAwait(false);
 			return new ApiResponse(
-				$"ApplicationUser with id: {addUserToGroupCommand.UserId} has been added to group with id: {groupId}.");
+				$"ApplicationUser with id: {addUserToGroupCommand.AppUserId} has been added to group with id: {groupId}.");
 		}
 
 		// DELETE: api/Groups/5
@@ -103,10 +103,10 @@ namespace RestApi.Controllers
 		}
 
 
-		[HttpGet("~/api/users/{userId}/groups")]
-		public async Task<ApiResponse> GetUserGroups([FromRoute] UserId userId)
+		[HttpGet("~/api/users/{appUserId}/groups")]
+		public async Task<ApiResponse> GetUserGroups([FromRoute] AppUserId appUserId)
 		{
-			var request = new GetUserGroupsQuery(userId);
+			var request = new GetUserGroupsQuery(appUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 

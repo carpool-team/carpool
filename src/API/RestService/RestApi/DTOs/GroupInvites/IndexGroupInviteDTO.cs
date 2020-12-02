@@ -10,7 +10,7 @@ namespace RestApi.DTOs.GroupInvites
 			bool isAccepted,
 			GroupId groupId,
 			string groupName,
-			UserId invitedUserId,
+			AppUserId invitedAppUserId,
 			DateTime dateAdded)
 		{
 			Id = id;
@@ -18,7 +18,7 @@ namespace RestApi.DTOs.GroupInvites
 			IsAccepted = isAccepted;
 			GroupId = groupId;
 			GroupName = groupName;
-			InvitedUserId = invitedUserId;
+			InvitedAppUserId = invitedAppUserId;
 			DateAdded = dateAdded;
 		}
 
@@ -30,7 +30,7 @@ namespace RestApi.DTOs.GroupInvites
 		public GroupId GroupId { get; set; }
 		public string GroupName { get; set; }
 
-		public UserId InvitedUserId { get; set; }
+		public AppUserId InvitedAppUserId { get; set; }
 
 		public DateTime DateAdded { get; set; }
 	}

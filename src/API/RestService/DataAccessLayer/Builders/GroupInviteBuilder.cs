@@ -19,13 +19,13 @@ namespace DataAccessLayer.Builders
 
 			builder.HasOne(x => x.InvitedApplicationUser)
 				.WithMany()
-				.HasForeignKey(x => x.InvitedUserId)
+				.HasForeignKey(x => x.InvitedAppUserId)
 				.OnDelete(DeleteBehavior.NoAction)
 				.IsRequired();
 
 			builder.HasOne(x => x.InvitingApplicationUser)
 				.WithMany()
-				.HasForeignKey(x => x.InvitingUserId)
+				.HasForeignKey(x => x.InvitingAppUserId)
 				.OnDelete(DeleteBehavior.NoAction)
 				.IsRequired();
 

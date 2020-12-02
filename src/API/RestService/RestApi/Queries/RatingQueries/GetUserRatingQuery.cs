@@ -8,10 +8,10 @@ namespace RestApi.Queries.RatingQueries
 {
 	public class GetUserRatingQuery : IRequest<double>
 	{
-		public GetUserRatingQuery(UserId userId)
-			=> UserId = userId;
+		public GetUserRatingQuery(AppUserId appUserId)
+			=> AppUserId = appUserId;
 
-		public UserId UserId { get; }
+		public AppUserId AppUserId { get; }
 	}
 	
 	public class GetUserRatingQueryHandler : IRequestHandler<GetUserRatingQuery, double>
@@ -23,7 +23,7 @@ namespace RestApi.Queries.RatingQueries
 
 		public async Task<double> Handle(GetUserRatingQuery request, CancellationToken cancellationToken)
 		{
-			var rating = await _repository.GetUserRatingAsync(request.UserId, cancellationToken)
+			var rating = await _repository.GetUserRatingAsync(request.AppUserId, cancellationToken)
 				.ConfigureAwait(false);
 
 			return rating;

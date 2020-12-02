@@ -56,35 +56,35 @@ namespace DataAccessLayer.Repositories.Ride
 		}
 
 		public async Task<IEnumerable<Domain.Entities.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(
-			UserId userId,
+			AppUserId appUserId,
 			bool past = false,
 			CancellationToken cancellationToken = default)
 		{
 			return await _context.Rides.Include(x => x.Participants)
 				.AsNoTracking()
-				.Where(x => x.Participants.Any(y => y.UserId == userId) && past
+				.Where(x => x.Participants.Any(y => y.AppUserId == appUserId) && past
 					? x.Date <= DateTime.Now
 					: x.Date >= DateTime.Now)
 				.ToListAsync(cancellationToken)
 				.ConfigureAwait(false);
 		}
 
-		public async Task<IEnumerable<Domain.Entities.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(UserId userId,
+		public async Task<IEnumerable<Domain.Entities.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			bool past,
 			CancellationToken cancellationToken)
 		{
 			return await _context.Rides.AsNoTracking()
-				.Where(x => x.OwnerId == userId && past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now)
+				.Where(x => x.OwnerId == appUserId && past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now)
 				.ToListAsync(cancellationToken)
 				.ConfigureAwait(false);
 		}
 
-		public async Task RemoveUserFromRide(UserId userId,
+		public async Task RemoveUserFromRide(AppUserId appUserId,
 			RideId rideId,
 			CancellationToken cancellationToken = default)
 		{
 			var rideParticipant = await _context.UserParticipatedRides
-				.FirstOrDefaultAsync(x => x.RideId == rideId && x.UserId == userId, cancellationToken)
+				.FirstOrDefaultAsync(x => x.RideId == rideId && x.AppUserId == appUserId, cancellationToken)
 				.ConfigureAwait(false);
 			_context.UserParticipatedRides.Remove(rideParticipant);
 		}

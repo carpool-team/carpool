@@ -10,13 +10,13 @@ namespace RestApi.Queries.RideQueries
 {
 	public class GetUserParticipatedRidesQuery : IRequest<IEnumerable<Ride>>
 	{
-		public GetUserParticipatedRidesQuery(UserId userId, bool past)
+		public GetUserParticipatedRidesQuery(AppUserId appUserId, bool past)
 		{
-			UserId = userId;
+			AppUserId = appUserId;
 			Past = past;
 		}
 
-		public UserId UserId { get; }
+		public AppUserId AppUserId { get; }
 		public bool Past { get; }
 	}
 	
@@ -33,7 +33,7 @@ namespace RestApi.Queries.RideQueries
 			CancellationToken cancellationToken)
 		{
 			var userRides =
-				await _repository.GetParticipatedRidesByUserIdAsNoTrackingAsync(request.UserId, request.Past,
+				await _repository.GetParticipatedRidesByUserIdAsNoTrackingAsync(request.AppUserId, request.Past,
 						cancellationToken)
 					.ConfigureAwait(false);
 

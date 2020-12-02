@@ -10,14 +10,14 @@ namespace RestApi.Commands.RideCommands.RemoveUserFromRide
 {
 	public class RemoveUserFromRideCommand : IRequest
 	{
-		public RemoveUserFromRideCommand(RideId rideId, UserId userId)
+		public RemoveUserFromRideCommand(RideId rideId, AppUserId appUserId)
 		{
 			RideId = rideId;
-			UserId = userId;
+			AppUserId = appUserId;
 		}
 
 		public RideId RideId { get; }
-		public UserId UserId { get; }
+		public AppUserId AppUserId { get; }
 	}
 
 	public class RemoveUserFromRideCommandHandler : AsyncRequestHandler<RemoveUserFromRideCommand>
@@ -30,7 +30,7 @@ namespace RestApi.Commands.RideCommands.RemoveUserFromRide
 		{
 			try
 			{
-				await _rideRepository.RemoveUserFromRide(request.UserId, request.RideId, cancellationToken)
+				await _rideRepository.RemoveUserFromRide(request.AppUserId, request.RideId, cancellationToken)
 					.ConfigureAwait(false);
 				await _rideRepository.SaveAsync(cancellationToken).ConfigureAwait(false);
 			}

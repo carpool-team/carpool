@@ -1,4 +1,5 @@
 ﻿using AuthDomain.Entities;
+using IdentifiersShared.Identifiers;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
