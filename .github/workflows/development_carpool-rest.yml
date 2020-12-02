@@ -5,6 +5,8 @@ name: Build and deploy ASP.Net Core app to Azure Web App - carpool-rest
 
 on:
   push:
+    paths:
+      - 'src/API/RestService/**'
     branches:
       - development
 
@@ -25,7 +27,8 @@ jobs:
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-
+      working-directory: ./src/API/RestService/RestAPI	
+      
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
