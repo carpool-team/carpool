@@ -33,5 +33,5 @@ jobs:
       with:
         app-name: 'carpool-rest'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_ece1b7ddd37b43eab1efd1d064595aed }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECE1B7DDD37B43EAB1EFD1D064595AED }}
         package: ${{env.DOTNET_ROOT}}/myapp 
