@@ -146,7 +146,6 @@ const RidesList = (props: IRidesListProps) => {
 						<div className={cssClasses.address}>
 							<div className={cssClasses.fromLabel}>
 								{props.ride.fromName}
-								{/* {.replace(",.*", "")} */}
 							</div>
 							<div className={cssClasses.toLabel}>
 								{props.ride.toName}

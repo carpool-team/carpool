@@ -53,6 +53,11 @@
             "ridesBtn": "Przejazdy",
             "invitesBtn": "Zaproszenia"
         },
+        "rides": {
+            "cyclicBtn": "Cykliczny",
+            "disposableBtn": "Jednorazowy",
+            "addRideLabel": "Dodaj przejazd do grupy"
+        },
         "footer": {
             "services": "Usługi",
             "environment": "Środowisko",

@@ -55,6 +55,7 @@ const GroupRides = (props: IGroupRidesProps) => {
 	return (
 		<GroupDetailedView group={props.group}>
 			<div className={cssClasses.leftPanel}>
+			<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
 				<div className={cssClasses.leftLabels}>
 					<Button onClick={() => {
 						history.push(`/${mainRoutes.groups}`);
@@ -72,7 +73,6 @@ const GroupRides = (props: IGroupRidesProps) => {
 					>
 						{t(resources.add)}
 					</ButtonLink>
-					<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
 				</div>
 				<div>
 
