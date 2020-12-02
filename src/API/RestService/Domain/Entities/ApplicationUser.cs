@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities
 {
-	public sealed class ApplicationUser : BaseEntity<UserId>
+	public sealed class ApplicationUser : BaseEntity<AppUserId>
 	{
-		public ApplicationUser(UserId id, string email, string firstName, string lastName)
+		public ApplicationUser(AppUserId id, string email, string firstName, string lastName)
 			=> (Id, Email, FirstName, LastName)
 				= (id, email, firstName, lastName);
 

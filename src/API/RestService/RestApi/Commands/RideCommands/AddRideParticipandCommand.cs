@@ -14,14 +14,14 @@ namespace RestApi.Commands.RideCommands
 	public class AddRideParticipandCommand : IRequest
 	{
 		[JsonConstructor]
-		public AddRideParticipandCommand(RideId? rideId, UserId participantId)
+		public AddRideParticipandCommand(RideId? rideId, AppUserId participantId)
 		{
 			RideId = rideId;
 			ParticipantId = participantId;
 		}
 
 		public RideId? RideId { get; set; }
-		public UserId ParticipantId { get; set; }
+		public AppUserId ParticipantId { get; set; }
 	}
 	
 	public class AddRideParticipandCommandHandler : AsyncRequestHandler<AddRideParticipandCommand>
@@ -55,7 +55,7 @@ namespace RestApi.Commands.RideCommands
 
 			rideParticipants.Add(new UserParticipatedRide
 			{
-				UserId = request.ParticipantId, RideId = (RideId) request.RideId
+				AppUserId = request.ParticipantId, RideId = (RideId) request.RideId
 			});
 
 			await _participantRepository.SaveAsync(cancellationToken).ConfigureAwait(false);

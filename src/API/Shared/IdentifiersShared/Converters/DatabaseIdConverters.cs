@@ -21,11 +21,11 @@ namespace IdentifiersShared.Converters
 				mappingHints) { }
 	}
 
-	public class UserIdValueConverter : ValueConverter<UserId, long>
+	public class UserIdValueConverter : ValueConverter<AppUserId, long>
 	{
 		public UserIdValueConverter(ConverterMappingHints mappingHints = null)
 			: base(id => id.Value,
-				value => new UserId(value),
+				value => new AppUserId(value),
 				mappingHints) { }
 	}
 

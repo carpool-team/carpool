@@ -11,10 +11,10 @@ namespace RestApi.Queries.UserQueries
 	public class GetUserByIdQuery : IRequest<ApplicationUser>
 	{
 		[JsonConstructor]
-		public GetUserByIdQuery(UserId userId)
-			=> UserId = userId;
+		public GetUserByIdQuery(AppUserId appUserId)
+			=> AppUserId = appUserId;
 
-		public UserId UserId { get; }
+		public AppUserId AppUserId { get; }
 	}
 	
 	public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, ApplicationUser>
@@ -25,6 +25,6 @@ namespace RestApi.Queries.UserQueries
 			=> _repository = repository;
 
 		public async Task<ApplicationUser> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
-			=> await _repository.GetByIdAsNoTrackingAsync(request.UserId, cancellationToken).ConfigureAwait(false);
+			=> await _repository.GetByIdAsNoTrackingAsync(request.AppUserId, cancellationToken).ConfigureAwait(false);
 	}
 }

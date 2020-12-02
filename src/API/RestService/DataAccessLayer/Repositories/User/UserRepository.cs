@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories.User
 {
-	public class UserRepository : BaseRepository<ApplicationUser, UserId>, IUserRepository
+	public class UserRepository : BaseRepository<ApplicationUser, AppUserId>, IUserRepository
 	{
 		public UserRepository(CarpoolDbContext context) : base(context) { }
 
@@ -26,12 +26,12 @@ namespace DataAccessLayer.Repositories.User
 			return users;
 		}
 
-		public async Task<ApplicationUser> GetByIdAsNoTrackingAsync(UserId id, CancellationToken cancellationToken)
+		public async Task<ApplicationUser> GetByIdAsNoTrackingAsync(AppUserId id, CancellationToken cancellationToken)
 			=> await _context.Users.AsNoTracking()
 				.FirstOrDefaultAsync(x => x.Id == id, cancellationToken)
 				.ConfigureAwait(false);
 
-		public async Task<ApplicationUser> GetByIdAsync(UserId id, CancellationToken cancellationToken)
+		public async Task<ApplicationUser> GetByIdAsync(AppUserId id, CancellationToken cancellationToken)
 			=> await _context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken).ConfigureAwait(false);
 
 		public async Task<List<ApplicationUser>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ namespace DataAccessLayer.Repositories.User
 		public void Delete(ApplicationUser entity)
 			=> _context.Users.Remove(entity);
 
-		public async Task DeleteByIdAsync(UserId id)
+		public async Task DeleteByIdAsync(AppUserId id)
 		{
 			var entity = await _context.Users.FirstOrDefaultAsync(x => id.Equals(x.Id)).ConfigureAwait(false);
 			_context.Users.Remove(entity);
@@ -64,16 +64,16 @@ namespace DataAccessLayer.Repositories.User
 		public void Save()
 			=> _context.SaveChanges();
 
-		public async Task<bool> AnyWithId(UserId id)
+		public async Task<bool> AnyWithId(AppUserId id)
 			=> await _context.Users.AnyAsync(x => x.Id.Equals(id)).ConfigureAwait(false);
 
-		public async Task<bool> ExistsWithId(UserId id, CancellationToken cancellationToken)
+		public async Task<bool> ExistsWithId(AppUserId id, CancellationToken cancellationToken)
 			=> await _context.Users.AnyAsync(x => x.Id == id, cancellationToken).ConfigureAwait(false);
 
-		public async Task<double> GetUserRatingAsync(UserId userId, CancellationToken cancellationToken)
+		public async Task<double> GetUserRatingAsync(AppUserId appUserId, CancellationToken cancellationToken)
 		{
 			var user = await _context.Users.Include(x => x.Ratings)
-				.SingleOrDefaultAsync(x => x.Id == userId, cancellationToken)
+				.SingleOrDefaultAsync(x => x.Id == appUserId, cancellationToken)
 				.ConfigureAwait(false);
 
 			var count = 0;

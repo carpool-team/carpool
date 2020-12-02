@@ -9,7 +9,7 @@ namespace Domain.Entities
 {
 	public class Ride : BaseEntity<RideId>
 	{
-		public UserId OwnerId { get; set; }
+		public AppUserId OwnerId { get; set; }
 		public ApplicationUser Owner { get; set; }
 
 		public List<UserParticipatedRide> Participants { get; set; }

@@ -3,5 +3,5 @@ using IdentifiersShared.Identifiers;
 
 namespace Domain.Aggregates
 {
-	public class UserRatings : AggregateRoot<UserId> { }
+	public class UserRatings : AggregateRoot<AppUserId> { }
 }
