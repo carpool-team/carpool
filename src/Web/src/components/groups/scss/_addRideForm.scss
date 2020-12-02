@@ -1,0 +1,78 @@
+.ridesAddRideForm {
+	display: flex;
+	background-color: $white;
+	width: 100%;
+	height: 900px;
+	justify-content: space-between;
+  }
+.ridesAddRideFormMapBox {
+	background-color:$background;
+	width: 65%;
+	margin-left: 7px;
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+.ridesAddRideFormLeftContainer {
+	padding-top: 15px;
+	margin-top: 7px;
+	margin-bottom: 7px;
+	background-color: $background;
+	width: 35%;
+	& > hr {
+		color: $grayDark;
+		border-width:2px;
+		margin-left: 5%;
+		margin-right: 5%;
+	}
+}
+.ridesAddRideFormButtonsContainer {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: row;
+	padding-left: 5%;
+	padding-bottom: 2%;
+	gap:3%;
+	&--outline{
+		background-color: $white;
+		height: 7px;
+	}
+	&--label{
+		color: $grayDark;
+		font-size: 18px;
+		font-weight: $medium;
+		width: 100%;
+		padding-top: 7px;
+		padding-bottom: 10px;
+		text-align: center;
+		& > span{
+			font-weight: $semi-bold;
+		}
+	}
+}
+.ridesAddRideFormButtonActive{
+	background-color: $blue;
+	color: $white;
+	&:hover{
+		background-color: $blueOnHover;
+	}
+}
+@media only screen and (max-width: 900px) {
+	.ridesAddRideForm {
+		display: flex;
+		background-color: $white;
+	}	
+	.ridesAddRideFormLeftContainer {
+		padding-top: 10px;
+		width: 100%;
+		margin-top: 5px;
+	}
+	.ridesAddRideFormButtonsContainer {
+		justify-content: center;
+		padding-left: 0;
+		gap:3%;
+		&--outline{
+			height: 5px;
+		}
+	}
+}

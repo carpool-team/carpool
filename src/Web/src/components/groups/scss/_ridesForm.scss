@@ -14,14 +14,15 @@
 		}
 		&__text{
 			font-weight: $medium;
-			font-size: 20px;
+			font-size: 22px;
 			color: $grayDark;
 			padding-top: 12px;
-			padding-bottom: 5px;
+			padding-bottom: 7px;
+			text-align: center;
 		}
 		&__text:before{
 			font-family: FontAwesome;
-			font-size: 25px;
+			font-size: 21px;
 			content:"\f0ac";
 			padding-right: 10px;
 		}
