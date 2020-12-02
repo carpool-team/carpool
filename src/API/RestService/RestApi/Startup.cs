@@ -29,6 +29,7 @@ namespace RestApi
 {
 	public class Startup
 	{
+		//CI TEST
 		public Startup(IConfiguration configuration)
 			=> Configuration = configuration;
 
