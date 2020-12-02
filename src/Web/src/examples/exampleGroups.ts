@@ -6,7 +6,7 @@ const exampleGroups: IGroup[] = [
 	{
 		id: faker.random.alphaNumeric(32),
 		name: faker.random.word(),
-		code: faker.random.word(),
+		code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({min: 0, max: 20}),
 		owner: faker.random.alphaNumeric(32),
 		location: {
@@ -18,7 +18,7 @@ const exampleGroups: IGroup[] = [
 	{
 		id: faker.random.alphaNumeric(32),
 		name: faker.random.word(),
-		code: faker.random.word(),
+		code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({min: 0, max: 20}),
 		owner: faker.random.alphaNumeric(32),
 		location: {
@@ -30,7 +30,7 @@ const exampleGroups: IGroup[] = [
 	{
 		id: faker.random.alphaNumeric(32),
 		name: faker.random.word(),
-		code: faker.random.word(),
+		code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({min: 0, max: 20}),
 		owner: faker.random.alphaNumeric(32),
 		location: {
@@ -42,7 +42,7 @@ const exampleGroups: IGroup[] = [
 	{
 		id: faker.random.alphaNumeric(32),
 		name: faker.random.word(),
-		code: faker.random.word(),
+		code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({min: 0, max: 20}),
 		owner: faker.random.alphaNumeric(32),
 		location: {
