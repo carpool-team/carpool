@@ -7,8 +7,8 @@ export interface IRide {
 	id: string;
 	owner: IParticipant;
 	ownerId: string;
-	participants: string[];
-	stops: ILocation[];
+	participants?: string[];
+	stops?: ILocation[];
 	destination: {
 			longitude: number,
 			latitude: number

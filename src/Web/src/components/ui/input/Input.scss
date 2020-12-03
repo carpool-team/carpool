@@ -58,14 +58,15 @@
 	&__checkbox{
 		font-size: 15px;
 		border: 0;
-		width: inherit;
-		height: 100%;
+		width:auto;
+		height: auto;
 		color: $grayDark;
 		font-weight: $regular;
 		background: $transparent;
 		display: flex;
 		justify-content: flex-start;
 		align-content: center;
+		padding-left: 10px;
 		&--box{
 			height: 25px;
 			width: 25px;

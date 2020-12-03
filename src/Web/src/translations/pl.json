@@ -56,7 +56,10 @@
         "rides": {
             "cyclicBtn": "Cykliczny",
             "disposableBtn": "Jednorazowy",
-            "addRideLabel": "Dodaj przejazd do grupy"
+            "addRideLabel": "Dodaj przejazd do grupy",
+            "fromOrTo": "Lokalizacja grupy jako adres: ",
+            "from": "początkowy",
+            "to": "końcowy"
         },
         "footer": {
             "services": "Usługi",
