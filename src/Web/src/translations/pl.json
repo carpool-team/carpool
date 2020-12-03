@@ -101,7 +101,8 @@
         "input": {
             "validation": {
                 "emailInvalid": "Nieprawidłowy adres e-mail",
-                "fieldRequired": "Pole wymagane"
+                "fieldRequired": "Pole wymagane",
+                "address": "Niepoprawny adres, proszę wybrać adres z podpowiedzi"
             }
         },
         "error": {

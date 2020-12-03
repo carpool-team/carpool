@@ -4,13 +4,11 @@ import { TFunction } from "i18next";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import { IRide } from "components/groups/interfaces/IRide";
-import { from } from "rxjs";
 import mapboxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import mapConfig from "../../../../map/mapConfig";
 import Button from "../../../../ui/button/Button";
-import {ButtonBackground} from "../../../../ui/button/enums/ButtonBackground";
-import {ButtonColor} from "../../../../ui/button/enums/ButtonColor";
-import MediaQuery from "react-responsive";
+import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
+import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 
 interface IRidesListProps extends IReactI18nProps {
 	rides: IRide[];
@@ -27,7 +25,7 @@ interface IRideNames extends IRide {
 	toName?: string;
 	fromName?: string;
 }
-const geocodingClient = mapboxGeocoding({accessToken: mapConfig.mapboxKey});
+const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
 
 const RidesList = (props: IRidesListProps) => {
 
@@ -68,6 +66,7 @@ const RidesList = (props: IRidesListProps) => {
 						const response = await geocodingClient
 							.reverseGeocode({
 								query: coords,
+								mode: "mapbox.places",
 							})
 							.send();
 						const result = response.body.features[0];
@@ -86,6 +85,7 @@ const RidesList = (props: IRidesListProps) => {
 						const response = await geocodingClient
 							.reverseGeocode({
 								query: coords,
+								mode: "mapbox.places",
 							})
 							.send();
 						const result = response.body.features[0];
@@ -154,7 +154,7 @@ const RidesList = (props: IRidesListProps) => {
 					</div>
 					<div className={cssClasses.bottomRow}>
 						<div className={cssClasses.driver}>
-							{ convertDate(props.ride.date) }
+							{convertDate(props.ride.date)}
 						</div>
 					</div>
 				</button>
@@ -216,27 +216,27 @@ const RidesList = (props: IRidesListProps) => {
 				const color = colorList[colorIndex % colorList.length];
 				const { t } = props;
 				return (
-						<React.Fragment key={ride.id}>
-							{(() => {
-								if (props.rideSelected && props.rideSelected.id === ride.id) {
-									return (
-										<ActiveItem
-											ride={ride}
-											color={color}
-											t={t}
-											setRide ={props.setRide}
-										/>);
-									} else {
-										return (
-											<DefaultItem
-											ride={ride}
-											color={color}
-											t={t}
-											setRide ={props.setRide}
-											/>);
-									}
-								})()}
-						</React.Fragment>
+					<React.Fragment key={ride.id}>
+						{(() => {
+							if (props.rideSelected && props.rideSelected.id === ride.id) {
+								return (
+									<ActiveItem
+										ride={ride}
+										color={color}
+										t={t}
+										setRide={props.setRide}
+									/>);
+							} else {
+								return (
+									<DefaultItem
+										ride={ride}
+										color={color}
+										t={t}
+										setRide={props.setRide}
+									/>);
+							}
+						})()}
+					</React.Fragment>
 				);
 			})}
 		</ul>

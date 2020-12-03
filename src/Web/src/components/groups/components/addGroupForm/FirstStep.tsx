@@ -114,7 +114,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					icon={InputIcon.Location}
 					addressCords={coords => setAddressCoordinates(coords)}
 					validation={{
-						type: ValidationType.Required,
+						type: ValidationType.Address,
 						isValidCallback: isValid => {
 							setInputsValid({
 								...inputsValid,
@@ -130,7 +130,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 			</div>
 			<MediaQuery query="(min-width: 900px)">
 				<div className={cssClasses.map}>
-					<MapBoxPicker location={addressCoordinates}/>
+					<MapBoxPicker location={addressCoordinates} />
 				</div>
 			</MediaQuery>
 		</div>

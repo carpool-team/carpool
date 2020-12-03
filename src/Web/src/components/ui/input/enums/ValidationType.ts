@@ -3,4 +3,5 @@ export enum ValidationType {
 	PostalCode = "VALIDATE_POSTAL_CODE",
 	Required = "VALIDATE_REQUIRED",
 	Custom = "VALIDATE_CUSTOM",
+	Address = "VALIDATE_ADDRESS"
 }

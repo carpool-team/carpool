@@ -55,6 +55,7 @@
         "@types/faker": "^5.1.4",
         "@types/lodash": "^4.14.165",
         "@types/mapbox-gl": "^1.12.8",
+        "@types/mapbox__mapbox-sdk": "^0.6.5",
         "@types/react-breadcrumbs-dynamic": "^1.0.2",
         "@types/react-redux": "^7.1.11",
         "@types/react-responsive": "^8.0.2",

@@ -4,13 +4,12 @@ import { InputIcon } from "./enums/InputIcon";
 import { getIconClass } from "./Helpers";
 import { IValidation } from "./interfaces/IValidation";
 import { ValidationType } from "./enums/ValidationType";
-
-import "./Input.scss";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
 import mapboxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import mapConfig from "../../map/mapConfig";
-import { add } from "lodash";
+
+import "./Input.scss";
 
 interface IINputProps extends IReactI18nProps {
 	changeHandler: (newValue: string) => void;
@@ -35,26 +34,37 @@ interface IAddress {
 const defaultValidationTextKeys = {
 	[ValidationType.Email]: "input.validation.emailInvalid",
 	[ValidationType.Required]: "input.validation.fieldRequired",
+	[ValidationType.Address]: "input.validation.address",
 };
 
 const regexes = {
 	[ValidationType.Email]: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 	[ValidationType.PostalCode]: /^\d{2}\-\d{3}$/,
+
 };
 
-const geocodingClient = mapboxGeocoding({accessToken: mapConfig.mapboxKey});
+const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
 
-const validateInput = (value: string, type: ValidationType, customValidation?: (value: string) => boolean) => {
-	if (type === ValidationType.Custom && !customValidation) {
+interface IInputValidationData {
+	value: string;
+	type: ValidationType;
+	customValidation?: (value: string) => boolean;
+	isAddressPicked?: boolean;
+}
+
+const validateInput = (data: IInputValidationData) => {
+	if (data.type === ValidationType.Custom && !data.customValidation) {
 		throw "Custom validation not provided!";
 	}
-	switch (type) {
+	switch (data.type) {
 		case ValidationType.Email:
-			return regexes[type].test(value);
+			return regexes[data.type].test(data.value);
 		case ValidationType.Required:
-			return Boolean(value);
+			return Boolean(data.value);
 		case ValidationType.Custom:
-			return customValidation(value);
+			return data.customValidation(data.value);
+		case ValidationType.Address:
+			return data.isAddressPicked;
 		default:
 			return true;
 	}
@@ -62,10 +72,17 @@ const validateInput = (value: string, type: ValidationType, customValidation?: (
 
 const Input = (props: IINputProps) => {
 	const [isValid, setIsValid] = useState(true);
+	const [autocompleteList, setAutocompleteList] = useState<IAddress[]>(null);
+	const [isAutoCompleted, setIsAutoCompleted] = useState(false);
 
 	useEffect(() => {
 		if (props.validation?.validate) {
-			const valid: boolean = validateInput(props.value, props.validation.type, props.validation.customValidation);
+			const valid: boolean = validateInput({
+				value: props.value,
+				type: props.validation.type,
+				customValidation: props.validation.customValidation,
+				isAddressPicked: isAutoCompleted,
+			});
 			setIsValid(valid);
 			if (props.validation.isValidCallback) {
 				props.validation.isValidCallback(valid);
@@ -93,8 +110,6 @@ const Input = (props: IINputProps) => {
 		}
 	};
 
-	const [autocompleteList, setAutocompleteList] = useState(null);
-
 	let baseInputClasses = [inputBaseClassName];
 	let baseContainerClasses = [inputBaseContainerClassName];
 	if (!isValid) {
@@ -111,24 +126,27 @@ const Input = (props: IINputProps) => {
 				.forwardGeocode({
 					query: text,
 					autocomplete: true,
-					limit: 3
+					limit: 3,
+					mode: "mapbox.places",
 				})
 				.send();
-			const result = response.body.features;
-			const addresses: IAddress[] = [];
-			result.map((item) => {
-						addresses.push({place_name: item.place_name, center: item.center});
-				});
+			const result: Array<any> = response.body.features;
+			const addresses: IAddress[] = result.map((item: { place_name: string; center: [number, number]; }) => {
+				return {
+					place_name: item.place_name,
+					center: item.center,
+				};
+			});
 			setAutocompleteList(addresses);
 		} catch (err) {
 			console.log(err);
-		} finally {
 		}
 	};
 
 	const addressChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		props.changeHandler(event.target.value);
-		if ( event.target.value.length > 3) {
+		setIsAutoCompleted(false);
+		if (event.target.value.length > 3) {
 			onAutocompleteName(event.target.value);
 		} else {
 			setAutocompleteList(null);
@@ -139,38 +157,44 @@ const Input = (props: IINputProps) => {
 		props.addressCords(coords);
 		props.changeHandler(placeName);
 		setAutocompleteList(null);
+		setIsAutoCompleted(true);
 	};
+
 	const submitAddressFocusOut = () => {
 		if (autocompleteList !== null) {
 			props.addressCords(autocompleteList[0].center);
 			props.changeHandler(autocompleteList[0].place_name);
 			setAutocompleteList(null);
+			setIsAutoCompleted(true);
 		}
 	};
+
 	const submitAdressEnter = (e) => {
 		if (e.key === "Enter") {
 			if (autocompleteList !== null) {
 				props.addressCords(autocompleteList[0].center);
 				props.changeHandler(autocompleteList[0].place_name);
 				setAutocompleteList(null);
+				setIsAutoCompleted(true);
 			}
 		}
 	};
 
 	const renderAutocompleteAddress = () => {
 		if (autocompleteList !== null && autocompleteList.length !== 0) {
-			return(
+			return (
 				autocompleteList.map((address: IAddress) => {
 					return (
 						<div
-							key = {address.place_name}
+							key={address.place_name}
 							className={inputAddressClassName}
-							onClick={() => onAutocompleteClick(address.place_name,  address.center)}
+							onClick={() => onAutocompleteClick(address.place_name, address.center)}
 						>
-								{address.place_name}
+							{address.place_name}
 						</div>
-			); }));
-			} else {
+					);
+				}));
+		} else {
 			return null;
 		}
 	};
@@ -233,6 +257,7 @@ const Input = (props: IINputProps) => {
 				/>
 			</div>
 			{renderAutocompleteAddress()}
+			{renderValidationMessage()}
 		</div>
 	);
 
@@ -242,8 +267,7 @@ const Input = (props: IINputProps) => {
 				className={checkboxBoxClassName}
 				placeholder={props.placeholder}
 				onChange={generalChangeHandler}
-				// value={props.value}
-				checked = {!!props.checked}
+				checked={!!props.checked}
 				type={"checkbox"}
 				id={props.label?.inputId}
 			/>
