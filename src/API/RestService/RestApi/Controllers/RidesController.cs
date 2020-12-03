@@ -24,24 +24,37 @@ namespace RestApi.Controllers
 			_mediator = mediator;
 		}
 
-		// GET: api/Rides?appUserId={id}
-		[HttpGet]
-		public async Task<ApiResponse> GetRides()
-		{
-			var request = new GetRidesQuery();
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-			return new ApiResponse(response);
-		}
-
-		// GET: api/Rides/5
+        // GET: api/Rides/5
 		[HttpGet("{rideId}")]
 		public async Task<ApiResponse> GetRide(RideId rideId)
 		{
-			var request = new GetRideQuery(rideId);
+            GetRideQuery request = new(rideId);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse(response);
 		}
+
+        [HttpGet("~/api/users/{appUserId}/rides/participated")]
+        public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] long userId,
+            [FromQuery] bool past = false)
+        {
+            AppUserId typedAppUserId = new(userId);
+            GetUserParticipatedRidesQuery request = new(typedAppUserId, past);
+            var response = await _mediator.Send(request).ConfigureAwait(false);
+
+            return new ApiResponse(response);
+        }
+
+        [HttpGet("~/api/users/{appUserId}/rides/owned")]
+        public async Task<ApiResponse> GetUserOwnedRides([FromRoute] long userId,
+            [FromQuery] bool past = false)
+        {
+            AppUserId typedAppUserId = new(userId);
+            GetUserOwnedRidesQuery request = new(typedAppUserId, past);
+            var response = await _mediator.Send(request).ConfigureAwait(false);
+
+            return new ApiResponse(response);
+        }
 
 		// PUT: api/Rides/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -50,7 +63,7 @@ namespace RestApi.Controllers
 		public async Task<ApiResponse> PutRide([FromRoute] long rideId, [FromBody] UpdateRideDto model)
 		{
 			RideId typedRideId = new(rideId);
-			var request = new UpdateRideCommand(typedRideId,
+            UpdateRideCommand request = new(typedRideId,
 				model.ParticipantIds,
 				model.Date,
 				model.Price);
@@ -70,6 +83,16 @@ namespace RestApi.Controllers
 			return new ApiResponse(response);
 		}
 
+        [HttpPost("{rideId}/users")]
+        public async Task<ApiResponse> AddParticipant([FromRoute] RideId rideId,
+            [FromBody] AddRideParticipandCommand request)
+        {
+            request.RideId = rideId;
+            var response = await _mediator.Send(request).ConfigureAwait(false);
+
+            return new ApiResponse("ok");
+        }
+
 		// DELETE: api/Rides/5
 		[HttpDelete("{rideId}")]
 		public async Task<ApiResponse> DeleteRide(long rideId)
@@ -81,39 +104,8 @@ namespace RestApi.Controllers
 			return new ApiResponse(response);
 		}
 
-		[HttpPost("{rideId}/users")]
-		public async Task<ApiResponse> AddParticipant([FromRoute] RideId rideId,
-			[FromBody] AddRideParticipandCommand request)
-		{
-			request.RideId = rideId;
-			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-			return new ApiResponse("ok");
-		}
-
-		[HttpGet("~/api/users/{appUserId}/rides/participated")]
-		public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] long userId,
-			[FromQuery] bool past = false)
-		{
-			AppUserId typedAppUserId = new(userId);
-			var request = new GetUserParticipatedRidesQuery(typedAppUserId, past);
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-
-			return new ApiResponse(response);
-		}
-
-		[HttpGet("~/api/users/{appUserId}/rides/owned")]
-		public async Task<ApiResponse> GetUserOwnedRides([FromRoute] long userId,
-			[FromQuery] bool past = false)
-		{
-			AppUserId typedAppUserId = new(userId);
-			var request = new GetUserOwnedRidesQuery(typedAppUserId, past);
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-
-			return new ApiResponse(response);
-		}
-
-		[HttpDelete("{rideId}/users/{appUserId}")]
+        [HttpDelete("{rideId}/users/{appUserId}")]
 		public async Task<ApiResponse> RemoveUserFromRide([FromRoute] long rideId, [FromRoute] AppUserId appUserId)
 		{
 			RideId typedRideId = new(rideId);

@@ -23,15 +23,7 @@ namespace RestApi.Controllers
 			_mediator = mediator;
 		}
 
-		[HttpGet]
-		public async Task<ApiResponse> GetUsers()
-		{
-			var request = new GetUsersQuery();
-			var response = await _mediator.Send(request);
-			return new ApiResponse(response);
-		}
-
-		[HttpGet("{appUserId}")]
+        [HttpGet("{appUserId}")]
 		public async Task<ApiResponse> GetUser([FromRoute] long userId)
 		{
 			AppUserId typedAppUserId = new(userId);

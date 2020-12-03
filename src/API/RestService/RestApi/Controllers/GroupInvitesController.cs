@@ -19,14 +19,16 @@ namespace RestApi.Controllers
 		public GroupInvitesController(IMediator mediator)
 			=> _mediator = mediator;
 
-		// GET: api/GroupInvites
-		[HttpGet]
-		public async Task<ApiResponse> GetGroupInvites()
-		{
-			var request = new GetGroupInvitesQuery();
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-			return new ApiResponse(response);
-		}
+        [HttpGet("~/api/users/{appUserId}/group-invites")]
+        public async Task<ApiResponse> GetUserGroupInvites([FromRoute] long userId)
+        {
+            AppUserId typedAppUserId = new(userId);
+            var request = new GetUserGroupInvitesQuery(typedAppUserId);
+
+            var response = await _mediator.Send(request).ConfigureAwait(false);
+
+            return new ApiResponse(response);
+        }
 
 		// GET: api/GroupInvites/5
 		[HttpGet("{groupInviteId}")]
@@ -75,16 +77,5 @@ namespace RestApi.Controllers
 
 			return new ApiResponse($"Group Invite with id: {response} has been deleted");
 		}
-
-		[HttpGet("~/api/users/{appUserId}/group-invites")]
-		public async Task<ApiResponse> GetUserGroupInvites([FromRoute] long userId)
-		{
-			AppUserId typedAppUserId = new(userId);
-			var request = new GetUserGroupInvitesQuery(typedAppUserId);
-
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-
-			return new ApiResponse(response);
-		}
-	}
+    }
 }
