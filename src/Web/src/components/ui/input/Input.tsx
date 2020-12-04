@@ -262,7 +262,7 @@ const Input = (props: IINputProps) => {
 	);
 
 	const renderCheckbox = () => (
-		<div className={checkboxClassName}>
+		<div className={[checkboxClassName , props.style].join(" ")}>
 			<input
 				className={checkboxBoxClassName}
 				placeholder={props.placeholder}

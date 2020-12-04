@@ -16,6 +16,8 @@ export const getIconClass: (type?: InputIcon) => string = (icon) => {
 			return `${baseIconClass} ${baseIconClass}--globe`;
 		case InputIcon.Password:
 			return `${baseIconClass} ${baseIconClass}--password`;
+		case InputIcon.Seats:
+			return `${baseIconClass} ${baseIconClass}--seats`;
 		default:
 			return "";
 	}

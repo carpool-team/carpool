@@ -4,6 +4,28 @@
 	width: 100%;
 	height: 900px;
 	justify-content: space-between;
+		&__checkboxContainer{
+			display: flex;
+			// justify-content: space-between;
+			padding: 10px;
+			flex-wrap: wrap;
+			margin-bottom: 15px;
+			background-color: $white;
+		}
+		&__checkboxLabel{
+			margin-top: 40px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			font-size: 17px;
+			font-weight: $medium;
+			color: $grayDark;
+			padding-left: 20px;
+			background-color: $white;
+		}
+		&__checkboxStyle {
+			font-size: 17px;
+			font-weight: $medium;
+		}
   }
 .ridesAddRideFormMapBox {
 	background-color:$background;

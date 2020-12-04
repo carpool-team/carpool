@@ -133,6 +133,9 @@
 		&--password::before{
 			content:"\f084";
 		}
+		&--seats::before{
+			content:"\f0c0";
+		}
 	}
 	&__input::placeholder {
 		font-weight: $medium;
