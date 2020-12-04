@@ -2,7 +2,7 @@ import React, { Component, Suspense } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Switch } from "react-router";
 import { BreadcrumbsProvider } from "react-breadcrumbs-dynamic";
-import { LoaderSpinner } from "./components/ui/loaderSpinner/LoaderSpinner";
+import LoaderSpinner from "./components/ui/loaderSpinner/LoaderSpinner";
 import Layout from "./components/layout/Layout";
 
 import "./scss/main.scss";

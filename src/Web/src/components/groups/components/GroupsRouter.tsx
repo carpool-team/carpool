@@ -2,7 +2,7 @@ import React, { Component, Suspense } from "react";
 import ManageScreen from "./manageScreen/ManageScreen";
 import AddGroupForm from "./addGroupForm/AddGroupForm";
 import { Switch, Route, RouteComponentProps } from "react-router";
-import { LoaderSpinner } from "../../ui/loaderSpinner/LoaderSpinner";
+import LoaderSpinner from "../../ui/loaderSpinner/LoaderSpinner";
 import { IGroupCallbacks } from "../interfaces/IGroupCallbacks";
 import GroupInvite from "./invite/GroupInvite";
 import GroupEdit from "./edit/GroupEdit";
@@ -50,7 +50,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 							<Route exact path={path + GroupsRouter.routes.rides}>
 								<GroupRides group={this.props.selectedGroup} />
 							</Route>
-							<Route  path={path + GroupsRouter.routes.rides + GroupsRouter.routes.addRide}>
+							<Route path={path + GroupsRouter.routes.rides + GroupsRouter.routes.addRide}>
 								<AddRideFormScreen group={this.props.selectedGroup} />
 							</Route>
 						</> : null}

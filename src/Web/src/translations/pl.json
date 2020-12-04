@@ -106,7 +106,8 @@
             }
         },
         "error": {
-            "DuplicateUserName": "Wybrany e-mail jest już zajęty!"
+            "DuplicateUserName": "Wybrany e-mail jest już zajęty!",
+            "unknownGeneric": "Nieznany błąd serwera. Spróbuj ponownie!"
         }
     }
 }

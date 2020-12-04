@@ -62,10 +62,10 @@ const LoginPanel = (props: ILoginPanelProps) => {
 	};
 
 	const validateForm = () => {
-		if (each(inputsValid , i => i)) {
+		if (each(inputsValid, i => i)) {
 			setValidate(false);
 			return true;
-		}	else {
+		} else {
 			setInputsValid({
 				email: false,
 				password: false
@@ -82,6 +82,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 				email,
 				rememberLogin
 			};
+			props.setLoaderVisible(true);
 			props.login(data);
 		}
 	};

@@ -94,6 +94,7 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 				email,
 			};
 			props.register(data);
+			props.setLoaderVisible(true);
 		}
 	};
 
