@@ -73,7 +73,11 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			} finally {
 		}
 	}
-
+	componentDidMount() {
+		if (this.props.ride) {
+			this.getBounds(this.props.ride);
+		}
+	}
 	componentDidUpdate() {
 		if (this.state.ride !== this.props.ride) {
 			this.onFindRoute(this.props.ride);

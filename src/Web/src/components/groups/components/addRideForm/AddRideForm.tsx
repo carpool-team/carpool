@@ -58,13 +58,13 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 
 	const [selectedScreen, setSelectedScreen] = useState(PanelType.Disposable);
 
-	const [fromCheckBox, setFromCheckBox] = useState(false);
-	const [toCheckBox, setToCheckBox] = useState(true);
+	const [fromCheckBox, setFromCheckBox] = useState(true);
+	const [toCheckBox, setToCheckBox] = useState(false);
 
-	const [fromAddressCoordinates, setFromAddressCoordinates] = useState([0, 0]);
-	const [toAddressCoordinates, setToAddressCoordinates] = useState([0, 0]);
+	const [fromAddressCoordinates, setFromAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
+	const [toAddressCoordinates, setToAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 
-	const [userAddressCoordinates, setUserAddressCoordinates] = useState([0, 0]);
+	const [userAddressCoordinates, setUserAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 	const [userAddressName, setUserAddresName] = useState(undefined);
 
 	const ride: IRide = {
@@ -166,14 +166,26 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 					/>
 				</div>
 				<div>
-				<Input
-					type={InputType.Address}
-					changeHandler={newValue => setUserAddresName(newValue)}
-					placeholder={"adres " + t(resources.from)}
-					value={(userAddressName)}
-					icon={InputIcon.Location}
-					addressCords={coords => setUserCoordinates(coords)}
-				/>
+				{fromCheckBox &&
+					<Input
+						type={InputType.Address}
+						changeHandler={newValue => setUserAddresName(newValue)}
+						placeholder={"Adres " + t(resources.to)}
+						value={(userAddressName)}
+						icon={InputIcon.Location}
+						addressCords={coords => setUserCoordinates(coords)}
+					/>
+				}
+				{toCheckBox &&
+					<Input
+						type={InputType.Address}
+						changeHandler={newValue => setUserAddresName(newValue)}
+						placeholder={"Adres " + t(resources.from)}
+						value={(userAddressName)}
+						icon={InputIcon.Location}
+						addressCords={coords => setUserCoordinates(coords)}
+					/>
+				}
 				</div>
 				{userAddressCoordinates}
 			</div>
