@@ -34,7 +34,8 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		addRideLabel: "rides.addRideLabel",
 		fromOrTo: "rides.fromOrTo",
 		from: "rides.from",
-		to: "rides.to"
+		to: "rides.to",
+		seats: "rides.seats"
 	};
 
 	const cssClasses = {
@@ -44,7 +45,10 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		buttonsOutline: "ridesAddRideFormButtonsContainer--outline",
 		buttonActive: "ridesAddRideFormButtonActive",
 		mapBox: "ridesAddRideFormMapBox",
-		buttonsLabel: "ridesAddRideFormButtonsContainer--label"
+		buttonsLabel: "ridesAddRideFormButtonsContainer--label",
+		checkboxContainer: "ridesAddRideForm__checkboxContainer",
+		checkboxLabel: "ridesAddRideForm__checkboxLabel",
+		checkboxStyle: "ridesAddRideForm__checkboxStyle"
 	};
 
 	const ids = {
@@ -66,6 +70,8 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 
 	const [userAddressCoordinates, setUserAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 	const [userAddressName, setUserAddresName] = useState(undefined);
+
+	const [seats, setSeats] = useState(undefined);
 
 	const ride: IRide = {
 		id : "fdsfds",
@@ -142,13 +148,16 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 
 		return(
 			<div>
-				<div>
-					{t(resources.fromOrTo)}
+					<div className={cssClasses.checkboxLabel}>
+						{t(resources.fromOrTo)}
+					</div>
+				<div className={cssClasses.checkboxContainer}>
 					<Input
 						changeHandler={ (newValue) => setFromCheckboxState(newValue) }
 						value={""}
 						type={InputType.Checkbox}
 						checked={fromCheckBox}
+						style={cssClasses.checkboxStyle}
 						label={{
 							text: t(resources.from),
 							inputId: inputKeys.from,
@@ -159,6 +168,7 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						value={""}
 						type={InputType.Checkbox}
 						checked={toCheckBox}
+						style={cssClasses.checkboxStyle}
 						label={{
 							text: t(resources.to),
 							inputId: inputKeys.to
@@ -187,7 +197,13 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 					/>
 				}
 				</div>
-				{userAddressCoordinates}
+				<Input
+						type={InputType.Text}
+						changeHandler={newValue => setSeats(newValue)}
+						placeholder={t(resources.seats)}
+						value={(seats)}
+						icon={InputIcon.Seats}
+					/>
 			</div>
 		);
 	};

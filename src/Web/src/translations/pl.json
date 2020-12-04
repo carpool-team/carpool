@@ -57,9 +57,10 @@
             "cyclicBtn": "Cykliczny",
             "disposableBtn": "Jednorazowy",
             "addRideLabel": "Dodaj przejazd do grupy",
-            "fromOrTo": "Lokalizacja grupy jako adres: ",
+            "fromOrTo": "Lokalizacja grupy jako punkt: ",
             "from": "początkowy",
-            "to": "końcowy"
+            "to": "końcowy",
+            "seats": "Ilość miejsc w samochodzie"
         },
         "footer": {
             "services": "Usługi",
