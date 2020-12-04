@@ -5,28 +5,88 @@
 	height: 900px;
 	justify-content: space-between;
 		&__checkboxContainer{
+			width: 100%;
 			display: flex;
-			// justify-content: space-between;
 			padding: 10px;
 			flex-wrap: wrap;
-			margin-bottom: 15px;
+			margin-bottom: 30px;
 			background-color: $white;
+			padding-left: 20px;
 		}
 		&__checkboxLabel{
-			margin-top: 40px;
+			width: 100%;
 			padding-top: 10px;
-			padding-bottom: 10px;
-			font-size: 17px;
+			font-size: 14px;
 			font-weight: $medium;
 			color: $grayDark;
-			padding-left: 20px;
+			padding-left: 30px;
 			background-color: $white;
 		}
 		&__checkboxStyle {
-			font-size: 17px;
-			font-weight: $medium;
+			font-size: 16px;
+			font-weight: $regular;
+		}
+		&__datePicker{
+			width: 100%;
+			background-color: $white;
+			margin-top: 0px !important;
+			margin-bottom: 30px !important;
+		}
+		&__inputs {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		&__input{
+			margin-bottom: 15px;
+		}
+		&__button {
+			margin-top: 5%;
+			margin-bottom: auto;
 		}
   }
+//Custom styles for date time controls 
+.MuiFormLabel-root.Mui-focused {
+	color: $grayDark !important;
+}
+.MuiFormLabel-root {
+	padding-top: 10px !important;
+	color: $grayDark !important;
+	padding-left: 17px !important;
+	font-size: 18px !important;
+	font-weight: $medium !important;
+	position: relative !important;
+	font-family: "Montserrat" !important;
+}
+.MuiInputBase-root{
+	margin-top: 2px !important;
+	color: $grayDark!important;
+	padding-left: 15px !important;
+	font-family: "Montserrat" !important;
+}
+.MuiInput-underline::before {
+	border-bottom: 0px solid $grayDark !important;
+}
+.MuiInput-underline::after {
+	border-bottom: 2px solid $blue !important;
+}
+.MuiInput-underline:hover:not(.Mui-disabled)::before{
+	border-bottom: 2px solid $grayDark !important;
+}
+.MuiInputAdornment-positionEnd{
+	& > button {
+		margin-bottom: 30px !important;
+	}
+}
+.MuiFormHelperText-root.Mui-error{
+	color: $red !important;
+	font-size: 14px !important;
+	font-weight: $medium !important;
+	font-family: "Montserrat" !important;
+	padding-left: 20px;
+}
+
 .ridesAddRideFormMapBox {
 	background-color:$background;
 	width: 65%;
@@ -58,6 +118,7 @@
 	&--outline{
 		background-color: $white;
 		height: 7px;
+		margin-bottom: 30px;
 	}
 	&--label{
 		color: $grayDark;
