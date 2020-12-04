@@ -12,10 +12,9 @@ import {colors, sheet} from '../../../styles';
 import {RouteMinimap} from '../../../components/Route';
 import {parseCoords} from '../../../utils/coords';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import {UpView} from '../../../components/common';
 import {Waypoints} from '../../../components/Ride';
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import PassengersList from '../../../components/Driver/PassengersList';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride} = route.params;
@@ -71,40 +70,8 @@ const DriversRideDetails = ({navigation, route}) => {
               start={parseCoords(ride.startingLocation.coordinates)}
             />
           </View>
-          <View
-            style={{
-              paddingVertical: 16,
-              borderTopWidth: 1,
-              borderTopColor: colors.gray,
-            }}>
-            <View
-              style={{
-                width: '100%',
-                paddingHorizontal: 16,
-              }}>
-              <Text
-                style={{
-                  ...sheet.textSemiBold,
-                  color: colors.grayVeryDark,
-                  fontSize: 18,
-                }}>
-                Passengers
-              </Text>
-              {ride.stops.map(stop => (
-                <View
-                  key={stop.user.id}
-                  style={{...sheet.rowCenter, paddingVertical: 12}}>
-                  <Icon name="circle" color={colors.orange} size={12} />
-                  <Text
-                    style={{
-                      marginLeft: 8,
-                      ...sheet.textMedium,
-                      color: colors.grayDark,
-                      fontSize: 16,
-                    }}>{`${stop.user.firstName} ${stop.user.lastName}`}</Text>
-                </View>
-              ))}
-            </View>
+          <View style={styles.passengersList}>
+            <PassengersList ride={ride} />
           </View>
         </View>
       </ScrollView>
@@ -122,7 +89,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   container: {
-    flex: 1,
     paddingVertical: 27,
   },
   topRow: {
@@ -166,6 +132,11 @@ const styles = StyleSheet.create({
   upView: {
     width: '46%',
     height: 100,
+  },
+  passengersList: {
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray,
   },
 });
 
