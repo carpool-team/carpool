@@ -13,6 +13,13 @@ import Input from "../../../ui/input/Input";
 import { InputIcon } from "../../../ui/input/enums/InputIcon";
 import { InputType } from "../../../ui/input/enums/InputType";
 import { IRide } from "components/groups/interfaces/IRide";
+import DateFnsUtils from "@date-io/date-fns";
+import "date-fns";
+import {
+	MuiPickersUtilsProvider,
+	KeyboardTimePicker,
+	KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 export interface IAddGroupProps extends IReactI18nProps {
 	group: IGroup;
@@ -35,7 +42,10 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		fromOrTo: "rides.fromOrTo",
 		from: "rides.from",
 		to: "rides.to",
-		seats: "rides.seats"
+		seats: "rides.seats",
+		date: "rides.date",
+		time: "rides.time",
+		addBtn: "rides.addBtn"
 	};
 
 	const cssClasses = {
@@ -48,7 +58,11 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		buttonsLabel: "ridesAddRideFormButtonsContainer--label",
 		checkboxContainer: "ridesAddRideForm__checkboxContainer",
 		checkboxLabel: "ridesAddRideForm__checkboxLabel",
-		checkboxStyle: "ridesAddRideForm__checkboxStyle"
+		checkboxStyle: "ridesAddRideForm__checkboxStyle",
+		datePicker: "ridesAddRideForm__datePicker",
+		inputs: "ridesAddRideForm__inputs",
+		input: "ridesAddRideForm__input",
+		button: "ridesAddRideForm__button"
 	};
 
 	const ids = {
@@ -72,6 +86,12 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 	const [userAddressName, setUserAddresName] = useState(undefined);
 
 	const [seats, setSeats] = useState(undefined);
+
+	const [selectedDate, setSelectedDate] = useState(new Date("2014-08-18T21:11:54"));
+
+	const handleDateChange = (date) => {
+		setSelectedDate(date);
+	};
 
 	const ride: IRide = {
 		id : "fdsfds",
@@ -147,7 +167,34 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		};
 
 		return(
-			<div>
+			<div className={cssClasses.inputs}>
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+						<KeyboardDatePicker
+							className={cssClasses.datePicker}
+							disableToolbar
+							variant="inline"
+							format="dd/MM/yyyy"
+							margin="dense"
+							id="date-picker-inlie"
+							label={t(resources.date)}
+							value={selectedDate}
+							onChange={handleDateChange}
+							KeyboardButtonProps={{
+								"aria-label": "change date",
+							}}
+						/>
+						<KeyboardTimePicker
+							margin="normal"
+							id="time-picker"
+							className={cssClasses.datePicker}
+							label={t(resources.time)}
+							value={selectedDate}
+							onChange={handleDateChange}
+							KeyboardButtonProps={{
+								"aria-label": "change time",
+						}}
+						/>
+					</MuiPickersUtilsProvider>
 					<div className={cssClasses.checkboxLabel}>
 						{t(resources.fromOrTo)}
 					</div>
@@ -175,12 +222,12 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						}}
 					/>
 				</div>
-				<div>
 				{fromCheckBox &&
 					<Input
+						style = { cssClasses.input}
 						type={InputType.Address}
 						changeHandler={newValue => setUserAddresName(newValue)}
-						placeholder={"Adres " + t(resources.to)}
+						placeholder={"Adres " + t(resources.to) + " przejazdu"}
 						value={(userAddressName)}
 						icon={InputIcon.Location}
 						addressCords={coords => setUserCoordinates(coords)}
@@ -188,6 +235,7 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 				}
 				{toCheckBox &&
 					<Input
+						style = {cssClasses.input}
 						type={InputType.Address}
 						changeHandler={newValue => setUserAddresName(newValue)}
 						placeholder={"Adres " + t(resources.from)}
@@ -196,14 +244,22 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						addressCords={coords => setUserCoordinates(coords)}
 					/>
 				}
-				</div>
 				<Input
+						style = { cssClasses.input}
 						type={InputType.Text}
 						changeHandler={newValue => setSeats(newValue)}
 						placeholder={t(resources.seats)}
 						value={(seats)}
 						icon={InputIcon.Seats}
 					/>
+					<Button
+						className={cssClasses.button}
+						onClick={() => (null)}
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}>
+						{t(resources.addBtn)}
+					</Button>
+
 			</div>
 		);
 	};

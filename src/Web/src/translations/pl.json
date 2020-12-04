@@ -60,7 +60,10 @@
             "fromOrTo": "Lokalizacja grupy jako punkt: ",
             "from": "początkowy",
             "to": "końcowy",
-            "seats": "Ilość miejsc w samochodzie"
+            "seats": "Ilość miejsc w samochodzie",
+            "date": "Wybierz datę przejazdu.",
+            "time": "Wybierz godzinę przejazdu",
+            "addBtn": "Utwórz"
         },
         "footer": {
             "services": "Usługi",
