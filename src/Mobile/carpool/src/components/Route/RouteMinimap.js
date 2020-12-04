@@ -35,7 +35,7 @@ const parseCoords = coords => {
   return [coords.longitude, coords.latitude];
 };
 
-const RouteMinimap = ({stops}) => {
+const RouteMinimap = ({stops, hideDetails = false}) => {
   const [routes, setRoutes] = useState([]);
   const [bounds, setBounds] = useState(null);
 
@@ -183,7 +183,7 @@ const RouteMinimap = ({stops}) => {
 
   return (
     <View style={styles.container}>
-      {renderRouteDetails()}
+      {!hideDetails && renderRouteDetails()}
       <MapboxGL.MapView
         style={{flex: 1}}
         styleURL={MAP_LIGHT}

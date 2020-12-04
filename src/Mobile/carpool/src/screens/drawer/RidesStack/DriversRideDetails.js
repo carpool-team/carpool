@@ -17,7 +17,7 @@ import moment from 'moment';
 import PassengersList from '../../../components/Driver/PassengersList';
 
 const DriversRideDetails = ({navigation, route}) => {
-  const {ride} = route.params;
+  const {ride, past} = route.params;
 
   const onDeletePress = () =>
     Alert.alert('Warning!', 'Are you sure you want to delete this ride?', [
@@ -31,8 +31,6 @@ const DriversRideDetails = ({navigation, route}) => {
         onPress: () => console.log('DELETE RIDE'),
       },
     ]);
-
-  console.log(ride.stops);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -61,6 +59,7 @@ const DriversRideDetails = ({navigation, route}) => {
         <View style={styles.mapWrapper}>
           <RouteMinimap
             stops={[ride.startingLocation, ...ride.stops, ride.destination]}
+            hideDetails={past}
           />
         </View>
         <View style={styles.bottomWrapper}>

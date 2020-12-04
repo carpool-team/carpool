@@ -20,8 +20,6 @@ const PastRides = () => {
     state => state.passengerReducer.userPastRides,
   );
 
-  console.log(passengersPastRides);
-
   useEffect(() => {
     onRefreshPastRides();
   }, []);
@@ -34,7 +32,7 @@ const PastRides = () => {
   };
 
   const onItemPress = ride => {
-    navigation.navigate('DriversRideDetails', {ride});
+    navigation.navigate('DriversRideDetails', {ride, past: true});
   };
 
   return (
