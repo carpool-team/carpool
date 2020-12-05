@@ -56,9 +56,13 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ApiResponse> PostUser([FromBody] AddUserCommand request)
+		public async Task<ApiResponse> PostUser([FromBody] AddUserDto model)
 		{
-			var response = await _mediator.Send(request);
+			AddUserCommand addUser = new(new AppUserId(model.appUserId),
+				model.firstName,
+				model.lastName,
+				model.email);
+			var response = await _mediator.Send(addUser);
 			return new ApiResponse(response);
 		}
 

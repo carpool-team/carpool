@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
-using DataAccessLayer.IdGen;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
+using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
 using IdGen;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories
 {
-	public class RideRepository : IRideRepository
+    public class RideRepository : IRideRepository
 	{
 		private readonly CarpoolDbContext _context;
 		public RideRepository(CarpoolDbContext context)

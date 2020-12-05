@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.GroupDtos;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.GroupCommands;
 using RestApi.Commands.GroupCommands.AddGroup;
-using RestApi.DTOs.Group;
 using RestApi.Queries.GroupQueries;
 
 namespace RestApi.Controllers

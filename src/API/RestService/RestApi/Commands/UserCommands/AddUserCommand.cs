@@ -17,12 +17,12 @@ namespace RestApi.Commands.UserCommands
 	public class AddUserCommand : IRequest<ApplicationUser>
 	{
 		[JsonConstructor]
-		public AddUserCommand(string firstName, string lastName, string email, long appUserId)
+		public AddUserCommand(AppUserId appUserId, string firstName, string lastName, string email)
 		{
 			FirstName = firstName;
 			LastName = lastName;
 			Email = email;
-            AppUserId = new AppUserId(appUserId);
+            AppUserId = appUserId;
         }
 
 		public AppUserId AppUserId { get; }

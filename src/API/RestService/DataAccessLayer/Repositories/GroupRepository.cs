@@ -3,17 +3,17 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
-using DataAccessLayer.IdGen;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
 using Domain.Entities.Intersections;
+using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
 using IdGen;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories
 {
-	public class GroupRepository : IGroupRepository
+    public class GroupRepository : IGroupRepository
 	{
 		private readonly CarpoolDbContext _context;
 

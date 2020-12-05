@@ -9,7 +9,7 @@
     <PackageReference Include="AutoWrapper.Core" Version="4.3.1" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.0.0" />
     <PackageReference Include="Azure.Identity" Version="1.2.2" />
-    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.1.1" />
+    <PackageReference Include="IdGen" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.0" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
@@ -19,6 +19,11 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="RestEase" Version="1.5.1" />
+    <PackageReference Include="RestEase.SourceGenerator" Version="1.5.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -32,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\AuthShared\AuthShared.csproj" />
+    <ProjectReference Include="..\..\Shared\DataTransferObjects\DataTransferObjects.csproj" />
     <ProjectReference Include="..\..\Shared\IdentifiersShared\IdentifiersShared.csproj" />
     <ProjectReference Include="..\AuthDomain\AuthDomain.csproj" />
   </ItemGroup>

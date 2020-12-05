@@ -19,6 +19,8 @@ using AuthServer.Data;
 using AutoWrapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using AuthServer.Services;
+using RestEase;
 
 namespace AuthServer
 {
@@ -33,12 +35,14 @@ namespace AuthServer
 		{
 			services.AddDbContext<ApplicationDbContext>(options =>
 			{
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+				options.UseSqlServer(Configuration.GetConnectionString("IdentityDbConnectionString"));
 			});
 
 			services.AddIdentity<AuthUser, IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
+
+			services.AddTransient(_ => RestClient.For<IUserManagementService>("https://localhost:6001"));
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>

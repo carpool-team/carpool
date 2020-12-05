@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using AuthDomain.Entities;
 using AuthServer.Data;
 using AuthServer.Models;
+using AuthServer.Services;
 using AuthServer.Utilities;
 using AutoWrapper.Extensions;
 using AutoWrapper.Wrappers;
+using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
-using IdentityServer4.Events;
-using IdentityServer4.Services;
-using IdentityServer4.Stores;
+using IdGen;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using RestApi.DTOs.User;
 
 namespace AuthServer.Controllers
 {
@@ -28,41 +29,52 @@ namespace AuthServer.Controllers
 	[ApiController]
 	public class AuthController : ControllerBase
 	{
-		private readonly IClientStore _clientStore;
 		private readonly ApplicationDbContext _dbContext;
-		private readonly IEventService _events;
-		private readonly IIdentityServerInteractionService _interaction;
 		private readonly IAuthenticationSchemeProvider _schemeProvider;
 		private readonly SignInManager<AuthUser> _signInManager;
 		private readonly UserManager<AuthUser> _userManager;
 
-		public AuthController(UserManager<AuthUser> userManager,
-			SignInManager<AuthUser> signInManager,
-			IIdentityServerInteractionService interaction,
-			IClientStore clientStore,
-			IAuthenticationSchemeProvider schemeProvider,
-			IEventService events,
-			ApplicationDbContext dbContext)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-			_interaction = interaction;
-			_clientStore = clientStore;
-			_schemeProvider = schemeProvider;
-			_events = events;
-			_dbContext = dbContext;
-		}
+		private readonly IUserManagementService _userManagementService;
 
-		[HttpPost("register")]
+        public AuthController(UserManager<AuthUser> userManager,
+            SignInManager<AuthUser> signInManager,
+            IAuthenticationSchemeProvider schemeProvider,
+            ApplicationDbContext dbContext, IUserManagementService userManagementService)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _schemeProvider = schemeProvider;
+            _dbContext = dbContext;
+            _userManagementService = userManagementService;
+        }
+
+        [HttpPost("register")]
 		public async Task<ApiResponse> Register([FromBody] RegisterModel model)
 		{
 			if (!ModelState.IsValid)
 				throw new ApiException(ModelState.AllErrors());
-			AuthUser user = new(model.Email, model.Email, model.FirstName, model.LastName);
+
+			IdGenerator idGenerator = new IdGenerator(IdGeneratorType.User);
+			AuthUser user = new(model.Email, model.Email, model.FirstName, model.LastName, new AppUserId(idGenerator.CreateId()));
 			var result = await _userManager.CreateAsync(user, model.Password);
+
 			if (!result.Succeeded)
 				throw new ApiException(result.Errors);
-			return new ApiResponse("Successfully registered", StatusCodes.Status201Created);
+
+			AddUserDto addUser = new AddUserDto(user.AppUserId.Value,
+				user.FirstName,
+				user.LastName,
+				user.Email);
+
+            try 
+			{ 
+				await _userManagementService.CreateUser(addUser);
+				return new ApiResponse("Successfully registered", StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+            {
+				throw new ApiException(ex);
+            }
 		}
 
 
@@ -79,19 +91,15 @@ namespace AuthServer.Controllers
 
 			if (!result.Succeeded)
 			{
-				await _events.RaiseAsync(new UserLoginFailureEvent(model.Email, "invalid credentials"));
 				ModelState.AddModelError(string.Empty, "Invalid email or password");
 
 				throw new ApiException(ModelState);
 			}
 
 			var user = await _userManager.FindByNameAsync(model.Email);
-			await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
 
 			TokenGenerator tokenGenerator = new();
-
 			var token = tokenGenerator.GenerateJwtToken(new IdentityUserId(user.Id));
-
 			var refreshToken = tokenGenerator.GenerateRefreshToken();
 
 			user.RefreshTokens.Add(refreshToken);
