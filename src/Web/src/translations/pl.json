@@ -92,7 +92,15 @@
         "common": {
             "groups": "Grupy",
             "passenger": "Pasażer",
-            "driver": "Kierowca"
+            "driver": "Kierowca",
+            "monday": "Poniedziałek",
+            "tuesday": "Wtorek",
+            "wednesday": "Środa",
+            "thursday": "Czwartek",
+            "friday": "Piątek",
+            "saturday": "Sobota",
+            "sunday": "Niedziela",
+            "all": "Codziennie"
         },
         "prevBtn": "Wstecz",
         "createBtn": "Utwórz",

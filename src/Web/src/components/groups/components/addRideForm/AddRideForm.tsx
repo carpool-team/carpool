@@ -14,6 +14,10 @@ import { InputIcon } from "../../../ui/input/enums/InputIcon";
 import { InputType } from "../../../ui/input/enums/InputType";
 import { IRide } from "components/groups/interfaces/IRide";
 import DateFnsUtils from "@date-io/date-fns";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
+import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { purple } from "@material-ui/core/colors";
 import "date-fns";
 import {
 	MuiPickersUtilsProvider,
@@ -29,10 +33,6 @@ enum PanelType {
 	Disposable = "DISPOSABLE",
 	Cyclic = "CYCLIC",
 }
-enum StartPoint {
-	Group = "GROUP",
-	User = "USER"
-}
 
 const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 	const resources = {
@@ -45,7 +45,15 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		seats: "rides.seats",
 		date: "rides.date",
 		time: "rides.time",
-		addBtn: "rides.addBtn"
+		addBtn: "rides.addBtn",
+		monday: "common.monday",
+		tuesday: "common.tuesday",
+		wednesday: "common.wednesday",
+		thursday: "common.thursday",
+		friday: "common.friday",
+		saturday: "common.saturday",
+		sunday: "common.sunday",
+		all: "common.all"
 	};
 
 	const cssClasses = {
@@ -58,36 +66,41 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		buttonsLabel: "ridesAddRideFormButtonsContainer--label",
 		checkboxContainer: "ridesAddRideForm__checkboxContainer",
 		checkboxLabel: "ridesAddRideForm__checkboxLabel",
-		checkboxStyle: "ridesAddRideForm__checkboxStyle",
+		switchActive: "ridesAddRideForm__switchActive",
 		datePicker: "ridesAddRideForm__datePicker",
 		inputs: "ridesAddRideForm__inputs",
 		input: "ridesAddRideForm__input",
-		button: "ridesAddRideForm__button"
+		button: "ridesAddRideForm__button",
+		daysContainer: "ridesAddRideForm__daysContainer",
+		daysColumn: "ridesAddRideForm__daysContainer--column"
 	};
 
 	const ids = {
 		disposableBtn: "disposableBtn",
 		cyclicBtn: "cyclicBtn",
+		to: "toId",
+		from: "fromId"
 	};
 	const inputKeys = {
 		from: "fromStartPoint",
 		to: "toStartPoint"
 	};
 
-	const [selectedScreen, setSelectedScreen] = useState(PanelType.Disposable);
+	const { t } = props;
 
-	const [fromCheckBox, setFromCheckBox] = useState(true);
-	const [toCheckBox, setToCheckBox] = useState(false);
+	const [selectedScreen, setSelectedScreen] = useState(PanelType.Disposable);
+	const [startgroup, setStartGroup] = useState(false);
 
 	const [fromAddressCoordinates, setFromAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 	const [toAddressCoordinates, setToAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 
-	const [userAddressCoordinates, setUserAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 	const [userAddressName, setUserAddresName] = useState(undefined);
 
 	const [seats, setSeats] = useState(undefined);
 
 	const [selectedDate, setSelectedDate] = useState(new Date("2014-08-18T21:11:54"));
+
+	const [days, setDays] = useState({all: false, monday: false, tuesday: false, wednesday: false, thursday: false, friday: false, saturday: false, sunday: false});
 
 	const handleDateChange = (date) => {
 		setSelectedDate(date);
@@ -126,45 +139,79 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		setSelectedScreen(list);
 	};
 
-	const renderDisposablePanel = () => {
-		const { t } = props;
+	const setUserCoordinates = (coords: [number, number]) => {
+		if (!startgroup) {
+			setFromAddressCoordinates([props.group.location.latitude, props.group.location.longitude]);
+			setToAddressCoordinates(coords);
+		} else {
+			setFromAddressCoordinates(coords);
+			setToAddressCoordinates([props.group.location.latitude, props.group.location.longitude]);
+		}
+	};
 
-		const setFromCheckboxState = (newValue: string) => {
-			console.log(newValue);
-			if (newValue === "true") {
-				console.log(props.group);
-				setToCheckBox(false);
-				setFromCheckBox(true);
-				setFromAddressCoordinates([props.group.location.latitude, props.group.location.longitude]);
-				setToAddressCoordinates(userAddressCoordinates);
-			}	else {
-				setToCheckBox(true);
-				setFromCheckBox(false);
-				setToAddressCoordinates([props.group.location.latitude, props.group.location.longitude]);
-				setFromAddressCoordinates(userAddressCoordinates);
+	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const address1 = fromAddressCoordinates;
+		const address2 = toAddressCoordinates;
+		setFromAddressCoordinates(address2);
+		setToAddressCoordinates(address1);
+		setStartGroup(event.target.checked);
+		let from = document.getElementById(ids.from);
+		from?.classList.toggle(cssClasses.switchActive);
+		let to = document.getElementById(ids.to);
+		to?.classList.toggle(cssClasses.switchActive);
+	};
+
+	const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.name === "all") {
+			setDays({...days, monday: event.target.checked,
+								tuesday: event.target.checked,
+								wednesday: event.target.checked,
+								thursday: event.target.checked,
+								friday: event.target.checked,
+								saturday: event.target.checked,
+								sunday: event.target.checked,
+								all: event.target.checked,
+							});
+		} else {
+			setDays({ ...days, [event.target.name]: event.target.checked });
+		}
+	};
+
+	const LocationSwitch = withStyles({
+		switchBase: {
+			color: "#6b98d1",
+			"&$checked": {
+				color: "#6b98d1",
+			},
+			"&$checked + $track": {
+				backgroundColor: "#707070",
+			},
+			"& + $track": {
+				backgroundColor: "#707070",
 			}
-		};
-		const setToCheckBoxState = (newValue: string) => {
-			if (newValue === "true") {
-				setToCheckBox(true);
-				setFromCheckBox(false);
-				setToAddressCoordinates([props.group.location.latitude, props.group.location.longitude]);
-				setFromAddressCoordinates(userAddressCoordinates);
-			}	else {
-				setToCheckBox(false);
-				setFromCheckBox(true);
-				setFromAddressCoordinates([props.group.location.latitude, props.group.location.longitude]);
-				setToAddressCoordinates(userAddressCoordinates);
+		},
+		checked: {},
+		track: {},
+	})(Switch);
+
+	const DaysSwitch = withStyles({
+		switchBase: {
+			color: "#6b98d1",
+			"&$checked": {
+				color: "#6b98d1",
+			},
+			"&$checked + $track": {
+				backgroundColor: "#4a90e8",
+			},
+			"& + $track": {
+				backgroundColor: "#707070",
 			}
-		};
-		const setUserCoordinates = (coords: [number, number]) => {
-			setUserAddressCoordinates(coords);
-			if (toCheckBox) {
-				setFromAddressCoordinates(coords);
-			}	else {
-				setToAddressCoordinates(coords);
-			}
-		};
+		},
+		checked: {},
+		track: {},
+	})(Switch);
+
+	const renderDisposablePanel = () => {
 
 		return(
 			<div className={cssClasses.inputs}>
@@ -199,30 +246,14 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						{t(resources.fromOrTo)}
 					</div>
 				<div className={cssClasses.checkboxContainer}>
-					<Input
-						changeHandler={ (newValue) => setFromCheckboxState(newValue) }
-						value={""}
-						type={InputType.Checkbox}
-						checked={fromCheckBox}
-						style={cssClasses.checkboxStyle}
-						label={{
-							text: t(resources.from),
-							inputId: inputKeys.from,
-						}}
-					/>
-					<Input
-						changeHandler={newValue => setToCheckBoxState(newValue) }
-						value={""}
-						type={InputType.Checkbox}
-						checked={toCheckBox}
-						style={cssClasses.checkboxStyle}
-						label={{
-							text: t(resources.to),
-							inputId: inputKeys.to
-						}}
-					/>
+					<span className={cssClasses.switchActive} id={ids.from}> {t(resources.from)}</span>
+						<FormControlLabel
+							control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
+							label=""
+						/>
+					<span id={ids.to}> {t(resources.to) }</span>
 				</div>
-				{fromCheckBox &&
+				{!startgroup &&
 					<Input
 						style = { cssClasses.input}
 						type={InputType.Address}
@@ -233,7 +264,7 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						addressCords={coords => setUserCoordinates(coords)}
 					/>
 				}
-				{toCheckBox &&
+				{startgroup &&
 					<Input
 						style = {cssClasses.input}
 						type={InputType.Address}
@@ -265,9 +296,109 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 	};
 
 	const renderCyclicPanel = () => {
+
 		return(
-			<div>
-				dfs
+			<div className={cssClasses.inputs}>
+				<MuiPickersUtilsProvider utils={DateFnsUtils}>
+						<KeyboardTimePicker
+							margin="normal"
+							id="time-picker"
+							className={cssClasses.datePicker}
+							label={t(resources.time)}
+							value={selectedDate}
+							onChange={handleDateChange}
+							KeyboardButtonProps={{
+								"aria-label": "change time",
+						}}
+						/>
+					</MuiPickersUtilsProvider>
+					<div className={cssClasses.daysContainer}>
+						<div className={cssClasses.daysColumn}>
+							<FormControlLabel
+									control={<DaysSwitch size="medium" checked={days.all} onChange={handleDayChange} name="all"/>}
+									label={t(resources.all)}
+								/>
+							<FormControlLabel
+									control={<DaysSwitch size="medium" checked={days.monday} onChange={handleDayChange} name="monday"/>}
+									label={t(resources.monday)}
+								/>
+								<FormControlLabel
+									control={<DaysSwitch size="medium" checked={days.tuesday} onChange={handleDayChange} name="tuesday"/>}
+									label={t(resources.tuesday)}
+								/>
+								<FormControlLabel
+									control={<DaysSwitch size="medium" checked={days.wednesday} onChange={handleDayChange} name="wednesday"/>}
+									label={t(resources.wednesday)}
+								/>
+						</div>
+						<div className={cssClasses.daysColumn}>
+							<FormControlLabel
+									control={<DaysSwitch size="medium" checked={days.thursday} onChange={handleDayChange} name="thursday"/>}
+									label={t(resources.thursday)}
+								/>
+								<FormControlLabel
+									control={<DaysSwitch size="medium" checked={days.friday} onChange={handleDayChange} name="friday"/>}
+									label={t(resources.friday)}
+								/>
+								<FormControlLabel
+									control={<DaysSwitch size="medium" checked={days.saturday} onChange={handleDayChange} name="saturday"/>}
+									label={t(resources.saturday)}
+								/>
+								<FormControlLabel
+									control={<DaysSwitch size="medium" checked={days.sunday} onChange={handleDayChange} name="sunday"/>}
+									label={t(resources.sunday)}
+								/>
+						</div>
+					</div>
+					<div className={cssClasses.checkboxLabel}>
+						{t(resources.fromOrTo)}
+					</div>
+				<div className={cssClasses.checkboxContainer}>
+					<span className={cssClasses.switchActive} id={ids.from}> {t(resources.from)}</span>
+						<FormControlLabel
+							control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
+							label=""
+						/>
+					<span id={ids.to}> {t(resources.to) }</span>
+				</div>
+				{!startgroup &&
+					<Input
+						style = { cssClasses.input}
+						type={InputType.Address}
+						changeHandler={newValue => setUserAddresName(newValue)}
+						placeholder={"Adres " + t(resources.to) + " przejazdu"}
+						value={(userAddressName)}
+						icon={InputIcon.Location}
+						addressCords={coords => setUserCoordinates(coords)}
+					/>
+				}
+				{startgroup &&
+					<Input
+						style = {cssClasses.input}
+						type={InputType.Address}
+						changeHandler={newValue => setUserAddresName(newValue)}
+						placeholder={"Adres " + t(resources.from)}
+						value={(userAddressName)}
+						icon={InputIcon.Location}
+						addressCords={coords => setUserCoordinates(coords)}
+					/>
+				}
+				<Input
+						style = { cssClasses.input}
+						type={InputType.Text}
+						changeHandler={newValue => setSeats(newValue)}
+						placeholder={t(resources.seats)}
+						value={(seats)}
+						icon={InputIcon.Seats}
+					/>
+					<Button
+						className={cssClasses.button}
+						onClick={() => (null)}
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}>
+						{t(resources.addBtn)}
+					</Button>
+
 			</div>
 		);
 	};
