@@ -33,7 +33,7 @@ const SelectDirection = ({navigation}) => {
   }, [results]);
 
   useEffect(() => {
-    addRideState.swap !== null && console.log('GO FURTHER');
+    addRideState.swap !== null && navigation.navigate('SelectLocation');
   }, [addRideState.swap]);
 
   const onItemPress = swap =>
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     ...sheet.textMedium,
     color: colors.grayVeryDark,
     fontSize: 20,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   upview: {
     height: 80,

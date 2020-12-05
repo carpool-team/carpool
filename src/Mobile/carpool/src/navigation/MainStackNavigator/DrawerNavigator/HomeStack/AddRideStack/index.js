@@ -10,6 +10,7 @@ import {
   AddRideContext,
   AddRideContextActions,
 } from '../../../../../screens/HomeStack/AddRideStack/context';
+import SelectLocation from '../../../../../screens/HomeStack/AddRideStack/SelectLocation';
 
 const {useContext, useEffect} = React;
 
@@ -20,9 +21,9 @@ const AddRideStack = props => {
 
   const {dispatch} = useContext(AddRideContext);
 
-  useEffect(() => {
-    !focused && dispatch({type: AddRideContextActions.CLEAN_STATE});
-  }, [focused]);
+  // useEffect(() => {
+  //   !focused && dispatch({type: AddRideContextActions.CLEAN_STATE});
+  // }, [focused]);
 
   return (
     <Stack.Navigator>
@@ -41,8 +42,8 @@ const AddRideStack = props => {
         }}
       />
       <Stack.Screen
-        name="ChooseRoute"
-        component={ChooseRoute}
+        name="SelectLocation"
+        component={SelectLocation}
         options={{
           headerShown: false,
         }}
