@@ -7,11 +7,25 @@
 		&__checkboxContainer{
 			width: 100%;
 			display: flex;
-			padding: 10px;
+			padding: 5px;
 			flex-wrap: wrap;
 			margin-bottom: 30px;
 			background-color: $white;
+			align-items: center;
 			padding-left: 20px;
+			justify-content: flex-start;
+			& > span {
+				margin-left: 10px;
+				margin-right: 20px;
+				font-size: 16px;
+				font-weight: $medium;
+				color: $grayDark;
+			}
+		}
+		&__switchActive{
+			border-bottom: 2px solid $blue;
+			// border-radius: 20px;
+			padding: 5px;
 		}
 		&__checkboxLabel{
 			width: 100%;
@@ -21,10 +35,6 @@
 			color: $grayDark;
 			padding-left: 30px;
 			background-color: $white;
-		}
-		&__checkboxStyle {
-			font-size: 16px;
-			font-weight: $regular;
 		}
 		&__datePicker{
 			width: 100%;
@@ -45,10 +55,34 @@
 			margin-top: 5%;
 			margin-bottom: auto;
 		}
+		&__daysContainer{
+			padding-left: 7%;
+			width: 93%;
+			display: flex;
+			flex-direction:row;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+			margin-bottom: 20px;
+			&--column{
+				width: 48%;
+				display: flex;
+				flex-direction: column;
+			}
+		}
   }
 //Custom styles for date time controls 
+.MuiTypography-body1{
+	color: $grayDark !important;
+	font-family: "Montserrat" !important;
+	font-size: 15px !important;
+	font-weight: $medium !important;
+}
 .MuiFormLabel-root.Mui-focused {
 	color: $grayDark !important;
+}
+.MuiFormControlLabel-root{
+	margin-right: 0 !important;
 }
 .MuiFormLabel-root {
 	padding-top: 10px !important;
@@ -64,6 +98,10 @@
 	color: $grayDark!important;
 	padding-left: 15px !important;
 	font-family: "Montserrat" !important;
+	font-size: 17px !important;
+}
+.MuiInputBase-inputAdornedEnd{
+	padding: 2px !important;
 }
 .MuiInput-underline::before {
 	border-bottom: 0px solid $grayDark !important;
