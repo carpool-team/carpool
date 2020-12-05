@@ -157,7 +157,7 @@ const ChooseRoute = ({navigation}) => {
         </View>
       ) : (
         <View style={styles.mapContainer}>
-          <RouteMinimap start={startGeo} destination={destinationGeo} />
+          <RouteMinimap stops={[startGeo, destinationGeo]} />
           <StandardButton
             style={{marginTop: 36}}
             width="65%"
