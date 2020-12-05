@@ -11,7 +11,7 @@ import {
 import {colors, sheet} from '../../../styles';
 import {RouteMinimap} from '../../../components/Route';
 import {parseCoords} from '../../../utils/coords';
-import Ionicon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {Waypoints} from '../../../components/Ride';
 import moment from 'moment';
 import PassengersList from '../../../components/Driver/PassengersList';
@@ -47,14 +47,16 @@ const DriversRideDetails = ({navigation, route}) => {
               {moment(ride.date).format('Do MMMM YYYY')}
             </Text>
           </View>
-          <TouchableOpacity onPress={onDeletePress}>
-            <Ionicon
-              name="trash"
-              size={32}
-              color={colors.red}
-              style={styles.moreIcon}
-            />
-          </TouchableOpacity>
+          {!past && (
+            <TouchableOpacity onPress={onDeletePress}>
+              <Icon
+                name="trash"
+                size={32}
+                color={colors.red}
+                style={styles.moreIcon}
+              />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.mapWrapper}>
           <RouteMinimap
