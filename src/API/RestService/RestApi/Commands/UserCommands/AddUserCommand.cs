@@ -4,7 +4,9 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.User;
+using DataAccessLayer.Repositories;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using IdGen;
@@ -34,10 +36,12 @@ namespace RestApi.Commands.UserCommands
 	
 	public class AddUserCommandHandler : IRequestHandler<AddUserCommand, ApplicationUser>
 	{
-		private readonly IUserRepository _repository;
+		private readonly IUserRepository _userRepository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public AddUserCommandHandler(IUserRepository repository)
-			=> _repository = repository;
+		public AddUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+			=> (_userRepository, _unitOfWork)
+				= (userRepository, unitOfWork);
 
 		public async Task<ApplicationUser> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
@@ -45,8 +49,8 @@ namespace RestApi.Commands.UserCommands
 			var user = new ApplicationUser(appUserId, request.Email, request.FirstName, request.LastName);
 			try
 			{
-				await _repository.AddAsync(user, cancellationToken).ConfigureAwait(false);
-				await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+				await _userRepository.AddAsync(user, cancellationToken).ConfigureAwait(false);
+				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
                 return user;
 
 			}

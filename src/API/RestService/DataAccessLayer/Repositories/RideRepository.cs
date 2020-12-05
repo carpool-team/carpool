@@ -5,17 +5,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
 using DataAccessLayer.IdGen;
+using Domain.Contracts.Repositories;
+using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using IdGen;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccessLayer.Repositories.Ride
+namespace DataAccessLayer.Repositories
 {
-	public class RideRepository : BaseRepository<Domain.Entities.Ride, RideId>, IRideRepository
+	public class RideRepository : IRideRepository
 	{
-		public RideRepository(CarpoolDbContext context) : base(context) { }
+		private readonly CarpoolDbContext _context;
+		public RideRepository(CarpoolDbContext context)
+			=> _context = context;
 
-		public async Task<Domain.Entities.Ride> GetByIdAsync(RideId id, CancellationToken cancellationToken = default)
+		public async Task<Ride> GetByIdAsync(RideId id, CancellationToken cancellationToken = default)
 		{
 			return await _context.Rides.FirstOrDefaultAsync(ride => ride.Id == id, cancellationToken)
 				.ConfigureAwait(false);
@@ -55,7 +59,7 @@ namespace DataAccessLayer.Repositories.Ride
 				.ConfigureAwait(false);
 		}
 
-		public async Task<IEnumerable<Domain.Entities.Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(
+		public async Task<IEnumerable<Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(
 			AppUserId appUserId,
 			bool past = false,
 			CancellationToken cancellationToken = default)
@@ -69,7 +73,7 @@ namespace DataAccessLayer.Repositories.Ride
 				.ConfigureAwait(false);
 		}
 
-		public async Task<IEnumerable<Domain.Entities.Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
+		public async Task<IEnumerable<Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			bool past,
 			CancellationToken cancellationToken)
 		{
@@ -89,11 +93,14 @@ namespace DataAccessLayer.Repositories.Ride
 			_context.UserParticipatedRides.Remove(rideParticipant);
 		}
 		
-		public async Task AddAsync(Domain.Entities.Ride ride, CancellationToken cancellationToken = default)
+		public async Task AddAsync(Ride ride, CancellationToken cancellationToken = default)
 		{
 			IdGenerator rideIdGenerator = new IdGenerator(IdGeneratorType.Ride);
 			ride.Id = new RideId(rideIdGenerator.CreateId());
-			await _context.Set<Domain.Entities.Ride>().AddAsync(ride, cancellationToken).ConfigureAwait(false);
+			await _context.Set<Domain.Entities.Ride>().AddAsync(ride, cancellationToken);
 		}
-	}
+
+		public void Delete(Ride ride)
+			=> _context.Set<Ride>().Remove(ride);
+    }
 }

@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.Group;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -36,9 +37,11 @@ namespace RestApi.Commands.GroupCommands
 	public class UpdateGroupCommandHandler : IRequestHandler<UpdateGroupCommand, GroupId>
 	{
 		private readonly IGroupRepository _repository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public UpdateGroupCommandHandler(IGroupRepository repository)
-			=> _repository = repository;
+		public UpdateGroupCommandHandler(IGroupRepository repository, IUnitOfWork unitOfWork)
+			=> (_repository, _unitOfWork)
+				= (repository, unitOfWork);
 
 
 		public async Task<GroupId> Handle(UpdateGroupCommand request, CancellationToken cancellationToken = default)
@@ -55,7 +58,7 @@ namespace RestApi.Commands.GroupCommands
 
 			try
 			{
-				await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
 			}
 			catch (DbUpdateException ex)
 			{

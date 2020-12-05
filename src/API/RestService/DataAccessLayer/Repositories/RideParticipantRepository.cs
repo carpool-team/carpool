@@ -3,11 +3,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
+using Domain.Contracts.Repositories;
 using Domain.Entities.Intersections;
 using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccessLayer.Repositories.RideParticipant
+namespace DataAccessLayer.Repositories
 {
 	public class RideParticipantRepository : IRideParticipantRepository
 	{

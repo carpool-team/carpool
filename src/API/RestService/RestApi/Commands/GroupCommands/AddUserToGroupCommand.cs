@@ -2,8 +2,9 @@
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.Repositories;
-using DataAccessLayer.Repositories.Group;
-using DataAccessLayer.Repositories.Intersections.UserGroup;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
+using Domain.Contracts.Repositories.Intersections;
 using Domain.Entities.Intersections;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -46,17 +47,17 @@ namespace RestApi.Commands.GroupCommands
 						  ?? throw new ApiProblemDetailsException("Group id cannot be null.",
 							  StatusCodes.Status400BadRequest);
 
-			var group = await _repository.GetByIdAsync(groupId, cancellationToken).ConfigureAwait(false);
+			var group = await _repository.GetByIdAsync(groupId, cancellationToken);
 			_ = group
 				?? throw new ApiProblemDetailsException($"Group with id: {groupId} does not exist",
 					StatusCodes.Status404NotFound);
 
 			var userGroup = new UserGroup(request.AppUserId, groupId);
 
-			await _repository.AddUserToGroupAsync(userGroup, cancellationToken).ConfigureAwait(false);
+			await _repository.AddUserToGroupAsync(userGroup, cancellationToken);
 			try
 			{
-				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
+				await _unitOfWork.SaveAsync(cancellationToken);
 			}
 			catch (DbUpdateException ex)
 			{

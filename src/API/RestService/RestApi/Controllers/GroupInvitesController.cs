@@ -62,8 +62,8 @@ namespace RestApi.Controllers
 		[HttpPost]
 		public async Task<ApiResponse> PostGroupInvite(AddGroupInviteCommand request)
 		{
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-			return new ApiResponse($"Group Invite was created with id: {response}", response,
+			var groupInvite = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse($"Group Invite was created with id: {groupInvite}", groupInvite,
 				StatusCodes.Status201Created);
 		}
 

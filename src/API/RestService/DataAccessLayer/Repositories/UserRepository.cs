@@ -3,15 +3,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
+using Domain.Contracts.Repositories;
 using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccessLayer.Repositories.User
+namespace DataAccessLayer.Repositories
 {
-	public class UserRepository : BaseRepository<ApplicationUser, AppUserId>, IUserRepository
+	public class UserRepository : IUserRepository
 	{
-		public UserRepository(CarpoolDbContext context) : base(context) { }
+		private readonly CarpoolDbContext _context;
+		public UserRepository(CarpoolDbContext context)
+			=> _context = context;
 
 		//TODO: implement get group users by group id
 		public async Task<List<ApplicationUser>> GetGroupUsersByGroupIdAsync(GroupId id)

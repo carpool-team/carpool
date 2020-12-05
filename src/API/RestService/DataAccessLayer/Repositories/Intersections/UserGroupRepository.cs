@@ -1,8 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
+using Domain.Contracts.Repositories.Intersections;
 
-namespace DataAccessLayer.Repositories.Intersections.UserGroup
+namespace DataAccessLayer.Repositories.Intersections
 {
 	public class UserGroupRepository : IUserGroupRepository
 	{

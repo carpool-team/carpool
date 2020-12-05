@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccessLayer.Repositories.Group;
+using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;

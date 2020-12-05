@@ -3,15 +3,22 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
+using DataAccessLayer.IdGen;
+using Domain.Contracts.Repositories;
+using Domain.Entities;
 using Domain.Entities.Intersections;
 using IdentifiersShared.Identifiers;
+using IdGen;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccessLayer.Repositories.Group
+namespace DataAccessLayer.Repositories
 {
-	public class GroupRepository : BaseRepository<Domain.Entities.Group, GroupId>, IGroupRepository
+	public class GroupRepository : IGroupRepository
 	{
-		public GroupRepository(CarpoolDbContext context) : base(context) { }
+		private readonly CarpoolDbContext _context;
+
+		public GroupRepository(CarpoolDbContext context)
+			=> _context = context;
 
 		public async Task<Domain.Entities.Group> GetByIdAsync(GroupId id, CancellationToken cancellationToken = default)
 		{
@@ -76,7 +83,7 @@ namespace DataAccessLayer.Repositories.Group
 			return groups;
 		}
 
-		public async Task<List<Domain.Entities.Group>> GetGroupsByUserIdAsNoTrackingAsync(AppUserId appUserId,
+		public async Task<List<Group>> GetGroupsByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			CancellationToken cancellationToken)
 		{
 			var groupIds = await _context.UserGroups.AsNoTracking()
@@ -93,8 +100,20 @@ namespace DataAccessLayer.Repositories.Group
 		}
 
 		public async Task AddUserToGroupAsync(UserGroup userGroup, CancellationToken cancellationToken = default)
+			=> await _context.UserGroups.AddAsync(userGroup, cancellationToken);
+
+
+		public Task<bool> AnyWithIdAsync(GroupId groupId, CancellationToken cancellation = default)
+			=> _context.Set<Domain.Entities.Group>().AnyAsync(x => x.Id == groupId, cancellationToken: cancellation);
+
+		public async Task AddAsync(Group group, CancellationToken cancellationToken)
 		{
-			await _context.UserGroups.AddAsync(userGroup, cancellationToken).ConfigureAwait(false);
+			IdGenerator idGenerator = new(IdGeneratorType.Group);
+			group.Id = new GroupId(idGenerator.CreateId());
+			await _context.Set<Group>().AddAsync(group, cancellationToken);
 		}
-	}
+
+		public void Delete(Group group)
+			=> _context.Set<Group>().Remove(group);
+    }
 }

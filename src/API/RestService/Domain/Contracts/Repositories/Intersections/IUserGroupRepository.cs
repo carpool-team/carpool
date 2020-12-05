@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.Repositories.Intersections.UserGroup
+namespace Domain.Contracts.Repositories.Intersections
 {
 	public interface IUserGroupRepository
 	{

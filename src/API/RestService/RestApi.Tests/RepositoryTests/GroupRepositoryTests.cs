@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Carpool.Core.Models.Intersections;
 using Carpool.DAL.Repositories.Group;
+using DataAccessLayer.Repositories;
 using RestApi.Tests.Fixtures;
 using Xunit;
 using Xunit.Abstractions;

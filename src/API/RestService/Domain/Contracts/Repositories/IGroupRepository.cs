@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Domain.Entities;
 using Domain.Entities.Intersections;
 using IdentifiersShared.Identifiers;
 
-namespace DataAccessLayer.Repositories.Group
+namespace Domain.Contracts.Repositories
 {
-	public interface IGroupRepository : IBaseRepository<Domain.Entities.Group, GroupId>
+	public interface IGroupRepository
 	{
 		Task<Domain.Entities.Group> GetByIdAsync(GroupId id, CancellationToken cancellationToken);
 		Task<Domain.Entities.Group> GetByIdAsNoTrackingAsync(GroupId id, CancellationToken cancellationToken);
@@ -19,9 +20,15 @@ namespace DataAccessLayer.Repositories.Group
 		Task<IEnumerable<Domain.Entities.Group>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip);
 
 		Task<List<Domain.Entities.Group>> GetGroupsByUserIdAsNoTrackingAsync(AppUserId appUserId,
-			CancellationToken cancellationToken =
-				default);
+			CancellationToken cancellationToken = default);
 
 		Task AddUserToGroupAsync(UserGroup userGroup, CancellationToken cancellationToken = default);
+
+		Task<bool> AnyWithIdAsync(GroupId groupId, CancellationToken cancellation = default);
+
+		Task AddAsync(Group group, CancellationToken cancellationToken);
+
+		void Delete(Group group);
+
 	}
 }

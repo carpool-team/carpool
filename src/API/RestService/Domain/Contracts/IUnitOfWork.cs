@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.Repositories
+namespace Domain.Contracts
 {
 	public interface IUnitOfWork
 	{

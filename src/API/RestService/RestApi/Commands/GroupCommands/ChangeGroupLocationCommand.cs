@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.Group;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -25,9 +26,11 @@ namespace RestApi.Commands.GroupCommands
 	public class ChangeGroupLocationCommandHandler : AsyncRequestHandler<ChangeGroupLocationCommand>
 	{
 		private readonly IGroupRepository _repository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public ChangeGroupLocationCommandHandler(IGroupRepository repository)
-			=> _repository = repository;
+		public ChangeGroupLocationCommandHandler(IGroupRepository repository, IUnitOfWork unitOfWork)
+			=> (_repository, _unitOfWork)
+				= (repository, unitOfWork);
 
 		protected override async Task Handle(ChangeGroupLocationCommand request, CancellationToken cancellationToken)
 		{
@@ -39,7 +42,7 @@ namespace RestApi.Commands.GroupCommands
 			group.Location = new Location(request.Longitude, request.Latitude);
 			try
 			{
-				await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
 			}
 			catch (DbUpdateException ex)
 			{

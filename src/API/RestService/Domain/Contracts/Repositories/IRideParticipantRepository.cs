@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Domain.Entities.Intersections;
 using IdentifiersShared.Identifiers;
 
-namespace DataAccessLayer.Repositories.RideParticipant
+namespace Domain.Contracts.Repositories
 {
 	public interface IRideParticipantRepository
 	{

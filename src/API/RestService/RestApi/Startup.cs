@@ -5,12 +5,10 @@ using AuthShared.Options;
 using AutoWrapper;
 using DataAccessLayer.DatabaseContexts;
 using DataAccessLayer.Repositories;
-using DataAccessLayer.Repositories.Group;
-using DataAccessLayer.Repositories.GroupInvite;
-using DataAccessLayer.Repositories.Intersections.UserGroup;
-using DataAccessLayer.Repositories.Ride;
-using DataAccessLayer.Repositories.RideParticipant;
-using DataAccessLayer.Repositories.User;
+using DataAccessLayer.Repositories.Intersections;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
+using Domain.Contracts.Repositories.Intersections;
 using FluentValidation.AspNetCore;
 using IdentifiersShared.Converters;
 using MediatR;
@@ -47,7 +45,7 @@ namespace RestApi
 			services.AddSingleton(Configuration);
 
 			services.AddDbContext<CarpoolDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+				options.UseSqlServer(Configuration.GetConnectionString("RestDbConnectionString")));
 
 			services.AddHttpContextAccessor();
 

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AutoFixture;
-using Carpool.Core.Models;
-using Carpool.Core.Models.Intersections;
-using Carpool.DAL.ContextFactories;
-using Carpool.DAL.DatabaseContexts;
+using DataAccessLayer.ContextFactories;
+using DataAccessLayer.DatabaseContexts;
+using Domain.Entities;
+using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace RestApi.Tests.Fixtures
@@ -34,9 +35,9 @@ namespace RestApi.Tests.Fixtures
 
 			var vehicles = fixture.CreateMany<Vehicle>().ToList();
 
-			var users = new List<User>();
+			var users = new List<ApplicationUser>();
 			for (var i = 0; i <= iterRepeatCount; i++)
-				users.Add(fixture.Build<User>().With(x => x.VehicleId, vehicles[i].Id)
+				users.Add(fixture.Build<ApplicationUser>().With(x => x.VehicleId, vehicles[i].Id)
 				                 .Create());
 
 			var groups = new List<Group>();
