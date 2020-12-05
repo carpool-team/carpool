@@ -4,12 +4,14 @@ const initialState = {
   startingLocation: null,
   date: null,
   groupId: null,
+  swap: false,
 };
 
 export const AddRideContextActions = {
   SET_STARTING_LOCATION: 'SET_STARTING_LOCATION',
   SET_DATE: 'SET_DATE',
   SET_GROUP_ID: 'SET_GROUP_ID',
+  SET_SWAP: 'SET_SWAP',
   CLEAN_STATE: 'CLEAN_STATE',
 };
 
@@ -29,6 +31,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         groupId: action.payload,
+      };
+    case AddRideContextActions.SET_SWAP:
+      return {
+        ...state,
+        swap: action.payload,
       };
     case AddRideContextActions.CLEAN_STATE:
       return initialState;
