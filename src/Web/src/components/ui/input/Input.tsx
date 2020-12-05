@@ -23,7 +23,6 @@ interface IINputProps extends IReactI18nProps {
 		inputId: string;
 	};
 	validation?: IValidation;
-	checked?: boolean;
 	addressCords?: (cords: [number, number]) => void;
 }
 interface IAddress {
@@ -267,7 +266,7 @@ const Input = (props: IINputProps) => {
 				className={checkboxBoxClassName}
 				placeholder={props.placeholder}
 				onChange={generalChangeHandler}
-				checked={!!props.checked}
+				value={props.value}
 				type={"checkbox"}
 				id={props.label?.inputId}
 			/>
