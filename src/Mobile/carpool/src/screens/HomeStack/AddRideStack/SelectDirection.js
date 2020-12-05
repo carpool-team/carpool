@@ -43,6 +43,7 @@ const SelectDirection = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Text style={styles.title}>Select direction</Text>
+        <Text style={styles.info}>I want to ride</Text>
         <View style={sheet.rowCenterSplit}>
           <UpView
             onPress={() => onItemPress(false)}
@@ -90,6 +91,12 @@ const styles = StyleSheet.create({
     color: colors.orange,
     ...sheet.textSemiBold,
     marginBottom: 50,
+  },
+  info: {
+    ...sheet.textMedium,
+    color: colors.grayVeryDark,
+    fontSize: 20,
+    marginBottom: 16,
   },
   upview: {
     height: 80,

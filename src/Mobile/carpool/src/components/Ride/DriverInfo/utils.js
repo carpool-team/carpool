@@ -4,9 +4,6 @@ export const getLeavingIn = date => {
   const minutes = moment(date).diff(moment(), 'minutes');
   const hours = moment(date).diff(moment(), 'hours');
 
-  console.log('MIN', minutes);
-  console.log('H', hours);
-
   if (minutes < 60) {
     return `${minutes} minutes`;
   } else {
