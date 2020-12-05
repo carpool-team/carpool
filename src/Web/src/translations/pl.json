@@ -63,7 +63,9 @@
             "seats": "Ilość miejsc w samochodzie",
             "date": "Wybierz datę przejazdu.",
             "time": "Wybierz godzinę przejazdu",
-            "addBtn": "Utwórz"
+            "addBtn": "Utwórz",
+            "participantOnly": "Tylko przejazdy jako pasażer.",
+            "ownerOnly": "Tylko przejazdy jako kierowca."
         },
         "footer": {
             "services": "Usługi",
