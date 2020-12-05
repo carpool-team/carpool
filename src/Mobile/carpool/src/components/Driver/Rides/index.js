@@ -46,7 +46,11 @@ const Rides = () => {
   };
 
   const onItemPress = ride => {
-    navigation.navigate('DriversRideDetails', {ride, past: false});
+    if (isPassenger) {
+      navigation.navigate('PassengersRideDetails', {ride, past: false});
+    } else {
+      navigation.navigate('DriversRideDetails', {ride, past: false});
+    }
   };
 
   const onIncrement = () => setOffset(offset => offset + 1);

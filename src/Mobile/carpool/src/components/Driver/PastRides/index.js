@@ -32,7 +32,11 @@ const PastRides = () => {
   };
 
   const onItemPress = ride => {
-    navigation.navigate('DriversRideDetails', {ride, past: true});
+    if (isPassenger) {
+      navigation.navigate('PassengersRideDetails', {ride, past: true});
+    } else {
+      navigation.navigate('DriversRideDetails', {ride, past: true});
+    }
   };
 
   return (
