@@ -8,7 +8,6 @@ const GroupsFlatlist = ({data, loading, onItemPress}) => (
   <FlatList
     keyboardShouldPersistTaps="always"
     style={styles.flatlist}
-    contentContainerStyle={styles.contentContainer}
     data={data}
     keyExtractor={item => item.id}
     renderItem={({item}) => <ListItem item={item} onItemPress={onItemPress} />}
