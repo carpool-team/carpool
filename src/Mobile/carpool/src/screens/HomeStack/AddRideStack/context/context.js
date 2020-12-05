@@ -4,7 +4,7 @@ const initialState = {
   startingLocation: null,
   date: null,
   group: null,
-  swap: false,
+  swap: null,
 };
 
 export const AddRideContextActions = {
