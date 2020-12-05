@@ -3,14 +3,14 @@ import React, {createContext, useReducer} from 'react';
 const initialState = {
   startingLocation: null,
   date: null,
-  groupId: null,
+  group: null,
   swap: false,
 };
 
 export const AddRideContextActions = {
   SET_STARTING_LOCATION: 'SET_STARTING_LOCATION',
   SET_DATE: 'SET_DATE',
-  SET_GROUP_ID: 'SET_GROUP_ID',
+  SET_GROUP: 'SET_GROUP',
   SET_SWAP: 'SET_SWAP',
   CLEAN_STATE: 'CLEAN_STATE',
 };
@@ -27,10 +27,10 @@ const reducer = (state, action) => {
         ...state,
         date: action.payload,
       };
-    case AddRideContextActions.SET_GROUP_ID:
+    case AddRideContextActions.SET_GROUP:
       return {
         ...state,
-        groupId: action.payload,
+        group: action.payload,
       };
     case AddRideContextActions.SET_SWAP:
       return {
