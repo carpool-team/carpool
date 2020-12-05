@@ -146,7 +146,7 @@ const ChooseRoute = ({navigation}) => {
       return (
         <GroupsFlatlist
           data={grps}
-          loaidng={groups.loading}
+          loading={groups.loading}
           onItemPress={onDestinationItemPress}
         />
       );
