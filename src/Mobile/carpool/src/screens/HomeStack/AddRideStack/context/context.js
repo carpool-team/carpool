@@ -1,14 +1,14 @@
 import React, {createContext, useReducer} from 'react';
 
 const initialState = {
-  startingLocation: null,
+  location: null,
   date: null,
   group: null,
   swap: null,
 };
 
 export const AddRideContextActions = {
-  SET_STARTING_LOCATION: 'SET_STARTING_LOCATION',
+  SET_LOCATION: 'SET_LOCATION',
   SET_DATE: 'SET_DATE',
   SET_GROUP: 'SET_GROUP',
   SET_SWAP: 'SET_SWAP',
@@ -17,16 +17,6 @@ export const AddRideContextActions = {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case AddRideContextActions.SET_STARTING_LOCATION:
-      return {
-        ...state,
-        startingLocation: action.payload,
-      };
-    case AddRideContextActions.SET_DATE:
-      return {
-        ...state,
-        date: action.payload,
-      };
     case AddRideContextActions.SET_GROUP:
       return {
         ...state,
@@ -36,6 +26,16 @@ const reducer = (state, action) => {
       return {
         ...state,
         swap: action.payload,
+      };
+    case AddRideContextActions.SET_LOCATION:
+      return {
+        ...state,
+        location: action.payload,
+      };
+    case AddRideContextActions.SET_DATE:
+      return {
+        ...state,
+        date: action.payload,
       };
     case AddRideContextActions.CLEAN_STATE:
       return initialState;
