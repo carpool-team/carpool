@@ -1,116 +1,126 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.RideCommands;
 using RestApi.Commands.RideCommands.RemoveUserFromRide;
+using RestApi.DTOs.Ride;
 using RestApi.Queries.RideQueries;
 
 namespace RestApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RidesController : Controller
-    {
-        private readonly CarpoolDbContext _context;
-        private readonly IMediator _mediator;
+	[Route("api/[controller]")]
+	[ApiController]
+	public class RidesController : Controller
+	{
+		private readonly CarpoolDbContext _context;
+		private readonly IMediator _mediator;
 
-        public RidesController(CarpoolDbContext context, IMediator mediator)
-        {
-            _context = context;
-            _mediator = mediator;
-        }
+		public RidesController(CarpoolDbContext context, IMediator mediator)
+		{
+			_context = context;
+			_mediator = mediator;
+		}
 
-        // GET: api/Rides?userId={id}
-        [HttpGet]
-        public async Task<ApiResponse> GetRides()
-        {
-            var request = new GetRidesQuery();
-            var response = await _mediator.Send(request).ConfigureAwait(false);
-            return new ApiResponse(response);
-        }
+		// GET: api/Rides?appUserId={id}
+		[HttpGet]
+		public async Task<ApiResponse> GetRides()
+		{
+			var request = new GetRidesQuery();
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse(response);
+		}
 
-        // GET: api/Rides/5
-        [HttpGet("{rideId}")]
-        public async Task<ApiResponse> GetRide(Guid rideId)
-        {
-            var request = new GetRideQuery(rideId);
-            var response = await _mediator.Send(request).ConfigureAwait(false);
+		// GET: api/Rides/5
+		[HttpGet("{rideId}")]
+		public async Task<ApiResponse> GetRide(RideId rideId)
+		{
+			var request = new GetRideQuery(rideId);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-            return new ApiResponse(response);
-        }
+			return new ApiResponse(response);
+		}
 
-        // PUT: api/Rides/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<ApiResponse> PutRide(Guid id, UpdateRideCommand request)
-        {
-            request.RideId = id;
-            var response = await _mediator.Send(request).ConfigureAwait(false);
+		// PUT: api/Rides/5
+		// To protect from overposting attacks, enable the specific properties you want to bind to, for
+		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[HttpPut("{rideId}")]
+		public async Task<ApiResponse> PutRide([FromRoute] long rideId, [FromBody] UpdateRideDto model)
+		{
+			RideId typedRideId = new(rideId);
+			var request = new UpdateRideCommand(typedRideId,
+				model.ParticipantIds,
+				model.Date,
+				model.Price);
 
-            return new ApiResponse(response);
-        }
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-        // POST: api/Rides
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ApiResponse> PostRide([FromBody] AddRideCommand request)
-        {
-            var response = await _mediator.Send(request).ConfigureAwait(false);
-            return new ApiResponse(response);
-        }
+			return new ApiResponse(response);
+		}
 
-        // DELETE: api/Rides/5
-        [HttpDelete("{id}")]
-        public async Task<ApiResponse> DeleteRide(Guid id)
-        {
-            var request = new DeleteRideCommand(id);
-            var response = await _mediator.Send(request).ConfigureAwait(false);
+		// POST: api/Rides
+		// To protect from overposting attacks, enable the specific properties you want to bind to, for
+		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+		[HttpPost]
+		public async Task<ApiResponse> PostRide([FromBody] AddRideCommand request)
+		{
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse(response);
+		}
 
-            return new ApiResponse(request);
-        }
+		// DELETE: api/Rides/5
+		[HttpDelete("{rideId}")]
+		public async Task<ApiResponse> DeleteRide(long rideId)
+		{
+			RideId typedRideId = new(rideId);
+			var request = new DeleteRideCommand(typedRideId);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-        [HttpPost("{rideId}/users")]
-        public async Task<ApiResponse> AddParticipant([FromRoute] Guid rideId,
-            [FromBody] AddRideParticipandCommand request)
-        {
-            request.RideId = rideId;
-            var response = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse(response);
+		}
 
-            return new ApiResponse("ok");
-        }
+		[HttpPost("{rideId}/users")]
+		public async Task<ApiResponse> AddParticipant([FromRoute] RideId rideId,
+			[FromBody] AddRideParticipandCommand request)
+		{
+			request.RideId = rideId;
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-        [HttpGet("~/api/users/{userId}/rides/participated")]
-        public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] Guid userId,
-            [FromQuery] bool past = false)
-        {
-            var request = new GetUserParticipatedRidesQuery(userId, past);
-            var response = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse("ok");
+		}
 
-            return new ApiResponse(response);
-        }
+		[HttpGet("~/api/users/{appUserId}/rides/participated")]
+		public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] long userId,
+			[FromQuery] bool past = false)
+		{
+			AppUserId typedAppUserId = new(userId);
+			var request = new GetUserParticipatedRidesQuery(typedAppUserId, past);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-        [HttpGet("~/api/users/{userId}/rides/owned")]
-        public async Task<ApiResponse> GetUserOwnedRides([FromRoute] Guid userId,
-            [FromQuery] bool past = false)
-        {
-            var request = new GetUserOwnedRidesQuery(userId, past);
-            var response = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse(response);
+		}
 
-            return new ApiResponse(response);
-        }
+		[HttpGet("~/api/users/{appUserId}/rides/owned")]
+		public async Task<ApiResponse> GetUserOwnedRides([FromRoute] long userId,
+			[FromQuery] bool past = false)
+		{
+			AppUserId typedAppUserId = new(userId);
+			var request = new GetUserOwnedRidesQuery(typedAppUserId, past);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
 
-        [HttpDelete("{rideId}/users/{userId}")]
-        public async Task<ApiResponse> RemoveUserFromRide([FromRoute] Guid rideId, [FromRoute] Guid userId)
-        {
-            var request = new RemoveUserFromRideCommand(rideId, userId);
-            var response = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse(response);
+		}
 
-            return new ApiResponse($"User with id {userId} has been deleted from ride with id {rideId}");
-        }
-    }
+		[HttpDelete("{rideId}/users/{appUserId}")]
+		public async Task<ApiResponse> RemoveUserFromRide([FromRoute] long rideId, [FromRoute] AppUserId appUserId)
+		{
+			RideId typedRideId = new(rideId);
+			var request = new RemoveUserFromRideCommand(typedRideId, appUserId);
+			var response = await _mediator.Send(request).ConfigureAwait(false);
+
+			return new ApiResponse($"User with id {appUserId} has been deleted from ride with id {rideId}");
+		}
+	}
 }

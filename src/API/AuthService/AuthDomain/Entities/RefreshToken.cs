@@ -9,11 +9,12 @@ namespace AuthDomain.Entities
 	{
 		public string Token { get; set; }
 		public DateTime Expires { get; set; }
-		[NotMapped]
-		public bool IsExpired => DateTime.UtcNow >= Expires;
+
+		[NotMapped] public bool IsExpired => DateTime.UtcNow >= Expires;
+
 		public DateTime Created { get; set; }
 		public DateTime? Revoked { get; set; }
-		[NotMapped]
-		public bool IsActive => Revoked == null && !IsExpired;
+
+		[NotMapped] public bool IsActive => Revoked == null && !IsExpired;
 	}
 }

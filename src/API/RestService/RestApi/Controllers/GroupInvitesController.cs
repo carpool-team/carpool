@@ -1,10 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.GroupInviteCommands;
+using RestApi.DTOs.GroupInvites;
 using RestApi.Queries.GroupInviteQueries;
 
 namespace RestApi.Controllers
@@ -29,8 +30,10 @@ namespace RestApi.Controllers
 
 		// GET: api/GroupInvites/5
 		[HttpGet("{groupInviteId}")]
-		public async Task<ApiResponse> GetGroupInvite([FromRoute] GetGroupInviteQuery request)
+		public async Task<ApiResponse> GetGroupInvite([FromRoute] long groupInviteId)
 		{
+			GetGroupInviteQuery request = new(new GroupInviteId(groupInviteId));
+
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse(response);
@@ -40,10 +43,11 @@ namespace RestApi.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{groupInviteId}")]
-		public async Task<ApiResponse> PutGroupInvite([FromBody] UpdateGroupInviteCommand request,
-		                                              [FromRoute] Guid groupInviteId)
+		public async Task<ApiResponse> PutGroupInvite([FromBody] UpdateGroupInviteDto model,
+			[FromRoute] long groupInviteId)
 		{
-			request.GroupInviteId = groupInviteId;
+			GroupInviteId typedGroupInviteId = new(groupInviteId);
+			UpdateGroupInviteCommand request = new(typedGroupInviteId, model.IsAccepted);
 
 			await _mediator.Send(request).ConfigureAwait(false);
 
@@ -63,18 +67,20 @@ namespace RestApi.Controllers
 
 		// DELETE: api/GroupInvites/5
 		[HttpDelete("{groupInviteId}")]
-		public async Task<ApiResponse> DeleteGroupInvite(Guid groupInviteId)
+		public async Task<ApiResponse> DeleteGroupInvite(long groupInviteId)
 		{
-			var request = new DeleteGroupInviteCommand(groupInviteId);
+			GroupInviteId typedGroupInviteId = new(groupInviteId);
+			var request = new DeleteGroupInviteCommand(typedGroupInviteId);
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse($"Group Invite with id: {response} has been deleted");
 		}
 
-		[HttpGet("~/api/users/{userId}/group-invites")]
-		public async Task<ApiResponse> GetUserGroupInvites([FromRoute] Guid userId)
+		[HttpGet("~/api/users/{appUserId}/group-invites")]
+		public async Task<ApiResponse> GetUserGroupInvites([FromRoute] long userId)
 		{
-			var request = new GetUserGroupInvitesQuery(userId);
+			AppUserId typedAppUserId = new(userId);
+			var request = new GetUserGroupInvitesQuery(typedAppUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 

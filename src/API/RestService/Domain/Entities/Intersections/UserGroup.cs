@@ -1,18 +1,18 @@
-﻿using System;
+﻿using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities.Intersections
 {
 	public class UserGroup
 	{
-		public UserGroup(Guid userId, Guid groupId)
+		public UserGroup(AppUserId appUserId, GroupId groupId)
 		{
-			UserId = userId;
+			AppUserId = appUserId;
 			GroupId = groupId;
 		}
 
-		public Guid UserId { get; set; }
+		public AppUserId AppUserId { get; set; }
 		public ApplicationUser ApplicationUser { get; set; }
-		public Guid GroupId { get; set; }
+		public GroupId GroupId { get; set; }
 		public Group Group { get; set; }
 	}
 }

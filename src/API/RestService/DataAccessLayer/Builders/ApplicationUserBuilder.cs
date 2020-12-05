@@ -12,39 +12,28 @@ namespace DataAccessLayer.Builders
 			_ = builder ?? throw new NullReferenceException(nameof(builder));
 			builder.ToTable("Users");
 			builder.HasKey(x => x.Id);
+			builder.Property(x => x.FirstName).IsRequired();
+			builder.Property(x => x.LastName).IsRequired();
+			builder.Property(x => x.Email).IsRequired();
 
-			builder.Property(x => x.FirstName);
-			builder.Property(x => x.LastName);
-
-			builder.OwnsMany(x => x.Ratings)
-			       .WithOwner()
-			       .HasForeignKey(x => x.UserId);
-
-
-			//  builder.HasMany(x => x.CreatedRides)
-			//.WithOne()
-			//.HasForeignKey(r => r.OwnerId)
-			//         .OnDelete(DeleteBehavior.Cascade);
-
-			//  builder.HasMany(x => x.ParticipatedRides)
-			//.WithOne()
-			//.HasForeignKey(r => r.UserId)
-			//.OnDelete(DeleteBehavior.Cascade);
-
-			//builder.HasMany(x => x.RideRequests)
-			//       .WithOne()
-			//       .HasForeignKey(r => r.RequesterId)
-			//       .OnDelete(DeleteBehavior.Cascade);
+			builder.OwnsMany(x => x.Ratings, x =>
+			{
+				x.ToTable("Ratings");
+				x.WithOwner().HasForeignKey("AppUserId");
+				x.Property<Guid>("Id");
+				x.Property(x => x.Value).IsRequired();
+				x.HasKey("Id");
+			});
 
 			builder.HasMany(x => x.UserGroups)
-			       .WithOne(x => x.ApplicationUser)
-			       .HasForeignKey(ug => ug.UserId)
-			       .OnDelete(DeleteBehavior.Cascade);
+				.WithOne(x => x.ApplicationUser)
+				.HasForeignKey(ug => ug.AppUserId)
+				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasOne(x => x.Vehicle)
-			       .WithOne()
-			       .HasForeignKey<ApplicationUser>(v => v.VehicleId)
-			       .OnDelete(DeleteBehavior.Cascade);
+				.WithOne()
+				.HasForeignKey<Vehicle>(v => v.AppUserId)
+				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }

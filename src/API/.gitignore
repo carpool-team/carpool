@@ -273,5 +273,6 @@ __pycache__/
 # tools/
 
 # End of https://www.gitignore.io/api/aspnetcore
-/Carpool.RestAPI/logs/
+/RestService/RestAPI/logs/
 /AuthService/AuthServer/tempkey.jwk
+/RestService/RestApi/logs/
