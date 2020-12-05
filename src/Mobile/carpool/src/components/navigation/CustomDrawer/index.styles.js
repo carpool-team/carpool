@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
   },
   upcomingRide: {
     fontSize: 18,
-    color: colors.green,
+    color: colors.blue,
     ...sheet.textMedium,
     marginBottom: 18,
   },

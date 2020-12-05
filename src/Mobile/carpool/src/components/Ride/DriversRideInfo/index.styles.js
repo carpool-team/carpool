@@ -2,21 +2,14 @@ import {StyleSheet} from 'react-native';
 import {sheet, colors} from '../../../styles';
 
 export const styles = StyleSheet.create({
-  circleButton: {
-    marginRight: 12,
+  upview: {
+    width: '100%',
+    height: 80,
   },
-  upperContainer: {
-    flex: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 18,
-    ...sheet.rowCenter,
-  },
-  userInfoContainer: {
-    flex: 1,
-    flexDirection: 'column',
+  contentContainer: {
     justifyContent: 'space-between',
-    height: 64,
-    paddingVertical: 5,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   regularRide: {
     ...sheet.textBold,

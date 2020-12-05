@@ -1,18 +1,19 @@
+import moment from 'moment';
+
 export const getLeavingIn = date => {
-  const now = Date.now();
-  const lv = new Date(date).getTime();
-  const diff = lv - now;
-  const minutes = parseInt(diff / (1000 * 60));
-  const hours = parseInt(minutes / 60);
-  const dt = new Date(date).toLocaleString();
+  const minutes = moment(date).diff(moment(), 'minutes');
+  const hours = moment(date).diff(moment(), 'hours');
+
+  console.log('MIN', minutes);
+  console.log('H', hours);
 
   if (minutes < 60) {
-    return `Leaving in ${minutes} minutes`;
+    return `${minutes} minutes`;
   } else {
     if (hours < 12) {
-      return `Leaving in ${hours} hours`;
+      return `${hours} hours`;
     } else {
-      return `${dt}`;
+      return `${moment(date).format('HH:mm DD.MM.YYYY')}`;
     }
   }
 };
