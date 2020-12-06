@@ -8,6 +8,7 @@ const initialState = {
   days: null,
   regular: false,
   time: null,
+  seats: null,
 };
 
 export const AddRideContextActions = {
@@ -18,6 +19,7 @@ export const AddRideContextActions = {
   SET_DAYS: 'SET_DAYS',
   SET_REGULAR: 'SET_REGULAR',
   SET_TIME: 'SET_TIME',
+  SET_SEATS: 'SET_SEATS',
   CLEAN_STATE: 'CLEAN_STATE',
 };
 
@@ -57,6 +59,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         time: action.payload,
+      };
+    case AddRideContextActions.SET_SEATS:
+      return {
+        ...state,
+        seats: action.payload,
       };
     case AddRideContextActions.CLEAN_STATE:
       return initialState;
