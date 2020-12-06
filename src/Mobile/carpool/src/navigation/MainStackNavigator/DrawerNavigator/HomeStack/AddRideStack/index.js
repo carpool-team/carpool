@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import ChooseRoute from '../../../../../screens/HomeStack/AddRideStack/ChooseRoute';
 import PickTime from '../../../../../screens/HomeStack/AddRideStack/PickTime';
 import SetSeats from '../../../../../screens/HomeStack/AddRideStack/SetSeats';
 import SelectGroup from '../../../../../screens/HomeStack/AddRideStack/SelectGroup';
@@ -11,6 +10,7 @@ import {
   AddRideContextActions,
 } from '../../../../../screens/HomeStack/AddRideStack/context';
 import SelectLocation from '../../../../../screens/HomeStack/AddRideStack/SelectLocation';
+import RideSummary from '../../../../../screens/HomeStack/AddRideStack/RideSummary';
 
 const {useContext, useEffect} = React;
 
@@ -58,6 +58,13 @@ const AddRideStack = props => {
       <Stack.Screen
         name="SetSeats"
         component={SetSeats}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="RideSummary"
+        component={RideSummary}
         options={{
           headerShown: false,
         }}
