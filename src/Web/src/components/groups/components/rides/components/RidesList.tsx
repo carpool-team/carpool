@@ -9,6 +9,7 @@ import mapConfig from "../../../../map/mapConfig";
 import Button from "../../../../ui/button/Button";
 import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
+import SearchBar from "../../../../ui/searchBar/SearchBar";
 
 interface IRidesListProps extends IReactI18nProps {
 	rides: IRide[];
@@ -28,7 +29,7 @@ interface IRideNames extends IRide {
 const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
 
 const RidesList = (props: IRidesListProps) => {
-
+	const [searchKey, setSearchKey] = useState(null);
 	const cssClasses = {
 		list: "ridesList",
 		mainRow: "ridesList--mainRow",
@@ -100,12 +101,17 @@ const RidesList = (props: IRidesListProps) => {
 				useEffect(() => {
 					if (ride) {
 						if (!fromName || !toName) {
-							onGetFromName([ride.startingLocation.latitude, ride.startingLocation.longitude]);
-							onGetToName([ride.destination.latitude, ride.destination.longitude]);
+							onGetFromName([
+								ride.startingLocation.latitude,
+								ride.startingLocation.longitude,
+							]);
+							onGetToName([
+								ride.destination.latitude,
+								ride.destination.longitude,
+							]);
 						}
 					}
 				});
-
 			});
 		}
 		return rides;
@@ -115,11 +121,16 @@ const RidesList = (props: IRidesListProps) => {
 		if (date) {
 			let d = new Date(date);
 			let dateOutput =
-				d.getUTCFullYear() + "/" +
-				("0" + (d.getUTCMonth() + 1)).slice(-2) + "/" +
-				("0" + d.getUTCDate()).slice(-2) + " " +
-				("0" + d.getUTCHours()).slice(-2) + ":" +
-				("0" + d.getUTCMinutes()).slice(-2) + ":" +
+				d.getUTCFullYear() +
+				"/" +
+				("0" + (d.getUTCMonth() + 1)).slice(-2) +
+				"/" +
+				("0" + d.getUTCDate()).slice(-2) +
+				" " +
+				("0" + d.getUTCHours()).slice(-2) +
+				":" +
+				("0" + d.getUTCMinutes()).slice(-2) +
+				":" +
 				("0" + d.getUTCSeconds()).slice(-2);
 			return dateOutput;
 		}
@@ -129,10 +140,10 @@ const RidesList = (props: IRidesListProps) => {
 
 	const DefaultItem = (props: IListItemProps) => {
 		const color = {
-			color: props.color
+			color: props.color,
 		};
 		const borderColor = {
-			borderColor: props.color
+			borderColor: props.color,
 		};
 
 		return (
@@ -142,14 +153,12 @@ const RidesList = (props: IRidesListProps) => {
 					onClick={() => props.setRide(props.ride)}
 				>
 					<div className={cssClasses.mainRow} style={borderColor}>
-						<div className={cssClasses.icon} style={color}>	</div>
+						<div className={cssClasses.icon} style={color}>
+							{" "}
+						</div>
 						<div className={cssClasses.address}>
-							<div className={cssClasses.fromLabel}>
-								{props.ride.fromName}
-							</div>
-							<div className={cssClasses.toLabel}>
-								{props.ride.toName}
-							</div>
+							<div className={cssClasses.fromLabel}>{props.ride.fromName}</div>
+							<div className={cssClasses.toLabel}>{props.ride.toName}</div>
 						</div>
 					</div>
 					<div className={cssClasses.bottomRow}>
@@ -164,27 +173,25 @@ const RidesList = (props: IRidesListProps) => {
 
 	const ActiveItem = (props: IListItemProps) => {
 		const color = {
-			color: props.color
+			color: props.color,
 		};
 		const borderColor = {
-			borderColor: props.color
+			borderColor: props.color,
 		};
 		const backgroundColor = {
-			backgroundColor: props.color
+			backgroundColor: props.color,
 		};
 
 		return (
 			<li className={cssClasses.activeContainer} key={props.ride.id}>
-				<div className={cssClasses.activeButtonContainer} >
+				<div className={cssClasses.activeButtonContainer}>
 					<div className={cssClasses.mainRow} style={borderColor}>
-						<div className={cssClasses.icon} style={color}>	</div>
-						<div className={cssClasses.address} >
-							<div className={cssClasses.fromLabel}>
-								{props.ride.fromName}
-							</div>
-							<div className={cssClasses.toLabel}>
-								{props.ride.toName}
-							</div>
+						<div className={cssClasses.icon} style={color}>
+							{" "}
+						</div>
+						<div className={cssClasses.address}>
+							<div className={cssClasses.fromLabel}>{props.ride.fromName}</div>
+							<div className={cssClasses.toLabel}>{props.ride.toName}</div>
 						</div>
 					</div>
 					<div className={cssClasses.activeBottomRow}>
@@ -197,10 +204,13 @@ const RidesList = (props: IRidesListProps) => {
 						<div className={cssClasses.activeCar}>
 							{props.ride.owner.vehicle}
 						</div>
-						<div className={cssClasses.activeSeats}>
-							Wolne miejsca: {"2"}
-						</div>
-						<Button style={backgroundColor} background={ButtonBackground.Blue} color={ButtonColor.White} className={cssClasses.activeJoinButton}>
+						<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
+						<Button
+							style={backgroundColor}
+							background={ButtonBackground.Blue}
+							color={ButtonColor.White}
+							className={cssClasses.activeJoinButton}
+						>
 							Dołącz
 						</Button>
 					</div>
@@ -211,6 +221,12 @@ const RidesList = (props: IRidesListProps) => {
 
 	return (
 		<ul className={cssClasses.list}>
+			<SearchBar
+				keyword={searchKey}
+				setKeyword={(nv) => {
+					setSearchKey(nv);
+				}}
+			/>
 			{rides.map((ride) => {
 				++colorIndex;
 				const color = colorList[colorIndex % colorList.length];
@@ -225,7 +241,8 @@ const RidesList = (props: IRidesListProps) => {
 										color={color}
 										t={t}
 										setRide={props.setRide}
-									/>);
+									/>
+								);
 							} else {
 								return (
 									<DefaultItem
@@ -233,7 +250,8 @@ const RidesList = (props: IRidesListProps) => {
 										color={color}
 										t={t}
 										setRide={props.setRide}
-									/>);
+									/>
+								);
 							}
 						})()}
 					</React.Fragment>

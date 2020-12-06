@@ -18,6 +18,8 @@ export const getIconClass: (type?: InputIcon) => string = (icon) => {
 			return `${baseIconClass} ${baseIconClass}--password`;
 		case InputIcon.Seats:
 			return `${baseIconClass} ${baseIconClass}--seats`;
+		case InputIcon.Search:
+			return `${baseIconClass} ${baseIconClass}--search`;
 		default:
 			return "";
 	}

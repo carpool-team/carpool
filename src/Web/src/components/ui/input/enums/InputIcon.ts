@@ -6,5 +6,6 @@ export enum InputIcon {
 	Code,
 	Globe,
 	Password,
-	Seats
+	Seats,
+	Search,
 }

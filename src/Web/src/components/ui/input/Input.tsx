@@ -24,6 +24,7 @@ interface IINputProps extends IReactI18nProps {
 	};
 	validation?: IValidation;
 	addressCords?: (cords: [number, number]) => void;
+	cssProps?: React.CSSProperties;
 }
 interface IAddress {
 	place_name: string;
@@ -39,7 +40,6 @@ const defaultValidationTextKeys = {
 const regexes = {
 	[ValidationType.Email]: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 	[ValidationType.PostalCode]: /^\d{2}\-\d{3}$/,
-
 };
 
 const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
@@ -93,7 +93,8 @@ const Input = (props: IINputProps) => {
 	const inputInvalidClassName: string = "input__input--invalid";
 	const inputInvalidContainerClassName: string = "input__container--invalid";
 	const inputInvalidTextClassName: string = "input__invalidText";
-	const inputBaseContainerClassName: string = "input__container input__container::before--user";
+	const inputBaseContainerClassName: string =
+		"input__container input__container::before--user";
 	const inputGroupContainerClassName: string = "input__groupContainer";
 	const inputCommentClassName: string = "input__comment";
 	const inputAddressClassName: string = "input__address";
@@ -130,12 +131,14 @@ const Input = (props: IINputProps) => {
 				})
 				.send();
 			const result: Array<any> = response.body.features;
-			const addresses: IAddress[] = result.map((item: { place_name: string; center: [number, number]; }) => {
-				return {
-					place_name: item.place_name,
-					center: item.center,
-				};
-			});
+			const addresses: IAddress[] = result.map(
+				(item: { place_name: string; center: [number, number] }) => {
+					return {
+						place_name: item.place_name,
+						center: item.center,
+					};
+				}
+			);
 			setAutocompleteList(addresses);
 		} catch (err) {
 			console.log(err);
@@ -181,18 +184,19 @@ const Input = (props: IINputProps) => {
 
 	const renderAutocompleteAddress = () => {
 		if (autocompleteList !== null && autocompleteList.length !== 0) {
-			return (
-				autocompleteList.map((address: IAddress) => {
-					return (
-						<div
-							key={address.place_name}
-							className={inputAddressClassName}
-							onClick={() => onAutocompleteClick(address.place_name, address.center)}
-						>
-							{address.place_name}
-						</div>
-					);
-				}));
+			return autocompleteList.map((address: IAddress) => {
+				return (
+					<div
+						key={address.place_name}
+						className={inputAddressClassName}
+						onClick={() =>
+							onAutocompleteClick(address.place_name, address.center)
+						}
+					>
+						{address.place_name}
+					</div>
+				);
+			});
 		} else {
 			return null;
 		}
@@ -203,7 +207,8 @@ const Input = (props: IINputProps) => {
 		if (!isValid) {
 			return (
 				<span className={inputInvalidTextClassName}>
-					{props.validation.validationText ?? t(defaultValidationTextKeys[props.validation?.type])}
+					{props.validation.validationText ??
+						t(defaultValidationTextKeys[props.validation?.type])}
 				</span>
 			);
 		} else {
@@ -220,6 +225,7 @@ const Input = (props: IINputProps) => {
 					placeholder={props.placeholder}
 					onChange={generalChangeHandler}
 					value={props.value}
+					style={props.cssProps}
 				/>
 			</div>
 			{renderValidationMessage()}
@@ -261,7 +267,7 @@ const Input = (props: IINputProps) => {
 	);
 
 	const renderCheckbox = () => (
-		<div className={[checkboxClassName , props.style].join(" ")}>
+		<div className={[checkboxClassName, props.style].join(" ")}>
 			<input
 				className={checkboxBoxClassName}
 				placeholder={props.placeholder}
@@ -270,7 +276,9 @@ const Input = (props: IINputProps) => {
 				type={"checkbox"}
 				id={props.label?.inputId}
 			/>
-			{props.label ? <span id={props.label.inputId}>{props.label.text}</span> : null}
+			{props.label ? (
+				<span id={props.label.inputId}>{props.label.text}</span>
+			) : null}
 		</div>
 	);
 
@@ -289,11 +297,7 @@ const Input = (props: IINputProps) => {
 		}
 	};
 
-	return (
-		<>
-			{renderInput()}
-		</>
-	);
+	return <>{renderInput()}</>;
 };
 
 export default withTranslation()(Input);
