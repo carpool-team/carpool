@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccessLayer.Repositories.Group;
+using DataTransferObjects.GroupDtos;
+using Domain.Contracts.Repositories;
 using MediatR;
-using RestApi.DTOs.Group;
 
 namespace RestApi.Queries.GroupQueries
 {

@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.Group;
-using DataAccessLayer.Repositories.User;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.Entities;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
@@ -33,19 +33,18 @@ namespace RestApi.Commands.GroupCommands.AddGroup
 	
 	public class AddGroupCommandHandler : IRequestHandler<AddGroupCommand, GroupId>
 	{
-		private readonly IGroupRepository _repository;
+		private readonly IGroupRepository _groupRepository;
 		private readonly IUserRepository _userRepository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public AddGroupCommandHandler(IGroupRepository repository, IUserRepository userRepository)
-		{
-			_repository = repository ?? throw new ArgumentNullException(nameof(repository));
-			_userRepository = userRepository;
-		}
+		public AddGroupCommandHandler(IGroupRepository groupRepository, IUserRepository userRepository, IUnitOfWork unitOfWork)
+			=> (_groupRepository, _userRepository, _unitOfWork)
+				= (groupRepository, userRepository, unitOfWork);
 
 		public async Task<GroupId> Handle(AddGroupCommand request, CancellationToken cancellationToken)
 		{
 			if (!string.IsNullOrEmpty(request.Code)
-				&& await _repository.GroupCodeExists(request.Code).ConfigureAwait(false))
+				&& await _groupRepository.GroupCodeExists(request.Code).ConfigureAwait(false))
 				throw new ApiProblemDetailsException($"Group code {request.Code} already exists",
 					StatusCodes.Status409Conflict);
 
@@ -57,10 +56,10 @@ namespace RestApi.Commands.GroupCommands.AddGroup
 
 			group.Location = request.Location ?? throw new ApiException("Group location cannot be empty");
 
-			await _repository.AddAsync(group, cancellationToken).ConfigureAwait(false);
+			await _groupRepository.AddAsync(group, cancellationToken).ConfigureAwait(false);
 			try
 			{
-				await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
 			}
 			catch (DbUpdateException ex)
 			{

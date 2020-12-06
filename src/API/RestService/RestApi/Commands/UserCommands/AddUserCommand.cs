@@ -3,7 +3,10 @@ using System.Diagnostics;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccessLayer.Repositories.User;
+using AutoWrapper.Wrappers;
+using DataAccessLayer.Repositories;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using IdGen;
@@ -14,12 +17,15 @@ namespace RestApi.Commands.UserCommands
 	public class AddUserCommand : IRequest<ApplicationUser>
 	{
 		[JsonConstructor]
-		public AddUserCommand(string firstName, string lastName, string email)
+		public AddUserCommand(AppUserId appUserId, string firstName, string lastName, string email)
 		{
 			FirstName = firstName;
 			LastName = lastName;
 			Email = email;
-		}
+            AppUserId = appUserId;
+        }
+
+		public AppUserId AppUserId { get; }
 
 		public string FirstName { get; }
 
@@ -30,26 +36,28 @@ namespace RestApi.Commands.UserCommands
 	
 	public class AddUserCommandHandler : IRequestHandler<AddUserCommand, ApplicationUser>
 	{
-		private readonly IUserRepository _repository;
+		private readonly IUserRepository _userRepository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public AddUserCommandHandler(IUserRepository repository)
-			=> _repository = repository;
+		public AddUserCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+			=> (_userRepository, _unitOfWork)
+				= (userRepository, unitOfWork);
 
 		public async Task<ApplicationUser> Handle(AddUserCommand request, CancellationToken cancellationToken)
-		{
-			var generator = new IdGenerator(0);
-			var userId = new AppUserId(generator.CreateId());
-			var user = new ApplicationUser(userId, request.Email, request.FirstName, request.LastName);
+        {
+            var appUserId = request.AppUserId;
+			var user = new ApplicationUser(appUserId, request.Email, request.FirstName, request.LastName);
 			try
 			{
-				await _repository.AddAsync(user, cancellationToken).ConfigureAwait(false);
-				await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+				await _userRepository.AddAsync(user, cancellationToken).ConfigureAwait(false);
+				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
+                return user;
+
 			}
 			catch (Exception ex)
-			{
-				Debug.WriteLine(ex);
-			}
-			return user;
+            {
+                throw new ApiException(ex);
+            }
 		}
 	}
 }

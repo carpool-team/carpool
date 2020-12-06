@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
+using Domain.Contracts;
 
 namespace DataAccessLayer.Repositories
 {

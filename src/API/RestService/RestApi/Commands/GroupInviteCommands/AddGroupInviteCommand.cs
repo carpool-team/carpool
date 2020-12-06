@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccessLayer.Repositories.GroupInvite;
+using DataAccessLayer.Repositories;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -28,10 +30,12 @@ namespace RestApi.Commands.GroupInviteCommands
 	
 	public class AddGroupInviteCommandHandler : IRequestHandler<AddGroupInviteCommand, GroupInviteId>
 	{
-		private readonly IGroupInviteRepository _repository;
+		private readonly IGroupInviteRepository _groupInviteRepository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public AddGroupInviteCommandHandler(IGroupInviteRepository repository)
-			=> _repository = repository;
+		public AddGroupInviteCommandHandler(IGroupInviteRepository groupInviteRepository, IUnitOfWork unitOfWork)
+			=> (_groupInviteRepository, _unitOfWork)
+				= (groupInviteRepository, unitOfWork);
 
 		public async Task<GroupInviteId> Handle(AddGroupInviteCommand request,
 			CancellationToken cancellationToken)
@@ -45,8 +49,8 @@ namespace RestApi.Commands.GroupInviteCommands
 				GroupId = request.GroupId
 			};
 
-			await _repository.AddAsync(groupInvite, cancellationToken).ConfigureAwait(false);
-			await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+			await _groupInviteRepository.AddAsync(groupInvite, cancellationToken);
+			await _unitOfWork.SaveAsync(cancellationToken);
 
 			return groupInvite.Id;
 		}

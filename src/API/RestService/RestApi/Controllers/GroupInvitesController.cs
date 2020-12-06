@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.GroupInvitesDtos;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -19,14 +20,16 @@ namespace RestApi.Controllers
 		public GroupInvitesController(IMediator mediator)
 			=> _mediator = mediator;
 
-		// GET: api/GroupInvites
-		[HttpGet]
-		public async Task<ApiResponse> GetGroupInvites()
-		{
-			var request = new GetGroupInvitesQuery();
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-			return new ApiResponse(response);
-		}
+        [HttpGet("~/api/users/{appUserId}/group-invites")]
+        public async Task<ApiResponse> GetUserGroupInvites([FromRoute] long userId)
+        {
+            AppUserId typedAppUserId = new(userId);
+            var request = new GetUserGroupInvitesQuery(typedAppUserId);
+
+            var response = await _mediator.Send(request).ConfigureAwait(false);
+
+            return new ApiResponse(response);
+        }
 
 		// GET: api/GroupInvites/5
 		[HttpGet("{groupInviteId}")]
@@ -60,8 +63,8 @@ namespace RestApi.Controllers
 		[HttpPost]
 		public async Task<ApiResponse> PostGroupInvite(AddGroupInviteCommand request)
 		{
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-			return new ApiResponse($"Group Invite was created with id: {response}", response,
+			var groupInvite = await _mediator.Send(request).ConfigureAwait(false);
+			return new ApiResponse($"Group Invite was created with id: {groupInvite}", groupInvite,
 				StatusCodes.Status201Created);
 		}
 
@@ -75,16 +78,5 @@ namespace RestApi.Controllers
 
 			return new ApiResponse($"Group Invite with id: {response} has been deleted");
 		}
-
-		[HttpGet("~/api/users/{appUserId}/group-invites")]
-		public async Task<ApiResponse> GetUserGroupInvites([FromRoute] long userId)
-		{
-			AppUserId typedAppUserId = new(userId);
-			var request = new GetUserGroupInvitesQuery(typedAppUserId);
-
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-
-			return new ApiResponse(response);
-		}
-	}
+    }
 }

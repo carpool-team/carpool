@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccessLayer.Repositories.User;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -23,9 +24,11 @@ namespace RestApi.Commands.UserCommands
 	public class AddUserRatingCommandHandler : IRequestHandler<AddUserRatingCommand, Rating>
 	{
 		private readonly IUserRepository _userRepository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public AddUserRatingCommandHandler(IUserRepository userRepository)
-			=> _userRepository = userRepository;
+		public AddUserRatingCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
+			=> (_userRepository, _unitOfWork)
+				= (userRepository, unitOfWork);
 
 
 		public async Task<Rating> Handle(AddUserRatingCommand request, CancellationToken cancellationToken)
@@ -38,7 +41,7 @@ namespace RestApi.Commands.UserCommands
 
 			user.Ratings.Add(rating);
 
-			await _userRepository.SaveAsync(cancellationToken).ConfigureAwait(false);
+			await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
 
 			return rating;
 		}

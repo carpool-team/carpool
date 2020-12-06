@@ -1,7 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.Group;
+using DataTransferObjects;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -13,10 +15,10 @@ namespace RestApi.Commands.GroupCommands
 {
 	public class UpdateGroupCommand : IRequest<GroupId>
 	{
-		public UpdateGroupCommand(GroupId groupId, Location? location, string name, string code, AppUserId? ownerId)
+		public UpdateGroupCommand(GroupId groupId, LocationDto? location, string name, string code, AppUserId? ownerId)
 		{
 			GroupId = groupId;
-			Location = location;
+			Location = location != null ? new Location(location.longitude, location.latitude) : null;
 			Name = name;
 			Code = code;
 			OwnerId = ownerId;
@@ -36,9 +38,11 @@ namespace RestApi.Commands.GroupCommands
 	public class UpdateGroupCommandHandler : IRequestHandler<UpdateGroupCommand, GroupId>
 	{
 		private readonly IGroupRepository _repository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public UpdateGroupCommandHandler(IGroupRepository repository)
-			=> _repository = repository;
+		public UpdateGroupCommandHandler(IGroupRepository repository, IUnitOfWork unitOfWork)
+			=> (_repository, _unitOfWork)
+				= (repository, unitOfWork);
 
 
 		public async Task<GroupId> Handle(UpdateGroupCommand request, CancellationToken cancellationToken = default)
@@ -55,7 +59,7 @@ namespace RestApi.Commands.GroupCommands
 
 			try
 			{
-				await _repository.SaveAsync(cancellationToken).ConfigureAwait(false);
+				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
 			}
 			catch (DbUpdateException ex)
 			{

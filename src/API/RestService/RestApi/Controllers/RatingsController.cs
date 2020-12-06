@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,9 @@ namespace RestApi.Controllers
 			AppUserId typedAppUserId = new(userId);
 			var request = new GetUserRatingQuery(typedAppUserId);
 
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			var usersRating = await _mediator.Send(request);
 
-			return new ApiResponse(response);
+			return new ApiResponse(usersRating);
 		}
 
 		[HttpPost("~/api/users/{appUserId}/ratings")]
@@ -35,9 +36,9 @@ namespace RestApi.Controllers
 			AppUserId typedAppUserId = new(userId);
 			AddUserRatingCommand request = new(typedAppUserId, model.Value);
 
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			var rating = await _mediator.Send(request);
 
-			return new ApiResponse(response);
+			return new ApiResponse(rating);
 		}
 	}
 }

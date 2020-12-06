@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.Group;
-using DataAccessLayer.Repositories.Ride;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -28,17 +28,16 @@ namespace RestApi.Commands.GroupCommands
 	{
 		private readonly IGroupRepository _groupRepository;
 		private readonly IRideRepository _rideRepository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public AddRideToGroupCommandHandler(IRideRepository repository, IGroupRepository groupRepository)
-		{
-			_rideRepository = repository;
-			_groupRepository = groupRepository;
-		}
+		public AddRideToGroupCommandHandler(IRideRepository rideRepository, IGroupRepository groupRepository, IUnitOfWork unitOfWork)
+		=> (_rideRepository, _groupRepository, _unitOfWork)
+			= (rideRepository, groupRepository, unitOfWork);
 
 
 		protected override async Task Handle(AddRideToGroupCommand request, CancellationToken cancellationToken)
 		{
-			if (!await _groupRepository.AnyWithId(request.GroupId).ConfigureAwait(false))
+			if (!await _groupRepository.AnyWithIdAsync(request.GroupId, cancellationToken))
 				throw new ApiProblemDetailsException($"Group with id: {request.GroupId} does not exist.",
 					StatusCodes.Status404NotFound);
 
@@ -50,7 +49,7 @@ namespace RestApi.Commands.GroupCommands
 			ride.GroupId = request.GroupId;
 			try
 			{
-				await _rideRepository.SaveAsync(cancellationToken).ConfigureAwait(false);
+				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
 			}
 			catch (DbUpdateException ex)
 			{

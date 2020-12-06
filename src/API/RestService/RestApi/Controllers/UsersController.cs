@@ -23,15 +23,7 @@ namespace RestApi.Controllers
 			_mediator = mediator;
 		}
 
-		[HttpGet]
-		public async Task<ApiResponse> GetUsers()
-		{
-			var request = new GetUsersQuery();
-			var response = await _mediator.Send(request);
-			return new ApiResponse(response);
-		}
-
-		[HttpGet("{appUserId}")]
+        [HttpGet("{appUserId}")]
 		public async Task<ApiResponse> GetUser([FromRoute] long userId)
 		{
 			AppUserId typedAppUserId = new(userId);
@@ -64,9 +56,13 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ApiResponse> PostUser([FromBody] AddUserCommand request)
+		public async Task<ApiResponse> PostUser([FromBody] AddUserDto model)
 		{
-			var response = await _mediator.Send(request);
+			AddUserCommand addUser = new(new AppUserId(model.appUserId),
+				model.firstName,
+				model.lastName,
+				model.email);
+			var response = await _mediator.Send(addUser);
 			return new ApiResponse(response);
 		}
 

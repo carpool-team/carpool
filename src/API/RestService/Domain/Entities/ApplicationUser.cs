@@ -16,25 +16,10 @@ namespace Domain.Entities
 
 		public string Email { get; set; }
 		public string FirstName { get; set; }
-
 		public string LastName { get; set; }
-
-		//public List<Location> Locations { get; set; }
-
 		public IReadOnlyList<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
-
-		//public List<RideRequest> RideRequests { get; set; }
-
-		//public List<Ride> CreatedRides { get; set; }
-
-		//public ICollection<UserParticipatedRide> ParticipatedRides { get; set; }
-
 		public List<Rating> Ratings { get; set; } = new();
-
 		public Vehicle? Vehicle { get; set; }
-
-		//public virtual ICollection<GroupInvite> ReceivedGroupInvites { get; set; }
-
-		//public virtual ICollection<GroupInvite> SentGroupInvites { get; set; }
+		
 	}
 }

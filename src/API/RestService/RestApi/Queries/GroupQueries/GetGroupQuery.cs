@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccessLayer.Repositories.Group;
+using DataTransferObjects.GroupDtos;
+using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
-using RestApi.DTOs.Group;
 using RestApi.DTOs.Ride;
 
 namespace RestApi.Queries.GroupQueries
