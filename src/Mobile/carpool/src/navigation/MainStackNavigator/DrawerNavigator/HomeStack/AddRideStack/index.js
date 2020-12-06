@@ -11,6 +11,7 @@ import {
 } from '../../../../../screens/HomeStack/AddRideStack/context';
 import SelectLocation from '../../../../../screens/HomeStack/AddRideStack/SelectLocation';
 import RideSummary from '../../../../../screens/HomeStack/AddRideStack/RideSummary';
+import RideCreated from '../../../../../screens/HomeStack/AddRideStack/RideCreated';
 
 const {useContext, useEffect} = React;
 
@@ -65,6 +66,13 @@ const AddRideStack = props => {
       <Stack.Screen
         name="RideSummary"
         component={RideSummary}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="RideCreated"
+        component={RideCreated}
         options={{
           headerShown: false,
         }}

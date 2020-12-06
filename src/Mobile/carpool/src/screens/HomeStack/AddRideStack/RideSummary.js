@@ -34,6 +34,7 @@ const RideSummary = ({navigation}) => {
 
   const onSubmit = () => {
     console.log(addRideState);
+    navigation.navigate('RideCreated');
   };
 
   return (
