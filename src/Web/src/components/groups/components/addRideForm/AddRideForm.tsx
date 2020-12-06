@@ -35,6 +35,7 @@ enum PanelType {
 }
 
 const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
+
 	const resources = {
 		disposableBtn: "rides.disposableBtn",
 		cyclicBtn: "rides.cyclicBtn",
@@ -81,12 +82,10 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		to: "toId",
 		from: "fromId"
 	};
-	const inputKeys = {
-		from: "fromStartPoint",
-		to: "toStartPoint"
-	};
 
 	const { t } = props;
+
+	const [switchCssClass, setSwitchCssClass] = useState({from: cssClasses.switchActive, to: null});
 
 	const [selectedScreen, setSelectedScreen] = useState(PanelType.Disposable);
 	const [startgroup, setStartGroup] = useState(false);
@@ -155,10 +154,11 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		setFromAddressCoordinates(address2);
 		setToAddressCoordinates(address1);
 		setStartGroup(event.target.checked);
-		let from = document.getElementById(ids.from);
-		from?.classList.toggle(cssClasses.switchActive);
-		let to = document.getElementById(ids.to);
-		to?.classList.toggle(cssClasses.switchActive);
+		if (event.target.checked) {
+			setSwitchCssClass({from: null, to: cssClasses.switchActive});
+		} else {
+			setSwitchCssClass({from: cssClasses.switchActive, to: null});
+		}
 	};
 
 	const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -246,12 +246,12 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						{t(resources.fromOrTo)}
 					</div>
 				<div className={cssClasses.checkboxContainer}>
-					<span className={cssClasses.switchActive} id={ids.from}> {t(resources.from)}</span>
+					<span className={switchCssClass.from} id={ids.from}> {t(resources.from)}</span>
 						<FormControlLabel
 							control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
 							label=""
 						/>
-					<span id={ids.to}> {t(resources.to) }</span>
+					<span className={switchCssClass.to} id={ids.to}> {t(resources.to) }</span>
 				</div>
 				{!startgroup &&
 					<Input
@@ -354,12 +354,12 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						{t(resources.fromOrTo)}
 					</div>
 				<div className={cssClasses.checkboxContainer}>
-					<span className={cssClasses.switchActive} id={ids.from}> {t(resources.from)}</span>
+					<span className={switchCssClass.from} id={ids.from}> {t(resources.from)}</span>
 						<FormControlLabel
 							control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
 							label=""
 						/>
-					<span id={ids.to}> {t(resources.to) }</span>
+					<span className={switchCssClass.to} id={ids.to}> {t(resources.to) }</span>
 				</div>
 				{!startgroup &&
 					<Input
