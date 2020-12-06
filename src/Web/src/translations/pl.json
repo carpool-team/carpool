@@ -74,7 +74,8 @@
         },
         "navBar": {
             "register": "Zarejestruj się",
-            "login": "Zaloguj się"
+            "login": "Zaloguj się",
+            "logout": "Wyloguj się"
         },
         "homeScreen": {
             "quote": "Nie jedź\n sam!",

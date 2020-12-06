@@ -1,10 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
+using RestApi.DTOs.User;
 using RestApi.Queries.UserQueries;
 
 namespace RestApi.Controllers
@@ -22,59 +23,58 @@ namespace RestApi.Controllers
 			_mediator = mediator;
 		}
 
-		// GET: api/Users
 		[HttpGet]
 		public async Task<ApiResponse> GetUsers()
 		{
 			var request = new GetUsersQuery();
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			var response = await _mediator.Send(request);
 			return new ApiResponse(response);
 		}
 
-		// GET: api/Users/5
-		[HttpGet("{id}")]
-		public async Task<ApiResponse> GetUser(Guid id)
+		[HttpGet("{appUserId}")]
+		public async Task<ApiResponse> GetUser([FromRoute] long userId)
 		{
-			var request = new GetUserByIdQuery(id);
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			AppUserId typedAppUserId = new(userId);
+			var request = new GetUserByIdQuery(typedAppUserId);
+			var response = await _mediator.Send(request);
 
 			return new ApiResponse(response);
 		}
 
 		[HttpGet("~/api/groups/{groupId}/users")]
-		public async Task<ApiResponse> GetGroupUsers([FromRoute] Guid groupId)
+		public async Task<ApiResponse> GetGroupUsers([FromRoute] long groupId)
 		{
-			var result = await _mediator.Send(new GetGroupUsersQuery(groupId)).ConfigureAwait(false);
+			GroupId typedGroupId = new(groupId);
+			var request = new GetGroupUsersQuery(typedGroupId);
+			var result = await _mediator.Send(request);
 			return new ApiResponse(result);
 		}
 
-		// PUT: api/Users/5
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPut("{id}")]
-		public async Task<ApiResponse> PutUser(Guid id, UpdateUserCommand request)
+		[HttpPut("{appUserId}")]
+		public async Task<ApiResponse> PutUser([FromRoute] long userId, [FromBody] UpdateUserDto model)
 		{
-			request.UserId = id;
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			AppUserId typedAppUserId = new(userId);
+			UpdateUserCommand request = new(typedAppUserId,
+				model.FirstName,
+				model.LastName);
 
-			return new ApiResponse(request);
-		}
+			var response = await _mediator.Send(request);
 
-		// POST: api/Users
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-		[HttpPost]
-		public async Task<ApiResponse> PostUser(AddUserCommand request)
-		{
-			var response = await _mediator.Send(request).ConfigureAwait(false);
 			return new ApiResponse(response);
 		}
 
-		// DELETE: api/Users/5
-		[HttpDelete("{userId}")]
-		public async Task<ApiResponse> DeleteUser(Guid userId)
+		[HttpPost]
+		public async Task<ApiResponse> PostUser([FromBody] AddUserCommand request)
 		{
-			var request = new DeleteUserCommand(userId);
+			var response = await _mediator.Send(request);
+			return new ApiResponse(response);
+		}
+
+		[HttpDelete("{appUserId}")]
+		public async Task<ApiResponse> DeleteUser([FromRoute] long userId)
+		{
+			AppUserId typedAppUserId = new(userId);
+			var request = new DeleteUserCommand(typedAppUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 

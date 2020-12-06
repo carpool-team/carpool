@@ -6,10 +6,38 @@ import { ButtonBackground } from "./navButton/enums/ButtonBackground";
 import { ButtonIcon } from "./navButton/enums/ButtonIcon";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import LayoutRouter, { mainRoutes } from "../layout/components/LayoutRouter";
+import { mainRoutes } from "../layout/components/LayoutRouter";
 import { isAuthorized } from "../../helpers/UniversalHelper";
+import { ILogoutAction } from "../auth/store/Types";
+import { connect } from "react-redux";
+import { logout } from "../auth/store/Actions";
+import { IAuthState } from "../auth/store/State";
+import { ITokenInfo } from "../auth/interfaces/ITokenInfo";
 
-interface INavBarProps extends IReactI18nProps { }
+interface IStatePropsType {
+	auth: IAuthState;
+}
+
+interface IStateFromProps {
+	tokenInfo: ITokenInfo;
+}
+
+export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (state) => ({
+	tokenInfo: state.auth.tokenInfo,
+});
+
+interface IDispatchPropsType {
+	logout: () => ILogoutAction;
+}
+
+const mapDispatchToProps: IDispatchPropsType = {
+	logout,
+};
+
+type DispatchProps = typeof mapDispatchToProps;
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+interface INavBarProps extends IReactI18nProps, DispatchProps, StateProps { }
 
 interface INavBarState {
 	logged: boolean;
@@ -41,6 +69,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		rides: "groups.ridesBtn",
 		groups: "common.groups",
 		login: "navBar.login",
+		logout: "navBar.logout",
 		register: "navBar.register",
 	};
 
@@ -61,8 +90,8 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 
 	private renderAccountContainer = () => {
 		const { t } = this.props;
-
-		if (isAuthorized() === false) {
+		console.log(this.props.tokenInfo);
+		if (!this.props.tokenInfo?.token) { // unathorized
 			return (
 				<div className={this.cssClasses.navBarAccountContainer}>
 					<Button
@@ -88,7 +117,20 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 				</div>
 			);
 		} else {
-			return null;
+			return (
+				<div className={this.cssClasses.navBarAccountContainer}>
+					<Button
+						color={ButtonColor.Gray}
+						background={ButtonBackground.None}
+						icon={ButtonIcon.User}
+						onClick={() => { this.props.logout(); }}
+					>
+						<span>
+							{t(this.resources.logout)}
+						</span>
+					</Button>
+				</div>
+			);
 		}
 	}
 
@@ -136,4 +178,4 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 	}
 }
 
-export default withTranslation()(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NavBar));

@@ -1,7 +1,9 @@
 import { getState } from "../store/Index";
 
 export function isAuthorized(): boolean {
-	return Boolean(getState().auth?.tokenInfo?.token);
+	const res: boolean = Boolean(getState().auth?.tokenInfo?.token);
+	console.log(res);
+	return res;
 }
 
 export function foreach<T>(iterable: { [key: string]: T }, callback: (item: T) => void) {

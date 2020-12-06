@@ -1,21 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using IdentifiersShared.Identifiers;
 
 namespace DataAccessLayer.Repositories.GroupInvite
 {
-	public interface IGroupInviteRepository : IBaseRepository<Domain.Entities.GroupInvite, Guid>
+	public interface IGroupInviteRepository : IBaseRepository<Domain.Entities.GroupInvite, GroupInviteId>
 	{
-		Task<Domain.Entities.GroupInvite> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-		Task<Domain.Entities.GroupInvite> GetByIdAsNoTrackingAsync(Guid id, CancellationToken cancellationToken);
+		Task<Domain.Entities.GroupInvite> GetByIdAsync(GroupInviteId id, CancellationToken cancellationToken);
 
-		Domain.Entities.GroupInvite GetById(Guid id);
-		Domain.Entities.GroupInvite GetByIdAsNoTracking(Guid id);
+		Task<Domain.Entities.GroupInvite> GetByIdAsNoTrackingAsync(GroupInviteId id,
+			CancellationToken cancellationToken);
+
+		Domain.Entities.GroupInvite GetById(GroupInviteId id);
+		Domain.Entities.GroupInvite GetByIdAsNoTracking(GroupInviteId id);
 
 		Task<List<Domain.Entities.GroupInvite>> GetPartAsync(CancellationToken cancellationToken);
 
-		Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(Guid userId,
-		                                                                     CancellationToken cancellationToken);
+		Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(AppUserId appUserId,
+			CancellationToken cancellationToken);
 	}
 }

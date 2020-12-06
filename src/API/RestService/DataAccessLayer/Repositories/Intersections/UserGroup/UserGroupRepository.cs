@@ -12,7 +12,7 @@ namespace DataAccessLayer.Repositories.Intersections.UserGroup
 			=> _context = context;
 
 		public async Task AddAsync(Domain.Entities.Intersections.UserGroup userGroup,
-		                           CancellationToken cancellationToken = default)
+			CancellationToken cancellationToken = default)
 			=> await _context.UserGroups.AddAsync(userGroup, cancellationToken).ConfigureAwait(false);
 	}
 }

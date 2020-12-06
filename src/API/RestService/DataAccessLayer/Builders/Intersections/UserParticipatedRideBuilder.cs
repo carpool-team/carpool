@@ -11,17 +11,17 @@ namespace DataAccessLayer.Builders.Intersections
 		{
 			_ = builder ?? throw new NullReferenceException(nameof(builder));
 
-			builder.HasKey(x => new {x.RideId, x.UserId});
+			builder.HasKey(x => new {x.RideId, UserId = x.AppUserId});
 
 			builder.HasOne(x => x.ApplicationUser)
-			       .WithMany()
-			       .HasForeignKey(x => x.UserId)
-			       .OnDelete(DeleteBehavior.NoAction);
+				.WithMany()
+				.HasForeignKey(x => x.AppUserId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			builder.HasOne(x => x.Ride)
-			       .WithMany()
-			       .HasForeignKey(x => x.RideId)
-			       .OnDelete(DeleteBehavior.NoAction);
+				.WithMany()
+				.HasForeignKey(x => x.RideId)
+				.OnDelete(DeleteBehavior.NoAction);
 		}
 	}
 }

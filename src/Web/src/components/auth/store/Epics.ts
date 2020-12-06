@@ -140,4 +140,7 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 		)
 	);
 
-export const authEpics = [registerEpic, loginEpic];
+export const authEpics = [
+	registerEpic,
+	loginEpic
+];

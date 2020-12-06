@@ -28,6 +28,10 @@ const reducer: Reducer<IAuthState> = (
 				break;
 			case RegisterActionTypes.RegisterSuccess:
 				break;
+			case LoginActionTypes.Logout:
+				console.log("LOGGING OUT...");
+				draft.tokenInfo = null;
+				break;
 			default:
 				break;
 		}
