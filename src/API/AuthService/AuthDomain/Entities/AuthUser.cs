@@ -6,7 +6,7 @@ namespace AuthDomain.Entities
 {
 	public sealed class AuthUser : IdentityUser
 	{
-		public AuthUser(string userName, string email, string firstName, string lastName, AppUserId appUserId) : base(email)
+		public AuthUser(string email, string firstName, string lastName, AppUserId appUserId) : base(email)
 			=> (Email, FirstName, LastName, AppUserId) = (email, firstName, lastName, appUserId);
 
 		public string FirstName { get; set; }

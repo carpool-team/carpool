@@ -56,7 +56,7 @@ namespace AuthServer.Controllers
 				throw new ApiException(ModelState.AllErrors());
 
 			var idGenerator = new IdGenerator(IdGeneratorType.User);
-			AuthUser user = new(model.Email, model.Email, model.FirstName, model.LastName,
+			AuthUser user = new(model.Email, model.FirstName, model.LastName,
 				new AppUserId(idGenerator.CreateId()));
 			var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -100,7 +100,7 @@ namespace AuthServer.Controllers
 			var user = await _userManager.FindByNameAsync(model.Email);
 
 			TokenGenerator tokenGenerator = new();
-			var token = tokenGenerator.GenerateJwtToken(new IdentityUserId(user.Id));
+			var token = tokenGenerator.GenerateJwtToken(user.AppUserId);
 			var refreshToken = tokenGenerator.GenerateRefreshToken();
 
 			user.RefreshTokens.Add(refreshToken);
@@ -128,55 +128,50 @@ namespace AuthServer.Controllers
 		public async Task<ApiResponse> RefreshToken([FromBody] string refreshToken)
 		{
 			var refreshTokenBytes = Convert.FromBase64String(refreshToken);
-
+		
 			var deserializedRefreshToken =
 				JsonConvert.DeserializeObject<RefreshToken>(Encoding.ASCII.GetString(refreshTokenBytes));
 
+			var user = await _dbContext.AuthUsers
+				.Include(x =>x.RefreshTokens)
+				.Where(x => x.RefreshTokens
+					.Any(a => a.Token == deserializedRefreshToken.Token && a.IsActive))
+				.FirstOrDefaultAsync();
+				
+				_ = user ?? throw new ApiException("Provided token is invalid", StatusCodes.Status401Unauthorized);
+
+				var token = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);			
+			// ReSharper disable once PossibleNullReferenceException
+			token.Revoked = DateTime.Now;
+
+			TokenGenerator tokenGenerator = new();
+
+			var newJwtToken = tokenGenerator.GenerateJwtToken(user.AppUserId);
+
+			var newRefreshToken = tokenGenerator.GenerateRefreshToken();
+
+			user.RefreshTokens.Add(newRefreshToken);
+			_dbContext.Set<AuthUser>().Update(user);
 			try
 			{
-				var authUser = await _dbContext.Set<AuthUser>()
-					.Include(x => x.RefreshTokens)
-					.SingleOrDefaultAsync(x
-						=> x.RefreshTokens.Any(a => a.Token == deserializedRefreshToken.Token && a.IsActive));
+				await _dbContext.SaveChangesAsync();
+			}
+			catch (DbUpdateException ex)
+			{
+				throw new ApiException(ex);
+			}
 
-				_ = authUser ?? throw new ApiException("Provided token is invalid", StatusCodes.Status401Unauthorized);
+			var refreshTokenByteArray = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(newRefreshToken));
 
-				// ReSharper disable once PossibleNullReferenceException
-				authUser.RefreshTokens.SingleOrDefault(x => x == deserializedRefreshToken).Revoked = DateTime.Now;
-
-				TokenGenerator tokenGenerator = new();
-
-				var token = tokenGenerator.GenerateJwtToken(new IdentityUserId(authUser.Id));
-
-				var newRefreshToken = tokenGenerator.GenerateRefreshToken();
-
-				authUser.RefreshTokens.Add(newRefreshToken);
-				_dbContext.Set<AuthUser>().Update(authUser);
-				try
+			try
+			{
+				var jwtToken = new JwtSecurityTokenHandler().WriteToken(newJwtToken);
+				return new ApiResponse(new
 				{
-					await _dbContext.SaveChangesAsync();
-				}
-				catch (DbUpdateException ex)
-				{
-					throw new ApiException(ex);
-				}
-
-				var refreshTokenByteArray = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(newRefreshToken));
-
-				try
-				{
-					var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-					return new ApiResponse(new
-					{
-						token = jwtToken,
-						expires = token.ValidTo,
-						refreshToken = Convert.ToBase64String(refreshTokenByteArray)
-					});
-				}
-				catch (Exception ex)
-				{
-					throw new ApiException(ex);
-				}
+					token = jwtToken,
+					expires = newJwtToken.ValidTo,
+					refreshToken = Convert.ToBase64String(refreshTokenByteArray)
+				});
 			}
 			catch (Exception ex)
 			{
