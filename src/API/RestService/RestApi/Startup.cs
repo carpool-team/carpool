@@ -53,18 +53,27 @@ namespace RestApi
 				.AddNewtonsoftJson()
 				.AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
-			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-				.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+			services.AddAuthentication(x =>
 				{
-					options.Authority = JwtOptions.Issuer;
-					options.Audience = JwtOptions.Audience;
+					x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+					x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+					x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+				})
+				.AddJwtBearer(options =>
+				{
+					options.RequireHttpsMetadata = true;
 					options.SaveToken = true;
 					options.TokenValidationParameters = new TokenValidationParameters
 					{
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
-						TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+						//TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
 						ValidateLifetime = true,
-						ValidateIssuer = true
+						ValidateIssuer = true,
+						ValidIssuer = JwtOptions.Issuer,
+						ValidateIssuerSigningKey = true,
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+						ValidateAudience = true,
+						ValidAudience = JwtOptions.Audience,
+						ClockSkew = TimeSpan.FromMinutes(1)
 					};
 				});
 

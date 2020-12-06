@@ -1,12 +1,11 @@
-﻿using AuthDomain.Entities;
-using AuthServer.Extensions;
+﻿using System;
+using Auth.DataAccessLayer.Extensions;
+using AuthDomain.Entities;
 using IdentifiersShared.Converters;
-using IdentifiersShared.Identifiers;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
-namespace AuthServer.Data
+namespace Auth.DataAccessLayer.DatabaseContexts
 {
 	public class ApplicationDbContext : IdentityDbContext<AuthUser>
 	{

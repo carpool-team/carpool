@@ -39,6 +39,7 @@
     <ProjectReference Include="..\..\Shared\AuthShared\AuthShared.csproj" />
     <ProjectReference Include="..\..\Shared\DataTransferObjects\DataTransferObjects.csproj" />
     <ProjectReference Include="..\..\Shared\IdentifiersShared\IdentifiersShared.csproj" />
+    <ProjectReference Include="..\Auth.DataAccessLayer\Auth.DataAccessLayer.csproj" />
     <ProjectReference Include="..\AuthDomain\AuthDomain.csproj" />
   </ItemGroup>
 

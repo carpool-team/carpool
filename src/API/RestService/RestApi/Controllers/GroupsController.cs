@@ -3,6 +3,7 @@ using AutoWrapper.Wrappers;
 using DataTransferObjects.GroupDtos;
 using IdentifiersShared.Identifiers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.GroupCommands;
@@ -59,6 +60,7 @@ namespace RestApi.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
+		[Authorize]
 		public async Task<ApiResponse> PostGroup([FromBody] AddGroupCommand addGroupCommand)
 		{
 			var groupId = await _mediator.Send(addGroupCommand).ConfigureAwait(false);
