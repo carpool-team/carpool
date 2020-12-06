@@ -5,6 +5,9 @@ const initialState = {
   date: null,
   group: null,
   swap: null,
+  days: null,
+  regular: false,
+  time: null,
 };
 
 export const AddRideContextActions = {
@@ -12,6 +15,9 @@ export const AddRideContextActions = {
   SET_DATE: 'SET_DATE',
   SET_GROUP: 'SET_GROUP',
   SET_SWAP: 'SET_SWAP',
+  SET_DAYS: 'SET_DAYS',
+  SET_REGULAR: 'SET_REGULAR',
+  SET_TIME: 'SET_TIME',
   CLEAN_STATE: 'CLEAN_STATE',
 };
 
@@ -36,6 +42,21 @@ const reducer = (state, action) => {
       return {
         ...state,
         date: action.payload,
+      };
+    case AddRideContextActions.SET_DAYS:
+      return {
+        ...state,
+        days: action.payload,
+      };
+    case AddRideContextActions.SET_REGULAR:
+      return {
+        ...state,
+        regular: action.payload,
+      };
+    case AddRideContextActions.SET_TIME:
+      return {
+        ...state,
+        time: action.payload,
       };
     case AddRideContextActions.CLEAN_STATE:
       return initialState;
