@@ -3,6 +3,11 @@
 @import "~scss_path/images";
 
 .rides{
+	&--container{
+		width: 100%;
+		display: flex;
+		min-height: 900px;
+	}
 	&--leftPanel{
 		padding-top: 15px;
 		margin-top: 7px;
@@ -26,7 +31,27 @@
 			content:"\f0ac";
 			padding-right: 10px;
 		}
-		
+		&__switch{
+			width: 100%;
+			display: flex;
+			padding: 5px;
+			flex-wrap: wrap;
+			margin-bottom: 10px;
+			background-color: $white;
+			align-items: center;
+			justify-content: space-evenly;
+			& > span {
+				margin-left: 10px;
+				margin-right: 20px;
+				font-size: 16px;
+				font-weight: $medium;
+				color: $grayDark;
+			}
+		}
+		&__switchActive{
+			font-weight: $semi-bold !important;
+			font-size: 17px !important;
+		}		
 		&__outline{
 			background-color: $white;
 			height: 7px;
@@ -36,12 +61,18 @@
 			justify-content: center;
 			flex-wrap: wrap;
 			flex-direction: row;
-			padding-bottom: 2%;
+			padding-bottom: 15px;
+			align-items: center;
 			background-color: $background;
 			gap:3%;
 			&--outline{
 				background-color: $white;
 				height: 7px;
+			}
+			& > span {
+				font-weight: $semi-bold;
+				color:  $grayDark;
+				font-size: 18px;
 			}
 		}
 	}
