@@ -69,7 +69,9 @@ const PickTime = ({navigation}) => {
         minuteInterval={10}
         mode="time"
       />
-      <PickDays days={days} setDays={setDays} />
+      <View style={{width: '100%', marginTop: 50}}>
+        <PickDays days={days} setDays={setDays} />
+      </View>
       {canSubmit && (
         <StandardButton
           style={{marginTop: 50}}

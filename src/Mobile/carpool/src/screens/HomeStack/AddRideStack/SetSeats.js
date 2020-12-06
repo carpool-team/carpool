@@ -16,8 +16,6 @@ const SetSeats = ({navigation}) => {
 
   const {addRideState, dispatch} = useContext(AddRideContext);
 
-  console.log(addRideState);
-
   // Requests
   const [response, loading, error, _createRide] = useRequest(
     METHODS.POST,
@@ -25,16 +23,20 @@ const SetSeats = ({navigation}) => {
     {...addRideState},
   );
 
-  const onSubmit = () => {
-    _createRide();
-  };
-
   useEffect(() => {
     if (response) {
       dispatch({type: AddRideContextActions.CLEAN_STATE});
       navigation.navigate('Home');
     }
   }, [response, error]);
+
+  useEffect(() => {
+    addRideState.seats && navigation.navigate('RideSummary');
+  }, [addRideState.seats]);
+
+  const onSubmit = () => {
+    dispatch({type: AddRideContextActions.SET_SEATS, payload: seats});
+  };
 
   const onIncrement = () => {
     if (seats < MAX_VALUE) {
