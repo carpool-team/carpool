@@ -32,7 +32,7 @@ namespace AuthServer
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
-			services.AddTransient(_ => RestClient.For<IUserManagementService>("https://localhost:6001"));
+			services.AddTransient(_ => RestClient.For<IUserManagementService>("https://carpool-rest.azurewebsites.net"));
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
