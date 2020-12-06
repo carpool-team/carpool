@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useMemo, useEffect} from 'react';
 import {View, Text, SafeAreaView, Switch, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
 import DatePicker from 'react-native-date-picker';
@@ -10,14 +10,36 @@ const PickTime = ({navigation}) => {
   const [isRegular, setIsRegular] = useState(false);
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
+  const [days, setDays] = useState([0, 0, 0, 0, 0, 0, 0]);
 
   const {addRideState, dispatch} = useContext(AddRideContext);
 
+  const canSubmit = useMemo(() => {
+    return days.includes(1);
+  }, [days]);
+
   useEffect(() => {
-    if (addRideState.date) {
-      navigation.navigate('SetSeats');
+    if (!isRegular) {
+      addRideState.time && navigation.navigate('SetSeats');
+    }
+    if (isRegular) {
+      if (addRideState.days && addRideState.time && addRideState.regular) {
+        navigation.navigate('SetSeats');
+      }
     }
   }, [addRideState]);
+
+  const onSubmitSingular = () => {
+    dispatch({type: AddRideContextActions.SET_TIME, payload: time});
+  };
+
+  const onSubmitRegular = () => {
+    const cp = [...days];
+    const mappedDays = parseInt(cp.reverse().join(''), 2);
+    dispatch({type: AddRideContextActions.SET_DAYS, payload: mappedDays});
+    dispatch({type: AddRideContextActions.SET_TIME, payload: time});
+    dispatch({type: AddRideContextActions.SET_REGULAR, payload: true});
+  };
 
   const renderSingular = () => (
     <View style={styles.singularContainer}>
@@ -27,6 +49,13 @@ const PickTime = ({navigation}) => {
         locale="pl"
         minimumDate={new Date()}
         minuteInterval={10}
+      />
+      <StandardButton
+        style={{marginTop: 50}}
+        width="65%"
+        onPress={onSubmitSingular}
+        title="Next"
+        color={colors.blue}
       />
     </View>
   );
@@ -40,13 +69,18 @@ const PickTime = ({navigation}) => {
         minuteInterval={10}
         mode="time"
       />
-      <PickDays />
+      <PickDays days={days} setDays={setDays} />
+      {canSubmit && (
+        <StandardButton
+          style={{marginTop: 50}}
+          width="65%"
+          onPress={onSubmitRegular}
+          title="Next"
+          color={colors.blue}
+        />
+      )}
     </View>
   );
-
-  const onSubmit = () => {
-    dispatch({type: AddRideContextActions.SET_DATE, payload: date});
-  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -56,13 +90,6 @@ const PickTime = ({navigation}) => {
           <Switch value={isRegular} onValueChange={setIsRegular} />
         </View>
         {isRegular ? renderRegular() : renderSingular()}
-        <StandardButton
-          style={{}}
-          width="65%"
-          onPress={onSubmit}
-          title="Next"
-          color={colors.blue}
-        />
       </View>
     </SafeAreaView>
   );
@@ -79,7 +106,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
   },
   safeArea: {
     flex: 1,

@@ -16,6 +16,8 @@ const SetSeats = ({navigation}) => {
 
   const {addRideState, dispatch} = useContext(AddRideContext);
 
+  console.log(addRideState);
+
   // Requests
   const [response, loading, error, _createRide] = useRequest(
     METHODS.POST,
