@@ -23,9 +23,8 @@
 			}
 		}
 		&__switchActive{
-			border-bottom: 2px solid $blue;
-			// border-radius: 20px;
-			padding: 5px;
+			font-weight: $semi-bold !important;
+			font-size: 17px !important;
 		}
 		&__checkboxLabel{
 			width: 100%;

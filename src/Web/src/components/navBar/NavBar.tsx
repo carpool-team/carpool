@@ -38,8 +38,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 	};
 
 	private resources = {
-		passenger: "common.passenger",
-		driver: "common.driver",
+		rides: "groups.ridesBtn",
 		groups: "common.groups",
 		login: "navBar.login",
 		register: "navBar.register",
@@ -107,15 +106,9 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 							color={ButtonColor.Gray}
 							background={ButtonBackground.None}
 							onClick={this.handleHamburgerClick.bind(this)}
+							to={`/${mainRoutes.rides}`}
 						>
-							{t(this.resources.passenger)}
-						</Button>
-						<Button
-							color={ButtonColor.Gray}
-							background={ButtonBackground.None}
-							onClick={this.handleHamburgerClick.bind(this)}
-						>
-							{t(this.resources.driver)}
+							{t(this.resources.rides)}
 						</Button>
 						<Button
 							color={ButtonColor.Gray}
