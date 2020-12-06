@@ -5,7 +5,7 @@ import {UpView} from '../../common';
 
 const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-const PickDays = ({days, setDays}) => {
+const PickDays = ({days, setDays, disabled = false}) => {
   const onItemPress = index => {
     const daysCopy = [...days];
 
@@ -32,7 +32,7 @@ const PickDays = ({days, setDays}) => {
             backgroundColor: circleColor,
           }}
           borderRadius={99999}
-          onPress={() => onItemPress(index)}>
+          onPress={disabled ? undefined : () => onItemPress(index)}>
           <Text
             style={{
               ...styles.circleLabel,
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
   container: {
     ...sheet.rowCenterSplit,
     width: '100%',
-    marginTop: 50,
   },
   circle: {
     width: 40,
