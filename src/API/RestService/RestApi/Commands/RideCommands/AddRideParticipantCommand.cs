@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DataAccessLayer.Repositories.Ride;
-using DataAccessLayer.Repositories.RideParticipant;
-using DataAccessLayer.Repositories.User;
+using Domain.Contracts.Repositories;
 using Domain.Entities.Intersections;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -11,10 +9,10 @@ using Newtonsoft.Json;
 
 namespace RestApi.Commands.RideCommands
 {
-    public class AddRideParticipandCommand : IRequest
+    public class AddRideParticipantCommand : IRequest
     {
         [JsonConstructor]
-        public AddRideParticipandCommand(RideId? rideId, AppUserId participantId)
+        public AddRideParticipantCommand(RideId? rideId, AppUserId participantId)
         {
             RideId = rideId;
             ParticipantId = participantId;
@@ -24,13 +22,13 @@ namespace RestApi.Commands.RideCommands
         public AppUserId ParticipantId { get; set; }
     }
 
-    public class AddRideParticipandCommandHandler : AsyncRequestHandler<AddRideParticipandCommand>
+    public class AddRideParticipantCommandHandler : AsyncRequestHandler<AddRideParticipantCommand>
     {
         private readonly IRideParticipantRepository _participantRepository;
         private readonly IRideRepository _rideRepository;
         private readonly IUserRepository _userRepository;
 
-        public AddRideParticipandCommandHandler(IRideRepository rideRepository,
+        public AddRideParticipantCommandHandler(IRideRepository rideRepository,
             IRideParticipantRepository participantRepository,
             IUserRepository userRepository)
         {
@@ -39,7 +37,7 @@ namespace RestApi.Commands.RideCommands
             _userRepository = userRepository;
         }
 
-        protected override async Task Handle(AddRideParticipandCommand request, CancellationToken cancellationToken)
+        protected override async Task Handle(AddRideParticipantCommand request, CancellationToken cancellationToken)
         {
             var ride = await _rideRepository.GetByIdAsNoTrackingAsync((RideId)request.RideId, cancellationToken)
                 .ConfigureAwait(false);

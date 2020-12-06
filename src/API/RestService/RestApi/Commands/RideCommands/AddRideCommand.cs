@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.Ride;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.Entities;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;
@@ -41,9 +42,13 @@ namespace RestApi.Commands.RideCommands
     public class AddRideCommandHandler : IRequestHandler<AddRideCommand, Ride>
     {
         private readonly IRideRepository _rideRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AddRideCommandHandler(IRideRepository rideRepository)
-            => _rideRepository = rideRepository;
+        public AddRideCommandHandler(IRideRepository rideRepository, IUnitOfWork unitOfWork)
+        {
+            _rideRepository = rideRepository;
+            _unitOfWork = unitOfWork;
+        }
 
         public async Task<Ride> Handle(AddRideCommand request, CancellationToken cancellationToken)
         {
@@ -71,7 +76,7 @@ namespace RestApi.Commands.RideCommands
 
             try
             {
-                await _rideRepository.SaveAsync(cancellationToken).ConfigureAwait(false);
+                await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
             }
             catch (DbUpdateException ex)
             {
