@@ -21,7 +21,7 @@ const exampleRides: IRide[] = [
 			longitude: 52.40656926303501,
 			latitude: 16.86633729745128
 		},
-		date: "2020-11-07T18:10:46.1252449",
+		date: String(faker.date.future()),
 		isUserParticipant: faker.random.boolean(),
 		group: null,
 		groupId: faker.random.alphaNumeric(32)
