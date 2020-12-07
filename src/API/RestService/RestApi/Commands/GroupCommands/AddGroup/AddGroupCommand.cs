@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using AutoWrapper.Wrappers;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
+using Domain.Entities.Intersections;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -52,11 +54,18 @@ namespace RestApi.Commands.GroupCommands.AddGroup
 				throw new ApiProblemDetailsException($"ApplicationUser with id {request.OwnerId} does not exist.",
 					StatusCodes.Status404NotFound);
 
-			var group = new Group {Name = request.Name, Code = request.Code, OwnerId = request.OwnerId};
+			var group = new Group 
+			{
+				Name = request.Name, 
+				Code = request.Code,
+				OwnerId = request.OwnerId,
+			};
 
 			group.Location = request.Location ?? throw new ApiException("Group location cannot be empty");
 
 			await _groupRepository.AddAsync(group, cancellationToken).ConfigureAwait(false);
+
+			group.UserGroups = new List<UserGroup>() {new UserGroup(request.OwnerId, group.Id)};
 			try
 			{
 				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
