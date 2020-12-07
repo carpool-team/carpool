@@ -1,10 +1,11 @@
-import React, {useState, useContext, useMemo, useEffect} from 'react';
+import React, {useState, useContext, useMemo} from 'react';
 import {View, Text, SafeAreaView, Switch, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
 import DatePicker from 'react-native-date-picker';
 import PickDays from '../../../components/Driver/AddRide/PickDays';
 import {StandardButton} from '../../../components/common/buttons';
 import {AddRideContext, AddRideContextActions} from './context';
+import moment from 'moment';
 
 const PickTime = ({navigation}) => {
   const [isRegular, setIsRegular] = useState(false);
@@ -12,33 +13,30 @@ const PickTime = ({navigation}) => {
   const [time, setTime] = useState(new Date());
   const [days, setDays] = useState([0, 0, 0, 0, 0, 0, 0]);
 
-  const {addRideState, dispatch} = useContext(AddRideContext);
+  const {dispatch} = useContext(AddRideContext);
 
   const canSubmit = useMemo(() => {
     return days.includes(1);
   }, [days]);
 
-  useEffect(() => {
-    if (!isRegular) {
-      addRideState.time && navigation.navigate('SetSeats');
-    }
-    if (isRegular) {
-      if (addRideState.days && addRideState.time && addRideState.regular) {
-        navigation.navigate('SetSeats');
-      }
-    }
-  }, [addRideState]);
-
   const onSubmitSingular = () => {
-    dispatch({type: AddRideContextActions.SET_TIME, payload: time});
+    dispatch({
+      type: AddRideContextActions.SET_DATE,
+      payload: date,
+    });
+    navigation.navigate('SetSeats');
   };
 
   const onSubmitRegular = () => {
     const cp = [...days];
     const mappedDays = parseInt(cp.reverse().join(''), 2);
     dispatch({type: AddRideContextActions.SET_DAYS, payload: mappedDays});
-    dispatch({type: AddRideContextActions.SET_TIME, payload: time});
+    dispatch({
+      type: AddRideContextActions.SET_TIME,
+      payload: moment(time).format('HH:mm'),
+    });
     dispatch({type: AddRideContextActions.SET_REGULAR, payload: true});
+    navigation.navigate('SetSeats');
   };
 
   const renderSingular = () => (

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import {GroupsFlatlist} from '../../../components/Locations';
@@ -8,16 +8,11 @@ import {AddRideContext, AddRideContextActions} from './context';
 const SelectGroup = ({navigation}) => {
   const groups = useSelector(state => state.accountReducer.groups);
 
-  const {addRideState, dispatch} = useContext(AddRideContext);
-
-  useEffect(() => {
-    if (addRideState.group) {
-      navigation.navigate('SelectDirection');
-    }
-  }, [addRideState]);
+  const {dispatch} = useContext(AddRideContext);
 
   const onItemPress = item => {
     dispatch({type: AddRideContextActions.SET_GROUP, payload: item});
+    navigation.navigate('SelectDirection');
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
-import {AddRideContext, AddRideContextActions} from './context';
+import {AddRideContext} from './context';
 import RouteMinimap from '../../../components/Route/RouteMinimap';
 import {sheet, colors} from '../../../styles';
 import GroupWaypoints from '../../../components/Ride/GroupWaypoints';
@@ -12,7 +12,7 @@ import {useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
 
 const RideSummary = ({navigation}) => {
-  const {addRideState, dispatch} = useContext(AddRideContext);
+  const {addRideState} = useContext(AddRideContext);
   const {
     group,
     location,
@@ -24,7 +24,7 @@ const RideSummary = ({navigation}) => {
     date,
   } = addRideState;
 
-  const rdispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const convertDays = () => {
     let arr = days
@@ -46,10 +46,8 @@ const RideSummary = ({navigation}) => {
   };
 
   const onSubmit = () => {
-    // console.log(addRideState);
-    // navigation.navigate('RideCreated');
     if (regular) {
-      rdispatch(
+      dispatch(
         actions.createRegularRide({
           group,
           location,
@@ -66,7 +64,7 @@ const RideSummary = ({navigation}) => {
           alert('Error ocurred');
         });
     } else {
-      rdispatch(
+      dispatch(
         actions.createSingleRide({
           swap,
           group,

@@ -21,7 +21,7 @@ const SelectLocation = ({navigation}) => {
 
   // Context
   const {addRideState, dispatch} = useContext(AddRideContext);
-  const {swap, group, location} = addRideState;
+  const {swap, group} = addRideState;
 
   const onSearch = () => {
     setLoading(true);
@@ -39,15 +39,11 @@ const SelectLocation = ({navigation}) => {
       });
   };
 
-  // useEffect(() => {
-  //   if (results.length && !query.length) {
-  //     setResults([]);
-  //   }
-  // }, [query]);
-
-  // useEffect(() => {
-  //   location && navigation.navigate('PickTime');
-  // }, [location]);
+  useEffect(() => {
+    if (results.length && !query.length) {
+      setResults([]);
+    }
+  }, [query]);
 
   const onItemPress = item => {
     const stGeo = {
@@ -65,8 +61,10 @@ const SelectLocation = ({navigation}) => {
     setPlace(null);
   };
 
-  const onConfirmPress = () =>
+  const onConfirmPress = () => {
     dispatch({type: AddRideContextActions.SET_LOCATION, payload: place});
+    navigation.navigate('PickTime');
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -81,13 +79,13 @@ const SelectLocation = ({navigation}) => {
               <Text style={styles.placeName}>{place.place_name}</Text>
             </View>
             <View style={styles.mapWrapper}>
-              {/* <RouteMinimap
+              <RouteMinimap
                 stops={
                   swap
                     ? [{coordinates: group.location}, place]
                     : [place, {coordinates: group.location}]
                 }
-              /> */}
+              />
             </View>
             <View style={sheet.rowCenterSplit}>
               <StandardButton

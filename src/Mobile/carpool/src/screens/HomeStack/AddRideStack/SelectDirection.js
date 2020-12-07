@@ -32,12 +32,10 @@ const SelectDirection = ({navigation}) => {
     }
   }, [results]);
 
-  useEffect(() => {
-    addRideState.swap !== null && navigation.navigate('SelectLocation');
-  }, [addRideState.swap]);
-
-  const onItemPress = swap =>
+  const onItemPress = swap => {
     dispatch({type: AddRideContextActions.SET_SWAP, payload: swap});
+    navigation.navigate('SelectLocation');
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
