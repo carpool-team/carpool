@@ -40,6 +40,35 @@ const DriversRideDetails = ({navigation, route}) => {
       },
     ]);
 
+  const onItemPress = item => {
+    Alert.alert(
+      'Warning!',
+      `Are you sure you want to delete ${item.user.firstName} ${
+        item.user.lastName
+      } from this ride?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'default',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(
+              actions.deleteParticipant({
+                rideId: ride.id,
+                userId: item.user.id,
+              }),
+            )
+              .then(() => navigation.goBack())
+              .catch(err => alert('Error ocurred'));
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView
@@ -80,7 +109,7 @@ const DriversRideDetails = ({navigation, route}) => {
             />
           </View>
           <View style={styles.passengersList}>
-            <PassengersList ride={ride} />
+            <PassengersList ride={ride} onItemPress={onItemPress} />
           </View>
         </View>
       </ScrollView>

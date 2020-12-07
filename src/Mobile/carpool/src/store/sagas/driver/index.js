@@ -416,10 +416,31 @@ export function* deleteRideAsync(action) {
   }
 }
 
+export function* deleteParticipantAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const {rideId, userId} = action.payload;
+      // yield instance.delete(`/Rides/${rideId}/users/${userId}`);
+      yield put(actions.getDriversRides());
+
+      console.log('DELETE PARTICIPANT', action.payload);
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('ERR', err);
+    yield call(rejectPromiseAction, action, err);
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetDriversRides.Trigger, getDriversRidesAsync),
   takeLatest(actions.GetDriversPastRides.Trigger, getDriversPastRidesAsync),
   takeLatest(actions.DeleteRide.PromiseTrigger, deleteRideAsync),
+  takeLatest(actions.DeleteParticipant.PromiseTrigger, deleteParticipantAsync),
 ];
 
 export default accountSagas;

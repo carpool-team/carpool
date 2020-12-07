@@ -20,6 +20,12 @@ export const DeleteRide = {
   PromiseTrigger: 'DELETE_RIDE.TRIGGER',
 };
 
+export const DeleteParticipant = {
+  Trigger: 'DELETE_PARTICIPANT',
+
+  PromiseTrigger: 'DELETE_PARTICIPANT.TRIGGER',
+};
+
 export const getDriversRides = () => ({
   type: GetDriversRides.Trigger,
 });
@@ -58,3 +64,6 @@ export const getDriversPastRidesLoading = () => ({
 
 export const deleteRide = payload =>
   createPromiseAction(DeleteRide.Trigger)(payload);
+
+export const deleteParticipant = payload =>
+  createPromiseAction(DeleteParticipant.Trigger)(payload);
