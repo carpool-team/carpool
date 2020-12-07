@@ -305,6 +305,11 @@ export function* getAllRidesAsync() {
 
       // const res = yield instance.get(
       //   `${ENDPOINTS.GET_ALL_RIDES}?userId=${userId}`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   },
       // );
 
       // console.log('RES', res);
@@ -328,7 +333,11 @@ export function* getUsersRidesAsync() {
     if (token) {
       yield put(actions.getUsersRidesLoading());
 
-      // const res = yield instance.get(`/users/${userId}/rides`);
+      // const res = yield instance.get(`/users/${userId}/rides`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
 
       // console.log('RES', res);
 
@@ -351,7 +360,11 @@ export function* getUsersPastRidesAsync() {
     if (token) {
       yield put(actions.getUsersPastRidesLoading());
 
-      // const res = yield instance.get(`/users/${userId}/rides`);
+      // const res = yield instance.get(`/users/${userId}/rides`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
 
       // console.log('RES', res);
 
