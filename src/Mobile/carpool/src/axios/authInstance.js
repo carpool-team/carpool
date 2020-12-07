@@ -5,8 +5,8 @@ const authInstance = axios.create({
   baseURL: AUTH_API_URL,
   timeout: 2000,
   headers: {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
+    // 'Content-Type': 'application/json',
+    // Accept: 'application/json',
   },
 });
 

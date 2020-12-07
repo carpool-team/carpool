@@ -61,12 +61,10 @@ export function* getGroupsAsync() {
     if (token) {
       yield put(actions.getGroupsLoading());
 
-      // const res = yield instance.get(`/users/${userId}/groups`);
+      const res = yield instance.get(`/users/${userId}/groups`);
 
-      // console.log('GROUPS RES', res);
-
-      // yield put(actions.getGroupsSuccess(res.data.result));
-      yield put(actions.getGroupsSuccess(exampleGroups));
+      yield put(actions.getGroupsSuccess(res.data.result));
+      // yield put(actions.getGroupsSuccess(exampleGroups));
     }
   } catch (err) {
     // TODO
