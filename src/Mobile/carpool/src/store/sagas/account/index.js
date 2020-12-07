@@ -1,9 +1,10 @@
-import {takeLatest, put} from 'redux-saga/effects';
+import {takeLatest, put, select} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
 const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 import faker from 'faker';
+import jwt_decode from 'jwt-decode';
 
 const exampleGroups = [
   {
@@ -50,12 +51,13 @@ const exampleGroups = [
 
 export function* getGroupsAsync() {
   try {
-    const token = '123';
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield put(actions.getGroupsLoading());
 
-      // const res = yield instance.get('/Groups');
+      // const res = yield instance.get(`/users/${userId}/groups`);
 
       // console.log('GROUPS RES', res);
 
@@ -96,12 +98,13 @@ const exampleInvitations = [
 
 export function* getInvitationsAsync() {
   try {
-    const token = '123';
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield put(actions.getInvitationsLoading());
 
-      // const res = yield instance.get(ENDPOINTS.GET_USER_INVITATIONS(userId));
+      // const res = yield instance.get(`/users/${userId}/group-invites`);
 
       // console.log('RES', res);
 

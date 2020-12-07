@@ -1,10 +1,11 @@
-import {takeLatest, put} from 'redux-saga/effects';
+import {takeLatest, put, select} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
 const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 import faker from 'faker';
 import moment from 'moment';
+import jwt_decode from 'jwt-decode';
 
 const exampleRides = [
   {
@@ -296,7 +297,8 @@ const examplePastRides = [
 
 export function* getAllRidesAsync() {
   try {
-    const token = '123';
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield put(actions.getAllRidesLoading());
@@ -320,12 +322,13 @@ export function* getAllRidesAsync() {
 
 export function* getUsersRidesAsync() {
   try {
-    const token = '123';
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield put(actions.getUsersRidesLoading());
 
-      // const res = yield instance.get(ENDPOINTS.GET_USERS_RIDES(userId));
+      // const res = yield instance.get(`/users/${userId}/rides`);
 
       // console.log('RES', res);
 
@@ -342,12 +345,13 @@ export function* getUsersRidesAsync() {
 
 export function* getUsersPastRidesAsync() {
   try {
-    const token = '123';
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield put(actions.getUsersPastRidesLoading());
 
-      // const res = yield instance.get(ENDPOINTS.GET_USERS_RIDES(userId));
+      // const res = yield instance.get(`/users/${userId}/rides`);
 
       // console.log('RES', res);
 
