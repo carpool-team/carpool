@@ -3,6 +3,7 @@ using AutoWrapper.Wrappers;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
 using RestApi.DTOs.Rating;
@@ -12,6 +13,7 @@ namespace RestApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class RatingsController : Controller
 	{
 		private readonly IMediator _mediator;

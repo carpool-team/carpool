@@ -21,9 +21,9 @@ namespace RestApi.Commands.GroupCommands.AddGroup
 	{
 		[JsonConstructor]
 		public AddGroupCommand(string name, string code, AppUserId ownerId, Location location)
-			=> (Name, Code, OwnerId, Location) = (name, code, ownerId, location);
-
-
+			=> (Name, Code, OwnerId, Location)
+				= (name, code, ownerId, location);
+		
 		[Required] public string Name { get; }
 
 		public string Code { get; }
