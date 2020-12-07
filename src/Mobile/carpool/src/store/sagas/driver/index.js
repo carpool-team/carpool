@@ -436,11 +436,29 @@ export function* deleteParticipantAsync(action) {
   }
 }
 
+export function* createSingleRideAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      // send request
+      console.log('CREATE SINGLE RIDE', action.payload);
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('ERR', err);
+    yield call(rejectPromiseAction, action, err);
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetDriversRides.Trigger, getDriversRidesAsync),
   takeLatest(actions.GetDriversPastRides.Trigger, getDriversPastRidesAsync),
   takeLatest(actions.DeleteRide.PromiseTrigger, deleteRideAsync),
   takeLatest(actions.DeleteParticipant.PromiseTrigger, deleteParticipantAsync),
+  takeLatest(actions.CreateSingleRide.PromiseTrigger, createSingleRideAsync),
 ];
 
 export default accountSagas;

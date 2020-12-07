@@ -26,6 +26,12 @@ export const DeleteParticipant = {
   PromiseTrigger: 'DELETE_PARTICIPANT.TRIGGER',
 };
 
+export const CreateSingleRide = {
+  Trigger: 'CREATE_SINGLE_RIDE',
+
+  PromiseTrigger: 'CREATE_SINGLE_RIDE.TRIGGER',
+};
+
 export const getDriversRides = () => ({
   type: GetDriversRides.Trigger,
 });
@@ -67,3 +73,6 @@ export const deleteRide = payload =>
 
 export const deleteParticipant = payload =>
   createPromiseAction(DeleteParticipant.Trigger)(payload);
+
+export const createSingleRide = payload =>
+  createPromiseAction(CreateSingleRide.Trigger)(payload);
