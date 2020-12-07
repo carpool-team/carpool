@@ -112,7 +112,11 @@ export function* getInvitationsAsync() {
     if (token) {
       yield put(actions.getInvitationsLoading());
 
-      // const res = yield instance.get(`/users/${userId}/group-invites`);
+      // const res = yield instance.get(`/users/${userId}/group-invites`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
 
       // console.log('RES', res);
 
@@ -135,7 +139,11 @@ export function* acceptInvitationAsync(action) {
     if (token) {
       console.log('ACCEPTING INVITATION', action.payload);
 
-      // yield instance.put(`/GroupInvites/${action.payload}`)
+      // yield instance.put(`/GroupInvites/${action.payload}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // })
       yield put(actions.getInvitations());
       yield put(actions.getGroups());
 
@@ -155,7 +163,11 @@ export function* declineInvitationAsync(action) {
     if (token) {
       console.log('DECLINING INVITATION', action.payload);
 
-      // yield instance.put(`/GroupInvites/${action.payload}`)
+      // yield instance.put(`/GroupInvites/${action.payload}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // })
       yield put(actions.getInvitations());
       yield put(actions.getGroups());
 
