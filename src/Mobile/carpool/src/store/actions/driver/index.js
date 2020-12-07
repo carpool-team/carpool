@@ -1,3 +1,5 @@
+import {createPromiseAction} from '@adobe/redux-saga-promise';
+
 export const GetDriversRides = {
   Trigger: 'GET_DRIVERS_RIDES',
   Success: 'GET_DRIVERS_RIDES_SUCCESS',
@@ -10,6 +12,12 @@ export const GetDriversPastRides = {
   Success: 'GET_DRIVERS_PAST_RIDES_SUCCESS',
   Error: 'GET_DRIVERS_PAST_RIDES_ERROR',
   Loading: 'GET_DRIVERS_PAST_RIDES_LOADING',
+};
+
+export const DeleteRide = {
+  Trigger: 'DELETE_RIDE',
+
+  PromiseTrigger: 'DELETE_RIDE.TRIGGER',
 };
 
 export const getDriversRides = () => ({
@@ -47,3 +55,6 @@ export const getDriversPastRidesError = payload => ({
 export const getDriversPastRidesLoading = () => ({
   type: GetDriversPastRides.Loading,
 });
+
+export const deleteRide = payload =>
+  createPromiseAction(DeleteRide.Trigger)(payload);

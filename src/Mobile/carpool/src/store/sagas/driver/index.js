@@ -1,4 +1,4 @@
-import {takeLatest, put, select} from 'redux-saga/effects';
+import {takeLatest, put, select, call} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
@@ -6,6 +6,10 @@ import faker from 'faker';
 const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 import moment from 'moment';
 import jwt_decode from 'jwt-decode';
+import {
+  rejectPromiseAction,
+  resolvePromiseAction,
+} from '@adobe/redux-saga-promise';
 
 const exampleRides = [
   {
@@ -395,9 +399,27 @@ export function* getDriversPastRidesAsync() {
   }
 }
 
+export function* deleteRideAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      // yield instance.delete(`/Rides/${action.payload}`);
+      yield put(actions.getDriversRides());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('ERR', err);
+    yield call(rejectPromiseAction, action, err);
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetDriversRides.Trigger, getDriversRidesAsync),
   takeLatest(actions.GetDriversPastRides.Trigger, getDriversPastRidesAsync),
+  takeLatest(actions.DeleteRide.PromiseTrigger, deleteRideAsync),
 ];
 
 export default accountSagas;
