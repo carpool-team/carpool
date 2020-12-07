@@ -27,56 +27,17 @@ const AddRideStack = props => {
   // }, [focused]);
 
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="SelectGroup"
-        component={SelectGroup}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="SelectDirection"
-        component={SelectDirection}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="SelectLocation"
-        component={SelectLocation}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="PickTime"
-        component={PickTime}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="SetSeats"
-        component={SetSeats}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="RideSummary"
-        component={RideSummary}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="RideCreated"
-        component={RideCreated}
-        options={{
-          headerShown: false,
-        }}
-      />
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="SelectGroup" component={SelectGroup} />
+      <Stack.Screen name="SelectDirection" component={SelectDirection} />
+      <Stack.Screen name="SelectLocation" component={SelectLocation} />
+      <Stack.Screen name="PickTime" component={PickTime} />
+      <Stack.Screen name="SetSeats" component={SetSeats} />
+      <Stack.Screen name="RideSummary" component={RideSummary} />
+      <Stack.Screen name="RideCreated" component={RideCreated} />
     </Stack.Navigator>
   );
 };
