@@ -361,7 +361,11 @@ export function* getDriversRidesAsync() {
     if (token) {
       yield put(actions.getDriversRidesLoading());
 
-      // const res = yield instance.get(`/users/${userId}/rides`);
+      // const res = yield instance.get(`/users/${userId}/rides`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
 
       // console.log('RES', res);
 
@@ -384,7 +388,11 @@ export function* getDriversPastRidesAsync() {
     if (token) {
       yield put(actions.getDriversPastRidesLoading());
 
-      // const res = yield instance.get(`/users/${userId}/rides`);
+      // const res = yield instance.get(`/users/${userId}/rides`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
 
       // console.log('RES', res);
 
@@ -405,7 +413,11 @@ export function* deleteRideAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      // yield instance.delete(`/Rides/${action.payload}`);
+      // yield instance.delete(`/Rides/${action.payload}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
       yield put(actions.getDriversRides());
 
       yield call(resolvePromiseAction, action);
@@ -423,7 +435,11 @@ export function* deleteParticipantAsync(action) {
 
     if (token) {
       const {rideId, userId} = action.payload;
-      // yield instance.delete(`/Rides/${rideId}/users/${userId}`);
+      // yield instance.delete(`/Rides/${rideId}/users/${userId}`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
       yield put(actions.getDriversRides());
 
       console.log('DELETE PARTICIPANT', action.payload);
