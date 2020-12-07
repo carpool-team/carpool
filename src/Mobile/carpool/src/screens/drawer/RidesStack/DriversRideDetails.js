@@ -15,9 +15,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {Waypoints} from '../../../components/Ride';
 import moment from 'moment';
 import PassengersList from '../../../components/Driver/PassengersList';
+import * as actions from '../../../store/actions';
+import {useDispatch} from 'react-redux';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
+
+  const dispatch = useDispatch();
 
   const onDeletePress = () =>
     Alert.alert('Warning!', 'Are you sure you want to delete this ride?', [
@@ -28,7 +32,11 @@ const DriversRideDetails = ({navigation, route}) => {
       {
         text: 'Delete',
         style: 'destructive',
-        onPress: () => console.log('DELETE RIDE'),
+        onPress: () => {
+          dispatch(actions.deleteRide(ride.id))
+            .then(() => navigation.goBack())
+            .catch(err => alert('Error ocurred'));
+        },
       },
     ]);
 
