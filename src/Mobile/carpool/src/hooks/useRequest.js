@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {API_URL} from '@env';
+import {WEB_API_URL} from '@env';
 
 export const METHODS = {
   GET: 'GET',
@@ -58,7 +58,7 @@ const useRequest = (method, endpoint, body = null) => {
         request.body = JSON.stringify(body);
       }
 
-      const res = await fetch(`${API_URL}${endpoint}`, request);
+      const res = await fetch(`${WEB_API_URL}${endpoint}`, request);
 
       if (res.status > 399) {
         setError('Error occured');
