@@ -14,6 +14,7 @@ namespace RestApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class GroupsController : ControllerBase
 	{
 		private readonly IMediator _mediator;
@@ -60,7 +61,6 @@ namespace RestApi.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
-		[Authorize]
 		public async Task<ApiResponse> PostGroup([FromBody] AddGroupCommand addGroupCommand)
 		{
 			var groupId = await _mediator.Send(addGroupCommand).ConfigureAwait(false);

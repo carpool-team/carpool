@@ -3,6 +3,7 @@ using AutoWrapper.Wrappers;
 using DataTransferObjects.GroupInvitesDtos;
 using IdentifiersShared.Identifiers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.GroupInviteCommands;
@@ -13,6 +14,7 @@ namespace RestApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class GroupInvitesController : Controller
 	{
 		private readonly IMediator _mediator;

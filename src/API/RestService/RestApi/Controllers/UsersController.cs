@@ -3,6 +3,7 @@ using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
 using IdentifiersShared.Identifiers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
 using RestApi.DTOs.User;
@@ -12,6 +13,7 @@ namespace RestApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class UsersController : Controller
 	{
 		private readonly CarpoolDbContext _context;

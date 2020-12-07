@@ -3,6 +3,7 @@ using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
 using IdentifiersShared.Identifiers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.RideCommands;
@@ -14,6 +15,7 @@ namespace RestApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class RidesController : Controller
 	{
 		private readonly CarpoolDbContext _context;
