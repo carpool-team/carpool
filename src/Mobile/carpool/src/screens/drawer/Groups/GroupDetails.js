@@ -42,11 +42,15 @@ const GroupDetails = ({navigation, route}) => {
         </View>
         <View style={styles.statsRow}>
           <View style={sheet.columnCenter}>
-            <Text style={styles.totalRides}>{group.rideCount}</Text>
+            <Text style={styles.totalRides}>
+              {group.rideCount ? group.rideCount : 0}
+            </Text>
             <Text style={styles.rides}>total rides</Text>
           </View>
           <View style={sheet.columnCenter}>
-            <Text style={styles.totalMembers}>{group.userCount}</Text>
+            <Text style={styles.totalMembers}>
+              {group.userCount ? group.userCount : 0}
+            </Text>
             <Text style={styles.members}>members</Text>
           </View>
           <View style={sheet.columnCenter}>

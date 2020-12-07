@@ -24,15 +24,15 @@ const ListItem = ({item, onItemPress}) => (
       <View style={styles.bottomRow}>
         <View style={sheet.rowCenter}>
           <Icon name="group" size={40} color={colors.grayDark} />
-          <Text style={styles.members}>{item.userCount}</Text>
+          <Text style={styles.members}>
+            {item.userCount ? item.userCount : 0}
+          </Text>
         </View>
         <View style={sheet.rowCenter}>
           <Ionicon name="ios-car" size={40} color={colors.grayDark} />
-          <Text style={styles.rides}>{item.rideCount}</Text>
-        </View>
-        <View style={sheet.rowCenter}>
-          <Ionicon name="md-git-branch" size={40} color={colors.grayDark} />
-          <Text style={styles.distance}>{`123 km`}</Text>
+          <Text style={styles.rides}>
+            {item.rideCount ? item.rideCount : 0}
+          </Text>
         </View>
       </View>
     </View>
@@ -84,7 +84,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   bottomRow: {
-    ...sheet.rowCenterSplit,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
     width: '100%',
   },
 });

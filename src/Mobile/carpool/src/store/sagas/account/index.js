@@ -1,4 +1,4 @@
-import {takeLatest, put, select, call} from 'redux-saga/effects';
+import {takeLatest, put, select, call, take} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
@@ -61,16 +61,22 @@ export function* getGroupsAsync() {
     if (token) {
       yield put(actions.getGroupsLoading());
 
-      const res = yield instance.get(`/users/${userId}/groups`);
+      const res = yield instance.get(`/users/${userId}/groups`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       yield put(actions.getGroupsSuccess(res.data.result));
-      // yield put(actions.getGroupsSuccess(exampleGroups));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response.status === 401) {
+      yield put(actions.refreshToken());
+      yield take(actions.GetToken.Success);
+      yield put(actions.getGroups());
+      return;
+    }
     yield put(actions.getGroupsError(err));
-    console.log('ERROR', err);
   }
 }
 
