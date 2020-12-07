@@ -2,8 +2,6 @@ import React, {useState, useContext, useEffect, useRef} from 'react';
 import {View, Text, SafeAreaView, StyleSheet, TextInput} from 'react-native';
 import {AddRideContext, AddRideContextActions} from './context';
 import {useForwardGeocoding} from '../../../hooks';
-import Geolocation from '@react-native-community/geolocation';
-import {geocodingClient} from '../../../maps/mapbox';
 import {StartLocationsFlatList} from '../../../components/FindRoute';
 import {colors, sheet} from '../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -16,7 +14,6 @@ const config = {
 };
 
 const SelectLocation = ({navigation}) => {
-  const [currentPosition, setCurrentPosition] = useState([]);
   const [query, setQuery] = useState('');
   const [place, setPlace] = useState(null);
 
@@ -30,12 +27,7 @@ const SelectLocation = ({navigation}) => {
   // Geocoding
   const [results, loading] = useForwardGeocoding(query, config, true);
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition(info => {
-      const {longitude, latitude} = info.coords;
-      setCurrentPosition([longitude, latitude]);
-    });
-  }, []);
+  console.log('RESULTS', results);
 
   useEffect(() => {
     if (place) {
@@ -47,31 +39,6 @@ const SelectLocation = ({navigation}) => {
   useEffect(() => {
     location && navigation.navigate('PickTime');
   }, [location]);
-
-  const onCurrentClick = async () => {
-    if (currentPosition.length) {
-      try {
-        const response = await geocodingClient
-          .reverseGeocode({
-            query: currentPosition,
-          })
-          .send();
-
-        const result = response.body.features[0];
-
-        const stGeo = {
-          coordinates: {
-            longitude: result.center[0],
-            latitude: result.center[1],
-          },
-          place_name: result.place_name,
-        };
-        setPlace(stGeo);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
 
   const onItemPress = item => {
     const stGeo = {
@@ -143,7 +110,6 @@ const SelectLocation = ({navigation}) => {
                 data={results}
                 loading={loading}
                 onItemPress={onItemPress}
-                onCurrentClick={onCurrentClick}
               />
             </View>
           </>
