@@ -15,6 +15,7 @@ namespace DataAccessLayer.Builders
 
 			builder.Property(x => x.Date).IsRequired();
 			builder.Property(x => x.Price).IsRequired();
+			builder.Property(x => x.RideDirection).IsRequired();
 
 			builder.HasMany(x => x.Participants)
 				.WithOne()
@@ -25,11 +26,7 @@ namespace DataAccessLayer.Builders
 				.WithOne()
 				.HasForeignKey(x => x.RideId)
 				.OnDelete(DeleteBehavior.Cascade);
-
-			builder.OwnsOne(x => x.Destination);
-
-			builder.OwnsOne(x => x.StartingLocation);
-
+			
 			builder.HasOne(x => x.Group)
 				.WithMany(x => x.Rides)
 				.HasForeignKey(x => x.GroupId)
@@ -39,6 +36,9 @@ namespace DataAccessLayer.Builders
 				.WithMany()
 				.HasForeignKey(x => x.OwnerId)
 				.OnDelete(DeleteBehavior.NoAction);
+			
+			builder.OwnsOne(x => x.Location);
+
 		}
 	}
 }
