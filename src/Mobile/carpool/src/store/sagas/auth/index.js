@@ -1,4 +1,4 @@
-import {takeLatest, put, call} from 'redux-saga/effects';
+import {takeLatest, put, call, select} from 'redux-saga/effects';
 import * as actions from '../../actions/auth';
 import axiosInstance from '../../../axios/authInstance';
 import {
@@ -59,10 +59,31 @@ export function* logoutUserAsync() {
   }
 }
 
+export function* refreshTokenAsync() {
+  try {
+    const currentRefreshToken = yield select(
+      state => state.authReducer.tokens.data.refreshToken,
+    );
+
+    if (currentRefreshToken) {
+      // Fetch refresh token
+      // Save new tokens in store
+      // Call getTokenSuccess
+      yield put(actions.logoutUser());
+    } else {
+      yield put(actions.logoutUser());
+    }
+  } catch (err) {
+    console.log('ERROR', err);
+    yield put(actions.logoutUser());
+  }
+}
+
 const authSagas = [
   takeLatest(actions.GetToken.Trigger, getTokenAsync),
   takeLatest(actions.RegisterUser.PromiseTrigger, registerUserAsync),
   takeLatest(actions.LogoutUser.Trigger, logoutUserAsync),
+  takeLatest(actions.GetToken.Refresh, refreshTokenAsync),
 ];
 
 export default authSagas;

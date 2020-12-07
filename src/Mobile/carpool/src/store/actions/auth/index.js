@@ -5,6 +5,7 @@ export const GetToken = {
   Success: 'GET_TOKEN_SUCCESS',
   Loading: 'GET_TOKEN_LOADING',
   Error: 'GET_TOKEN_ERROR',
+  Refresh: 'REFRESH_TOKEN',
 };
 
 export const RegisterUser = {
@@ -32,3 +33,5 @@ export const registerUser = payload =>
 export const logoutUser = () => ({type: LogoutUser.Trigger});
 
 export const logoutUserSuccess = () => ({type: LogoutUser.Success});
+
+export const refreshToken = () => ({type: GetToken.Refresh});
