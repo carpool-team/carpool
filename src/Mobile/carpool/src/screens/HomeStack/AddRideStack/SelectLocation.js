@@ -1,12 +1,12 @@
-import React, {useState, useContext, useEffect, useRef} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet, TextInput} from 'react-native';
 import {AddRideContext, AddRideContextActions} from './context';
-import {useForwardGeocoding} from '../../../hooks';
 import {StartLocationsFlatList} from '../../../components/FindRoute';
 import {colors, sheet} from '../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {StandardButton} from '../../../components/common/buttons';
 import {RouteMinimap} from '../../../components/Route';
+import {geocodingClient} from '../../../maps/mapbox';
 
 const config = {
   autocomplete: false,
@@ -16,29 +16,38 @@ const config = {
 const SelectLocation = ({navigation}) => {
   const [query, setQuery] = useState('');
   const [place, setPlace] = useState(null);
-
-  // Refs
-  const _input = useRef();
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // Context
   const {addRideState, dispatch} = useContext(AddRideContext);
   const {swap, group, location} = addRideState;
 
-  // Geocoding
-  const [results, loading] = useForwardGeocoding(query, config, true);
+  const onSearch = () => {
+    setLoading(true);
+    geocodingClient
+      .forwardGeocode({query, ...config})
+      .send()
+      .then(res => {
+        setResults([...res.body.features]);
+      })
+      .catch(err => {
+        console.log('ERR', err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
-  console.log('RESULTS', results);
+  // useEffect(() => {
+  //   if (results.length && !query.length) {
+  //     setResults([]);
+  //   }
+  // }, [query]);
 
-  useEffect(() => {
-    if (place) {
-      const {current} = _input;
-      current && current.blur();
-    }
-  }, [place]);
-
-  useEffect(() => {
-    location && navigation.navigate('PickTime');
-  }, [location]);
+  // useEffect(() => {
+  //   location && navigation.navigate('PickTime');
+  // }, [location]);
 
   const onItemPress = item => {
     const stGeo = {
@@ -72,13 +81,13 @@ const SelectLocation = ({navigation}) => {
               <Text style={styles.placeName}>{place.place_name}</Text>
             </View>
             <View style={styles.mapWrapper}>
-              <RouteMinimap
+              {/* <RouteMinimap
                 stops={
                   swap
                     ? [{coordinates: group.location}, place]
                     : [place, {coordinates: group.location}]
                 }
-              />
+              /> */}
             </View>
             <View style={sheet.rowCenterSplit}>
               <StandardButton
@@ -98,12 +107,12 @@ const SelectLocation = ({navigation}) => {
         ) : (
           <>
             <TextInput
-              ref={_input}
               returnKeyType="done"
               autoFocus
               value={query}
               onChangeText={setQuery}
               style={styles.input}
+              onSubmitEditing={onSearch}
             />
             <View style={styles.listWrapper}>
               <StartLocationsFlatList
@@ -111,6 +120,18 @@ const SelectLocation = ({navigation}) => {
                 loading={loading}
                 onItemPress={onItemPress}
               />
+              <View
+                style={{
+                  alignItems: 'center',
+                  width: '100%',
+                  marginTop: 50,
+                }}>
+                <StandardButton
+                  color={colors.blue}
+                  title="Search"
+                  onPress={onSearch}
+                />
+              </View>
             </View>
           </>
         )}
@@ -160,7 +181,7 @@ const styles = StyleSheet.create({
     color: colors.grayVeryDark,
   },
   listWrapper: {
-    flex: 1,
+    // flex: 1,
     width: '100%',
   },
 });
