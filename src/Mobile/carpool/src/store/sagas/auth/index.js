@@ -7,25 +7,26 @@ import {
 } from '@adobe/redux-saga-promise';
 import authInstance from '../../../axios/authInstance';
 import {STORAGE_KEYS, storeData, removeData} from '../../../storage';
+import jwt_decode from 'jwt-decode';
 
 export function* getTokenAsync({payload}) {
   try {
     yield put(actions.getTokenLoading());
 
-    const res = yield axiosInstance.post('/auth/login', {
+    const res = yield axiosInstance.post('/Auth/login', {
       email: payload.email,
       password: payload.password,
       rememberLogin: true,
       clientId: '123',
     });
 
-    const {
-      token,
-      refreshToken: {token: refreshToken},
-    } = res.data.result;
+    const {token, refreshToken} = res.data.result;
+
+    const decoded = jwt_decode(token);
 
     yield call(storeData, STORAGE_KEYS.token, token);
     yield call(storeData, STORAGE_KEYS.refreshToken, refreshToken);
+    yield call(storeData, STORAGE_KEYS.userId, decoded.sub.toString());
 
     yield put(actions.getTokenSuccess({token, refreshToken}));
   } catch (err) {
@@ -36,7 +37,7 @@ export function* getTokenAsync({payload}) {
 
 export function* registerUserAsync(action) {
   try {
-    yield authInstance.post('/auth/register', {
+    yield authInstance.post('/Auth/register', {
       ...action.payload,
     });
 
