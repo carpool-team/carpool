@@ -8,10 +8,23 @@ import PickDays from '../../../components/Driver/AddRide/PickDays';
 import moment from 'moment';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {StandardButton} from '../../../components/common/buttons';
+import {useDispatch} from 'react-redux';
+import * as actions from '../../../store/actions';
 
 const RideSummary = ({navigation}) => {
   const {addRideState, dispatch} = useContext(AddRideContext);
-  const {group, location, swap, regular, days, time, seats} = addRideState;
+  const {
+    group,
+    location,
+    swap,
+    regular,
+    days,
+    time,
+    seats,
+    date,
+  } = addRideState;
+
+  const rdispatch = useDispatch();
 
   const convertDays = () => {
     let arr = days
@@ -33,8 +46,42 @@ const RideSummary = ({navigation}) => {
   };
 
   const onSubmit = () => {
-    console.log(addRideState);
-    navigation.navigate('RideCreated');
+    // console.log(addRideState);
+    // navigation.navigate('RideCreated');
+    if (regular) {
+      rdispatch(
+        actions.createRegularRide({
+          group,
+          location,
+          swap,
+          days,
+          time,
+          seats,
+        }),
+      )
+        .then(() => {
+          navigation.navigate('RideCreated');
+        })
+        .catch(err => {
+          alert('Error ocurred');
+        });
+    } else {
+      rdispatch(
+        actions.createSingleRide({
+          swap,
+          group,
+          location,
+          date,
+          seats,
+        }),
+      )
+        .then(() => {
+          navigation.navigate('RideCreated');
+        })
+        .catch(err => {
+          alert('Error ocurred');
+        });
+    }
   };
 
   return (

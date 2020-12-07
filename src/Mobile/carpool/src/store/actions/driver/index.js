@@ -32,6 +32,12 @@ export const CreateSingleRide = {
   PromiseTrigger: 'CREATE_SINGLE_RIDE.TRIGGER',
 };
 
+export const CreateRegularRide = {
+  Trigger: 'CREATE_SINGLE_RIDE',
+
+  PromiseTrigger: 'CREATE_SINGLE_RIDE.TRIGGER',
+};
+
 export const getDriversRides = () => ({
   type: GetDriversRides.Trigger,
 });
@@ -76,3 +82,6 @@ export const deleteParticipant = payload =>
 
 export const createSingleRide = payload =>
   createPromiseAction(CreateSingleRide.Trigger)(payload);
+
+export const createRegularRide = payload =>
+  createPromiseAction(CreateRegularRide.Trigger)(payload);

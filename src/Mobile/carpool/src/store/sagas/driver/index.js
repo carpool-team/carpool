@@ -445,6 +445,27 @@ export function* createSingleRideAsync(action) {
       // send request
       console.log('CREATE SINGLE RIDE', action.payload);
 
+      yield put(actions.getDriversRides());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('ERR', err);
+    yield call(rejectPromiseAction, action, err);
+  }
+}
+
+export function* createRegularRideAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      // send request
+      console.log('CREATE REGULAR RIDE', action.payload);
+
+      yield put(actions.getDriversRides());
+
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
@@ -459,6 +480,7 @@ const accountSagas = [
   takeLatest(actions.DeleteRide.PromiseTrigger, deleteRideAsync),
   takeLatest(actions.DeleteParticipant.PromiseTrigger, deleteParticipantAsync),
   takeLatest(actions.CreateSingleRide.PromiseTrigger, createSingleRideAsync),
+  takeLatest(actions.CreateRegularRide.PromiseTrigger, createRegularRideAsync),
 ];
 
 export default accountSagas;
