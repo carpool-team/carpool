@@ -77,15 +77,11 @@ const RouteMinimap = ({stops, hideDetails = false}) => {
 
       return (
         <>
-          <MapboxGL.PointAnnotation
-            key={start.location.toString()}
-            id="selected"
-            coordinate={start.location}>
+          <MapboxGL.PointAnnotation id="startPoint" coordinate={start.location}>
             <BlueMarker size={20} />
           </MapboxGL.PointAnnotation>
           <MapboxGL.PointAnnotation
-            key={finish.location.toString()}
-            id="selected"
+            id="finishPoint"
             coordinate={finish.location}>
             <Icon
               name="map-marker"
@@ -95,10 +91,10 @@ const RouteMinimap = ({stops, hideDetails = false}) => {
             />
           </MapboxGL.PointAnnotation>
           {!!stopPoints.length &&
-            stopPoints.map(stop => (
+            stopPoints.map((stop, index) => (
               <MapboxGL.PointAnnotation
                 key={stop.location.toString()}
-                id="selected"
+                id={`stop${index}`}
                 coordinate={stop.location}>
                 <Icon
                   name="map-marker"
@@ -115,19 +111,18 @@ const RouteMinimap = ({stops, hideDetails = false}) => {
     }
   };
 
-  const renderRoutes = () =>
-    routes.map((item, index) => (
-      <MapboxGL.ShapeSource
-        key={index}
-        id={`route${index}`}
-        shape={item.geometry}>
+  const renderRoutes = () => {
+    const route = routes.length ? routes[0] : null;
+    return route ? (
+      <MapboxGL.ShapeSource id="routeShape" shape={route.geometry}>
         <MapboxGL.LineLayer
-          id={`route${index}`}
+          id="routeLayer"
           style={activeRouteStyle}
           layerIndex={40}
         />
       </MapboxGL.ShapeSource>
-    ));
+    ) : null;
+  };
 
   const renderTime = duration => {
     const minutes = Math.round(duration / 60);
@@ -187,7 +182,7 @@ const RouteMinimap = ({stops, hideDetails = false}) => {
       <MapboxGL.MapView
         style={{flex: 1}}
         styleURL={MAP_LIGHT}
-        contentInset={10}
+        // contentInset={10}
         compassEnabled={false}
         scrollEnabled={false}
         pitchEnabled={false}
