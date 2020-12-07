@@ -73,11 +73,6 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 			setValidate(false);
 			console.log("inputs");
 		} else {
-			setInputsValid({
-				name: false,
-				email: false,
-				surname: false,
-			});
 			isFormValid = false;
 			setValidate(true);
 		}

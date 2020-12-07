@@ -66,10 +66,6 @@ const LoginPanel = (props: ILoginPanelProps) => {
 			setValidate(false);
 			return true;
 		} else {
-			setInputsValid({
-				email: false,
-				password: false
-			});
 			setValidate(true);
 			return false;
 		}

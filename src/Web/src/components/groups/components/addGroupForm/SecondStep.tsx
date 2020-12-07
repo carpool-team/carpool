@@ -70,11 +70,6 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 		if (each(inputsValid, i => i)) {
 			props.callbacks.addUser();
 			setValidate(false);
-			setInputsValid({
-				name: false,
-				email: false,
-				surname: false,
-			});
 		} else {
 			setValidate(true);
 		}
