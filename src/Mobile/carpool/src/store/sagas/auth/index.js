@@ -30,7 +30,6 @@ export function* getTokenAsync({payload}) {
 
     yield put(actions.getTokenSuccess({token, refreshToken}));
   } catch (err) {
-    console.log('ERR', err);
     yield put(actions.getTokenError(err));
   }
 }
