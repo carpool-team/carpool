@@ -22,7 +22,7 @@ const DriversRideInfo = ({ride, style, onPress}) =>
         </Text>
       </View>
       <Text style={[styles.leavingIn, {color: getColor(ride.date)}]}>
-        {getLeavingIn(ride.date)}
+        {getLeavingIn(ride.rideDate)}
       </Text>
     </UpView>
   ) : null;
