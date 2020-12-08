@@ -9,11 +9,16 @@ import mapConfig from "../../map/mapConfig";
 import Button from "../../ui/button/Button";
 import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../ui/button/enums/ButtonColor";
+import moment from "moment";
+import { da } from "date-fns/locale";
+import "../Rides.scss"
 
 interface IRidesListProps extends IReactI18nProps {
 	rides: IRide[];
 	rideSelected: IRide;
 	setRide: (ride: IRide) => void;
+	firstDay: string,
+	lastDay: string;
 }
 interface IListItemProps {
 	ride: IRideNames;
@@ -31,6 +36,7 @@ const RidesParticipant = (props: IRidesListProps) => {
 
 	const cssClasses = {
 		list: "ridesList",
+		listContainer: "ridesList--container",
 		mainRow: "ridesList--mainRow",
 		bottomRow: "ridesList--bottomRow",
 		button: "ridesList--button",
@@ -48,6 +54,8 @@ const RidesParticipant = (props: IRidesListProps) => {
 		activeDate: "ridesListActive--date",
 		activeSeats: "ridesListActive--seats",
 		activeCar: "ridesListActive--car",
+		day: "day",
+		dayLabel: "day__label"
 	};
 
 	let colorIndex: number = 0;
@@ -209,35 +217,51 @@ const RidesParticipant = (props: IRidesListProps) => {
 		);
 	};
 
+	 const days = []
+	 for (var m = moment(props.firstDay); m.diff(props.lastDay, 'days') <= 0; m.add(1, 'days')) {
+		days.push(m.format());
+	}
+
 	return (
-		<ul className={cssClasses.list}>
-			{rides.map((ride) => {
-				++colorIndex;
-				const color = colorList[colorIndex % colorList.length];
-				const { t } = props;
-				return (
-					<React.Fragment key={ride.id}>
-						{(() => {
-							if (props.rideSelected && props.rideSelected.id === ride.id) {
-								return (
-									<ActiveItem
-										ride={ride}
-										color={color}
-										t={t}
-										setRide={props.setRide}
-									/>);
-							} else {
-								return (
-									<DefaultItem
-										ride={ride}
-										color={color}
-										t={t}
-										setRide={props.setRide}
-									/>);
-							}
-						})()}
-					</React.Fragment>
-				);
+		<ul className={cssClasses.listContainer}>
+			{days.map((day)=>{
+			return(
+				<div className={cssClasses.day} key={day}>
+					<div className={cssClasses.dayLabel}>{moment(day).format("DD.MM")}</div>
+					<ul className={cssClasses.list}>
+					{rides.map((ride) => {
+						const { t } = props;
+						if (moment(ride.date).format("YYYY-MM-DD") === moment(day).format("YYYY-MM-DD")){
+							++colorIndex;
+							const color = colorList[colorIndex % colorList.length];
+							return (
+								<React.Fragment key={ride.id}>
+									{(() => {
+										if (props.rideSelected && props.rideSelected.id === ride.id) {
+											return (
+												<ActiveItem
+													ride={ride}
+													color={color}
+													t={t}
+													setRide={props.setRide}
+												/>);
+										} else {
+											return (
+												<DefaultItem
+													ride={ride}
+													color={color}
+													t={t}
+													setRide={props.setRide}
+												/>);
+										}
+									})()}
+								</React.Fragment>
+							);
+						} 
+			})}
+				</ul>
+				</div>
+			);
 			})}
 		</ul>
 	);

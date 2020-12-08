@@ -73,6 +73,7 @@
         "immer": "^6.0.9",
         "json-loader": "^0.5.7",
         "mapbox-gl": "^1.13.0",
+        "moment": "^2.29.1",
         "react": "^16.14.0",
         "react-breadcrumbs-dynamic": "^1.2.1",
         "react-dom": "^16.14.0",
