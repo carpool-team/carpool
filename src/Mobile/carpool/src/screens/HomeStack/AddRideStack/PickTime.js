@@ -33,7 +33,7 @@ const PickTime = ({navigation}) => {
     dispatch({type: AddRideContextActions.SET_DAYS, payload: mappedDays});
     dispatch({
       type: AddRideContextActions.SET_TIME,
-      payload: moment(time).format('HH:mm'),
+      payload: time,
     });
     dispatch({type: AddRideContextActions.SET_REGULAR, payload: true});
     navigation.navigate('SetSeats');

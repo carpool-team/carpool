@@ -33,9 +33,9 @@ export const CreateSingleRide = {
 };
 
 export const CreateRegularRide = {
-  Trigger: 'CREATE_SINGLE_RIDE',
+  Trigger: 'CREATE_REGULAR_RIDE',
 
-  PromiseTrigger: 'CREATE_SINGLE_RIDE.TRIGGER',
+  PromiseTrigger: 'CREATE_REGULAR_RIDE.TRIGGER',
 };
 
 export const getDriversRides = () => ({

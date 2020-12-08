@@ -118,9 +118,9 @@ const RideSummary = ({navigation}) => {
       ) : (
         <View style={[styles.bottomWrapper, styles.detailsWrapper]}>
           <View>
-            <Text style={styles.time}>{moment(time).format('HH:mm')}</Text>
+            <Text style={styles.time}>{moment(date).format('HH:mm')}</Text>
             <Text style={styles.date}>
-              {moment(time).format('Do MMMM YYYY')}
+              {moment(date).format('Do MMMM YYYY')}
             </Text>
           </View>
           <View style={sheet.rowCenter}>
