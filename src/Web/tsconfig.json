@@ -6,8 +6,17 @@
         "noImplicitAny": false,
         "module": "esnext",
         "typeRoots": [
-            "node_modules/@types"
+            "node_modules/@types",
+            "src/types"
         ],
+        "paths": {
+            "assets_path": [
+                "./assets"
+            ],
+            "scss_path": [
+                "./scss"
+            ]
+        },
         "noEmitOnError": true,
         "allowJs": false,
         "moduleResolution": "node",
@@ -17,6 +26,7 @@
         "removeComments": true,
         "resolveJsonModule": true,
         "sourceMap": true,
+        "forceConsistentCasingInFileNames": false,
         "target": "ES6",
         "lib": [
             "ES6",

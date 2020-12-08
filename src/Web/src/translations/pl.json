@@ -1,60 +1,103 @@
 {
-  "defaultNamespace": {
-    "groups": {
-      "addGroupForm": {
-        "code": "Kod grupy",
-        "groupName": "Nazwa grupy",
-        "address": "Adres",
-        "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie",
-        "email": "Adres e-mail",
-        "emailComment": "Na ten adres zostanie wysłane zaproszenie",
+    "defaultNamespace": {
+        "auth": {
+            "registerPanel": {
+                "name": "Imię",
+                "surname": "Nazwisko",
+                "email": "Adres e-mail"
+            },
+            "loginPanel": {
+                "email": "Adres e-mail",
+                "password": "Hasło"
+            },
+            "passwordInput": {
+                "password": "Hasło",
+                "confirmPassword": "Potwierdź hasło",
+                "passwordsMismatch": "Hasła się nie zgadzają",
+                "passwordTooWeak": "Hasło jest za słabe",
+                "scoreWords": {
+                    "short": "Za krótkie",
+                    "weak": "Słabe",
+                    "okay": "Ok",
+                    "good": "Dobre",
+                    "strong": "Silne"
+                }
+            },
+            "submit": "Wyślij",
+            "register": "Zarejestruj się",
+            "registerSuccess": "Rejestracja pomyślna!",
+            "loginSuccess": "Logowanie pomyślne!",
+            "login": "Zaloguj się",
+            "rememberLogin": "Pamiętaj logowanie"
+        },
+        "groups": {
+            "addGroupForm": {
+                "code": "Kod grupy",
+                "groupName": "Nazwa grupy",
+                "address": "Adres",
+                "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie",
+                "email": "Adres e-mail",
+                "emailComment": "Na ten adres zostanie wysłane zaproszenie",
+                "createBtn": "Utwórz",
+                "name": "Imię",
+                "surname": "Nazwisko",
+                "basicInfo": "Podstawowe informacje",
+                "basicInfo2": "Zaproś użytkowników"
+            },
+            "list": {
+                "editGroup": "Edytuj grupę",
+                "ridesInGroup": "Przejazdy",
+                "inviteToGroup": "Zaproś do grupy"
+            },
+            "addGroupBtn": "Dodaj grupę",
+            "ridesBtn": "Przejazdy",
+            "invitesBtn": "Zaproszenia"
+        },
+        "footer": {
+            "services": "Usługi",
+            "environment": "Środowisko",
+            "about": "O nas",
+            "idea": "Idea",
+            "credits": "Grafiki"
+        },
+        "navBar": {
+            "register": "Zarejestruj się",
+            "login": "Zaloguj się"
+        },
+        "homeScreen": {
+            "quote": "Nie jedź\n sam!",
+            "join": "Dołącz do grupy",
+            "helpRides": "Wspólne przejazdy pomagają zmniejszyć ilośc samochodów na drogach i ograniczyć ilość emitowanych zanieczyszczeń.",
+            "helpGroups": "Stwórz grupę lub dołącz do już istniejącej w celu znalezienia kompanów podróży.",
+            "helpReports": "Rywalizuj w obrębie swich grup o najwięcej kilometrów przejachych razem.",
+            "btnRides": "Dowiedz się więcej o przejazdach",
+            "btnReports": "Dowiedz się więcej o raportach",
+            "btnGroups": "Dowiedz się więcej o grupach",
+            "groups": "Grupy",
+            "reports": "Raporty",
+            "rides": "Przejazdy"
+        },
+        "common": {
+            "groups": "Grupy",
+            "passenger": "Pasażer",
+            "driver": "Kierowca"
+        },
+        "prevBtn": "Wstecz",
         "createBtn": "Utwórz",
-        "name": "Imię",
-        "surname": "Nazwisko",
-        "basicInfo": "Podstawowe informacje",
-        "basicInfo2": "Zaproś użytkowników"
-      },
-      "addGroupBtn": "Dodaj grupę",
-      "ridesBtn": "Przejazdy",
-      "invitesBtn": "Zaproszenia"
-    },
-    "footer": {
-      "services": "Usługi",
-      "environment": "Środowisko",
-      "about": "O nas",
-      "idea": "Idea",
-      "credits": "Grafiki"
-    },
-    "navBar": {
-      "register": "Zarejestruj się",
-      "login": "Zaloguj się"
-    },
-    "homeScreen": {
-        "quote": "Nie jedź\n sam!",
-        "join": "Dołącz do grupy",
-        "helpRides": "Wspólne przejazdy pomagają zmniejszyć ilośc samochodów na drogach i ograniczyć ilość emitowanych zanieczyszczeń.",
-        "helpGroups": "Stwórz grupę lub dołącz do już istniejącej w celu znalezienia kompanów podróży.",
-        "helpReports": "Rywalizuj w obrębie swich grup o najwięcej kilometrów przejachych razem.",
-        "btnRides": "Dowiedz się więcej o przejazdach",
-        "btnReports": "Dowiedz się więcej o raportach",
-        "btnGroups": "Dowiedz się więcej o grupach",
-        "groups": "Grupy",
-        "reports":"Raporty",
-        "rides": "Przejazdy"
-    },
-    "common": {
-      "groups": "Grupy",
-      "passenger": "Pasażer",
-      "driver": "Kierowca"
-    },
-    
-    "prevBtn": "Wstecz",
-    "createBtn": "Utwórz",
-    "addBtn": "Dodaj",
-    "nextBtn": "Dalej",
-    "loadingScreen": {
-      "quote": "Share a ride",
-      "join": "Grupy"
+        "addBtn": "Dodaj",
+        "nextBtn": "Dalej",
+        "loadingScreen": {
+            "quote": "Share a ride",
+            "join": "Grupy"
+        },
+        "input": {
+            "validation": {
+                "emailInvalid": "Nieprawidłowy adres e-mail",
+                "fieldRequired": "Pole wymagane"
+            }
+        },
+        "error": {
+            "DuplicateUserName": "Wybrany e-mail jest już zajęty!"
+        }
     }
-  }
 }

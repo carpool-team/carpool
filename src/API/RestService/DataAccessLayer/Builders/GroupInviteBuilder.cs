@@ -18,14 +18,16 @@ namespace DataAccessLayer.Builders
 			builder.Property(x => x.DateAdded).IsRequired();
 
 			builder.HasOne(x => x.InvitedApplicationUser)
-			       .WithMany()
-			       .HasForeignKey(x => x.InvitedUserId)
-			       .OnDelete(DeleteBehavior.NoAction).IsRequired();
+				.WithMany()
+				.HasForeignKey(x => x.InvitedAppUserId)
+				.OnDelete(DeleteBehavior.NoAction)
+				.IsRequired();
 
 			builder.HasOne(x => x.InvitingApplicationUser)
-			       .WithMany()
-			       .HasForeignKey(x => x.InvitingUserId)
-			       .OnDelete(DeleteBehavior.NoAction).IsRequired();
+				.WithMany()
+				.HasForeignKey(x => x.InvitingAppUserId)
+				.OnDelete(DeleteBehavior.NoAction)
+				.IsRequired();
 
 			// builder.HasOne(x => x.Group)
 			//        .WithMany()

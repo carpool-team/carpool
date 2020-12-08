@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import MediaQuery from "react-responsive";
 import Input from "../../../ui/input/Input";
 import Button from "../../../ui/button/Button";
-import {ButtonBackground} from "../../../ui/button/enums/ButtonBackground"
-import {ButtonColor} from "../../../ui/button/enums/ButtonColor"
-import MapBox from "../../../map/map"
+import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
+import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
 import { IFormData } from "./interfaces/IFormData";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { InputType } from "../../../ui/input/enums/InputType";
 import { InputIcon } from "../../../ui/input/enums/InputIcon";
-
-
+import MapBoxPicker from "../../../map/MapBoxPicker";
+import { ValidationType } from "../../../ui/input/enums/ValidationType";
+import { each } from "../../../../helpers/UniversalHelper";
 
 interface IFirstStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
@@ -24,6 +24,14 @@ interface IFirstStepProps extends IReactI18nProps {
 }
 
 const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
+	const [inputsValid, setInputsValid] = useState({
+		name: false,
+		code: false,
+		location: false,
+	});
+
+	const [validate, setValidate] = useState(false);
+
 	const cssClasses = {
 		container: "addGroupContainer",
 		map: "addGroupFirstSide__map",
@@ -45,6 +53,20 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		basicInfo: "groups.addGroupForm.basicInfo"
 	};
 
+	const incrementStepClick = () => {
+		if (each(inputsValid, i => i)) {
+			props.callbacks.incrementStep();
+			setValidate(false);
+			setInputsValid({
+				name: false,
+				code: false,
+				location: false,
+			});
+		} else {
+			setValidate(true);
+		}
+	};
+
 	const { t } = props;
 
 	return (
@@ -56,32 +78,61 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.groupName)}
 					placeholder={t(resources.groupNameInput)}
 					value={props.data.group.groupName}
-					icon = {InputIcon.Globe}
+					icon={InputIcon.Globe}
+					validation={{
+						type: ValidationType.Required,
+						isValidCallback: isValid => {
+							setInputsValid({
+								...inputsValid,
+								name: isValid,
+							});
+						},
+						validate
+					}}
 				/>
 				<Input
 					type={InputType.Text}
 					changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.code)}
 					placeholder={t(resources.groupCodeInput)}
-					// commment={t(resources.groupCodeInputComment)}
 					value={props.data.group.code}
-					icon= {InputIcon.Code}
+					icon={InputIcon.Code}
+					validation={{
+						type: ValidationType.Required,
+						isValidCallback: isValid => {
+							setInputsValid({
+								...inputsValid,
+								code: isValid,
+							});
+						},
+						validate
+					}}
 				/>
 				<Input
 					type={InputType.Text}
 					changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.address)}
 					placeholder={t(resources.addressInput)}
 					value={props.data.group.address}
-					icon = {InputIcon.Location}
+					icon={InputIcon.Location}
+					validation={{
+						type: ValidationType.Required,
+						isValidCallback: isValid => {
+							setInputsValid({
+								...inputsValid,
+								location: isValid,
+							});
+						},
+						validate
+					}}
 				/>
-				<Button onClick={props.callbacks.incrementStep} color={ButtonColor.White} background = {ButtonBackground.Blue}>
+				<Button onClick={incrementStepClick} color={ButtonColor.White} background={ButtonBackground.Blue}>
 					{t(resources.nextBtn)}
 				</Button>
 			</div>
-				<MediaQuery query="(min-width: 900px)">
-					<div className={cssClasses.map}>
-						<MapBox longitude={52.455688} latitude={16.859060} />
-					</div>
-				</MediaQuery>
+			<MediaQuery query="(min-width: 900px)">
+				<div className={cssClasses.map}>
+					<MapBoxPicker />
+				</div>
+			</MediaQuery>
 		</div>
 	);
 };

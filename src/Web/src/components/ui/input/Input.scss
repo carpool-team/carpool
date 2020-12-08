@@ -1,104 +1,135 @@
 @import "~scss_path/colors";
 @import "~scss_path/fonts";
 
-
 .input {
-	&__container{
+	&__container {
 		width: 100%;
 		height: 40px;
+		background-color: $white;
 		display: flex;
+		margin-bottom: 15px;
+		&--invalid {
+			border-bottom: 3px solid $red;
+			margin-bottom: 5px;
+			width: 100%;
+			height: 40px;
+			background-color: $white;
+			display: flex;
+		}
 	}
-	&__input{
+	&__groupContainer {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+	&__input {
 		font-size: 17px;
 		border: 0;
 		width: inherit;
 		height: 100%;
 		color: $grayDark;
 		font-weight: $medium;
-		background: $white;
+		background: $transparent;
 		padding-left: 25px;
+		&--invalid {
+			font-size: 17px;
+			border: 0;
+			width: inherit;
+			height: 100%;
+			color: $grayDark;
+			font-weight: $medium;
+			background: $transparent;
+			padding-left: 25px;
+			&::placeholder{
+				color:  $gray;
+			}
+			&:focus{
+				outline: none;
+			}
+		}
 	}
-    &__comment {
-        font-size: 14px;
-        max-width: 80%;
-        text-align: center;
-        text-justify: auto;
+	&__checkbox{
+		font-size: 15px;
+		border: 0;
+		width: inherit;
+		height: 100%;
+		color: $grayDark;
+		font-weight: $regular;
+		background: $transparent;
+		display: flex;
+		justify-content: flex-start;
+		align-content: center;
+		&--box{
+			height: 25px;
+			width: 25px;
+			&:focus{
+				outline: none;
+			}
+		}
+		& > span {
+			padding-left: 10px;
+			margin-top: auto;
+			margin-bottom: auto;
+		}
 	}
-	&__input::placeholder{
+	&__comment {
+		font-size: 14px;
+		max-width: 80%;
+		text-align: center;
+		text-justify: auto;
+	}
+	&__icon {
+		height: 32px;
+		margin-top: 10px;
+		color: $grayDark;
+		&::before {
+			font-family: FontAwesome;
+			font-size: 22px;
+			background-color: $transparent;
+			align-content: center;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			padding-left: 15px;
+		}
+		&--user::before {
+			content: "\f2bc";
+		}
+		&--globe::before {
+			content: "\f0ac";
+		}
+		&--code::before {
+			content: "\f1b2";
+		}
+		&--location::before {
+			content: "\f124";
+		}
+		&--mail::before {
+			content: "\f003";
+		}
+		&--password::before{
+			content:"\f084";
+		}
+	}
+	&__input::placeholder {
 		font-weight: $medium;
 		font-size: 17px;
-		color: $grayDark;
+		color: $gray;
 	}
-	&__input:focus{
+	&__input:focus {
 		outline: none;
 	}
-	&__user{
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__user::before{
-		content:"\f2bc";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $white;
-		align-content: center;
-		padding-top: 10px;
+	&__invalidText {
+		color: $red;
+		margin: 0 16px 0 16px;
 		padding-bottom: 10px;
-		padding-left: 15px;
 	}
-	&__globe{
+	&__password{
 		height: 32px;
 		margin-top: 10px;
 		color: $grayDark;
 	}
-	&__globe::before{
-		content:"\f0ac";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $white;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__code{
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__code::before{
-		content:"\f1b2";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $white;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__location{
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__location::before{
-		content:"\f124";
-		font-family: FontAwesome;
-		font-size: 22px;
-		background-color: $white;
-		align-content: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 15px;
-	}
-	&__mail{
-		height: 32px;
-		margin-top: 10px;
-		color: $grayDark;
-	}
-	&__mail::before{
-		content:"\f003";
+	&__password::before{
+		content:"\f023";
 		font-family: FontAwesome;
 		font-size: 22px;
 		background-color: $white;

@@ -1,15 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
+using RestApi.DTOs.Rating;
 using RestApi.Queries.RatingQueries;
 
 namespace RestApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class RatingsController : Controller
 	{
 		private readonly IMediator _mediator;
@@ -17,23 +21,24 @@ namespace RestApi.Controllers
 		public RatingsController(IMediator mediator)
 			=> _mediator = mediator;
 
-		[HttpGet("~/api/users/{userId}/rating")]
-		public async Task<ApiResponse> GetUserRatingByUserId([FromRoute] Guid userId)
+		[HttpGet("~/api/users/{appUserId}/rating")]
+		public async Task<ApiResponse> GetUserRatingByUserId([FromRoute] AppUserId userId)
 		{
 			var request = new GetUserRatingQuery(userId);
 
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			var usersRating = await _mediator.Send(request);
 
-			return new ApiResponse(response);
+			return new ApiResponse(usersRating);
 		}
 
-		[HttpPost("~/api/users/{userId}/ratings")]
-		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingCommand request, [FromRoute] Guid userId)
+		[HttpPost("~/api/users/{appUserId}/ratings")]
+		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingDto model, [FromRoute] AppUserId userId)
 		{
-			request.UserId = userId;
-			var response = await _mediator.Send(request).ConfigureAwait(false);
+			AddUserRatingCommand request = new(userId, model.Value);
 
-			return new ApiResponse(response);
+			var rating = await _mediator.Send(request);
+
+			return new ApiResponse(rating);
 		}
 	}
 }

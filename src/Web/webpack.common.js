@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const devMode = process.env.NODE_ENV !== 'production'
+const devMode = process.env.NODE_ENV !== "production";
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 module.exports = {
 	entry: path.resolve(__dirname, "src/index"),
@@ -21,13 +22,24 @@ module.exports = {
 
 	module: {
 		rules: [
-			// we use babel-loader to load our jsx and tsx files
+			// we use babel-loader to load our ts and tsx files
 			{
-				test: /\.(ts|js)x?$/,
+				test: /\.tsx?$/,
 				exclude: /node_modules/,
-				use: {
-					loader: "babel-loader",
-				},
+				use: [
+					{
+						loader: "ts-loader",
+						options: {
+							transpileOnly: true,
+						}
+					},
+					{
+						loader: "babel-loader",
+						options: {
+							exclude: /node_modules/,
+						}
+					}
+				],
 			},
 
 			// css-loader to bundle all the css files into one file and style-loader to add all the styles  inside the style tag of the document
@@ -59,6 +71,19 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: "./src/index.html",
+		}),
+		new ForkTsCheckerWebpackPlugin({
+			async: false,
+			typescript: {
+				enabled: true,
+				diagnosticOptions: {
+					semantic: true,
+					syntactic: true,
+					declaration: true,
+					global: true,
+				},
+				profile: true,
+			}
 		}),
 	],
 };

@@ -39,12 +39,6 @@ const reducer: Reducer<IGroupsState> = (
 			case RidesActionTypes.GetRidesSuccess:
 				draft.rides = action.rides;
 				break;
-			case GroupsActionTypes.SetGroupSelected:
-				idx = draft.groups.findIndex(g => g.id === action.id);
-				if (idx > -1) {
-					draft.groups[idx].selected = action.selected;
-				}
-				break;
 			case RidesActionTypes.ParticipateInRideSuccess:
 				idx = draft.rides.findIndex(r => r.id === action.rideId);
 				if (idx > -1) {

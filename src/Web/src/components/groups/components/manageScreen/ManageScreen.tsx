@@ -1,24 +1,24 @@
 import React, { Component } from "react";
 import produce from "immer";
-import MapBox from "../../../map/map"
+import MapBoxGroups from "../../../map/MapBoxGroups";
+import MapBoxInvites from "../../../map/MapBoxInvites";
 import { withTranslation } from "react-i18next";
 import MediaQuery from "react-responsive";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import GroupsRouter from "../GroupsRouter";
-import Button from "../../../ui/button/Button"
+import Button from "../../../ui/button/Button";
 import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
-import { ButtonIcon } from "../../../ui/button/enums/ButtonIcon"
-import ButtonLink from "../../../ui/buttonLink/ButtonLink"
+import { ButtonIcon } from "../../../ui/button/enums/ButtonIcon";
+import ButtonLink from "../../../ui/buttonLink/ButtonLink";
 import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
-import { ButtonLinkIcon } from "../../../ui/buttonLink/enums/ButtonLinkIcon";
-import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle"
+import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle";
 import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import GroupsList from "./components/GroupsList";
 import InvitesList from "./components/InvitesList";
-import { DRAFTABLE } from "immer/dist/internal";
+import { IGroup } from "../../interfaces/IGroup";
 
 enum Lists {
 	Invites = "INVITES",
@@ -27,12 +27,13 @@ enum Lists {
 
 interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
 	callbacks: IGroupCallbacks;
+	selectedGroup: IGroup;
 }
 
 interface IManageScreenState {
 	selectedScreen: Lists;
+	selectedGroup: IGroup;
 }
-
 
 class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	private resources = {
@@ -58,13 +59,13 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	constructor(props: IManageScreenProps) {
 		super(props);
 		this.state = {
+			selectedGroup: null,
 			selectedScreen: Lists.Groups
 		};
 	}
 
-
 	setCurrentList = (list: Lists) => {
-		if (list != this.state.selectedScreen) {
+		if (list !== this.state.selectedScreen) {
 			let groupsBtn = document.getElementById(this.ids.groupsBtn);
 			groupsBtn?.classList.toggle(this.cssClasses.buttonActive);
 			let invitesBtn = document.getElementById(this.ids.invitesBtn);
@@ -73,7 +74,6 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		this.setState(produce((draft: IManageScreenState) => {
 			draft.selectedScreen = list;
 		}));
-
 	}
 
 	renderInvitesList = () => (
@@ -87,11 +87,24 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	renderGroupsList = () => (
 		<GroupsList
 			getGroupsCallback={this.props.callbacks.getGroups}
-			setGroupChecked={this.props.callbacks.setGroupSelected}
+			setGroupSelected={this.props.callbacks.setGroupSelected}
+			groupSelected={this.props.selectedGroup}
 		/>
 	)
 
-	renderGroups = () => {
+	renderGroupsMap = () => (
+		<MapBoxGroups
+			getGroupsCallback={this.props.callbacks.getGroups}
+			setSelectedGroupCallback={this.props.callbacks.setGroupSelected}
+			group={this.props.selectedGroup}
+		/>
+	)
+
+	renderInvitesMap = () => (
+		<MapBoxInvites getInvitesCallback={this.props.callbacks.getInvites} />
+	)
+
+	renderLeftPanel = () => {
 		const { t } = this.props;
 		const { url } = this.props.match;
 
@@ -131,16 +144,34 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		);
 	}
 
+	renderRightPanel = () => {
+		let map: JSX.Element;
+
+		switch (this.state.selectedScreen) {
+			case Lists.Invites:
+				map = this.renderInvitesMap();
+				break;
+			case Lists.Groups:
+			default:
+				map = this.renderGroupsMap();
+				break;
+		}
+
+		return (
+			<MediaQuery query="(min-width: 900px)">
+				<div className={this.cssClasses.mapBox}>
+					{map}
+				</div>
+			</MediaQuery>
+		);
+	}
+
 	render() {
 		return (
 			<>
 				<div className={this.cssClasses.container}>
-					{this.renderGroups()}
-					<MediaQuery query="(min-width: 900px)">
-						<div className={this.cssClasses.mapBox}>
-							<MapBox longitude={52.455688} latitude={16.859060} />
-						</div>
-					</MediaQuery>
+					{this.renderLeftPanel()}
+					{this.renderRightPanel()}
 				</div>
 			</>
 		);

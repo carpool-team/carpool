@@ -4,5 +4,6 @@ export enum InputIcon {
 	Mail,
 	Location,
 	Code,
-	Globe
+	Globe,
+	Password
 }

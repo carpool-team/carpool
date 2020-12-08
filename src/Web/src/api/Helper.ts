@@ -43,6 +43,10 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 				return `/rides/${queries?.rideId}/users`;
 			case RequestEndpoint.GET_ALL_RIDES:
 				return "/rides";
+			case RequestEndpoint.LOGIN_USER:
+				return "/auth/login";
+			case RequestEndpoint.REGISTER_USER:
+				return "/auth/register";
 			default:
 				throw "Unhandled endpoint";
 		}
@@ -69,5 +73,15 @@ export const getRequestType: (type: RequestType) => string = (type) => {
 			return "DELETE";
 		default:
 			throw "Unhandled request type";
+	}
+};
+
+export const isAuthEndpoint: (endpoint: RequestEndpoint) => boolean = ep => {
+	switch (ep) {
+		case RequestEndpoint.LOGIN_USER:
+		case RequestEndpoint.REGISTER_USER:
+			return true;
+		default:
+			return false;
 	}
 };

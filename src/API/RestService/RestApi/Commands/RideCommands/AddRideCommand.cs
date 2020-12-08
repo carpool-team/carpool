@@ -1,8 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoWrapper.Wrappers;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.Entities;
+using Domain.Entities.Intersections;
+using Domain.Enums;
 using Domain.ValueObjects;
+using IdentifiersShared.Generator;
+using IdentifiersShared.Identifiers;
+using IdGen;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace RestApi.Commands.RideCommands
@@ -10,27 +23,72 @@ namespace RestApi.Commands.RideCommands
 	public class AddRideCommand : IRequest<Ride>
 	{
 		[JsonConstructor]
-		public AddRideCommand(Guid ownerId,
-		                      List<Guid> participantsIds,
-		                      Guid groupId,
-		                      DateTime date,
-		                      double price,
-		                      Location destination,
-		                      Location startingLocation)
-			=> (OwnerId, ParticipantsIds, GroupId, Date, Price, Destination, StartingLocation) =
-			   (ownerId, participantsIds, groupId, date, price, destination, startingLocation);
+		public AddRideCommand(AppUserId ownerId,
+			List<AppUserId>? participantsIds,
+			GroupId groupId,
+			DateTime date,
+			double price,
+			Location location,
+			RideDirection rideDirection,
+			List<Stop>? stops)
+			=> (OwnerId, ParticipantsIds, GroupId, Date, Price, Location, RideDirection, Stops) =
+				(ownerId, participantsIds, groupId, date, price, location, rideDirection, stops);
 
-		public Guid OwnerId { get; set; }
-		public List<Guid> ParticipantsIds { get; set; }
+		public AppUserId OwnerId { get; }
+		public List<AppUserId>? ParticipantsIds { get; }
+		public GroupId GroupId { get; }
+		public DateTime Date { get; }
+		public double Price { get; }
+		public Location Location { get; }
+		public RideDirection RideDirection { get; }
+		public List<Stop>? Stops { get; }
 
-		public Guid GroupId { get; set; }
+		public class AddRideCommandHandler : IRequestHandler<AddRideCommand, Ride>
+		{
+			private readonly IRideRepository _rideRepository;
+			private readonly IUnitOfWork _unitOfWork;
 
-		public DateTime Date { get; set; }
+			public AddRideCommandHandler(IRideRepository rideRepository, IUnitOfWork unitOfWork)
+			{
+				_rideRepository = rideRepository;
+				_unitOfWork = unitOfWork;
+			}
 
-		public double Price { get; set; }
+			public async Task<Ride> Handle(AddRideCommand request, CancellationToken cancellationToken)
+			{
+				IdGenerator idGenerator = new(IdGeneratorType.Ride);
+				var id = idGenerator.CreateId();
+				var ride = new Ride(new(id),
+					request.OwnerId,
+					request.GroupId,
+					request.Date,
+					request.Price,
+					request.Location
+					?? throw new ApiProblemDetailsException("Ride must have a destination",
+						StatusCodes.Status400BadRequest),
+					request.RideDirection, request.Stops ?? new List<Stop>());
 
-		public Location Destination { get; set; }
+				await _rideRepository.AddAsync(ride, cancellationToken).ConfigureAwait(false);
 
-		public Location StartingLocation { get; set; }
+				if (request.ParticipantsIds != null)
+					ride.Participants = request.ParticipantsIds.Select(x =>
+						{
+							AppUserId userId = new(x.Value);
+							return new UserParticipatedRide(userId, ride.Id);
+						})
+						.ToList();
+
+				try
+				{
+					await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
+				}
+				catch (DbUpdateException ex)
+				{
+					throw new ApiException(ex);
+				}
+
+				return ride;
+			}
+		}
 	}
 }

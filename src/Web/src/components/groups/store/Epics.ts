@@ -5,7 +5,6 @@ import {
 	GroupsAction,
 	GroupsActionTypes,
 	IAddGroupAction,
-	IAddGroupActionSuccess,
 	IGetGroupsAction,
 	IGetGroupsActionSuccess,
 	IGetInvitesAction,
