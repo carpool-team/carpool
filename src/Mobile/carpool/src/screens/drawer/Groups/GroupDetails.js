@@ -53,18 +53,14 @@ const GroupDetails = ({navigation, route}) => {
             </Text>
             <Text style={styles.members}>members</Text>
           </View>
-          <View style={sheet.columnCenter}>
-            <Text style={styles.totalDistance}>{123}</Text>
-            <Text style={styles.distance}>kilometers</Text>
-          </View>
         </View>
         <View style={styles.cardGrid}>
-          <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
+          {/* <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
             <View style={styles.cardContent}>
               <MaterialIcon name="group" size={40} color={colors.blue} />
               <Text style={styles.cardLabel}>Members</Text>
             </View>
-          </UpView>
+          </UpView> */}
           <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
             <View style={styles.cardContent}>
               <MaterialIcon name="settings" size={40} color={colors.blue} />
@@ -77,7 +73,7 @@ const GroupDetails = ({navigation, route}) => {
               <Text style={styles.cardLabel}>Your rides</Text>
             </View>
           </UpView>
-          <UpView
+          {/* <UpView
             borderRadius={8}
             style={styles.upview}
             onPress={() => navigation.navigate('FindRide')}>
@@ -85,7 +81,7 @@ const GroupDetails = ({navigation, route}) => {
               <MaterialIcon name="search" size={40} color={colors.blue} />
               <Text style={styles.cardLabel}>Find a ride</Text>
             </View>
-          </UpView>
+          </UpView> */}
         </View>
         <View style={styles.flexed}>
           <MapboxGL.MapView
@@ -134,7 +130,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   statsRow: {
-    ...sheet.rowCenterSplit,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
     marginTop: 18,
     paddingHorizontal: 16,
   },
@@ -169,14 +167,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   cardGrid: {
-    marginTop: 27,
+    marginVertical: 27,
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
-    alignContent: 'space-between',
-    height: 300,
     paddingHorizontal: 16,
-    marginBottom: 27,
   },
   cardContent: {
     flex: 1,
@@ -192,7 +186,7 @@ const styles = StyleSheet.create({
     marginBottom: 35,
   },
   upview: {
-    width: 168,
+    width: '48%',
     height: 135,
   },
   flexed: {
