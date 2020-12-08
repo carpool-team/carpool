@@ -3,6 +3,7 @@ import { Epic, ofType } from "redux-observable";
 import { of } from "rxjs";
 import { switchMap, mergeMap, catchError } from "rxjs/operators";
 import { tempClientId } from "../../../api/requests/RequestCore";
+import { parseJwt } from "../../../helpers/UniversalHelper";
 import i18n from "../../../i18n";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
 import { IRedirectAction, ISetLoaderVisibleAction, LayoutActionTypes } from "../../layout/store/Types";
@@ -98,7 +99,9 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 					refreshToken: response.result.refreshToken,
 					token: response.result.token,
 					expires: response.result.expires,
+					payload: parseJwt(response.result.token),
 				};
+				console.log("TOKEN PAYLOAD: ", tokenInfo.payload);
 				return [
 					<ILoginSuccessAction>{
 						type: LoginActionTypes.LoginSuccess,

@@ -6,7 +6,6 @@ import { IRequestProperties } from "../interfaces/IRequestProperties";
 import ResponseCore from "../responses/ResponseCore";
 import RequestBody from "./RequestBody";
 
-export const tempUserId: string = "ba5c33df-0c92-4324-19c7-08d8778cb545";
 export const tempCoords = {
 	latitude: 0,
 	longitude: 0,
@@ -21,7 +20,6 @@ export default abstract class RequestCore {
 	private static config = {
 		devUrl: "https://carpool-rest.azurewebsites.net/api",
 		devAuthUrl: "https://carpool-identity.azurewebsites.net/api",
-		userId: tempUserId,
 	};
 	private static proxyUrl: string = "https://cors-anywhere.herokuapp.com/";
 	private static headers = {

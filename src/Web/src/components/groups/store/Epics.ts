@@ -25,7 +25,7 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
 import { GetGroupsResponse } from "../api/getGroups/GetGroupsResponse";
-import { tempCoords, tempUserId } from "../../../api/requests/RequestCore";
+import { tempCoords } from "../../../api/requests/RequestCore";
 import { AddGroupRequest } from "../api/addGroup/AddGroupRequest";
 import { GetInvitesRequest } from "../api/getInvites/GetInvitesRequest";
 import { AnswerInviteRequest } from "../api/answerInvite/AnswerInviteRequest";
@@ -36,6 +36,8 @@ import { GetRidesResponse } from "../api/getRides/GetRidesResponse";
 import { GetRidesRequest } from "../api/getRides/GetRidesRequest";
 import { ParticipateInRideResponse } from "../api/participateInRide/ParticipateInRideResponse";
 import { ParticipateInRideRequest } from "../api/participateInRide/ParticipateInRideRequest";
+import { getId } from "../../../helpers/UniversalHelper";
+import { IAuthState } from "../../auth/store/State";
 
 const addGroupEpic: Epic<GroupsAction> = (action$) =>
 	action$.pipe(
@@ -45,7 +47,7 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 				body: {
 					name: action.group.name,
 					code: action.group.code,
-					ownerId: tempUserId,
+					ownerId: getId(),
 					latitude: tempCoords.latitude,
 					longitude: tempCoords.longitude,
 				}
@@ -79,11 +81,15 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 		)
 	);
 
-const getGroupsEpic: Epic<GroupsAction> = (action$) =>
+const getGroupsEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.GetGroups),
 		switchMap(async (action: IGetGroupsAction) => {
-			const request: GetGroupsRequest = new GetGroupsRequest({ userOnly: action.userOnly });
+			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.jti;
+			const request: GetGroupsRequest = new GetGroupsRequest({
+				userOnly: action.userOnly,
+				userId: uid,
+			});
 			const response: GetGroupsResponse = await request.send();
 			return response.result;
 		}),
@@ -103,11 +109,15 @@ const getGroupsEpic: Epic<GroupsAction> = (action$) =>
 		)
 	);
 
-const getInvitesEpic: Epic<InviteAction> = (action$) =>
+const getInvitesEpic: Epic<InviteAction> = (action$, state$) =>
 	action$.pipe(
 		ofType(InvitesActionTypes.GetInvites),
 		switchMap(async (action: IGetInvitesAction) => {
-			const request: GetInvitesRequest = new GetInvitesRequest({ userOnly: action.userOnly });
+			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.jti;
+			const request: GetInvitesRequest = new GetInvitesRequest({
+				userOnly: action.userOnly,
+				userId: uid,
+			});
 			const response: GetInvitesResponse = await request.send();
 			return response.result;
 		}),
@@ -165,12 +175,14 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 		)
 	);
 
-const getRidesEpic: Epic<RideAction> = (action$) =>
+const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 	action$.pipe(
 		ofType(RidesActionTypes.GetRides),
 		switchMap(async (action: IGetRidesAction) => {
+			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.jti;
 			const request: GetRidesRequest = new GetRidesRequest({
-				userOnly: action.userOnly
+				userOnly: action.userOnly,
+				userId: uid,
 			});
 			const response: GetRidesResponse = await request.send();
 			return response.result;
@@ -197,7 +209,7 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 		switchMap(async (action: IParticipateInRideAction) => {
 			const request: ParticipateInRideRequest = new ParticipateInRideRequest({
 				rideId: action.rideId,
-				participantId: tempUserId,
+				participantId: getId(),
 			});
 			const response: ParticipateInRideResponse = await request.send();
 			return {

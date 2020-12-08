@@ -14,6 +14,7 @@ import AddRideFormScreen from "./addRideForm/AddRideForm";
 interface IGroupsRouterProps extends RouteComponentProps {
 	callbacks: IGroupCallbacks;
 	selectedGroup: IGroup;
+	authId: string;
 }
 
 class GroupsRouter extends Component<IGroupsRouterProps> {
@@ -37,7 +38,10 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 						/>
 					</Route>
 					<Route path={path + GroupsRouter.routes.addGroup}>
-						<AddGroupForm callbacks={this.props.callbacks} />
+						<AddGroupForm
+							callbacks={this.props.callbacks}
+							userId={this.props.authId}
+						/>
 					</Route>
 					{this.props.selectedGroup ?
 						<>

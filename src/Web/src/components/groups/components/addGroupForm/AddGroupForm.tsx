@@ -9,11 +9,11 @@ import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import { IFormData, initialFormData } from "./interfaces/IFormData";
 import { IGroup } from "../../interfaces/IGroup";
 import { mainRoutes } from "../../../layout/components/LayoutRouter";
-import { tempUserId } from "../../../../api/requests/RequestCore";
 import { IFormUserData } from "./interfaces/IFormUserData";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {
 	callbacks: IGroupCallbacks;
+	userId: string;
 }
 
 interface IAddGroupFormScreenState {
@@ -72,7 +72,7 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 			id: "",
 			name: this.state.formData.group.groupName,
 			code: this.state.formData.group.code,
-			owner: tempUserId,
+			owner: this.props.userId,
 			location: {
 				latitude: 0,
 				longitude: 0,

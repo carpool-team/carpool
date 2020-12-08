@@ -11,11 +11,10 @@ import {
 	mapStateToProps,
 	mapDispatchToProps,
 } from "./store/PropsTypes";
-
-import "./Groups.scss";
-import { tempUserId } from "../../api/requests/RequestCore";
 import produce from "immer";
 import exampleGroups from "../../examples/exampleGroups";
+
+import "./Groups.scss";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
@@ -49,7 +48,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 	getInvitesHandler = () => this.props.invites;
 
 	getRidesHandler = () => {
-		return this.props.rides.filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === tempUserId));
+		return this.props.rides.filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === this.props.authId));
 	}
 
 	setSelectedGroupHandler = (id: string) => {
@@ -79,6 +78,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 					location={this.props.location}
 					callbacks={callbacks}
 					selectedGroup={this.state.selectedGroup}
+					authId={this.props.authId}
 				/>
 			</section>
 		);
