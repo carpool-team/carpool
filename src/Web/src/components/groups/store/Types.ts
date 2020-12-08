@@ -115,7 +115,8 @@ export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
 
 /** Action for getting rides success */
 export interface IGetRidesActionSuccess extends Action<RidesActionTypes.GetRidesSuccess> {
-	rides: IRide[];
+	ridesOwned: IRide[];
+	ridesParticipated: IRide[];
 }
 
 /** Action for getting rides error */

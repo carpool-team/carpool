@@ -52,24 +52,19 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	componentDidUpdate() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
-		if (this.state.groups !== groups) {
+		if (groups && this.state.groups?.length !== groups.length) {
 			this.getBounds(groups);
 			this.setState(produce((draft: IMapState) => {
 				draft.groups = groups;
 			}));
 		}
-		if (this.props.group?.id !== this.currentGroupId) {
-			this.currentGroupId = this.props.group?.id ?? undefined;
+		if (this.props.group && this.props.group?.id !== this.currentGroupId) {
+			this.currentGroupId = this.props.group.id;
 			this.setState(produce((draft: IMapState) => {
-				if (this.props.group) {
-					draft.center = [this.props.group.location.latitude, this.props.group.location.longitude];
-					draft.zoom = [14];
-				} else {
-					this.getBounds(groups);
-				}
+				draft.center = [this.props.group.location.latitude, this.props.group.location.longitude];
+				draft.zoom = [14];
 			}));
 		}
-
 	}
 
 	private getBounds = (groups: IGroup[]) => {
@@ -82,9 +77,11 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);
 			bbox[1][1] = Math.max.apply(null, allCoords[1]);
 		}
-		this.setState(produce((draft: IMapState) => {
-			draft.fitBounds = bbox;
-		}));
+		if (this.state.fitBounds !== bbox) {
+			this.setState(produce((draft: IMapState) => {
+				draft.fitBounds = bbox;
+			}));
+		}
 	}
 
 	private onDrag = () => {

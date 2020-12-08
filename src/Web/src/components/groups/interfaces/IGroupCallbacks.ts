@@ -9,7 +9,7 @@ export interface IGroupCallbacks {
 	getInvites: () => IInvite[];
 	answerInvite: (accepted: boolean, inviteId: string) => void;
 	redirect: (route: string) => void;
-	getRides: () => IRide[];
+	getRides: (owned: boolean) => IRide[];
 	participateInRide: (rideId: string) => void;
 	setGroupSelected: (id: string) => void;
 }

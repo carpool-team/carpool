@@ -127,10 +127,11 @@ export function getRides(userOnly: boolean): IGetRidesAction {
 	};
 }
 
-export function getRidesSuccess(rides: IRide[]): IGetRidesActionSuccess {
+export function getRidesSuccess(ridesOwned: IRide[], ridesParticipated: IRide[]): IGetRidesActionSuccess {
 	return {
 		type: RidesActionTypes.GetRidesSuccess,
-		rides,
+		ridesOwned,
+		ridesParticipated,
 	};
 }
 

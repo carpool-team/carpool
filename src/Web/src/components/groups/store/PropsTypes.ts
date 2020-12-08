@@ -14,14 +14,16 @@ interface IStatePropsType {
 interface IStateFromProps {
 	groups: IGroup[];
 	invites: IInvite[];
-	rides: IRide[];
+	ridesOwned: IRide[];
+	ridesParticipated: IRide[];
 	authId: string;
 }
 
 export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (state) => ({
 	groups: state.groups.groups,
 	invites: state.groups.invites,
-	rides: state.groups.rides,
+	ridesOwned: state.groups.ridesOwned,
+	ridesParticipated: state.groups.ridesParticipated,
 	authId: state.auth.tokenInfo?.payload?.jti,
 });
 

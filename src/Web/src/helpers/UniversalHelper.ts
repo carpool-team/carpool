@@ -8,7 +8,7 @@ export function isAuthorized(): boolean {
 
 /** Gets current auth id */
 export function getId(): string {
-	const res: string = getState().auth?.tokenInfo?.payload?.jti;
+	const res: string = getState().auth?.tokenInfo?.payload?.sub;
 	console.log("ID: ", res);
 	return res;
 }

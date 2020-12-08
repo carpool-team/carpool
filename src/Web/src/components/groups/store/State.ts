@@ -8,6 +8,8 @@ export interface IGroupsState {
 	groups: IGroup[];
 	/** List of invites */
 	invites: IInvite[];
-	/** List of rides */
-	rides: IRide[];
+	/** List of rides owned by user */
+	ridesOwned: IRide[];
+	/** List of rides participated by user */
+	ridesParticipated: IRide[];
 }

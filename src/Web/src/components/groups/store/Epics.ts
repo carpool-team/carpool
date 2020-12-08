@@ -85,7 +85,7 @@ const getGroupsEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.GetGroups),
 		switchMap(async (action: IGetGroupsAction) => {
-			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.jti;
+			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
 			const request: GetGroupsRequest = new GetGroupsRequest({
 				userOnly: action.userOnly,
 				userId: uid,
@@ -113,7 +113,7 @@ const getInvitesEpic: Epic<InviteAction> = (action$, state$) =>
 	action$.pipe(
 		ofType(InvitesActionTypes.GetInvites),
 		switchMap(async (action: IGetInvitesAction) => {
-			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.jti;
+			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
 			const request: GetInvitesRequest = new GetInvitesRequest({
 				userOnly: action.userOnly,
 				userId: uid,
@@ -178,20 +178,29 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 	action$.pipe(
 		ofType(RidesActionTypes.GetRides),
-		switchMap(async (action: IGetRidesAction) => {
-			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.jti;
-			const request: GetRidesRequest = new GetRidesRequest({
-				userOnly: action.userOnly,
+		switchMap(async (_action: IGetRidesAction) => {
+			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
+			const ownedRequest: GetRidesRequest = new GetRidesRequest({
 				userId: uid,
+				owned: true,
 			});
-			const response: GetRidesResponse = await request.send();
-			return response.result;
+			const participatedRequest: GetRidesRequest = new GetRidesRequest({
+				userId: uid,
+				participated: true,
+			});
+			const responseOwned: GetRidesResponse = await ownedRequest.send();
+			const responseParticipated: GetRidesResponse = await participatedRequest.send();
+			return {
+				owned: responseOwned.result,
+				participated: responseParticipated.result,
+			};
 		}),
 		mergeMap((response) => {
 			return [
 				<IGetRidesActionSuccess>{
 					type: RidesActionTypes.GetRidesSuccess,
-					rides: response,
+					ridesOwned: response.owned,
+					ridesParticipated: response.participated
 				},
 			];
 		}),

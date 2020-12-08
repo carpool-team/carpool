@@ -12,7 +12,6 @@ import {
 	mapDispatchToProps,
 } from "./store/PropsTypes";
 import produce from "immer";
-import exampleGroups from "../../examples/exampleGroups";
 
 import "./Groups.scss";
 
@@ -42,13 +41,13 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 	}
 
 	getGroupsHandler = () => {
-		return this.props.groups ?? exampleGroups;
+		return this.props.groups ?? [];
 	}
 
-	getInvitesHandler = () => this.props.invites;
+	getInvitesHandler = () => this.props.invites ?? [];
 
-	getRidesHandler = () => {
-		return this.props.rides.filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === this.props.authId));
+	getRidesHandler = (owned: boolean) => {
+		return (owned ? this.props.ridesOwned : this.props.ridesParticipated) ?? []; // .filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === this.props.authId));
 	}
 
 	setSelectedGroupHandler = (id: string) => {
