@@ -5,8 +5,9 @@ import {StartLocationsFlatList} from '../../../components/FindRoute';
 import {colors, sheet} from '../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {StandardButton} from '../../../components/common/buttons';
-import {RouteMinimap} from '../../../components/Route';
+import {PointMinimap} from '../../../components/Route';
 import {geocodingClient} from '../../../maps/mapbox';
+import {parseCoords} from '../../../utils/coords';
 
 const config = {
   autocomplete: false,
@@ -84,13 +85,7 @@ const SelectLocation = ({navigation}) => {
               <Text style={styles.placeName}>{place.place_name}</Text>
             </View>
             <View style={styles.mapWrapper}>
-              <RouteMinimap
-                stops={
-                  swap
-                    ? [{coordinates: group.location}, place]
-                    : [place, {coordinates: group.location}]
-                }
-              />
+              <PointMinimap coordinates={parseCoords(place.coordinates)} />
             </View>
             <View style={sheet.rowCenterSplit}>
               <StandardButton
