@@ -12,8 +12,7 @@ import {colors, sheet} from '../../../styles';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {RouteMinimap} from '../../../components/Route';
-import {Waypoints} from '../../../components/Ride';
-import {parseCoords} from '../../../utils/coords';
+import {GroupWaypoints} from '../../../components/Ride';
 
 const PassengersRideDetails = ({route}) => {
   const {ride, past} = route.params;
@@ -39,10 +38,10 @@ const PassengersRideDetails = ({route}) => {
         <View style={styles.topRow}>
           <View>
             <Text style={styles.time}>
-              {moment(ride.date).format('HH:mm ')}
+              {moment(ride.rideDate).format('HH:mm ')}
             </Text>
             <Text style={styles.date}>
-              {moment(ride.date).format('Do MMMM YYYY')}
+              {moment(ride.rideDate).format('Do MMMM YYYY')}
             </Text>
           </View>
           {!past && (
@@ -58,14 +57,25 @@ const PassengersRideDetails = ({route}) => {
         </View>
         <View style={styles.mapWrapper}>
           <RouteMinimap
-            stops={[ride.startingLocation, ...ride.stops, ride.destination]}
+            stops={
+              ride.rideDirection
+                ? [
+                    {coordinates: ride.group.location},
+                    {coordinates: ride.location},
+                  ]
+                : [
+                    {coordinates: ride.location},
+                    {coordinates: ride.group.location},
+                  ]
+            }
             hideDetails={past}
           />
         </View>
         <View style={styles.waypoints}>
-          <Waypoints
-            ride={ride}
-            start={parseCoords(ride.startingLocation.coordinates)}
+          <GroupWaypoints
+            group={ride.group}
+            location={{coordinates: ride.location}}
+            swap={ride.rideDirection}
           />
         </View>
       </ScrollView>
