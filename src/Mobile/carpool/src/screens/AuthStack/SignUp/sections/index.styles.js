@@ -20,4 +20,12 @@ export const styles = StyleSheet.create({
     ...sheet.textMedium,
     marginBottom: 20,
   },
+  apiError: {
+    textAlign: 'left',
+    width: '100%',
+    marginBottom: 20,
+    fontSize: 16,
+    ...sheet.textSemiBold,
+    color: colors.red,
+  },
 });

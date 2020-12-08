@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import StandardInput from '../../../../../components/common/inputs/StandardInput';
 import {colors} from '../../../../../styles';
 import {useFormik} from 'formik';
@@ -24,6 +24,7 @@ const NameSection = ({onSubmitName, initialValues, apiError}) => {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
+      {!!apiError && <Text style={styles.apiError}>{apiError}</Text>}
       <StandardInput
         returnKeyType="next"
         wrapperStyle={styles.inputWrapper}
@@ -51,13 +52,7 @@ const NameSection = ({onSubmitName, initialValues, apiError}) => {
         autoCapitalize="none"
         value={values.email}
         onChangeText={handleChange('email')}
-        error={
-          touched.email && errors.email
-            ? errors.email
-            : apiError
-            ? apiError
-            : null
-        }
+        error={touched.email && errors.email ? errors.email : null}
         onSubmitEditing={handleSubmit}
       />
       <StandardButton
