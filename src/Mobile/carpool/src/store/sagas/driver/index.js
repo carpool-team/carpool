@@ -373,7 +373,6 @@ export function* getDriversRidesAsync() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('getDriversRidesAsync RES', res);
 
       yield put(actions.getDriversRidesSuccess(res.data.result));
       // yield put(actions.getDriversRidesSuccess(exampleRides));
@@ -431,12 +430,11 @@ export function* deleteRideAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      // yield instance.delete(`/Rides/${action.payload}`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
-      yield put(actions.getDriversRides());
+      yield instance.delete(`/Rides/${action.payload}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       yield call(resolvePromiseAction, action);
     }
@@ -471,8 +469,6 @@ export function* deleteParticipantAsync(action) {
       //   },
       // });
       yield put(actions.getDriversRides());
-
-      console.log('DELETE PARTICIPANT', action.payload);
 
       yield call(resolvePromiseAction, action);
     }
