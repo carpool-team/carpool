@@ -15,10 +15,8 @@ const dirConfig = {
   geometries: 'geojson',
 };
 
-const getBounds = routesArray => {
-  const allCoords = routesArray.map(rt => rt.geometry.coordinates).flat(1);
-  const allPoints = multiPoint(allCoords);
-  const boundingBox = bbox(allPoints);
+const getBounds = route => {
+  const boundingBox = bbox(multiPoint(route.geometry.coordinates));
   const [ne1, ne2, sw1, sw2] = boundingBox;
 
   return {
@@ -36,8 +34,14 @@ const parseCoords = coords => {
 };
 
 const RouteMinimap = ({stops, hideDetails = false}) => {
-  const [routes, setRoutes] = useState([]);
+  const [route, setRoute] = useState(null);
   const [bounds, setBounds] = useState(null);
+
+  useEffect(() => {
+    if (route) {
+      setBounds(getBounds(route));
+    }
+  }, [route]);
 
   // Directions
   const [results, loading, error, _getDirections] = useGetDirections({
@@ -51,20 +55,13 @@ const RouteMinimap = ({stops, hideDetails = false}) => {
   }, [stops]);
 
   useEffect(() => {
-    if (routes.length) {
-      const bds = getBounds(routes);
-      setBounds(bds);
-    }
-  }, [routes]);
-
-  useEffect(() => {
     if (results) {
-      setRoutes(results.body.routes);
+      setRoute(results.body.routes[0]);
     }
   }, [results]);
 
   const renderPoints = () => {
-    if (routes.length) {
+    if (route) {
       const {waypoints} = results.body;
       const start = waypoints[0];
       const finish = waypoints[waypoints.length - 1];
@@ -112,7 +109,6 @@ const RouteMinimap = ({stops, hideDetails = false}) => {
   };
 
   const renderRoutes = () => {
-    const route = routes.length ? routes[0] : null;
     return route ? (
       <MapboxGL.ShapeSource id="routeShape" shape={route.geometry}>
         <MapboxGL.LineLayer
@@ -162,8 +158,8 @@ const RouteMinimap = ({stops, hideDetails = false}) => {
   };
 
   const renderRouteDetails = () => {
-    if (routes.length) {
-      const {distance, duration} = routes[0];
+    if (route) {
+      const {distance, duration} = route;
 
       return (
         <View style={styles.routeDetailsWrapper}>
