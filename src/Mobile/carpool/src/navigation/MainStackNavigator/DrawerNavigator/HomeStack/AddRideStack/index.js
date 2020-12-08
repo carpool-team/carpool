@@ -12,6 +12,7 @@ import {
 import SelectLocation from '../../../../../screens/HomeStack/AddRideStack/SelectLocation';
 import RideSummary from '../../../../../screens/HomeStack/AddRideStack/RideSummary';
 import RideCreated from '../../../../../screens/HomeStack/AddRideStack/RideCreated';
+import RideError from '../../../../../screens/HomeStack/AddRideStack/RideError';
 
 const {useContext, useEffect} = React;
 
@@ -38,6 +39,7 @@ const AddRideStack = props => {
       <Stack.Screen name="SetSeats" component={SetSeats} />
       <Stack.Screen name="RideSummary" component={RideSummary} />
       <Stack.Screen name="RideCreated" component={RideCreated} />
+      <Stack.Screen name="RideError" component={RideError} />
     </Stack.Navigator>
   );
 };

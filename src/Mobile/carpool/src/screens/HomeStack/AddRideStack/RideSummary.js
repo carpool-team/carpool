@@ -67,7 +67,7 @@ const RideSummary = ({navigation}) => {
           navigation.navigate('RideCreated');
         })
         .catch(err => {
-          alert('Error ocurred');
+          navigation.navigate('RideError');
         });
     } else {
       setLoading(true);
