@@ -71,9 +71,9 @@ namespace DataAccessLayer.Repositories
 				.Include(x => x.Participants)
 				.Include(x => x.Stops)
 				.AsNoTracking()
-				.Where(x => x.Participants.Any(y => y.AppUserId == appUserId) && past
+				.Where(x => x.Participants.Any(y => y.AppUserId == appUserId) && (past
 					? x.Date <= DateTime.Now
-					: x.Date >= DateTime.Now)
+					: x.Date >= DateTime.Now))
 				.ToListAsync(cancellationToken);
 		}
 
@@ -90,7 +90,7 @@ namespace DataAccessLayer.Repositories
 					.ThenInclude(a => a.UserGroups)
 				.Include(x => x.Participants)
 				.Include(x => x.Stops)
-				.Where(x => x.OwnerId == appUserId && past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now)
+				.Where(x => x.OwnerId == appUserId && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
 				.ToListAsync(cancellationToken);
 		}
 
