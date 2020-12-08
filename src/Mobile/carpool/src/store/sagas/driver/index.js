@@ -373,11 +373,13 @@ export function* getDriversRidesAsync() {
           Authorization: `Bearer ${token}`,
         },
       });
+      // console.log('getDriversRidesAsync RES', res);
 
       yield put(actions.getDriversRidesSuccess(res.data.result));
       // yield put(actions.getDriversRidesSuccess(exampleRides));
     }
   } catch (err) {
+    console.log('getDriversRidesAsync ERR', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
@@ -541,8 +543,30 @@ export function* createRegularRideAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      // send request
-      console.log('CREATE REGULAR RIDE', action.payload);
+      const res = yield instance.post(
+        '/Rides/recurring',
+        {
+          ...action.payload,
+          ownerId: userId,
+          price: 0,
+          startDate: moment()
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0)
+            .toISOString(),
+          endDate: moment()
+            .set('hours', 0)
+            .set('minutes', 0)
+            .set('seconds', 0)
+            .add(1, 'months')
+            .toISOString(),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       yield put(actions.getDriversRides());
 
@@ -561,6 +585,7 @@ export function* createRegularRideAsync(action) {
         }
         return;
       }
+      yield call(rejectPromiseAction, action, err.response);
     }
     yield call(rejectPromiseAction, action, err.response);
   }

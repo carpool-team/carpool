@@ -56,12 +56,11 @@ const RideSummary = ({navigation}) => {
     if (regular) {
       dispatch(
         actions.createRegularRide({
-          group,
-          location,
-          swap,
-          days,
-          time,
-          seats,
+          groupId: group.id,
+          location: location.coordinates,
+          rideDirection: swap ? 1 : 0,
+          weekDays: days,
+          rideTime: moment(time).format('HH:mm'),
         }),
       )
         .then(() => {
