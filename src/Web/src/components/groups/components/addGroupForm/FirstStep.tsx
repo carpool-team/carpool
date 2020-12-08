@@ -12,6 +12,7 @@ import { InputIcon } from "../../../ui/input/enums/InputIcon";
 import MapBoxPicker from "../../../map/MapBoxPicker";
 import { ValidationType } from "../../../ui/input/enums/ValidationType";
 import { each } from "../../../../helpers/UniversalHelper";
+import { useImmer } from "use-immer";
 
 interface IFirstStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
@@ -24,7 +25,7 @@ interface IFirstStepProps extends IReactI18nProps {
 }
 
 const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
-	const [inputsValid, setInputsValid] = useState({
+	const [inputsValid, setInputsValid] = useImmer({
 		name: false,
 		code: false,
 		location: false,
@@ -76,9 +77,8 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					validation={{
 						type: ValidationType.Required,
 						isValidCallback: isValid => {
-							setInputsValid({
-								...inputsValid,
-								name: isValid,
+							setInputsValid(draft => {
+								draft.name = isValid;
 							});
 						},
 						validate
@@ -93,9 +93,8 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					validation={{
 						type: ValidationType.Required,
 						isValidCallback: isValid => {
-							setInputsValid({
-								...inputsValid,
-								code: isValid,
+							setInputsValid(draft => {
+								draft.code = isValid;
 							});
 						},
 						validate
@@ -111,9 +110,8 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					validation={{
 						type: ValidationType.Address,
 						isValidCallback: isValid => {
-							setInputsValid({
-								...inputsValid,
-								location: isValid,
+							setInputsValid(draft => {
+								draft.location = isValid;
 							});
 						},
 						validate

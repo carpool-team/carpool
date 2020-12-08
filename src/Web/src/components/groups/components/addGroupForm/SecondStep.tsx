@@ -16,7 +16,7 @@ import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { IFormUserData } from "./interfaces/IFormUserData";
 import { ValidationType } from "../../../ui/input/enums/ValidationType";
 import { each } from "../../../../helpers/UniversalHelper";
-import produce from "immer";
+import { useImmer } from "use-immer";
 
 interface ISecondStepCallbacks {
 	handleChange: (newValue: string, key: string) => void;
@@ -32,7 +32,7 @@ interface ISecondStepProps extends IReactI18nProps {
 }
 
 const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
-	const [inputsValid, setInputsValid] = useState({
+	const [inputsValid, setInputsValid] = useImmer({
 		name: false,
 		surname: false,
 		email: false,
@@ -70,6 +70,11 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 		if (each(inputsValid, i => i)) {
 			props.callbacks.addUser();
 			setValidate(false);
+			setInputsValid(draft => {
+				draft.name = false;
+				draft.email = false;
+				draft.surname = false;
+			});
 		} else {
 			setValidate(true);
 		}
@@ -89,9 +94,8 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 				validation={{
 					type: ValidationType.Required,
 					isValidCallback: isValid => {
-						setInputsValid({
-							...inputsValid,
-							name: isValid,
+						setInputsValid(draft => {
+							draft.name = isValid;
 						});
 					},
 					validate,
@@ -106,9 +110,8 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 				validation={{
 					type: ValidationType.Required,
 					isValidCallback: isValid => {
-						setInputsValid({
-							...inputsValid,
-							surname: isValid,
+						setInputsValid(draft => {
+							draft.surname = isValid;
 						});
 					},
 					validate,
@@ -123,9 +126,8 @@ const SecondStep: (props: ISecondStepProps) => JSX.Element = props => {
 				validation={{
 					type: ValidationType.Email,
 					isValidCallback: isValid => {
-						setInputsValid({
-							...inputsValid,
-							email: isValid,
+						setInputsValid(draft => {
+							draft.email = isValid;
 						});
 					},
 					validate,
