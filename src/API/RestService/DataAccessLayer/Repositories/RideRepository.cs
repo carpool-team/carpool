@@ -90,9 +90,9 @@ namespace DataAccessLayer.Repositories
 		
 		public async Task AddAsync(Ride ride, CancellationToken cancellationToken = default)
 		{
-			IdGenerator rideIdGenerator = new IdGenerator(IdGeneratorType.Ride);
-			ride.Id = new RideId(rideIdGenerator.CreateId());
-			await _context.Set<Domain.Entities.Ride>().AddAsync(ride, cancellationToken);
+			// IdGenerator rideIdGenerator = new IdGenerator(IdGeneratorType.Ride);
+			// ride.Id = new RideId(rideIdGenerator.CreateId());
+			await _context.Set<Ride>().AddAsync(ride, cancellationToken);
 		}
 
 		public void Delete(Ride ride)

@@ -46,9 +46,9 @@ namespace RestApi.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{groupId}")]
-		public async Task<ApiResponse> PutGroup([FromRoute] long groupId, [FromBody] UpdateGroupDto model)
+		public async Task<ApiResponse> PutGroup([FromRoute] GroupId groupId, [FromBody] UpdateGroupDto model)
 		{
-			UpdateGroupCommand request = new(new GroupId(groupId),
+			UpdateGroupCommand request = new(groupId,
 				model.Location,
 				model.Name,
 				model.Code,
@@ -69,10 +69,10 @@ namespace RestApi.Controllers
 
         // DELETE: api/Groups/5
 		[HttpDelete("{id}")]
-		public async Task<ApiResponse> DeleteGroup(long id)
+		public async Task<ApiResponse> DeleteGroup(GroupId groupId)
 		{
-			var response = await _mediator.Send(new DeleteGroupCommand(new GroupId(id))).ConfigureAwait(false);
-			return new ApiResponse($"Group with id: {id} has been deleted", StatusCodes.Status200OK);
+			var response = await _mediator.Send(new DeleteGroupCommand(groupId)).ConfigureAwait(false);
+			return new ApiResponse($"Group with id: {groupId} has been deleted", StatusCodes.Status200OK);
 		}
     }
 }

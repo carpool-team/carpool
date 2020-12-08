@@ -22,10 +22,9 @@ namespace RestApi.Controllers
 			=> _mediator = mediator;
 
 		[HttpGet("~/api/users/{appUserId}/rating")]
-		public async Task<ApiResponse> GetUserRatingByUserId([FromRoute] long userId)
+		public async Task<ApiResponse> GetUserRatingByUserId([FromRoute] AppUserId userId)
 		{
-			AppUserId typedAppUserId = new(userId);
-			var request = new GetUserRatingQuery(typedAppUserId);
+			var request = new GetUserRatingQuery(userId);
 
 			var usersRating = await _mediator.Send(request);
 
@@ -33,10 +32,9 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost("~/api/users/{appUserId}/ratings")]
-		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingDto model, [FromRoute] long userId)
+		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingDto model, [FromRoute] AppUserId userId)
 		{
-			AppUserId typedAppUserId = new(userId);
-			AddUserRatingCommand request = new(typedAppUserId, model.Value);
+			AddUserRatingCommand request = new(userId, model.Value);
 
 			var rating = await _mediator.Send(request);
 

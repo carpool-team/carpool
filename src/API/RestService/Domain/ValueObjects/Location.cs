@@ -5,7 +5,7 @@ namespace Domain.ValueObjects
 {
 	public class Location : ValueObject
 	{
-		public Location() { }
+		private Location() { }
 
 		public Location(double longitude, double latitude)
 			=> (Longitude, Latitude) = (longitude, latitude);
