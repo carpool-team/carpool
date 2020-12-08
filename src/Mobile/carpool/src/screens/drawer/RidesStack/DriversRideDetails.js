@@ -10,9 +10,8 @@ import {
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {RouteMinimap} from '../../../components/Route';
-import {parseCoords} from '../../../utils/coords';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Waypoints} from '../../../components/Ride';
+import {GroupWaypoints} from '../../../components/Ride';
 import moment from 'moment';
 import PassengersList from '../../../components/Driver/PassengersList';
 import * as actions from '../../../store/actions';
@@ -33,7 +32,7 @@ const DriversRideDetails = ({navigation, route}) => {
         text: 'Delete',
         style: 'destructive',
         onPress: () => {
-          dispatch(actions.deleteRide(ride.id))
+          dispatch(actions.deleteRide(ride.rideId))
             .then(() => navigation.goBack())
             .catch(err => alert('Error ocurred'));
         },
@@ -57,7 +56,7 @@ const DriversRideDetails = ({navigation, route}) => {
           onPress: () => {
             dispatch(
               actions.deleteParticipant({
-                rideId: ride.id,
+                rideId: ride.rideId,
                 userId: item.user.id,
               }),
             )
@@ -78,10 +77,10 @@ const DriversRideDetails = ({navigation, route}) => {
           <View>
             <Text style={styles.singleRide}>Single ride</Text>
             <Text style={styles.time}>
-              {moment(ride.date).format('HH:mm ')}
+              {moment(ride.rideDate).format('HH:mm ')}
             </Text>
             <Text style={styles.date}>
-              {moment(ride.date).format('Do MMMM YYYY')}
+              {moment(ride.rideDate).format('Do MMMM YYYY')}
             </Text>
           </View>
           {!past && (
@@ -97,15 +96,26 @@ const DriversRideDetails = ({navigation, route}) => {
         </View>
         <View style={styles.mapWrapper}>
           <RouteMinimap
-            stops={[ride.startingLocation, ...ride.stops, ride.destination]}
+            stops={
+              ride.rideDirection
+                ? [
+                    {coordinates: ride.group.location},
+                    {coordinates: ride.location},
+                  ]
+                : [
+                    {coordinates: ride.location},
+                    {coordinates: ride.group.location},
+                  ]
+            }
             hideDetails={past}
           />
         </View>
         <View style={styles.bottomWrapper}>
           <View style={styles.waypoints}>
-            <Waypoints
-              ride={ride}
-              start={parseCoords(ride.startingLocation.coordinates)}
+            <GroupWaypoints
+              group={ride.group}
+              location={{coordinates: ride.location}}
+              swap={ride.rideDirection}
             />
           </View>
           <View style={styles.passengersList}>

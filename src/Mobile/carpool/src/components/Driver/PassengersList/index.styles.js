@@ -11,4 +11,7 @@ export const styles = StyleSheet.create({
     color: colors.grayVeryDark,
     fontSize: 18,
   },
+  empty: {
+    marginTop: 25,
+  },
 });
