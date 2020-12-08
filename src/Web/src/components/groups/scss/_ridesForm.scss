@@ -14,12 +14,8 @@
 		margin-bottom: 7px;
 		background-color: $background;
 		width: 35%;
-		display: flex;
-		flex-direction: column;
-		height: 900px;
-		justify-content: flex-start;
 		&__list{
-			height: auto;
+			 height: inherit;
 		}
 		&__text{
 			font-weight: $medium;
@@ -99,24 +95,14 @@
 	flex-direction: column;
 	width: auto;
 	background-color: $background;
-	&--container{
-		max-height: 700px;
-		list-style-type: none;
-		padding-left: 0;
-		display: flex;
-		flex-direction: column;
-		margin-top: 0;
-		width: auto;
-		height: 100%;
-		background-color: $background;
-		overflow:hidden; 
-		overflow-y:scroll;
-		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none;  /* IE 10+ */
-		&::-webkit-scrollbar {
-		  width: 0px;
-		  background: transparent; /* Chrome/Safari/Webkit */
-		}
+	overflow:hidden; 
+	max-height: 800px;
+	overflow-y:scroll;
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none;  /* IE 10+ */
+	&::-webkit-scrollbar {
+		width: 0px;
+		background: transparent; /* Chrome/Safari/Webkit */
 	}
     & > li {
       display: flex;
