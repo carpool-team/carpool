@@ -19,8 +19,8 @@ export default abstract class RequestCore {
 	requestBody?: RequestBody;
 
 	private static config = {
-		devUrl: "https://carpool-rest-api.azurewebsites.net/api",
-		devAuthUrl: "https://carpool-auth.azurewebsites.net/api",
+		devUrl: "https://carpool-rest.azurewebsites.net/api",
+		devAuthUrl: "https://carpool-identity.azurewebsites.net/api",
 		userId: tempUserId,
 	};
 	private static proxyUrl: string = "https://cors-anywhere.herokuapp.com/";

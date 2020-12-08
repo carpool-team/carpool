@@ -57,11 +57,6 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		if (each(inputsValid, i => i)) {
 			props.callbacks.incrementStep();
 			setValidate(false);
-			setInputsValid({
-				name: false,
-				code: false,
-				location: false,
-			});
 		} else {
 			setValidate(true);
 		}
