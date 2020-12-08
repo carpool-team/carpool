@@ -1,10 +1,7 @@
-﻿namespace RestApi.DTOs.Vehicle
-{
-    public class IndexVehicleDto
-    {
-        public IndexVehicleDto(string name)
-            => Name = name;
+﻿using Newtonsoft.Json;
 
-        public string Name { get; set; }
-    }
+namespace RestApi.DTOs.Vehicle
+{
+    public record IndexVehicleDto([JsonProperty("Name")]string Name);
+
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using Domain.Abstract;
 using Domain.Contracts;
 using Domain.Entities.Intersections;
@@ -20,6 +22,9 @@ namespace Domain.Entities
 		public IReadOnlyList<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
 		public List<Rating> Ratings { get; set; } = new();
 		public Vehicle? Vehicle { get; set; }
-		
+
+		[NotMapped]
+		public double Rating => Ratings.Count > 0 ?Ratings.Sum(x => (double)x.Value) / Ratings.Count() : 0;
+
 	}
 }

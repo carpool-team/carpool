@@ -34,25 +34,25 @@ namespace RestApi.Controllers
 		}
 
         [HttpGet("~/api/users/{appUserId}/rides")]
-        public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] AppUserId userId,
+        public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] AppUserId appUserId,
             [FromQuery] bool past = false, [FromQuery]bool owned = false,[FromQuery]bool participated = false)
         {
 			if (owned)
-            {
-                GetUserOwnedRidesQuery getUserOwnedRides = new(userId, past);
+			{
+                GetUserOwnedRidesQuery getUserOwnedRides = new(appUserId, past);
                 var userOwnedRides = await _mediator.Send(getUserOwnedRides);
 
                 return new ApiResponse(userOwnedRides);
 			}
             if(participated)
             {
-                GetUserParticipatedRidesQuery getUserParticipatedRides = new(userId, past);
+                GetUserParticipatedRidesQuery getUserParticipatedRides = new(appUserId, past);
                 var userParticipatedRides = await _mediator.Send(getUserParticipatedRides);
 
                 return new ApiResponse(userParticipatedRides);
             }
 
-            GetUserRidesQuery getUserRides = new(userId, past);
+            GetUserRidesQuery getUserRides = new(appUserId, past);
             var userRides = await _mediator.Send(getUserRides);
 
             return new ApiResponse(userRides);
