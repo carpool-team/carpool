@@ -90,7 +90,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 
 	private renderAccountContainer = () => {
 		const { t } = this.props;
-		console.log(this.props.tokenInfo);
+		console.log("TOKEN INFO: ", this.props.tokenInfo);
 		if (!this.props.tokenInfo?.token) { // unathorized
 			return (
 				<div className={this.cssClasses.navBarAccountContainer}>

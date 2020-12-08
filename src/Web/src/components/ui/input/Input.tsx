@@ -74,8 +74,8 @@ const Input = (props: IINputProps) => {
 	const [autocompleteList, setAutocompleteList] = useState<IAddress[]>(null);
 	const [isAutoCompleted, setIsAutoCompleted] = useState(false);
 
-	useEffect(() => {
-		if (props.validation?.validate) {
+	const validate = () => {
+		if (props.validation) {
 			const valid: boolean = validateInput({
 				value: props.value,
 				type: props.validation.type,
@@ -87,6 +87,14 @@ const Input = (props: IINputProps) => {
 				props.validation.isValidCallback(valid);
 			}
 		}
+	};
+
+	useEffect(() => {
+		validate();
+	}, []);
+
+	useEffect(() => {
+		validate();
 	}, [props.value, props.validation?.validate]);
 
 	const inputBaseClassName: string = "input__input";
@@ -112,7 +120,7 @@ const Input = (props: IINputProps) => {
 
 	let baseInputClasses = [inputBaseClassName];
 	let baseContainerClasses = [inputBaseContainerClassName];
-	if (!isValid) {
+	if (props.validation?.validate && !isValid) {
 		baseInputClasses = [inputInvalidClassName];
 		baseContainerClasses = [inputInvalidContainerClassName];
 	}
@@ -204,16 +212,17 @@ const Input = (props: IINputProps) => {
 
 	const renderValidationMessage = () => {
 		const { t } = props;
-		if (!isValid) {
-			return (
-				<span className={inputInvalidTextClassName}>
-					{props.validation.validationText ??
-						t(defaultValidationTextKeys[props.validation?.type])}
-				</span>
-			);
-		} else {
-			return null;
+		if (props.validation?.validate) {
+			if (!isValid) {
+				return (
+					<span className={inputInvalidTextClassName}>
+						{props.validation.validationText ??
+							t(defaultValidationTextKeys[props.validation?.type])}
+					</span>
+				);
+			}
 		}
+		return null;
 	};
 
 	const renderTextInput = () => (

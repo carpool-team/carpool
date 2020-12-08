@@ -67,6 +67,7 @@
         "@types/react-toastify": "^4.1.0",
         "@types/redux": "^3.6.0",
         "date-fns": "^2.16.1",
+        "drop-console-webpack-plugin": "^3.0.2",
         "faker": "^5.1.0",
         "i18next": "^19.8.4",
         "i18next-browser-languagedetector": "^4.3.1",
@@ -91,6 +92,7 @@
         "redux-dynamic-modules-core": "^5.2.3",
         "redux-dynamic-modules-observable": "^5.2.3",
         "redux-observable": "^1.2.0",
-        "rxjs": "^6.6.3"
+        "rxjs": "^6.6.3",
+        "use-immer": "^0.4.2"
     }
 }

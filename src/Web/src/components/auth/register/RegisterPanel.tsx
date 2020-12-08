@@ -66,17 +66,14 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 		let isFormValid: boolean = true;
 		if (!isPasswordValid) {
 			isFormValid = false;
-			console.log("password");
 		}
 		if (each(inputsValid, i => i)) {
 			isFormValid = true;
 			setValidate(false);
-			console.log("inputs");
 		} else {
 			isFormValid = false;
 			setValidate(true);
 		}
-		console.log(isFormValid);
 		return isFormValid;
 	};
 
