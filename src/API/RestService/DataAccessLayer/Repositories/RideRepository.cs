@@ -63,7 +63,11 @@ namespace DataAccessLayer.Repositories
 		{
 			return await _context.Rides
 				.Include(x => x.Owner)
+					.ThenInclude(a => a.Ratings)
+				.Include(x => x.Owner)
+					.ThenInclude(a => a.Vehicle)
 				.Include(x => x.Group)
+					.ThenInclude(a => a.UserGroups)
 				.Include(x => x.Participants)
 				.Include(x => x.Stops)
 				.AsNoTracking()
@@ -79,7 +83,11 @@ namespace DataAccessLayer.Repositories
 		{
 			return await _context.Rides.AsNoTracking()
 				.Include(x => x.Owner)
+					.ThenInclude(a => a.Ratings)
+				.Include(x => x.Owner)
+					.ThenInclude(a => a.Vehicle)
 				.Include(x => x.Group)
+					.ThenInclude(a => a.UserGroups)
 				.Include(x => x.Participants)
 				.Include(x => x.Stops)
 				.Where(x => x.OwnerId == appUserId && past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now)

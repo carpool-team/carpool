@@ -1,4 +1,5 @@
-﻿using IdentifiersShared.Identifiers;
+﻿#nullable enable
+using IdentifiersShared.Identifiers;
 using Newtonsoft.Json;
 using RestApi.DTOs.Vehicle;
 
@@ -16,5 +17,5 @@ namespace RestApi.DTOs.User
         [JsonProperty("firstName")] string FirstName,
         [JsonProperty("lastName")]string LastName,
         [JsonProperty("id")] AppUserId Id,
-        [JsonProperty("vehicle")]IndexVehicleDto Vehicle);
+        [JsonProperty("vehicle")]IndexVehicleDto? Vehicle);
 }
