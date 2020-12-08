@@ -35,8 +35,8 @@ const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
 const RidesParticipant = (props: IRidesListProps) => {
 
 	const cssClasses = {
-		list: "ridesList",
-		listContainer: "ridesList--container",
+		list: "ridesListContainer",
+		listContainer: "ridesListContainer__days",
 		mainRow: "ridesList--mainRow",
 		bottomRow: "ridesList--bottomRow",
 		button: "ridesList--button",
@@ -217,9 +217,39 @@ const RidesParticipant = (props: IRidesListProps) => {
 		);
 	};
 
-	 const days = []
-	 for (var m = moment(props.firstDay); m.diff(props.lastDay, 'days') <= 0; m.add(1, 'days')) {
-		days.push(m.format());
+	const days = []
+	for (let m = moment(props.firstDay); m.diff(props.lastDay, "days") <= 0; m.add(1, "days")) {
+	 days.push(m.format());
+ 	}
+
+ 	const { t } = props;
+
+	const renderItem = (color:string, ride:IRide, day:string) =>{
+		if (moment(ride.date).format("YYYY-MM-DD") === moment(day).format("YYYY-MM-DD")){
+			if(props.rideSelected && props.rideSelected.id === ride.id){
+				return (
+					<React.Fragment key={ride.id}>
+					 <ActiveItem
+						 ride={ride}
+						 color={color}
+						 t={t}
+					 setRide={props.setRide}
+					 />
+					 </React.Fragment>
+				);
+		 } else {
+			 return (
+				 <React.Fragment key={ride.id}>
+					 <DefaultItem
+						 ride={ride}
+						 color={color}
+						 t={t}
+						 setRide={props.setRide}
+					 />
+				 </React.Fragment>
+			 );	
+			}
+		} 
 	}
 
 	return (
@@ -230,35 +260,13 @@ const RidesParticipant = (props: IRidesListProps) => {
 					<div className={cssClasses.dayLabel}>{moment(day).format("DD.MM")}</div>
 					<ul className={cssClasses.list}>
 					{rides.map((ride) => {
-						const { t } = props;
-						if (moment(ride.date).format("YYYY-MM-DD") === moment(day).format("YYYY-MM-DD")){
 							++colorIndex;
 							const color = colorList[colorIndex % colorList.length];
-							return (
-								<React.Fragment key={ride.id}>
-									{(() => {
-										if (props.rideSelected && props.rideSelected.id === ride.id) {
-											return (
-												<ActiveItem
-													ride={ride}
-													color={color}
-													t={t}
-													setRide={props.setRide}
-												/>);
-										} else {
-											return (
-												<DefaultItem
-													ride={ride}
-													color={color}
-													t={t}
-													setRide={props.setRide}
-												/>);
-										}
-									})()}
-								</React.Fragment>
+							return(
+								renderItem(color, ride, day)
 							);
 						} 
-			})}
+					)}
 				</ul>
 				</div>
 			);

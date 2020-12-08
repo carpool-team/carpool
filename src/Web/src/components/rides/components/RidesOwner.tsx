@@ -9,11 +9,14 @@ import mapConfig from "../../map/mapConfig";
 import Button from "../../ui/button/Button";
 import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../ui/button/enums/ButtonColor";
+import moment from "moment";
 
 interface IRidesListProps extends IReactI18nProps {
 	rides: IRide[];
 	rideSelected: IRide;
 	setRide: (ride: IRide) => void;
+	firstDay: string,
+	lastDay: string;
 }
 interface IListItemProps {
 	ride: IRideNames;
@@ -30,7 +33,8 @@ const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
 const RidesOwner = (props: IRidesListProps) => {
 
 	const cssClasses = {
-		list: "ridesList",
+		list: "ridesListContainer",
+		listContainer: "ridesListContainer__days",
 		mainRow: "ridesList--mainRow",
 		bottomRow: "ridesList--bottomRow",
 		button: "ridesList--button",
@@ -48,6 +52,8 @@ const RidesOwner = (props: IRidesListProps) => {
 		activeDate: "ridesListActive--date",
 		activeSeats: "ridesListActive--seats",
 		activeCar: "ridesListActive--car",
+		day: "day",
+		dayLabel: "day__label"
 	};
 
 	let colorIndex: number = 0;
@@ -201,7 +207,7 @@ const RidesOwner = (props: IRidesListProps) => {
 							Wolne miejsca: {"2"}
 						</div>
 						<Button style={backgroundColor} background={ButtonBackground.Blue} color={ButtonColor.White} className={cssClasses.activeJoinButton}>
-							Dołącz
+							{"Usuń"}
 						</Button>
 					</div>
 				</div>
@@ -209,35 +215,60 @@ const RidesOwner = (props: IRidesListProps) => {
 		);
 	};
 
-	return (
-		<ul className={cssClasses.list}>
-			{rides.map((ride) => {
-				++colorIndex;
-				const color = colorList[colorIndex % colorList.length];
-				const { t } = props;
+	const days = []
+	for (let m = moment(props.firstDay); m.diff(props.lastDay, "days") <= 0; m.add(1, "days")) {
+	 days.push(m.format());
+ 	}
+ 
+	const { t } = props;
+
+	const renderItem = (color:string, ride:IRide, day:string) =>{
+	 	if (moment(ride.date).format("YYYY-MM-DD") === moment(day).format("YYYY-MM-DD")){
+			 if(props.rideSelected && props.rideSelected.id === ride.id){
+				 return (
+					 <React.Fragment key={ride.id}>
+						<ActiveItem
+							ride={ride}
+							color={color}
+							t={t}
+						setRide={props.setRide}
+						/>
+						</React.Fragment>
+				 );
+			} else {
 				return (
 					<React.Fragment key={ride.id}>
-						{(() => {
-							if (props.rideSelected && props.rideSelected.id === ride.id) {
-								return (
-									<ActiveItem
-										ride={ride}
-										color={color}
-										t={t}
-										setRide={props.setRide}
-									/>);
-							} else {
-								return (
-									<DefaultItem
-										ride={ride}
-										color={color}
-										t={t}
-										setRide={props.setRide}
-									/>);
-							}
-						})()}
+						<DefaultItem
+							ride={ride}
+							color={color}
+							t={t}
+							setRide={props.setRide}
+						/>
 					</React.Fragment>
-				);
+				);	
+		 }
+	 } 
+ }
+
+
+	return (
+		<ul className={cssClasses.listContainer}>
+			{days.map((day)=>{
+			return(
+				<div className={cssClasses.day} key={day}>
+					<div className={cssClasses.dayLabel}>{moment(day).format("DD.MM")}</div>
+					<ul className={cssClasses.list}>
+					{rides.map((ride) => {
+							++colorIndex;
+							const color = colorList[colorIndex % colorList.length];
+							return(
+								renderItem(color, ride, day)
+							);
+						} 
+					)}
+				</ul>
+				</div>
+			);
 			})}
 		</ul>
 	);

@@ -24,6 +24,7 @@ import RidesParticipant from "./components/RidesParticipant";
 import moment from "moment";
 import "./Rides.scss";
 import { random } from "lodash";
+import exampleRides from "../../examples/exampleRides";
 
 interface IRidesProps extends RouteComponentProps, IReactI18nProps {
 
@@ -57,7 +58,10 @@ const Rides = (props: IRidesProps) => {
 		from: "fromId"
 	};
 
-	const rides: IRide[] = ridesExample;
+	// Pobierać dane z serwera z odpowiedniego endpointu
+	const [ridesParticipant, setRidesParticipant] = useState(exampleRides);
+	const [ridesOwner, setRidesOwner] = useState(exampleRides);
+
 	const [selectedRide, setSelectedRide] = useState(null);
 	const [userOwner, setUserOwner] = useState(false);
 	const [switchCssClass, setSwitchCssClass] = useState({from: cssClasses.switchActive, to: null});
@@ -122,11 +126,26 @@ const Rides = (props: IRidesProps) => {
 		setDateOffset(newOffset);
 	};
 
+	const matchRides = (rides: IRide[]) => {
+
+		const filtered = rides.filter(ride => {
+			const current = moment(ride.date);
+			if (current.isBetween(moment(date.firstDay), moment(date.lastDay))) {
+				return ride;
+			}
+		});
+
+		if (filtered.length) {
+			return filtered;
+		}
+		return [];
+	};
+
 	const renderOwnerList = () => (
-		<RidesOwner rideSelected={selectedRide} setRide={setRide} rides={rides} />
+		<RidesOwner firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={ridesOwner} />
 	);
 	const renderParticipantList = () => (
-		<RidesParticipant firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={rides}/>
+		<RidesParticipant firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={ridesParticipant}/>
 	);
 
 	const UserSwitch = withStyles({
