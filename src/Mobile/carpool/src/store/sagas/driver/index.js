@@ -373,7 +373,7 @@ export function* getDriversRidesAsync() {
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log('getDriversRidesAsync RES', res);
+      console.log('getDriversRidesAsync RES', res);
 
       yield put(actions.getDriversRidesSuccess(res.data.result));
       // yield put(actions.getDriversRidesSuccess(exampleRides));
