@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import StandardInput from '../../../../../components/common/inputs/StandardInput';
 import {colors} from '../../../../../styles';
 import {useFormik} from 'formik';
@@ -8,8 +8,17 @@ import {StandardButton} from '../../../../../components/common/buttons';
 import {styles} from '../index.styles';
 
 const ValidationSchema = Yup.object().shape({
-  // TODO: Password strength validation
-  password: Yup.string().required('Password is required'),
+  password: Yup.string()
+    .min(8, 'Password is too short (at least 8 characters)')
+    .matches(
+      /[0-9!?@#$%^&\\*"'+,./:;<>=_`|~\-\(\){}[\]]+/,
+      'The password must contain at least one number or special character',
+    )
+    .matches(
+      /[A-Z]+/,
+      'The password must contain at least one uppercase letter',
+    )
+    .required('Password is required'),
   password_confirmation: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords do not match')
     .required('Password confirmation is required'),
@@ -35,6 +44,10 @@ const PasswordSection = ({onSubmtiPassword, initialValues}) => {
         onChangeText={handleChange('password')}
         error={touched.password && errors.password ? errors.password : null}
       />
+      <Text style={styles.info}>
+        Password must be at least 8 characters long and contain at least one
+        number, special character and an uppercase letter
+      </Text>
       <StandardInput
         secureTextEntry
         returnKeyType="done"
