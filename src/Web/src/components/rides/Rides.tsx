@@ -73,6 +73,7 @@ const Rides = (props: IRidesProps) => {
 	};
 	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUserOwner(event.target.checked);
+		setSelectedRide(null);
 		if (event.target.checked) {
 			setSwitchCssClass({from: null, to: cssClasses.switchActive});
 		} else {
@@ -119,11 +120,13 @@ const Rides = (props: IRidesProps) => {
 		const newOffset = dateOffset + 1 ;
 		setDate(getDates(newOffset));
 		setDateOffset(newOffset);
+		setSelectedRide(null);
 	};
 	const onPrevDate = () => {
 		const newOffset = dateOffset - 1 ;
 		setDate(getDates(newOffset));
 		setDateOffset(newOffset);
+		setSelectedRide(null);
 	};
 
 	const matchRides = (rides: IRide[]) => {

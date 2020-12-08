@@ -43,12 +43,14 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		this.state = {
 			fitBounds: undefined,
 			ride: this.props.ride,
-			route: undefined,
 			...defaults,
 		};
 	}
 	private onFindRoute = async (ride: IRide) => {
 		try {
+			if (!ride) {
+				this.setState(produce((draft: IMapState) => {draft.route = null; }));
+			}
 			const response = await directionsClient
 				.getDirections({
 					profile: "driving-traffic",
@@ -79,14 +81,16 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		}
 	}
 	componentDidUpdate() {
-		if (this.state.ride !== this.props.ride) {
-			this.onFindRoute(this.props.ride);
-			this.getBounds(this.props.ride);
-			this.setState(produce((draft: IMapState) => {
-				draft.ride = this.props.ride;
-			}));
-		}
+			if (this.state.ride !== this.props.ride) {
+				if (this.props.ride) {
+					this.getBounds(this.props.ride);
+					}
+					this.onFindRoute(this.props.ride);
+					this.setState(produce((draft: IMapState) => {
+						draft.ride = this.props.ride;
+				}));
 	}
+}
 
 	private getBounds = (ride: IRide) => {
 		const allCoords = [[ride.destination.latitude, ride.startingLocation.latitude], [ride.destination.longitude, ride.startingLocation.longitude]];
