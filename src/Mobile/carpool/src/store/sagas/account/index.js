@@ -70,11 +70,13 @@ export function* getGroupsAsync() {
       yield put(actions.getGroupsSuccess(res.data.result));
     }
   } catch (err) {
-    if (err.response.status === 401) {
-      yield put(actions.refreshToken());
-      yield take(actions.GetToken.Success);
-      yield put(actions.getGroups());
-      return;
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getGroups());
+        return;
+      }
     }
     yield put(actions.getGroupsError(err));
   }
