@@ -333,16 +333,17 @@ export function* getUsersRidesAsync() {
     if (token) {
       yield put(actions.getUsersRidesLoading());
 
-      // const res = yield instance.get(`/users/${userId}/rides`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+      const res = yield instance.get(
+        `/users/${userId}/rides?participated=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      // console.log('RES', res);
-
-      // yield put(actions.getUsersRidesSuccess(res.data.result));
-      yield put(actions.getUsersRidesSuccess(exampleRides));
+      yield put(actions.getUsersRidesSuccess(res.data.result));
+      // yield put(actions.getUsersRidesSuccess(exampleRides));
     }
   } catch (err) {
     // TODO
@@ -360,16 +361,17 @@ export function* getUsersPastRidesAsync() {
     if (token) {
       yield put(actions.getUsersPastRidesLoading());
 
-      // const res = yield instance.get(`/users/${userId}/rides`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+      const res = yield instance.get(
+        `/users/${userId}/rides?past=true&participated=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      // console.log('RES', res);
-
-      // yield put(actions.getUsersRidesSuccess(res.data.result));
-      yield put(actions.getUsersPastRidesSuccess(examplePastRides));
+      yield put(actions.getUsersPastRidesSuccess(res.data.result));
+      // yield put(actions.getUsersPastRidesSuccess(examplePastRides));
     }
   } catch (err) {
     // TODO

@@ -51,7 +51,7 @@ const RideInfoSheet = ({visible, ride, userLocation, onShowWay, onClose}) => {
     if (!visible) {
       setRideId(null);
       setSuccess(false);
-      dispatch(actions.getAllRides());
+      dispatch(actions.getUsersRides());
     }
   }, [visible]);
 
