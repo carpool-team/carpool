@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.RideCommands;
+using RestApi.Commands.RideCommands.AddRecurringRide;
 using RestApi.Commands.RideCommands.RemoveUserFromRide;
 using RestApi.DTOs.Ride;
 using RestApi.Queries.RideQueries;
@@ -18,16 +19,11 @@ namespace RestApi.Controllers
 	[Authorize]
 	public class RidesController : Controller
 	{
-		private readonly CarpoolDbContext _context;
 		private readonly IMediator _mediator;
 
-		public RidesController(CarpoolDbContext context, IMediator mediator)
-		{
-			_context = context;
-			_mediator = mediator;
-		}
+		public RidesController(IMediator mediator) => _mediator = mediator;
 
-        // GET: api/Rides/5
+		// GET: api/Rides/5
 		[HttpGet("{rideId}")]
 		public async Task<ApiResponse> GetRide(RideId rideId)
 		{
@@ -38,27 +34,25 @@ namespace RestApi.Controllers
 		}
 
         [HttpGet("~/api/users/{appUserId}/rides")]
-        public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] long userId,
+        public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] AppUserId userId,
             [FromQuery] bool past = false, [FromQuery]bool owned = false,[FromQuery]bool participated = false)
         {
-            AppUserId typedAppUserId = new(userId);
-
 			if (owned)
             {
-                GetUserOwnedRidesQuery getUserOwnedRides = new(typedAppUserId, past);
+                GetUserOwnedRidesQuery getUserOwnedRides = new(userId, past);
                 var userOwnedRides = await _mediator.Send(getUserOwnedRides);
 
                 return new ApiResponse(userOwnedRides);
 			}
             if(participated)
             {
-                GetUserParticipatedRidesQuery getUserParticipatedRides = new(typedAppUserId, past);
+                GetUserParticipatedRidesQuery getUserParticipatedRides = new(userId, past);
                 var userParticipatedRides = await _mediator.Send(getUserParticipatedRides);
 
                 return new ApiResponse(userParticipatedRides);
             }
 
-            GetUserRidesQuery getUserRides = new(typedAppUserId, past);
+            GetUserRidesQuery getUserRides = new(userId, past);
             var userRides = await _mediator.Send(getUserRides);
 
             return new ApiResponse(userRides);
@@ -68,10 +62,9 @@ namespace RestApi.Controllers
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{rideId}")]
-		public async Task<ApiResponse> PutRide([FromRoute] long rideId, [FromBody] UpdateRideDto model)
+		public async Task<ApiResponse> PutRide([FromRoute] RideId rideId, [FromBody] UpdateRideDto model)
 		{
-			RideId typedRideId = new(rideId);
-            UpdateRideCommand updateRide = new(typedRideId,
+			UpdateRideCommand updateRide = new(rideId,
 				model.ParticipantIds,
 				model.Date,
 				model.Price);
@@ -87,26 +80,32 @@ namespace RestApi.Controllers
 		[HttpPost]
 		public async Task<ApiResponse> PostRide([FromBody] AddRideCommand request)
 		{
-			var ride = await _mediator.Send(request).ConfigureAwait(false);
+			var ride = await _mediator.Send(request);
 			return new ApiResponse(ride, StatusCodes.Status201Created);
+		}
+
+		[HttpPost("recurring")]
+		public async Task<ApiResponse> AddRecurringRide([FromBody] AddRecurringRideCommand request)
+		{
+			var rideIds = await _mediator.Send(request);
+			return new ApiResponse(rideIds, StatusCodes.Status201Created);
 		}
 
         [HttpPost("{rideId}/users")]
         public async Task<ApiResponse> AddParticipant([FromRoute] RideId rideId,
-            [FromBody] AddRideParticipantCommand addrideParticipant)
+            [FromBody] AddRideParticipantCommand addRideParticipant)
         {
-            addrideParticipant.RideId = rideId;
-            await _mediator.Send(addrideParticipant).ConfigureAwait(false);
+            addRideParticipant.RideId = rideId;
+            await _mediator.Send(addRideParticipant).ConfigureAwait(false);
 
             return new ApiResponse("Added user to the ride", StatusCodes.Status201Created);
         }
 
 		// DELETE: api/Rides/5
 		[HttpDelete("{rideId}")]
-		public async Task<ApiResponse> DeleteRide(long rideId)
+		public async Task<ApiResponse> DeleteRide(RideId rideId)
 		{
-			RideId typedRideId = new(rideId);
-            DeleteRideCommand deleteRide = new(typedRideId);
+            DeleteRideCommand deleteRide = new(rideId);
 			var ride = await _mediator.Send(deleteRide).ConfigureAwait(false);
 
 			return new ApiResponse(ride);
@@ -114,10 +113,9 @@ namespace RestApi.Controllers
 
 
         [HttpDelete("{rideId}/users/{appUserId}")]
-		public async Task<ApiResponse> RemoveUserFromRide([FromRoute] long rideId, [FromRoute] AppUserId appUserId)
+		public async Task<ApiResponse> RemoveUserFromRide([FromRoute] RideId rideId, [FromRoute] AppUserId appUserId)
 		{
-			RideId typedRideId = new(rideId);
-            RemoveUserFromRideCommand removeUserFromRide = new(typedRideId, appUserId);
+            RemoveUserFromRideCommand removeUserFromRide = new(rideId, appUserId);
 			var response = await _mediator.Send(removeUserFromRide).ConfigureAwait(false);
 
 			return new ApiResponse($"User with id {appUserId} has been deleted from ride with id {rideId}");

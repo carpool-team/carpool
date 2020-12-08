@@ -10,6 +10,18 @@ namespace Domain.Entities
 {
 	public class Ride : BaseEntity<RideId>
 	{
+		private Ride(){}
+		public Ride(RideId rideId, AppUserId ownerId, GroupId groupId, DateTime date, double price, Location location, RideDirection rideDirection, List<Stop> stops)
+		{
+			Id = rideId;
+			OwnerId = ownerId;
+			GroupId = groupId;
+			Date = date;
+			Price = price;
+			Location = location;
+			RideDirection = rideDirection;
+			Stops = stops;
+		}
 		public AppUserId OwnerId { get; set; }
 		public ApplicationUser Owner { get; set; }
 

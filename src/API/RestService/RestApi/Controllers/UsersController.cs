@@ -26,29 +26,26 @@ namespace RestApi.Controllers
 		}
 
         [HttpGet("{appUserId}")]
-		public async Task<ApiResponse> GetUser([FromRoute] long userId)
+		public async Task<ApiResponse> GetUser([FromRoute] AppUserId userId)
 		{
-			AppUserId typedAppUserId = new(userId);
-			var request = new GetUserByIdQuery(typedAppUserId);
+			var request = new GetUserByIdQuery(userId);
 			var response = await _mediator.Send(request);
 
 			return new ApiResponse(response);
 		}
 
 		[HttpGet("~/api/groups/{groupId}/users")]
-		public async Task<ApiResponse> GetGroupUsers([FromRoute] long groupId)
+		public async Task<ApiResponse> GetGroupUsers([FromRoute] GroupId groupId)
 		{
-			GroupId typedGroupId = new(groupId);
-			var request = new GetGroupUsersQuery(typedGroupId);
+			var request = new GetGroupUsersQuery(groupId);
 			var result = await _mediator.Send(request);
 			return new ApiResponse(result);
 		}
 
 		[HttpPut("{appUserId}")]
-		public async Task<ApiResponse> PutUser([FromRoute] long userId, [FromBody] UpdateUserDto model)
+		public async Task<ApiResponse> PutUser([FromRoute] AppUserId userId, [FromBody] UpdateUserDto model)
 		{
-			AppUserId typedAppUserId = new(userId);
-			UpdateUserCommand request = new(typedAppUserId,
+			UpdateUserCommand request = new(userId,
 				model.FirstName,
 				model.LastName);
 
@@ -69,10 +66,9 @@ namespace RestApi.Controllers
 		}
 
 		[HttpDelete("{appUserId}")]
-		public async Task<ApiResponse> DeleteUser([FromRoute] long userId)
+		public async Task<ApiResponse> DeleteUser([FromRoute] AppUserId userId)
 		{
-			AppUserId typedAppUserId = new(userId);
-			var request = new DeleteUserCommand(typedAppUserId);
+			var request = new DeleteUserCommand(userId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
