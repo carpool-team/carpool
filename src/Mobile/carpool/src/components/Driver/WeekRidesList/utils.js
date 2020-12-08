@@ -4,7 +4,7 @@ export const matchRides = (rides, day) => {
   const current = moment(day);
 
   const filtered = rides.filter(ride => {
-    const date = moment(ride.date);
+    const date = moment(ride.rideDate);
 
     if (date.isSame(current, 'day')) {
       return ride;
@@ -14,6 +14,7 @@ export const matchRides = (rides, day) => {
   if (filtered.length) {
     return [...filtered];
   }
+
   return null;
 };
 
