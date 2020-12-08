@@ -181,7 +181,8 @@ const styles = StyleSheet.create({
   },
   mapWrapper: {
     width: '100%',
-    height: 300,
+    // height: 300,
+    flex: 1,
   },
   waypoints: {
     width: '100%',
@@ -217,11 +218,11 @@ const styles = StyleSheet.create({
   },
   buttonsWrapper: {
     width: '100%',
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingBottom: '15%',
     paddingHorizontal: 16,
+    paddingTop: 20,
   },
   buttonsContainer: {
     ...sheet.rowCenterSplit,
