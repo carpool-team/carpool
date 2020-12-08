@@ -1,28 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {UpView} from '../../common';
 
-const weekDays = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Ndz'];
+const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-const PickDays = () => {
-  const [days, setDays] = useState([
-    true,
-    true,
-    true,
-    true,
-    true,
-    false,
-    false,
-  ]);
-
+const PickDays = ({days, setDays, disabled = false}) => {
   const onItemPress = index => {
     const daysCopy = [...days];
 
     if (daysCopy[index]) {
-      daysCopy[index] = false;
+      daysCopy[index] = 0;
     } else {
-      daysCopy[index] = true;
+      daysCopy[index] = 1;
     }
 
     setDays([...daysCopy]);
@@ -42,7 +32,7 @@ const PickDays = () => {
             backgroundColor: circleColor,
           }}
           borderRadius={99999}
-          onPress={() => onItemPress(index)}>
+          onPress={disabled ? undefined : () => onItemPress(index)}>
           <Text
             style={{
               ...styles.circleLabel,
@@ -54,18 +44,14 @@ const PickDays = () => {
       );
     });
 
-  return (
-    <View
-      style={{
-        ...sheet.rowCenterSplit,
-        width: '100%',
-      }}>
-      {renderDays()}
-    </View>
-  );
+  return <View style={styles.container}>{renderDays()}</View>;
 };
 
 const styles = StyleSheet.create({
+  container: {
+    ...sheet.rowCenterSplit,
+    width: '100%',
+  },
   circle: {
     width: 40,
     height: 40,

@@ -28,8 +28,7 @@ const SignIn = ({navigation}) => {
     handleSubmit,
     touched,
     errors,
-    setSubmitting,
-    isSubmitting,
+    setErrors,
   } = useFormik({
     initialValues: {
       email: '',
@@ -42,7 +41,6 @@ const SignIn = ({navigation}) => {
   const dispatch = useDispatch();
 
   const onSubmitData = data => {
-    setSubmitting(true);
     dispatch(actions.getToken(data));
   };
 
@@ -50,15 +48,17 @@ const SignIn = ({navigation}) => {
 
   useEffect(() => {
     if (tokens.error) {
-      alert('ERROR');
-      setSubmitting(false);
+      setErrors({
+        email: 'Wrong email or password',
+        password: 'Wrong email or password',
+      });
     }
-  }, [tokens.error]);
+  }, [tokens]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <Text style={styles.title}>Carpool</Text>
-      {isSubmitting ? (
+      {tokens.loading ? (
         <FullScreenLoading />
       ) : (
         <ScrollView contentContainerStyle={styles.scrollView}>

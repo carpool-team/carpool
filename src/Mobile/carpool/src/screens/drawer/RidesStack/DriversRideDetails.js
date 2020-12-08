@@ -5,77 +5,124 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
+  Alert,
+  ScrollView,
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
 import {RouteMinimap} from '../../../components/Route';
-import {parseCoords} from '../../../utils/coords';
-import Ionicon from 'react-native-vector-icons/Ionicons';
-import {UpView} from '../../../components/common';
-import {Marker} from '../../../components/common/map';
-import {Waypoints} from '../../../components/Ride';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {GroupWaypoints} from '../../../components/Ride';
+import moment from 'moment';
+import PassengersList from '../../../components/Driver/PassengersList';
+import * as actions from '../../../store/actions';
+import {useDispatch} from 'react-redux';
 
 const DriversRideDetails = ({navigation, route}) => {
-  const {ride} = route.params;
+  const {ride, past} = route.params;
 
-  const date = new Date(ride.date).setSeconds(0, 0);
-  const dt = new Date(date).toLocaleString();
+  const dispatch = useDispatch();
 
-  console.log(ride);
+  const onDeletePress = () =>
+    Alert.alert('Warning!', 'Are you sure you want to delete this ride?', [
+      {
+        text: 'Cancel',
+        style: 'default',
+      },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => {
+          dispatch(actions.deleteRide(ride.rideId))
+            .then(() => navigation.goBack())
+            .catch(err => alert('Error ocurred'));
+        },
+      },
+    ]);
+
+  const onItemPress = item => {
+    Alert.alert(
+      'Warning!',
+      `Are you sure you want to delete ${item.user.firstName} ${
+        item.user.lastName
+      } from this ride?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'default',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(
+              actions.deleteParticipant({
+                rideId: ride.rideId,
+                userId: item.user.id,
+              }),
+            )
+              .then(() => navigation.goBack())
+              .catch(err => alert('Error ocurred'));
+          },
+        },
+      ],
+    );
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.container}>
         <View style={styles.topRow}>
           <View>
             <Text style={styles.singleRide}>Single ride</Text>
-            <Text style={styles.date}>{dt}</Text>
+            <Text style={styles.time}>
+              {moment(ride.rideDate).format('HH:mm ')}
+            </Text>
+            <Text style={styles.date}>
+              {moment(ride.rideDate).format('Do MMMM YYYY')}
+            </Text>
           </View>
-          <TouchableOpacity>
-            <Ionicon
-              name="ellipsis-vertical"
-              size={32}
-              color={colors.grayDark}
-              style={styles.moreIcon}
-            />
-          </TouchableOpacity>
+          {!past && (
+            <TouchableOpacity onPress={onDeletePress}>
+              <Icon
+                name="trash"
+                size={32}
+                color={colors.red}
+                style={styles.moreIcon}
+              />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.mapWrapper}>
           <RouteMinimap
-            start={ride.startingLocation}
-            destination={ride.destination}
+            stops={
+              ride.rideDirection
+                ? [
+                    {coordinates: ride.group.location},
+                    {coordinates: ride.location},
+                  ]
+                : [
+                    {coordinates: ride.location},
+                    {coordinates: ride.group.location},
+                  ]
+            }
+            hideDetails={past}
           />
         </View>
         <View style={styles.bottomWrapper}>
-          <Waypoints
-            ride={ride}
-            start={parseCoords(ride.startingLocation.coordinates)}
-          />
-          <View style={styles.bottomRow}>
-            <UpView
-              contentContainerStyle={sheet.center}
-              style={styles.upView}
-              onPress={() => null}
-              borderRadius={8}>
-              <View style={styles.upviewContent}>
-                <Ionicon name="md-person" color={colors.blue} size={40} />
-                <Text style={styles.upviewCount}>
-                  {ride.participants.length}
-                </Text>
-              </View>
-            </UpView>
-            <UpView
-              contentContainerStyle={sheet.center}
-              style={styles.upView}
-              onPress={() => null}
-              borderRadius={8}>
-              <View style={styles.upviewContent}>
-                <Marker color={colors.blue} size={24} />
-                <Text style={styles.upviewCount}>{ride.stops.length}</Text>
-              </View>
-            </UpView>
+          <View style={styles.waypoints}>
+            <GroupWaypoints
+              group={ride.group}
+              location={{coordinates: ride.location}}
+              swap={ride.rideDirection}
+            />
+          </View>
+          <View style={styles.passengersList}>
+            <PassengersList ride={ride} onItemPress={onItemPress} />
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -85,8 +132,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-  container: {
+  scrollView: {
     flex: 1,
+    width: '100%',
+  },
+  container: {
     paddingVertical: 27,
   },
   topRow: {
@@ -100,40 +150,41 @@ const styles = StyleSheet.create({
     color: colors.green,
     marginBottom: 10,
   },
+  time: {
+    ...sheet.textMedium,
+    fontSize: 20,
+    color: colors.blue,
+  },
   date: {
     ...sheet.textMedium,
     fontSize: 16,
     color: colors.grayDark,
+    marginTop: 5,
   },
   moreIcon: {
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
   mapWrapper: {
-    height: 450,
+    height: 300,
+  },
+  waypoints: {
+    paddingTop: 8,
+    paddingBottom: 16,
+    paddingHorizontal: 16,
   },
   bottomWrapper: {
     flex: 1,
-    paddingTop: 27,
-    paddingHorizontal: 16,
-  },
-  bottomRow: {
-    ...sheet.rowCenterSplit,
-    marginTop: 27,
-    flex: 1,
+    paddingVertical: 8,
   },
   upView: {
     width: '46%',
+    height: 100,
   },
-  upviewContent: {
-    padding: 16,
-    ...sheet.rowCenter,
-  },
-  upviewCount: {
-    ...sheet.textSemiBold,
-    fontSize: 28,
-    color: colors.grayDark,
-    marginLeft: 16,
+  passengersList: {
+    paddingVertical: 16,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray,
   },
 });
 

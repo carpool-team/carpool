@@ -65,7 +65,8 @@ const Home = () => {
       }
     }
     if (activeAccount === 'passenger') {
-      dispatch(actions.getAllRides());
+      dispatch(actions.getUsersRides());
+      dispatch(actions.getUsersPastRides());
     }
   }, [activeAccount]);
 

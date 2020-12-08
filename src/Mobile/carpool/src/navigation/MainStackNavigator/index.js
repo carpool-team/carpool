@@ -50,7 +50,7 @@ const MainStackNavigator = () => {
           name="DrawerNavigator"
           component={DrawerNavigator}
           options={{
-            header: () => null,
+            headerShown: false,
           }}
         />
       )}

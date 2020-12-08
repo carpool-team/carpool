@@ -2,8 +2,7 @@ import React from 'react';
 import {Text} from 'react-native';
 import {UpView} from '../../../../common';
 import moment from 'moment';
-import {Waypoints} from '../../../../Ride';
-import {parseCoords} from '../../../../../utils/coords';
+import {GroupWaypoints} from '../../../../Ride';
 import {styles} from './index.styles';
 
 const RideItem = ({item, onItemPress}) => (
@@ -12,10 +11,11 @@ const RideItem = ({item, onItemPress}) => (
     borderRadius={16}
     style={styles.upview}
     contentContainerStyle={styles.container}>
-    <Text style={styles.time}>{moment(item.date).format('HH:mm')}</Text>
-    <Waypoints
-      ride={item}
-      start={parseCoords(item.startingLocation.coordinates)}
+    <Text style={styles.time}>{moment(item.rideDate).format('HH:mm')}</Text>
+    <GroupWaypoints
+      group={item.group}
+      location={{coordinates: item.location}}
+      swap={item.rideDirection}
     />
   </UpView>
 );

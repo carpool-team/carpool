@@ -1,3 +1,5 @@
+import {createPromiseAction} from '@adobe/redux-saga-promise';
+
 export const ToggleActiveAccount = {
   Trigger: 'TOGGLE_ACTIVE_ACCOUNT',
 };
@@ -14,6 +16,18 @@ export const GetInvitations = {
   Success: 'GET_INVITATIONS_SUCCESS',
   Loading: 'GET_INVITATIONS_LOADING',
   Error: 'GET_INVITATIONS_ERROR',
+};
+
+export const AcceptInvitation = {
+  Trigger: 'ACCEPT_INVITATION',
+
+  PromiseTrigger: 'ACCEPT_INVITATION.TRIGGER',
+};
+
+export const DeclineInvitation = {
+  Trigger: 'DECLINE_INVITATION',
+
+  PromiseTrigger: 'DECLINE_INVITATION.TRIGGER',
 };
 
 export const toggleActiveAccount = () => ({
@@ -55,3 +69,9 @@ export const getInvitationsError = payload => ({
 export const getInvitationsLoading = () => ({
   type: GetInvitations.Loading,
 });
+
+export const acceptInvitation = payload =>
+  createPromiseAction(AcceptInvitation.Trigger)(payload);
+
+export const declineInvitation = payload =>
+  createPromiseAction(DeclineInvitation.Trigger)(payload);

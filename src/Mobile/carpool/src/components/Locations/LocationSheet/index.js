@@ -2,15 +2,20 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import BottomSheet from 'reanimated-bottom-sheet';
 import {colors, sheet} from '../../../styles';
-import {Marker} from '../../common/map';
 import {StandardButton} from '../../common/buttons';
 import {styles} from './index.styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LocationSheet = ({_onSelect, _onGoBack, location}) => {
   const _renderContent = () => (
     <View style={styles.content}>
       <View style={sheet.rowCenter}>
-        <Marker size={28} color={colors.blue} style={{marginRight: 12}} />
+        <Icon
+          name="map-marker"
+          size={40}
+          color={colors.blue}
+          style={styles.marker}
+        />
         <Text style={styles.placeName}>{location.place_name}</Text>
       </View>
       <View style={styles.buttonsContainer}>

@@ -2,23 +2,19 @@ import {StyleSheet} from 'react-native';
 import {sheet, colors} from '../../../styles';
 
 export const styles = StyleSheet.create({
-  upperContainer: {
-    flex: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 18,
-    ...sheet.rowCenter,
+  upview: {
+    width: '100%',
+    height: 80,
   },
-  userInfoContainer: {
-    flex: 1,
-    flexDirection: 'column',
+  contentContainer: {
     justifyContent: 'space-between',
-    height: 64,
-    paddingVertical: 5,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   username: {
-    ...sheet.textBold,
+    ...sheet.textSemiBold,
     fontSize: 16,
-    color: colors.grayDark,
+    color: colors.grayVeryDark,
     flex: 1,
     marginRight: 4,
   },

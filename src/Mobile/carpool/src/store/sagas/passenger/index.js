@@ -1,34 +1,11 @@
-import {takeLatest, put} from 'redux-saga/effects';
+import {takeLatest, put, select, take} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
-import {ENDPOINTS} from '../../../hooks';
-const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 import faker from 'faker';
 import moment from 'moment';
+import jwt_decode from 'jwt-decode';
 
 const exampleRides = [
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .subtract(1, 'day')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    owner: {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    },
-  },
   {
     id: faker.random.alphaNumeric(32),
     date: moment()
@@ -46,6 +23,26 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      },
+    ],
+    stops: [
+      {
+        coordinates: {
+          latitude: 52.807428,
+          longitude: 17.208917,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -68,6 +65,26 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      },
+    ],
+    stops: [
+      {
+        coordinates: {
+          latitude: 52.55188,
+          longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -90,6 +107,26 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      },
+    ],
+    stops: [
+      {
+        coordinates: {
+          latitude: 52.55188,
+          longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -112,6 +149,26 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      },
+    ],
+    stops: [
+      {
+        coordinates: {
+          latitude: 52.55188,
+          longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -134,6 +191,26 @@ const exampleRides = [
         longitude: 16.76633729745128,
       },
     },
+    participants: [
+      {
+        id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
+      },
+    ],
+    stops: [
+      {
+        coordinates: {
+          latitude: 52.55188,
+          longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
+      },
+    ],
     owner: {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -160,11 +237,21 @@ const examplePastRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.55188,
+          longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
       },
     ],
   },
@@ -186,11 +273,21 @@ const examplePastRides = [
     participants: [
       {
         id: faker.random.alphaNumeric(32),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
       },
     ],
     stops: [
       {
-        id: faker.random.alphaNumeric(32),
+        coordinates: {
+          latitude: 52.55188,
+          longitude: 16.838128,
+        },
+        user: {
+          id: faker.random.alphaNumeric(32),
+          firstName: faker.name.firstName(),
+          lastName: faker.name.lastName(),
+        },
       },
     ],
   },
@@ -198,13 +295,19 @@ const examplePastRides = [
 
 export function* getAllRidesAsync() {
   try {
-    const token = '123';
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield put(actions.getAllRidesLoading());
 
       // const res = yield instance.get(
       //   `${ENDPOINTS.GET_ALL_RIDES}?userId=${userId}`,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   },
       // );
 
       // console.log('RES', res);
@@ -213,54 +316,81 @@ export function* getAllRidesAsync() {
       yield put(actions.getAllRidesSuccess(exampleRides));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getAllRides());
+        return;
+      }
+    }
     yield put(actions.getAllRidesError(err));
-    console.log('ERROR', err);
   }
 }
 
 export function* getUsersRidesAsync() {
   try {
-    const token = '123';
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield put(actions.getUsersRidesLoading());
 
-      // const res = yield instance.get(ENDPOINTS.GET_USERS_RIDES(userId));
+      const res = yield instance.get(
+        `/users/${userId}/rides?participated=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      // console.log('RES', res);
-
-      // yield put(actions.getUsersRidesSuccess(res.data.result));
-      yield put(actions.getUsersRidesSuccess(exampleRides));
+      yield put(actions.getUsersRidesSuccess(res.data.result));
+      // yield put(actions.getUsersRidesSuccess(exampleRides));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getUsersRides());
+        return;
+      }
+    }
     yield put(actions.getUsersRidesError(err));
-    console.log('ERROR', err);
   }
 }
 
 export function* getUsersPastRidesAsync() {
   try {
-    const token = '123';
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield put(actions.getUsersPastRidesLoading());
 
-      // const res = yield instance.get(ENDPOINTS.GET_USERS_RIDES(userId));
+      const res = yield instance.get(
+        `/users/${userId}/rides?past=true&participated=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      // console.log('RES', res);
-
-      // yield put(actions.getUsersRidesSuccess(res.data.result));
-      yield put(actions.getUsersPastRidesSuccess(examplePastRides));
+      yield put(actions.getUsersPastRidesSuccess(res.data.result));
+      // yield put(actions.getUsersPastRidesSuccess(examplePastRides));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getUsersPastRides());
+        return;
+      }
+    }
     yield put(actions.getUsersPastRidesError(err));
-    console.log('ERROR', err);
   }
 }
 
