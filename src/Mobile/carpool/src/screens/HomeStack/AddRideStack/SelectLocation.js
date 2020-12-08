@@ -66,6 +66,11 @@ const SelectLocation = ({navigation}) => {
     navigation.navigate('PickTime');
   };
 
+  const onReset = () => {
+    setQuery('');
+    setResults([]);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -118,17 +123,20 @@ const SelectLocation = ({navigation}) => {
                 loading={loading}
                 onItemPress={onItemPress}
               />
-              <View
-                style={{
-                  alignItems: 'center',
-                  width: '100%',
-                  marginTop: 50,
-                }}>
-                <StandardButton
-                  color={colors.blue}
-                  title="Search"
-                  onPress={onSearch}
-                />
+              <View style={styles.buttonWrapper}>
+                {results.length ? (
+                  <StandardButton
+                    color={colors.red}
+                    title="Reset"
+                    onPress={onReset}
+                  />
+                ) : (
+                  <StandardButton
+                    color={colors.blue}
+                    title="Search"
+                    onPress={onSearch}
+                  />
+                )}
               </View>
             </View>
           </>
@@ -181,6 +189,11 @@ const styles = StyleSheet.create({
   listWrapper: {
     // flex: 1,
     width: '100%',
+  },
+  buttonWrapper: {
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 50,
   },
 });
 
