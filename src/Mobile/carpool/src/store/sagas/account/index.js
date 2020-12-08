@@ -1,4 +1,11 @@
-import {takeLatest, put, select, call, take} from 'redux-saga/effects';
+import {
+  takeLatest,
+  put,
+  select,
+  call,
+  take,
+  putResolve,
+} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
@@ -126,10 +133,15 @@ export function* getInvitationsAsync() {
       yield put(actions.getInvitationsSuccess(exampleInvitations));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getInvitations());
+        return;
+      }
+    }
     yield put(actions.getInvitationsError(err));
-    console.log('ERROR', err);
   }
 }
 
@@ -152,8 +164,20 @@ export function* acceptInvitationAsync(action) {
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('ERR', err);
-    yield call(rejectPromiseAction, action, err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.acceptInvitation(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
   }
 }
 
@@ -176,8 +200,20 @@ export function* declineInvitationAsync(action) {
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('ERR', err);
-    yield call(rejectPromiseAction, action, err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.declineInvitation(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
   }
 }
 
