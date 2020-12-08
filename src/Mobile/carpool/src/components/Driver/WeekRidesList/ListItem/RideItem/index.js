@@ -11,7 +11,7 @@ const RideItem = ({item, onItemPress}) => (
     borderRadius={16}
     style={styles.upview}
     contentContainerStyle={styles.container}>
-    <Text style={styles.time}>{moment(item.date).format('HH:mm')}</Text>
+    <Text style={styles.time}>{moment(item.rideDate).format('HH:mm')}</Text>
     <GroupWaypoints
       group={item.group}
       location={{coordinates: item.location}}
