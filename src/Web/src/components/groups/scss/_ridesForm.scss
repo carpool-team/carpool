@@ -6,7 +6,7 @@
 	&--container{
 		width: 100%;
 		display: flex;
-		min-height: 900px;
+		height: 900px;
 	}
 	&--leftPanel{
 		padding-top: 15px;
@@ -14,8 +14,12 @@
 		margin-bottom: 7px;
 		background-color: $background;
 		width: 35%;
+		display: flex;
+		flex-direction: column;
+		height: 900px;
+		justify-content: flex-start;
 		&__list{
-
+			height: auto;
 		}
 		&__text{
 			font-weight: $medium;
@@ -34,7 +38,8 @@
 		&__switch{
 			width: 100%;
 			display: flex;
-			padding: 5px;
+			padding-top: 5px;
+			padding-bottom: 5px;
 			flex-wrap: wrap;
 			margin-bottom: 10px;
 			background-color: $white;
@@ -70,7 +75,7 @@
 				height: 7px;
 			}
 			& > span {
-				font-weight: $semi-bold;
+				font-weight: $medium;
 				color:  $grayDark;
 				font-size: 18px;
 			}
@@ -94,6 +99,25 @@
 	flex-direction: column;
 	width: auto;
 	background-color: $background;
+	&--container{
+		max-height: 700px;
+		list-style-type: none;
+		padding-left: 0;
+		display: flex;
+		flex-direction: column;
+		margin-top: 0;
+		width: auto;
+		height: 100%;
+		background-color: $background;
+		overflow:hidden; 
+		overflow-y:scroll;
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none;  /* IE 10+ */
+		&::-webkit-scrollbar {
+		  width: 0px;
+		  background: transparent; /* Chrome/Safari/Webkit */
+		}
+	}
     & > li {
       display: flex;
 	  flex-direction: row;

@@ -1,0 +1,39 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.dateBar {
+	width: 100%;
+	background-color: $white;
+	margin-bottom: 10px;
+	height: 35px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	&__range {
+		padding-right:10px;
+		font-size: 17px;
+		font-weight: $medium;
+		color: $grayDark;
+	}
+	&__arrow:hover{
+		color: $blue;
+	}
+}
+.day{
+	width: 100%;
+	margin-top: 7px;
+	&__label{
+		padding-top: 3px;
+		padding-left: 10px;
+		padding-bottom: 3px;
+		background-color: $blueLight;
+		// border-bottom: 2px solid $grayDark;
+		font-size: 16px;
+		font-weight: $semi-bold;
+		color: $grayDark;
+		text-align: center;
+
+	}
+}
