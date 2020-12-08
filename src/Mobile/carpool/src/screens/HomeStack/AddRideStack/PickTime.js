@@ -5,7 +5,6 @@ import DatePicker from 'react-native-date-picker';
 import PickDays from '../../../components/Driver/AddRide/PickDays';
 import {StandardButton} from '../../../components/common/buttons';
 import {AddRideContext, AddRideContextActions} from './context';
-import moment from 'moment';
 
 const PickTime = ({navigation}) => {
   const [isRegular, setIsRegular] = useState(false);
@@ -47,6 +46,9 @@ const PickTime = ({navigation}) => {
         locale="pl"
         minimumDate={new Date()}
         minuteInterval={10}
+        androidVariant="nativeAndroid"
+        locale="en"
+        is24hourSource="locale"
       />
       <StandardButton
         style={{marginTop: 50}}
@@ -66,6 +68,9 @@ const PickTime = ({navigation}) => {
         locale="pl"
         minuteInterval={10}
         mode="time"
+        androidVariant="nativeAndroid"
+        locale="en"
+        style={styles.picker}
       />
       <View style={{width: '100%', marginTop: 50}}>
         <PickDays days={days} setDays={setDays} />
@@ -126,6 +131,9 @@ const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     fontSize: 18,
     color: colors.grayVeryDark,
+  },
+  picker: {
+    marginTop: 40,
   },
 });
 
