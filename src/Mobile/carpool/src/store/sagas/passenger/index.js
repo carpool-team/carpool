@@ -1,8 +1,6 @@
 import {takeLatest, put, select} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
-import {ENDPOINTS} from '../../../hooks';
-const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 import faker from 'faker';
 import moment from 'moment';
 import jwt_decode from 'jwt-decode';
@@ -318,10 +316,15 @@ export function* getAllRidesAsync() {
       yield put(actions.getAllRidesSuccess(exampleRides));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getAllRides());
+        return;
+      }
+    }
     yield put(actions.getAllRidesError(err));
-    console.log('ERROR', err);
   }
 }
 
@@ -346,10 +349,15 @@ export function* getUsersRidesAsync() {
       // yield put(actions.getUsersRidesSuccess(exampleRides));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getUsersRides());
+        return;
+      }
+    }
     yield put(actions.getUsersRidesError(err));
-    console.log('ERROR', err);
   }
 }
 
@@ -374,10 +382,15 @@ export function* getUsersPastRidesAsync() {
       // yield put(actions.getUsersPastRidesSuccess(examplePastRides));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getUsersPastRides());
+        return;
+      }
+    }
     yield put(actions.getUsersPastRidesError(err));
-    console.log('ERROR', err);
   }
 }
 
