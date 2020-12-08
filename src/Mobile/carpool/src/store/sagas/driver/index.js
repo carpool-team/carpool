@@ -498,8 +498,19 @@ export function* createSingleRideAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      // send request
-      console.log('CREATE SINGLE RIDE', action.payload);
+      yield instance.post(
+        '/Rides',
+        {
+          ...action.payload,
+          ownerId: userId,
+          price: 0,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       yield put(actions.getDriversRides());
 
@@ -518,6 +529,7 @@ export function* createSingleRideAsync(action) {
         }
         return;
       }
+      yield call(rejectPromiseAction, action, err.response);
     }
     yield call(rejectPromiseAction, action, err.response);
   }
