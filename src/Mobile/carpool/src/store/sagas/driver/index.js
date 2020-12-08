@@ -1,4 +1,11 @@
-import {takeLatest, put, select, call} from 'redux-saga/effects';
+import {
+  takeLatest,
+  put,
+  select,
+  call,
+  putResolve,
+  take,
+} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import {ENDPOINTS} from '../../../hooks';
@@ -371,10 +378,15 @@ export function* getDriversRidesAsync() {
       // yield put(actions.getDriversRidesSuccess(exampleRides));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getDriversRides());
+        return;
+      }
+    }
     yield put(actions.getDriversRidesError(err));
-    console.log('ERROR', err);
   }
 }
 
@@ -399,10 +411,15 @@ export function* getDriversPastRidesAsync() {
       // yield put(actions.getDriversPastRidesSuccess(examplePastRides));
     }
   } catch (err) {
-    // TODO
-    // Token refreshing
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getDriversPastRides());
+        return;
+      }
+    }
     yield put(actions.getDriversPastRidesError(err));
-    console.log('ERROR', err);
   }
 }
 
@@ -422,8 +439,20 @@ export function* deleteRideAsync(action) {
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('ERR', err);
-    yield call(rejectPromiseAction, action, err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.deleteRide(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
   }
 }
 
@@ -446,8 +475,20 @@ export function* deleteParticipantAsync(action) {
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('ERR', err);
-    yield call(rejectPromiseAction, action, err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.deleteParticipant(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
   }
 }
 
@@ -465,8 +506,20 @@ export function* createSingleRideAsync(action) {
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('ERR', err);
-    yield call(rejectPromiseAction, action, err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.createSingleRide(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
   }
 }
 
@@ -484,8 +537,20 @@ export function* createRegularRideAsync(action) {
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('ERR', err);
-    yield call(rejectPromiseAction, action, err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.createRegularRide(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
   }
 }
 

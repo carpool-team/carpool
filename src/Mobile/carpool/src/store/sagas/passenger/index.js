@@ -1,4 +1,4 @@
-import {takeLatest, put, select} from 'redux-saga/effects';
+import {takeLatest, put, select, take} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import faker from 'faker';
