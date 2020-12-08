@@ -61,7 +61,7 @@ namespace RestApi.Queries.RideQueries
 						.ToList();
 				rideDtos.Add(new RideDto(ownerDto, groupDto,
 					new LocationDto(ride.Location.Longitude, ride.Location.Latitude), ride.Price,
-					ride.RideDirection, stopDtos));
+					ride.RideDirection, stopDtos, ride.Date, ride.Id));
 			}
 
 			return rideDtos;

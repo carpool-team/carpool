@@ -20,5 +20,7 @@ namespace RestApi.DTOs.Ride
 		[property: JsonProperty("location")]LocationDto Location,
 		[JsonProperty("price")]double Price,
 		[JsonProperty("rideDirection")]RideDirection RideDirection,
-		[JsonProperty("stops")]List<StopDto> stops);
+		[JsonProperty("stops")]List<StopDto> stops,
+		[JsonProperty("rideDate")]DateTime RideDate,
+		[JsonProperty("rideId")]RideId RideId);
 }
