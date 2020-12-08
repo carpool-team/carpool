@@ -361,16 +361,14 @@ export function* getDriversRidesAsync() {
     if (token) {
       yield put(actions.getDriversRidesLoading());
 
-      // const res = yield instance.get(`/users/${userId}/rides`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+      const res = yield instance.get(`/users/${userId}/rides?owned=true`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      // console.log('RES', res);
-
-      // yield put(actions.getDriversRidesSuccess(res.data.result));
-      yield put(actions.getDriversRidesSuccess(exampleRides));
+      yield put(actions.getDriversRidesSuccess(res.data.result));
+      // yield put(actions.getDriversRidesSuccess(exampleRides));
     }
   } catch (err) {
     // TODO
@@ -388,16 +386,17 @@ export function* getDriversPastRidesAsync() {
     if (token) {
       yield put(actions.getDriversPastRidesLoading());
 
-      // const res = yield instance.get(`/users/${userId}/rides`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+      const res = yield instance.get(
+        `/users/${userId}/rides?past=true&owned=true`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      // console.log('RES', res);
-
-      // yield put(actions.getDriversPastRidesSuccess(res.data.result));
-      yield put(actions.getDriversPastRidesSuccess(examplePastRides));
+      yield put(actions.getDriversPastRidesSuccess(res.data.result));
+      // yield put(actions.getDriversPastRidesSuccess(examplePastRides));
     }
   } catch (err) {
     // TODO
