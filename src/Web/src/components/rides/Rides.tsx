@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import Button from "../ui/button/Button";
-import { ButtonBackground } from "../ui/button/enums/ButtonBackground";
-import { ButtonColor } from "../ui/button/enums/ButtonColor";
+import ButtonSmall from "../ui/buttonSmall/ButtonSmall";
+import { ButtonSmallBackground } from "../ui/buttonSmall/enums/ButtonSmallBackground";
+import { ButtonSmallColor } from "../ui/buttonSmall/enums/ButtonSmallColor";
+import { ButtonSmallIcon } from "../ui/buttonSmall/enums/ButtonSmallIcon";
 import ButtonLink from "../ui/buttonLink/ButtonLink";
 import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
 import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
@@ -20,6 +21,9 @@ import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import RidesOwner from "./components/RidesOwner";
 import RidesParticipant from "./components/RidesParticipant";
+import moment from "moment";
+import "./Rides.scss";
+import { random } from "lodash";
 
 interface IRidesProps extends RouteComponentProps, IReactI18nProps {
 
@@ -37,8 +41,12 @@ const Rides = (props: IRidesProps) => {
 		leftOutline: "rides--leftPanel__outline",
 		leftLabelsText: "rides--leftPanel__text",
 		switchActive: "rides--leftPanel__switchActive",
-		switch: "rides--leftPanel__switch"
+		switch: "rides--leftPanel__switch",
+		dateBar: "dateBar",
+		dateBarRange: "dateBar__range",
+		dateBarArrow: "dateBar__arrow"
 	};
+
 	const resources = {
 		add: "addBtn",
 		participant: "common.passenger",
@@ -53,6 +61,7 @@ const Rides = (props: IRidesProps) => {
 	const [selectedRide, setSelectedRide] = useState(null);
 	const [userOwner, setUserOwner] = useState(false);
 	const [switchCssClass, setSwitchCssClass] = useState({from: cssClasses.switchActive, to: null});
+
 	const setRide = (ride: IRide) => {
 		if (ride !== null) {
 			setSelectedRide(ride);
@@ -67,11 +76,57 @@ const Rides = (props: IRidesProps) => {
 		}
 	};
 
+	const getWeek = offset => {
+		const start = moment()
+			.add(offset, "weeks")
+			.startOf("isoWeek");
+		const end = moment()
+			.add(offset, "weeks")
+			.endOf("isoWeek");
+		const current = start.clone();
+		const week = [];
+
+		while (current.isBefore(end)) {
+			week.push(current.format("YYYY-MM-DD"));
+			current.add(1, "day");
+		}
+
+		return week;
+	};
+	const getDates = offset => {
+		const week = getWeek(offset);
+		const range = `${moment(week[0]).format("DD.MM")} - ${moment(week[6]).format(
+			"DD.MM",
+		)}`;
+
+		const firstDay = moment(week[0]).format();
+		const lastDay = moment(week[6]).format();
+		return {
+			firstDay,
+			lastDay,
+			range,
+			week,
+		};
+	};
+	const [dateOffset, setDateOffset] = useState(0);
+	const [date, setDate] = useState(getDates(0));
+
+	const onNextDate = () => {
+		const newOffset = dateOffset + 1 ;
+		setDate(getDates(newOffset));
+		setDateOffset(newOffset);
+	};
+	const onPrevDate = () => {
+		const newOffset = dateOffset - 1 ;
+		setDate(getDates(newOffset));
+		setDateOffset(newOffset);
+	};
+
 	const renderOwnerList = () => (
 		<RidesOwner rideSelected={selectedRide} setRide={setRide} rides={rides} />
 	);
 	const renderParticipantList = () => (
-		<RidesParticipant rideSelected={selectedRide} setRide={setRide} rides={rides}/>
+		<RidesParticipant firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={rides}/>
 	);
 
 	const UserSwitch = withStyles({
@@ -126,6 +181,27 @@ const Rides = (props: IRidesProps) => {
 							label=""
 						/>
 					<span className={switchCssClass.to} id={ids.to}> {t(resources.owner) }</span>
+				</div>
+				<div className={cssClasses.dateBar}>
+					<div>
+						<ButtonSmall
+							className={cssClasses.dateBarArrow}
+							color={ButtonSmallColor.Gray}
+							background={ButtonSmallBackground.White}
+							icon={ButtonSmallIcon.Left}
+							onClick={() => onPrevDate()}
+						/ >
+					</div>
+					<div className={cssClasses.dateBarRange}>{date.range}</div>
+					<div >
+						<ButtonSmall
+							className={cssClasses.dateBarArrow}
+							color={ButtonSmallColor.Gray}
+							background={ButtonSmallBackground.White}
+							icon={ButtonSmallIcon.Right}
+							onClick={() => onNextDate()}
+						/ >
+					</div>
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<div className={cssClasses.leftList}>
