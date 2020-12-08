@@ -61,7 +61,11 @@ namespace DataAccessLayer.Repositories
 			bool past = false,
 			CancellationToken cancellationToken = default)
 		{
-			return await _context.Rides.Include(x => x.Participants)
+			return await _context.Rides
+				.Include(x => x.Owner)
+				.Include(x => x.Group)
+				.Include(x => x.Participants)
+				.Include(x => x.Stops)
 				.AsNoTracking()
 				.Where(x => x.Participants.Any(y => y.AppUserId == appUserId) && past
 					? x.Date <= DateTime.Now
@@ -74,6 +78,10 @@ namespace DataAccessLayer.Repositories
 			CancellationToken cancellationToken)
 		{
 			return await _context.Rides.AsNoTracking()
+				.Include(x => x.Owner)
+				.Include(x => x.Group)
+				.Include(x => x.Participants)
+				.Include(x => x.Stops)
 				.Where(x => x.OwnerId == appUserId && past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now)
 				.ToListAsync(cancellationToken);
 		}
