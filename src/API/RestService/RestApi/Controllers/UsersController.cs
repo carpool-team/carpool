@@ -55,6 +55,7 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost]
+		[AllowAnonymous]
 		public async Task<ApiResponse> PostUser([FromBody] AddUserDto model)
 		{
 			AddUserCommand addUser = new(new AppUserId(model.appUserId),
