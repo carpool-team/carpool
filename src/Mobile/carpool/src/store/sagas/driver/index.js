@@ -436,6 +436,8 @@ export function* deleteRideAsync(action) {
         },
       });
 
+      yield put(actions.getDriversRides());
+
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
