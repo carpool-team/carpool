@@ -1,5 +1,11 @@
-import React, {useContext} from 'react';
-import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
+import React, {useContext, useState} from 'react';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import {AddRideContext} from './context';
 import RouteMinimap from '../../../components/Route/RouteMinimap';
 import {sheet, colors} from '../../../styles';
@@ -12,6 +18,7 @@ import {useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
 
 const RideSummary = ({navigation}) => {
+  const [loading, setLoading] = useState(false);
   const {addRideState} = useContext(AddRideContext);
   const {
     group,
@@ -64,13 +71,13 @@ const RideSummary = ({navigation}) => {
           alert('Error ocurred');
         });
     } else {
+      setLoading(true);
       dispatch(
         actions.createSingleRide({
-          swap,
-          group,
-          location,
-          date,
-          seats,
+          groupId: group.id,
+          date: date,
+          rideDirection: swap ? 1 : 0,
+          location: location.coordinates,
         }),
       )
         .then(() => {
@@ -78,7 +85,8 @@ const RideSummary = ({navigation}) => {
         })
         .catch(err => {
           alert('Error ocurred');
-        });
+        })
+        .finally(() => setLoading(false));
     }
   };
 
@@ -130,20 +138,26 @@ const RideSummary = ({navigation}) => {
         </View>
       )}
       <View style={styles.buttonsWrapper}>
-        <View style={{...sheet.rowCenterSplit, width: '100%'}}>
-          <StandardButton
-            onPress={onCancel}
-            color={colors.red}
-            title="Cancel"
-            width="45%"
-          />
-          <StandardButton
-            onPress={onSubmit}
-            color={colors.green}
-            title="Submit"
-            width="45%"
-          />
-        </View>
+        {loading ? (
+          <View style={styles.loadingWrapper}>
+            <ActivityIndicator color={colors.blue} size="large" />
+          </View>
+        ) : (
+          <View style={styles.buttonsContainer}>
+            <StandardButton
+              onPress={onCancel}
+              color={colors.red}
+              title="Cancel"
+              width="45%"
+            />
+            <StandardButton
+              onPress={onSubmit}
+              color={colors.green}
+              title="Submit"
+              width="45%"
+            />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -209,6 +223,16 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingBottom: '15%',
     paddingHorizontal: 16,
+  },
+  buttonsContainer: {
+    ...sheet.rowCenterSplit,
+    width: '100%',
+  },
+  loadingWrapper: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
