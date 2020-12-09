@@ -8,6 +8,7 @@ import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { IRide } from "components/groups/interfaces/IRide";
 import mapboxDirections from "@mapbox/mapbox-sdk/services/directions";
 import { RideDirection } from "../groups/api/addRide/AddRideRequest";
+import {parseCoords} from "../../helpers/UniversalHelper";
 
 const Mapbox = ReactMapboxGl({
 	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
@@ -57,10 +58,10 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					profile: "driving-traffic",
 					waypoints: [
 						{
-							coordinates: [ride.location.latitude, ride.location.longitude],
+							coordinates: parseCoords(ride.location),
 						},
 						{
-							coordinates: [ride.group.location.latitude, ride.group.location.longitude]
+							coordinates: parseCoords(ride.group.location)
 						},
 					],
 					overview: "full",
@@ -94,13 +95,12 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	}
 
 	private getBounds = (ride: IRide) => {
-		const allCoords = [[ride.group.location.latitude, ride.location.latitude], [ride.group.location.longitude, ride.location.longitude]];
+		const allCoords = [[ride.location.longitude, ride.group.location.longitude], [ride.group.location.latitude, ride.location.latitude]];
 		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
-
-		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
+		if (allCoords[0][0] && allCoords[1][1] && allCoords[0][1] && allCoords[1][0]) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
-			bbox[1][0] = Math.max.apply(null, allCoords[0]);
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);
+			bbox[1][0] = Math.max.apply(null, allCoords[0]);
 			bbox[1][1] = Math.max.apply(null, allCoords[1]);
 		}
 		this.setState(produce((draft: any) => {
@@ -191,12 +191,12 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					>
 					<i className={"fa fa-map-marker"}></i>
 				</Marker> */}
-						<Popup coordinates={[ride.group.location.latitude, ride.location.longitude]}>
+						<Popup coordinates={parseCoords(ride.group.location)}>
 							<div style={popupStyle}>
 								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "początkowa" : "końcowa"}`}
 							</div>
 						</Popup>
-						<Popup coordinates={[ride.location.latitude, ride.location.longitude]}>
+						<Popup coordinates={parseCoords(ride.location)}>
 							<div style={popupStyle}>
 								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "końcowa" : "początkowa"}`}
 							</div>

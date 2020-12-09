@@ -6,6 +6,7 @@ import mapConfig from "./mapConfig";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
+import {parseCoords} from "../../helpers/UniversalHelper";
 
 const Mapbox = ReactMapboxGl({
 	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
@@ -50,6 +51,16 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		this.currentGroupId = undefined;
 	}
 
+	componentDidMount() {
+		const groups: IGroup[] = this.props.getGroupsCallback();
+		if (groups && this.state.groups?.length !== groups.length) {
+			this.getBounds(groups);
+			this.setState(produce((draft: IMapState) => {
+				draft.groups = groups;
+			}));
+		}
+	}
+
 	componentDidUpdate() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
 		if (groups && this.state.groups?.length !== groups.length) {
@@ -58,17 +69,18 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 				draft.groups = groups;
 			}));
 		}
+
 		if (this.props.group && this.props.group?.id !== this.currentGroupId) {
 			this.currentGroupId = this.props.group.id;
 			this.setState(produce((draft: IMapState) => {
-				draft.center = [this.props.group.location.latitude, this.props.group.location.longitude];
+				draft.center = parseCoords(this.props.group.location);
 				draft.zoom = [14];
 			}));
 		}
 	}
 
 	private getBounds = (groups: IGroup[]) => {
-		const allCoords = [groups.map(g => g.location.latitude), groups.map(g => g.location.longitude)];
+		const allCoords = [groups.map(g => g.location.longitude), groups.map(g => g.location.latitude)];
 		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
 
 		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
@@ -97,7 +109,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	private markerClick = (group: IGroup) => {
 		this.setState({
-			center: [group.location.latitude, group.location.longitude],
+			center: parseCoords(group.location),
 			zoom: [14],
 		});
 
@@ -150,7 +162,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 						return (
 							<Marker
 								key={g.id}
-								coordinates={[g.location.latitude, g.location.longitude]}
+								coordinates={parseCoords(g.location)}
 								anchor="bottom"
 								onClick={this.markerClick.bind(this, g)}
 							>
@@ -160,7 +172,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					})}
 
 					{group && (
-						<Popup key={group.id} coordinates={[group.location.latitude, group.location.longitude]}>
+						<Popup key={group.id} coordinates={parseCoords(group.location)}>
 							<div style={popupStyle}>
 								{group.name}
 							</div>

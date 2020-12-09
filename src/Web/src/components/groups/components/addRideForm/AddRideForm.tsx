@@ -33,6 +33,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import LayoutRouter, { mainRoutes } from "../../../layout/components/LayoutRouter";
 import GroupsRouter from "../GroupsRouter";
 import { RideDirection } from "../../api/addRide/AddRideRequest";
+import {parseCoords} from "../../../../helpers/UniversalHelper";
 
 export interface IRideDays {
 	all: boolean;
@@ -120,8 +121,8 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 
 	const [startgroup, setStartGroup] = useState(false);
 
-	const [fromAddressCoordinates, setFromAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
-	const [toAddressCoordinates, setToAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
+	const [fromAddressCoordinates, setFromAddressCoordinates] = useState(parseCoords(props.group.location));
+	const [toAddressCoordinates, setToAddressCoordinates] = useState(parseCoords(props.group.location));
 
 	const [userAddressName, setUserAddresName] = useState<string>("");
 	const [seats, setSeats] = useState<string>("");
@@ -139,8 +140,8 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 				groupId: props.group.id.toString(),
 				to: startgroup,
 				location: {
-					latitude: toAddressCoordinates[0],
-					longitude: toAddressCoordinates[1],
+					latitude: toAddressCoordinates[1],
+					longitude: toAddressCoordinates[0],
 				},
 				date: selectedDate,
 			};
@@ -174,8 +175,8 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 			rating: 0,
 		},
 		location: {
-			latitude: toAddressCoordinates[0],
-			longitude: toAddressCoordinates[1]
+			latitude: toAddressCoordinates[1],
+			longitude: toAddressCoordinates[0]
 		},
 		rideDate: new Date(),
 		group: {
@@ -198,11 +199,11 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 
 	const setUserCoordinates = (coords: [number, number]) => {
 		if (!startgroup) {
-			setFromAddressCoordinates([props.group.location.latitude, props.group.location.longitude]);
+			setFromAddressCoordinates(parseCoords(props.group.location));
 			setToAddressCoordinates(coords);
 		} else {
 			setFromAddressCoordinates(coords);
-			setToAddressCoordinates([props.group.location.latitude, props.group.location.longitude]);
+			setToAddressCoordinates(parseCoords(props.group.location));
 		}
 	};
 
