@@ -1,6 +1,7 @@
 export interface IParticipant {
-	userId: string;
+	id: string;
 	firstName: string;
 	lastName: string;
 	vehicle: string;
+	rating: number;
 }
