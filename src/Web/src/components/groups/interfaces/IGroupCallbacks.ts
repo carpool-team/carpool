@@ -1,3 +1,4 @@
+import { IAddRideInput } from "../components/addRideForm/interfaces/IAddRideInput";
 import { IGroup } from "./IGroup";
 import { IInvite } from "./IInvite";
 import { IRide } from "./IRide";
@@ -9,7 +10,8 @@ export interface IGroupCallbacks {
 	getInvites: () => IInvite[];
 	answerInvite: (accepted: boolean, inviteId: string) => void;
 	redirect: (route: string) => void;
-	getRides: () => IRide[];
+	getRides: (owned: boolean) => IRide[];
 	participateInRide: (rideId: string) => void;
-	setGroupSelected: (id: string) => void;
+	setGroupSelected: (id: number) => void;
+	addRide: (input: IAddRideInput) => void;
 }

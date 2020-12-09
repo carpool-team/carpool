@@ -1,4 +1,5 @@
 import { Action } from "redux";
+import { IAddRideInput } from "../components/addRideForm/interfaces/IAddRideInput";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
@@ -31,6 +32,7 @@ export enum RidesActionTypes {
 	ParticipateInRide = "RIDES_PARTICIPATE_IN_RIDE",
 	ParticipateInRideSuccess = "RIDES_PARTICIPATE_IN_RIDE_SUCCESS",
 	ParticipateInRideError = "RIDES_PARTICIPATE_IN_RIDE_ERROR",
+	AddRide = "RIDES_ADD",
 }
 
 //#region GROUPS
@@ -110,12 +112,12 @@ export interface IGetInvitesActionError
 //#region RIDES
 /** Action for getting rides */
 export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
-	userOnly: boolean;
 }
 
 /** Action for getting rides success */
 export interface IGetRidesActionSuccess extends Action<RidesActionTypes.GetRidesSuccess> {
-	rides: IRide[];
+	ridesOwned: IRide[];
+	ridesParticipated: IRide[];
 }
 
 /** Action for getting rides error */
@@ -136,6 +138,10 @@ export interface IParticipateInRideActionSuccess extends Action<RidesActionTypes
 /** Action for participating in ride error */
 export interface IParticipateInRideActionError extends Action<RidesActionTypes.ParticipateInRideError> {
 	error: Error;
+}
+
+export interface IAddRideAction extends Action<RidesActionTypes.AddRide> {
+	input: IAddRideInput;
 }
 //#endregion
 
@@ -162,4 +168,5 @@ export type RideAction =
 	| IGetRidesActionError
 	| IParticipateInRideAction
 	| IParticipateInRideActionSuccess
-	| IParticipateInRideActionError;
+	| IParticipateInRideActionError
+	| IAddRideAction;

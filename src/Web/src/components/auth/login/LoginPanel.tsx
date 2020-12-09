@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -19,6 +19,7 @@ import {
 	mapStateToProps,
 	mapDispatchToProps,
 } from "../store/PropsTypes";
+import { useImmer } from "use-immer";
 
 interface ILoginPanelProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps { }
 
@@ -33,12 +34,31 @@ const LoginPanel = (props: ILoginPanelProps) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [rememberLogin, setRememberLogin] = useState(false);
-	const [inputsValid, setInputsValid] = useState({
+	const [inputsValid, setInputsValid] = useImmer({
 		email: false,
 		password: false
 	});
+	const [submitted, setSubmitted] = useState(false);
 
-	const [validate, setValidate] = useState(false);
+	const trySendForm = () => {
+		if (each(inputsValid, i => i)) {
+			const data: ILoginFormData = {
+				password,
+				email,
+				rememberLogin
+			};
+			props.setLoaderVisible(true);
+			props.login(data);
+		} else {
+			setSubmitted(false);
+		}
+	};
+
+	useEffect(() => {
+		if (submitted) {
+			trySendForm();
+		}
+	}, [submitted, inputsValid]);
 
 	const cssClasses = {
 		container: "auth__container",
@@ -61,29 +81,8 @@ const LoginPanel = (props: ILoginPanelProps) => {
 		rememberPassword: "rememberPassword",
 	};
 
-	const validateForm = () => {
-		if (each(inputsValid , i => i)) {
-			setValidate(false);
-			return true;
-		}	else {
-			setInputsValid({
-				email: false,
-				password: false
-			});
-			setValidate(true);
-			return false;
-		}
-	};
-
 	const onClickSubmit = () => {
-		if (validateForm()) {
-			const data: ILoginFormData = {
-				password,
-				email,
-				rememberLogin
-			};
-			props.login(data);
-		}
+		setSubmitted(true);
 	};
 
 	return (
@@ -101,12 +100,11 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						validation={{
 							type: ValidationType.Email,
 							isValidCallback: isValid => {
-								setInputsValid({
-									...inputsValid,
-									password: isValid,
+								setInputsValid(draft => {
+									draft.email = isValid;
 								});
 							},
-							validate
+							validate: submitted
 						}}
 					/>
 					<Input
@@ -118,12 +116,11 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						validation={{
 							type: ValidationType.Required,
 							isValidCallback: isValid => {
-								setInputsValid({
-									...inputsValid,
-									email: isValid,
+								setInputsValid(draft => {
+									draft.password = isValid;
 								});
 							},
-							validate
+							validate: submitted
 						}}
 					/>
 					<Input

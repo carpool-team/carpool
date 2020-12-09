@@ -6,6 +6,7 @@ import { Redirect, RouteComponentProps, withRouter } from "react-router";
 import { ToastContainer } from "react-toastify";
 import { connect } from "react-redux";
 import { DispatchProps, mapDispatchToProps, mapStateToProps, StateProps } from "./store/PropsTypes";
+import LoaderSplash from "../ui/loaderSplash/LoaderSplash";
 
 import "./Layout.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,12 +28,18 @@ class Layout extends Component<ILayoutProps> {
 			redirectComponent = <Redirect to={this.props.redirectTo} />;
 			this.props.redirected();
 		}
+		const mainHeight: number = document.querySelector(".main")?.clientHeight;
 		return (
 			<React.Fragment>
 				<NavBar />
 				<ToastContainer />
 				<main className={this.cssClasses.main}>
-					<LayoutRouter />
+					<LoaderSplash
+						active={this.props.loaderVisible}
+						height={mainHeight}
+					>
+						<LayoutRouter />
+					</LoaderSplash>
 				</main>
 				{redirectComponent}
 				<Footer />

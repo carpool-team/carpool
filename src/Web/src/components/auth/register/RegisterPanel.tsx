@@ -21,6 +21,7 @@ import {
 } from "../store/PropsTypes";
 
 import "./RegisterPanel.scss";
+import { useImmer } from "use-immer";
 
 export interface IRegisterFormData {
 	firstName: string;
@@ -36,7 +37,7 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 	const [name, setName] = useState("");
 	const [surname, setSurname] = useState("");
 	const [password, isPasswordValid, renderPasswordInputs] = usePassword();
-	const [inputsValid, setInputsValid] = useState({
+	const [inputsValid, setInputsValid] = useImmer({
 		name: false,
 		surname: false,
 		email: false,
@@ -66,22 +67,14 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 		let isFormValid: boolean = true;
 		if (!isPasswordValid) {
 			isFormValid = false;
-			console.log("password");
 		}
 		if (each(inputsValid, i => i)) {
 			isFormValid = true;
 			setValidate(false);
-			console.log("inputs");
 		} else {
-			setInputsValid({
-				name: false,
-				email: false,
-				surname: false,
-			});
 			isFormValid = false;
 			setValidate(true);
 		}
-		console.log(isFormValid);
 		return isFormValid;
 	};
 
@@ -94,6 +87,7 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 				email,
 			};
 			props.register(data);
+			props.setLoaderVisible(true);
 		}
 	};
 
@@ -112,9 +106,8 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 						validation={{
 							type: ValidationType.Required,
 							isValidCallback: isValid => {
-								setInputsValid({
-									...inputsValid,
-									name: isValid,
+								setInputsValid(draft => {
+									draft.name = isValid;
 								});
 							},
 							validate,
@@ -130,9 +123,8 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 						validation={{
 							type: ValidationType.Required,
 							isValidCallback: isValid => {
-								setInputsValid({
-									...inputsValid,
-									surname: isValid,
+								setInputsValid(draft => {
+									draft.surname = isValid;
 								});
 							},
 							validate,
@@ -148,9 +140,8 @@ const RegisterPanel = (props: IRegisterPanelProps) => {
 						validation={{
 							type: ValidationType.Email,
 							isValidCallback: isValid => {
-								setInputsValid({
-									...inputsValid,
-									email: isValid,
+								setInputsValid(draft => {
+									draft.email = isValid;
 								});
 							},
 							validate,

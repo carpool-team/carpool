@@ -5,6 +5,7 @@ import {
 	ILoginAction,
 	ILoginErrorAction,
 	ILoginSuccessAction,
+	ILogoutAction,
 	IRegisterAction,
 	IRegisterErrorAction,
 	IRegisterSuccessAction,
@@ -30,6 +31,12 @@ export function loginSuccess(tokenInfo: ITokenInfo): ILoginSuccessAction {
 export function loginError(): ILoginErrorAction {
 	return {
 		type: LoginActionTypes.LoginError
+	};
+}
+
+export function logout(): ILogoutAction {
+	return {
+		type: LoginActionTypes.Logout
 	};
 }
 //#endregion

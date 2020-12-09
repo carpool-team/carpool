@@ -7,18 +7,12 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 		switch (endpoint) {
 			case RequestEndpoint.POST_ADD_GROUP:
 				return "/groups";
+			case RequestEndpoint.PUT_UPDATE_GROUP:
+				return `/groups/${queries.groupId}/`;
 			case RequestEndpoint.GET_GROUP_BY_ID:
 				return `/groups/${queries?.groupId}`;
 			case RequestEndpoint.GET_USER_GROUPS:
 				return `/users/${queries?.userId}/groups`;
-			case RequestEndpoint.GET_ALL_GROUPS:
-				return `/groups`;
-			case RequestEndpoint.PUT_ADD_RIDE_TO_GROUP:
-				return `/groups/${queries?.groupId}/rides`;
-			case RequestEndpoint.PUT_ADD_USER_TO_GROUP:
-				return `/groups/${queries?.groupId}/users`;
-			case RequestEndpoint.PUT_ADD_LOCATION_TO_GROUP:
-				return `/groups/${queries?.groupId}/locations`;
 			case RequestEndpoint.DELETE_GROUP_BY_ID:
 				return `/groups/${queries?.groupId}`;
 			case RequestEndpoint.GET_INVITES_BY_USER_ID:
@@ -33,20 +27,18 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 				return `/groupinvites/${queries?.inviteId}`;
 			case RequestEndpoint.DELETE_INVITE_BY_ID:
 				return `/groupinvites/${queries?.inviteId}`;
-			case RequestEndpoint.GET_RIDES_AVAILABLE_BY_USER_ID:
-				return queries?.userId ? `/rides?userId=${queries.userId}` : "/rides";
-			case RequestEndpoint.GET_RIDES_PARTICIPATED_BY_USER_ID:
-				return `/users/${queries?.userId}/rides/participated`;
-			case RequestEndpoint.GET_RIDES_OWNED_BY_USER_ID:
-				return `/users/${queries?.userId}/rides/owned`;
+			case RequestEndpoint.GET_RIDES_BY_USER_ID:
+				return `/users/${queries.userId}/rides`;
 			case RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT:
 				return `/rides/${queries?.rideId}/users`;
-			case RequestEndpoint.GET_ALL_RIDES:
-				return "/rides";
 			case RequestEndpoint.LOGIN_USER:
 				return "/auth/login";
 			case RequestEndpoint.REGISTER_USER:
 				return "/auth/register";
+			case RequestEndpoint.POST_RIDE:
+				return "/rides/";
+			case RequestEndpoint.POST_RIDE_RECURRING:
+				return "/rides/recurring";
 			default:
 				throw "Unhandled endpoint";
 		}
@@ -58,6 +50,19 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 	if (queries?.count) {
 		ep += "?count=" + queries.count;
 	}
+
+	if (queries?.owned) {
+		ep += "?owned=" + queries.owned;
+	}
+
+	if (queries?.past) {
+		ep += "?past=" + queries.past;
+	}
+
+	if (queries?.participated) {
+		ep += "?participated=" + queries.participated;
+	}
+
 	return ep;
 };
 

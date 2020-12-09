@@ -8,6 +8,7 @@ import {
 
 const initialState: ILayoutState = {
 	redirectTo: undefined,
+	loaderVisible: false,
 };
 
 /**
@@ -26,6 +27,9 @@ const reducer: Reducer<ILayoutState> = (
 				break;
 			case LayoutActionTypes.Redirected:
 				draft.redirectTo = undefined;
+				break;
+			case LayoutActionTypes.SetLoaderVisible:
+				draft.loaderVisible = action.visible;
 				break;
 			default:
 				break;

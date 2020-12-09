@@ -1,8 +1,10 @@
+import { setLoaderVisible } from "../../layout/store/Actions";
+import { ISetLoaderVisibleAction } from "../../layout/store/Types";
 import { ILoginFormData } from "../login/LoginPanel";
 import { IRegisterFormData } from "../register/RegisterPanel";
-import { login, register } from "./Actions";
+import { login, logout, register } from "./Actions";
 import { IAuthState } from "./State";
-import { ILoginAction, IRegisterAction } from "./Types";
+import { ILoginAction, ILogoutAction, IRegisterAction } from "./Types";
 
 interface IStatePropsType {
 	auth: IAuthState;
@@ -16,12 +18,16 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = stat
 
 interface IDispatchPropsType {
 	login: (data: ILoginFormData) => ILoginAction;
+	logout: () => ILogoutAction;
 	register: (data: IRegisterFormData) => IRegisterAction;
+	setLoaderVisible: (visible: boolean) => ISetLoaderVisibleAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
 	login,
 	register,
+	setLoaderVisible,
+	logout: logout,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;

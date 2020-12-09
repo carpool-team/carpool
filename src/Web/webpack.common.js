@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const devMode = process.env.NODE_ENV !== "production";
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const DropConsoleWebpackPlugin = require("drop-console-webpack-plugin");
 
 module.exports = {
 	entry: path.resolve(__dirname, "src/index"),
@@ -87,3 +88,9 @@ module.exports = {
 		}),
 	],
 };
+
+if (!devMode) {
+	module.exports.plugins.push(
+		new DropConsoleWebpackPlugin(),
+	);
+}

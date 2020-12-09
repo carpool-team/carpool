@@ -8,6 +8,7 @@ export enum LoginActionTypes {
 	Login = "AUTH_LOGIN",
 	LoginSuccess = "AUTH_LOGIN_SUCCESS",
 	LoginError = "AUTH_LOGIN_ERROR",
+	Logout = "AUTH_LOGOUT",
 }
 
 /** Enum of register actions */
@@ -33,6 +34,9 @@ export interface ILoginSuccessAction extends Action<LoginActionTypes.LoginSucces
 export interface ILoginErrorAction extends Action<LoginActionTypes.LoginError> {
 }
 
+/** Action for logout */
+export interface ILogoutAction extends Action<LoginActionTypes.Logout> {
+}
 //#endregion
 
 //#region REGISTER
@@ -56,7 +60,8 @@ export interface IRegisterErrorAction extends Action<RegisterActionTypes.Registe
 export type LoginAction =
 	ILoginAction |
 	ILoginSuccessAction |
-	ILoginErrorAction;
+	ILoginErrorAction |
+	ILogoutAction;
 
 /** Type of register action */
 export type RegisterAction =

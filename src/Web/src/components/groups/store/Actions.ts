@@ -19,10 +19,12 @@ import {
 	RidesActionTypes,
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
+	IAddRideAction,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
+import { IAddRideInput } from "../components/addRideForm/interfaces/IAddRideInput";
 
 //#region GROUPS
 export function addGroup(group: IGroup): IAddGroupAction {
@@ -120,17 +122,17 @@ export function getInvitesError(error: Error): IGetInvitesActionError {
 //#endregion
 
 //#region RIDES
-export function getRides(userOnly: boolean): IGetRidesAction {
+export function getRides(): IGetRidesAction {
 	return {
 		type: RidesActionTypes.GetRides,
-		userOnly,
 	};
 }
 
-export function getRidesSuccess(rides: IRide[]): IGetRidesActionSuccess {
+export function getRidesSuccess(ridesOwned: IRide[], ridesParticipated: IRide[]): IGetRidesActionSuccess {
 	return {
 		type: RidesActionTypes.GetRidesSuccess,
-		rides,
+		ridesOwned,
+		ridesParticipated,
 	};
 }
 
@@ -152,6 +154,13 @@ export function participateInRideSuccess(rideId: string): IParticipateInRideActi
 	return {
 		type: RidesActionTypes.ParticipateInRideSuccess,
 		rideId,
+	};
+}
+
+export function addRide(input: IAddRideInput): IAddRideAction {
+	return {
+		type: RidesActionTypes.AddRide,
+		input,
 	};
 }
 //#endregion

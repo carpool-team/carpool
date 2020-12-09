@@ -1,6 +1,7 @@
 import {
 	IRedirectAction,
 	IRedirectedAction,
+	ISetLoaderVisibleAction,
 	LayoutActionTypes
 } from "./Types";
 
@@ -15,6 +16,13 @@ export function redirect(to: string): IRedirectAction {
 export function redirected(): IRedirectedAction {
 	return {
 		type: LayoutActionTypes.Redirected,
+	};
+}
+
+export function setLoaderVisible(visible: boolean): ISetLoaderVisibleAction {
+	return {
+		type: LayoutActionTypes.SetLoaderVisible,
+		visible,
 	};
 }
 //#endregion

@@ -53,6 +53,20 @@
             "ridesBtn": "Przejazdy",
             "invitesBtn": "Zaproszenia"
         },
+        "rides": {
+            "cyclicBtn": "Cykliczny",
+            "disposableBtn": "Jednorazowy",
+            "addRideLabel": "Dodaj przejazd do grupy",
+            "fromOrTo": "Lokalizacja grupy jako punkt: ",
+            "from": "początkowy",
+            "to": "końcowy",
+            "seats": "Ilość miejsc w samochodzie",
+            "date": "Wybierz datę przejazdu.",
+            "time": "Wybierz godzinę przejazdu.",
+            "invalidDate": "Niewłaściwa data przejazdu",
+            "invalidTime": "Niewłaściwa godzina przejazdu",
+            "addBtn": "Utwórz"
+        },
         "footer": {
             "services": "Usługi",
             "environment": "Środowisko",
@@ -62,7 +76,8 @@
         },
         "navBar": {
             "register": "Zarejestruj się",
-            "login": "Zaloguj się"
+            "login": "Zaloguj się",
+            "logout": "Wyloguj się"
         },
         "homeScreen": {
             "quote": "Nie jedź\n sam!",
@@ -80,7 +95,15 @@
         "common": {
             "groups": "Grupy",
             "passenger": "Pasażer",
-            "driver": "Kierowca"
+            "driver": "Kierowca",
+            "monday": "Poniedziałek",
+            "tuesday": "Wtorek",
+            "wednesday": "Środa",
+            "thursday": "Czwartek",
+            "friday": "Piątek",
+            "saturday": "Sobota",
+            "sunday": "Niedziela",
+            "all": "Codziennie"
         },
         "prevBtn": "Wstecz",
         "createBtn": "Utwórz",
@@ -93,11 +116,14 @@
         "input": {
             "validation": {
                 "emailInvalid": "Nieprawidłowy adres e-mail",
-                "fieldRequired": "Pole wymagane"
+                "fieldRequired": "Pole wymagane",
+                "address": "Niepoprawny adres, proszę wybrać adres z podpowiedzi",
+                "numeric": "Niepoprawna liczba"
             }
         },
         "error": {
-            "DuplicateUserName": "Wybrany e-mail jest już zajęty!"
+            "DuplicateUserName": "Wybrany e-mail jest już zajęty!",
+            "unknownGeneric": "Nieznany błąd serwera. Spróbuj ponownie!"
         }
     }
 }

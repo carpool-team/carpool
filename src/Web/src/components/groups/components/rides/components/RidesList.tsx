@@ -4,13 +4,14 @@ import { TFunction } from "i18next";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import { IRide } from "components/groups/interfaces/IRide";
-import { from } from "rxjs";
 import mapboxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
 import mapConfig from "../../../../map/mapConfig";
 import Button from "../../../../ui/button/Button";
-import {ButtonBackground} from "../../../../ui/button/enums/ButtonBackground";
-import {ButtonColor} from "../../../../ui/button/enums/ButtonColor";
-import MediaQuery from "react-responsive";
+import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
+import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
+import SearchBar from "../../../../ui/searchBar/SearchBar";
+import { useImmer } from "use-immer";
+import { RideDirection } from "../../../api/addRide/AddRideRequest";
 
 interface IRidesListProps extends IReactI18nProps {
 	rides: IRide[];
@@ -27,9 +28,10 @@ interface IRideNames extends IRide {
 	toName?: string;
 	fromName?: string;
 }
-const geocodingClient = mapboxGeocoding({accessToken: mapConfig.mapboxKey});
+const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
 
 const RidesList = (props: IRidesListProps) => {
+	const [searchKey, setSearchKey] = useState(null);
 
 	const cssClasses = {
 		list: "ridesList",
@@ -68,6 +70,7 @@ const RidesList = (props: IRidesListProps) => {
 						const response = await geocodingClient
 							.reverseGeocode({
 								query: coords,
+								mode: "mapbox.places",
 							})
 							.send();
 						const result = response.body.features[0];
@@ -86,6 +89,7 @@ const RidesList = (props: IRidesListProps) => {
 						const response = await geocodingClient
 							.reverseGeocode({
 								query: coords,
+								mode: "mapbox.places",
 							})
 							.send();
 						const result = response.body.features[0];
@@ -100,12 +104,16 @@ const RidesList = (props: IRidesListProps) => {
 				useEffect(() => {
 					if (ride) {
 						if (!fromName || !toName) {
-							onGetFromName([ride.startingLocation.latitude, ride.startingLocation.longitude]);
-							onGetToName([ride.destination.latitude, ride.destination.longitude]);
+							if (ride.rideDirection === RideDirection.To) {
+								onGetFromName([ride.location.latitude, ride.location.longitude]);
+								onGetToName([ride.group.location.latitude, ride.group.location.longitude]);
+							} else {
+								onGetFromName([ride.group.location.latitude, ride.group.location.longitude]);
+								onGetToName([ride.location.latitude, ride.location.longitude]);
+							}
 						}
 					}
 				});
-
 			});
 		}
 		return rides;
@@ -115,11 +123,16 @@ const RidesList = (props: IRidesListProps) => {
 		if (date) {
 			let d = new Date(date);
 			let dateOutput =
-				d.getUTCFullYear() + "/" +
-				("0" + (d.getUTCMonth() + 1)).slice(-2) + "/" +
-				("0" + d.getUTCDate()).slice(-2) + " " +
-				("0" + d.getUTCHours()).slice(-2) + ":" +
-				("0" + d.getUTCMinutes()).slice(-2) + ":" +
+				d.getUTCFullYear() +
+				"/" +
+				("0" + (d.getUTCMonth() + 1)).slice(-2) +
+				"/" +
+				("0" + d.getUTCDate()).slice(-2) +
+				" " +
+				("0" + d.getUTCHours()).slice(-2) +
+				":" +
+				("0" + d.getUTCMinutes()).slice(-2) +
+				":" +
 				("0" + d.getUTCSeconds()).slice(-2);
 			return dateOutput;
 		}
@@ -129,33 +142,30 @@ const RidesList = (props: IRidesListProps) => {
 
 	const DefaultItem = (props: IListItemProps) => {
 		const color = {
-			color: props.color
+			color: props.color,
 		};
 		const borderColor = {
-			borderColor: props.color
+			borderColor: props.color,
 		};
 
 		return (
-			<li key={props.ride.id}>
+			<li key={props.ride.rideId}>
 				<button
 					className={cssClasses.button}
 					onClick={() => props.setRide(props.ride)}
 				>
 					<div className={cssClasses.mainRow} style={borderColor}>
-						<div className={cssClasses.icon} style={color}>	</div>
+						<div className={cssClasses.icon} style={color}>
+							{" "}
+						</div>
 						<div className={cssClasses.address}>
-							<div className={cssClasses.fromLabel}>
-								{props.ride.fromName}
-								{/* {.replace(",.*", "")} */}
-							</div>
-							<div className={cssClasses.toLabel}>
-								{props.ride.toName}
-							</div>
+							<div className={cssClasses.fromLabel}>{props.ride.fromName}</div>
+							<div className={cssClasses.toLabel}>{props.ride.toName}</div>
 						</div>
 					</div>
 					<div className={cssClasses.bottomRow}>
 						<div className={cssClasses.driver}>
-							{ convertDate(props.ride.date) }
+							{convertDate(props.ride.rideDate.toString())}
 						</div>
 					</div>
 				</button>
@@ -165,32 +175,30 @@ const RidesList = (props: IRidesListProps) => {
 
 	const ActiveItem = (props: IListItemProps) => {
 		const color = {
-			color: props.color
+			color: props.color,
 		};
 		const borderColor = {
-			borderColor: props.color
+			borderColor: props.color,
 		};
 		const backgroundColor = {
-			backgroundColor: props.color
+			backgroundColor: props.color,
 		};
 
 		return (
-			<li className={cssClasses.activeContainer} key={props.ride.id}>
-				<div className={cssClasses.activeButtonContainer} >
+			<li className={cssClasses.activeContainer} key={props.ride.rideId}>
+				<div className={cssClasses.activeButtonContainer}>
 					<div className={cssClasses.mainRow} style={borderColor}>
-						<div className={cssClasses.icon} style={color}>	</div>
-						<div className={cssClasses.address} >
-							<div className={cssClasses.fromLabel}>
-								{props.ride.fromName}
-							</div>
-							<div className={cssClasses.toLabel}>
-								{props.ride.toName}
-							</div>
+						<div className={cssClasses.icon} style={color}>
+							{" "}
+						</div>
+						<div className={cssClasses.address}>
+							<div className={cssClasses.fromLabel}>{props.ride.fromName}</div>
+							<div className={cssClasses.toLabel}>{props.ride.toName}</div>
 						</div>
 					</div>
 					<div className={cssClasses.activeBottomRow}>
 						<div className={cssClasses.activeDate}>
-							{convertDate(props.ride.date)}
+							{convertDate(props.ride.rideDate.toString())}
 						</div>
 						<div className={cssClasses.activeDriver}>
 							Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
@@ -198,10 +206,13 @@ const RidesList = (props: IRidesListProps) => {
 						<div className={cssClasses.activeCar}>
 							{props.ride.owner.vehicle}
 						</div>
-						<div className={cssClasses.activeSeats}>
-							Wolne miejsca: {"2"}
-						</div>
-						<Button style={backgroundColor} background={ButtonBackground.Blue} color={ButtonColor.White} className={cssClasses.activeJoinButton}>
+						<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
+						<Button
+							style={backgroundColor}
+							background={ButtonBackground.Blue}
+							color={ButtonColor.White}
+							className={cssClasses.activeJoinButton}
+						>
 							Dołącz
 						</Button>
 					</div>
@@ -212,32 +223,40 @@ const RidesList = (props: IRidesListProps) => {
 
 	return (
 		<ul className={cssClasses.list}>
+			<SearchBar
+				keyword={searchKey}
+				setKeyword={(nv) => {
+					setSearchKey(nv);
+				}}
+			/>
 			{rides.map((ride) => {
 				++colorIndex;
 				const color = colorList[colorIndex % colorList.length];
 				const { t } = props;
 				return (
-						<React.Fragment key={ride.id}>
-							{(() => {
-								if (props.rideSelected && props.rideSelected.id === ride.id) {
-									return (
-										<ActiveItem
-											ride={ride}
-											color={color}
-											t={t}
-											setRide ={props.setRide}
-										/>);
-									} else {
-										return (
-											<DefaultItem
-											ride={ride}
-											color={color}
-											t={t}
-											setRide ={props.setRide}
-											/>);
-									}
-								})()}
-						</React.Fragment>
+					<React.Fragment key={ride.rideId}>
+						{(() => {
+							if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
+								return (
+									<ActiveItem
+										ride={ride}
+										color={color}
+										t={t}
+										setRide={props.setRide}
+									/>
+								);
+							} else {
+								return (
+									<DefaultItem
+										ride={ride}
+										color={color}
+										t={t}
+										setRide={props.setRide}
+									/>
+								);
+							}
+						})()}
+					</React.Fragment>
 				);
 			})}
 		</ul>

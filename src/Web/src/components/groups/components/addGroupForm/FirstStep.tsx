@@ -12,9 +12,11 @@ import { InputIcon } from "../../../ui/input/enums/InputIcon";
 import MapBoxPicker from "../../../map/MapBoxPicker";
 import { ValidationType } from "../../../ui/input/enums/ValidationType";
 import { each } from "../../../../helpers/UniversalHelper";
+import { useImmer } from "use-immer";
+import { ILocation } from "../../interfaces/ILocation";
 
 interface IFirstStepCallbacks {
-	handleChange: (newValue: string, key: string) => void;
+	handleChange: (newValue: string | { latitude: number, longitude: number }, key: string) => void;
 	incrementStep: () => void;
 }
 
@@ -24,13 +26,13 @@ interface IFirstStepProps extends IReactI18nProps {
 }
 
 const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
-	const [inputsValid, setInputsValid] = useState({
+	const [inputsValid, setInputsValid] = useImmer({
 		name: false,
 		code: false,
 		location: false,
 	});
-
 	const [validate, setValidate] = useState(false);
+	const [addressCoordinates, setAddressCoordinates] = useState<[number, number]>([0, 0]);
 
 	const cssClasses = {
 		container: "addGroupContainer",
@@ -41,7 +43,8 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 	const dataKeys = {
 		groupName: "group.groupName",
 		code: "group.code",
-		address: "group.address"
+		address: "group.address",
+		location: "group.location",
 	};
 
 	const resources = {
@@ -57,16 +60,10 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		if (each(inputsValid, i => i)) {
 			props.callbacks.incrementStep();
 			setValidate(false);
-			setInputsValid({
-				name: false,
-				code: false,
-				location: false,
-			});
 		} else {
 			setValidate(true);
 		}
 	};
-
 	const { t } = props;
 
 	return (
@@ -82,9 +79,8 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					validation={{
 						type: ValidationType.Required,
 						isValidCallback: isValid => {
-							setInputsValid({
-								...inputsValid,
-								name: isValid,
+							setInputsValid(draft => {
+								draft.name = isValid;
 							});
 						},
 						validate
@@ -99,26 +95,31 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					validation={{
 						type: ValidationType.Required,
 						isValidCallback: isValid => {
-							setInputsValid({
-								...inputsValid,
-								code: isValid,
+							setInputsValid(draft => {
+								draft.code = isValid;
 							});
 						},
 						validate
 					}}
 				/>
 				<Input
-					type={InputType.Text}
+					type={InputType.Address}
 					changeHandler={newValue => props.callbacks.handleChange(newValue, dataKeys.address)}
 					placeholder={t(resources.addressInput)}
 					value={props.data.group.address}
 					icon={InputIcon.Location}
+					addressCords={coords => {
+						props.callbacks.handleChange({
+							latitude: coords[0],
+							longitude: coords[1],
+						}, dataKeys.location);
+						setAddressCoordinates(coords);
+					}}
 					validation={{
-						type: ValidationType.Required,
+						type: ValidationType.Address,
 						isValidCallback: isValid => {
-							setInputsValid({
-								...inputsValid,
-								location: isValid,
+							setInputsValid(draft => {
+								draft.location = isValid;
 							});
 						},
 						validate
@@ -130,7 +131,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 			</div>
 			<MediaQuery query="(min-width: 900px)">
 				<div className={cssClasses.map}>
-					<MapBoxPicker />
+					<MapBoxPicker location={addressCoordinates} />
 				</div>
 			</MediaQuery>
 		</div>

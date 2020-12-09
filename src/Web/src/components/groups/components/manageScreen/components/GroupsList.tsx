@@ -10,7 +10,7 @@ import { withTranslation } from "react-i18next";
 
 interface IGroupsListProps extends IReactI18nProps {
 	getGroupsCallback: () => IGroup[];
-	setGroupSelected: (id: string) => void;
+	setGroupSelected: (id: number) => void;
 	groupSelected: IGroup;
 }
 interface IListItemProps {

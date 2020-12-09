@@ -16,6 +16,13 @@
 			background-color: $white;
 			display: flex;
 		}
+		&--address {
+			border-bottom: 3px solid $blue;
+			width: 100%;
+			height: 40px;
+			background-color: $white;
+			display: flex;
+		}
 	}
 	&__groupContainer {
 		width: 100%;
@@ -40,29 +47,30 @@
 			font-weight: $medium;
 			background: $transparent;
 			padding-left: 25px;
-			&::placeholder{
-				color:  $gray;
+			&::placeholder {
+				color: $gray;
 			}
-			&:focus{
+			&:focus {
 				outline: none;
 			}
 		}
 	}
-	&__checkbox{
+	&__checkbox {
 		font-size: 15px;
 		border: 0;
-		width: inherit;
-		height: 100%;
+		width: auto;
+		height: auto;
 		color: $grayDark;
 		font-weight: $regular;
 		background: $transparent;
 		display: flex;
 		justify-content: flex-start;
 		align-content: center;
-		&--box{
+		padding-left: 10px;
+		&--box {
 			height: 25px;
 			width: 25px;
-			&:focus{
+			&:focus {
 				outline: none;
 			}
 		}
@@ -77,6 +85,22 @@
 		max-width: 80%;
 		text-align: center;
 		text-justify: auto;
+	}
+	&__address {
+		background-color: $white;
+		font-size: 18px;
+		font-weight: $regular;
+		padding-top: 10px;
+		padding-bottom: 5px;
+		padding-left: 30px;
+		margin-bottom: 3px;
+		color: $grayDark;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		&:hover {
+			cursor: pointer !important;
+		}
 	}
 	&__icon {
 		height: 32px;
@@ -106,8 +130,14 @@
 		&--mail::before {
 			content: "\f003";
 		}
-		&--password::before{
-			content:"\f084";
+		&--password::before {
+			content: "\f084";
+		}
+		&--seats::before {
+			content: "\f0c0";
+		}
+		&--search::before {
+			content: "\f002";
 		}
 	}
 	&__input::placeholder {
@@ -123,13 +153,13 @@
 		margin: 0 16px 0 16px;
 		padding-bottom: 10px;
 	}
-	&__password{
+	&__password {
 		height: 32px;
 		margin-top: 10px;
 		color: $grayDark;
 	}
-	&__password::before{
-		content:"\f023";
+	&__password::before {
+		content: "\f023";
 		font-family: FontAwesome;
 		font-size: 22px;
 		background-color: $white;

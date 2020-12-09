@@ -6,7 +6,8 @@ import { GroupsAction, GroupsActionTypes, InviteAction, InvitesActionTypes, Ride
 const initialState: IGroupsState = {
 	groups: [],
 	invites: [],
-	rides: [],
+	ridesOwned: [],
+	ridesParticipated: [],
 };
 
 /**
@@ -37,13 +38,14 @@ const reducer: Reducer<IGroupsState> = (
 				draft.invites = action.invites;
 				break;
 			case RidesActionTypes.GetRidesSuccess:
-				draft.rides = action.rides;
+				draft.ridesOwned = action.ridesOwned;
+				draft.ridesParticipated = action.ridesParticipated;
 				break;
 			case RidesActionTypes.ParticipateInRideSuccess:
-				idx = draft.rides.findIndex(r => r.id === action.rideId);
-				if (idx > -1) {
-					draft.rides[idx].isUserParticipant = true;
-				}
+				// idx = draft.rides.findIndex(r => r.id === action.rideId);
+				// if (idx > -1) {
+				// 	draft.rides[idx].isUserParticipant = true;
+				// }
 				break;
 			default:
 				break;
