@@ -30,8 +30,9 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 		const { path } = this.props.match;
 		let rides: IRide[] = [];
 		if (this.props.selectedGroup) {
-			let ridesOwned: IRide[] = this.props.callbacks.getRides(true).filter(r => r.group.id === this.props.selectedGroup.id);
-			let ridesParticipated: IRide[] = this.props.callbacks.getRides(false).filter(r => r.group.id === this.props.selectedGroup.id);
+			const selGroupId: string = this.props.selectedGroup.id.toString();
+			const ridesOwned: IRide[] = this.props.callbacks.getRides(true).filter(r => r.group.groupId === selGroupId);
+			const ridesParticipated: IRide[] = this.props.callbacks.getRides(false).filter(r => r.group.groupId === selGroupId);
 			rides = [...ridesOwned, ...ridesParticipated];
 		}
 		return (

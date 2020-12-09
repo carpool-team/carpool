@@ -178,7 +178,10 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 			longitude: toAddressCoordinates[1]
 		},
 		rideDate: new Date(),
-		group: props.group,
+		group: {
+			...props.group,
+			groupId: props.group.id.toString(),
+		},
 		rideDirection: RideDirection.To,
 		price: 0,
 	};

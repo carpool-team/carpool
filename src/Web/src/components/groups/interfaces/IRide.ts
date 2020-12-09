@@ -11,5 +11,13 @@ export interface IRide extends ILocation {
 	stops?: ILocation[];
 	price: number;
 	owner: IParticipant;
-	group: IGroup;
+	group: {
+		groupId: string;
+		location: {
+			latitude: number;
+			longitude: number;
+		};
+		name: string;
+		userCount: number;
+	};
 }
