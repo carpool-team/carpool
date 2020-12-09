@@ -256,7 +256,6 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 							setInputsValid(draft => {
 								draft.date = isValidDate(date);
 							});
-							console.log("DATE: ", isValidDate(date));
 						}}
 						invalidDateMessage={t(resources.invalidDate)}
 						KeyboardButtonProps={{
@@ -274,7 +273,6 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 							setInputsValid(draft => {
 								draft.time = isValidDate(date);
 							});
-							console.log("TIME: ", isValidDate(date));
 						}}
 						invalidDateMessage={t(resources.invalidTime)}
 						KeyboardButtonProps={{
@@ -375,7 +373,12 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						className={cssClasses.datePicker}
 						label={t(resources.time)}
 						value={selectedDate}
-						onChange={handleDateChange}
+						onChange={(date: Date, value?: string) => {
+							handleDateChange(date);
+							setInputsValid(draft => {
+								draft.time = isValidDate(date);
+							});
+						}}
 						KeyboardButtonProps={{
 							"aria-label": "change time",
 						}}
@@ -439,6 +442,15 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						value={(userAddressName)}
 						icon={InputIcon.Location}
 						addressCords={coords => setUserCoordinates(coords)}
+						validation={{
+							validate: submitted,
+							type: ValidationType.Address,
+							isValidCallback: (isValid) => {
+								setInputsValid(draft => {
+									draft.fromAddress = isValid;
+								});
+							},
+						}}
 					/>
 				}
 				{startgroup &&
@@ -450,6 +462,15 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 						value={(userAddressName)}
 						icon={InputIcon.Location}
 						addressCords={coords => setUserCoordinates(coords)}
+						validation={{
+							validate: submitted,
+							type: ValidationType.Address,
+							isValidCallback: (isValid) => {
+								setInputsValid(draft => {
+									draft.fromAddress = isValid;
+								});
+							},
+						}}
 					/>
 				}
 				<Input
@@ -459,6 +480,15 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 					placeholder={t(resources.seats)}
 					value={(seats)}
 					icon={InputIcon.Seats}
+					validation={{
+						validate: submitted,
+						type: ValidationType.Numeric,
+						isValidCallback: (isValid) => {
+							setInputsValid(draft => {
+								draft.seatsNumber = isValid;
+							});
+						},
+					}}
 				/>
 				<Button
 					className={cssClasses.button}
