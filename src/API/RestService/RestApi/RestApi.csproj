@@ -52,7 +52,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\AuthShared\AuthShared.csproj" />
-    <ProjectReference Include="..\..\Shared\DataTransferObjects\DataTransferObjects.csproj" />	
+    <ProjectReference Include="..\..\Shared\DataTransferObjects\DataTransferObjects.csproj" />
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
 
