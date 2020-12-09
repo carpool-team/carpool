@@ -53,3 +53,9 @@ export function parseJwt(token): any {
 
 	return JSON.parse(jsonPayload);
 }
+export const parseCoords = (coords): [number, number] => {
+
+		const {longitude, latitude} = coords;
+		return [longitude, latitude];
+
+};

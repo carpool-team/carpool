@@ -13,6 +13,8 @@ import moment from "moment";
 import { da } from "date-fns/locale";
 import "../Rides.scss";
 import { RideDirection } from "../../groups/api/addRide/AddRideRequest";
+import {parseCoords} from "../../../helpers/UniversalHelper";
+import { parse } from "@babel/core";
 
 interface IRidesListProps extends IReactI18nProps {
 	rides: IRide[];
@@ -22,14 +24,10 @@ interface IRidesListProps extends IReactI18nProps {
 	lastDay: string;
 }
 interface IListItemProps {
-	ride: IRideNames;
+	ride: IRide;
 	color: string;
 	t: TFunction;
 	setRide: (ride: IRide) => void;
-}
-interface IRideNames extends IRide {
-	toName?: string;
-	fromName?: string;
 }
 const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
 
@@ -61,70 +59,6 @@ const RidesParticipant = (props: IRidesListProps) => {
 
 	let colorIndex: number = 0;
 
-	const GetNames = (ridesProps: IRide[]) => {
-		const rides: IRideNames[] = ridesProps;
-		if (rides) {
-			rides.map((ride) => {
-				const [loading, setLoading] = useState(null);
-				const [fromName, setfromName] = useState(null);
-				const [toName, setToName] = useState(null);
-
-				const onGetFromName = async (coords: [number, number]) => {
-					try {
-						setLoading(true);
-						const response = await geocodingClient
-							.reverseGeocode({
-								query: coords,
-								mode: "mapbox.places",
-							})
-							.send();
-						const result = response.body.features[0];
-						setfromName(result.place_name);
-						ride.fromName = result.place_name;
-					} catch (err) {
-						console.log(err);
-					} finally {
-						setLoading(false);
-					}
-				};
-
-				const onGetToName = async (coords: [number, number]) => {
-					try {
-						setLoading(true);
-						const response = await geocodingClient
-							.reverseGeocode({
-								query: coords,
-								mode: "mapbox.places",
-							})
-							.send();
-						const result = response.body.features[0];
-						setToName(result.place_name);
-						ride.toName = result.place_name;
-					} catch (err) {
-						console.log(err);
-					} finally {
-						setLoading(false);
-					}
-				};
-				useEffect(() => {
-					if (ride) {
-						if (!fromName || !toName) {
-							if (ride.rideDirection === RideDirection.To) {
-								onGetFromName([ride.location.latitude, ride.location.longitude]);
-								onGetToName([ride.group.location.latitude, ride.group.location.longitude]);
-							} else {
-								onGetFromName([ride.group.location.latitude, ride.group.location.longitude]);
-								onGetToName([ride.location.latitude, ride.location.longitude]);
-							}
-						}
-					}
-				});
-
-			});
-		}
-		return rides;
-	};
-
 	const convertDate = (date: string) => {
 		if (date) {
 			let d = new Date(date);
@@ -139,15 +73,57 @@ const RidesParticipant = (props: IRidesListProps) => {
 		}
 	};
 
-	const rides: IRide[] = GetNames(props.rides);
+	const rides: IRide[] = props.rides;
 
 	const DefaultItem = (props: IListItemProps) => {
+
+		const [loading, setLoading] = useState(null);
+		const [placeName, setPlaceName] = useState(null);
+		const onGetName = async (coords: [number, number]) => {
+			try {
+				setLoading(true);
+				const response = await geocodingClient
+					.reverseGeocode({
+						query: coords,
+						mode: "mapbox.places",
+					})
+					.send();
+				const result = response.body.features[0];
+				if ( result !== undefined && result.hasOwnProperty("place_name")){
+					setPlaceName(result.place_name);
+				} else {
+					setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				}
+			} catch (err) {
+				console.log(err);
+			} finally {
+				setLoading(false);
+			}
+		};
+
 		const color = {
 			color: props.color
 		};
 		const borderColor = {
 			borderColor: props.color
 		};
+
+		if (!placeName && !loading && placeName !== undefined) {
+			onGetName(parseCoords(props.ride.location));
+		}
+		let fromName: string;
+		let toName: string;
+
+		switch(props.ride.rideDirection) {
+			case 1: {
+				fromName = placeName;
+				toName = props.ride.group.name;
+			}
+			case 0: {
+				toName = placeName;
+				fromName = props.ride.group.name;
+			}
+		}
 
 		return (
 			<li key={props.ride.rideId}>
@@ -159,10 +135,14 @@ const RidesParticipant = (props: IRidesListProps) => {
 						<div className={cssClasses.icon} style={color}>	</div>
 						<div className={cssClasses.address}>
 							<div className={cssClasses.fromLabel}>
-								{props.ride.fromName}
+							{!loading &&
+									fromName
+								}
 							</div>
 							<div className={cssClasses.toLabel}>
-								{props.ride.toName}
+								{ !loading &&
+									toName
+								}
 							</div>
 						</div>
 					</div>
@@ -177,6 +157,31 @@ const RidesParticipant = (props: IRidesListProps) => {
 	};
 
 	const ActiveItem = (props: IListItemProps) => {
+
+		const [loading, setLoading] = useState(null);
+		const [placeName, setPlaceName] = useState(null);
+		const onGetName = async (coords: [number, number]) => {
+			try {
+				setLoading(true);
+				const response = await geocodingClient
+					.reverseGeocode({
+						query: coords,
+						mode: "mapbox.places",
+					})
+					.send();
+				const result = response.body.features[0];
+				if ( result !== undefined && result.hasOwnProperty("place_name")){
+					setPlaceName(result.place_name);
+				} else {
+					setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				}
+			} catch (err) {
+				console.log(err);
+			} finally {
+				setLoading(false);
+			}
+		};
+
 		const color = {
 			color: props.color
 		};
@@ -187,6 +192,23 @@ const RidesParticipant = (props: IRidesListProps) => {
 			backgroundColor: props.color
 		};
 
+		if (!placeName && !loading && placeName !== undefined) {
+			onGetName(parseCoords(props.ride.location));
+		}
+		let fromName: string;
+		let toName: string;
+
+		switch(props.ride.rideDirection) {
+			case 1: {
+				fromName = placeName;
+				toName = props.ride.group.name;
+			}
+			case 0: {
+				toName = placeName;
+				fromName = props.ride.group.name;
+			}
+		}
+
 		return (
 			<li className={cssClasses.activeContainer} key={props.ride.rideId}>
 				<div className={cssClasses.activeButtonContainer} >
@@ -194,10 +216,14 @@ const RidesParticipant = (props: IRidesListProps) => {
 						<div className={cssClasses.icon} style={color}>	</div>
 						<div className={cssClasses.address} >
 							<div className={cssClasses.fromLabel}>
-								{props.ride.fromName}
+							{!loading &&
+									fromName
+								}
 							</div>
 							<div className={cssClasses.toLabel}>
-								{props.ride.toName}
+								{ !loading &&
+									toName
+								}
 							</div>
 						</div>
 					</div>
