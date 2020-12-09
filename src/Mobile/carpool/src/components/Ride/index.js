@@ -4,6 +4,7 @@ import RideInfoSheet from './RideInfoSheet';
 import RidesFlatList from './RidesFlatList';
 import Waypoints from './Waypoints';
 import GroupWaypoints from './GroupWaypoints';
+import RideDetailsCard from './RideDetailsCard';
 
 export {
   DriverInfo,
@@ -12,4 +13,5 @@ export {
   RidesFlatList,
   Waypoints,
   GroupWaypoints,
+  RideDetailsCard,
 };
