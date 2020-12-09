@@ -58,7 +58,11 @@ const DriversHome = () => {
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Your groups</Text>
           <Text
-            onPress={() => navigation.navigate('Groups')}
+            onPress={() =>
+              navigation.navigate('GroupsStack', {
+                screen: 'Groups',
+              })
+            }
             style={styles.seeAll}>
             More
           </Text>
