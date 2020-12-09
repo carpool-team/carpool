@@ -1,42 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {AccountSwitch} from '../../../../components/navigation';
 import {sheet, colors} from '../../../../styles';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import * as actions from '../../../../store/actions';
-import {UpView} from '../../../../components/common';
-import moment from 'moment';
-import {ListEmptyComponent} from '../../../../components/common/lists';
-import {GroupWaypoints} from '../../../../components/Ride';
 import {useActiveAccount} from '../../../../hooks';
+import {DriversHome} from '../../../../components/Home';
 
 const Home = ({navigation}) => {
   const {activeAccount} = useActiveAccount();
   const isPassenger = activeAccount === 'passenger';
 
-  const [ride, setRide] = useState(null);
-
-  const driversRides = useSelector(state => state.driverReducer.driversRides);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(actions.getDriversRides());
+    dispatch(actions.getUsersRides());
+    dispatch(actions.getGroups());
   }, []);
-
-  useEffect(() => {
-    if (driversRides.data) {
-      setRide(driversRides.data[0]);
-    }
-  }, [driversRides]);
-
-  console.log(ride);
 
   return isPassenger ? (
     <SafeAreaView style={styles.safeArea}>
@@ -47,89 +28,7 @@ const Home = ({navigation}) => {
       </View>
     </SafeAreaView>
   ) : (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.topRow}>
-          <AccountSwitch />
-        </View>
-        <View style={sheet.rowCenterSplit}>
-          <Text style={styles.title}>Upcoming ride</Text>
-          <Text
-            onPress={() => navigation.navigate('DriversRides')}
-            style={styles.seeAll}>
-            See all
-          </Text>
-        </View>
-        <View
-          style={{
-            width: '100%',
-            flex: 1,
-          }}>
-          {driversRides.loading ? (
-            <View style={styles.loadingWrapper}>
-              <ActivityIndicator color={colors.blue} size="large" />
-            </View>
-          ) : ride ? (
-            <UpView
-              onPress={() =>
-                navigation.navigate('RidesStack', {
-                  screen: 'DriversRideDetails',
-                  params: {ride, past: false},
-                })
-              }
-              borderRadius={12}
-              style={{
-                height: 140,
-                marginTop: 16,
-              }}
-              contentContainerStyle={{
-                padding: 16,
-                justifyContent: 'space-between',
-              }}>
-              <View style={sheet.rowCenterSplit}>
-                <Text
-                  style={{
-                    ...sheet.textMedium,
-                    color: colors.orange,
-                    fontSize: 20,
-                  }}>
-                  {moment(ride.rideDate).format('HH:mm')}
-                </Text>
-                <Text
-                  style={{
-                    ...sheet.textMedium,
-                    color: colors.grayDark,
-                    fontSize: 16,
-                  }}>
-                  {moment(ride.rideDate).format('Do MMMM YYYY')}
-                </Text>
-              </View>
-              <GroupWaypoints
-                group={ride.group}
-                location={{coordinates: ride.location}}
-                swap={ride.rideDirection}
-              />
-            </UpView>
-          ) : (
-            <ListEmptyComponent title="You don't have any upcoming rides" />
-          )}
-        </View>
-        <View style={sheet.rowCenterSplit}>
-          <Text style={styles.title}>Your groups</Text>
-          <Text
-            onPress={() => navigation.navigate('Groups')}
-            style={styles.seeAll}>
-            See all
-          </Text>
-        </View>
-        <View
-          style={{
-            width: '100%',
-            flex: 1,
-          }}
-        />
-      </View>
-    </SafeAreaView>
+    <DriversHome />
   );
 };
 
