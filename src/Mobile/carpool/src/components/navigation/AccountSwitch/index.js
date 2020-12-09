@@ -29,32 +29,30 @@ const AccountSwitch = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={sheet.rowCenter}>
-        <CircleButton
-          style={styles.circleButton}
-          size={activeAccount === 'driver' ? 64 : 48}
-          onPress={onDriverPress}
-          icon={
-            <Ionicon
-              name="ios-car"
-              color={colors.grayDark}
-              size={activeAccount === 'driver' ? activeSize : inactiveSize}
-            />
-          }
-        />
-        <CircleButton
-          size={activeAccount === 'passenger' ? 64 : 48}
-          onPress={onPassengerPress}
-          icon={
-            <Ionicon
-              name="md-person"
-              color={colors.grayDark}
-              size={activeAccount === 'passenger' ? activeSize : inactiveSize}
-            />
-          }
-        />
-      </View>
+    <View style={sheet.rowCenter}>
+      <CircleButton
+        style={styles.circleButton}
+        size={activeAccount === 'driver' ? 64 : 48}
+        onPress={onDriverPress}
+        icon={
+          <Ionicon
+            name="ios-car"
+            color={colors.grayDark}
+            size={activeAccount === 'driver' ? activeSize : inactiveSize}
+          />
+        }
+      />
+      <CircleButton
+        size={activeAccount === 'passenger' ? 64 : 48}
+        onPress={onPassengerPress}
+        icon={
+          <Ionicon
+            name="md-person"
+            color={colors.grayDark}
+            size={activeAccount === 'passenger' ? activeSize : inactiveSize}
+          />
+        }
+      />
     </View>
   );
 };
