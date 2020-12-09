@@ -1,3 +1,4 @@
 import DriversHome from './DriversHome';
+import PassengersHome from './PassengersHome';
 
-export {DriversHome};
+export {DriversHome, PassengersHome};

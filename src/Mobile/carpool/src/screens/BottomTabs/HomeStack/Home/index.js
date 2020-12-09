@@ -5,7 +5,7 @@ import {sheet, colors} from '../../../../styles';
 import {useDispatch} from 'react-redux';
 import * as actions from '../../../../store/actions';
 import {useActiveAccount} from '../../../../hooks';
-import {DriversHome} from '../../../../components/Home';
+import {DriversHome, PassengersHome} from '../../../../components/Home';
 
 const Home = ({navigation}) => {
   const {activeAccount} = useActiveAccount();
@@ -19,17 +19,7 @@ const Home = ({navigation}) => {
     dispatch(actions.getGroups());
   }, []);
 
-  return isPassenger ? (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.topRow}>
-          <AccountSwitch />
-        </View>
-      </View>
-    </SafeAreaView>
-  ) : (
-    <DriversHome />
-  );
+  return isPassenger ? <PassengersHome /> : <DriversHome />;
 };
 
 const styles = StyleSheet.create({
