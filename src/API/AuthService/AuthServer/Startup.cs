@@ -1,5 +1,6 @@
+using Auth.DataAccessLayer.DatabaseContexts;
 using AuthDomain.Entities;
-using AuthServer.Data;
+using AuthServer.Services;
 using AutoWrapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,17 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AuthDomain.Entities;
-using AuthServer.Data;
-using AutoWrapper;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using RestEase;
 
 namespace AuthServer
 {
@@ -33,12 +25,14 @@ namespace AuthServer
 		{
 			services.AddDbContext<ApplicationDbContext>(options =>
 			{
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+				options.UseSqlServer(Configuration.GetConnectionString("IdentityDbConnectionString"));
 			});
 
 			services.AddIdentity<AuthUser, IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
+
+			services.AddTransient(_ => RestClient.For<IUserManagementService>("https://carpool-rest.azurewebsites.net"));
 
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
@@ -47,17 +41,15 @@ namespace AuthServer
 			});
 		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthServer v1"));
-			
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+				app.UseDeveloperExceptionPage();
+
+			app.UseSwagger();
+			app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthServer v1"));
+
 			app.UseHttpsRedirection();
 
 			app.UseRouting();

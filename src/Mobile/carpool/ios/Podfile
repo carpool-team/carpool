@@ -78,7 +78,6 @@ target 'carpool' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   # Mapbox
-  pod 'react-native-mapbox-gl', :path => '../node_modules/@react-native-mapbox-gl/maps'
 
   target 'carpoolTests' do
     inherit! :complete

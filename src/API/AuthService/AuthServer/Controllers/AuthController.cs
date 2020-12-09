@@ -3,16 +3,16 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Auth.DataAccessLayer.DatabaseContexts;
 using AuthDomain.Entities;
-using AuthServer.Data;
 using AuthServer.Models;
+using AuthServer.Services;
 using AuthServer.Utilities;
 using AutoWrapper.Extensions;
 using AutoWrapper.Wrappers;
+using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
-using IdentityServer4.Events;
-using IdentityServer4.Services;
-using IdentityServer4.Stores;
+using IdGen;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using RestApi.DTOs.User;
 
 namespace AuthServer.Controllers
 {
@@ -28,29 +29,24 @@ namespace AuthServer.Controllers
 	[ApiController]
 	public class AuthController : ControllerBase
 	{
-		private readonly IClientStore _clientStore;
 		private readonly ApplicationDbContext _dbContext;
-		private readonly IEventService _events;
-		private readonly IIdentityServerInteractionService _interaction;
 		private readonly IAuthenticationSchemeProvider _schemeProvider;
 		private readonly SignInManager<AuthUser> _signInManager;
+
+		private readonly IUserManagementService _userManagementService;
 		private readonly UserManager<AuthUser> _userManager;
 
 		public AuthController(UserManager<AuthUser> userManager,
 			SignInManager<AuthUser> signInManager,
-			IIdentityServerInteractionService interaction,
-			IClientStore clientStore,
 			IAuthenticationSchemeProvider schemeProvider,
-			IEventService events,
-			ApplicationDbContext dbContext)
+			ApplicationDbContext dbContext,
+			IUserManagementService userManagementService)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
-			_interaction = interaction;
-			_clientStore = clientStore;
 			_schemeProvider = schemeProvider;
-			_events = events;
 			_dbContext = dbContext;
+			_userManagementService = userManagementService;
 		}
 
 		[HttpPost("register")]
@@ -58,13 +54,30 @@ namespace AuthServer.Controllers
 		{
 			if (!ModelState.IsValid)
 				throw new ApiException(ModelState.AllErrors());
-			AuthUser user = new(model.Email, model.Email, model.FirstName, model.LastName);
+
+			var idGenerator = new IdGenerator(IdGeneratorType.User);
+			AuthUser user = new(model.Email, model.FirstName, model.LastName,
+				new AppUserId(idGenerator.CreateId()));
 			var result = await _userManager.CreateAsync(user, model.Password);
+
 			if (!result.Succeeded)
 				throw new ApiException(result.Errors);
-			return new ApiResponse("Successfully registered", StatusCodes.Status201Created);
-		}
 
+			var addUser = new AddUserDto(user.AppUserId.Value,
+				user.FirstName,
+				user.LastName,
+				user.Email);
+
+			try
+			{
+				await _userManagementService.CreateUser(addUser);
+				return new ApiResponse("Successfully registered", StatusCodes.Status201Created);
+			}
+			catch (Exception ex)
+			{
+				throw new ApiException(ex);
+			}
+		}
 
 		[HttpPost("login")]
 		public async Task<ApiResponse> Login([FromBody] LoginModel model)
@@ -79,29 +92,31 @@ namespace AuthServer.Controllers
 
 			if (!result.Succeeded)
 			{
-				await _events.RaiseAsync(new UserLoginFailureEvent(model.Email, "invalid credentials"));
 				ModelState.AddModelError(string.Empty, "Invalid email or password");
 
 				throw new ApiException(ModelState);
 			}
 
 			var user = await _userManager.FindByNameAsync(model.Email);
-			await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
 
 			TokenGenerator tokenGenerator = new();
-
-			var token = tokenGenerator.GenerateJwtToken(new IdentityUserId(user.Id));
-
+			var token = tokenGenerator.GenerateJwtToken(user.AppUserId);
 			var refreshToken = tokenGenerator.GenerateRefreshToken();
 
 			user.RefreshTokens.Add(refreshToken);
 			_dbContext.Set<AuthUser>().Update(user);
 			await _dbContext.SaveChangesAsync();
 
+			var refreshTokenByteArray = Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(refreshToken));
 			try
 			{
 				var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-				return new ApiResponse(new {token = jwtToken, expires = token.ValidTo, refreshToken});
+				return new ApiResponse(new
+				{
+					token = jwtToken,
+					expires = token.ValidTo,
+					refreshToken = Convert.ToBase64String(refreshTokenByteArray)
+				});
 			}
 			catch (Exception ex)
 			{
@@ -113,24 +128,30 @@ namespace AuthServer.Controllers
 		public async Task<ApiResponse> RefreshToken([FromBody] string refreshToken)
 		{
 			var refreshTokenBytes = Convert.FromBase64String(refreshToken);
+		
+			var deserializedRefreshToken =
+				JsonConvert.DeserializeObject<RefreshToken>(Encoding.ASCII.GetString(refreshTokenBytes));
 
-			var deserializedRefreshToken = JsonConvert.DeserializeObject(Encoding.ASCII.GetString(refreshTokenBytes));
-			var authUser = await AsyncEnumerable.SingleOrDefaultAsync(_dbContext.Set<AuthUser>(),
-				x => x.RefreshTokens.Any(a => a == deserializedRefreshToken && a.IsActive));
+			var user = await _dbContext.AuthUsers
+				.Include(x =>x.RefreshTokens)
+				.Where(x => x.RefreshTokens
+					.Any(a => a.Token == deserializedRefreshToken.Token && a.IsActive))
+				.FirstOrDefaultAsync();
+				
+				_ = user ?? throw new ApiException("Provided token is invalid", StatusCodes.Status401Unauthorized);
 
-			_ = authUser ?? throw new ApiException("Provided token is invalid", StatusCodes.Status401Unauthorized);
-
+				var token = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);			
 			// ReSharper disable once PossibleNullReferenceException
-			authUser.RefreshTokens.SingleOrDefault(x => x == deserializedRefreshToken).Revoked = DateTime.Now;
+			token.Revoked = DateTime.Now;
 
 			TokenGenerator tokenGenerator = new();
 
-			var token = tokenGenerator.GenerateJwtToken(new IdentityUserId(authUser.Id));
+			var newJwtToken = tokenGenerator.GenerateJwtToken(user.AppUserId);
 
 			var newRefreshToken = tokenGenerator.GenerateRefreshToken();
 
-			authUser.RefreshTokens.Add(newRefreshToken);
-			_dbContext.Set<AuthUser>().Update(authUser);
+			user.RefreshTokens.Add(newRefreshToken);
+			_dbContext.Set<AuthUser>().Update(user);
 			try
 			{
 				await _dbContext.SaveChangesAsync();
@@ -144,11 +165,11 @@ namespace AuthServer.Controllers
 
 			try
 			{
-				var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
+				var jwtToken = new JwtSecurityTokenHandler().WriteToken(newJwtToken);
 				return new ApiResponse(new
 				{
 					token = jwtToken,
-					expires = token.ValidTo,
+					expires = newJwtToken.ValidTo,
 					refreshToken = Convert.ToBase64String(refreshTokenByteArray)
 				});
 			}

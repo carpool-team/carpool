@@ -1,34 +1,69 @@
 import React, {createContext, useReducer} from 'react';
 
 const initialState = {
-  startingLocation: null,
+  location: null,
   date: null,
-  groupId: null,
+  group: null,
+  swap: null,
+  days: null,
+  regular: false,
+  time: null,
+  seats: null,
 };
 
 export const AddRideContextActions = {
-  SET_STARTING_LOCATION: 'SET_STARTING_LOCATION',
+  SET_LOCATION: 'SET_LOCATION',
   SET_DATE: 'SET_DATE',
-  SET_GROUP_ID: 'SET_GROUP_ID',
+  SET_GROUP: 'SET_GROUP',
+  SET_SWAP: 'SET_SWAP',
+  SET_DAYS: 'SET_DAYS',
+  SET_REGULAR: 'SET_REGULAR',
+  SET_TIME: 'SET_TIME',
+  SET_SEATS: 'SET_SEATS',
   CLEAN_STATE: 'CLEAN_STATE',
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case AddRideContextActions.SET_STARTING_LOCATION:
+    case AddRideContextActions.SET_GROUP:
       return {
         ...state,
-        startingLocation: action.payload,
+        group: action.payload,
+      };
+    case AddRideContextActions.SET_SWAP:
+      return {
+        ...state,
+        swap: action.payload,
+      };
+    case AddRideContextActions.SET_LOCATION:
+      return {
+        ...state,
+        location: action.payload,
       };
     case AddRideContextActions.SET_DATE:
       return {
         ...state,
         date: action.payload,
       };
-    case AddRideContextActions.SET_GROUP_ID:
+    case AddRideContextActions.SET_DAYS:
       return {
         ...state,
-        groupId: action.payload,
+        days: action.payload,
+      };
+    case AddRideContextActions.SET_REGULAR:
+      return {
+        ...state,
+        regular: action.payload,
+      };
+    case AddRideContextActions.SET_TIME:
+      return {
+        ...state,
+        time: action.payload,
+      };
+    case AddRideContextActions.SET_SEATS:
+      return {
+        ...state,
+        seats: action.payload,
       };
     case AddRideContextActions.CLEAN_STATE:
       return initialState;

@@ -1,19 +1,20 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.GroupDtos;
 using IdentifiersShared.Identifiers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.GroupCommands;
 using RestApi.Commands.GroupCommands.AddGroup;
-using RestApi.DTOs.Group;
 using RestApi.Queries.GroupQueries;
 
 namespace RestApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class GroupsController : ControllerBase
 	{
 		private readonly IMediator _mediator;
@@ -21,16 +22,7 @@ namespace RestApi.Controllers
 		public GroupsController(IMediator mediator)
 			=> _mediator = mediator;
 
-		//// GET: api/Groups
-		[HttpGet]
-		public async Task<ApiResponse> GetGroups([FromQuery] int page = 0, [FromQuery] int count = 5)
-		{
-			var request = new GetGroupsQuery(page, count);
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-			return new ApiResponse(response);
-		}
-
-		// GET: api/Groups/5
+        // GET: api/Groups/5
 		[HttpGet("{groupId}")]
 		public async Task<ApiResponse> GetGroup([FromRoute] long groupId)
 		{
@@ -40,13 +32,23 @@ namespace RestApi.Controllers
 			return new ApiResponse(response);
 		}
 
+        [HttpGet("~/api/users/{appUserId}/groups")]
+        public async Task<ApiResponse> GetUserGroups([FromRoute] AppUserId appUserId)
+        {
+            var request = new GetUserGroupsQuery(appUserId);
+
+            var response = await _mediator.Send(request).ConfigureAwait(false);
+
+            return new ApiResponse(response);
+        }
+
 		// PUT: api/Groups/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPut("{groupId}")]
-		public async Task<ApiResponse> PutGroup([FromRoute] long groupId, [FromBody] UpdateGroupDto model)
+		public async Task<ApiResponse> PutGroup([FromRoute] GroupId groupId, [FromBody] UpdateGroupDto model)
 		{
-			UpdateGroupCommand request = new(new GroupId(groupId),
+			UpdateGroupCommand request = new(groupId,
 				model.Location,
 				model.Name,
 				model.Code,
@@ -55,26 +57,7 @@ namespace RestApi.Controllers
 			return new ApiResponse($"Group with id: {response} has been updated", response);
 		}
 
-		[HttpPut("{groupId}/locations")]
-		public async Task<ApiResponse> ChangeGroupLocation([FromRoute] GroupId groupId,
-			[FromBody] ChangeGroupLocationDto model)
-		{
-			ChangeGroupLocationCommand changeGroupLocationCommand = new(groupId,
-				model.Latitude,
-				model.Latitude);
-			var response = await _mediator.Send(changeGroupLocationCommand).ConfigureAwait(false);
-			return new ApiResponse($"Location of a group with id: {groupId} has ben changed");
-		}
-
-		[HttpPut("{groupId}/rides")]
-		public async Task<ApiResponse> AddRideToGroup([FromRoute] Guid groupId,
-			[FromBody] AddRideToGroupCommand addRideToGroupCommand)
-		{
-			var response = await _mediator.Send(addRideToGroupCommand).ConfigureAwait(false);
-			return new ApiResponse(response);
-		}
-
-		// POST: api/Groups
+        // POST: api/Groups
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 		[HttpPost]
@@ -84,33 +67,12 @@ namespace RestApi.Controllers
 			return new ApiResponse($"Created group with id: {groupId}", groupId);
 		}
 
-		[HttpPost("{groupId}/users")]
-		public async Task<ApiResponse> AddUserToGroup([FromRoute] long groupId,
-			[FromBody] AddUserToGroupCommand addUserToGroupCommand)
-		{
-			addUserToGroupCommand.GroupId = new GroupId(groupId);
-			var response = await _mediator.Send(addUserToGroupCommand).ConfigureAwait(false);
-			return new ApiResponse(
-				$"ApplicationUser with id: {addUserToGroupCommand.AppUserId} has been added to group with id: {groupId}.");
-		}
-
-		// DELETE: api/Groups/5
+        // DELETE: api/Groups/5
 		[HttpDelete("{id}")]
-		public async Task<ApiResponse> DeleteGroup(long id)
+		public async Task<ApiResponse> DeleteGroup(GroupId groupId)
 		{
-			var response = await _mediator.Send(new DeleteGroupCommand(new GroupId(id))).ConfigureAwait(false);
-			return new ApiResponse($"Group with id: {id} has been deleted", StatusCodes.Status200OK);
+			var response = await _mediator.Send(new DeleteGroupCommand(groupId)).ConfigureAwait(false);
+			return new ApiResponse($"Group with id: {groupId} has been deleted", StatusCodes.Status200OK);
 		}
-
-
-		[HttpGet("~/api/users/{appUserId}/groups")]
-		public async Task<ApiResponse> GetUserGroups([FromRoute] AppUserId appUserId)
-		{
-			var request = new GetUserGroupsQuery(appUserId);
-
-			var response = await _mediator.Send(request).ConfigureAwait(false);
-
-			return new ApiResponse(response);
-		}
-	}
+    }
 }

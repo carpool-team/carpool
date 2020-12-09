@@ -1,14 +1,19 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import {colors, sheet} from '../../../styles';
-import {Marker} from '../../common/map';
 import {styles} from './index.styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const CurrentLocationListItem = ({onPress = () => null}) => (
   <TouchableOpacity
     style={[sheet.rowCenter, styles.container]}
     onPress={onPress}>
-    <Marker color={colors.blue} size={20} style={styles.marker} />
+    <Icon
+      name="map-marker"
+      color={colors.blue}
+      size={32}
+      style={styles.marker}
+    />
     <Text style={styles.address}>Current location</Text>
   </TouchableOpacity>
 );

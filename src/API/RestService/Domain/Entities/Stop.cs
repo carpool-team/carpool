@@ -8,7 +8,6 @@ namespace Domain.Entities
 	public class Stop : BaseEntity<StopId>
 	{
 		public Guid UserId { get; set; }
-		public Guid LocationId { get; set; }
 		public Location Location { get; set; }
 		public RideId RideId { get; set; }
 	}

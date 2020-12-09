@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import {colors} from '../../styles';
 
 const UpView = ({
@@ -10,6 +10,8 @@ const UpView = ({
   onPress,
 }) => {
   const WrappingComponent = onPress ? TouchableOpacity : View;
+
+  const styles = Platform.OS === 'ios' ? iosStyles : androidStyles;
 
   const wrapperStyles = {...styles.wrapper, borderRadius, ...style};
   const containerStyles = {
@@ -27,7 +29,7 @@ const UpView = ({
   );
 };
 
-const styles = StyleSheet.create({
+const iosStyles = StyleSheet.create({
   wrapper: {
     backgroundColor: colors.background,
     shadowColor: '#000',
@@ -50,6 +52,23 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     backgroundColor: colors.background,
     elevation: 5,
+  },
+});
+
+const androidStyles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: colors.background,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  container: {
+    flex: 1,
   },
 });
 

@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {View, ActivityIndicator, Text, StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import config from '../../../config';
 import {multiPoint} from '@turf/helpers';
 import bbox from '@turf/bbox';
 import {activeRouteStyle, colors, sheet} from '../../styles';
 import {useGetDirections} from '../../hooks';
-import {BlueMarker, Marker} from '../common/map';
+import {BlueMarker} from '../common/map';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {MAP_LIGHT} from '@env';
 
 const dirConfig = {
   profile: 'driving',
@@ -14,25 +15,33 @@ const dirConfig = {
   geometries: 'geojson',
 };
 
-const getBounds = routesArray => {
-  const allCoords = routesArray.map(rt => rt.geometry.coordinates).flat(1);
-  const allPoints = multiPoint(allCoords);
-  const boundingBox = bbox(allPoints);
+const getBounds = route => {
+  const boundingBox = bbox(multiPoint(route.geometry.coordinates));
   const [ne1, ne2, sw1, sw2] = boundingBox;
 
   return {
     paddingLeft: 32,
     paddingRight: 32,
-    paddingTop: 72,
-    paddingBottom: 72,
+    paddingTop: 30,
+    paddingBottom: 30,
     ne: [ne1, ne2],
     sw: [sw1, sw2],
   };
 };
 
-const RouteMinimap = ({start, destination}) => {
-  const [routes, setRoutes] = useState([]);
+const parseCoords = coords => {
+  return [coords.longitude, coords.latitude];
+};
+
+const RouteMinimap = ({stops, hideDetails = false}) => {
+  const [route, setRoute] = useState(null);
   const [bounds, setBounds] = useState(null);
+
+  useEffect(() => {
+    if (route) {
+      setBounds(getBounds(route));
+    }
+  }, [route]);
 
   // Directions
   const [results, loading, error, _getDirections] = useGetDirections({
@@ -40,51 +49,58 @@ const RouteMinimap = ({start, destination}) => {
   });
 
   useEffect(() => {
-    if (start && destination) {
-      _getDirections(
-        parseCoords(start.coordinates),
-        parseCoords(destination.coordinates),
-      );
+    if (stops.length) {
+      _getDirections(stops.map(stop => parseCoords(stop.coordinates)));
     }
-  }, [start, destination]);
-
-  useEffect(() => {
-    if (routes.length) {
-      const bds = getBounds(routes);
-      setBounds(bds);
-    }
-  }, [routes]);
+  }, [stops]);
 
   useEffect(() => {
     if (results) {
-      setRoutes(results.body.routes);
+      setRoute(results.body.routes[0]);
     }
   }, [results]);
 
-  const parseCoords = coords => {
-    return [coords.longitude, coords.latitude];
-  };
-
   const renderPoints = () => {
-    if (routes.length) {
-      const {coordinates} = routes[0].geometry;
-      const start = coordinates[0];
-      const finish = coordinates[coordinates.length - 1];
+    if (route) {
+      const {waypoints} = results.body;
+      const start = waypoints[0];
+      const finish = waypoints[waypoints.length - 1];
+
+      let stopPoints = [];
+
+      if (waypoints.length > 2) {
+        stopPoints = waypoints.slice(1, waypoints.length - 1);
+      }
 
       return (
         <>
-          <MapboxGL.PointAnnotation
-            key={start.toString()}
-            id="selected"
-            coordinate={start}>
+          <MapboxGL.PointAnnotation id="startPoint" coordinate={start.location}>
             <BlueMarker size={20} />
           </MapboxGL.PointAnnotation>
           <MapboxGL.PointAnnotation
-            key={finish.toString()}
-            id="selected"
-            coordinate={finish}>
-            <Marker color={colors.green} size={20} style={{marginTop: -24}} />
+            id="finishPoint"
+            coordinate={finish.location}>
+            <Icon
+              name="map-marker"
+              color={colors.green}
+              size={32}
+              style={styles.marker}
+            />
           </MapboxGL.PointAnnotation>
+          {!!stopPoints.length &&
+            stopPoints.map((stop, index) => (
+              <MapboxGL.PointAnnotation
+                key={stop.location.toString()}
+                id={`stop${index}`}
+                coordinate={stop.location}>
+                <Icon
+                  name="map-marker"
+                  color={colors.orange}
+                  size={32}
+                  style={styles.marker}
+                />
+              </MapboxGL.PointAnnotation>
+            ))}
         </>
       );
     } else {
@@ -92,19 +108,17 @@ const RouteMinimap = ({start, destination}) => {
     }
   };
 
-  const renderRoutes = () =>
-    routes.map((item, index) => (
-      <MapboxGL.ShapeSource
-        key={index}
-        id={`route${index}`}
-        shape={item.geometry}>
+  const renderRoutes = () => {
+    return route ? (
+      <MapboxGL.ShapeSource id="routeShape" shape={route.geometry}>
         <MapboxGL.LineLayer
-          id={`route${index}`}
+          id="routeLayer"
           style={activeRouteStyle}
           layerIndex={40}
         />
       </MapboxGL.ShapeSource>
-    ));
+    ) : null;
+  };
 
   const renderTime = duration => {
     const minutes = Math.round(duration / 60);
@@ -144,13 +158,13 @@ const RouteMinimap = ({start, destination}) => {
   };
 
   const renderRouteDetails = () => {
-    if (routes.length) {
-      const {duration, distance} = routes[0];
+    if (route) {
+      const {distance, duration} = route;
 
       return (
         <View style={styles.routeDetailsWrapper}>
-          {renderTime(duration)}
           {renderDistance(distance)}
+          {renderTime(duration)}
         </View>
       );
     } else {
@@ -160,10 +174,11 @@ const RouteMinimap = ({start, destination}) => {
 
   return (
     <View style={styles.container}>
+      {!hideDetails && renderRouteDetails()}
       <MapboxGL.MapView
         style={{flex: 1}}
-        styleURL={config.mapLight}
-        contentInset={10}
+        styleURL={MAP_LIGHT}
+        // contentInset={10}
         compassEnabled={false}
         scrollEnabled={false}
         pitchEnabled={false}
@@ -183,7 +198,6 @@ const RouteMinimap = ({start, destination}) => {
           />
         ) : null}
         {renderPoints()}
-        {renderRouteDetails()}
       </MapboxGL.MapView>
     </View>
   );
@@ -201,13 +215,12 @@ const styles = StyleSheet.create({
     bottom: 90,
   },
   routeDetailsWrapper: {
-    position: 'absolute',
-    top: 9,
-    left: 0,
-    right: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',
+    paddingVertical: 8,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray,
   },
   time: {
     ...sheet.textSemiBold,
@@ -228,6 +241,9 @@ const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     fontSize: 32,
     color: colors.orange,
+  },
+  marker: {
+    marginBottom: 32,
   },
 });
 

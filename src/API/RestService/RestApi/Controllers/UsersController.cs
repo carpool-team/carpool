@@ -3,6 +3,7 @@ using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
 using IdentifiersShared.Identifiers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
 using RestApi.DTOs.User;
@@ -12,6 +13,7 @@ namespace RestApi.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class UsersController : Controller
 	{
 		private readonly CarpoolDbContext _context;
@@ -23,38 +25,27 @@ namespace RestApi.Controllers
 			_mediator = mediator;
 		}
 
-		[HttpGet]
-		public async Task<ApiResponse> GetUsers()
+        [HttpGet("{appUserId}")]
+		public async Task<ApiResponse> GetUser([FromRoute] AppUserId userId)
 		{
-			var request = new GetUsersQuery();
-			var response = await _mediator.Send(request);
-			return new ApiResponse(response);
-		}
-
-		[HttpGet("{appUserId}")]
-		public async Task<ApiResponse> GetUser([FromRoute] long userId)
-		{
-			AppUserId typedAppUserId = new(userId);
-			var request = new GetUserByIdQuery(typedAppUserId);
+			var request = new GetUserByIdQuery(userId);
 			var response = await _mediator.Send(request);
 
 			return new ApiResponse(response);
 		}
 
 		[HttpGet("~/api/groups/{groupId}/users")]
-		public async Task<ApiResponse> GetGroupUsers([FromRoute] long groupId)
+		public async Task<ApiResponse> GetGroupUsers([FromRoute] GroupId groupId)
 		{
-			GroupId typedGroupId = new(groupId);
-			var request = new GetGroupUsersQuery(typedGroupId);
+			var request = new GetGroupUsersQuery(groupId);
 			var result = await _mediator.Send(request);
 			return new ApiResponse(result);
 		}
 
 		[HttpPut("{appUserId}")]
-		public async Task<ApiResponse> PutUser([FromRoute] long userId, [FromBody] UpdateUserDto model)
+		public async Task<ApiResponse> PutUser([FromRoute] AppUserId userId, [FromBody] UpdateUserDto model)
 		{
-			AppUserId typedAppUserId = new(userId);
-			UpdateUserCommand request = new(typedAppUserId,
+			UpdateUserCommand request = new(userId,
 				model.FirstName,
 				model.LastName);
 
@@ -64,17 +55,21 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ApiResponse> PostUser([FromBody] AddUserCommand request)
+		[AllowAnonymous]
+		public async Task<ApiResponse> PostUser([FromBody] AddUserDto model)
 		{
-			var response = await _mediator.Send(request);
+			AddUserCommand addUser = new(new AppUserId(model.appUserId),
+				model.firstName,
+				model.lastName,
+				model.email);
+			var response = await _mediator.Send(addUser);
 			return new ApiResponse(response);
 		}
 
 		[HttpDelete("{appUserId}")]
-		public async Task<ApiResponse> DeleteUser([FromRoute] long userId)
+		public async Task<ApiResponse> DeleteUser([FromRoute] AppUserId userId)
 		{
-			AppUserId typedAppUserId = new(userId);
-			var request = new DeleteUserCommand(typedAppUserId);
+			var request = new DeleteUserCommand(userId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 

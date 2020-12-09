@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.Ride;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,16 +24,18 @@ namespace RestApi.Commands.RideCommands.RemoveUserFromRide
 	public class RemoveUserFromRideCommandHandler : AsyncRequestHandler<RemoveUserFromRideCommand>
 	{
 		private readonly IRideRepository _rideRepository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public RemoveUserFromRideCommandHandler(IRideRepository rideRepository) => _rideRepository = rideRepository;
+		public RemoveUserFromRideCommandHandler(IRideRepository rideRepository, IUnitOfWork unitOfWork) 
+			=> (_rideRepository, _unitOfWork)
+				= (rideRepository, unitOfWork);
 
 		protected override async Task Handle(RemoveUserFromRideCommand request, CancellationToken cancellationToken)
 		{
 			try
 			{
-				await _rideRepository.RemoveUserFromRide(request.AppUserId, request.RideId, cancellationToken)
-					.ConfigureAwait(false);
-				await _rideRepository.SaveAsync(cancellationToken).ConfigureAwait(false);
+				await _rideRepository.RemoveUserFromRide(request.AppUserId, request.RideId, cancellationToken);
+				await _unitOfWork.SaveAsync(cancellationToken);
 			}
 			catch (DbUpdateException ex)
 			{

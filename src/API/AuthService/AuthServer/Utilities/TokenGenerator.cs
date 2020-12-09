@@ -12,12 +12,12 @@ namespace AuthServer.Utilities
 {
 	public class TokenGenerator
 	{
-		public JwtSecurityToken GenerateJwtToken(IdentityUserId userId)
+		public JwtSecurityToken GenerateJwtToken(AppUserId userId)
 		{
 			var authClaims = new[]
 			{
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-				new Claim(JwtRegisteredClaimNames.Sub, userId.Value),
+				new Claim(JwtRegisteredClaimNames.Sub, userId.Value.ToString()),
 				new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
 				new Claim("scope", "carpool_rest_api")
 			};
@@ -26,7 +26,7 @@ namespace AuthServer.Utilities
 
 			var token = new JwtSecurityToken(JwtOptions.Issuer,
 				JwtOptions.Audience,
-				expires: DateTime.Now.AddMinutes(5),
+				expires: DateTime.Now.AddDays(30),
 				claims: authClaims,
 				signingCredentials: new SigningCredentials(authSigningKey,
 					SecurityAlgorithms.HmacSha256));

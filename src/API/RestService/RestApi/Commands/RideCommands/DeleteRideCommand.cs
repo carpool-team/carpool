@@ -1,7 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.Ride;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
 using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -23,7 +24,11 @@ namespace RestApi.Commands.RideCommands
 	public class DeleteRideCommandHandler : IRequestHandler<DeleteRideCommand, Ride>
 	{
 		private readonly IRideRepository _rideRepository;
-		public DeleteRideCommandHandler(IRideRepository rideRepository) => _rideRepository = rideRepository;
+		private readonly IUnitOfWork _unitOfWork;
+
+		public DeleteRideCommandHandler(IRideRepository rideRepository, IUnitOfWork unitOfWork)
+			=> (_rideRepository, _unitOfWork)
+				= (rideRepository, unitOfWork);
 
 		public async Task<Ride> Handle(DeleteRideCommand request, CancellationToken cancellationToken)
 		{
@@ -37,7 +42,7 @@ namespace RestApi.Commands.RideCommands
 
 			try
 			{
-				await _rideRepository.SaveAsync(cancellationToken);
+				await _unitOfWork.SaveAsync(cancellationToken);
 			}
 			catch (DbUpdateException ex)
 			{

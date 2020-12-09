@@ -259,4 +259,16 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 		})
 	);
 
-export const groupEpics = [addGroupEpic, getGroupsEpic, getInvitesEpic, answerInviteEpic, getRidesEpic, participateInRideEpic];
+const addRideEpic: Epic<RideAction> = (action$, state$) => action$.pipe(
+	ofType(RidesActionTypes.AddRide)
+);
+
+export const groupEpics = [
+	addGroupEpic,
+	getGroupsEpic,
+	getInvitesEpic,
+	answerInviteEpic,
+	getRidesEpic,
+	participateInRideEpic,
+	addRideEpic,
+];

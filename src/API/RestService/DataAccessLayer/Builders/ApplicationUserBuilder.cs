@@ -21,7 +21,7 @@ namespace DataAccessLayer.Builders
 				x.ToTable("Ratings");
 				x.WithOwner().HasForeignKey("AppUserId");
 				x.Property<Guid>("Id");
-				x.Property(x => x.Value).IsRequired();
+				x.Property(a => a.Value).IsRequired();
 				x.HasKey("Id");
 			});
 

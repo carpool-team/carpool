@@ -1,38 +1,23 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {colors, sheet} from '../../../styles';
 import {CircleButton, StandardButton} from '../../../components/common/buttons';
 import {AddRideContext, AddRideContextActions} from './context';
-import {useRequest, METHODS, ENDPOINTS} from '../../../hooks';
 
 const MIN_VALUE = 1;
 const MAX_VALUE = 4;
-const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 
 const SetSeats = ({navigation}) => {
   const [seats, setSeats] = useState(MIN_VALUE);
 
-  const {addRideState, dispatch} = useContext(AddRideContext);
-
-  // Requests
-  const [response, loading, error, _createRide] = useRequest(
-    METHODS.POST,
-    ENDPOINTS.CREATE_NEW_RIDE(userId),
-    {...addRideState},
-  );
+  const {dispatch} = useContext(AddRideContext);
 
   const onSubmit = () => {
-    _createRide();
+    dispatch({type: AddRideContextActions.SET_SEATS, payload: seats});
+    navigation.navigate('RideSummary');
   };
-
-  useEffect(() => {
-    if (response) {
-      dispatch({type: AddRideContextActions.CLEAN_STATE});
-      navigation.navigate('Home');
-    }
-  }, [response, error]);
 
   const onIncrement = () => {
     if (seats < MAX_VALUE) {

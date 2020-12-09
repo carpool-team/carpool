@@ -75,10 +75,10 @@ namespace DataAccessLayer.Migrations
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("InvitedUserId")
+                    b.Property<long>("InvitedAppUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("InvitingUserId")
+                    b.Property<long>("InvitingAppUserId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsAccepted")
@@ -89,9 +89,9 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvitedUserId");
+                    b.HasIndex("InvitedAppUserId");
 
-                    b.HasIndex("InvitingUserId");
+                    b.HasIndex("InvitingAppUserId");
 
                     b.ToTable("GroupInvites");
                 });
@@ -101,12 +101,12 @@ namespace DataAccessLayer.Migrations
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("AppUserId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("GroupId", "UserId");
+                    b.HasKey("GroupId", "AppUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AppUserId");
 
                     b.ToTable("UserGroups");
                 });
@@ -116,17 +116,17 @@ namespace DataAccessLayer.Migrations
                     b.Property<long>("RideId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
+                    b.Property<long>("AppUserId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("RideId1")
                         .HasColumnType("bigint");
 
-                    b.HasKey("RideId", "UserId");
+                    b.HasKey("RideId", "AppUserId");
+
+                    b.HasIndex("AppUserId");
 
                     b.HasIndex("RideId1");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserParticipatedRides");
                 });
@@ -148,6 +148,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<int>("RideDirection")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
@@ -161,9 +164,6 @@ namespace DataAccessLayer.Migrations
                 {
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
-
-                    b.Property<Guid>("LocationId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<long>("RideId")
                         .HasColumnType("bigint");
@@ -183,16 +183,16 @@ namespace DataAccessLayer.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("AppUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("AppUserId")
                         .IsUnique();
 
                     b.ToTable("Vehicles");
@@ -206,7 +206,7 @@ namespace DataAccessLayer.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<long>("UserId")
+                            b1.Property<long>("AppUserId")
                                 .HasColumnType("bigint");
 
                             b1.Property<byte>("Value")
@@ -214,12 +214,12 @@ namespace DataAccessLayer.Migrations
 
                             b1.HasKey("Id");
 
-                            b1.HasIndex("UserId");
+                            b1.HasIndex("AppUserId");
 
                             b1.ToTable("Ratings");
 
                             b1.WithOwner()
-                                .HasForeignKey("UserId");
+                                .HasForeignKey("AppUserId");
                         });
 
                     b.Navigation("Ratings");
@@ -262,13 +262,13 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("Domain.Entities.ApplicationUser", "InvitedApplicationUser")
                         .WithMany()
-                        .HasForeignKey("InvitedUserId")
+                        .HasForeignKey("InvitedAppUserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.ApplicationUser", "InvitingApplicationUser")
                         .WithMany()
-                        .HasForeignKey("InvitingUserId")
+                        .HasForeignKey("InvitingAppUserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -279,15 +279,15 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Intersections.UserGroup", b =>
                 {
-                    b.HasOne("Domain.Entities.Group", "Group")
+                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany("UserGroups")
-                        .HasForeignKey("GroupId")
+                        .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Domain.Entities.Group", "Group")
                         .WithMany("UserGroups")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -298,6 +298,12 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Intersections.UserParticipatedRide", b =>
                 {
+                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Ride", "Ride")
                         .WithMany()
                         .HasForeignKey("RideId")
@@ -307,12 +313,6 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("Domain.Entities.Ride", null)
                         .WithMany("Participants")
                         .HasForeignKey("RideId1");
-
-                    b.HasOne("Domain.Entities.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
 
                     b.Navigation("ApplicationUser");
 
@@ -333,7 +333,7 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.ValueObjects.Location", "Destination", b1 =>
+                    b.OwnsOne("Domain.ValueObjects.Location", "Location", b1 =>
                         {
                             b1.Property<long>("RideId")
                                 .HasColumnType("bigint");
@@ -351,35 +351,13 @@ namespace DataAccessLayer.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("RideId");
                         });
-
-                    b.OwnsOne("Domain.ValueObjects.Location", "StartingLocation", b1 =>
-                        {
-                            b1.Property<long>("RideId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<double>("Latitude")
-                                .HasColumnType("float");
-
-                            b1.Property<double>("Longitude")
-                                .HasColumnType("float");
-
-                            b1.HasKey("RideId");
-
-                            b1.ToTable("Rides");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RideId");
-                        });
-
-                    b.Navigation("Destination")
-                        .IsRequired();
 
                     b.Navigation("Group");
 
-                    b.Navigation("Owner");
-
-                    b.Navigation("StartingLocation")
+                    b.Navigation("Location")
                         .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stop", b =>
@@ -417,7 +395,7 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("Domain.Entities.ApplicationUser", null)
                         .WithOne("Vehicle")
-                        .HasForeignKey("Domain.Entities.Vehicle", "UserId")
+                        .HasForeignKey("Domain.Entities.Vehicle", "AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

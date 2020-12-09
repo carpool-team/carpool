@@ -37,7 +37,7 @@ namespace IdentifiersShared.Converters
 
 		public static bool IsStronglyTypedId(Type type) => IsStronglyTypedId(type, out _);
 
-		public static bool IsStronglyTypedId(Type type, [NotNullWhen(true)] out Type idType)
+		public static bool IsStronglyTypedId(Type type, [NotNullWhen(true)] out Type? idType)
 		{
 			if (type is null)
 				throw new ArgumentNullException(nameof(type));
@@ -49,7 +49,6 @@ namespace IdentifiersShared.Converters
 				idType = baseType.GetGenericArguments()[0];
 				return true;
 			}
-
 			idType = null;
 			return false;
 		}

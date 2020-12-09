@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using DataAccessLayer.Repositories.User;
+using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 

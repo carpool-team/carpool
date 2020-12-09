@@ -8,23 +8,18 @@ const defaultConfig = {
   alternatives: 'true',
 };
 
-export default useGetDirections = (config = defaultConfig) => {
+export default (useGetDirections = (config = defaultConfig) => {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const _execute = async (start, finish) => {
+  const _execute = async stops => {
     try {
       setLoading(true);
 
-      const waypoints = [
-        {
-          coordinates: start,
-        },
-        {
-          coordinates: finish,
-        },
-      ];
+      const waypoints = stops.map(stop => ({
+        coordinates: stop,
+      }));
 
       const response = await directionsClient
         .getDirections({
@@ -42,4 +37,4 @@ export default useGetDirections = (config = defaultConfig) => {
   };
 
   return [results, loading, error, _execute];
-};
+});

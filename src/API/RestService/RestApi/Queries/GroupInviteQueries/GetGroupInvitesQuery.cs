@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.Repositories.GroupInvite;
+using Domain.Contracts.Repositories;
 using MediatR;
 using RestApi.DTOs.GroupInvites;
 

@@ -5,12 +5,10 @@ using AuthShared.Options;
 using AutoWrapper;
 using DataAccessLayer.DatabaseContexts;
 using DataAccessLayer.Repositories;
-using DataAccessLayer.Repositories.Group;
-using DataAccessLayer.Repositories.GroupInvite;
-using DataAccessLayer.Repositories.Intersections.UserGroup;
-using DataAccessLayer.Repositories.Ride;
-using DataAccessLayer.Repositories.RideParticipant;
-using DataAccessLayer.Repositories.User;
+using DataAccessLayer.Repositories.Intersections;
+using Domain.Contracts;
+using Domain.Contracts.Repositories;
+using Domain.Contracts.Repositories.Intersections;
 using FluentValidation.AspNetCore;
 using IdentifiersShared.Converters;
 using MediatR;
@@ -46,7 +44,7 @@ namespace RestApi
 			services.AddSingleton(Configuration);
 
 			services.AddDbContext<CarpoolDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+				options.UseSqlServer(Configuration.GetConnectionString("RestDbConnectionString")));
 
 			services.AddHttpContextAccessor();
 
@@ -54,18 +52,27 @@ namespace RestApi
 				.AddNewtonsoftJson()
 				.AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
-			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-				.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+			services.AddAuthentication(x =>
 				{
-					options.Authority = JwtOptions.Issuer;
-					options.Audience = JwtOptions.Audience;
+					x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+					x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+					x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+				})
+				.AddJwtBearer(options =>
+				{
+					options.RequireHttpsMetadata = true;
 					options.SaveToken = true;
 					options.TokenValidationParameters = new TokenValidationParameters
 					{
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
-						TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+						//TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
 						ValidateLifetime = true,
-						ValidateIssuer = true
+						ValidateIssuer = true,
+						ValidIssuer = JwtOptions.Issuer,
+						ValidateIssuerSigningKey = true,
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+						ValidateAudience = true,
+						ValidAudience = JwtOptions.Audience,
+						ClockSkew = TimeSpan.FromMinutes(1)
 					};
 				});
 

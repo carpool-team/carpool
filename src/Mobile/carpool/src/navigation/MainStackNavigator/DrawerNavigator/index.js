@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import Settings from '../../../screens/drawer/Settings';
 import {CustomDrawer} from '../../../components/navigation';
 import {sheet, colors} from '../../../styles';
 import HomeStack from './HomeStack';
@@ -15,8 +14,8 @@ const DrawerNavigator = () => (
     drawerContent={props => <CustomDrawer {...props} />}
     drawerContentOptions={{
       labelStyle: {
-        fontSize: 20,
-        ...sheet.textBold,
+        fontSize: 18,
+        ...sheet.textSemiBold,
       },
       activeBackgroundColor: colors.background,
     }}>
@@ -48,7 +47,6 @@ const DrawerNavigator = () => (
         drawerLabel: 'Your preferences',
       }}
     />
-    <Drawer.Screen name="Settings" component={Settings} />
   </Drawer.Navigator>
 );
 

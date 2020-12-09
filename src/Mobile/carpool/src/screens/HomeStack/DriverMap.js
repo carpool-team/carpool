@@ -1,10 +1,10 @@
-import React, {useRef, useContext} from 'react';
+import React, {useRef} from 'react';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import config from '../../../config';
 import {CircleButton} from '../../components/common/buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {colors} from '../../styles';
 import {useNavigation} from '@react-navigation/core';
+import {MAP_LIGHT} from '@env';
 
 const DriverMap = ({coordinates, _onLocateUser}) => {
   const _driverMap = useRef(null);
@@ -15,7 +15,7 @@ const DriverMap = ({coordinates, _onLocateUser}) => {
       <MapboxGL.MapView
         ref={_driverMap}
         style={{flex: 1}}
-        styleURL={config.mapLight}
+        styleURL={MAP_LIGHT}
         contentInset={10}
         compassEnabled={false}>
         <MapboxGL.Camera
@@ -28,7 +28,7 @@ const DriverMap = ({coordinates, _onLocateUser}) => {
         <MapboxGL.UserLocation visible onUpdate={_onLocateUser} />
       </MapboxGL.MapView>
       <CircleButton
-        style={{position: 'absolute', bottom: 72, right: 20}}
+        style={{position: 'absolute', bottom: '6%', right: 20}}
         onPress={() => navigation.navigate('AddRide')}
         icon={<Icon name="plus" color={colors.grayDark} size={24} />}
       />

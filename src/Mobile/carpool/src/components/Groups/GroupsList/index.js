@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, RefreshControl, StyleSheet} from 'react-native';
 import colors from '../../../styles/colors';
 import ListItem from './ListItem';
+import {ListEmptyComponent} from '../../common/lists';
 
 const GroupsList = ({data, loading, onItemPress, onRefresh}) => (
   <FlatList
@@ -17,6 +18,9 @@ const GroupsList = ({data, loading, onItemPress, onRefresh}) => (
         refreshing={loading}
         onRefresh={onRefresh}
       />
+    }
+    ListEmptyComponent={
+      <ListEmptyComponent title="You are not a member of any group yet" />
     }
   />
 );
