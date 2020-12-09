@@ -1,4 +1,5 @@
 import { Action } from "redux";
+import { IAddRideInput } from "../components/addRideForm/interfaces/IAddRideInput";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
@@ -140,7 +141,7 @@ export interface IParticipateInRideActionError extends Action<RidesActionTypes.P
 }
 
 export interface IAddRideAction extends Action<RidesActionTypes.AddRide> {
-
+	input: IAddRideInput;
 }
 //#endregion
 

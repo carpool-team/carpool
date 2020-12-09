@@ -10,8 +10,8 @@ export interface IRide {
 	participants?: string[];
 	stops?: ILocation[];
 	destination: {
-			longitude: number,
-			latitude: number
+		longitude: number,
+		latitude: number
 	};
 	startingLocation: {
 		longitude: number,
@@ -20,5 +20,5 @@ export interface IRide {
 	date: string;
 	isUserParticipant: boolean;
 	group: IGroup;
-	groupId: string;
+	groupId: number;
 }

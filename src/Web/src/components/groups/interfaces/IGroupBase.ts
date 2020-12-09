@@ -1,7 +1,7 @@
 import { ILocation } from "./ILocation";
 
 export interface IGroupBase {
-	id: string;
+	id: number;
 	// location: ILocation[];
 	location: {
 		longitude: number,

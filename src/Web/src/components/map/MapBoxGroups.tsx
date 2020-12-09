@@ -33,12 +33,12 @@ const defaults = {
 export interface IMapProps {
 	onStyleLoad?: (map: any) => any;
 	getGroupsCallback: () => IGroup[];
-	setSelectedGroupCallback: (id: string) => void;
+	setSelectedGroupCallback: (id: number) => void;
 	group?: IGroup;
 }
 
 export default class MapBoxGroups extends React.Component<IMapProps, IMapState> {
-	private currentGroupId: string;
+	private currentGroupId: number;
 
 	constructor(props: IMapProps) {
 		super(props);

@@ -23,11 +23,11 @@ const exampleRides: IRide[] = [
 			latitude: 16.86633729745128
 		},
 		date: moment()
-		.add(0, "days")
-		.format(),
+			.add(0, "days")
+			.format(),
 		isUserParticipant: faker.random.boolean(),
 		group: null,
-		groupId: faker.random.alphaNumeric(32)
+		groupId: faker.random.number(32)
 
 	},
 	{
@@ -50,11 +50,11 @@ const exampleRides: IRide[] = [
 			latitude: 16.86633729745128
 		},
 		date: moment()
-		.add(0, "days")
-		.format(),
+			.add(0, "days")
+			.format(),
 		isUserParticipant: faker.random.boolean(),
 		group: null,
-		groupId: faker.random.alphaNumeric(32)
+		groupId: faker.random.number(32)
 
 	},
 	{
@@ -77,11 +77,11 @@ const exampleRides: IRide[] = [
 			latitude: 16.86633729745128
 		},
 		date: moment()
-		.add(0, "days")
-		.format(),
+			.add(0, "days")
+			.format(),
 		isUserParticipant: faker.random.boolean(),
 		group: null,
-		groupId: faker.random.alphaNumeric(32)
+		groupId: faker.random.number(32)
 
 	},
 	{
@@ -104,11 +104,11 @@ const exampleRides: IRide[] = [
 			latitude: 16.866356
 		},
 		date: moment()
-		.add(1, "days")
-		.format(),
+			.add(1, "days")
+			.format(),
 		isUserParticipant: faker.random.boolean(),
 		group: null,
-		groupId: faker.random.alphaNumeric(32)
+		groupId: faker.random.number(32)
 
 	},
 	{
@@ -131,11 +131,11 @@ const exampleRides: IRide[] = [
 			latitude: 16.86633729745128
 		},
 		date: moment()
-		.add(2, "days")
-		.format(),
+			.add(2, "days")
+			.format(),
 		isUserParticipant: faker.random.boolean(),
 		group: null,
-		groupId: faker.random.alphaNumeric(32)
+		groupId: faker.random.number(32)
 	},
 	{
 		owner: {
@@ -157,11 +157,11 @@ const exampleRides: IRide[] = [
 			latitude: 16.86633729745128
 		},
 		date: moment()
-		.add(2, "days")
-		.format(),
+			.add(2, "days")
+			.format(),
 		isUserParticipant: faker.random.boolean(),
 		group: null,
-		groupId: faker.random.alphaNumeric(32)
+		groupId: faker.random.number(32)
 	},
 	{
 		owner: {
@@ -183,11 +183,11 @@ const exampleRides: IRide[] = [
 			latitude: 16.86633729745128
 		},
 		date: moment()
-		.add(2, "days")
-		.format(),
+			.add(2, "days")
+			.format(),
 		isUserParticipant: faker.random.boolean(),
 		group: null,
-		groupId: faker.random.alphaNumeric(32)
+		groupId: faker.random.number(32)
 	},
 	{
 		owner: {
@@ -209,11 +209,11 @@ const exampleRides: IRide[] = [
 			latitude: 16.86633729745128
 		},
 		date: moment()
-		.add(8, "days")
-		.format(),
+			.add(8, "days")
+			.format(),
 		isUserParticipant: faker.random.boolean(),
 		group: null,
-		groupId: faker.random.alphaNumeric(32)
+		groupId: faker.random.number(32)
 	},
 ];
 export default exampleRides;

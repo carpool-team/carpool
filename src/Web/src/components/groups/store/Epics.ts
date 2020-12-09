@@ -19,7 +19,7 @@ import {
 	IGetRidesActionSuccess,
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
-	IParticipateInRideActionError, IAddGroupActionError
+	IParticipateInRideActionError, IAddGroupActionError, IAddRideAction
 } from "./Types";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -39,12 +39,14 @@ import { getId } from "../../../helpers/UniversalHelper";
 import { IAuthState } from "../../auth/store/State";
 import { UpdateGroupRequest } from "../api/updateGroup/UpdateGroupRequest";
 import { UpdateGroupResponse } from "../api/updateGroup/UpdateGroupResponse";
+import { AddRideRequest, RideDirection } from "../api/addRide/AddRideRequest";
+import { AddRideResponse } from "../api/addRide/AddRideResponse";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.AddGroup),
 		switchMap(async (action: IAddGroupAction) => {
-			const ownerId: number = Number((state$.value.auth as IAuthState).tokenInfo?.payload?.sub);
+			const ownerId: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
 			const request: AddGroupRequest = new AddGroupRequest({
 				body: {
 					ownerId,
@@ -260,7 +262,54 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 	);
 
 const addRideEpic: Epic<RideAction> = (action$, state$) => action$.pipe(
-	ofType(RidesActionTypes.AddRide)
+	ofType(RidesActionTypes.AddRide),
+	switchMap(async (action: IAddRideAction) => {
+		const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
+		let weekdays: number = 0;
+		if (action.input.weekDays.all) {
+			weekdays = 1111111;
+		} else {
+			if (action.input.weekDays.monday) {
+				weekdays += 1;
+			}
+			if (action.input.weekDays.tuesday) {
+				weekdays += 10;
+			}
+			if (action.input.weekDays.wednesday) {
+				weekdays += 100;
+			}
+			if (action.input.weekDays.thursday) {
+				weekdays += 1000;
+			}
+			if (action.input.weekDays.friday) {
+				weekdays += 10000;
+			}
+			if (action.input.weekDays.saturday) {
+				weekdays += 100000;
+			}
+			if (action.input.weekDays.sunday) {
+				weekdays += 1000000;
+			}
+		}
+		console.log(action.input);
+		const request: AddRideRequest = new AddRideRequest({
+			body: {
+				rideDirection: action.input.to ? RideDirection.To : RideDirection.From,
+				date: action.input.date,
+				weekDays: weekdays,
+				ownerId: uid,
+				groupId: action.input.groupId,
+				location: action.input.location,
+				price: 0,
+			},
+			recurring: action.input.recurring,
+		});
+		const response: AddRideResponse = await request.send();
+		return <IGetRidesAction>{
+			type: RidesActionTypes.GetRides,
+		};
+	}),
+	mergeMap(res => [res]),
 );
 
 export const groupEpics = [

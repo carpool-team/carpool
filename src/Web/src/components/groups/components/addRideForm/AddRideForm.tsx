@@ -25,11 +25,15 @@ import {
 	KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { useImmer } from "use-immer";
-import { isValidDate } from "../../../../helpers/UniversalHelper";
+import { each, isValidDate } from "../../../../helpers/UniversalHelper";
 import { ValidationType } from "../../../ui/input/enums/ValidationType";
 import { address } from "faker";
+import { IAddRideInput } from "./interfaces/IAddRideInput";
+import { RouteComponentProps, withRouter } from "react-router";
+import LayoutRouter, { mainRoutes } from "../../../layout/components/LayoutRouter";
+import GroupsRouter from "../GroupsRouter";
 
-interface IRideDays {
+export interface IRideDays {
 	all: boolean;
 	monday: boolean;
 	tuesday: boolean;
@@ -40,8 +44,9 @@ interface IRideDays {
 	sunday: boolean;
 }
 
-export interface IAddGroupProps extends IReactI18nProps {
+export interface IAddRideProps extends IReactI18nProps, RouteComponentProps {
 	group: IGroup;
+	addRide: (input: IAddRideInput) => void;
 }
 
 enum PanelType {
@@ -49,7 +54,7 @@ enum PanelType {
 	Cyclic = "CYCLIC",
 }
 
-const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
+const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 	const [inputsValid, setInputsValid] = useImmer({
 		date: true,
 		time: true,
@@ -117,13 +122,41 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 	const [fromAddressCoordinates, setFromAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 	const [toAddressCoordinates, setToAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 
-	const [userAddressName, setUserAddresName] = useState<string>(undefined);
-	const [seats, setSeats] = useState<string>(undefined);
+	const [userAddressName, setUserAddresName] = useState<string>("");
+	const [seats, setSeats] = useState<string>("");
 
 	const [selectedDate, setSelectedDate] = useState(new Date("2014-08-18T21:11:54"));
 	const [days, setDays] = useState<IRideDays>({ all: false, monday: false, tuesday: false, wednesday: false, thursday: false, friday: false, saturday: false, sunday: false });
 
 	const [submitted, setSubmitted] = useState(false);
+
+	const trySendForm = () => {
+		if (each(inputsValid, i => i)) {
+			const input: IAddRideInput = {
+				recurring: selectedScreen === PanelType.Cyclic,
+				weekDays: days,
+				groupId: props.group.id.toString(),
+				to: startgroup,
+				location: {
+					latitude: toAddressCoordinates[0],
+					longitude: toAddressCoordinates[1],
+				},
+				date: selectedDate,
+			};
+			console.log(input);
+			props.addRide(input);
+			props.history.push(`/${mainRoutes.groups}${GroupsRouter.routes.rides}`);
+		} else {
+			console.log(inputsValid);
+			setSubmitted(false);
+		}
+	};
+
+	useEffect(() => {
+		if (submitted) {
+			trySendForm();
+		}
+	}, [submitted, inputsValid]);
 
 	const handleDateChange = (date: Date) => {
 		setSelectedDate(date);
@@ -291,27 +324,7 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 					/>
 					<span className={switchCssClass.to} id={ids.to}> {t(resources.to)}</span>
 				</div>
-				{!startgroup &&
-					<Input
-						style={cssClasses.input}
-						type={InputType.Address}
-						changeHandler={newValue => setUserAddresName(newValue)}
-						placeholder={"Adres " + t(resources.to) + " przejazdu"}
-						value={(userAddressName)}
-						icon={InputIcon.Location}
-						addressCords={coords => setUserCoordinates(coords)}
-						validation={{
-							validate: submitted,
-							type: ValidationType.Address,
-							isValidCallback: (isValid) => {
-								setInputsValid(draft => {
-									draft.targetAddress = isValid;
-								});
-							},
-						}}
-					/>
-				}
-				{startgroup &&
+				{startgroup ?
 					<Input
 						style={cssClasses.input}
 						type={InputType.Address}
@@ -326,6 +339,23 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 							isValidCallback: (isValid) => {
 								setInputsValid(draft => {
 									draft.fromAddress = isValid;
+								});
+							},
+						}}
+					/> : <Input
+						style={cssClasses.input}
+						type={InputType.Address}
+						changeHandler={newValue => setUserAddresName(newValue)}
+						placeholder={"Adres " + t(resources.to) + " przejazdu"}
+						value={(userAddressName)}
+						icon={InputIcon.Location}
+						addressCords={coords => setUserCoordinates(coords)}
+						validation={{
+							validate: submitted,
+							type: ValidationType.Address,
+							isValidCallback: (isValid) => {
+								setInputsValid(draft => {
+									draft.targetAddress = isValid;
 								});
 							},
 						}}
@@ -350,9 +380,7 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 				/>
 				<Button
 					className={cssClasses.button}
-					onClick={() => {
-						setSubmitted(true);
-					}}
+					onClick={() => trySendForm()}
 					color={ButtonColor.White}
 					background={ButtonBackground.Blue}>
 					{t(resources.addBtn)}
@@ -433,12 +461,12 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 					/>
 					<span className={switchCssClass.to} id={ids.to}> {t(resources.to)}</span>
 				</div>
-				{!startgroup &&
+				{startgroup ?
 					<Input
 						style={cssClasses.input}
 						type={InputType.Address}
 						changeHandler={newValue => setUserAddresName(newValue)}
-						placeholder={"Adres " + t(resources.to) + " przejazdu"}
+						placeholder={"Adres " + t(resources.from)}
 						value={(userAddressName)}
 						icon={InputIcon.Location}
 						addressCords={coords => setUserCoordinates(coords)}
@@ -451,14 +479,12 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 								});
 							},
 						}}
-					/>
-				}
-				{startgroup &&
+					/> :
 					<Input
 						style={cssClasses.input}
 						type={InputType.Address}
 						changeHandler={newValue => setUserAddresName(newValue)}
-						placeholder={"Adres " + t(resources.from)}
+						placeholder={"Adres " + t(resources.to) + " przejazdu"}
 						value={(userAddressName)}
 						icon={InputIcon.Location}
 						addressCords={coords => setUserCoordinates(coords)}
@@ -492,7 +518,7 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 				/>
 				<Button
 					className={cssClasses.button}
-					onClick={() => (null)}
+					onClick={() => trySendForm()}
 					color={ButtonColor.White}
 					background={ButtonBackground.Blue}>
 					{t(resources.addBtn)}
@@ -554,4 +580,6 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 	);
 };
 
-export default withTranslation()(AddRideFormScreen);
+export default withRouter(
+	withTranslation()(AddRideFormScreen)
+);

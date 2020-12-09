@@ -69,7 +69,7 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 
 	private createGroup = () => {
 		let group: IGroup = {
-			id: "",
+			id: 0,
 			name: this.state.formData.group.groupName,
 			code: this.state.formData.group.code,
 			owner: this.props.userId,

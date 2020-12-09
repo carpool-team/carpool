@@ -35,6 +35,10 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 				return "/auth/login";
 			case RequestEndpoint.REGISTER_USER:
 				return "/auth/register";
+			case RequestEndpoint.POST_RIDE:
+				return "/rides/";
+			case RequestEndpoint.POST_RIDE_RECURRING:
+				return "/rides/recurring";
 			default:
 				throw "Unhandled endpoint";
 		}

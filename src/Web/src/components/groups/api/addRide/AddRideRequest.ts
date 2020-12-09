@@ -1,32 +1,42 @@
 import { RequestEndpoint } from "../../../../api/enum/RequestEndpoint";
 import { RequestType } from "../../../../api/enum/RequestType";
 import RequestBase from "../../../../api/requests/RequestBase";
-import { AddGroupResponse } from "./AddGroupResponse";
+import { AddRideResponse } from "./AddRideResponse";
 
-export interface IAddGroupRequestBody {
-	ownerId: number;
+export enum RideDirection {
+	From = 0,
+	To = 1,
+	Both = 2,
+}
+
+export interface IAddRideRequestBody {
+	ownerId: string;
+	groupId: string;
 	location: {
 		latitude: number;
 		longitude: number;
 	};
-	code: string;
-	name: string;
+	rideDirection: RideDirection;
+	date: Date;
+	weekDays?: number;
+	price: number;
 }
 
-export class AddGroupRequest extends RequestBase<IAddGroupRequestBody> {
+export class AddRideRequest extends RequestBase<IAddRideRequestBody> {
 	constructor(init: {
-		body: IAddGroupRequestBody
+		body: IAddRideRequestBody,
+		recurring: boolean,
 	}) {
 		super({
 			properties: {
 				method: RequestType.POST,
-				endpoint: RequestEndpoint.POST_ADD_GROUP,
+				endpoint: init.recurring ? RequestEndpoint.POST_RIDE_RECURRING : RequestEndpoint.POST_RIDE,
 				queries: null
 			},
 			body: init.body
 		});
 	}
 	async send() {
-		return await super.fetch<AddGroupResponse>();
+		return await super.fetch<AddRideResponse>();
 	}
 }

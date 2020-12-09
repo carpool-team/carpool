@@ -4,7 +4,7 @@ import RequestBase from "../../../../api/requests/RequestBase";
 import { AddGroupResponse } from "./AddGroupResponse";
 
 export interface IAddGroupRequestBody {
-	ownerId: number;
+	ownerId: string;
 	location: {
 		latitude: number;
 		longitude: number;

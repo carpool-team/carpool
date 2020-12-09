@@ -1,10 +1,11 @@
 import { IGroup } from "../interfaces/IGroup";
-import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction, IParticipateInRideAction } from "./Types";
-import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide } from "./Actions";
+import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction, IParticipateInRideAction, IAddRideAction } from "./Types";
+import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, addRide } from "./Actions";
 import { IGroupsState } from "./State";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
 import { IAuthState } from "../../auth/store/State";
+import { IAddRideInput } from "../components/addRideForm/interfaces/IAddRideInput";
 
 interface IStatePropsType {
 	groups: IGroupsState;
@@ -34,6 +35,7 @@ interface IDispatchPropsType {
 	answerInvite: (accepted: boolean, inviteId: string) => IAnswerInviteAction;
 	getRides: (userOnly: boolean) => IGetRidesAction;
 	participateInRide: (rideId: string) => IParticipateInRideAction;
+	addRide: (input: IAddRideInput) => IAddRideAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
@@ -43,6 +45,7 @@ export const mapDispatchToProps: IDispatchPropsType = {
 	answerInvite,
 	getRides,
 	participateInRide,
+	addRide,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;

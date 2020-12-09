@@ -14,6 +14,7 @@ import {
 import produce from "immer";
 
 import "./Groups.scss";
+import { IAddRideInput } from "./components/addRideForm/interfaces/IAddRideInput";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
@@ -51,7 +52,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 		// .filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === this.props.authId));
 	}
 
-	setSelectedGroupHandler = (id: string) => {
+	setSelectedGroupHandler = (id: number) => {
 		this.setState(produce((draft: IGroupsState) => {
 			draft.selectedGroup = this.getGroupsHandler().find(g => g.id === id);
 		}));
@@ -67,6 +68,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 			getRides: this.getRidesHandler,
 			participateInRide: this.props.participateInRide,
 			setGroupSelected: (id) => this.setSelectedGroupHandler(id),
+			addRide: (input: IAddRideInput) => this.props.addRide(input),
 		};
 
 		return (

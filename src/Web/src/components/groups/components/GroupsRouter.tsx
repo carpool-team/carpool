@@ -70,7 +70,10 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 								/>
 							</Route>
 							<Route path={path + GroupsRouter.routes.rides + GroupsRouter.routes.addRide}>
-								<AddRideFormScreen group={this.props.selectedGroup} />
+								<AddRideFormScreen
+									group={this.props.selectedGroup}
+									addRide={this.props.callbacks.addRide}
+								/>
 							</Route>
 						</> : null}
 				</Switch>
