@@ -19,9 +19,9 @@ const ListItem = ({day, rides, onItemPress}) => {
           )}
         </View>
         <View style={styles.ridesWrapper}>
-          {rides.map(ride => (
+          {rides.map((ride, index) => (
             <RideItem
-              key={ride.id}
+              key={`${ride.id}${index}`}
               item={ride}
               onItemPress={() => onItemPress(ride)}
             />

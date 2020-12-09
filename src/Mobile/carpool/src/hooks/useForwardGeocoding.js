@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {geocodingClient} from '../maps/mapbox';
-import Geolocation from '@react-native-community/geolocation';
 
-export default useForwardGeocoding = (
+export default (useForwardGeocoding = (
   place,
   config = {
     autocomplete: false,
@@ -11,17 +10,9 @@ export default useForwardGeocoding = (
   optimized = false,
   trigger = 3,
 ) => {
-  const [currentPosition, setCurrentPosition] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    Geolocation.getCurrentPosition(info => {
-      const {longitude, latitude} = info.coords;
-      setCurrentPosition([longitude, latitude]);
-    });
-  }, []);
 
   const onSearch = async () => {
     try {
@@ -31,10 +22,6 @@ export default useForwardGeocoding = (
         query: place,
         ...config,
       };
-
-      if (optimized) {
-        body.proximity = currentPosition;
-      }
 
       const response = await geocodingClient.forwardGeocode(body).send();
       console.log('RESSS', response);
@@ -63,4 +50,4 @@ export default useForwardGeocoding = (
   }, [place]);
 
   return [results, loading, error, onSearch];
-};
+});

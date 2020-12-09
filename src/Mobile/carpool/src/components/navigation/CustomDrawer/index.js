@@ -97,9 +97,9 @@ const CustomDrawer = props => {
         <View style={styles.flexed}>
           <View style={styles.userInfoContainer}>
             <CircleButton
-              size={72}
+              size={60}
               icon={
-                <Ionicon name="md-person" color={colors.grayDark} size={44} />
+                <Ionicon name="md-person" color={colors.grayDark} size={36} />
               }
             />
             <View style={styles.userDataWrapper}>
@@ -108,7 +108,7 @@ const CustomDrawer = props => {
                 <Text style={styles.rating}>5.00</Text>
                 <Icon
                   name="star"
-                  size={32}
+                  size={25}
                   color={colors.yellow}
                   style={{marginLeft: 8}}
                 />

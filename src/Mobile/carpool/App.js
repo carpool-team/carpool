@@ -3,7 +3,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {LightTheme} from './src/styles';
 import MainStackNavigator from './src/navigation/MainStackNavigator/index';
-import config from './config';
 import {AddRideStore} from './src/screens/HomeStack/AddRideStack/context';
 
 import {Provider} from 'react-redux';
@@ -17,9 +16,11 @@ const sagaMiddleware = createSagaMiddleware();
 const middleware = [promiseMiddleware, sagaMiddleware];
 const store = createStore(rootReducer, {}, applyMiddleware(...middleware));
 
+import {MAPBOX_KEY} from '@env';
+
 sagaMiddleware.run(rootSaga);
 
-MapboxGL.setAccessToken(config.mapboxKey);
+MapboxGL.setAccessToken(MAPBOX_KEY);
 
 const App = () => {
   useEffect(() => {

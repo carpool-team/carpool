@@ -24,7 +24,7 @@ const SignUp = props => {
           setSuccess(true);
         })
         .catch(err => {
-          setApiError(err);
+          setApiError('An error ocurred, try again');
           dispatch({type: SignUpActions.RESET});
         })
         .finally(() => {

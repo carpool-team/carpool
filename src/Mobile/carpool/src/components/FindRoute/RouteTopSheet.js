@@ -1,20 +1,26 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../styles';
-import {BlueMarker, Marker} from '../common/map';
+import {BlueMarker} from '../common/map';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const RouteTopSheet = ({start, destination}) => {
   return (
     <View style={styles.topSheet}>
       <View style={styles.contentContainer}>
         <View style={sheet.rowCenter}>
-          <BlueMarker size={16} style={{marginRight: 12}} />
+          <BlueMarker size={16} style={styles.blueMarker} />
           <Text style={styles.placeName} numberOfLines={1}>
             {start.place_name}
           </Text>
         </View>
-        <View style={[sheet.rowCenter, {marginTop: 18}]}>
-          <Marker color={colors.green} size={16} style={{marginRight: 12}} />
+        <View style={styles.destinationWrapper}>
+          <Icon
+            name="map-marker"
+            color={colors.green}
+            size={25}
+            style={styles.marker}
+          />
           <Text style={styles.placeName} numberOfLines={1}>
             {destination.place_name}
           </Text>
@@ -66,6 +72,16 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     fontSize: 18,
     color: colors.grayVeryDark,
+  },
+  blueMarker: {
+    marginRight: 12,
+  },
+  destinationWrapper: {
+    ...sheet.rowCenter,
+    marginTop: 18,
+  },
+  marker: {
+    marginRight: 12,
   },
 });
 

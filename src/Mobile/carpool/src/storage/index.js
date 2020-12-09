@@ -29,6 +29,7 @@ const removeData = async key => {
 const STORAGE_KEYS = {
   token: 'TOKEN',
   refreshToken: 'REFRESH_TOKEN',
+  userId: 'USER_ID',
 };
 
 export {STORAGE_KEYS, storeData, readData, removeData};

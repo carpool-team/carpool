@@ -1,9 +1,8 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {UpView} from '../../../common';
-import {parseCoords} from '../../../../utils/coords';
 import {styles} from './index.styles';
-import {Waypoints} from '../../../Ride';
+import {GroupWaypoints} from '../../../Ride';
 import moment from 'moment';
 import {sheet} from '../../../../styles';
 
@@ -14,14 +13,15 @@ const ListItem = ({item, onItemPress}) => (
     style={styles.upview}
     contentContainerStyle={styles.container}>
     <View style={sheet.rowCenterSplit}>
-      <Text style={styles.time}>{moment(item.date).format('hh:mm')}</Text>
+      <Text style={styles.time}>{moment(item.rideDate).format('hh:mm')}</Text>
       <Text style={styles.date}>
-        {moment(item.date).format('Do MMMM YYYY')}
+        {moment(item.rideDate).format('Do MMMM YYYY')}
       </Text>
     </View>
-    <Waypoints
-      ride={item}
-      start={parseCoords(item.startingLocation.coordinates)}
+    <GroupWaypoints
+      group={item.group}
+      location={{coordinates: item.location}}
+      swap={item.rideDirection}
     />
   </UpView>
 );

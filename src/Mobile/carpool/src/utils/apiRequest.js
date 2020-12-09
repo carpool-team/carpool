@@ -1,3 +1,5 @@
+import {WEB_API_URL} from '@env';
+
 export const apiRequest = async (method, endpoint, body = null) => {
   try {
     let request = {};
@@ -12,7 +14,7 @@ export const apiRequest = async (method, endpoint, body = null) => {
     }
 
     console.log(method, endpoint, request);
-    const res = await fetch(`${config.devUrl}${endpoint}`, request);
+    const res = await fetch(`${WEB_API_URL}${endpoint}`, request);
 
     if (res.status > 399) {
       console.log('ERROR', res);

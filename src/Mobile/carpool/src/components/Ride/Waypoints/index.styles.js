@@ -2,32 +2,37 @@ import {StyleSheet} from 'react-native';
 import {sheet, colors} from '../../../styles';
 
 export const styles = StyleSheet.create({
-  marker: {
-    marginRight: 12,
-  },
   container: {
     width: '100%',
     ...sheet.rowCenter,
   },
-  column: {
+  wrapper: {
+    height: 60,
     flex: 1,
+    ...sheet.rowCenter,
+  },
+  columnLeft: {
     flexDirection: 'column',
+    height: 55,
     justifyContent: 'space-between',
-    height: 52,
+    alignItems: 'center',
+    marginRight: 8,
   },
-  from: {
-    ...sheet.textBold,
-    color: colors.blue,
-    fontSize: 16,
-  },
-  to: {
-    ...sheet.textBold,
-    color: colors.green,
-    fontSize: 16,
+  columnRight: {
+    flexDirection: 'column',
+    height: 60,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   placeName: {
     ...sheet.textSemiBold,
     fontSize: 16,
     color: colors.grayDark,
+  },
+  line: {
+    flex: 1,
+    backgroundColor: colors.grayVeryDark,
+    width: 1,
+    marginVertical: 1,
   },
 });
