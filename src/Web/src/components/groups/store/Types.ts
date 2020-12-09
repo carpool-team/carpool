@@ -110,7 +110,6 @@ export interface IGetInvitesActionError
 //#region RIDES
 /** Action for getting rides */
 export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
-	userOnly: boolean;
 }
 
 /** Action for getting rides success */

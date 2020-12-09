@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ButtonSmall from "../ui/buttonSmall/ButtonSmall";
 import { ButtonSmallBackground } from "../ui/buttonSmall/enums/ButtonSmallBackground";
 import { ButtonSmallColor } from "../ui/buttonSmall/enums/ButtonSmallColor";
@@ -22,6 +22,8 @@ import moment from "moment";
 import "./Rides.scss";
 import { connect } from "react-redux";
 import { IGroupsState } from "../groups/store/State";
+import { IGetRidesAction } from "../groups/store/Types";
+import { getRides } from "../groups/store/Actions";
 
 interface IStatePropsType {
 	groups: IGroupsState;
@@ -38,13 +40,26 @@ const mapStateToProps = (state: IStatePropsType): IStateToProps => ({
 	ridesParticipated: state.groups.ridesParticipated,
 });
 
-type StateProps = ReturnType<typeof mapStateToProps>;
+interface IDispatchPropsType {
+	getRides: () => IGetRidesAction;
+}
 
-interface IRidesProps extends RouteComponentProps, IReactI18nProps, StateProps {
+const mapDispatchToProps: IDispatchPropsType = {
+	getRides,
+};
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+interface IRidesProps extends RouteComponentProps, IReactI18nProps, StateProps, DispatchProps {
 
 }
 
 const Rides = (props: IRidesProps) => {
+	useEffect(() => {
+		props.getRides();
+	}, []);
+
 	const cssClasses = {
 		container: "rides--container",
 		leftPanel: "rides--leftPanel",
@@ -154,10 +169,10 @@ const Rides = (props: IRidesProps) => {
 	};
 
 	const renderOwnerList = () => (
-		<RidesOwner firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={props.ridesOwned} />
+		<RidesOwner firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={props.ridesOwned ?? []} />
 	);
 	const renderParticipantList = () => (
-		<RidesParticipant firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={props.ridesParticipated} />
+		<RidesParticipant firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={props.ridesParticipated ?? []} />
 	);
 
 	const UserSwitch = withStyles({
@@ -250,6 +265,6 @@ const Rides = (props: IRidesProps) => {
 
 export default withTranslation()(
 	withRouter(
-		connect(mapStateToProps, null)(Rides)
+		connect(mapStateToProps, mapDispatchToProps)(Rides)
 	)
 );

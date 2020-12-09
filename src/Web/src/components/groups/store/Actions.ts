@@ -120,10 +120,9 @@ export function getInvitesError(error: Error): IGetInvitesActionError {
 //#endregion
 
 //#region RIDES
-export function getRides(userOnly: boolean): IGetRidesAction {
+export function getRides(): IGetRidesAction {
 	return {
 		type: RidesActionTypes.GetRides,
-		userOnly,
 	};
 }
 
