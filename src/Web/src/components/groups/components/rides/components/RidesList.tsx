@@ -10,6 +10,7 @@ import Button from "../../../../ui/button/Button";
 import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 import SearchBar from "../../../../ui/searchBar/SearchBar";
+import { useImmer } from "use-immer";
 
 interface IRidesListProps extends IReactI18nProps {
 	rides: IRide[];
@@ -30,6 +31,7 @@ const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
 
 const RidesList = (props: IRidesListProps) => {
 	const [searchKey, setSearchKey] = useState(null);
+
 	const cssClasses = {
 		list: "ridesList",
 		mainRow: "ridesList--mainRow",

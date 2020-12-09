@@ -24,6 +24,21 @@ import {
 	KeyboardTimePicker,
 	KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { useImmer } from "use-immer";
+import { isValidDate } from "../../../../helpers/UniversalHelper";
+import { ValidationType } from "../../../ui/input/enums/ValidationType";
+import { address } from "faker";
+
+interface IRideDays {
+	all: boolean;
+	monday: boolean;
+	tuesday: boolean;
+	wednesday: boolean;
+	thursday: boolean;
+	friday: boolean;
+	saturday: boolean;
+	sunday: boolean;
+}
 
 export interface IAddGroupProps extends IReactI18nProps {
 	group: IGroup;
@@ -35,6 +50,13 @@ enum PanelType {
 }
 
 const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
+	const [inputsValid, setInputsValid] = useImmer({
+		date: true,
+		time: true,
+		targetAddress: true,
+		fromAddress: true,
+		seatsNumber: true,
+	});
 
 	const resources = {
 		disposableBtn: "rides.disposableBtn",
@@ -45,7 +67,9 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		to: "rides.to",
 		seats: "rides.seats",
 		date: "rides.date",
+		invalidDate: "rides.invalidDate",
 		time: "rides.time",
+		invalidTime: "rides.invalidTime",
 		addBtn: "rides.addBtn",
 		monday: "common.monday",
 		tuesday: "common.tuesday",
@@ -85,28 +109,29 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 
 	const { t } = props;
 
-	const [switchCssClass, setSwitchCssClass] = useState({from: cssClasses.switchActive, to: null});
-
+	const [switchCssClass, setSwitchCssClass] = useState({ from: cssClasses.switchActive, to: null });
 	const [selectedScreen, setSelectedScreen] = useState(PanelType.Disposable);
+
 	const [startgroup, setStartGroup] = useState(false);
 
 	const [fromAddressCoordinates, setFromAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 	const [toAddressCoordinates, setToAddressCoordinates] = useState([props.group.location.latitude, props.group.location.longitude]);
 
-	const [userAddressName, setUserAddresName] = useState(undefined);
-
-	const [seats, setSeats] = useState(undefined);
+	const [userAddressName, setUserAddresName] = useState<string>(undefined);
+	const [seats, setSeats] = useState<string>(undefined);
 
 	const [selectedDate, setSelectedDate] = useState(new Date("2014-08-18T21:11:54"));
+	const [days, setDays] = useState<IRideDays>({ all: false, monday: false, tuesday: false, wednesday: false, thursday: false, friday: false, saturday: false, sunday: false });
 
-	const [days, setDays] = useState({all: false, monday: false, tuesday: false, wednesday: false, thursday: false, friday: false, saturday: false, sunday: false});
+	const [submitted, setSubmitted] = useState(false);
 
-	const handleDateChange = (date) => {
+	const handleDateChange = (date: Date) => {
 		setSelectedDate(date);
+		console.log(date);
 	};
 
 	const ride: IRide = {
-		id : "fdsfds",
+		id: "fdsfds",
 		owner: {
 			userId: "fdasfda",
 			firstName: "Maciej",
@@ -155,23 +180,24 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 		setToAddressCoordinates(address1);
 		setStartGroup(event.target.checked);
 		if (event.target.checked) {
-			setSwitchCssClass({from: null, to: cssClasses.switchActive});
+			setSwitchCssClass({ from: null, to: cssClasses.switchActive });
 		} else {
-			setSwitchCssClass({from: cssClasses.switchActive, to: null});
+			setSwitchCssClass({ from: cssClasses.switchActive, to: null });
 		}
 	};
 
 	const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.name === "all") {
-			setDays({...days, monday: event.target.checked,
-								tuesday: event.target.checked,
-								wednesday: event.target.checked,
-								thursday: event.target.checked,
-								friday: event.target.checked,
-								saturday: event.target.checked,
-								sunday: event.target.checked,
-								all: event.target.checked,
-							});
+			setDays({
+				...days, monday: event.target.checked,
+				tuesday: event.target.checked,
+				wednesday: event.target.checked,
+				thursday: event.target.checked,
+				friday: event.target.checked,
+				saturday: event.target.checked,
+				sunday: event.target.checked,
+				all: event.target.checked,
+			});
 		} else {
 			setDays({ ...days, [event.target.name]: event.target.checked });
 		}
@@ -213,83 +239,126 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 
 	const renderDisposablePanel = () => {
 
-		return(
+		return (
 			<div className={cssClasses.inputs}>
 				<MuiPickersUtilsProvider utils={DateFnsUtils}>
-						<KeyboardDatePicker
-							className={cssClasses.datePicker}
-							disableToolbar
-							variant="inline"
-							format="dd/MM/yyyy"
-							margin="dense"
-							id="date-picker-inlie"
-							label={t(resources.date)}
-							value={selectedDate}
-							onChange={handleDateChange}
-							KeyboardButtonProps={{
-								"aria-label": "change date",
-							}}
-						/>
-						<KeyboardTimePicker
-							margin="normal"
-							id="time-picker"
-							className={cssClasses.datePicker}
-							label={t(resources.time)}
-							value={selectedDate}
-							onChange={handleDateChange}
-							KeyboardButtonProps={{
-								"aria-label": "change time",
+					<KeyboardDatePicker
+						className={cssClasses.datePicker}
+						disableToolbar
+						variant="inline"
+						format="dd/MM/yyyy"
+						margin="dense"
+						id="date-picker-inlie"
+						label={t(resources.date)}
+						value={selectedDate}
+						onChange={(date: Date, value?: string) => {
+							handleDateChange(date);
+							setInputsValid(draft => {
+								draft.date = isValidDate(date);
+							});
+							console.log("DATE: ", isValidDate(date));
 						}}
-						/>
-					</MuiPickersUtilsProvider>
-					<div className={cssClasses.checkboxLabel}>
-						{t(resources.fromOrTo)}
-					</div>
+						invalidDateMessage={t(resources.invalidDate)}
+						KeyboardButtonProps={{
+							"aria-label": "change date",
+						}}
+					/>
+					<KeyboardTimePicker
+						margin="normal"
+						id="time-picker"
+						className={cssClasses.datePicker}
+						label={t(resources.time)}
+						value={selectedDate}
+						onChange={(date: Date, value?: string) => {
+							handleDateChange(date);
+							setInputsValid(draft => {
+								draft.time = isValidDate(date);
+							});
+							console.log("TIME: ", isValidDate(date));
+						}}
+						invalidDateMessage={t(resources.invalidTime)}
+						KeyboardButtonProps={{
+							"aria-label": "change time",
+						}}
+					/>
+				</MuiPickersUtilsProvider>
+				<div className={cssClasses.checkboxLabel}>
+					{t(resources.fromOrTo)}
+				</div>
 				<div className={cssClasses.checkboxContainer}>
 					<span className={switchCssClass.from} id={ids.from}> {t(resources.from)}</span>
-						<FormControlLabel
-							control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
-							label=""
-						/>
-					<span className={switchCssClass.to} id={ids.to}> {t(resources.to) }</span>
+					<FormControlLabel
+						control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
+						label=""
+					/>
+					<span className={switchCssClass.to} id={ids.to}> {t(resources.to)}</span>
 				</div>
 				{!startgroup &&
 					<Input
-						style = { cssClasses.input}
+						style={cssClasses.input}
 						type={InputType.Address}
 						changeHandler={newValue => setUserAddresName(newValue)}
 						placeholder={"Adres " + t(resources.to) + " przejazdu"}
 						value={(userAddressName)}
 						icon={InputIcon.Location}
 						addressCords={coords => setUserCoordinates(coords)}
+						validation={{
+							validate: submitted,
+							type: ValidationType.Address,
+							isValidCallback: (isValid) => {
+								setInputsValid(draft => {
+									draft.targetAddress = isValid;
+								});
+							},
+						}}
 					/>
 				}
 				{startgroup &&
 					<Input
-						style = {cssClasses.input}
+						style={cssClasses.input}
 						type={InputType.Address}
 						changeHandler={newValue => setUserAddresName(newValue)}
 						placeholder={"Adres " + t(resources.from)}
 						value={(userAddressName)}
 						icon={InputIcon.Location}
 						addressCords={coords => setUserCoordinates(coords)}
+						validation={{
+							validate: submitted,
+							type: ValidationType.Address,
+							isValidCallback: (isValid) => {
+								setInputsValid(draft => {
+									draft.fromAddress = isValid;
+								});
+							},
+						}}
 					/>
 				}
 				<Input
-						style = { cssClasses.input}
-						type={InputType.Text}
-						changeHandler={newValue => setSeats(newValue)}
-						placeholder={t(resources.seats)}
-						value={(seats)}
-						icon={InputIcon.Seats}
-					/>
-					<Button
-						className={cssClasses.button}
-						onClick={() => (null)}
-						color={ButtonColor.White}
-						background={ButtonBackground.Blue}>
-						{t(resources.addBtn)}
-					</Button>
+					style={cssClasses.input}
+					type={InputType.Text}
+					changeHandler={newValue => setSeats(newValue)}
+					placeholder={t(resources.seats)}
+					value={(seats)}
+					icon={InputIcon.Seats}
+					validation={{
+						validate: submitted,
+						type: ValidationType.Numeric,
+						isValidCallback: (isValid) => {
+							setInputsValid(draft => {
+								draft.seatsNumber = isValid;
+							});
+						},
+					}}
+				/>
+				<Button
+					className={cssClasses.button}
+					onClick={() => {
+						setSubmitted(true);
+					}}
+					color={ButtonColor.White}
+					background={ButtonBackground.Blue}>
+					{t(resources.addBtn)}
+				</Button>
 
 			</div>
 		);
@@ -297,73 +366,73 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 
 	const renderCyclicPanel = () => {
 
-		return(
+		return (
 			<div className={cssClasses.inputs}>
 				<MuiPickersUtilsProvider utils={DateFnsUtils}>
-						<KeyboardTimePicker
-							margin="normal"
-							id="time-picker"
-							className={cssClasses.datePicker}
-							label={t(resources.time)}
-							value={selectedDate}
-							onChange={handleDateChange}
-							KeyboardButtonProps={{
-								"aria-label": "change time",
+					<KeyboardTimePicker
+						margin="normal"
+						id="time-picker"
+						className={cssClasses.datePicker}
+						label={t(resources.time)}
+						value={selectedDate}
+						onChange={handleDateChange}
+						KeyboardButtonProps={{
+							"aria-label": "change time",
 						}}
+					/>
+				</MuiPickersUtilsProvider>
+				<div className={cssClasses.daysContainer}>
+					<div className={cssClasses.daysColumn}>
+						<FormControlLabel
+							control={<DaysSwitch size="medium" checked={days.all} onChange={handleDayChange} name="all" />}
+							label={t(resources.all)}
 						/>
-					</MuiPickersUtilsProvider>
-					<div className={cssClasses.daysContainer}>
-						<div className={cssClasses.daysColumn}>
-							<FormControlLabel
-									control={<DaysSwitch size="medium" checked={days.all} onChange={handleDayChange} name="all"/>}
-									label={t(resources.all)}
-								/>
-							<FormControlLabel
-									control={<DaysSwitch size="medium" checked={days.monday} onChange={handleDayChange} name="monday"/>}
-									label={t(resources.monday)}
-								/>
-								<FormControlLabel
-									control={<DaysSwitch size="medium" checked={days.tuesday} onChange={handleDayChange} name="tuesday"/>}
-									label={t(resources.tuesday)}
-								/>
-								<FormControlLabel
-									control={<DaysSwitch size="medium" checked={days.wednesday} onChange={handleDayChange} name="wednesday"/>}
-									label={t(resources.wednesday)}
-								/>
-						</div>
-						<div className={cssClasses.daysColumn}>
-							<FormControlLabel
-									control={<DaysSwitch size="medium" checked={days.thursday} onChange={handleDayChange} name="thursday"/>}
-									label={t(resources.thursday)}
-								/>
-								<FormControlLabel
-									control={<DaysSwitch size="medium" checked={days.friday} onChange={handleDayChange} name="friday"/>}
-									label={t(resources.friday)}
-								/>
-								<FormControlLabel
-									control={<DaysSwitch size="medium" checked={days.saturday} onChange={handleDayChange} name="saturday"/>}
-									label={t(resources.saturday)}
-								/>
-								<FormControlLabel
-									control={<DaysSwitch size="medium" checked={days.sunday} onChange={handleDayChange} name="sunday"/>}
-									label={t(resources.sunday)}
-								/>
-						</div>
+						<FormControlLabel
+							control={<DaysSwitch size="medium" checked={days.monday} onChange={handleDayChange} name="monday" />}
+							label={t(resources.monday)}
+						/>
+						<FormControlLabel
+							control={<DaysSwitch size="medium" checked={days.tuesday} onChange={handleDayChange} name="tuesday" />}
+							label={t(resources.tuesday)}
+						/>
+						<FormControlLabel
+							control={<DaysSwitch size="medium" checked={days.wednesday} onChange={handleDayChange} name="wednesday" />}
+							label={t(resources.wednesday)}
+						/>
 					</div>
-					<div className={cssClasses.checkboxLabel}>
-						{t(resources.fromOrTo)}
+					<div className={cssClasses.daysColumn}>
+						<FormControlLabel
+							control={<DaysSwitch size="medium" checked={days.thursday} onChange={handleDayChange} name="thursday" />}
+							label={t(resources.thursday)}
+						/>
+						<FormControlLabel
+							control={<DaysSwitch size="medium" checked={days.friday} onChange={handleDayChange} name="friday" />}
+							label={t(resources.friday)}
+						/>
+						<FormControlLabel
+							control={<DaysSwitch size="medium" checked={days.saturday} onChange={handleDayChange} name="saturday" />}
+							label={t(resources.saturday)}
+						/>
+						<FormControlLabel
+							control={<DaysSwitch size="medium" checked={days.sunday} onChange={handleDayChange} name="sunday" />}
+							label={t(resources.sunday)}
+						/>
 					</div>
+				</div>
+				<div className={cssClasses.checkboxLabel}>
+					{t(resources.fromOrTo)}
+				</div>
 				<div className={cssClasses.checkboxContainer}>
 					<span className={switchCssClass.from} id={ids.from}> {t(resources.from)}</span>
-						<FormControlLabel
-							control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
-							label=""
-						/>
-					<span className={switchCssClass.to} id={ids.to}> {t(resources.to) }</span>
+					<FormControlLabel
+						control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
+						label=""
+					/>
+					<span className={switchCssClass.to} id={ids.to}> {t(resources.to)}</span>
 				</div>
 				{!startgroup &&
 					<Input
-						style = { cssClasses.input}
+						style={cssClasses.input}
 						type={InputType.Address}
 						changeHandler={newValue => setUserAddresName(newValue)}
 						placeholder={"Adres " + t(resources.to) + " przejazdu"}
@@ -374,7 +443,7 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 				}
 				{startgroup &&
 					<Input
-						style = {cssClasses.input}
+						style={cssClasses.input}
 						type={InputType.Address}
 						changeHandler={newValue => setUserAddresName(newValue)}
 						placeholder={"Adres " + t(resources.from)}
@@ -384,20 +453,20 @@ const AddRideFormScreen: React.FunctionComponent<IAddGroupProps> = props => {
 					/>
 				}
 				<Input
-						style = { cssClasses.input}
-						type={InputType.Text}
-						changeHandler={newValue => setSeats(newValue)}
-						placeholder={t(resources.seats)}
-						value={(seats)}
-						icon={InputIcon.Seats}
-					/>
-					<Button
-						className={cssClasses.button}
-						onClick={() => (null)}
-						color={ButtonColor.White}
-						background={ButtonBackground.Blue}>
-						{t(resources.addBtn)}
-					</Button>
+					style={cssClasses.input}
+					type={InputType.Text}
+					changeHandler={newValue => setSeats(newValue)}
+					placeholder={t(resources.seats)}
+					value={(seats)}
+					icon={InputIcon.Seats}
+				/>
+				<Button
+					className={cssClasses.button}
+					onClick={() => (null)}
+					color={ButtonColor.White}
+					background={ButtonBackground.Blue}>
+					{t(resources.addBtn)}
+				</Button>
 
 			</div>
 		);

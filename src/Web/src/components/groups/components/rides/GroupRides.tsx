@@ -8,9 +8,8 @@ import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
 import ButtonLink from "../../../ui/buttonLink/ButtonLink";
 import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
 import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
-import {ButtonLinkStyle} from "../../../ui/buttonLink/enums/ButtonLinkStyle";
+import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle";
 import { mainRoutes } from "../../../layout/components/LayoutRouter";
-import ridesExample from "../../../../examples/exampleRides";
 import { IRide } from "../../../../components/groups/interfaces/IRide";
 import MediaQuery from "react-responsive";
 import MapBoxRides from "../../../map/MapBoxRides";
@@ -18,9 +17,6 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import GroupsRouter from "../GroupsRouter";
-import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
-import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 interface IGroupRidesProps extends IGroupDetailedViewProps, RouteComponentProps, IReactI18nProps {
 
@@ -46,7 +42,6 @@ const GroupRides = (props: IGroupRidesProps) => {
 		owner: "rides.ownerOnly"
 	};
 
-	const rides: IRide[] = ridesExample;
 	const [selectedRide, setSelectedRide] = useState(null);
 
 	const setRide = (ride: IRide) => {
@@ -59,9 +54,12 @@ const GroupRides = (props: IGroupRidesProps) => {
 	const { t } = props;
 
 	return (
-		<GroupDetailedView group={props.group}>
+		<GroupDetailedView
+			group={props.group}
+			rides={props.rides}
+		>
 			<div className={cssClasses.leftPanel}>
-			<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
+				<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
 				<div className={cssClasses.leftLabels}>
 					<Button onClick={() => {
 						history.push(`/${mainRoutes.groups}`);
@@ -82,7 +80,7 @@ const GroupRides = (props: IGroupRidesProps) => {
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<div className={cssClasses.leftList}>
-					<RidesList rideSelected={selectedRide} setRide={setRide} rides={rides} />
+					<RidesList rideSelected={selectedRide} setRide={setRide} rides={props.rides} />
 				</div>
 			</div>
 			<MediaQuery query="(min-width: 900px)">

@@ -13,6 +13,18 @@ export function getId(): string {
 	return res;
 }
 
+export function isValidDate(d: any): boolean {
+	if (Object.prototype.toString.call(d) === "[object Date]") {
+		if (isNaN(d.getTime())) {
+			return false;
+		} else {
+			return true;
+		}
+	} else {
+		return true;
+	}
+}
+
 export function foreach<T>(iterable: { [key: string]: T }, callback: (item: T) => void) {
 	Object.keys(iterable).forEach(key => {
 		callback(iterable[key]);

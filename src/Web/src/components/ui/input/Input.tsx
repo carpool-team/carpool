@@ -35,11 +35,13 @@ const defaultValidationTextKeys = {
 	[ValidationType.Email]: "input.validation.emailInvalid",
 	[ValidationType.Required]: "input.validation.fieldRequired",
 	[ValidationType.Address]: "input.validation.address",
+	[ValidationType.Numeric]: "input.validation.numeric",
 };
 
 const regexes = {
 	[ValidationType.Email]: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 	[ValidationType.PostalCode]: /^\d{2}\-\d{3}$/,
+	[ValidationType.Numeric]: /^\d+$/,
 };
 
 const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
@@ -64,6 +66,8 @@ const validateInput = (data: IInputValidationData) => {
 			return data.customValidation(data.value);
 		case ValidationType.Address:
 			return data.isAddressPicked;
+		case ValidationType.Numeric:
+			return regexes[data.type].test(data.value);
 		default:
 			return true;
 	}

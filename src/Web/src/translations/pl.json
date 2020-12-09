@@ -62,7 +62,9 @@
             "to": "końcowy",
             "seats": "Ilość miejsc w samochodzie",
             "date": "Wybierz datę przejazdu.",
-            "time": "Wybierz godzinę przejazdu",
+            "time": "Wybierz godzinę przejazdu.",
+            "invalidDate": "Niewłaściwa data przejazdu",
+            "invalidTime": "Niewłaściwa godzina przejazdu",
             "addBtn": "Utwórz"
         },
         "footer": {
@@ -115,7 +117,8 @@
             "validation": {
                 "emailInvalid": "Nieprawidłowy adres e-mail",
                 "fieldRequired": "Pole wymagane",
-                "address": "Niepoprawny adres, proszę wybrać adres z podpowiedzi"
+                "address": "Niepoprawny adres, proszę wybrać adres z podpowiedzi",
+                "numeric": "Niepoprawna liczba"
             }
         },
         "error": {

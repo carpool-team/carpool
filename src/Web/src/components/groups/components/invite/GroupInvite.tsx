@@ -6,7 +6,10 @@ interface IGroupInviteProps extends IGroupDetailedViewProps {
 
 const GroupInvite = (props: IGroupInviteProps) => {
 	return (
-		<GroupDetailedView group={props.group}>
+		<GroupDetailedView
+			group={props.group}
+			rides={props.rides}
+		>
 			GROUP INVITE: {props.group.id}
 		</GroupDetailedView>
 	);
