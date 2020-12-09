@@ -110,8 +110,8 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					icon={InputIcon.Location}
 					addressCords={coords => {
 						props.callbacks.handleChange({
-							latitude: coords[0],
-							longitude: coords[1],
+							latitude: coords[1],
+							longitude: coords[0],
 						}, dataKeys.location);
 						setAddressCoordinates(coords);
 					}}
