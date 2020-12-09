@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import OnBoarding from '../../screens/OnBoarding';
 import DrawerNavigator from './DrawerNavigator';
+import BottomTabs from './BottomTabs';
 import AuthStack from './AuthStack';
 import {useDispatch, useSelector} from 'react-redux';
 import {readData, STORAGE_KEYS} from '../../storage';
@@ -47,8 +48,8 @@ const MainStackNavigator = () => {
       )}
       {isLoaded && tokens.data && (
         <Stack.Screen
-          name="DrawerNavigator"
-          component={DrawerNavigator}
+          name="BottomTabs"
+          component={BottomTabs}
           options={{
             headerShown: false,
           }}
@@ -57,5 +58,15 @@ const MainStackNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+{
+  /* <Stack.Screen
+  name="DrawerNavigator"
+  component={DrawerNavigator}
+  options={{
+    headerShown: false,
+  }}
+/>; */
+}
 
 export default MainStackNavigator;

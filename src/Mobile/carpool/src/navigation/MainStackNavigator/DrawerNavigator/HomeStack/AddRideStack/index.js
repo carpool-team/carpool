@@ -30,7 +30,8 @@ const AddRideStack = props => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        headerTitle: 'Create a new ride',
+        headerLeft: null,
       }}>
       <Stack.Screen name="SelectGroup" component={SelectGroup} />
       <Stack.Screen name="SelectDirection" component={SelectDirection} />

@@ -1,0 +1,35 @@
+import * as React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import DriversRides from '../../../../screens/drawer/RidesStack/DriversRides';
+import DriversRideDetails from '../../../../screens/drawer/RidesStack/DriversRideDetails';
+import PassengersRideDetails from '../../../../screens/drawer/RidesStack/PassengersRideDetails';
+
+const Stack = createStackNavigator();
+
+const RidesStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="DriversRides"
+      component={DriversRides}
+      options={{
+        headerTitle: 'Your rides',
+      }}
+    />
+    <Stack.Screen
+      name="DriversRideDetails"
+      component={DriversRideDetails}
+      options={{
+        headerTitle: 'Ride details',
+      }}
+    />
+    <Stack.Screen
+      name="PassengersRideDetails"
+      component={PassengersRideDetails}
+      options={{
+        headerTitle: 'Ride details',
+      }}
+    />
+  </Stack.Navigator>
+);
+
+export default RidesStack;
