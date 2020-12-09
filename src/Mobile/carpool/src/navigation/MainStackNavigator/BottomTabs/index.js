@@ -8,6 +8,8 @@ import RidesStack from './RidesStack';
 import AddRideStack from './AddRideStack';
 import {colors} from '../../../styles';
 import {useActiveAccount} from '../../../hooks';
+import SearchStack from './SearchStack';
+import SettingsStack from './SettingsStack';
 
 const Tabs = createBottomTabNavigator();
 
@@ -47,7 +49,7 @@ const BottomTabs = () => {
       {isPassenger ? (
         <Tabs.Screen
           name="SearchStack"
-          component={GroupsStack}
+          component={SearchStack}
           options={{
             tabBarIcon: ({color, size}) => (
               <Icon name="search" size={0.7 * size} color={color} />
@@ -79,7 +81,7 @@ const BottomTabs = () => {
       />
       <Tabs.Screen
         name="SettingsStack"
-        component={RidesStack}
+        component={SettingsStack}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="cog" size={0.7 * size} color={color} />

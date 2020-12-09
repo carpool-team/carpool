@@ -1,17 +1,17 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Settings} from '../../../../screens/BottomTabs';
+import {Search} from '../../../../screens/BottomTabs';
 
 const Stack = createStackNavigator();
 
-const SettingsStack = () => (
+const SearchStack = () => (
   <Stack.Navigator
     screenOptions={{
-      headerTitle: 'Settings for a ride',
+      headerTitle: 'Search for a ride',
       headerLeft: null,
     }}>
-    <Stack.Screen name="Settings" component={Settings} />
+    <Stack.Screen name="Search" component={Search} />
   </Stack.Navigator>
 );
 
-export default SettingsStack;
+export default SearchStack;
