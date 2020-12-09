@@ -1,12 +1,13 @@
 import * as React from "react";
 import { CSSProperties } from "react";
-import ReactMapboxGl, { Layer, Feature, Popup, Marker, GeoJSONLayer} from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, Popup, Marker, GeoJSONLayer } from "react-mapbox-gl";
 import mapConfig from "./mapConfig";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { IRide } from "components/groups/interfaces/IRide";
 import mapboxDirections from "@mapbox/mapbox-sdk/services/directions";
+import { RideDirection } from "../groups/api/addRide/AddRideRequest";
 
 const Mapbox = ReactMapboxGl({
 	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
@@ -15,7 +16,7 @@ const Mapbox = ReactMapboxGl({
 	accessToken: mapConfig.mapboxKey
 });
 
-const directionsClient = mapboxDirections({accessToken: mapConfig.mapboxKey});
+const directionsClient = mapboxDirections({ accessToken: mapConfig.mapboxKey });
 
 export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
@@ -49,30 +50,30 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	private onFindRoute = async (ride: IRide) => {
 		try {
 			if (!ride) {
-				this.setState(produce((draft: IMapState) => {draft.route = null; }));
+				this.setState(produce((draft: IMapState) => { draft.route = null; }));
 			}
 			const response = await directionsClient
 				.getDirections({
 					profile: "driving-traffic",
 					waypoints: [
 						{
-							coordinates: [ride.startingLocation.latitude, ride.startingLocation.longitude],
+							coordinates: [ride.location.latitude, ride.location.longitude],
 						},
 						{
-							coordinates: [ride.destination.latitude, ride.destination.longitude]
+							coordinates: [ride.group.location.latitude, ride.group.location.longitude]
 						},
 					],
 					overview: "full",
 					geometries: "geojson",
 				})
 				.send();
-				this.setState(produce((draft: any) => {
-					draft.route = response.body.routes[0].geometry.coordinates;
-				}));
+			this.setState(produce((draft: any) => {
+				draft.route = response.body.routes[0].geometry.coordinates;
+			}));
 
-			} catch (err) {
-				console.log(err);
-			} finally {
+		} catch (err) {
+			console.log(err);
+		} finally {
 		}
 	}
 	componentDidMount() {
@@ -81,19 +82,19 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		}
 	}
 	componentDidUpdate() {
-			if (this.state.ride !== this.props.ride) {
-				if (this.props.ride) {
-					this.getBounds(this.props.ride);
-					}
-					this.onFindRoute(this.props.ride);
-					this.setState(produce((draft: IMapState) => {
-						draft.ride = this.props.ride;
-				}));
+		if (this.state.ride !== this.props.ride) {
+			if (this.props.ride) {
+				this.getBounds(this.props.ride);
+			}
+			this.onFindRoute(this.props.ride);
+			this.setState(produce((draft: IMapState) => {
+				draft.ride = this.props.ride;
+			}));
+		}
 	}
-}
 
 	private getBounds = (ride: IRide) => {
-		const allCoords = [[ride.destination.latitude, ride.startingLocation.latitude], [ride.destination.longitude, ride.startingLocation.longitude]];
+		const allCoords = [[ride.group.location.latitude, ride.location.latitude], [ride.group.location.longitude, ride.location.longitude]];
 		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
 
 		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
@@ -138,7 +139,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			color: "#ee5253"
 		};
 		const lineLayout = {
-			"line-cap": "round" ,
+			"line-cap": "round",
 			"line-join": "round"
 		};
 		const linePaint = {
@@ -175,8 +176,8 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					/>
 				}
 				{ride !== null &&
-				<>
-				{/* <Marker
+					<>
+						{/* <Marker
 					style= {toMarkerStyle}
 					coordinates={[ride.destination.latitude, ride.destination.longitude]}
 					anchor="bottom"
@@ -190,18 +191,18 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					>
 					<i className={"fa fa-map-marker"}></i>
 				</Marker> */}
-				<Popup coordinates={[ride.destination.latitude, ride.destination.longitude]}>
-					<div style={popupStyle}>
-						{"Lokalizacja końcowa."}
-					</div>
-				</Popup>
-				<Popup coordinates={[ride.startingLocation.latitude, ride.startingLocation.longitude]}>
-					<div style={popupStyle}>
-						{"Lokalizacja startowa."}
-					</div>
-				</Popup>
-				</>
+						<Popup coordinates={[ride.group.location.latitude, ride.location.longitude]}>
+							<div style={popupStyle}>
+								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "początkowa" : "końcowa"}`}
+							</div>
+						</Popup>
+						<Popup coordinates={[ride.location.latitude, ride.location.longitude]}>
+							<div style={popupStyle}>
+								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "końcowa" : "początkowa"}`}
+							</div>
+						</Popup>
+					</>
 				}
-			</Mapbox>		);
+			</Mapbox>);
 	}
 }

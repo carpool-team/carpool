@@ -11,6 +11,7 @@ import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 import SearchBar from "../../../../ui/searchBar/SearchBar";
 import { useImmer } from "use-immer";
+import { RideDirection } from "../../../api/addRide/AddRideRequest";
 
 interface IRidesListProps extends IReactI18nProps {
 	rides: IRide[];
@@ -103,14 +104,13 @@ const RidesList = (props: IRidesListProps) => {
 				useEffect(() => {
 					if (ride) {
 						if (!fromName || !toName) {
-							onGetFromName([
-								ride.startingLocation.latitude,
-								ride.startingLocation.longitude,
-							]);
-							onGetToName([
-								ride.destination.latitude,
-								ride.destination.longitude,
-							]);
+							if (ride.rideDirection === RideDirection.To) {
+								onGetFromName([ride.location.latitude, ride.location.longitude]);
+								onGetToName([ride.group.location.latitude, ride.group.location.longitude]);
+							} else {
+								onGetFromName([ride.group.location.latitude, ride.group.location.longitude]);
+								onGetToName([ride.location.latitude, ride.location.longitude]);
+							}
 						}
 					}
 				});
@@ -149,7 +149,7 @@ const RidesList = (props: IRidesListProps) => {
 		};
 
 		return (
-			<li key={props.ride.id}>
+			<li key={props.ride.rideId}>
 				<button
 					className={cssClasses.button}
 					onClick={() => props.setRide(props.ride)}
@@ -165,7 +165,7 @@ const RidesList = (props: IRidesListProps) => {
 					</div>
 					<div className={cssClasses.bottomRow}>
 						<div className={cssClasses.driver}>
-							{convertDate(props.ride.date)}
+							{convertDate(props.ride.rideDate.toString())}
 						</div>
 					</div>
 				</button>
@@ -185,7 +185,7 @@ const RidesList = (props: IRidesListProps) => {
 		};
 
 		return (
-			<li className={cssClasses.activeContainer} key={props.ride.id}>
+			<li className={cssClasses.activeContainer} key={props.ride.rideId}>
 				<div className={cssClasses.activeButtonContainer}>
 					<div className={cssClasses.mainRow} style={borderColor}>
 						<div className={cssClasses.icon} style={color}>
@@ -198,7 +198,7 @@ const RidesList = (props: IRidesListProps) => {
 					</div>
 					<div className={cssClasses.activeBottomRow}>
 						<div className={cssClasses.activeDate}>
-							{convertDate(props.ride.date)}
+							{convertDate(props.ride.rideDate.toString())}
 						</div>
 						<div className={cssClasses.activeDriver}>
 							Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
@@ -234,9 +234,9 @@ const RidesList = (props: IRidesListProps) => {
 				const color = colorList[colorIndex % colorList.length];
 				const { t } = props;
 				return (
-					<React.Fragment key={ride.id}>
+					<React.Fragment key={ride.rideId}>
 						{(() => {
-							if (props.rideSelected && props.rideSelected.id === ride.id) {
+							if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
 								return (
 									<ActiveItem
 										ride={ride}

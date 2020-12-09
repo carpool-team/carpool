@@ -32,6 +32,7 @@ import { IAddRideInput } from "./interfaces/IAddRideInput";
 import { RouteComponentProps, withRouter } from "react-router";
 import LayoutRouter, { mainRoutes } from "../../../layout/components/LayoutRouter";
 import GroupsRouter from "../GroupsRouter";
+import { RideDirection } from "../../api/addRide/AddRideRequest";
 
 export interface IRideDays {
 	all: boolean;
@@ -164,26 +165,22 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 	};
 
 	const ride: IRide = {
-		id: "fdsfds",
+		rideId: "fdsfds",
 		owner: {
-			userId: "fdasfda",
+			id: "fdasfda",
 			firstName: "Maciej",
 			lastName: "Sobkowiak",
-			vehicle: "Mazda"
+			vehicle: "Mazda",
+			rating: 0,
 		},
-		ownerId: "fdsa",
-		destination: {
+		location: {
 			latitude: toAddressCoordinates[0],
 			longitude: toAddressCoordinates[1]
 		},
-		startingLocation: {
-			latitude: fromAddressCoordinates[0],
-			longitude: fromAddressCoordinates[1]
-		},
-		date: "314212351",
-		isUserParticipant: true,
+		rideDate: new Date(),
 		group: props.group,
-		groupId: props.group.id
+		rideDirection: RideDirection.To,
+		price: 0,
 	};
 
 	const setCurrentList = (list: PanelType) => {

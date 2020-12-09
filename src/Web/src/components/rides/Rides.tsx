@@ -156,7 +156,7 @@ const Rides = (props: IRidesProps) => {
 
 	const matchRides = (rides: IRide[]) => {
 		const filtered = rides.filter(ride => {
-			const current = moment(ride.date);
+			const current = moment(ride.rideDate);
 			if (current.isBetween(moment(date.firstDay), moment(date.lastDay))) {
 				return ride;
 			}

@@ -4,7 +4,7 @@ import { ILocation } from "./ILocation";
 import { RideDirection } from "../api/addRide/AddRideRequest";
 
 /** Ride interface */
-export interface IRide {
+export interface IRide extends ILocation {
 	rideId: string;
 	rideDate: Date;
 	rideDirection: RideDirection;
@@ -12,5 +12,4 @@ export interface IRide {
 	price: number;
 	owner: IParticipant;
 	group: IGroup;
-	location: ILocation;
 }
