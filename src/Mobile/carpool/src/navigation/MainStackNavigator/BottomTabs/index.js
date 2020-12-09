@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import GroupsStack from './GroupsStack';
 import HomeStack from './HomeStack';
 import RidesStack from './RidesStack';
-import AddRideStack from '../DrawerNavigator/HomeStack/AddRideStack';
+import AddRideStack from './AddRideStack';
 import {colors} from '../../../styles';
 import {useActiveAccount} from '../../../hooks';
 
