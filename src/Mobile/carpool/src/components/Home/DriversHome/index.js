@@ -31,7 +31,7 @@ const DriversHome = () => {
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Upcoming ride</Text>
           <Text
-            onPress={() => navigation.navigate('DriversRides')}
+            onPress={() => navigation.navigate('RidesStack')}
             style={styles.seeAll}>
             See all
           </Text>
