@@ -19,6 +19,10 @@ export const initialFormData: IFormData = {
 		address: "",
 		code: "",
 		groupName: "",
+		location: {
+			latitude: 0,
+			longitude: 0,
+		},
 	},
 	user: {
 		name: "",

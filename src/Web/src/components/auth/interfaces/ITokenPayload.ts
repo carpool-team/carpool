@@ -1,5 +1,5 @@
 export interface ITokenPayload {
-	/** Subject */
+	/** Subject (AUTH ID) */
 	sub: string;
 	/** Scope */
 	scope: string;

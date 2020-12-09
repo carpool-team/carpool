@@ -73,10 +73,7 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 			name: this.state.formData.group.groupName,
 			code: this.state.formData.group.code,
 			owner: this.props.userId,
-			location: {
-				latitude: 0,
-				longitude: 0,
-			},
+			location: this.state.formData.group.location,
 			rideCount: 0,
 			userCount: this.state.formData.users.length,
 			// users: this.state.formData.users.map(user => ({

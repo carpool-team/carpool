@@ -7,18 +7,12 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 		switch (endpoint) {
 			case RequestEndpoint.POST_ADD_GROUP:
 				return "/groups";
+			case RequestEndpoint.PUT_UPDATE_GROUP:
+				return `/groups/${queries.groupId}/`;
 			case RequestEndpoint.GET_GROUP_BY_ID:
 				return `/groups/${queries?.groupId}`;
 			case RequestEndpoint.GET_USER_GROUPS:
 				return `/users/${queries?.userId}/groups`;
-			case RequestEndpoint.GET_ALL_GROUPS:
-				return `/groups`;
-			case RequestEndpoint.PUT_ADD_RIDE_TO_GROUP:
-				return `/groups/${queries?.groupId}/rides`;
-			case RequestEndpoint.PUT_ADD_USER_TO_GROUP:
-				return `/groups/${queries?.groupId}/users`;
-			case RequestEndpoint.PUT_ADD_LOCATION_TO_GROUP:
-				return `/groups/${queries?.groupId}/locations`;
 			case RequestEndpoint.DELETE_GROUP_BY_ID:
 				return `/groups/${queries?.groupId}`;
 			case RequestEndpoint.GET_INVITES_BY_USER_ID:

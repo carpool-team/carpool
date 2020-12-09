@@ -25,7 +25,6 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
 import { GetGroupsResponse } from "../api/getGroups/GetGroupsResponse";
-import { tempCoords } from "../../../api/requests/RequestCore";
 import { AddGroupRequest } from "../api/addGroup/AddGroupRequest";
 import { GetInvitesRequest } from "../api/getInvites/GetInvitesRequest";
 import { AnswerInviteRequest } from "../api/answerInvite/AnswerInviteRequest";
@@ -38,30 +37,32 @@ import { ParticipateInRideResponse } from "../api/participateInRide/ParticipateI
 import { ParticipateInRideRequest } from "../api/participateInRide/ParticipateInRideRequest";
 import { getId } from "../../../helpers/UniversalHelper";
 import { IAuthState } from "../../auth/store/State";
+import { UpdateGroupRequest } from "../api/updateGroup/UpdateGroupRequest";
+import { UpdateGroupResponse } from "../api/updateGroup/UpdateGroupResponse";
 
-const addGroupEpic: Epic<GroupsAction> = (action$) =>
+const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.AddGroup),
 		switchMap(async (action: IAddGroupAction) => {
+			const ownerId: number = Number((state$.value.auth as IAuthState).tokenInfo?.payload?.sub);
 			const request: AddGroupRequest = new AddGroupRequest({
 				body: {
-					name: action.group.name,
+					ownerId,
+					location: {
+						latitude: action.group.location.latitude,
+						longitude: action.group.location.longitude,
+					},
 					code: action.group.code,
-					ownerId: getId(),
-					latitude: tempCoords.latitude,
-					longitude: tempCoords.longitude,
+					name: action.group.name,
 				}
 			});
 			const response: AddGroupResponse = await request.send();
-			return response;
-		}),
-		mergeMap((response) => {
-			if (response.status > 200) {
-				toast.error("Error while adding group: " + response.title);
+			if (response.status > 200 || response.isError) {
+				toast.error("Error while adding group: " + response.title ?? response.responseException?.exceptionMessage);
 				return [
 					<IAddGroupActionError>{
 						type: GroupsActionTypes.AddGroupError,
-						error: new Error(response.title)
+						error: new Error(response.title ?? response.responseException?.exceptionMessage)
 					}
 				];
 			} else {
@@ -73,6 +74,7 @@ const addGroupEpic: Epic<GroupsAction> = (action$) =>
 				];
 			}
 		}),
+		mergeMap((response) => response),
 		catchError((err: Error) =>
 			of(<any>{
 				type: GroupsActionTypes.AddGroupError,
@@ -87,7 +89,6 @@ const getGroupsEpic: Epic<GroupsAction> = (action$, state$) =>
 		switchMap(async (action: IGetGroupsAction) => {
 			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
 			const request: GetGroupsRequest = new GetGroupsRequest({
-				userOnly: action.userOnly,
 				userId: uid,
 			});
 			const response: GetGroupsResponse = await request.send();

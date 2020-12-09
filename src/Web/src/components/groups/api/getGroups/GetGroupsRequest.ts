@@ -5,7 +5,6 @@ import { GetGroupsResponse } from "./GetGroupsResponse";
 
 export class GetGroupsRequest extends RequestCore {
 	constructor(init: {
-		userOnly: boolean,
 		count?: number,
 		page?: number,
 		userId?: string,
@@ -13,11 +12,9 @@ export class GetGroupsRequest extends RequestCore {
 		super({
 			properties: {
 				method: RequestType.GET,
-				endpoint: init.userOnly ? RequestEndpoint.GET_ALL_GROUPS : RequestEndpoint.GET_ALL_GROUPS,
+				endpoint: RequestEndpoint.GET_USER_GROUPS,
 				queries: {
-					userId: init.userOnly ? init.userId : undefined,
-					page: init.page ? init.page : 0,
-					count: init.count ? init.count : 9999,
+					userId: init.userId,
 				},
 			}
 		});

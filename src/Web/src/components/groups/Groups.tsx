@@ -47,7 +47,8 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 	getInvitesHandler = () => this.props.invites ?? [];
 
 	getRidesHandler = (owned: boolean) => {
-		return (owned ? this.props.ridesOwned : this.props.ridesParticipated) ?? []; // .filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === this.props.authId));
+		return (owned ? this.props.ridesOwned : this.props.ridesParticipated) ?? [];
+		// .filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === this.props.authId));
 	}
 
 	setSelectedGroupHandler = (id: string) => {

@@ -13,9 +13,10 @@ import MapBoxPicker from "../../../map/MapBoxPicker";
 import { ValidationType } from "../../../ui/input/enums/ValidationType";
 import { each } from "../../../../helpers/UniversalHelper";
 import { useImmer } from "use-immer";
+import { ILocation } from "../../interfaces/ILocation";
 
 interface IFirstStepCallbacks {
-	handleChange: (newValue: string, key: string) => void;
+	handleChange: (newValue: string | { latitude: number, longitude: number }, key: string) => void;
 	incrementStep: () => void;
 }
 
@@ -31,7 +32,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		location: false,
 	});
 	const [validate, setValidate] = useState(false);
-	const [addressCoordinates, setAddressCoordinates] = useState(undefined);
+	const [addressCoordinates, setAddressCoordinates] = useState<[number, number]>([0, 0]);
 
 	const cssClasses = {
 		container: "addGroupContainer",
@@ -42,7 +43,8 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 	const dataKeys = {
 		groupName: "group.groupName",
 		code: "group.code",
-		address: "group.address"
+		address: "group.address",
+		location: "group.location",
 	};
 
 	const resources = {
@@ -106,7 +108,13 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 					placeholder={t(resources.addressInput)}
 					value={props.data.group.address}
 					icon={InputIcon.Location}
-					addressCords={coords => setAddressCoordinates(coords)}
+					addressCords={coords => {
+						props.callbacks.handleChange({
+							latitude: coords[0],
+							longitude: coords[1],
+						}, dataKeys.location);
+						setAddressCoordinates(coords);
+					}}
 					validation={{
 						type: ValidationType.Address,
 						isValidCallback: isValid => {
