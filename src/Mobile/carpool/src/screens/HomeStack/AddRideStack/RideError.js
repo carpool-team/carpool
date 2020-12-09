@@ -11,7 +11,7 @@ const RideError = ({navigation}) => (
         <Text style={styles.info}>Couldn't create a new ride</Text>
       </View>
       <StandardButton
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('RidesStack')}
         color={colors.red}
         title="OK"
       />

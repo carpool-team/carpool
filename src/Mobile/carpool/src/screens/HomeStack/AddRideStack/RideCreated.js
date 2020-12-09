@@ -11,7 +11,7 @@ const RideCreated = ({navigation}) => (
         <Text style={styles.info}>Ride has been created!</Text>
       </View>
       <StandardButton
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('RidesStack')}
         color={colors.blue}
         title="OK"
       />
