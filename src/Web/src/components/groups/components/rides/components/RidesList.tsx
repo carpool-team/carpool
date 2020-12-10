@@ -114,13 +114,20 @@ const RidesList = (props: IRidesListProps) => {
 		let toName: string;
 
 		switch (props.ride.rideDirection) {
-			case 1: {
+			case 0: {
 				fromName = placeName;
 				toName = props.ride.group.name;
+				break;
 			}
-			case 0: {
+			case 1: {
 				toName = placeName;
 				fromName = props.ride.group.name;
+				break;
+			}
+			default: {
+				toName = "";
+				fromName = "";
+				break;
 			}
 		}
 
@@ -141,7 +148,7 @@ const RidesList = (props: IRidesListProps) => {
 								}
 							</div>
 							<div className={cssClasses.toLabel}>
-								{ !loading &&
+								{!loading &&
 									toName
 								}
 								</div>
@@ -200,13 +207,20 @@ const RidesList = (props: IRidesListProps) => {
 		let toName: string;
 
 		switch (props.ride.rideDirection) {
-			case 1: {
+			case 0: {
 				fromName = placeName;
 				toName = props.ride.group.name;
+				break;
 			}
-			case 0: {
+			case 1: {
 				toName = placeName;
 				fromName = props.ride.group.name;
+				break;
+			}
+			default: {
+				toName = "";
+				fromName = "";
+				break;
 			}
 		}
 

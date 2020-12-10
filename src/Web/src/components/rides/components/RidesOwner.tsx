@@ -110,14 +110,21 @@ const RidesOwner = (props: IRidesListProps) => {
 		let fromName: string;
 		let toName: string;
 
-		switch(props.ride.rideDirection) {
-			case 1: {
+		switch (props.ride.rideDirection) {
+			case 0: {
 				fromName = placeName;
 				toName = props.ride.group.name;
+				break;
 			}
-			case 0: {
+			case 1: {
 				toName = placeName;
 				fromName = props.ride.group.name;
+				break;
+			}
+			default: {
+				toName = "";
+				fromName = "";
+				break;
 			}
 		}
 
@@ -194,14 +201,21 @@ const RidesOwner = (props: IRidesListProps) => {
 		let fromName: string;
 		let toName: string;
 
-		switch(props.ride.rideDirection) {
-			case 1: {
+		switch (props.ride.rideDirection) {
+			case 0: {
 				fromName = placeName;
 				toName = props.ride.group.name;
+				break;
 			}
-			case 0: {
+			case 1: {
 				toName = placeName;
 				fromName = props.ride.group.name;
+				break;
+			}
+			default: {
+				toName = "";
+				fromName = "";
+				break;
 			}
 		}
 
