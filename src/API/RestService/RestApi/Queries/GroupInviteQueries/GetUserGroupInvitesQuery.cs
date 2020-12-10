@@ -41,7 +41,8 @@ namespace RestApi.Queries.GroupInviteQueries
 
 			try
 			{
-				var groupInviteDtos = groupInvites.Select(x => new GroupInviteDto(x.IsAccepted,
+				var groupInviteDtos = groupInvites.Select(x => new GroupInviteDto(x.Id,
+						x.IsAccepted,
 						x.IsPending,
 						new GroupDto(x.Group.UserGroups.Count,
 							x.Group.Id,

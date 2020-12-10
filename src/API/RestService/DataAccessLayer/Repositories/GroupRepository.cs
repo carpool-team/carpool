@@ -13,14 +13,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories
 {
-    public class GroupRepository : IGroupRepository
+	public class GroupRepository : IGroupRepository
 	{
 		private readonly CarpoolDbContext _context;
 
 		public GroupRepository(CarpoolDbContext context)
 			=> _context = context;
 
-		public async Task<Domain.Entities.Group> GetByIdAsync(GroupId id, CancellationToken cancellationToken = default)
+		public async Task<Group> GetByIdAsync(GroupId id, CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
 				//.Include(group => group.Rides)
@@ -30,7 +30,7 @@ namespace DataAccessLayer.Repositories
 				.ConfigureAwait(false);
 		}
 
-		public async Task<Domain.Entities.Group> GetByIdAsNoTrackingAsync(GroupId id,
+		public async Task<Group> GetByIdAsNoTrackingAsync(GroupId id,
 			CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
@@ -43,7 +43,7 @@ namespace DataAccessLayer.Repositories
 				.ConfigureAwait(false);
 		}
 
-		public Domain.Entities.Group GetById(GroupId id)
+		public Group GetById(GroupId id)
 		{
 			return _context.Groups
 				.AsNoTracking()
@@ -53,7 +53,7 @@ namespace DataAccessLayer.Repositories
 				.FirstOrDefault(group => group.Id == id);
 		}
 
-		public Domain.Entities.Group GetByIdAsNoTracking(GroupId id)
+		public Group GetByIdAsNoTracking(GroupId id)
 		{
 			return _context.Groups
 				//.Include(group => group.Rides)
@@ -68,7 +68,7 @@ namespace DataAccessLayer.Repositories
 			return await _context.Groups.AnyAsync(group => group.Code == code).ConfigureAwait(false);
 		}
 
-		public async Task<IEnumerable<Domain.Entities.Group>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip)
+		public async Task<IEnumerable<Group>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip)
 		{
 			var groups = await _context.Groups
 				.AsNoTracking()
@@ -104,7 +104,7 @@ namespace DataAccessLayer.Repositories
 
 
 		public Task<bool> AnyWithIdAsync(GroupId groupId, CancellationToken cancellation = default)
-			=> _context.Set<Domain.Entities.Group>().AnyAsync(x => x.Id == groupId, cancellationToken: cancellation);
+			=> _context.Set<Group>().AnyAsync(x => x.Id == groupId, cancellation);
 
 		public async Task AddAsync(Group group, CancellationToken cancellationToken)
 		{
@@ -115,5 +115,5 @@ namespace DataAccessLayer.Repositories
 
 		public void Delete(Group group)
 			=> _context.Set<Group>().Remove(group);
-    }
+	}
 }
