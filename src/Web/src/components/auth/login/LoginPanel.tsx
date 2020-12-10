@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback} from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -54,10 +54,20 @@ const LoginPanel = (props: ILoginPanelProps) => {
 		}
 	};
 
+	const enterFunction = useCallback((event) => {
+		if ( event.keyCode === 13) {
+			setSubmitted(true);
+		}
+	}, []);
+
 	useEffect(() => {
 		if (submitted) {
 			trySendForm();
 		}
+		document.addEventListener("keydown", enterFunction, false);
+		return () => {
+			document.removeEventListener("keydown", enterFunction, false);
+		};
 	}, [submitted, inputsValid]);
 
 	const cssClasses = {
