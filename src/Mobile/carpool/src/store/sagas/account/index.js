@@ -121,16 +121,14 @@ export function* getInvitationsAsync() {
     if (token) {
       yield put(actions.getInvitationsLoading());
 
-      // const res = yield instance.get(`/users/${userId}/group-invites`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+      const res = yield instance.get(`/users/${userId}/group-invites`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      // console.log('RES', res);
-
-      // yield put(actions.getInvitationsSuccess(res.data.result));
-      yield put(actions.getInvitationsSuccess(exampleInvitations));
+      yield put(actions.getInvitationsSuccess(res.data.result));
+      // yield put(actions.getInvitationsSuccess(exampleInvitations));
     }
   } catch (err) {
     if (err.response) {
