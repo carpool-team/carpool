@@ -294,7 +294,7 @@ const addRideEpic: Epic<RideAction> = (action$, state$) => action$.pipe(
 		console.log(action.input);
 		const request: AddRideRequest = new AddRideRequest({
 			body: {
-				rideDirection: action.input.to ? RideDirection.To : RideDirection.From,
+				rideDirection: action.input.rideDirection,
 				date: action.input.date,
 				weekDays: weekdays,
 				ownerId: uid,

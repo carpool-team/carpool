@@ -121,8 +121,8 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 
 	const [startgroup, setStartGroup] = useState(false);
 
-	const [fromAddressCoordinates, setFromAddressCoordinates] = useState(parseCoords(props.group.location));
-	const [toAddressCoordinates, setToAddressCoordinates] = useState(parseCoords(props.group.location));
+	const [location, setLocation] = useState(parseCoords(props.group.location))
+	const [direction, setDirection] = useState(RideDirection.To)
 
 	const [userAddressName, setUserAddresName] = useState<string>("");
 	const [seats, setSeats] = useState<string>("");
@@ -138,10 +138,10 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 				recurring: selectedScreen === PanelType.Cyclic,
 				weekDays: days,
 				groupId: props.group.id.toString(),
-				to: startgroup,
+				rideDirection: direction,
 				location: {
-					latitude: toAddressCoordinates[1],
-					longitude: toAddressCoordinates[0],
+					latitude: location[1],
+					longitude: location[0],
 				},
 				date: selectedDate,
 			};
@@ -175,15 +175,15 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 			rating: 0,
 		},
 		location: {
-			latitude: toAddressCoordinates[1],
-			longitude: toAddressCoordinates[0]
+			latitude: location[1],
+			longitude: location[0]
 		},
 		rideDate: new Date(),
 		group: {
 			...props.group,
 			groupId: props.group.id.toString(),
 		},
-		rideDirection: RideDirection.To,
+		rideDirection: direction,
 		price: 0,
 	};
 
@@ -198,25 +198,17 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 	};
 
 	const setUserCoordinates = (coords: [number, number]) => {
-		if (!startgroup) {
-			setFromAddressCoordinates(parseCoords(props.group.location));
-			setToAddressCoordinates(coords);
-		} else {
-			setFromAddressCoordinates(coords);
-			setToAddressCoordinates(parseCoords(props.group.location));
-		}
+		setLocation(coords)
 	};
 
 	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const address1 = fromAddressCoordinates;
-		const address2 = toAddressCoordinates;
-		setFromAddressCoordinates(address2);
-		setToAddressCoordinates(address1);
 		setStartGroup(event.target.checked);
 		if (event.target.checked) {
 			setSwitchCssClass({ from: null, to: cssClasses.switchActive });
+			setDirection(RideDirection.From)
 		} else {
 			setSwitchCssClass({ from: cssClasses.switchActive, to: null });
+			setDirection(RideDirection.To)
 		}
 	};
 
