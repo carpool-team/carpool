@@ -1,8 +1,8 @@
-﻿using Domain.Entities;
-using IdentifiersShared.Identifiers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Domain.Entities;
+using IdentifiersShared.Identifiers;
 
 namespace Domain.Contracts.Repositories
 {
@@ -11,8 +11,8 @@ namespace Domain.Contracts.Repositories
 		Task<Ride> GetByIdAsync(RideId id, CancellationToken cancellationToken);
 		Task<Ride> GetByIdAsNoTrackingAsync(RideId id, CancellationToken cancellationToken);
 
-        Ride GetById(RideId id);
-		Domain.Entities.Ride GetByAsNoTrackingId(RideId id);
+		Ride GetById(RideId id);
+		Ride GetByAsNoTrackingId(RideId id);
 
 		Task<IEnumerable<Ride>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken);
 

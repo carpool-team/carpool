@@ -79,13 +79,9 @@ namespace DataAccessLayer.Repositories
 		public async Task<double> GetUserRatingAsync(AppUserId appUserId, CancellationToken cancellationToken)
 		{
 			var user = await _context.Users.Include(x => x.Ratings)
-				.SingleOrDefaultAsync(x => x.Id == appUserId, cancellationToken)
-				.ConfigureAwait(false);
-
-			var count = 0;
-			foreach (var rating in user.Ratings)
-				count++;
-			return count == 0 ? 0 : (double) user.Ratings.Sum(x => x.Value) / count;
+				.SingleOrDefaultAsync(x => x.Id == appUserId, cancellationToken);
+			
+			return user.Rating;
 		}
 	}
 }
