@@ -29,9 +29,9 @@ namespace DataAccessLayer.Builders
 				.OnDelete(DeleteBehavior.NoAction)
 				.IsRequired();
 
-			// builder.HasOne(x => x.Group)
-			//        .WithMany()
-			//        .HasForeignKey(x => x.GroupId);
-		}
+            builder.HasOne(x => x.Group)
+                   .WithMany()
+                   .HasForeignKey(x => x.GroupId);
+        }
 	}
 }

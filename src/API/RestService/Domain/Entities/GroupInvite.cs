@@ -12,7 +12,7 @@ namespace Domain.Entities
 
 		public GroupId GroupId { get; set; }
 
-		//public Group Group { get; set; }
+		public Group Group { get; set; }
 
 		public AppUserId InvitedAppUserId { get; set; }
 		public virtual ApplicationUser InvitedApplicationUser { get; set; }

@@ -63,7 +63,7 @@ namespace AuthServer.Controllers
 			if (!result.Succeeded)
 				throw new ApiException(result.Errors);
 
-			var addUser = new AddUserDto(user.AppUserId.Value,
+			var addUser = new AddUserDto(user.AppUserId,
 				user.FirstName,
 				user.LastName,
 				user.Email);

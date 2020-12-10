@@ -5,7 +5,9 @@ using DataAccessLayer.Repositories;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
+using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
+using IdGen;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -40,11 +42,14 @@ namespace RestApi.Commands.GroupInviteCommands
 		public async Task<GroupInviteId> Handle(AddGroupInviteCommand request,
 			CancellationToken cancellationToken)
 		{
+			IdGenerator idGenerator = new IdGenerator(IdGeneratorType.GroupInvite);
 			var groupInvite = new GroupInvite
 			{
+				Id = new GroupInviteId(idGenerator.CreateId()),
 				InvitingAppUserId = request.InviterId,
 				InvitedAppUserId = request.InvitedAppUserId,
 				IsAccepted = false,
+				IsPending = true,
 				DateAdded = DateTime.Now,
 				GroupId = request.GroupId
 			};
