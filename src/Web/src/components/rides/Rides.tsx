@@ -24,6 +24,12 @@ import { connect } from "react-redux";
 import { IGroupsState } from "../groups/store/State";
 import { IGetRidesAction } from "../groups/store/Types";
 import { getRides } from "../groups/store/Actions";
+import Button from "../ui/button/Button";
+import { ButtonColor } from "../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../ui/button/enums/ButtonBackground";
+import { ButtonIcon } from "../ui/button/enums/ButtonIcon";
+import RidesPast from "./components/RidesPast";
+import { List } from "@material-ui/core";
 
 interface IStatePropsType {
 	groups: IGroupsState;
@@ -32,12 +38,20 @@ interface IStatePropsType {
 interface IStateToProps {
 	ridesOwned: IRide[];
 	ridesParticipated: IRide[];
-
+	ridesPastOwner: IRide[];
+	ridesPastParticipated: IRide[];
+}
+enum Lists {
+	Future = "FUTURE",
+	Past = "PAST",
 }
 
 const mapStateToProps = (state: IStatePropsType): IStateToProps => ({
 	ridesOwned: state.groups.ridesOwned,
 	ridesParticipated: state.groups.ridesParticipated,
+	// TODO Pobierać przeszłe przejazdy
+	ridesPastParticipated : null,
+	ridesPastOwner : null
 });
 
 interface IDispatchPropsType {
@@ -74,28 +88,50 @@ const Rides = (props: IRidesProps) => {
 		switch: "rides--leftPanel__switch",
 		dateBar: "dateBar",
 		dateBarRange: "dateBar__range",
-		dateBarArrow: "dateBar__arrow"
+		dateBarArrow: "dateBar__arrow",
+		buttonActive: "groupsManagementButtonActive",
 	};
 
 	const resources = {
 		add: "addBtn",
 		participant: "common.passenger",
-		owner: "common.driver"
+		owner: "common.driver",
+		pastBtn: "rides.pastBtn",
+		futureBtn: "rides.futureBtn"
 	};
 	const ids = {
 		to: "toId",
-		from: "fromId"
+		from: "fromId",
+		past: "pastId",
+		future: "futureId"
 	};
 
 	const [selectedRide, setSelectedRide] = useState(null);
 	const [userOwner, setUserOwner] = useState(false);
 	const [switchCssClass, setSwitchCssClass] = useState({ from: cssClasses.switchActive, to: null });
+	const [activeList, setActiveList] = useState(Lists.Future);
+	const [buttonCssClass, setButtonCssClass] = useState({ future: cssClasses.buttonActive, past: null });
 
 	const setRide = (ride: IRide) => {
 		if (ride !== null) {
 			setSelectedRide(ride);
 		}
 	};
+
+	const	setCurrentList = (list: Lists) => {
+		if (list !== activeList) {
+			if (list === Lists.Future) {
+				setButtonCssClass({future: cssClasses.buttonActive, past: null});
+				setActiveList(Lists.Future);
+				setSelectedRide(null);
+			} else {
+				setButtonCssClass({future: null, past: cssClasses.buttonActive});
+				setActiveList(Lists.Past);
+				setSelectedRide(null);
+			}
+		}
+	};
+
 	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUserOwner(event.target.checked);
 		setSelectedRide(null);
@@ -154,25 +190,17 @@ const Rides = (props: IRidesProps) => {
 		setSelectedRide(null);
 	};
 
-	const matchRides = (rides: IRide[]) => {
-		const filtered = rides.filter(ride => {
-			const current = moment(ride.rideDate);
-			if (current.isBetween(moment(date.firstDay), moment(date.lastDay))) {
-				return ride;
-			}
-		});
-
-		if (filtered.length) {
-			return filtered;
-		}
-		return [];
-	};
-
 	const renderOwnerList = () => (
 		<RidesOwner firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={props.ridesOwned ?? []} />
 	);
 	const renderParticipantList = () => (
 		<RidesParticipant firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={props.ridesParticipated ?? []} />
+	);
+	const renderPastParticipantList = () => (
+		<RidesPast  rideSelected={selectedRide} setRide={setRide} rides={props.ridesPastParticipated ?? []}/>
+	);
+	const renderPastOwnerList = () => (
+		<RidesPast  rideSelected={selectedRide} setRide={setRide} rides={props.ridesPastOwner ?? []}/>
 	);
 
 	const UserSwitch = withStyles({
@@ -196,9 +224,17 @@ const Rides = (props: IRidesProps) => {
 
 		let list: JSX.Element;
 		if (userOwner) {
-			list = renderOwnerList();
+			if (activeList === Lists.Future) {
+				list = renderOwnerList();
+			} else {
+				list = renderPastOwnerList();
+			}
 		} else {
-			list = renderParticipantList();
+			if (activeList === Lists.Future) {
+				list = renderParticipantList();
+			} else {
+				list = renderPastParticipantList();
+			}
 		}
 		return list;
 	};
@@ -210,7 +246,13 @@ const Rides = (props: IRidesProps) => {
 		<div className={cssClasses.container}>
 			<div className={cssClasses.leftPanel}>
 				<div className={cssClasses.leftLabels}>
-					<span> {t("Moje przejazdy")} </span>
+					{/* <span> {t("Moje przejazdy")} </span> */}
+					<Button id={ids.past} background={ButtonBackground.White}  color={ButtonColor.Gray} className={buttonCssClass.past} onClick={() => setCurrentList(Lists.Past)}>
+						{t(resources.pastBtn)}
+					</Button>
+					<Button id={ids.future} background={ButtonBackground.White} className={buttonCssClass.future} color={ButtonColor.Gray} onClick={() => setCurrentList(Lists.Future)}>
+						{t(resources.futureBtn)}
+					</Button>
 					<ButtonLink
 						style={ButtonLinkStyle.Button}
 						color={ButtonLinkColor.Gray}
@@ -228,6 +270,7 @@ const Rides = (props: IRidesProps) => {
 					/>
 					<span className={switchCssClass.to} id={ids.to}> {t(resources.owner)}</span>
 				</div>
+				{activeList === Lists.Future &&
 				<div className={cssClasses.dateBar}>
 					<div>
 						<ButtonSmall
@@ -249,6 +292,7 @@ const Rides = (props: IRidesProps) => {
 						/>
 					</div>
 				</div>
+				}
 				<div className={cssClasses.leftOutline}></div>
 				<div className={cssClasses.leftList}>
 					{renderList()}

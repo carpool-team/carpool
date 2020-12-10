@@ -65,7 +65,9 @@
             "time": "Wybierz godzinę przejazdu.",
             "invalidDate": "Niewłaściwa data przejazdu",
             "invalidTime": "Niewłaściwa godzina przejazdu",
-            "addBtn": "Utwórz"
+            "addBtn": "Utwórz",
+            "pastBtn": "Przeszłe",
+            "futureBtn": "Przyszłe"
         },
         "footer": {
             "services": "Usługi",
