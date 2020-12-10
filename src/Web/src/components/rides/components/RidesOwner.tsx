@@ -195,11 +195,11 @@ const RidesOwner = (props: IRidesListProps) => {
 		let toName: string;
 
 		switch(props.ride.rideDirection) {
-			case 1: {
+			case 0: {
 				fromName = placeName;
 				toName = props.ride.group.name;
 			}
-			case 0: {
+			case 1: {
 				toName = placeName;
 				fromName = props.ride.group.name;
 			}
