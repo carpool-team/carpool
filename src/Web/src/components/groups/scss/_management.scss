@@ -45,6 +45,7 @@
 .groupsManagementButtonActive{
 	background-color: $blue;
 	color: $white;
+	font-weight: $semi-bold;
 	&:hover{
 		background-color: $blueOnHover;
 	}

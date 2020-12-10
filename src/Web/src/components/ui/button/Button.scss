@@ -56,6 +56,9 @@
 		&--white {
 			background-color: $white;
 		}
+		&--grayDark {
+			background-color: $backgroundDarker;
+		}
 	}
 	&__icon {
 		&--user:before{
