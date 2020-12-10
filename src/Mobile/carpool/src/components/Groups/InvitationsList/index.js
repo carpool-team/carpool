@@ -10,7 +10,7 @@ const InvitationsList = ({data, loading, onAccept, onDecline}) => (
     data={data}
     style={styles.flatlist}
     contentContainerStyle={styles.contentContainer}
-    keyExtractor={item => item.id}
+    keyExtractor={(item, index) => index.toString()}
     renderItem={({item}) => (
       <ListItem item={item} onAccept={onAccept} onDecline={onDecline} />
     )}
