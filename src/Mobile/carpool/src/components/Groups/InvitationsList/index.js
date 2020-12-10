@@ -5,7 +5,7 @@ import {ListEmptyComponent} from '../../common/lists';
 import {styles} from './index.styles';
 import ListItem from './ListItem';
 
-const InvitationsList = ({data, loading, onAccept, onDecline}) => (
+const InvitationsList = ({data, loading, onAccept, onDecline, onRefresh}) => (
   <FlatList
     data={data}
     style={styles.flatlist}
@@ -19,6 +19,7 @@ const InvitationsList = ({data, loading, onAccept, onDecline}) => (
         colors={[colors.green]}
         tintColor={colors.green}
         refreshing={loading}
+        onRefresh={onRefresh}
       />
     }
     ListEmptyComponent={

@@ -24,6 +24,8 @@ const Invitations = ({navigation}) => {
       .catch(err => alert('Error ocurred'));
   };
 
+  const onRefresh = () => dispatch(actions.getInvitations());
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <InvitationsList
@@ -31,6 +33,7 @@ const Invitations = ({navigation}) => {
         loading={invitations.loading}
         onDecline={onDecline}
         onAccept={onAccept}
+        onRefresh={onRefresh}
       />
     </SafeAreaView>
   );
