@@ -8,57 +8,11 @@ import {
 } from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
-import {ENDPOINTS} from '../../../hooks';
-const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
-import faker from 'faker';
 import jwt_decode from 'jwt-decode';
 import {
   rejectPromiseAction,
   resolvePromiseAction,
 } from '@adobe/redux-saga-promise';
-
-const exampleGroups = [
-  {
-    id: faker.random.alphaNumeric(32),
-    location: {
-      latitude: 52.40656926303501,
-      longitude: 16.86633729745128,
-    },
-    name: faker.random.word(),
-    rideCount: faker.random.number({min: 0, max: 100}),
-    userCount: faker.random.number({min: 10, max: 1000}),
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    location: {
-      latitude: 52.40656926303501,
-      longitude: 16.86633729745128,
-    },
-    name: faker.random.word(),
-    rideCount: faker.random.number({min: 0, max: 100}),
-    userCount: faker.random.number({min: 10, max: 1000}),
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    location: {
-      latitude: 52.40656926303501,
-      longitude: 16.86633729745128,
-    },
-    name: faker.random.word(),
-    rideCount: faker.random.number({min: 0, max: 100}),
-    userCount: faker.random.number({min: 10, max: 1000}),
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    location: {
-      latitude: 52.40656926303501,
-      longitude: 16.86633729745128,
-    },
-    name: faker.random.word(),
-    rideCount: faker.random.number({min: 0, max: 100}),
-    userCount: faker.random.number({min: 10, max: 1000}),
-  },
-];
 
 export function* getGroupsAsync() {
   try {
@@ -89,30 +43,6 @@ export function* getGroupsAsync() {
   }
 }
 
-const exampleInvitations = [
-  {
-    id: faker.random.alphaNumeric(32),
-    group: {
-      name: faker.random.word(),
-      userCount: faker.random.number({min: 0, max: 100}),
-    },
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    group: {
-      name: faker.random.word(),
-      userCount: faker.random.number({min: 0, max: 100}),
-    },
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    group: {
-      name: faker.random.word(),
-      userCount: faker.random.number({min: 0, max: 100}),
-    },
-  },
-];
-
 export function* getInvitationsAsync() {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
@@ -128,7 +58,6 @@ export function* getInvitationsAsync() {
       });
 
       yield put(actions.getInvitationsSuccess(res.data.result));
-      // yield put(actions.getInvitationsSuccess(exampleInvitations));
     }
   } catch (err) {
     if (err.response) {
