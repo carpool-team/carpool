@@ -90,6 +90,7 @@ const Rides = (props: IRidesProps) => {
 		dateBarRange: "dateBar__range",
 		dateBarArrow: "dateBar__arrow",
 		buttonActive: "groupsManagementButtonActive",
+		buttonDisable: "buttonDisable"
 	};
 
 	const resources = {
@@ -111,6 +112,7 @@ const Rides = (props: IRidesProps) => {
 	const [switchCssClass, setSwitchCssClass] = useState({ from: cssClasses.switchActive, to: null });
 	const [activeList, setActiveList] = useState(Lists.Future);
 	const [buttonCssClass, setButtonCssClass] = useState({ future: cssClasses.buttonActive, past: null });
+	const [buttonDisable, setButtonDisable] = useState(cssClasses.buttonDisable);
 
 	const setRide = (ride: IRide) => {
 		if (ride !== null) {
@@ -182,12 +184,16 @@ const Rides = (props: IRidesProps) => {
 		setDate(getDates(newOffset));
 		setDateOffset(newOffset);
 		setSelectedRide(null);
+		setButtonDisable(null);
 	};
 	const onPrevDate = () => {
 		const newOffset = dateOffset - 1;
 		setDate(getDates(newOffset));
 		setDateOffset(newOffset);
 		setSelectedRide(null);
+		if (newOffset === 0) {
+			setButtonDisable(cssClasses.buttonDisable);
+		}
 	};
 
 	const renderOwnerList = () => (
@@ -274,7 +280,7 @@ const Rides = (props: IRidesProps) => {
 				<div className={cssClasses.dateBar}>
 					<div>
 						<ButtonSmall
-							className={cssClasses.dateBarArrow}
+							className={[cssClasses.dateBarArrow, buttonDisable].join(" ")}
 							color={ButtonSmallColor.Gray}
 							background={ButtonSmallBackground.White}
 							icon={ButtonSmallIcon.Left}

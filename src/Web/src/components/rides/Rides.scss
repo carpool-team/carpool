@@ -37,6 +37,11 @@
 
 	}
 }
+.buttonDisable {
+	cursor: not-allowed;
+	pointer-events: none;
+	color: $backgroundDarker;
+}
 
 .ridesListContainer{
 	list-style-type: none;
