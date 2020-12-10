@@ -146,22 +146,20 @@ export function* getInvitationsAsync() {
 export function* acceptInvitationAsync(action) {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      console.log('ACCEPTING INVITATION', action.payload);
+      yield instance.put(
+        `/GroupInvites/${action.payload}`,
+        {
+          isAccepted: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      // yield instance.put(
-      //   `/GroupInvites/${action.payload}`,
-      //   {
-      //     isAccepted: true,
-      //   },
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   },
-      // );
       yield put(actions.getInvitations());
       yield put(actions.getGroups());
 

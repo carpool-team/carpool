@@ -9,7 +9,7 @@ const Invitations = ({navigation}) => {
   const dispatch = useDispatch();
 
   const onAccept = item => {
-    dispatch(actions.acceptInvitation(item.id))
+    dispatch(actions.acceptInvitation(item.groupInviteId))
       .then(res => {
         console.log('SUCCESS');
       })
@@ -17,7 +17,7 @@ const Invitations = ({navigation}) => {
   };
 
   const onDecline = async item => {
-    dispatch(actions.declineInvitation(item.id))
+    dispatch(actions.declineInvitation(item.groupInviteId))
       .then(res => {
         console.log('SUCCESS');
       })
