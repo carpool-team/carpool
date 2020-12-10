@@ -127,7 +127,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 	const [userAddressName, setUserAddresName] = useState<string>("");
 	const [seats, setSeats] = useState<string>("");
 
-	const [selectedDate, setSelectedDate] = useState(new Date("2014-08-18T21:11:54"));
+	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [days, setDays] = useState<IRideDays>({ all: false, monday: false, tuesday: false, wednesday: false, thursday: false, friday: false, saturday: false, sunday: false });
 
 	const [submitted, setSubmitted] = useState(false);
