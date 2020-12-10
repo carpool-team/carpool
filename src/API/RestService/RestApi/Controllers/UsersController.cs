@@ -34,6 +34,17 @@ namespace RestApi.Controllers
 			return new ApiResponse(response);
 		}
 
+		[HttpGet]
+		public async Task<ApiResponse> GetUsers([FromQuery] string email, 
+			[FromQuery]int page = 0,
+			[FromQuery]int count = 5)
+		{
+			SearchUsersByEmailQuery request = new(email, page, count);
+			var users = await _mediator.Send(request);
+
+			return new ApiResponse(users);
+		}
+		
 		[HttpGet("~/api/groups/{groupId}/users")]
 		public async Task<ApiResponse> GetGroupUsers([FromRoute] GroupId groupId)
 		{

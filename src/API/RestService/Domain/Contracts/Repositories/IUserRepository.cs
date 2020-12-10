@@ -10,6 +10,8 @@ namespace Domain.Contracts.Repositories
 	{
 		Task<List<ApplicationUser>> GetGroupUsersByGroupIdAsync(GroupId id);
 
+		Task<IEnumerable<ApplicationUser>> GetUsersByEmail(string email, int page, int count);
+
 		Task<ApplicationUser> GetByIdAsNoTrackingAsync(AppUserId id, CancellationToken cancellationToken);
 
 		Task<ApplicationUser> GetByIdAsync(AppUserId id, CancellationToken cancellationToken);

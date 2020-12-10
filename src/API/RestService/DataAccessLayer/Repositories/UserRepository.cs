@@ -16,18 +16,21 @@ namespace DataAccessLayer.Repositories
 		public UserRepository(CarpoolDbContext context)
 			=> _context = context;
 
-		//TODO: implement get group users by group id
 		public async Task<List<ApplicationUser>> GetGroupUsersByGroupIdAsync(GroupId id)
-		{
-			var users = await _context.Users
+			=> await _context.Users
 				.AsNoTracking()
 				//.Include(user => user.UserGroups)
 				//.Where(user => user.UserGroups.Any(group => group.GroupId == id))
 				.ToListAsync()
 				.ConfigureAwait(false);
 
-			return users;
-		}
+
+		public async Task<IEnumerable<ApplicationUser>> GetUsersByEmail(string email, int page, int count)
+			=> await _context.Users.AsNoTracking()
+				.Where(x => x.Email.Contains(email))
+				.Skip(page * count)
+				.Take(count)
+				.ToListAsync();
 
 		public async Task<ApplicationUser> GetByIdAsNoTrackingAsync(AppUserId id, CancellationToken cancellationToken)
 			=> await _context.Users.AsNoTracking()
