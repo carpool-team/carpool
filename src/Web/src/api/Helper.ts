@@ -45,27 +45,31 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 				throw "Unhandled endpoint";
 		}
 	})();
+	const query = [];
 	if (queries?.page) {
-		ep += "?page=" + queries.page;
+		query.push("page=" + queries.page);
 	}
 
 	if (queries?.count) {
-		ep += "?count=" + queries.count;
+		query.push("count=" + queries.count);
 	}
 
 	if (queries?.owned) {
-		ep += "?owned=" + queries.owned;
+		query.push("owned=" + queries.owned);
 	}
 
 	if (queries?.past) {
-		ep += "?past=" + queries.past;
+		query.push("past=" + queries.past);
 	}
 
 	if (queries?.participated) {
-		ep += "?participated=" + queries.participated;
+		query.push("participated=" + queries.participated);
 	}
-
-	return ep;
+	if (query.length){
+		return ep + "?" + query.join("&");
+	} else {
+		return ep;
+	}
 };
 
 export const getRequestType: (type: RequestType) => string = (type) => {

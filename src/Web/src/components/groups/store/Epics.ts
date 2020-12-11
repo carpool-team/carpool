@@ -192,11 +192,25 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 				userId: uid,
 				participated: true,
 			});
+			const ownedPastRequest: GetRidesRequest = new GetRidesRequest({
+				userId: uid,
+				owned: true,
+				past: true
+			});
+			const participatedPastRequest: GetRidesRequest = new GetRidesRequest({
+				userId: uid,
+				participated: true,
+				past: true
+			});
 			const responseOwned: GetRidesResponse = await ownedRequest.send();
 			const responseParticipated: GetRidesResponse = await participatedRequest.send();
+			const responsePastOwned: GetRidesResponse = await ownedPastRequest.send();
+			const responsePastParticipated: GetRidesResponse = await participatedPastRequest.send();
 			return {
 				owned: responseOwned.result,
 				participated: responseParticipated.result,
+				ownedPast: responsePastOwned.result,
+				participatedPast: responsePastParticipated.result
 			};
 		}),
 		mergeMap((response) => {
@@ -204,7 +218,9 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 				<IGetRidesActionSuccess>{
 					type: RidesActionTypes.GetRidesSuccess,
 					ridesOwned: response.owned,
-					ridesParticipated: response.participated
+					ridesParticipated: response.participated,
+					ridesOwnedPast: response.ownedPast,
+					ridesParticipatedPast: response.participatedPast
 				},
 			];
 		}),

@@ -17,6 +17,8 @@ interface IStateFromProps {
 	invites: IInvite[];
 	ridesOwned: IRide[];
 	ridesParticipated: IRide[];
+	ridesOwnedPast: IRide[];
+	ridesParticipatedPast: IRide[];
 	authId: string;
 }
 
@@ -25,6 +27,8 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 	invites: state.groups.invites,
 	ridesOwned: state.groups.ridesOwned,
 	ridesParticipated: state.groups.ridesParticipated,
+	ridesOwnedPast: state.groups.ridesOwnedPast,
+	ridesParticipatedPast: state.groups.ridesParticipatedPast,
 	authId: state.auth.tokenInfo?.payload?.jti,
 });
 
