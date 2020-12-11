@@ -63,7 +63,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 								<GroupInvite
 									group={this.props.selectedGroup}
 									rides={rides}
-									onConfirm={(users) => {}}
+									onConfirm={(_users) => {}}
 								/>
 							</Route>
 							<Route exact path={path + GroupsRouter.routes.rides}>

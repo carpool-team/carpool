@@ -4,19 +4,17 @@ import { ILocation } from "./ILocation";
 import { RideDirection } from "../api/addRide/AddRideRequest";
 
 /** Ride interface */
-export interface IRide extends ILocation {
+export interface IRide {
 	rideId: string;
 	rideDate: Date;
 	rideDirection: RideDirection;
 	stops?: ILocation[];
 	price: number;
 	owner: IParticipant;
+	location: ILocation;
 	group: {
 		groupId: string;
-		location: {
-			latitude: number;
-			longitude: number;
-		};
+		location: ILocation;
 		name: string;
 		userCount: number;
 	};

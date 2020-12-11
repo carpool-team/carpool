@@ -1,6 +1,7 @@
 import { RequestEndpoint } from "../../../../api/enum/RequestEndpoint";
 import { RequestType } from "../../../../api/enum/RequestType";
 import RequestBase from "../../../../api/requests/RequestBase";
+import { ILocation } from "../../interfaces/ILocation";
 import { AddRideResponse } from "./AddRideResponse";
 
 /** Ride direction enum */
@@ -16,10 +17,7 @@ export enum RideDirection {
 export interface IAddRideRequestBody {
 	ownerId: string;
 	groupId: string;
-	location: {
-		latitude: number;
-		longitude: number;
-	};
+	location: ILocation;
 	rideDirection: RideDirection;
 	date: Date;
 	weekDays?: number;

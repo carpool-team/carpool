@@ -27,7 +27,7 @@ import {
 import { useImmer } from "use-immer";
 import { each, isValidDate } from "../../../../helpers/UniversalHelper";
 import { ValidationType } from "../../../ui/input/enums/ValidationType";
-import { address } from "faker";
+import { address, date } from "faker";
 import { IAddRideInput } from "./interfaces/IAddRideInput";
 import { RouteComponentProps, withRouter } from "react-router";
 import LayoutRouter, {
@@ -133,7 +133,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 	const [seats, setSeats] = useState<string>("");
 
 	const [selectedDate, setSelectedDate] = useState(new Date());
-	const [days, setDays] = useState<IRideDays>({
+	const [days, setDays] = useImmer<IRideDays>({
 		all: false,
 		monday: false,
 		tuesday: false,
@@ -228,19 +228,20 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 
 	const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.name === "all") {
-			setDays({
-				...days,
-				monday: event.target.checked,
-				tuesday: event.target.checked,
-				wednesday: event.target.checked,
-				thursday: event.target.checked,
-				friday: event.target.checked,
-				saturday: event.target.checked,
-				sunday: event.target.checked,
-				all: event.target.checked,
+			setDays(draft => {
+				draft.monday = event.target.checked;
+				draft.tuesday = event.target.checked;
+				draft.wednesday = event.target.checked;
+				draft.thursday = event.target.checked;
+				draft.friday = event.target.checked;
+				draft.saturday = event.target.checked;
+				draft.sunday = event.target.checked;
+				draft.all = event.target.checked;
 			});
 		} else {
-			setDays({ ...days, [event.target.name]: event.target.checked });
+			setDays(draft => {
+				draft[event.target.name] = event.target.checked
+			});
 		}
 	};
 
@@ -361,25 +362,25 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 						}}
 					/>
 				) : (
-					<Input
-						style={cssClasses.input}
-						type={InputType.Address}
-						changeHandler={(newValue) => setUserAddresName(newValue)}
-						placeholder={"Adres " + t(resources.to) + " przejazdu"}
-						value={userAddressName}
-						icon={InputIcon.Location}
-						addressCords={(coords) => setUserCoordinates(coords)}
-						validation={{
-							validate: submitted,
-							type: ValidationType.Address,
-							isValidCallback: (isValid) => {
-								setInputsValid((draft) => {
-									draft.targetAddress = isValid;
-								});
-							},
-						}}
-					/>
-				)}
+						<Input
+							style={cssClasses.input}
+							type={InputType.Address}
+							changeHandler={(newValue) => setUserAddresName(newValue)}
+							placeholder={"Adres " + t(resources.to) + " przejazdu"}
+							value={userAddressName}
+							icon={InputIcon.Location}
+							addressCords={(coords) => setUserCoordinates(coords)}
+							validation={{
+								validate: submitted,
+								type: ValidationType.Address,
+								isValidCallback: (isValid) => {
+									setInputsValid((draft) => {
+										draft.targetAddress = isValid;
+									});
+								},
+							}}
+						/>
+					)}
 				<Input
 					style={cssClasses.input}
 					type={InputType.Text}
@@ -565,25 +566,25 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 						}}
 					/>
 				) : (
-					<Input
-						style={cssClasses.input}
-						type={InputType.Address}
-						changeHandler={(newValue) => setUserAddresName(newValue)}
-						placeholder={"Adres " + t(resources.to) + " przejazdu"}
-						value={userAddressName}
-						icon={InputIcon.Location}
-						addressCords={(coords) => setUserCoordinates(coords)}
-						validation={{
-							validate: submitted,
-							type: ValidationType.Address,
-							isValidCallback: (isValid) => {
-								setInputsValid((draft) => {
-									draft.fromAddress = isValid;
-								});
-							},
-						}}
-					/>
-				)}
+						<Input
+							style={cssClasses.input}
+							type={InputType.Address}
+							changeHandler={(newValue) => setUserAddresName(newValue)}
+							placeholder={"Adres " + t(resources.to) + " przejazdu"}
+							value={userAddressName}
+							icon={InputIcon.Location}
+							addressCords={(coords) => setUserCoordinates(coords)}
+							validation={{
+								validate: submitted,
+								type: ValidationType.Address,
+								isValidCallback: (isValid) => {
+									setInputsValid((draft) => {
+										draft.fromAddress = isValid;
+									});
+								},
+							}}
+						/>
+					)}
 				<Input
 					style={cssClasses.input}
 					type={InputType.Text}

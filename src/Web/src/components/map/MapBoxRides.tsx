@@ -8,7 +8,7 @@ import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { IRide } from "components/groups/interfaces/IRide";
 import mapboxDirections from "@mapbox/mapbox-sdk/services/directions";
 import { RideDirection } from "../groups/api/addRide/AddRideRequest";
-import {parseCoords} from "../../helpers/UniversalHelper";
+import { parseCoords } from "../../helpers/UniversalHelper";
 
 const Mapbox = ReactMapboxGl({
 	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
@@ -61,7 +61,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 							coordinates: parseCoords(ride.location),
 						},
 						{
-							coordinates: parseCoords(ride.group.location)
+							coordinates: parseCoords(ride.group?.location)
 						},
 					],
 					overview: "full",
@@ -95,7 +95,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	}
 
 	private getBounds = (ride: IRide) => {
-		const allCoords = [[ride.location.longitude, ride.group.location.longitude], [ride.group.location.latitude, ride.location.latitude]];
+		const allCoords = [[ride.location?.longitude, ride.group?.location.longitude], [ride.group?.location.latitude, ride.location?.latitude]];
 		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
 		if (allCoords[0][0] && allCoords[1][1] && allCoords[0][1] && allCoords[1][0]) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
@@ -191,7 +191,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					>
 					<i className={"fa fa-map-marker"}></i>
 				</Marker> */}
-						<Popup coordinates={parseCoords(ride.group.location)}>
+						<Popup coordinates={parseCoords(ride.group?.location)}>
 							<div style={popupStyle}>
 								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "początkowa" : "końcowa"}`}
 							</div>

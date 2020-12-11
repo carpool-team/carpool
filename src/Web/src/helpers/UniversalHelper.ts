@@ -1,3 +1,4 @@
+import { ILocation } from "../components/groups/interfaces/ILocation";
 import { getState } from "../store/Index";
 
 export function isAuthorized(): boolean {
@@ -53,12 +54,15 @@ export function parseJwt(token): any {
 
 	return JSON.parse(jsonPayload);
 }
-export const parseCoords = (coords): [number, number] => {
-
-		const {longitude, latitude} = coords;
+export const parseCoords: (coords: ILocation) => [number, number] = coords => {
+	if (coords) {
+		const { longitude, latitude } = coords;
 		return [longitude, latitude];
-
+	} else {
+		return [0, 0] //todo: ogarnac 
+	}
 };
+
 export const convertDate = (date: string) => {
 	if (date) {
 		let d = new Date(date);
