@@ -73,7 +73,7 @@ const RideSummary = ({navigation}) => {
       setLoading(true);
       dispatch(
         actions.createSingleRide({
-          groupId: group.id,
+          groupId: group.groupId,
           date: date,
           rideDirection: swap ? 1 : 0,
           location: location.coordinates,
