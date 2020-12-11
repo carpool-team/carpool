@@ -3,13 +3,14 @@ import {FlatList, RefreshControl, StyleSheet} from 'react-native';
 import colors from '../../../styles/colors';
 import ListItem from './ListItem';
 import {ListEmptyComponent} from '../../common/lists';
+import {styles} from './index.styles';
 
 const GroupsList = ({data, loading, onItemPress, onRefresh}) => (
   <FlatList
     data={data}
     style={styles.flatlist}
     contentContainerStyle={styles.contentContainer}
-    keyExtractor={item => Math.random().toString()}
+    keyExtractor={item => item.groupId}
     renderItem={({item}) => <ListItem item={item} onItemPress={onItemPress} />}
     refreshControl={
       <RefreshControl
@@ -24,15 +25,5 @@ const GroupsList = ({data, loading, onItemPress, onRefresh}) => (
     }
   />
 );
-
-const styles = StyleSheet.create({
-  flatlist: {
-    width: '100%',
-    paddingTop: 18,
-  },
-  contentContainer: {
-    paddingHorizontal: 16,
-  },
-});
 
 export default GroupsList;

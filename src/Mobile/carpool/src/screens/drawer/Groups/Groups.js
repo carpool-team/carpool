@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {SafeAreaView, TouchableOpacity, View, Text} from 'react-native';
+import {
+  SafeAreaView,
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+} from 'react-native';
 import sheet from '../../../styles/sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../../styles/colors';
@@ -31,19 +37,9 @@ const Groups = ({navigation}) => {
     } else {
       return (
         <TouchableOpacity
-          style={{
-            ...sheet.rowCenterSplit,
-            width: '100%',
-            marginBottom: 36,
-            paddingHorizontal: 16,
-          }}
+          style={styles.button}
           onPress={() => navigation.navigate('Invitations')}>
-          <Text
-            style={{
-              ...sheet.textSemiBold,
-              fontSize: 14,
-              color: colors.blue,
-            }}>
+          <Text style={styles.number}>
             {`${number} new invitation${number > 1 ? 's' : ''}`}
           </Text>
           <Icon name="group-add" size={32} color={colors.grayDark} />
@@ -53,13 +49,8 @@ const Groups = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-          paddingTop: 36,
-        }}>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
         {getInvitations(invitations.data ? invitations.data.length : 0)}
         <GroupsList
           data={groups.data}
@@ -71,5 +62,26 @@ const Groups = ({navigation}) => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  button: {
+    ...sheet.rowCenterSplit,
+    width: '100%',
+    marginBottom: 36,
+    paddingHorizontal: 16,
+  },
+  number: {
+    ...sheet.textSemiBold,
+    fontSize: 14,
+    color: colors.blue,
+  },
+});
 
 export default Groups;
