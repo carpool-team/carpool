@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.DatabaseContexts;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +15,10 @@ namespace RestApi.Controllers
 	[Authorize]
 	public class UsersController : Controller
 	{
-		private readonly CarpoolDbContext _context;
 		private readonly IMediator _mediator;
 
-		public UsersController(CarpoolDbContext context, IMediator mediator)
+		public UsersController(IMediator mediator)
 		{
-			_context = context;
 			_mediator = mediator;
 		}
 
