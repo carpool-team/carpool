@@ -5,20 +5,15 @@ import {
   Groups,
   Invitations,
 } from '../../../../screens/drawer/Groups';
-import {sheet, colors} from '../../../../styles';
+import {Header} from '../../../../components/navigation';
 
 const Stack = createStackNavigator();
 
 const GroupsStack = () => (
   <Stack.Navigator
     screenOptions={{
-      headerTitleStyle: {
-        ...sheet.textMedium,
-        color: colors.grayVeryDark,
-      },
-      headerStyle: {
-        height: 110,
-      },
+      header: props => <Header {...props} />,
+      title: 'Groups',
     }}>
     <Stack.Screen
       name="Groups"

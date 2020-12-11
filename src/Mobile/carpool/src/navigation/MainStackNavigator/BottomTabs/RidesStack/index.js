@@ -3,20 +3,15 @@ import {createStackNavigator} from '@react-navigation/stack';
 import DriversRides from '../../../../screens/drawer/RidesStack/DriversRides';
 import DriversRideDetails from '../../../../screens/drawer/RidesStack/DriversRideDetails';
 import PassengersRideDetails from '../../../../screens/drawer/RidesStack/PassengersRideDetails';
-import {sheet, colors} from '../../../../styles';
+import {Header} from '../../../../components/navigation';
 
 const Stack = createStackNavigator();
 
 const RidesStack = () => (
   <Stack.Navigator
     screenOptions={{
-      headerTitleStyle: {
-        ...sheet.textMedium,
-        color: colors.grayVeryDark,
-      },
-      headerStyle: {
-        height: 110,
-      },
+      header: props => <Header {...props} />,
+      title: 'Rides',
     }}>
     <Stack.Screen
       name="DriversRides"
