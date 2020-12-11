@@ -20,6 +20,8 @@ import {
 	mapDispatchToProps,
 } from "../store/PropsTypes";
 import { useImmer } from "use-immer";
+import { FormControlClassKey } from "@material-ui/core";
+import { Event } from "react-toastify/dist/core";
 
 interface ILoginPanelProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps { }
 
@@ -53,6 +55,18 @@ const LoginPanel = (props: ILoginPanelProps) => {
 			setSubmitted(false);
 		}
 	};
+
+	const enterFunction = (event) => {
+		if ( event.keyCode === 13) {
+			setSubmitted(true);
+		}
+	};
+
+	useEffect(() => { 
+		document.addEventListener("keydown", enterFunction, false); 
+		return () => { 
+			document.removeEventListener("keydown", enterFunction, false); 
+		} }, []);
 
 	useEffect(() => {
 		if (submitted) {

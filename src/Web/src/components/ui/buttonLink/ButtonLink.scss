@@ -11,7 +11,7 @@
   cursor: pointer;
 	&__text {
 		&--green {
-			color: $green;
+			color: $green !important;
 		}
 		&--blue {
 			color: $blue;
@@ -38,6 +38,9 @@
 		}
 		&--white {
 			background-color: $white;
+		}
+		&--grayDark {
+			background-color: $backgroundDarker;
 		}
 	}
 	&__icon {

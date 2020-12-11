@@ -59,3 +59,16 @@ export const parseCoords = (coords): [number, number] => {
 		return [longitude, latitude];
 
 };
+export const convertDate = (date: string) => {
+	if (date) {
+		let d = new Date(date);
+		let dateOutput =
+			d.getUTCFullYear() + "/" +
+			("0" + (d.getUTCMonth() + 1)).slice(-2) + "/" +
+			("0" + d.getUTCDate()).slice(-2) + " " +
+			("0" + d.getUTCHours()).slice(-2) + ":" +
+			("0" + d.getUTCMinutes()).slice(-2) + ":" +
+			("0" + d.getUTCSeconds()).slice(-2);
+		return dateOutput;
+	}
+};
