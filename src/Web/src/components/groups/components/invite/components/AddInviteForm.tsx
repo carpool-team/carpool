@@ -1,3 +1,4 @@
+import Autocomplete from "@material-ui/lab/Autocomplete/Autocomplete";
 import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import MediaQuery from "react-responsive";
@@ -10,11 +11,10 @@ import ButtonSmall from "../../../../ui/buttonSmall/ButtonSmall";
 import { ButtonSmallBackground } from "../../../../ui/buttonSmall/enums/ButtonSmallBackground";
 import { ButtonSmallColor } from "../../../../ui/buttonSmall/enums/ButtonSmallColor";
 import { ButtonSmallIcon } from "../../../../ui/buttonSmall/enums/ButtonSmallIcon";
-import { InputIcon } from "../../../../ui/input/enums/InputIcon";
-import { InputType } from "../../../../ui/input/enums/InputType";
-import { ValidationType } from "../../../../ui/input/enums/ValidationType";
-import Input from "../../../../ui/input/Input";
+import AutocompleteWrapper from "../../../../ui/autocompleteWrapper/AutocompleteWrapper";
 import { IInviteUser } from "../interfaces/IInviteUser";
+
+import colors from "scss_path/_colors.scss";
 
 interface IAddInviteFormProps extends IReactI18nProps {
 	addUserToInvite: (user: IInviteUser) => void;
@@ -92,20 +92,19 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	const renderInputs = () => (
 		<div className={cssClasses.inputs}>
 			<span> {t(resources.basicInfo)}</span>
-			<Input
-				type={InputType.Text}
-				changeHandler={newValue => setEmail(newValue)}
+			<AutocompleteWrapper
+				onChange={newValue => setEmail(newValue)}
+				wrapperStyle={{
+					width: "400px",
+				}}
+				textFieldStyle={{
+				}}
 				placeholder={t(resources.emailInput)}
-				icon={InputIcon.Mail}
-				value={email}
-				validation={{
-					type: ValidationType.Email,
-					isValidCallback: isValid => {
-						setInputsValid(draft => {
-							draft.email = isValid;
-						});
-					},
-					validate,
+				autocompleteCallback={async () => {
+					const response = await fetch('https://country.register.gov.uk/records.json?page-size=5000');
+					const json = await response.json();
+					return Object.keys(json).map((key) => json[key].item[0].name)
+					// todo: podpiąc emaile
 				}}
 			/>
 			<div className={cssClasses.buttonsGroup}>
