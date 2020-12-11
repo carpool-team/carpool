@@ -10,7 +10,6 @@ using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Repositories.Intersections;
 using FluentValidation.AspNetCore;
-using IdentifiersShared.Converters;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -36,10 +35,7 @@ namespace RestApi
 		public void ConfigureServices(IServiceCollection services)
 		{
 			Log.Information("Configuring services...");
-			services.AddCors(options =>
-			{
-				options.AddDefaultPolicy(builder => { builder.WithOrigins("http://localhost:8080"); });
-			});
+			services.AddCors();
 
 			services.AddSingleton(Configuration);
 
@@ -132,7 +128,12 @@ namespace RestApi
 
 			app.UseRouting();
 
-			app.UseCors();
+			app.UseCors(x =>
+			{
+				x.AllowAnyMethod()
+					.AllowAnyHeader()
+					.SetIsOriginAllowed(origin => true); // allow any origin
+			});
 
 			app.UseAuthentication();
 
