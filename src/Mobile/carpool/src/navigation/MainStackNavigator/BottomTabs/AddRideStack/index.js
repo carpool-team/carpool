@@ -13,6 +13,7 @@ import SelectLocation from '../../../../screens/HomeStack/AddRideStack/SelectLoc
 import RideSummary from '../../../../screens/HomeStack/AddRideStack/RideSummary';
 import RideCreated from '../../../../screens/HomeStack/AddRideStack/RideCreated';
 import RideError from '../../../../screens/HomeStack/AddRideStack/RideError';
+import {sheet, colors} from '../../../../styles';
 
 const {useContext, useEffect} = React;
 
@@ -23,15 +24,18 @@ const AddRideStack = props => {
 
   const {dispatch} = useContext(AddRideContext);
 
-  // useEffect(() => {
-  //   !focused && dispatch({type: AddRideContextActions.CLEAN_STATE});
-  // }, [focused]);
-
   return (
     <Stack.Navigator
       screenOptions={{
         headerTitle: 'Create a new ride',
         headerLeft: null,
+        headerTitleStyle: {
+          ...sheet.textMedium,
+          color: colors.grayVeryDark,
+        },
+        headerStyle: {
+          height: 110,
+        },
       }}>
       <Stack.Screen name="SelectGroup" component={SelectGroup} />
       <Stack.Screen name="SelectDirection" component={SelectDirection} />
