@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,33 +18,37 @@ namespace DataAccessLayer.Repositories
 		public GroupInviteRepository(CarpoolDbContext context)
 			=> _context = context;
 
-		public async Task<Domain.Entities.GroupInvite> GetByIdAsync(GroupInviteId id,
+		public async Task<GroupInvite> GetByIdAsync(GroupInviteId id,
 			CancellationToken cancellationToken = default)
 			=> await _context.GroupInvites.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
 		public async Task<GroupInvite> GetByIdAsNoTrackingAsync(GroupInviteId id,
 			CancellationToken cancellationToken =
 				default)
-			=> await _context.Set<GroupInvite>().AsNoTracking()
+			=> await _context.Set<GroupInvite>()
+				.AsNoTracking()
 				.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-		public async Task<List<Domain.Entities.GroupInvite>> GetPartAsync(CancellationToken cancellationToken)
+		public async Task<List<GroupInvite>> GetPartAsync(CancellationToken cancellationToken)
 			=> await _context.GroupInvites.ToListAsync(cancellationToken);
 
-		public async Task<List<Domain.Entities.GroupInvite>> GetUserGroupInvitesByUserIdAsNoTrackingAsync(AppUserId appUserId,
-			CancellationToken cancellationToken)
-			=> await _context.GroupInvites.AsNoTracking()
+		public IQueryable<GroupInvite> GetUserGroupInvitesByUserIdAsNoTrackingAsync(AppUserId appUserId)
+			=> _context.GroupInvites.AsNoTracking()
+				.Include(x => x.Group)
+				.ThenInclude(a => a.UserGroups)
+				.Include(x => x.InvitingApplicationUser)
+				.Include(x => x.InvitedApplicationUser)
 				.Where(x => x.InvitedAppUserId == appUserId)
 				.OrderByDescending(x => x.DateAdded)
-				.ToListAsync(cancellationToken);
+				.AsQueryable();
 
 
 		public async Task AddAsync(GroupInvite groupInvite, CancellationToken cancellationToken)
 			=> await _context.Set<GroupInvite>().AddAsync(groupInvite, cancellationToken);
 
-        public void Delete(GroupInvite groupInvite)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
+		public void Delete(GroupInvite groupInvite)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

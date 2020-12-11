@@ -23,10 +23,9 @@ namespace RestApi.Controllers
 			=> _mediator = mediator;
 
         [HttpGet("~/api/users/{appUserId}/group-invites")]
-        public async Task<ApiResponse> GetUserGroupInvites([FromRoute] long userId)
+        public async Task<ApiResponse> GetUserGroupInvites([FromRoute] AppUserId appUserId)
         {
-            AppUserId typedAppUserId = new(userId);
-            var request = new GetUserGroupInvitesQuery(typedAppUserId);
+            var request = new GetUserGroupInvitesQuery(appUserId);
 
             var response = await _mediator.Send(request).ConfigureAwait(false);
 

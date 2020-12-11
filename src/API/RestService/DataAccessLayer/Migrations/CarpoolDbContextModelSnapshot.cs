@@ -89,6 +89,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("InvitedAppUserId");
 
                     b.HasIndex("InvitingAppUserId");
@@ -260,6 +262,12 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.GroupInvite", b =>
                 {
+                    b.HasOne("Domain.Entities.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.ApplicationUser", "InvitedApplicationUser")
                         .WithMany()
                         .HasForeignKey("InvitedAppUserId")
@@ -271,6 +279,8 @@ namespace DataAccessLayer.Migrations
                         .HasForeignKey("InvitingAppUserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Group");
 
                     b.Navigation("InvitedApplicationUser");
 

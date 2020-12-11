@@ -29,6 +29,10 @@ export const getBackgroundClass: (type?: ButtonBackground) => string = (backgrou
 			return "button__background--blue";
 		case ButtonBackground.Green:
 			return "button__background--green";
+		case ButtonBackground.White:
+			return "button__background--white";
+		case ButtonBackground.GrayDark:
+			return "button__background--grayDark";
 		default:
 			return "button__background--transparent";
 	}

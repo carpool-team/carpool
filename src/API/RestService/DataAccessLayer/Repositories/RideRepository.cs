@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
-using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
-using IdGen;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Repositories
 {
-    public class RideRepository : IRideRepository
+	public class RideRepository : IRideRepository
 	{
 		private readonly CarpoolDbContext _context;
+
 		public RideRepository(CarpoolDbContext context)
 			=> _context = context;
 
@@ -25,7 +24,7 @@ namespace DataAccessLayer.Repositories
 				.ConfigureAwait(false);
 		}
 
-		public async Task<Domain.Entities.Ride> GetByIdAsNoTrackingAsync(RideId id,
+		public async Task<Ride> GetByIdAsNoTrackingAsync(RideId id,
 			CancellationToken cancellationToken = default)
 		{
 			return await _context.Rides.AsNoTracking()
@@ -33,18 +32,17 @@ namespace DataAccessLayer.Repositories
 				.ConfigureAwait(false);
 		}
 
-		public Domain.Entities.Ride GetById(RideId id)
+		public Ride GetById(RideId id)
 		{
 			return _context.Rides.FirstOrDefault(ride => ride.Id == id);
 		}
 
-		public Domain.Entities.Ride GetByAsNoTrackingId(RideId id)
+		public Ride GetByAsNoTrackingId(RideId id)
 		{
 			return _context.Rides.AsNoTracking().FirstOrDefault(ride => ride.Id == id);
 		}
 
-		public async Task<IEnumerable<Ride>> GetPartAsNoTrackingAsync(
-			CancellationToken cancellationToken)
+		public async Task<IEnumerable<Ride>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken)
 		{
 			return await _context.Rides
 				.Include(ride => ride.Stops)
@@ -56,24 +54,24 @@ namespace DataAccessLayer.Repositories
 				.ToListAsync(cancellationToken);
 		}
 
-		public async Task<IEnumerable<Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(
-			AppUserId appUserId,
+		public async Task<IEnumerable<Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			bool past = false,
 			CancellationToken cancellationToken = default)
 		{
 			return await _context.Rides
 				.Include(x => x.Owner)
-					.ThenInclude(a => a.Ratings)
+				.ThenInclude(a => a.Ratings)
 				.Include(x => x.Owner)
-					.ThenInclude(a => a.Vehicle)
+				.ThenInclude(a => a.Vehicle)
 				.Include(x => x.Group)
-					.ThenInclude(a => a.UserGroups)
+				.ThenInclude(a => a.UserGroups)
 				.Include(x => x.Participants)
 				.Include(x => x.Stops)
 				.AsNoTracking()
-				.Where(x => x.Participants.Any(y => y.AppUserId == appUserId) && (past
-					? x.Date <= DateTime.Now
-					: x.Date >= DateTime.Now))
+				.Where(x => x.Participants.Any(y => y.AppUserId == appUserId)
+							&& (past
+								? x.Date <= DateTime.Now
+								: x.Date >= DateTime.Now))
 				.ToListAsync(cancellationToken);
 		}
 
@@ -83,11 +81,11 @@ namespace DataAccessLayer.Repositories
 		{
 			return await _context.Rides.AsNoTracking()
 				.Include(x => x.Owner)
-					.ThenInclude(a => a.Ratings)
+				.ThenInclude(a => a.Ratings)
 				.Include(x => x.Owner)
-					.ThenInclude(a => a.Vehicle)
+				.ThenInclude(a => a.Vehicle)
 				.Include(x => x.Group)
-					.ThenInclude(a => a.UserGroups)
+				.ThenInclude(a => a.UserGroups)
 				.Include(x => x.Participants)
 				.Include(x => x.Stops)
 				.Where(x => x.OwnerId == appUserId && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
@@ -103,7 +101,7 @@ namespace DataAccessLayer.Repositories
 				.ConfigureAwait(false);
 			_context.UserParticipatedRides.Remove(rideParticipant);
 		}
-		
+
 		public async Task AddAsync(Ride ride, CancellationToken cancellationToken = default)
 		{
 			// IdGenerator rideIdGenerator = new IdGenerator(IdGeneratorType.Ride);
@@ -113,5 +111,5 @@ namespace DataAccessLayer.Repositories
 
 		public void Delete(Ride ride)
 			=> _context.Set<Ride>().Remove(ride);
-    }
+	}
 }

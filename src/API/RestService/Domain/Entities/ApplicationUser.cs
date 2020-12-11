@@ -2,11 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Domain.Abstract;
-using Domain.Contracts;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
-using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities
 {
@@ -24,7 +22,6 @@ namespace Domain.Entities
 		public Vehicle? Vehicle { get; set; }
 
 		[NotMapped]
-		public double Rating => Ratings.Count > 0 ?Ratings.Sum(x => (double)x.Value) / Ratings.Count() : 0;
-
+		public double Rating => Ratings.Count > 0 ? Ratings.Sum(x => (double) x.Value) / Ratings.Count : 0;
 	}
 }

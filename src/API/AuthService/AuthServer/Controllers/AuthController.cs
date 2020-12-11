@@ -13,7 +13,6 @@ using AutoWrapper.Wrappers;
 using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
 using IdGen;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -30,7 +29,6 @@ namespace AuthServer.Controllers
 	public class AuthController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
-		private readonly IAuthenticationSchemeProvider _schemeProvider;
 		private readonly SignInManager<AuthUser> _signInManager;
 
 		private readonly IUserManagementService _userManagementService;
@@ -38,13 +36,11 @@ namespace AuthServer.Controllers
 
 		public AuthController(UserManager<AuthUser> userManager,
 			SignInManager<AuthUser> signInManager,
-			IAuthenticationSchemeProvider schemeProvider,
 			ApplicationDbContext dbContext,
 			IUserManagementService userManagementService)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
-			_schemeProvider = schemeProvider;
 			_dbContext = dbContext;
 			_userManagementService = userManagementService;
 		}
@@ -63,7 +59,7 @@ namespace AuthServer.Controllers
 			if (!result.Succeeded)
 				throw new ApiException(result.Errors);
 
-			var addUser = new AddUserDto(user.AppUserId.Value,
+			var addUser = new AddUserDto(user.AppUserId,
 				user.FirstName,
 				user.LastName,
 				user.Email);
@@ -128,19 +124,19 @@ namespace AuthServer.Controllers
 		public async Task<ApiResponse> RefreshToken([FromBody] string refreshToken)
 		{
 			var refreshTokenBytes = Convert.FromBase64String(refreshToken);
-		
+
 			var deserializedRefreshToken =
 				JsonConvert.DeserializeObject<RefreshToken>(Encoding.ASCII.GetString(refreshTokenBytes));
 
 			var user = await _dbContext.AuthUsers
-				.Include(x =>x.RefreshTokens)
+				.Include(x => x.RefreshTokens)
 				.Where(x => x.RefreshTokens
 					.Any(a => a.Token == deserializedRefreshToken.Token && a.IsActive))
 				.FirstOrDefaultAsync();
-				
-				_ = user ?? throw new ApiException("Provided token is invalid", StatusCodes.Status401Unauthorized);
 
-				var token = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);			
+			_ = user ?? throw new ApiException("Provided token is invalid", StatusCodes.Status401Unauthorized);
+
+			var token = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);
 			// ReSharper disable once PossibleNullReferenceException
 			token.Revoked = DateTime.Now;
 

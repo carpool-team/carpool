@@ -1,14 +1,12 @@
-﻿using IdentifiersShared.Identifiers;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
 using RestApi.DTOs.User;
 using RestEase;
-using System.Threading.Tasks;
 
 namespace AuthServer.Services
 {
-    public interface IUserManagementService
-    {
-        [Post("api/users")]
-        Task CreateUser([Body] AddUserDto addUser);
-    }
+	public interface IUserManagementService
+	{
+		[Post("api/users")]
+		Task CreateUser([Body] AddUserDto addUser);
+	}
 }
