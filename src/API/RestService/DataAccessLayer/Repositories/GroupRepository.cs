@@ -93,6 +93,9 @@ namespace DataAccessLayer.Repositories
 				.ConfigureAwait(false);
 
 			var groups = await _context.Groups.Where(x => groupIds.Contains(x.Id))
+				.Include(x => x.UserGroups)
+				.Include(x => x.Rides)
+				.AsNoTracking()
 				.ToListAsync(cancellationToken)
 				.ConfigureAwait(false);
 

@@ -16,4 +16,10 @@ namespace DataTransferObjects.GroupDtos
         [JsonProperty("groupId")] GroupId GroupId,
         [JsonProperty("location")] LocationDto Location,
         [JsonProperty("name")] string Name);
+
+    public record IndexGroupDto([JsonProperty("userCount")] int UserCount,
+        [JsonProperty("groupId")] GroupId GroupId,
+        [JsonProperty("location")] LocationDto Location,
+        [JsonProperty("name")] string Name,
+        [JsonProperty("rideCount")] int RideCount);
 }
