@@ -22,6 +22,7 @@ export enum InvitesActionTypes {
 	GetInvites = "INVITES_GET_INVITES",
 	GetInvitesSuccess = "INVITES_GET_INVITES_SUCCESS",
 	GetInvitesError = "INVITES_GET_INVITES_ERROR",
+	AddInvites = "INVITES_ADD",
 }
 
 /** Enum of rides actions */
@@ -107,6 +108,11 @@ export interface IGetInvitesActionError
 	extends Action<InvitesActionTypes.GetInvitesError> {
 	error: Error;
 }
+
+export interface IAddInvitesAction extends Action<InvitesActionTypes.AddInvites> {
+	groupId: string;
+	userIds: string[];
+}
 //#endregion
 
 //#region RIDES
@@ -162,7 +168,8 @@ export type InviteAction =
 	| IAnswerInviteActionError
 	| IGetInvitesAction
 	| IGetInvitessActionSuccess
-	| IGetInvitesActionError;
+	| IGetInvitesActionError
+	| IAddInvitesAction;
 
 export type RideAction =
 	IGetRidesAction

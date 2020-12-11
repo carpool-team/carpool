@@ -42,7 +42,8 @@
                 "name": "Imię",
                 "surname": "Nazwisko",
                 "basicInfo": "Podstawowe informacje",
-                "basicInfo2": "Zaproś użytkowników"
+                "basicInfo2": "Zaproś użytkowników",
+                "confirmBtn": "Zatwierdź"
             },
             "list": {
                 "editGroup": "Edytuj grupę",

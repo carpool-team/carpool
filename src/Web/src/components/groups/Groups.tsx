@@ -16,7 +16,7 @@ import produce from "immer";
 import "./Groups.scss";
 import { IAddRideInput } from "./components/addRideForm/interfaces/IAddRideInput";
 
-interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
+interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps {}
 
 interface IGroupsState {
 	selectedGroup: IGroup;
@@ -39,24 +39,28 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 	/** Handles adding group */
 	addGroupHandler = (group: IGroup) => {
 		this.props.addGroup(group);
-	}
+	};
 
 	getGroupsHandler = () => {
 		return this.props.groups ?? [];
-	}
+	};
 
 	getInvitesHandler = () => this.props.invites ?? [];
 
 	getRidesHandler = (owned: boolean) => {
 		return (owned ? this.props.ridesOwned : this.props.ridesParticipated) ?? [];
 		// .filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === this.props.authId));
-	}
+	};
 
-	setSelectedGroupHandler = (id: number) => {
-		this.setState(produce((draft: IGroupsState) => {
-			draft.selectedGroup = this.getGroupsHandler().find(g => g.id === id);
-		}));
-	}
+	setSelectedGroupHandler = (id: string) => {
+		this.setState(
+			produce((draft: IGroupsState) => {
+				draft.selectedGroup = this.getGroupsHandler().find(
+					(g) => g.groupId === id
+				);
+			})
+		);
+	};
 
 	render() {
 		let callbacks: IGroupCallbacks = {

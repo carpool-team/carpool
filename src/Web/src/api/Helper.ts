@@ -2,7 +2,10 @@ import { RequestType } from "./enum/RequestType";
 import { RequestEndpoint } from "./enum/RequestEndpoint";
 import { IRequestQueries } from "./interfaces/IRequestQueries";
 
-export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQueries) => string = (endpoint, queries) => {
+export const getRequestEndpoint: (
+	endpoint: RequestEndpoint,
+	queries?: IRequestQueries
+) => string = (endpoint, queries) => {
 	let ep: string = (() => {
 		switch (endpoint) {
 			case RequestEndpoint.POST_ADD_GROUP:
@@ -39,38 +42,29 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 				return "/rides/";
 			case RequestEndpoint.POST_RIDE_RECURRING:
 				return "/rides/recurring";
+			case RequestEndpoint.AUTOCOMPLETE_USER:
+				return "/users";
 			default:
 				throw "Unhandled endpoint";
 		}
 	})();
 	const query = [];
-	if (queries?.page) {
-		query.push("page=" + queries.page);
+	if (queries) {
+		Object.keys(queries).forEach((key) => {
+			query.push(`${key}=${queries[key]}`);
+		});
 	}
-
-	if (queries?.count) {
-		query.push("count=" + queries.count);
+	if (query.length > 0) {
+		ep += "?" + query.join("&");
 	}
-
-	if (queries?.owned) {
-		query.push("owned=" + queries.owned);
-	}
-
-	if (queries?.past) {
-		query.push("past=" + queries.past);
-	}
-
-	if (queries?.participated) {
-		query.push("participated=" + queries.participated);
-	}
-	if (query.length){
-		return ep + "?" + query.join("&");
-	} else {
-		return ep;
-	}
+	return ep;
 };
 
-export const getRequestType: (type: RequestType) => string = (type) => {
+type AllowedRequestVerb = "POST" | "PUT" | "DELETE" | "GET";
+
+export const getRequestType: (type: RequestType) => AllowedRequestVerb = (
+	type
+) => {
 	switch (type) {
 		case RequestType.GET:
 			return "GET";
@@ -85,7 +79,7 @@ export const getRequestType: (type: RequestType) => string = (type) => {
 	}
 };
 
-export const isAuthEndpoint: (endpoint: RequestEndpoint) => boolean = ep => {
+export const isAuthEndpoint: (endpoint: RequestEndpoint) => boolean = (ep) => {
 	switch (ep) {
 		case RequestEndpoint.LOGIN_USER:
 		case RequestEndpoint.REGISTER_USER:

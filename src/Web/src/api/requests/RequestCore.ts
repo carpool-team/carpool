@@ -21,17 +21,12 @@ export default abstract class RequestCore {
 		devUrl: "https://carpool-rest.azurewebsites.net/api",
 		devAuthUrl: "https://carpool-identity.azurewebsites.net/api",
 	};
-	private static proxyUrl: string = "https://cors-anywhere.herokuapp.com/";
-	private static headers = {
-		"Content-Type": "application/json",
-	};
+	private static headers: string[][] = [["Content-Type", "application/json"]];
 	//#endregion
 
 	abstract send(): Promise<any>;
 
-	constructor(init: {
-		properties: IRequestProperties
-	}) {
+	constructor(init: { properties: IRequestProperties }) {
 		this.requestProperties = init.properties;
 	}
 
@@ -41,30 +36,25 @@ export default abstract class RequestCore {
 			this.requestProperties.endpoint,
 			this.requestProperties.queries
 		);
-		const headers: { [key: string]: string } = { ...RequestCore.headers };
+		const headers = [...RequestCore.headers];
 		const state: AppState = getState();
 		if (state.auth?.tokenInfo?.token) {
-			headers["Authorization"] = `Bearer ${state.auth.tokenInfo.token}`;
-		}
-		const request: IRequest = {
-			method,
-			headers
-		};
-		if (this.requestBody) {
-			request.body = JSON.stringify(this.requestBody);
+			headers.push(["Authorization", `Bearer ${state.auth.tokenInfo.token}`]);
 		}
 		const apiUrl: string = isAuthEndpoint(this.requestProperties.endpoint)
 			? RequestCore.config.devAuthUrl
 			: RequestCore.config.devUrl;
-		const url: string = `${RequestCore.proxyUrl}${apiUrl}${endpoint}`;
-		const res = await fetch(url, request);
+		const url: string = `${apiUrl}${endpoint}`;
+		const res = await fetch(url, {
+			method,
+			headers: new Headers(headers),
+			body: this.requestBody ? JSON.stringify(this.requestBody) : null,
+		});
 		const json = await res.json();
 		console.debug("RESPONSE: ", {
-			request,
 			url,
-			json
+			json,
 		});
 		return json as R;
 	}
-
 }

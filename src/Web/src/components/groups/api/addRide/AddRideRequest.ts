@@ -3,9 +3,13 @@ import { RequestType } from "../../../../api/enum/RequestType";
 import RequestBase from "../../../../api/requests/RequestBase";
 import { AddRideResponse } from "./AddRideResponse";
 
+/** Ride direction enum */
 export enum RideDirection {
+	/** From point to group */
 	From = 0,
+	/** From group to point */
 	To = 1,
+	/** Both directions */
 	Both = 2,
 }
 

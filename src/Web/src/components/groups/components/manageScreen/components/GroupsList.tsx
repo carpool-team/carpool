@@ -10,7 +10,7 @@ import { withTranslation } from "react-i18next";
 
 interface IGroupsListProps extends IReactI18nProps {
 	getGroupsCallback: () => IGroup[];
-	setGroupSelected: (id: number) => void;
+	setGroupSelected: (id: string) => void;
 	groupSelected: IGroup;
 }
 interface IListItemProps {
@@ -44,21 +44,21 @@ const GroupsList = (props: IGroupsListProps) => {
 
 	const ActiveItem = (props: IListItemProps) => {
 		const color = {
-			color: props.color
+			color: props.color,
 		};
 
 		const { t } = props;
 		return (
-			<li className={activeListItemCssClass} key={props.group.id}>
+			<li className={activeListItemCssClass} key={props.group.groupId}>
 				<button
 					onClick={() => props.setGroupSelected()}
 					className={activeButtonCssClass}
 					style={color}
 				>
-					<div className={pinCssClass} style={color}>	</div>
-					<div className={activeLabelCssClass}>
-						{props.group.name}
+					<div className={pinCssClass} style={color}>
+						{" "}
 					</div>
+					<div className={activeLabelCssClass}>{props.group.name}</div>
 				</button>
 				<div className={activeMenuCssClass}>
 					<ButtonLink to={`/${mainRoutes.groups}${GroupsRouter.routes.rides}`}>
@@ -78,18 +78,18 @@ const GroupsList = (props: IGroupsListProps) => {
 
 	const DefaultItem = (props: IListItemProps) => {
 		const color = {
-			color: props.color
+			color: props.color,
 		};
 		return (
-			<li key={props.group.id}>
+			<li key={props.group.groupId}>
 				<button
 					onClick={() => props.setGroupSelected()}
 					className={buttonCssClass}
 				>
-					<div className={pinCssClass} style={color}>	</div>
-					<div className={labelCssClass}>
-						{props.group.name}
+					<div className={pinCssClass} style={color}>
+						{" "}
 					</div>
+					<div className={labelCssClass}>{props.group.name}</div>
 				</button>
 			</li>
 		);
@@ -102,24 +102,31 @@ const GroupsList = (props: IGroupsListProps) => {
 				const color = colorList[colorIndex % colorList.length];
 				const { t } = props;
 				return (
-					<React.Fragment key={group.id}>
+					<React.Fragment key={group.groupId}>
 						{(() => {
-							if (props.groupSelected && props.groupSelected.id === group.id) {
+							if (
+								props.groupSelected &&
+								props.groupSelected.groupId === group.groupId
+							) {
 								return (
 									<ActiveItem
 										group={group}
 										color={color}
 										setGroupSelected={() => props.setGroupSelected(null)}
 										t={t}
-									/>);
+									/>
+								);
 							} else {
 								return (
 									<DefaultItem
 										group={group}
 										color={color}
-										setGroupSelected={() => props.setGroupSelected(group.id)}
+										setGroupSelected={() =>
+											props.setGroupSelected(group.groupId)
+										}
 										t={t}
-									/>);
+									/>
+								);
 							}
 						})()}
 					</React.Fragment>

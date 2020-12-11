@@ -119,6 +119,14 @@ export function getInvitesError(error: Error): IGetInvitesActionError {
 		error,
 	};
 }
+
+export function addInvite(groupId: string, userIds: string[]) {
+	return {
+		type: InvitesActionTypes.AddInvites,
+		groupId,
+		userIds,
+	}
+}
 //#endregion
 
 //#region RIDES
