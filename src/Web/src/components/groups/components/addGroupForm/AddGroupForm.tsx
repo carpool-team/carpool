@@ -20,11 +20,14 @@ interface IAddGroupFormScreenState {
 	formData: IFormData;
 }
 
-class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFormScreenState> {
+class AddGroupFormScreen extends Component<
+	IAddGroupFormScreenProps,
+	IAddGroupFormScreenState
+> {
 	constructor(props: IAddGroupFormScreenProps) {
 		super(props);
 		this.state = {
-			formData: initialFormData
+			formData: initialFormData,
 		};
 	}
 
@@ -35,41 +38,51 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 	 * @param key form data object value key to assign to
 	 */
 	private changeHandler = (newValue: string, key: string) => {
-		this.setState(produce((draft: IAddGroupFormScreenState) => {
-			_.set(draft.formData, key, newValue);
-		}));
-	}
+		this.setState(
+			produce((draft: IAddGroupFormScreenState) => {
+				_.set(draft.formData, key, newValue);
+			})
+		);
+	};
 
 	/** Increments form step */
 	private incrementStep = () => {
-		this.setState(produce((draft: IAddGroupFormScreenState) => {
-			draft.formData.step += 1;
-		}));
-	}
+		this.setState(
+			produce((draft: IAddGroupFormScreenState) => {
+				draft.formData.step += 1;
+			})
+		);
+	};
 
 	/** Decrements form step */
 	private decrementStep = () => {
-		this.setState(produce((draft: IAddGroupFormScreenState) => {
-			draft.formData.step -= 1;
-		}));
-	}
+		this.setState(
+			produce((draft: IAddGroupFormScreenState) => {
+				draft.formData.step -= 1;
+			})
+		);
+	};
 
 	private addUser = () => {
-		this.setState(produce((draft: IAddGroupFormScreenState) => {
-			draft.formData.users.push(this.state.formData.user);
-			draft.formData.user = initialFormData.user;
-		}));
-	}
+		this.setState(
+			produce((draft: IAddGroupFormScreenState) => {
+				draft.formData.users.push(this.state.formData.user);
+				draft.formData.user = initialFormData.user;
+			})
+		);
+	};
 	private removeUser = (user: IFormUserData) => {
-		const users = this.state.formData.users.filter(item => item !== user);
-		this.setState(produce((draft: IAddGroupFormScreenState) => {
-			draft.formData.users = users;
-		}));
-	}
+		const users = this.state.formData.users.filter((item) => item !== user);
+		this.setState(
+			produce((draft: IAddGroupFormScreenState) => {
+				draft.formData.users = users;
+			})
+		);
+	};
 
 	private createGroup = () => {
 		let group: IGroup = {
-			id: 0,
+			groupId: "0",
 			name: this.state.formData.group.groupName,
 			code: this.state.formData.group.code,
 			owner: this.props.userId,
@@ -82,17 +95,17 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 		};
 		this.props.callbacks.addGroup(group);
 		this.props.callbacks.redirect("/" + mainRoutes.groups); // make path absolute
-	}
+	};
 
 	private renderFirstStep = () => (
 		<FirstStep
 			data={this.state.formData}
 			callbacks={{
 				handleChange: this.changeHandler,
-				incrementStep: this.incrementStep
+				incrementStep: this.incrementStep,
 			}}
 		/>
-	)
+	);
 
 	private renderSecondStep = () => (
 		<SecondStep
@@ -102,10 +115,10 @@ class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFo
 				decrementStep: this.decrementStep,
 				createGroup: this.createGroup,
 				addUser: this.addUser,
-				removeUser: this.removeUser
+				removeUser: this.removeUser,
 			}}
 		/>
-	)
+	);
 
 	render() {
 		if (this.state.formData.step === 1) {

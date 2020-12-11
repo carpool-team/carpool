@@ -1,9 +1,11 @@
 import { RequestType } from "./enum/RequestType";
 import { RequestEndpoint } from "./enum/RequestEndpoint";
 import { IRequestQueries } from "./interfaces/IRequestQueries";
-import { Method } from "axios";
 
-export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQueries) => string = (endpoint, queries) => {
+export const getRequestEndpoint: (
+	endpoint: RequestEndpoint,
+	queries?: IRequestQueries
+) => string = (endpoint, queries) => {
 	let ep: string = (() => {
 		switch (endpoint) {
 			case RequestEndpoint.POST_ADD_GROUP:
@@ -48,7 +50,7 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 	})();
 	const query = [];
 	if (queries) {
-		Object.keys(queries).forEach(key => {
+		Object.keys(queries).forEach((key) => {
 			query.push(`${key}=${queries[key]}`);
 		});
 	}
@@ -58,7 +60,11 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 	return ep;
 };
 
-export const getRequestType: (type: RequestType) => Method = (type) => {
+type AllowedRequestVerb = "POST" | "PUT" | "DELETE" | "GET";
+
+export const getRequestType: (type: RequestType) => AllowedRequestVerb = (
+	type
+) => {
 	switch (type) {
 		case RequestType.GET:
 			return "GET";
@@ -73,7 +79,7 @@ export const getRequestType: (type: RequestType) => Method = (type) => {
 	}
 };
 
-export const isAuthEndpoint: (endpoint: RequestEndpoint) => boolean = ep => {
+export const isAuthEndpoint: (endpoint: RequestEndpoint) => boolean = (ep) => {
 	switch (ep) {
 		case RequestEndpoint.LOGIN_USER:
 		case RequestEndpoint.REGISTER_USER:

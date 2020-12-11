@@ -6,13 +6,13 @@ import mapConfig from "./mapConfig";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
-import {parseCoords} from "../../helpers/UniversalHelper";
+import { parseCoords } from "../../helpers/UniversalHelper";
 
 const Mapbox = ReactMapboxGl({
 	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
 	minZoom: 2,
 	maxZoom: 15,
-	accessToken: mapConfig.mapboxKey
+	accessToken: mapConfig.mapboxKey,
 });
 
 export interface IMapState {
@@ -23,7 +23,7 @@ export interface IMapState {
 }
 
 const flyToOptions = {
-	speed: 0.8
+	speed: 0.8,
 };
 
 const defaults = {
@@ -34,12 +34,15 @@ const defaults = {
 export interface IMapProps {
 	onStyleLoad?: (map: any) => any;
 	getGroupsCallback: () => IGroup[];
-	setSelectedGroupCallback: (id: number) => void;
+	setSelectedGroupCallback: (id: string) => void;
 	group?: IGroup;
 }
 
-export default class MapBoxGroups extends React.Component<IMapProps, IMapState> {
-	private currentGroupId: number;
+export default class MapBoxGroups extends React.Component<
+	IMapProps,
+	IMapState
+> {
+	private currentGroupId: string;
 
 	constructor(props: IMapProps) {
 		super(props);
@@ -55,9 +58,11 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		const groups: IGroup[] = this.props.getGroupsCallback();
 		if (groups && this.state.groups?.length !== groups.length) {
 			this.getBounds(groups);
-			this.setState(produce((draft: IMapState) => {
-				draft.groups = groups;
-			}));
+			this.setState(
+				produce((draft: IMapState) => {
+					draft.groups = groups;
+				})
+			);
 		}
 	}
 
@@ -65,23 +70,33 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		const groups: IGroup[] = this.props.getGroupsCallback();
 		if (groups && this.state.groups?.length !== groups.length) {
 			this.getBounds(groups);
-			this.setState(produce((draft: IMapState) => {
-				draft.groups = groups;
-			}));
+			this.setState(
+				produce((draft: IMapState) => {
+					draft.groups = groups;
+				})
+			);
 		}
 
-		if (this.props.group && this.props.group?.id !== this.currentGroupId) {
-			this.currentGroupId = this.props.group.id;
-			this.setState(produce((draft: IMapState) => {
-				draft.center = parseCoords(this.props.group.location);
-				draft.zoom = [14];
-			}));
+		if (this.props.group && this.props.group?.groupId !== this.currentGroupId) {
+			this.currentGroupId = this.props.group.groupId;
+			this.setState(
+				produce((draft: IMapState) => {
+					draft.center = parseCoords(this.props.group.location);
+					draft.zoom = [14];
+				})
+			);
 		}
 	}
 
 	private getBounds = (groups: IGroup[]) => {
-		const allCoords = [groups.map(g => g.location.longitude), groups.map(g => g.location.latitude)];
-		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
+		const allCoords = [
+			groups.map((g) => g.location.longitude),
+			groups.map((g) => g.location.latitude),
+		];
+		let bbox: [[number, number], [number, number]] = [
+			[0, 0],
+			[0, 0],
+		];
 
 		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
@@ -90,22 +105,24 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			bbox[1][1] = Math.max.apply(null, allCoords[1]);
 		}
 		if (this.state.fitBounds !== bbox) {
-			this.setState(produce((draft: IMapState) => {
-				draft.fitBounds = bbox;
-			}));
+			this.setState(
+				produce((draft: IMapState) => {
+					draft.fitBounds = bbox;
+				})
+			);
 		}
-	}
+	};
 
 	private onDrag = () => {
 		if (this.props.group) {
 			this.props.setSelectedGroupCallback(undefined);
 		}
-	}
+	};
 
 	private onStyleLoad = (map: any) => {
 		const onStyleLoad = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
-	}
+	};
 
 	private markerClick = (group: IGroup) => {
 		this.setState({
@@ -113,8 +130,8 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			zoom: [14],
 		});
 
-		this.props.setSelectedGroupCallback(group.id);
-	}
+		this.props.setSelectedGroupCallback(group.groupId);
+	};
 
 	public render() {
 		const { fitBounds, center, zoom, groups } = this.state;
@@ -125,14 +142,14 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		};
 
 		const boundsOptions: FitBoundsOptions = {
-			padding: 100
+			padding: 100,
 		};
 
 		const popupStyle: CSSProperties = {
 			background: "white",
 			color: "gray",
 			fontWeight: 400,
-			border: "2px"
+			border: "2px",
 		};
 
 		let colorIndex = 0;
@@ -156,12 +173,12 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 						const markerStyle: CSSProperties = {
 							fontSize: "40px",
-							color: color
+							color: color,
 						};
 
 						return (
 							<Marker
-								key={g.id}
+								key={g.groupId}
 								coordinates={parseCoords(g.location)}
 								anchor="bottom"
 								onClick={this.markerClick.bind(this, g)}
@@ -172,13 +189,12 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					})}
 
 					{group && (
-						<Popup key={group.id} coordinates={parseCoords(group.location)}>
-							<div style={popupStyle}>
-								{group.name}
-							</div>
-							<div style={popupStyle}>
-								{"Adres:TODO"}
-							</div>
+						<Popup
+							key={group.groupId}
+							coordinates={parseCoords(group.location)}
+						>
+							<div style={popupStyle}>{group.name}</div>
+							<div style={popupStyle}>{"Adres:TODO"}</div>
 						</Popup>
 					)}
 				</>
