@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback} from "react";
+import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -20,6 +20,8 @@ import {
 	mapDispatchToProps,
 } from "../store/PropsTypes";
 import { useImmer } from "use-immer";
+import { FormControlClassKey } from "@material-ui/core";
+import { Event } from "react-toastify/dist/core";
 
 interface ILoginPanelProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps { }
 
@@ -54,20 +56,22 @@ const LoginPanel = (props: ILoginPanelProps) => {
 		}
 	};
 
-	const enterFunction = useCallback((event) => {
+	const enterFunction = (event) => {
 		if ( event.keyCode === 13) {
 			setSubmitted(true);
 		}
-	}, []);
+	};
+
+	useEffect(() => { 
+		document.addEventListener("keydown", enterFunction, false); 
+		return () => { 
+			document.removeEventListener("keydown", enterFunction, false); 
+		} }, []);
 
 	useEffect(() => {
 		if (submitted) {
 			trySendForm();
 		}
-		document.addEventListener("keydown", enterFunction, false);
-		return () => {
-			document.removeEventListener("keydown", enterFunction, false);
-		};
 	}, [submitted, inputsValid]);
 
 	const cssClasses = {
