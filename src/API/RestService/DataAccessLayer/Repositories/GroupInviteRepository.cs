@@ -32,13 +32,13 @@ namespace DataAccessLayer.Repositories
 		public async Task<List<GroupInvite>> GetPartAsync(CancellationToken cancellationToken)
 			=> await _context.GroupInvites.ToListAsync(cancellationToken);
 
-		public IQueryable<GroupInvite> GetUserGroupInvitesByUserIdAsNoTrackingAsync(AppUserId appUserId)
+		public IQueryable<GroupInvite> GetUserGroupPendingInvitesByUserIdAsNoTrackingAsync(AppUserId appUserId)
 			=> _context.GroupInvites.AsNoTracking()
 				.Include(x => x.Group)
 				.ThenInclude(a => a.UserGroups)
 				.Include(x => x.InvitingApplicationUser)
 				.Include(x => x.InvitedApplicationUser)
-				.Where(x => x.InvitedAppUserId == appUserId)
+				.Where(x => x.InvitedAppUserId == appUserId && x.IsPending)
 				.OrderByDescending(x => x.DateAdded)
 				.AsQueryable();
 

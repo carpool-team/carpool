@@ -37,7 +37,7 @@ namespace RestApi.Queries.GroupInviteQueries
 		public async Task<IEnumerable<GroupInviteDto>> Handle(GetUserGroupInvitesQuery request,
 			CancellationToken cancellationToken)
 		{
-			var groupInvites = await _repository.GetUserGroupInvitesByUserIdAsNoTrackingAsync(request.AppUserId).ToListAsync();
+			var groupInvites = await _repository.GetUserGroupPendingInvitesByUserIdAsNoTrackingAsync(request.AppUserId).ToListAsync();
 
 			try
 			{
