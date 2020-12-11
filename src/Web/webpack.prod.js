@@ -1,6 +1,9 @@
-const merge = require('webpack-merge');
-const common = require('./webpack.common');
+const merge = require("webpack-merge");
+const common = require("./webpack.common");
+const DropConsoleWebpackPlugin = require("drop-console-webpack-plugin");
 
 module.exports = merge(common, {
-    mode: "production"
+	mode: "production",
 });
+
+module.exports.plugins.push(new DropConsoleWebpackPlugin());
