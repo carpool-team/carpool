@@ -15,6 +15,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {parseCoords} from '../../../utils/coords';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {MAP_LIGHT} from '@env';
+import {GoBack} from '../../../components/navigation';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
@@ -24,6 +25,10 @@ const GroupDetails = ({navigation, route}) => {
       setGroup(route.params.group);
     }
   }, []);
+
+  navigation.setOptions({
+    headerLeft: () => <GoBack onPress={() => navigation.navigate('Groups')} />,
+  });
 
   return group ? (
     <SafeAreaView style={styles.flexed}>

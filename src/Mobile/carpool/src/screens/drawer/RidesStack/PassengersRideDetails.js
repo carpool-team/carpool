@@ -13,9 +13,16 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {RouteMinimap} from '../../../components/Route';
 import {GroupWaypoints} from '../../../components/Ride';
+import {GoBack} from '../../../components/navigation';
 
-const PassengersRideDetails = ({route}) => {
+const PassengersRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
+
+  navigation.setOptions({
+    headerLeft: () => (
+      <GoBack onPress={() => navigation.navigate('DriversRides')} />
+    ),
+  });
 
   const onResignPress = () =>
     Alert.alert('Warning!', 'Are you sure you want to resign?', [
