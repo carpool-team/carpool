@@ -43,7 +43,7 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 				throw "Unhandled endpoint";
 		}
 	})();
-	let query = [];
+	const query = [];
 	if (queries?.page) {
 		query.push("page=" + queries.page);
 	}
@@ -63,8 +63,11 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 	if (queries?.participated) {
 		query.push("participated=" + queries.participated);
 	}
-
-	return ep + "?" + query.join("&");
+	if (query.length){
+		return ep + "?" + query.join("&");
+	} else {
+		return ep;
+	}
 };
 
 export const getRequestType: (type: RequestType) => string = (type) => {
