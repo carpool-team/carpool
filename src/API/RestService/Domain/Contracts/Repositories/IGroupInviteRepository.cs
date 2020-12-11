@@ -16,7 +16,7 @@ namespace Domain.Contracts.Repositories
 
 		Task<List<GroupInvite>> GetPartAsync(CancellationToken cancellationToken);
 
-		IQueryable<GroupInvite> GetUserGroupInvitesByUserIdAsNoTrackingAsync(AppUserId appUserId);
+		IQueryable<GroupInvite> GetUserGroupPendingInvitesByUserIdAsNoTrackingAsync(AppUserId appUserId);
 
 		Task AddAsync(GroupInvite groupInvite, CancellationToken cancellationToken);
 
