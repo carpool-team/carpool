@@ -19,7 +19,7 @@ import {
 	IGetRidesActionSuccess,
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
-	IParticipateInRideActionError, IAddGroupActionError, IAddRideAction
+	IParticipateInRideActionError, IAddGroupActionError, IAddRideAction, IAddInvitesAction
 } from "./Types";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -35,12 +35,13 @@ import { GetRidesResponse } from "../api/getRides/GetRidesResponse";
 import { GetRidesRequest } from "../api/getRides/GetRidesRequest";
 import { ParticipateInRideResponse } from "../api/participateInRide/ParticipateInRideResponse";
 import { ParticipateInRideRequest } from "../api/participateInRide/ParticipateInRideRequest";
-import { getId } from "../../../helpers/UniversalHelper";
+import { foreach, getId } from "../../../helpers/UniversalHelper";
 import { IAuthState } from "../../auth/store/State";
 import { UpdateGroupRequest } from "../api/updateGroup/UpdateGroupRequest";
 import { UpdateGroupResponse } from "../api/updateGroup/UpdateGroupResponse";
 import { AddRideRequest, RideDirection } from "../api/addRide/AddRideRequest";
 import { AddRideResponse } from "../api/addRide/AddRideResponse";
+import { AddInviteRequest, IAddInviteRequestBody } from "../api/addInvite/AddInviteRequest";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -312,6 +313,31 @@ const addRideEpic: Epic<RideAction> = (action$, state$) => action$.pipe(
 	mergeMap(res => [res]),
 );
 
+const addInviteEpic: Epic<InviteAction> = (action$, state$) => action$.pipe(
+	ofType(InvitesActionTypes.AddInvites),
+	mergeMap(async (action: IAddInvitesAction) => {
+		const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
+		const request: AddInviteRequest = new AddInviteRequest({
+			body: {
+				groupId: action.groupId,
+				inviterId: uid,
+				inviteAppUserId: undefined,
+			}
+		});
+		action.userIds.forEach(async id => {
+			(request.requestBody as IAddInviteRequestBody).inviteAppUserId = id;
+			await request.send();
+		});
+		return [
+			<IGetInvitesAction>{
+				type: InvitesActionTypes.GetInvites,
+				userOnly: true,
+			}
+		];
+	}),
+	switchMap(res => res)
+)
+
 export const groupEpics = [
 	addGroupEpic,
 	getGroupsEpic,
@@ -320,4 +346,5 @@ export const groupEpics = [
 	getRidesEpic,
 	participateInRideEpic,
 	addRideEpic,
+	addInviteEpic,
 ];
