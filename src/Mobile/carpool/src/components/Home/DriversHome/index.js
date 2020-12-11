@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, ActivityIndicator, SafeAreaView} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/native';
-import {AccountSwitch} from '../../navigation';
 import {RideDetailsCard} from '../../Ride';
 import {useSelector} from 'react-redux';
 import {ListEmptyComponent} from '../../common/lists';
@@ -25,9 +24,6 @@ const DriversHome = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <View style={styles.topRow}>
-          <AccountSwitch />
-        </View>
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Upcoming ride</Text>
           <Text
