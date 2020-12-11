@@ -39,6 +39,8 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 				return "/rides/";
 			case RequestEndpoint.POST_RIDE_RECURRING:
 				return "/rides/recurring";
+			case RequestEndpoint.AUTOCOMPLETE_USER:
+				return "/users";
 			default:
 				throw "Unhandled endpoint";
 		}
