@@ -12,7 +12,7 @@ import SearchBar from "../../../../ui/searchBar/SearchBar";
 const RidesListDefault = (props: IRidesListProps) => {
 
 	const cssClasses = {
-		list: "ridesListContainer",
+		list: "ridesList",
 		day: "day",
 		dayLabel: "day__label"
 	};

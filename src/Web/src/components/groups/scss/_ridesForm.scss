@@ -14,8 +14,11 @@
 		margin-bottom: 7px;
 		background-color: $background;
 		width: 35%;
+		display: flex;
+		flex-direction: column;
 		&__list{
-			 height: inherit;
+			 height: 100%;
+			 overflow: hidden;
 		}
 		&__text{
 			font-weight: $medium;
