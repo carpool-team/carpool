@@ -51,7 +51,9 @@ export const getRequestEndpoint: (
 	const query = [];
 	if (queries) {
 		Object.keys(queries).forEach((key) => {
-			query.push(`${key}=${queries[key]}`);
+			if (queries[key]) {
+				query.push(`${key}=${queries[key]}`);
+			}
 		});
 	}
 	if (query.length > 0) {

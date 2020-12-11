@@ -2,7 +2,6 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const devMode = process.env.NODE_ENV !== "production";
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const DropConsoleWebpackPlugin = require("drop-console-webpack-plugin");
 
 module.exports = {
 	entry: path.resolve(__dirname, "src/index"),
@@ -10,15 +9,15 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, "dist"),
 		filename: "bundle.js",
-		publicPath: '/',
+		publicPath: "/",
 	},
 
 	resolve: {
 		extensions: [".ts", ".tsx", ".js", ".scss", ".css", ".png"],
 		alias: {
 			scss_path: path.resolve(__dirname, "../Web/src/scss"),
-			assets_path: path.resolve(__dirname, "../Web/src/assets")
-		}
+			assets_path: path.resolve(__dirname, "../Web/src/assets"),
+		},
 	},
 
 	module: {
@@ -32,14 +31,14 @@ module.exports = {
 						loader: "ts-loader",
 						options: {
 							transpileOnly: true,
-						}
+						},
 					},
 					{
 						loader: "babel-loader",
 						options: {
 							exclude: /node_modules/,
-						}
-					}
+						},
+					},
 				],
 			},
 
@@ -60,7 +59,7 @@ module.exports = {
 
 				use: [
 					// Creates `style` nodes from JS strings
-					devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+					devMode ? "style-loader" : MiniCssExtractPlugin.loader,
 					// Translates CSS into CommonJS
 					"css-loader",
 					// Compiles Sass to CSS
@@ -84,13 +83,7 @@ module.exports = {
 					global: true,
 				},
 				profile: true,
-			}
+			},
 		}),
 	],
 };
-
-if (!devMode) {
-	module.exports.plugins.push(
-		new DropConsoleWebpackPlugin(),
-	);
-}
