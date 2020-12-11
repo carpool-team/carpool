@@ -1,21 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import sheet from '../../../styles/sheet';
 import colors from '../../../styles/colors';
 import UpView from '../../../components/common/UpView';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import MapboxGL from '@react-native-mapbox-gl/maps';
 import {parseCoords} from '../../../utils/coords';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {MAP_LIGHT} from '@env';
 import {GoBack} from '../../../components/navigation';
+import {PointMinimap} from '../../../components/Route';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
@@ -33,18 +25,9 @@ const GroupDetails = ({navigation, route}) => {
   return group ? (
     <SafeAreaView style={styles.flexed}>
       <View style={styles.upperContainer}>
-        <View style={sheet.rowCenterSplit}>
-          <Text style={styles.name} numberOfLines={1}>
-            {group.name}
-          </Text>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <MaterialIcon
-              name="chevron-left"
-              size={40}
-              color={colors.grayVeryDark}
-            />
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.name} numberOfLines={1}>
+          {group.name}
+        </Text>
         <View style={styles.statsRow}>
           <View style={sheet.columnCenter}>
             <Text style={styles.totalRides}>
@@ -60,12 +43,6 @@ const GroupDetails = ({navigation, route}) => {
           </View>
         </View>
         <View style={styles.cardGrid}>
-          {/* <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
-            <View style={styles.cardContent}>
-              <MaterialIcon name="group" size={40} color={colors.blue} />
-              <Text style={styles.cardLabel}>Members</Text>
-            </View>
-          </UpView> */}
           <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
             <View style={styles.cardContent}>
               <MaterialIcon name="settings" size={40} color={colors.blue} />
@@ -78,45 +55,9 @@ const GroupDetails = ({navigation, route}) => {
               <Text style={styles.cardLabel}>Your rides</Text>
             </View>
           </UpView>
-          {/* <UpView
-            borderRadius={8}
-            style={styles.upview}
-            onPress={() => navigation.navigate('FindRide')}>
-            <View style={styles.cardContent}>
-              <MaterialIcon name="search" size={40} color={colors.blue} />
-              <Text style={styles.cardLabel}>Find a ride</Text>
-            </View>
-          </UpView> */}
         </View>
         <View style={styles.flexed}>
-          <MapboxGL.MapView
-            style={styles.flexed}
-            styleURL={MAP_LIGHT}
-            contentInset={10}
-            compassEnabled={false}
-            scrollEnabled={false}
-            pitchEnabled={false}
-            rotateEnabled={false}>
-            <MapboxGL.Camera
-              zoomLevel={12}
-              maxZoomLevel={19}
-              animationMode="flyTo"
-              animationDuration={500}
-              centerCoordinate={parseCoords(group.location)}
-            />
-            <MapboxGL.PointAnnotation
-              key={group.id}
-              id="selected"
-              coordinate={parseCoords(group.location)}>
-              <Icon
-                name="map-marker"
-                color={colors.green}
-                size={35}
-                style={styles.marker}
-              />
-            </MapboxGL.PointAnnotation>
-            <MapboxGL.UserLocation visible />
-          </MapboxGL.MapView>
+          <PointMinimap coordinates={parseCoords(group.location)} />
         </View>
       </View>
     </SafeAreaView>
@@ -161,16 +102,6 @@ const styles = StyleSheet.create({
     color: colors.blue,
     fontSize: 18,
   },
-  totalDistance: {
-    ...sheet.textBold,
-    color: colors.orange,
-    fontSize: 40,
-  },
-  distance: {
-    ...sheet.textBold,
-    color: colors.orange,
-    fontSize: 18,
-  },
   cardGrid: {
     marginVertical: 27,
     flexDirection: 'row',
@@ -186,9 +117,6 @@ const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     color: colors.grayDark,
     fontSize: 20,
-  },
-  marker: {
-    marginBottom: 35,
   },
   upview: {
     width: '48%',
