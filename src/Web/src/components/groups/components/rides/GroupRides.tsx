@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/GroupDetailedView";
-import RidesList from "./components/RidesList";
 import { useHistory } from "react-router";
 import Button from "../../../ui/button/Button";
 import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
@@ -17,6 +16,8 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import GroupsRouter from "../GroupsRouter";
+import RidesList from "../../../shared/ridesList/RidesList";
+import {RidesListType} from "../../../shared/ridesList/enums/RidesListType";
 
 interface IGroupRidesProps extends IGroupDetailedViewProps, RouteComponentProps, IReactI18nProps {
 
@@ -80,7 +81,7 @@ const GroupRides = (props: IGroupRidesProps) => {
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<div className={cssClasses.leftList}>
-					<RidesList rideSelected={selectedRide} setRide={setRide} rides={props.rides} />
+					<RidesList listType={RidesListType.Default} rideSelected={selectedRide} setRide={setRide} rides={props.rides ?? []} />
 				</div>
 			</div>
 			<MediaQuery query="(min-width: 900px)">

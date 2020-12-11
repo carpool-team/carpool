@@ -16,8 +16,6 @@ import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import Switch from "@material-ui/core/Switch";
 import { withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import RidesOwner from "./components/RidesOwner";
-import RidesParticipant from "./components/RidesParticipant";
 import moment from "moment";
 import "./Rides.scss";
 import { connect } from "react-redux";
@@ -28,7 +26,6 @@ import Button from "../ui/button/Button";
 import { ButtonColor } from "../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../ui/button/enums/ButtonBackground";
 import { ButtonIcon } from "../ui/button/enums/ButtonIcon";
-import RidesPast from "./components/RidesPast";
 import RidesList from "../shared/ridesList/RidesList";
 import {RidesListType} from "../shared/ridesList/enums/RidesListType";
 
