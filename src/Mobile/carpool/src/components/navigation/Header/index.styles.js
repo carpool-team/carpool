@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    ...sheet.textMedium,
+    ...sheet.textSemiBold,
     color: colors.grayVeryDark,
     fontSize: 20,
   },
