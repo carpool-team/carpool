@@ -8,6 +8,8 @@ const initialState: IGroupsState = {
 	invites: [],
 	ridesOwned: [],
 	ridesParticipated: [],
+	ridesOwnedPast: [],
+	ridesParticipatedPast: []
 };
 
 /**
@@ -40,6 +42,8 @@ const reducer: Reducer<IGroupsState> = (
 			case RidesActionTypes.GetRidesSuccess:
 				draft.ridesOwned = action.ridesOwned;
 				draft.ridesParticipated = action.ridesParticipated;
+				draft.ridesOwnedPast = action.ridesOwnedPast;
+				draft.ridesParticipatedPast = action.ridesParticipatedPast;
 				break;
 			case RidesActionTypes.ParticipateInRideSuccess:
 				// idx = draft.rides.findIndex(r => r.id === action.rideId);

@@ -23,7 +23,7 @@
 	width: auto;
 	background-color: $background;
 	&__days{
-		max-height: 72vh;
+		height: inherit;
 		list-style-type: none;
 		flex: 0 0 auto;	
 		padding-left: 0;
@@ -64,7 +64,7 @@
 	width: auto;
 	background-color: $background;
 	overflow:hidden; 
-	max-height: 76vh;
+	height: inherit;
 	overflow-y:scroll;
 	scrollbar-width: none; /* Firefox */
 	-ms-overflow-style: none;  /* IE 10+ */

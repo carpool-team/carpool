@@ -128,11 +128,13 @@ export function getRides(): IGetRidesAction {
 	};
 }
 
-export function getRidesSuccess(ridesOwned: IRide[], ridesParticipated: IRide[]): IGetRidesActionSuccess {
+export function getRidesSuccess(ridesOwned: IRide[], ridesParticipated: IRide[], ridesOwnedPast: IRide[], ridesParticipatedPast: IRide[]): IGetRidesActionSuccess {
 	return {
 		type: RidesActionTypes.GetRidesSuccess,
 		ridesOwned,
 		ridesParticipated,
+		ridesOwnedPast,
+		ridesParticipatedPast
 	};
 }
 

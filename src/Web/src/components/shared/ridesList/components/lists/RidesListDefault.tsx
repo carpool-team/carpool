@@ -12,7 +12,7 @@ import SearchBar from "../../../../ui/searchBar/SearchBar";
 const RidesListDefault = (props: IRidesListProps) => {
 
 	const cssClasses = {
-		list: "ridesListContainer",
+		list: "ridesList",
 		day: "day",
 		dayLabel: "day__label"
 	};
@@ -98,7 +98,7 @@ const RidesListDefault = (props: IRidesListProps) => {
 					setSearchKey(nv);
 				}}
 			/>
-			{rides.map((ride) => {
+			{rides && rides.map((ride) => {
 				++colorIndex;
 				const color = colorList[colorIndex % colorList.length];
 				return (
