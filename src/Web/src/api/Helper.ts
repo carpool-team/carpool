@@ -1,6 +1,7 @@
 import { RequestType } from "./enum/RequestType";
 import { RequestEndpoint } from "./enum/RequestEndpoint";
 import { IRequestQueries } from "./interfaces/IRequestQueries";
+import { Method } from "axios";
 
 export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQueries) => string = (endpoint, queries) => {
 	let ep: string = (() => {
@@ -46,33 +47,18 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 		}
 	})();
 	const query = [];
-	if (queries?.page) {
-		query.push("page=" + queries.page);
+	if (queries) {
+		Object.keys(queries).forEach(key => {
+			query.push(`${key}=${queries[key]}`);
+		});
 	}
-
-	if (queries?.count) {
-		query.push("count=" + queries.count);
+	if (query.length > 0) {
+		ep += "?" + query.join("&");
 	}
-
-	if (queries?.owned) {
-		query.push("owned=" + queries.owned);
-	}
-
-	if (queries?.past) {
-		query.push("past=" + queries.past);
-	}
-
-	if (queries?.participated) {
-		query.push("participated=" + queries.participated);
-	}
-	if (query.length){
-		return ep + "?" + query.join("&");
-	} else {
-		return ep;
-	}
+	return ep;
 };
 
-export const getRequestType: (type: RequestType) => string = (type) => {
+export const getRequestType: (type: RequestType) => Method = (type) => {
 	switch (type) {
 		case RequestType.GET:
 			return "GET";

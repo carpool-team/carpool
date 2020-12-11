@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/GroupDetailedView";
+import GroupDetailedView, {
+	IGroupDetailedViewProps,
+} from "../detailedView/GroupDetailedView";
 import AddInviteForm from "./components/AddInviteForm";
 import { IInviteUser } from "./interfaces/IInviteUser";
 
@@ -10,22 +12,16 @@ interface IGroupInviteProps extends IGroupDetailedViewProps {
 const GroupInvite = (props: IGroupInviteProps) => {
 	const [users, setUsers] = useState<IInviteUser[]>([]);
 
-	const addUserCallback: (user: IInviteUser) => void = user => {
-		setUsers([
-			...users,
-			user,
-		]);
+	const addUserCallback: (user: IInviteUser) => void = (user) => {
+		setUsers([...users, user]);
 	};
 
-	const removeUserCallback: (user: IInviteUser) => void = user => {
-		setUsers(users.filter(u => u.email !== user.email));
-	}
+	const removeUserCallback: (user: IInviteUser) => void = (user) => {
+		setUsers(users.filter((u) => u.email !== user.email));
+	};
 
 	return (
-		<GroupDetailedView
-			group={props.group}
-			rides={props.rides}
-		>
+		<GroupDetailedView group={props.group} rides={props.rides}>
 			<AddInviteForm
 				users={users}
 				addUserToInvite={addUserCallback}
