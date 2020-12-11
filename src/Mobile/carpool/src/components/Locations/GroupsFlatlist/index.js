@@ -9,7 +9,7 @@ const GroupsFlatlist = ({data, loading, onItemPress}) => (
     keyboardShouldPersistTaps="always"
     style={styles.flatlist}
     data={data}
-    keyExtractor={item => item.id}
+    keyExtractor={item => item.groupId}
     renderItem={({item}) => <ListItem item={item} onItemPress={onItemPress} />}
     refreshControl={
       <RefreshControl

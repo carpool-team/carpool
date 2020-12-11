@@ -5,6 +5,7 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {LightTheme} from './src/styles';
 import MainStackNavigator from './src/navigation/MainStackNavigator/index';
 import {AddRideStore} from './src/screens/HomeStack/AddRideStack/context';
+import {enableScreens} from 'react-native-screens';
 
 import {Provider, SafeAreaView} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
@@ -23,6 +24,8 @@ import {MAPBOX_KEY} from '@env';
 sagaMiddleware.run(rootSaga);
 
 MapboxGL.setAccessToken(MAPBOX_KEY);
+
+enableScreens();
 
 const App = () => {
   useEffect(() => {

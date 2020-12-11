@@ -19,11 +19,14 @@ const BottomTabs = () => {
 
   return (
     <Tabs.Navigator
+      lazy
+      detachInactiveScreens
       tabBarOptions={{
         activeTintColor: colors.blue,
         inactiveTintColor: colors.gray,
         style: {
           backgroundColor: '#fff',
+          height: 85,
         },
       }}>
       <Tabs.Screen
@@ -31,7 +34,7 @@ const BottomTabs = () => {
         component={HomeStack}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" size={0.7 * size} color={color} />
+            <Icon name="home" size={size} color={color} />
           ),
           tabBarLabel: 'Home',
         }}
@@ -41,7 +44,7 @@ const BottomTabs = () => {
         component={GroupsStack}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="group" size={0.7 * size} color={color} />
+            <Icon name="group" size={size} color={color} />
           ),
           tabBarLabel: 'Groups',
         }}
@@ -52,7 +55,7 @@ const BottomTabs = () => {
           component={SearchStack}
           options={{
             tabBarIcon: ({color, size}) => (
-              <Icon name="search" size={0.7 * size} color={color} />
+              <Icon name="search" size={size} color={color} />
             ),
             tabBarLabel: 'Search',
           }}
@@ -63,7 +66,7 @@ const BottomTabs = () => {
           component={AddRideStack}
           options={{
             tabBarIcon: ({color, size}) => (
-              <Icon name="plus" size={0.7 * size} color={color} />
+              <Icon name="plus" size={size} color={color} />
             ),
             tabBarLabel: 'Add ride',
           }}
@@ -74,7 +77,7 @@ const BottomTabs = () => {
         component={RidesStack}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="map-signs" size={0.7 * size} color={color} />
+            <Icon name="map-signs" size={size} color={color} />
           ),
           tabBarLabel: 'Rides',
         }}
@@ -84,7 +87,7 @@ const BottomTabs = () => {
         component={SettingsStack}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="cog" size={0.7 * size} color={color} />
+            <Icon name="cog" size={size} color={color} />
           ),
           tabBarLabel: 'Settings',
         }}
