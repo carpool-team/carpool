@@ -74,8 +74,8 @@ const RidesOwner = (props: IRidesListProps) => {
 
 	const DefaultItem = (props: IListItemProps) => {
 
-		const [loading, setLoading] = useState(null);
-		const [placeName, setPlaceName] = useState(null);
+		const [loading, setLoading] = useState<boolean>(null);
+		const [placeName, setPlaceName] = useState<string>(null);
 		const onGetName = async (coords: [number, number]) => {
 			try {
 				setLoading(true);

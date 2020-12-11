@@ -29,7 +29,8 @@ import { ButtonColor } from "../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../ui/button/enums/ButtonBackground";
 import { ButtonIcon } from "../ui/button/enums/ButtonIcon";
 import RidesPast from "./components/RidesPast";
-import { List } from "@material-ui/core";
+import RidesList from "../shared/ridesList/RidesList";
+import {RidesListType} from "../shared/ridesList/enums/RidesListType";
 
 interface IStatePropsType {
 	groups: IGroupsState;
@@ -196,19 +197,6 @@ const Rides = (props: IRidesProps) => {
 		}
 	};
 
-	const renderOwnerList = () => (
-		<RidesOwner firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={props.ridesOwned ?? []} />
-	);
-	const renderParticipantList = () => (
-		<RidesParticipant firstDay={date.firstDay} lastDay={date.lastDay} rideSelected={selectedRide} setRide={setRide} rides={props.ridesParticipated ?? []} />
-	);
-	const renderPastParticipantList = () => (
-		<RidesPast  rideSelected={selectedRide} setRide={setRide} rides={props.ridesPastParticipated ?? []}/>
-	);
-	const renderPastOwnerList = () => (
-		<RidesPast  rideSelected={selectedRide} setRide={setRide} rides={props.ridesPastOwner ?? []}/>
-	);
-
 	const UserSwitch = withStyles({
 		switchBase: {
 			color: "#6b98d1",
@@ -225,6 +213,19 @@ const Rides = (props: IRidesProps) => {
 		checked: {},
 		track: {},
 	})(Switch);
+
+	const renderOwnerList = () => (
+		<RidesList listType={RidesListType.Owner} rides={props.ridesOwned ?? []} rideSelected={selectedRide} firstDay={date.firstDay} lastDay={date.lastDay} setRide={setRide} />
+	);
+	const renderParticipantList = () => (
+		<RidesList listType={RidesListType.Participant} rides={props.ridesParticipated ?? []} rideSelected={selectedRide} firstDay={date.firstDay} lastDay={date.lastDay} setRide={setRide} />
+	);
+	const renderPastParticipantList = () => (
+		<RidesList listType={RidesListType.Default} rides={props.ridesPastParticipated ?? []} rideSelected={selectedRide} setRide={setRide} />
+	);
+	const renderPastOwnerList = () => (
+		<RidesList listType={RidesListType.Default} rides={props.ridesPastOwner ?? []} rideSelected={selectedRide} setRide={setRide} />
+	);
 
 	const renderList = () => {
 
@@ -252,7 +253,6 @@ const Rides = (props: IRidesProps) => {
 		<div className={cssClasses.container}>
 			<div className={cssClasses.leftPanel}>
 				<div className={cssClasses.leftLabels}>
-					{/* <span> {t("Moje przejazdy")} </span> */}
 					<Button id={ids.past} background={ButtonBackground.White}  color={ButtonColor.Gray} className={buttonCssClass.past} onClick={() => setCurrentList(Lists.Past)}>
 						{t(resources.pastBtn)}
 					</Button>
