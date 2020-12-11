@@ -1,21 +1,24 @@
-import React from "react";
-import { useImmer } from "use-immer";
+import React, { useState } from "react";
 import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/GroupDetailedView";
 import AddInviteForm from "./components/AddInviteForm";
 import { IInviteUser } from "./interfaces/IInviteUser";
 
 interface IGroupInviteProps extends IGroupDetailedViewProps {
+	onConfirm: (users: IInviteUser[]) => void;
 }
 
 const GroupInvite = (props: IGroupInviteProps) => {
-	const [users, setUsers] = useImmer<IInviteUser[]>([]);
+	const [users, setUsers] = useState<IInviteUser[]>([]);
 
 	const addUserCallback: (user: IInviteUser) => void = user => {
-		setUsers(draft => {
-			draft.push({
-				email: user.email,
-			})
-		});
+		setUsers([
+			...users,
+			user,
+		]);
+	};
+
+	const removeUserCallback: (user: IInviteUser) => void = user => {
+		setUsers(users.filter(u => u.email !== user.email));
 	}
 
 	return (
@@ -26,6 +29,8 @@ const GroupInvite = (props: IGroupInviteProps) => {
 			<AddInviteForm
 				users={users}
 				addUserToInvite={addUserCallback}
+				removeUser={removeUserCallback}
+				onConfirm={() => props.onConfirm(users)}
 			/>
 		</GroupDetailedView>
 	);

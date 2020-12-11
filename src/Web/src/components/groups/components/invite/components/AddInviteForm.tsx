@@ -18,7 +18,9 @@ import colors from "scss_path/_colors.scss";
 
 interface IAddInviteFormProps extends IReactI18nProps {
 	addUserToInvite: (user: IInviteUser) => void;
+	removeUser: (user: IInviteUser) => void;
 	users: IInviteUser[];
+	onConfirm: () => void;
 }
 
 const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
@@ -27,7 +29,6 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	});
 	const [email, setEmail] = useState<string>("");
 	const [submitted, setSubmitted] = useState(false);
-	const [validate, setValidate] = useState(false);
 
 	const onAdd = () => {
 		if (each(inputsValid, i => i)) {
@@ -37,7 +38,6 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 			});
 			clearInputs();
 			setSubmitted(false);
-			setValidate(false);
 		} else {
 			setSubmitted(false);
 		}
@@ -52,7 +52,6 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	const onEnter: (event: KeyboardEvent) => void = event => {
 		if (event.key === Key.Enter) {
 			setSubmitted(true);
-			setValidate(true);
 		}
 	};
 
@@ -81,6 +80,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 		nameInput: "groups.addGroupForm.name",
 		surnameInput: "groups.addGroupForm.surname",
 		basicInfo: "groups.addGroupForm.basicInfo2",
+		confirm: "groups.addGroupForm.confirmBtn",
 	};
 
 	const clearInputs = () => {
@@ -100,6 +100,12 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 				textFieldStyle={{
 				}}
 				placeholder={t(resources.emailInput)}
+				onSelect={() => {
+					console.log("SELECTED");
+					setInputsValid(draft => {
+						draft.email = true;
+					})
+				}}
 				autocompleteCallback={async () => {
 					const response = await fetch('https://country.register.gov.uk/records.json?page-size=5000');
 					const json = await response.json();
@@ -110,9 +116,13 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 			<div className={cssClasses.buttonsGroup}>
 				<Button onClick={() => {
 					setSubmitted(true);
-					setValidate(true);
 				}}>
 					{t(resources.addBtn)}
+				</Button>
+				<Button onClick={() => {
+					props.onConfirm();
+				}}>
+					{t(resources.confirm)}
 				</Button>
 			</div>
 		</div>
@@ -137,7 +147,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 								</div>
 								<ButtonSmall
 									icon={ButtonSmallIcon.Close}
-									// onClick={() => props.callbacks.removeUser(user)}
+									onClick={() => props.removeUser(user)}
 									color={ButtonSmallColor.Gray}
 									background={ButtonSmallBackground.White}
 								/>

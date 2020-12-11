@@ -12,6 +12,7 @@ function sleep(delay = 0) {
 interface IAutocompleteTextInputProps {
 	placeholder: string;
 	onChange: (newValue: string) => void;
+	onSelect?: () => void;
 	autocompleteCallback: () => Promise<string[]>;
 	wrapperStyle?: React.CSSProperties;
 	textFieldStyle?: React.CSSProperties;
@@ -66,6 +67,12 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 			getOptionLabel={(option) => option}
 			options={options}
 			loading={loading}
+			onChange={(_event, value) => {
+				if (props.onSelect) {
+					props.onSelect();
+				}
+				props.onChange(value);
+			}}
 			renderInput={(params) => (
 				<TextField
 					{...params}
