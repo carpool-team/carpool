@@ -47,9 +47,8 @@ enum Lists {
 const mapStateToProps = (state: IStatePropsType): IStateToProps => ({
 	ridesOwned: state.groups.ridesOwned,
 	ridesParticipated: state.groups.ridesParticipated,
-	// TODO Pobierać przeszłe przejazdy
-	ridesPastParticipated : null,
-	ridesPastOwner : null
+	ridesPastParticipated : state.groups.ridesParticipatedPast,
+	ridesPastOwner : state.groups.ridesOwnedPast
 });
 
 interface IDispatchPropsType {
