@@ -6,12 +6,13 @@ import {LightTheme} from './src/styles';
 import MainStackNavigator from './src/navigation/MainStackNavigator/index';
 import {AddRideStore} from './src/screens/HomeStack/AddRideStack/context';
 
-import {Provider} from 'react-redux';
+import {Provider, SafeAreaView} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import {promiseMiddleware} from '@adobe/redux-saga-promise';
 import {createStore, applyMiddleware} from 'redux';
 import {rootReducer} from './src/store/reducers';
 import rootSaga from './src/store/sagas';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [promiseMiddleware, sagaMiddleware];
@@ -33,13 +34,15 @@ const App = () => {
   }, []);
 
   return (
-    <NavigationContainer theme={LightTheme}>
-      <AddRideStore>
-        <Provider store={store}>
-          <MainStackNavigator />
-        </Provider>
-      </AddRideStore>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer theme={LightTheme}>
+        <AddRideStore>
+          <Provider store={store}>
+            <MainStackNavigator />
+          </Provider>
+        </AddRideStore>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
