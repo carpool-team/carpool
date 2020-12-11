@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {BackHandler} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {LightTheme} from './src/styles';
@@ -25,6 +26,10 @@ MapboxGL.setAccessToken(MAPBOX_KEY);
 const App = () => {
   useEffect(() => {
     MapboxGL.setTelemetryEnabled(false);
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', () => true);
   }, []);
 
   return (
