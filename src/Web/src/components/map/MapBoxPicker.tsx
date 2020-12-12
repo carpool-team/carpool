@@ -1,9 +1,11 @@
 import * as React from "react";
-import {CSSProperties} from "react";
-import ReactMapboxGl from "react-mapbox-gl";
+import { CSSProperties } from "react";
+import ReactMapboxGl, { Popup } from "react-mapbox-gl";
 import mapConfig from "./mapConfig";
-import {  Marker } from "react-mapbox-gl";
+import { Marker } from "react-mapbox-gl";
 import produce from "immer";
+import { parseCoords } from "../../helpers/UniversalHelper";
+import { ILocation } from "../groups/interfaces/ILocation";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 8,
@@ -22,7 +24,8 @@ const flyToOptions = {
 
 export interface IMapProps {
 	onStyleLoad?: (map: any) => any;
-	location?: [number, number];
+	location?: ILocation;
+	label?: string;
 }
 
 export default class MapBoxPicker extends React.Component<IMapProps, IMapState> {
@@ -36,48 +39,67 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 	}
 
 	private onStyleLoad = (map: any) => {
-		const onStyleLoad  = this.props.onStyleLoad;
+		const onStyleLoad = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
 	}
 	componentDidUpdate() {
-		if (this.props.location !== this.state.center) {
-			this.setState(produce((draft: IMapState) => {
-				draft.zoom = [14];
-				draft.center = this.props.location;
-			}));
+		if (this.props.location) {
+			if (parseCoords(this.props.location) !== this.state.center) {
+				this.setState(produce((draft: IMapState) => {
+					draft.zoom = [14];
+					draft.center = parseCoords(this.props.location);
+				}));
+			}
 		}
 	}
 
 	public render() {
-		const {center, zoom} = this.state;
+		const { center, zoom } = this.state;
 		const location = this.props.location;
+		const label = this.props.label;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
 		};
+
 		const markerStyle: CSSProperties = {
 			fontSize: "50px",
 			color: "#6b98d1"
 		};
 
+		const popupStyle: CSSProperties = {
+			background: "white",
+			color: "gray",
+			fontWeight: 400,
+			border: "2px",
+		};
+
+
 		return (
-		<Mapbox
+			<Mapbox
 				style={mapConfig.mapLight}
 				onStyleLoad={this.onStyleLoad}
 				center={center}
 				zoom={zoom}
 				containerStyle={containerStyle}
 				flyToOptions={flyToOptions}
-				>
-					{location &&
-						<Marker
-							coordinates={[location[0], location[1]]}
-							anchor="bottom"
-						>
-							<i className={"fa fa-map-marker"} style={markerStyle}></i>
-						</Marker>
-					}
-		</Mapbox>
+			>
+				{location && label &&
+					<Popup coordinates={parseCoords(location)}>
+						<div style={popupStyle}>
+							{label}
+						</div>
+					</Popup>
+				}
+				{location && !label &&
+					<Marker
+						coordinates={[location[0], location[1]]}
+						anchor="bottom"
+					>
+						<i className={"fa fa-map-marker"} style={markerStyle}></i>
+					</Marker>
+				}
+			</Mapbox>
 		);
 	}
 }

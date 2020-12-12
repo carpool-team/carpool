@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import produce from "immer";
 import _ from "lodash";
 import { withTranslation } from "react-i18next";
@@ -9,23 +9,59 @@ import { ButtonLinkColor } from "../../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../../ui/buttonLink/enums/ButtonLinkBackground";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
 import FirstStep from "./FirstStep";
-// import SecondStep from "./SecondStep";
+import SecondStep from "./SecondStep";
 import { IGroup } from "components/groups/interfaces/IGroup";
 import MediaQuery from "react-responsive";
 import MapBoxRides from "../../map/MapBoxRides";
 import { IRide } from "components/groups/interfaces/IRide";
 import { RideDirection } from "../../../components/groups/api/addRide/AddRideRequest";
 import { ILocation } from "../../groups/interfaces/ILocation";
+import MapBoxPicker from "../../map/MapBoxPicker";
+import { each, parseCoords } from "../../../helpers/UniversalHelper";
+import { IAddRideAction, IGetGroupsAction } from "../../groups/store/Types";
+import { IGroupsState } from "../../groups/store/State";
+import { connect } from "react-redux";
+import { getGroups } from "../../groups/store/Actions";
+import { addRide } from "../../groups/store/Actions";
+import { IAddRideInput } from "./interfaces/IAddRideInput";
 
 
-interface IAddRideFormScreenProps extends IReactI18nProps, RouteComponentProps {
+interface IStatePropsType {
+	groups: IGroupsState;
+}
+interface IStateToProps {
+	groups: IGroup[];
+}
+
+const mapStateToProps = (state: IStatePropsType): IStateToProps => ({
+	groups: state.groups.groups
+});
+
+interface IDispatchPropsType {
+	getGroups: (userOnly: boolean) => IGetGroupsAction;
+	addRide: (input: IAddRideInput) => IAddRideAction;
+}
+
+const mapDispatchToProps: IDispatchPropsType = {
+	getGroups,
+	addRide,
+};
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+interface IAddRideFormScreenProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps {
 }
 
 const AddRide = (props: IAddRideFormScreenProps) => {
 
+	useEffect(() => {
+		props.getGroups(true);
+	}, []);
+
 	const { url } = props.match;
 	const { t } = props
-	const groups: IGroup[] = [];
+	const groups: IGroup[] = props.groups;
 
 	const cssClasses = {
 		container: "groupsManagement",
@@ -34,23 +70,34 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 		buttonsOutline: "groupsManagementButtonsContainer--outline",
 		buttonActive: "groupsManagementButtonActive",
 		mapBox: "groupsManagementMapBox",
+		buttonsLabel: "ridesAddRideFormButtonsContainer--label",
 	};
 	const resources = {
 		addRideBtn: "groups.addGroupBtn",
+		pickGroupLabel: "rides.pickGroupLabel",
+		addRideLabel: "rides.addRideLabel",
 	};
 
 	const [step, setStep] = useState(1);
 	const [groupSelected, setGroupSelected] = useState<IGroup>(null);
 	const [direction, setDirection] = useState(RideDirection.To);
-	const [location, setLocation] = useState<ILocation>({ latitude: 0, longitude: 0 });
+	const [location, setLocation] = useState<ILocation>();
+	const [userRide, setUserRide] = useState<IAddRideInput>();
+
+	useEffect(() => {
+		if (groupSelected) {
+			incrementStep()
+			setLocation(groupSelected?.location);
+		}
+	}, [groupSelected]);
 
 	const ride: IRide = {
-		rideId: "fdsfds",
+		rideId: "",
 		owner: {
-			id: "fdasfda",
-			firstName: "Maciej",
-			lastName: "Sobkowiak",
-			vehicle: "Mazda",
+			id: "",
+			firstName: "",
+			lastName: "",
+			vehicle: "",
 			rating: 0,
 		},
 		location,
@@ -60,24 +107,24 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 		price: 0,
 	};
 
-
+	const SendForm = () => {
+		props.addRide(userRide);
+		props.history.push(`/${mainRoutes.rides}`);
+	};
 
 	const incrementStep = () => {
 		setStep(step + 1);
-	}
-
-	const setgroup = () => {
-
 	}
 
 	const decrementStep = () => {
 		setStep(step - 1)
 	}
 
-	const addRide = () => {
-
+	const setRide = (userRide: IAddRideInput) => {
+		setUserRide(userRide)
+		setLocation(userRide.location)
+		setDirection(userRide.rideDirection)
 	}
-
 
 	const renderFirstStep = () => (
 		<FirstStep
@@ -86,14 +133,34 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 	)
 
 	const renderSecondStep = () => (
-		// <SecondStep	
-		// />
-		<></>
+		<SecondStep
+			group={groupSelected} addRide={SendForm} setRide={setRide}
+		/>
+	)
+	const renderMapFirstStep = () => (
+		<MapBoxPicker />
+	)
+	const renderMapSecondStep = () => (
+		<MapBoxRides ride={ride} />
 	)
 
 	const renderMap = () => {
+		let map: JSX.Element;
+		switch (step) {
+			case 1: {
+				map = renderMapFirstStep();
+				break;
+			}
+			case 2: {
+				map = renderMapSecondStep();
+				break;
+			}
+			default: {
+				throw "Unhandled add group form step";
+			}
+		}
 		return (
-			<MapBoxRides ride={ride} />
+			map
 		);
 	};
 
@@ -105,7 +172,7 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 				break;
 			}
 			case 2: {
-				screen = renderFirstStep();
+				screen = renderSecondStep();
 				break;
 			}
 			default: {
@@ -115,8 +182,16 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 
 		return (
 			<div className={cssClasses.listContainer}>
-				<div className={cssClasses.buttonsContainer}>
-					"Fdsfds"
+				<div className={cssClasses.buttonsLabel}>
+					{step === 1 &&
+						t(resources.pickGroupLabel)
+					}
+					{step === 2 &&
+						<>
+							{t(resources.addRideLabel)}
+							<span> {groupSelected?.name}</span>
+						</>
+					}
 				</div>
 				<div className={cssClasses.buttonsOutline}></div>
 				{screen}
@@ -136,4 +211,8 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 	)
 }
 
-export default withTranslation()(withRouter(AddRide));
+export default withTranslation()(
+	withRouter(
+		connect(mapStateToProps, mapDispatchToProps)(AddRide)
+	)
+);

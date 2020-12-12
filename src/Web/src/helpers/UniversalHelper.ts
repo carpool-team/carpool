@@ -55,12 +55,24 @@ export function parseJwt(token): any {
 	return JSON.parse(jsonPayload);
 }
 export const parseCoords: (coords: ILocation) => [number, number] = coords => {
+
 	if (coords) {
 		const { longitude, latitude } = coords;
 		return [longitude, latitude];
 	} else {
-		return [0, 0] //todo: ogarnac 
+		// if ("geolocation" in navigator) {
+		// 	let userCoords: [number, number] = [52.41, 16.89];
+		// 	navigator.geolocation.getCurrentPosition(function (position) {
+		// 		userCoords = [position.coords.longitude, position.coords.latitude];
+		// 	});
+		// 	console.log(userCoords)
+		// 	return userCoords
+
+		// } else {
+		// 	// LngLat of Pozen
+		return [52.41, 16.89]
 	}
+	// }
 };
 
 export const convertDate = (date: string) => {

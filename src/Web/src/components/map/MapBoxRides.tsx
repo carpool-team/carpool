@@ -96,7 +96,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	private getBounds = (ride: IRide) => {
 		const allCoords = [[ride.location?.longitude, ride.group?.location.longitude], [ride.group?.location.latitude, ride.location?.latitude]];
-		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
+		let bbox: [[number, number], [number, number]] = [[16.89, 52.41], [16.89, 52.41]];
 		if (allCoords[0][0] && allCoords[1][1] && allCoords[0][1] && allCoords[1][0]) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);
