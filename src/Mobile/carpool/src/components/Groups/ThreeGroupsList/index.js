@@ -9,7 +9,7 @@ const ThreeGroupsList = ({groups, onItemPress}) => (
     {groups.slice(0, 3).map(group => (
       <TouchableOpacity
         onPress={() => onItemPress(group)}
-        key={group.id}
+        key={group.groupId}
         style={styles.button}>
         <Icon name="circle" color={colors.orange} size={15} />
         <Text style={styles.name}>{group.name}</Text>

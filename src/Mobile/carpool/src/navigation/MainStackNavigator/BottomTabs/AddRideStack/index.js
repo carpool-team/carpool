@@ -26,8 +26,9 @@ const AddRideStack = props => {
 
   return (
     <Stack.Navigator
+      initialRouteName="SelectGroup"
       screenOptions={{
-        headerTitle: 'Create a new ride',
+        title: 'Create a new ride',
         headerLeft: null,
         headerTitleStyle: {
           ...sheet.textMedium,
@@ -36,6 +37,7 @@ const AddRideStack = props => {
         headerStyle: {
           height: 110,
         },
+        gestureEnabled: false,
       }}>
       <Stack.Screen name="SelectGroup" component={SelectGroup} />
       <Stack.Screen name="SelectDirection" component={SelectDirection} />
