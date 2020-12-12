@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 import GroupsStack from './GroupsStack';
 import HomeStack from './HomeStack';
@@ -10,12 +10,14 @@ import {colors} from '../../../styles';
 import {useActiveAccount} from '../../../hooks';
 import SearchStack from './SearchStack';
 import SettingsStack from './SettingsStack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Tabs = createBottomTabNavigator();
 
 const BottomTabs = () => {
   const {activeAccount} = useActiveAccount();
   const isPassenger = activeAccount === 'passenger';
+  const {bottom} = useSafeAreaInsets();
 
   return (
     <Tabs.Navigator
@@ -23,10 +25,12 @@ const BottomTabs = () => {
       detachInactiveScreens
       tabBarOptions={{
         activeTintColor: colors.blue,
-        inactiveTintColor: colors.gray,
+        inactiveTintColor: colors.grayDark,
         style: {
-          backgroundColor: '#fff',
-          height: 85,
+          backgroundColor: colors.background,
+        },
+        labelStyle: {
+          marginBottom: bottom > 0 ? 0 : 5,
         },
       }}>
       <Tabs.Screen
@@ -34,7 +38,7 @@ const BottomTabs = () => {
         component={HomeStack}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="home" size={size} color={color} />
+            <MaterialIcon name="home" size={size} color={color} />
           ),
           tabBarLabel: 'Home',
         }}
@@ -44,7 +48,7 @@ const BottomTabs = () => {
         component={GroupsStack}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="group" size={size} color={color} />
+            <MaterialIcon name="group" size={size} color={color} />
           ),
           tabBarLabel: 'Groups',
         }}
@@ -55,7 +59,7 @@ const BottomTabs = () => {
           component={SearchStack}
           options={{
             tabBarIcon: ({color, size}) => (
-              <Icon name="search" size={size} color={color} />
+              <MaterialIcon name="search" size={size} color={color} />
             ),
             tabBarLabel: 'Search',
           }}
@@ -66,7 +70,7 @@ const BottomTabs = () => {
           component={AddRideStack}
           options={{
             tabBarIcon: ({color, size}) => (
-              <Icon name="plus" size={size} color={color} />
+              <MaterialIcon name="add" size={size} color={color} />
             ),
             tabBarLabel: 'Add ride',
           }}
@@ -77,7 +81,7 @@ const BottomTabs = () => {
         component={RidesStack}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="map-signs" size={size} color={color} />
+            <MaterialIcon name="directions" size={size} color={color} />
           ),
           tabBarLabel: 'Rides',
         }}
@@ -87,7 +91,7 @@ const BottomTabs = () => {
         component={SettingsStack}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="cog" size={size} color={color} />
+            <MaterialIcon name="settings" size={size} color={color} />
           ),
           tabBarLabel: 'Settings',
         }}
