@@ -1,4 +1,4 @@
-import { IAddRideInput } from "../components/addRideForm/interfaces/IAddRideInput";
+import { IAddRideInput } from "../../rides/addRide/interfaces/IAddRideInput";
 import { IGroup } from "./IGroup";
 import { IInvite } from "./IInvite";
 import { IRide } from "./IRide";
