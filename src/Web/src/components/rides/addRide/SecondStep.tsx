@@ -56,7 +56,6 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		date: true,
 		time: true,
 		targetAddress: true,
-		fromAddress: true,
 		seatsNumber: true,
 	});
 
@@ -338,7 +337,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 							type: ValidationType.Address,
 							isValidCallback: (isValid) => {
 								setInputsValid((draft) => {
-									draft.fromAddress = isValid;
+									draft.targetAddress = isValid;
 								});
 							},
 						}}
@@ -542,7 +541,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 							type: ValidationType.Address,
 							isValidCallback: (isValid) => {
 								setInputsValid((draft) => {
-									draft.fromAddress = isValid;
+									draft.targetAddress = isValid;
 								});
 							},
 						}}
@@ -561,7 +560,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 								type: ValidationType.Address,
 								isValidCallback: (isValid) => {
 									setInputsValid((draft) => {
-										draft.fromAddress = isValid;
+										draft.targetAddress = isValid;
 									});
 								},
 							}}
