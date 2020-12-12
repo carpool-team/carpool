@@ -1,8 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import SInfo from 'react-native-sensitive-info';
 
 const storeData = async (key, value) => {
   try {
-    await AsyncStorage.setItem(key, value);
+    await SInfo.setItem(key, value, {
+      keychainService: 'myKeychain',
+      sharedPreferencesName: 'mySharedPrefs',
+    });
   } catch (e) {
     console.log(e);
   }
@@ -10,7 +13,10 @@ const storeData = async (key, value) => {
 
 const readData = async key => {
   try {
-    const value = await AsyncStorage.getItem(key);
+    const value = await SInfo.getItem(key, {
+      keychainService: 'myKeychain',
+      sharedPreferencesName: 'mySharedPrefs',
+    });
 
     return value;
   } catch (e) {
@@ -20,7 +26,10 @@ const readData = async key => {
 
 const removeData = async key => {
   try {
-    await AsyncStorage.removeItem(key);
+    await SInfo.deleteItem(key, {
+      keychainService: 'myKeychain',
+      sharedPreferencesName: 'mySharedPrefs',
+    });
   } catch (e) {
     console.log(e);
   }
