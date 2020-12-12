@@ -47,9 +47,9 @@ const Rides = () => {
 
   const onItemPress = ride => {
     if (isPassenger) {
-      navigation.navigate('PassengersRideDetails', {ride, past: false});
+      navigation.push('PassengersRideDetails', {ride, past: false});
     } else {
-      navigation.navigate('DriversRideDetails', {ride, past: false});
+      navigation.push('DriversRideDetails', {ride, past: false});
     }
   };
 
