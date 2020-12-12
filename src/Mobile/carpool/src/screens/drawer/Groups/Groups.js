@@ -19,7 +19,7 @@ const Groups = ({navigation}) => {
   const dispatch = useDispatch();
 
   const onItemPress = item => {
-    navigation.navigate('GroupDetails', {group: item});
+    navigation.push('GroupDetails', {group: item});
   };
 
   const onRefresh = () => {
