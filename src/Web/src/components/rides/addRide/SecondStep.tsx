@@ -181,7 +181,6 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 
 	const handleDateChange = (date: Date) => {
 		setSelectedDate(date);
-		console.log(date);
 	};
 
 	const setCurrentList = (list: PanelType) => {

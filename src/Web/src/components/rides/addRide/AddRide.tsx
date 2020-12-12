@@ -24,6 +24,7 @@ import { connect } from "react-redux";
 import { getGroups } from "../../groups/store/Actions";
 import { addRide } from "../../groups/store/Actions";
 import { IAddRideInput } from "./interfaces/IAddRideInput";
+import MapBoxGroups from "../../map/MapBoxGroups";
 
 
 interface IStatePropsType {
@@ -138,7 +139,8 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 		/>
 	)
 	const renderMapFirstStep = () => (
-		<MapBoxPicker />
+		// <MapBoxPicker />
+		<MapBoxGroups getGroupsCallback={() => groups} setSelectedGroupCallback={(id) => (id)} />
 	)
 	const renderMapSecondStep = () => (
 		<MapBoxRides ride={ride} />
