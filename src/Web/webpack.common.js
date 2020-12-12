@@ -1,7 +1,10 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const devMode = process.env.NODE_ENV !== "production";
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+const devMode = process.env.NODE_ENV !== "production";
 
 module.exports = {
 	entry: path.resolve(__dirname, "src/index"),
@@ -68,6 +71,19 @@ module.exports = {
 			},
 		],
 	},
+
+	optimization: {
+		minimizer: [
+			new TerserPlugin({
+				terserOptions: {
+					compress: {
+						drop_console: devMode ? false : true,
+					},
+				},
+			}),
+		],
+	},
+
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: "./src/index.html",
@@ -85,5 +101,9 @@ module.exports = {
 				profile: true,
 			},
 		}),
+		new MiniCssExtractPlugin({
+			filename: 'bundle.css',
+			chunkFilename: '[id].css'
+		})
 	],
 };
