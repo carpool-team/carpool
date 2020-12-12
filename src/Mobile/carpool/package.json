@@ -46,6 +46,7 @@
     "react-native-reanimated": "^1.8.0",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.5.0",
+    "react-native-sensitive-info": "^6.0.0-alpha.8",
     "react-native-vector-icons": "^7.0.0",
     "react-redux": "^7.2.2",
     "reanimated-bottom-sheet": "^1.0.0-alpha.19",
