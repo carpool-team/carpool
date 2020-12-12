@@ -56,7 +56,7 @@ const RideSummary = ({navigation}) => {
     if (regular) {
       dispatch(
         actions.createRegularRide({
-          groupId: group.id,
+          groupId: group.groupId,
           location: location.coordinates,
           rideDirection: swap ? 1 : 0,
           weekDays: days,
@@ -90,75 +90,77 @@ const RideSummary = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.topWrapper}>
+    !!group && (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.topWrapper}>
+          {regular ? (
+            <Text style={styles.regular}>Regular ride</Text>
+          ) : (
+            <Text style={styles.single}>Single ride</Text>
+          )}
+        </View>
+        <View style={styles.mapWrapper}>
+          <RouteMinimap
+            hideDetails
+            stops={
+              swap
+                ? [{coordinates: group.location}, location]
+                : [location, {coordinates: group.location}]
+            }
+          />
+        </View>
+        <View style={styles.waypoints}>
+          <GroupWaypoints group={group} location={location} swap={swap} />
+        </View>
         {regular ? (
-          <Text style={styles.regular}>Regular ride</Text>
+          <View style={styles.bottomWrapper}>
+            <PickDays days={convertDays()} setDays={() => null} disabled />
+            <View style={styles.detailsWrapper}>
+              <Text style={styles.time}>{moment(time).format('HH:mm')}</Text>
+              <View style={sheet.rowCenter}>
+                <Ionicon name="ios-car" size={50} color={colors.grayVeryDark} />
+                <Text style={styles.seats}>{seats}</Text>
+              </View>
+            </View>
+          </View>
         ) : (
-          <Text style={styles.single}>Single ride</Text>
-        )}
-      </View>
-      <View style={styles.mapWrapper}>
-        <RouteMinimap
-          hideDetails
-          stops={
-            swap
-              ? [{coordinates: group.location}, location]
-              : [location, {coordinates: group.location}]
-          }
-        />
-      </View>
-      <View style={styles.waypoints}>
-        <GroupWaypoints group={group} location={location} swap={swap} />
-      </View>
-      {regular ? (
-        <View style={styles.bottomWrapper}>
-          <PickDays days={convertDays()} setDays={() => null} disabled />
-          <View style={styles.detailsWrapper}>
-            <Text style={styles.time}>{moment(time).format('HH:mm')}</Text>
+          <View style={[styles.bottomWrapper, styles.detailsWrapper]}>
+            <View>
+              <Text style={styles.time}>{moment(date).format('HH:mm')}</Text>
+              <Text style={styles.date}>
+                {moment(date).format('Do MMMM YYYY')}
+              </Text>
+            </View>
             <View style={sheet.rowCenter}>
               <Ionicon name="ios-car" size={50} color={colors.grayVeryDark} />
               <Text style={styles.seats}>{seats}</Text>
             </View>
           </View>
-        </View>
-      ) : (
-        <View style={[styles.bottomWrapper, styles.detailsWrapper]}>
-          <View>
-            <Text style={styles.time}>{moment(date).format('HH:mm')}</Text>
-            <Text style={styles.date}>
-              {moment(date).format('Do MMMM YYYY')}
-            </Text>
-          </View>
-          <View style={sheet.rowCenter}>
-            <Ionicon name="ios-car" size={50} color={colors.grayVeryDark} />
-            <Text style={styles.seats}>{seats}</Text>
-          </View>
-        </View>
-      )}
-      <View style={styles.buttonsWrapper}>
-        {loading ? (
-          <View style={styles.loadingWrapper}>
-            <ActivityIndicator color={colors.blue} size="large" />
-          </View>
-        ) : (
-          <View style={styles.buttonsContainer}>
-            <StandardButton
-              onPress={onCancel}
-              color={colors.red}
-              title="Cancel"
-              width="45%"
-            />
-            <StandardButton
-              onPress={onSubmit}
-              color={colors.green}
-              title="Submit"
-              width="45%"
-            />
-          </View>
         )}
-      </View>
-    </SafeAreaView>
+        <View style={styles.buttonsWrapper}>
+          {loading ? (
+            <View style={styles.loadingWrapper}>
+              <ActivityIndicator color={colors.blue} size="large" />
+            </View>
+          ) : (
+            <View style={styles.buttonsContainer}>
+              <StandardButton
+                onPress={onCancel}
+                color={colors.red}
+                title="Cancel"
+                width="45%"
+              />
+              <StandardButton
+                onPress={onSubmit}
+                color={colors.green}
+                title="Submit"
+                width="45%"
+              />
+            </View>
+          )}
+        </View>
+      </SafeAreaView>
+    )
   );
 };
 

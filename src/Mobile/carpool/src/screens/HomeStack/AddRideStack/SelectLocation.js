@@ -22,7 +22,7 @@ const SelectLocation = ({navigation}) => {
 
   // Context
   const {addRideState, dispatch} = useContext(AddRideContext);
-  const {swap, group} = addRideState;
+  const {swap} = addRideState;
 
   const onSearch = () => {
     setLoading(true);

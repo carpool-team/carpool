@@ -38,39 +38,41 @@ const SelectDirection = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Select direction</Text>
-        <Text style={styles.info}>I want to ride</Text>
-        <View style={sheet.rowCenterSplit}>
-          <UpView
-            onPress={() => onItemPress(false)}
-            borderRadius={12}
-            style={styles.upview}
-            contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.direction}>To</Text>
-          </UpView>
-          <UpView
-            onPress={() => onItemPress(true)}
-            borderRadius={12}
-            style={styles.upview}
-            contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.direction}>From</Text>
-          </UpView>
+    !!group && (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Select direction</Text>
+          <Text style={styles.info}>I want to ride</Text>
+          <View style={sheet.rowCenterSplit}>
+            <UpView
+              onPress={() => onItemPress(false)}
+              borderRadius={12}
+              style={styles.upview}
+              contentContainerStyle={styles.contentContainer}>
+              <Text style={styles.direction}>To</Text>
+            </UpView>
+            <UpView
+              onPress={() => onItemPress(true)}
+              borderRadius={12}
+              style={styles.upview}
+              contentContainerStyle={styles.contentContainer}>
+              <Text style={styles.direction}>From</Text>
+            </UpView>
+          </View>
+          <Text style={styles.name}>{group.name}</Text>
+          {loading ? (
+            <View style={styles.center}>
+              <ActivityIndicator size="small" color={colors.blue} />
+            </View>
+          ) : (
+            <View style={sheet.rowCenter}>
+              <Icon name="map-marker" color={colors.green} size={30} />
+              <Text style={styles.placeName}>{placeName}</Text>
+            </View>
+          )}
         </View>
-        <Text style={styles.name}>{group.name}</Text>
-        {loading ? (
-          <View style={styles.center}>
-            <ActivityIndicator size="small" color={colors.blue} />
-          </View>
-        ) : (
-          <View style={sheet.rowCenter}>
-            <Icon name="map-marker" color={colors.green} size={30} />
-            <Text style={styles.placeName}>{placeName}</Text>
-          </View>
-        )}
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    )
   );
 };
 
