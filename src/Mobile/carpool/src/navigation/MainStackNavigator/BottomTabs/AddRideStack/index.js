@@ -19,10 +19,20 @@ const {useContext, useEffect} = React;
 
 const Stack = createStackNavigator();
 
-const AddRideStack = props => {
-  const focused = useIsFocused();
+const AddRideStack = ({navigation}) => {
+  const isFocused = useIsFocused();
 
   const {dispatch} = useContext(AddRideContext);
+
+  useEffect(() => {
+    if (!isFocused) {
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'SelectGroup'}],
+      });
+      dispatch({type: AddRideContextActions.CLEAN_STATE});
+    }
+  }, [isFocused]);
 
   return (
     <Stack.Navigator
