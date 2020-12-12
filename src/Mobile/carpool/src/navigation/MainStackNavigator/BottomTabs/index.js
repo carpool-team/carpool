@@ -61,7 +61,7 @@ const BottomTabs = () => {
             tabBarIcon: ({color, size}) => (
               <MaterialIcon name="search" size={size} color={color} />
             ),
-            tabBarLabel: 'Search',
+            tabBarLabel: 'Find ride',
           }}
         />
       ) : (
