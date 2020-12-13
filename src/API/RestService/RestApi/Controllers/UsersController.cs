@@ -23,9 +23,9 @@ namespace RestApi.Controllers
 		}
 
         [HttpGet("{appUserId}")]
-		public async Task<ApiResponse> GetUser([FromRoute] AppUserId userId)
+		public async Task<ApiResponse> GetUser([FromRoute] AppUserId appUserId)
 		{
-			var request = new GetUserByIdQuery(userId);
+			var request = new GetUserByIdQuery(appUserId);
 			var response = await _mediator.Send(request);
 
 			return new ApiResponse(response);

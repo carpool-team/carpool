@@ -1,5 +1,5 @@
-﻿using IdentifiersShared.Identifiers;
-using RestApi.DTOs.Vehicle;
+﻿using DataTransferObjects.VehicleDtos;
+using IdentifiersShared.Identifiers;
 
 namespace RestApi.DTOs.User
 {

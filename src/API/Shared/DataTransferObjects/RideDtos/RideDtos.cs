@@ -7,7 +7,6 @@ using Domain.Enums;
 using IdentifiersShared.Identifiers;
 using RestApi.DTOs.Stop;
 using RestApi.DTOs.User;
-using RestApi.DTOs.Vehicle;
 
 namespace RestApi.DTOs.Ride
 {

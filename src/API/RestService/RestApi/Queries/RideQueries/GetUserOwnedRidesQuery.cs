@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataTransferObjects;
 using DataTransferObjects.GroupDtos;
+using DataTransferObjects.VehicleDtos;
 using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using RestApi.DTOs.Ride;
 using RestApi.DTOs.Stop;
 using RestApi.DTOs.User;
-using RestApi.DTOs.Vehicle;
 
 namespace RestApi.Queries.RideQueries
 {
