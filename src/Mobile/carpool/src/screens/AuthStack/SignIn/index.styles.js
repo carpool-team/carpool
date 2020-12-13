@@ -9,14 +9,13 @@ export const styles = StyleSheet.create({
   },
   title: {
     ...sheet.textSemiBold,
-    fontSize: 45,
+    fontSize: 36,
     color: colors.blue,
     alignSelf: 'center',
-    marginVertical: 25,
+    marginVertical: 24,
   },
   scrollView: {
-    alignItems: 'center',
-    marginVertical: 20,
+    marginBottom: 20,
     paddingHorizontal: 32,
   },
   inputWrapper: {
