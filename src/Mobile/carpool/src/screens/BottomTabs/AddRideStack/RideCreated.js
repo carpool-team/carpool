@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
-import {sheet, colors} from '../../../styles';
 import {StandardButton} from '../../../components/common/buttons';
+import {sheet, colors} from '../../../styles';
 
 const RideCreated = ({navigation}) => (
   <SafeAreaView style={styles.safeArea}>

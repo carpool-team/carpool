@@ -1,11 +1,11 @@
 import React, {useState, useContext, useMemo, useEffect} from 'react';
 import {View, Text, SafeAreaView, Switch, StyleSheet} from 'react-native';
-import {colors, sheet} from '../../../styles';
 import DatePicker from 'react-native-date-picker';
 import PickDays from '../../../components/Driver/AddRide/PickDays';
 import {StandardButton} from '../../../components/common/buttons';
 import {AddRideContext, AddRideContextActions} from './context';
 import {GoBack} from '../../../components/navigation';
+import {colors, sheet} from '../../../styles';
 
 const PickTime = ({navigation}) => {
   const [isRegular, setIsRegular] = useState(false);

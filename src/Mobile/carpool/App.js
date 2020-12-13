@@ -4,10 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {LightTheme} from './src/styles';
 import MainStackNavigator from './src/navigation/MainStackNavigator/index';
-import {AddRideStore} from './src/screens/HomeStack/AddRideStack/context';
 import {enableScreens} from 'react-native-screens';
+import {AddRideStore} from './src/screens/BottomTabs/AddRideStack/context';
 
-import {Provider, SafeAreaView} from 'react-redux';
+import {Provider} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import {promiseMiddleware} from '@adobe/redux-saga-promise';
 import {createStore, applyMiddleware} from 'redux';

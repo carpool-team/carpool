@@ -1,19 +1,21 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import PickTime from '../../../../screens/HomeStack/AddRideStack/PickTime';
-import SetSeats from '../../../../screens/HomeStack/AddRideStack/SetSeats';
-import SelectGroup from '../../../../screens/HomeStack/AddRideStack/SelectGroup';
-import SelectDirection from '../../../../screens/HomeStack/AddRideStack/SelectDirection';
+import {
+  PickTime,
+  SetSeats,
+  SelectGroup,
+  SelectDirection,
+  SelectLocation,
+  RideSummary,
+  RideCreated,
+  RideError,
+} from '../../../../screens/BottomTabs';
 import {useIsFocused} from '@react-navigation/native';
+import {Header} from '../../../../components/navigation';
 import {
   AddRideContext,
   AddRideContextActions,
-} from '../../../../screens/HomeStack/AddRideStack/context';
-import SelectLocation from '../../../../screens/HomeStack/AddRideStack/SelectLocation';
-import RideSummary from '../../../../screens/HomeStack/AddRideStack/RideSummary';
-import RideCreated from '../../../../screens/HomeStack/AddRideStack/RideCreated';
-import RideError from '../../../../screens/HomeStack/AddRideStack/RideError';
-import {Header} from '../../../../components/navigation';
+} from '../../../../screens/BottomTabs/AddRideStack/context';
 
 const {useContext, useEffect} = React;
 
