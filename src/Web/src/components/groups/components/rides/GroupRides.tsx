@@ -17,7 +17,7 @@ import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import GroupsRouter from "../GroupsRouter";
 import RidesList from "../../../shared/ridesList/RidesList";
-import {RidesListType} from "../../../shared/ridesList/enums/RidesListType";
+import { RidesListType } from "../../../shared/ridesList/enums/RidesListType";
 
 interface IGroupRidesProps extends IGroupDetailedViewProps, RouteComponentProps, IReactI18nProps {
 
@@ -70,14 +70,6 @@ const GroupRides = (props: IGroupRidesProps) => {
 					>
 						{t(resources.back)}
 					</Button>
-					<ButtonLink
-						style={ButtonLinkStyle.Button}
-						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
-						to={`${url}${GroupsRouter.routes.addGroup}`}
-					>
-						{t(resources.add)}
-					</ButtonLink>
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<div className={cssClasses.leftList}>

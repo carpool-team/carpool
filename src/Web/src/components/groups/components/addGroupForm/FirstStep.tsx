@@ -32,7 +32,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		location: false,
 	});
 	const [validate, setValidate] = useState(false);
-	const [addressCoordinates, setAddressCoordinates] = useState<[number, number]>([0, 0]);
+	const [addressCoordinates, setAddressCoordinates] = useState<ILocation>({ latitude: 52.41, longitude: 16.89 });
 
 	const cssClasses = {
 		container: "addGroupContainer",
@@ -113,7 +113,10 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 							latitude: coords[1],
 							longitude: coords[0],
 						}, dataKeys.location);
-						setAddressCoordinates(coords);
+						setAddressCoordinates({
+							latitude: coords[1],
+							longitude: coords[0],
+						});
 					}}
 					validation={{
 						type: ValidationType.Address,

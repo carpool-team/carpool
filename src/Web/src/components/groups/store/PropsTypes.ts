@@ -5,8 +5,7 @@ import { IGroupsState } from "./State";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
 import { IAuthState } from "../../auth/store/State";
-import { IAddRideInput } from "../components/addRideForm/interfaces/IAddRideInput";
-
+import { IAddRideInput } from "../../rides/addRide/interfaces/IAddRideInput";
 interface IStatePropsType {
 	groups: IGroupsState;
 	auth: IAuthState;

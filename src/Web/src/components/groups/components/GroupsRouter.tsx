@@ -8,7 +8,6 @@ import GroupInvite from "./invite/GroupInvite";
 import GroupEdit from "./edit/GroupEdit";
 import GroupRides from "./rides/GroupRides";
 import { IGroup } from "../interfaces/IGroup";
-import AddRideFormScreen from "./addRideForm/AddRideForm";
 import { IRide } from "../interfaces/IRide";
 
 interface IGroupsRouterProps extends RouteComponentProps {
@@ -63,21 +62,11 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 								<GroupInvite
 									group={this.props.selectedGroup}
 									rides={rides}
-									onConfirm={(users) => {}}
+									onConfirm={(_users) => { }}
 								/>
 							</Route>
 							<Route exact path={path + GroupsRouter.routes.rides}>
 								<GroupRides group={this.props.selectedGroup} rides={rides} />
-							</Route>
-							<Route
-								path={
-									path + GroupsRouter.routes.rides + GroupsRouter.routes.addRide
-								}
-							>
-								<AddRideFormScreen
-									group={this.props.selectedGroup}
-									addRide={this.props.callbacks.addRide}
-								/>
 							</Route>
 						</>
 					) : null}
