@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {MAP_LIGHT} from '@env';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {colors} from '../../../styles';
+import {styles} from './index.styles';
 
 const PointMinimap = ({coordinates}) => (
   <View style={styles.container}>
@@ -31,18 +32,5 @@ const PointMinimap = ({coordinates}) => (
     </MapboxGL.MapView>
   </View>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-  },
-  map: {
-    flex: 1,
-  },
-  marker: {
-    marginBottom: 17.5,
-  },
-});
 
 export default PointMinimap;
