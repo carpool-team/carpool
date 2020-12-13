@@ -1,7 +1,7 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React, { useEffect } from "react";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function sleep(delay = 0) {
 	return new Promise((resolve) => {
@@ -13,7 +13,7 @@ interface IAutocompleteTextInputProps {
 	placeholder: string;
 	onChange: (newValue: string) => void;
 	onSelect?: () => void;
-	autocompleteCallback: () => Promise<string[]>;
+	autocompleteCallback: (value: string) => Promise<string[]>;
 	wrapperStyle?: React.CSSProperties;
 	textFieldStyle?: React.CSSProperties;
 }
@@ -21,37 +21,35 @@ interface IAutocompleteTextInputProps {
 const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps> = props => {
 	const [open, setOpen] = React.useState(false);
 	const [options, setOptions] = React.useState<string[]>([]);
+	const [value, setValue] = React.useState<string>(null);
 	const loading = open && options.length === 0;
 
-	React.useEffect(() => {
+	useEffect(() => {
 		let active = true;
-
 		if (!loading) {
 			return undefined;
 		}
-
-		(async () => {
-			const res = await props.autocompleteCallback();
-
-			if (active) {
-				setOptions(res);
-			}
-		})();
-
+		props.autocompleteCallback(value).then(res => {
+			setOptions(res);
+		});
 		return () => {
 			active = false;
 		};
 	}, [loading]);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (!open) {
 			setOptions([]);
 		}
 	}, [open]);
 
+	useEffect(() => {
+		setOptions([]);
+	}, [value]);
+
 	const onChangeInput: (event: React.ChangeEvent) => void = event => {
 		props.onChange(event.target.nodeValue);
-	}
+	};
 
 	return (
 		<Autocomplete
@@ -63,15 +61,20 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 			onClose={() => {
 				setOpen(false);
 			}}
-			getOptionSelected={(option, value) => option === value}
+			getOptionSelected={(option, newValue) => option === newValue}
 			getOptionLabel={(option) => option}
 			options={options}
 			loading={loading}
-			onChange={(_event, value) => {
+			onChange={(_event, newValue) => {
 				if (props.onSelect) {
 					props.onSelect();
 				}
-				props.onChange(value);
+				props.onChange(newValue);
+				console.log("ON CHANGE");
+			}}
+			onInputChange={(_event, newValue, _reason) => {
+				console.log("ON INPUT CHANGE. NEW VAL: ", newValue);
+				setValue(newValue);
 			}}
 			renderInput={(params) => (
 				<TextField
@@ -92,6 +95,6 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 			)}
 		/>
 	);
-}
+};
 
 export default AutocompleteTextInput;

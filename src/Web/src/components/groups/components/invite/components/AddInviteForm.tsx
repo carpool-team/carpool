@@ -15,6 +15,7 @@ import AutocompleteWrapper from "../../../../ui/autocompleteWrapper/Autocomplete
 import { IInviteUser } from "../interfaces/IInviteUser";
 
 import colors from "scss_path/_colors.scss";
+import { UserAutocompleteRequest } from "../../../api/userAutocomplete/UserAutocompleteRequest";
 
 interface IAddInviteFormProps extends IReactI18nProps {
 	addUserToInvite: (user: IInviteUser) => void;
@@ -24,11 +25,16 @@ interface IAddInviteFormProps extends IReactI18nProps {
 }
 
 const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
+	const { t } = props;
 	const [inputsValid, setInputsValid] = useImmer({
 		email: true,
 	});
-	const [email, setEmail] = useState<string>("");
+	const [email, setEmail] = useState<string>(null);
 	const [submitted, setSubmitted] = useState(false);
+
+	const clearInputs = () => {
+		setEmail(null);
+	};
 
 	const onAdd = () => {
 		if (each(inputsValid, i => i)) {
@@ -56,10 +62,10 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	};
 
 	useEffect(() => {
-		document.addEventListener("keypress", onEnter)
+		document.addEventListener("keypress", onEnter);
 		return () => {
 			document.removeEventListener("keypress", onEnter);
-		}
+		};
 	}, []);
 
 	const cssClasses = {
@@ -83,45 +89,51 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 		confirm: "groups.addGroupForm.confirmBtn",
 	};
 
-	const clearInputs = () => {
-		setEmail("");
-	}
+	const autocompleteCallback: (value: string) => Promise<string[]> = async (value) => {
+		const request = new UserAutocompleteRequest({
+			queries: {
+				email: value,
+			},
+		});
+		const response = await request.send();
+		console.log(response);
+		return ["test@o2.pl"];
+	};
 
-	const { t } = props;
+	const selectedOptionCallback = () => {
+		setInputsValid(draft => {
+			draft.email = true;
+		});
+	};
+
+	const confirmButtonClick = () => {
+		props.onConfirm();
+	};
+
+	const addButtonClick = () => {
+		setSubmitted(true);
+	};
+
+	const onEmailInputChange: (newValue: string) => void = newValue => {
+		setEmail(newValue);
+		console.log(newValue);
+	};
 
 	const renderInputs = () => (
 		<div className={cssClasses.inputs}>
 			<span> {t(resources.basicInfo)}</span>
 			<AutocompleteWrapper
-				onChange={newValue => setEmail(newValue)}
-				wrapperStyle={{
-					width: "400px",
-				}}
-				textFieldStyle={{
-				}}
+				onChange={onEmailInputChange}
+				wrapperStyle={{ width: "400px" }}
 				placeholder={t(resources.emailInput)}
-				onSelect={() => {
-					console.log("SELECTED");
-					setInputsValid(draft => {
-						draft.email = true;
-					})
-				}}
-				autocompleteCallback={async () => {
-					const response = await fetch('https://country.register.gov.uk/records.json?page-size=5000');
-					const json = await response.json();
-					return Object.keys(json).map((key) => json[key].item[0].name)
-					// todo: podpiąc emaile
-				}}
+				onSelect={selectedOptionCallback}
+				autocompleteCallback={autocompleteCallback}
 			/>
 			<div className={cssClasses.buttonsGroup}>
-				<Button onClick={() => {
-					setSubmitted(true);
-				}}>
+				<Button onClick={addButtonClick}>
 					{t(resources.addBtn)}
 				</Button>
-				<Button onClick={() => {
-					props.onConfirm();
-				}}>
+				<Button onClick={confirmButtonClick}>
 					{t(resources.confirm)}
 				</Button>
 			</div>
