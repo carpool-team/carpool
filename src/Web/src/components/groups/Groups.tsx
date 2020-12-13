@@ -36,21 +36,15 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 		this.props.getRides(false);
 	}
 
-	/** Handles adding group */
-	addGroupHandler = (group: IGroup) => {
-		this.props.addGroup(group);
-	};
-
 	getGroupsHandler = () => {
 		return this.props.groups ?? [];
-	};
+	}
 
 	getInvitesHandler = () => this.props.invites ?? [];
 
 	getRidesHandler = (owned: boolean) => {
 		return (owned ? this.props.ridesOwned : this.props.ridesParticipated) ?? [];
-		// .filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === this.props.authId));
-	};
+	}
 
 	setSelectedGroupHandler = (id: string) => {
 		this.setState(
@@ -60,11 +54,11 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 				);
 			})
 		);
-	};
+	}
 
 	render() {
 		let callbacks: IGroupCallbacks = {
-			addGroup: this.addGroupHandler,
+			addGroup: this.props.addGroup,
 			getGroups: this.getGroupsHandler,
 			getInvites: this.getInvitesHandler,
 			answerInvite: (answer, id) => this.props.answerInvite(answer, id),
@@ -72,7 +66,8 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 			getRides: this.getRidesHandler,
 			participateInRide: this.props.participateInRide,
 			setGroupSelected: (id) => this.setSelectedGroupHandler(id),
-			addRide: (input: IAddRideInput) => this.props.addRide(input),
+			addRide: this.props.addRide,
+			addInvites: this.props.addInvites,
 		};
 
 		return (
