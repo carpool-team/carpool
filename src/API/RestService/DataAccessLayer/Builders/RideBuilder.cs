@@ -16,6 +16,7 @@ namespace DataAccessLayer.Builders
 			builder.Property(x => x.Date).IsRequired();
 			builder.Property(x => x.Price).IsRequired();
 			builder.Property(x => x.RideDirection).IsRequired();
+			builder.Property(x => x.SeatsLimit).IsRequired();
 
 			builder.HasMany(x => x.Participants)
 				.WithOne()

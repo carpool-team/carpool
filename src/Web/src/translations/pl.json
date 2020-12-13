@@ -68,7 +68,8 @@
             "invalidTime": "Niewłaściwa godzina przejazdu",
             "addBtn": "Utwórz",
             "pastBtn": "Przeszłe",
-            "futureBtn": "Przyszłe"
+            "futureBtn": "Przyszłe",
+            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd."
         },
         "footer": {
             "services": "Usługi",

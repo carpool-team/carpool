@@ -5,7 +5,7 @@ import LoaderSpinner from "../../ui/loaderSpinner/LoaderSpinner";
 import Groups from "../../groups/Groups";
 import LoginPanel from "../../auth/login/LoginPanel";
 import RegisterPanel from "../../auth/register/RegisterPanel";
-import Rides from "../../rides/Rides";
+import RidesRouter from "../../rides/RidesRouter";
 import PrivateRoute from "../../system/PrivateRoute";
 
 export const mainRoutes = {
@@ -13,7 +13,7 @@ export const mainRoutes = {
 	default: "",
 	register: "register/",
 	login: "login/",
-	rides: "rides/"
+	rides: "rides/",
 };
 
 const LayoutRouter = (props: RouteComponentProps) => {
@@ -25,7 +25,7 @@ const LayoutRouter = (props: RouteComponentProps) => {
 				<PrivateRoute path={path + mainRoutes.groups} component={Groups} />
 				<Route exact path={path + mainRoutes.register} component={RegisterPanel} />
 				<Route exact path={path + mainRoutes.login} component={LoginPanel} />
-				<PrivateRoute path={path + mainRoutes.rides} component={Rides} />
+				<PrivateRoute path = {path + mainRoutes.rides} component = {RidesRouter} />
 			</Switch>
 		</Suspense>
 	);

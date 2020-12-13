@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from "react";
-import ButtonSmall from "../ui/buttonSmall/ButtonSmall";
-import { ButtonSmallBackground } from "../ui/buttonSmall/enums/ButtonSmallBackground";
-import { ButtonSmallColor } from "../ui/buttonSmall/enums/ButtonSmallColor";
-import { ButtonSmallIcon } from "../ui/buttonSmall/enums/ButtonSmallIcon";
-import ButtonLink from "../ui/buttonLink/ButtonLink";
-import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
-import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
-import { ButtonLinkStyle } from "../ui/buttonLink/enums/ButtonLinkStyle";
-import { IRide } from "../../components/groups/interfaces/IRide";
+import ButtonSmall from "../../ui/buttonSmall/ButtonSmall";
+import { ButtonSmallBackground } from "../../ui/buttonSmall/enums/ButtonSmallBackground";
+import { ButtonSmallColor } from "../../ui/buttonSmall/enums/ButtonSmallColor";
+import { ButtonSmallIcon } from "../../ui/buttonSmall/enums/ButtonSmallIcon";
+import ButtonLink from "../../ui/buttonLink/ButtonLink";
+import { ButtonLinkBackground } from "../../ui/buttonLink/enums/ButtonLinkBackground";
+import { ButtonLinkColor } from "../../ui/buttonLink/enums/ButtonLinkColor";
+import { ButtonLinkStyle } from "../../ui/buttonLink/enums/ButtonLinkStyle";
+import { IRide } from "../../groups/interfaces/IRide";
 import MediaQuery from "react-responsive";
-import MapBoxRides from "../map/MapBoxRides";
+import MapBoxRides from "../../map/MapBoxRides";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { withTranslation } from "react-i18next";
-import { IReactI18nProps } from "../system/resources/IReactI18nProps";
+import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
 import Switch from "@material-ui/core/Switch";
 import { withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import moment from "moment";
 import "./Rides.scss";
 import { connect } from "react-redux";
-import { IGroupsState } from "../groups/store/State";
-import { IGetRidesAction } from "../groups/store/Types";
-import { getRides } from "../groups/store/Actions";
-import Button from "../ui/button/Button";
-import { ButtonColor } from "../ui/button/enums/ButtonColor";
-import { ButtonBackground } from "../ui/button/enums/ButtonBackground";
-import { ButtonIcon } from "../ui/button/enums/ButtonIcon";
-import RidesList from "../shared/ridesList/RidesList";
-import {RidesListType} from "../shared/ridesList/enums/RidesListType";
+import { IGroupsState } from "../../groups/store/State";
+import { IGetRidesAction } from "../../groups/store/Types";
+import { getRides } from "../../groups/store/Actions";
+import Button from "../../ui/button/Button";
+import { ButtonColor } from "../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
+import { ButtonIcon } from "../../ui/button/enums/ButtonIcon";
+import RidesList from "../../shared/ridesList/RidesList";
+import {RidesListType} from "../../shared/ridesList/enums/RidesListType";
+import { rideRoutes } from "../RidesRouter";
 
 interface IStatePropsType {
 	groups: IGroupsState;
@@ -259,7 +260,7 @@ const Rides = (props: IRidesProps) => {
 						style={ButtonLinkStyle.Button}
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
-					// to={`${url}${GroupsRouter.routes.addGroup}`}
+					  to={`${url}${rideRoutes.addRide}`}
 					>
 						{t(resources.add)}
 					</ButtonLink>
