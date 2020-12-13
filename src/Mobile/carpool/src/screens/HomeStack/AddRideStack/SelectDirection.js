@@ -25,9 +25,7 @@ const SelectDirection = ({navigation}) => {
   useEffect(() => {
     _getPlaceName(parseCoords(group.location));
     navigation.setOptions({
-      headerLeft: () => (
-        <GoBack style={{marginLeft: 16}} onPress={navigation.goBack} />
-      ),
+      headerLeft: () => <GoBack onPress={navigation.goBack} />,
     });
   }, []);
 

@@ -13,7 +13,7 @@ import SelectLocation from '../../../../screens/HomeStack/AddRideStack/SelectLoc
 import RideSummary from '../../../../screens/HomeStack/AddRideStack/RideSummary';
 import RideCreated from '../../../../screens/HomeStack/AddRideStack/RideCreated';
 import RideError from '../../../../screens/HomeStack/AddRideStack/RideError';
-import {sheet, colors} from '../../../../styles';
+import {Header} from '../../../../components/navigation';
 
 const {useContext, useEffect} = React;
 
@@ -38,12 +38,8 @@ const AddRideStack = ({navigation}) => {
     <Stack.Navigator
       initialRouteName="SelectGroup"
       screenOptions={{
-        title: 'Create a new ride',
-        headerLeft: null,
-        headerTitleStyle: {
-          ...sheet.textMedium,
-          color: colors.grayVeryDark,
-        },
+        title: 'New ride',
+        header: props => <Header {...props} hideSwitch />,
         gestureEnabled: false,
       }}>
       <Stack.Screen name="SelectGroup" component={SelectGroup} />

@@ -17,9 +17,7 @@ const SetSeats = ({navigation}) => {
 
   useEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (
-        <GoBack style={{marginLeft: 16}} onPress={navigation.goBack} />
-      ),
+      headerLeft: () => <GoBack onPress={navigation.goBack} />,
     });
   }, []);
 

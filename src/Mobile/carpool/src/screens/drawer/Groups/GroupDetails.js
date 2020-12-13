@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   name: {
     ...sheet.textBold,
     color: colors.grayDark,
-    fontSize: 32,
+    fontSize: 25,
     paddingHorizontal: 16,
   },
   statsRow: {
@@ -119,25 +119,25 @@ const styles = StyleSheet.create({
   totalRides: {
     ...sheet.textBold,
     color: colors.green,
-    fontSize: 40,
+    fontSize: 30,
   },
   rides: {
-    ...sheet.textBold,
+    ...sheet.textMedium,
     color: colors.green,
-    fontSize: 18,
+    fontSize: 16,
   },
   totalMembers: {
     ...sheet.textBold,
     color: colors.blue,
-    fontSize: 40,
+    fontSize: 30,
   },
   members: {
-    ...sheet.textBold,
+    ...sheet.textMedium,
     color: colors.blue,
-    fontSize: 18,
+    fontSize: 16,
   },
   cardGrid: {
-    marginVertical: 27,
+    paddingTop: 16,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
@@ -154,14 +154,14 @@ const styles = StyleSheet.create({
   },
   upview: {
     width: '48%',
-    height: 135,
+    height: 100,
   },
   flexed: {
     flex: 1,
   },
   addressWrapper: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 16,
     ...sheet.rowCenter,
   },
   icon: {
