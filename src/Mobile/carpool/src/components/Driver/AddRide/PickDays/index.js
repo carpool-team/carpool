@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {sheet, colors} from '../../../styles';
-import {UpView} from '../../common';
+import {View, Text} from 'react-native';
+import {sheet, colors} from '../../../../styles';
+import UpView from '../../../common/UpView';
+import {styles} from './index.styles';
 
 const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -46,20 +47,5 @@ const PickDays = ({days, setDays, disabled = false}) => {
 
   return <View style={styles.container}>{renderDays()}</View>;
 };
-
-const styles = StyleSheet.create({
-  container: {
-    ...sheet.rowCenterSplit,
-    width: '100%',
-  },
-  circle: {
-    width: 40,
-    height: 40,
-  },
-  circleLabel: {
-    ...sheet.textMedium,
-    fontSize: 12,
-  },
-});
 
 export default PickDays;
