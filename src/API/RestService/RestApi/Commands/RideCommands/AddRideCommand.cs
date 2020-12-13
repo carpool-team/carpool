@@ -15,6 +15,7 @@ using IdentifiersShared.Identifiers;
 using IdGen;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -30,9 +31,10 @@ namespace RestApi.Commands.RideCommands
 			double price,
 			Location location,
 			RideDirection rideDirection,
-			List<Stop>? stops)
-			=> (OwnerId, ParticipantsIds, GroupId, Date, Price, Location, RideDirection, Stops) =
-				(ownerId, participantsIds, groupId, date, price, location, rideDirection, stops);
+			List<Stop>? stops,
+			byte seatsLimit)
+			=> (OwnerId, ParticipantsIds, GroupId, Date, Price, Location, RideDirection, Stops, SeatsLimit)
+				= (ownerId, participantsIds, groupId, date, price, location, rideDirection, stops, seatsLimit);
 
 		public AppUserId OwnerId { get; }
 		public List<AppUserId>? ParticipantsIds { get; }
@@ -42,53 +44,55 @@ namespace RestApi.Commands.RideCommands
 		public Location Location { get; }
 		public RideDirection RideDirection { get; }
 		public List<Stop>? Stops { get; }
+		public byte SeatsLimit { get; }
+	}
 
-		public class AddRideCommandHandler : IRequestHandler<AddRideCommand, Ride>
+	public class AddRideCommandHandler : IRequestHandler<AddRideCommand, Ride>
+	{
+		private readonly IRideRepository _rideRepository;
+		private readonly IUnitOfWork _unitOfWork;
+
+		public AddRideCommandHandler(IRideRepository rideRepository, IUnitOfWork unitOfWork)
 		{
-			private readonly IRideRepository _rideRepository;
-			private readonly IUnitOfWork _unitOfWork;
+			_rideRepository = rideRepository;
+			_unitOfWork = unitOfWork;
+		}
 
-			public AddRideCommandHandler(IRideRepository rideRepository, IUnitOfWork unitOfWork)
+		public async Task<Ride> Handle(AddRideCommand request, CancellationToken cancellationToken)
+		{
+			IdGenerator idGenerator = new(IdGeneratorType.Ride);
+			var id = idGenerator.CreateId();
+			var ride = new Ride(new RideId(id),
+				request.OwnerId,
+				request.GroupId,
+				request.Date,
+				request.Price,
+				request.Location
+				?? throw new ApiProblemDetailsException("Ride must have a destination",
+					StatusCodes.Status400BadRequest),
+				request.RideDirection, request.Stops ?? new List<Stop>(),
+				request.SeatsLimit);
+
+			await _rideRepository.AddAsync(ride, cancellationToken).ConfigureAwait(false);
+
+			if (request.ParticipantsIds != null)
+				ride.Participants = request.ParticipantsIds.Select(x =>
+					{
+						AppUserId userId = new(x.Value);
+						return new UserParticipatedRide(userId, ride.Id);
+					})
+					.ToList();
+
+			try
 			{
-				_rideRepository = rideRepository;
-				_unitOfWork = unitOfWork;
+				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
+			}
+			catch (SqlException ex)
+			{
+				throw new ApiException(ex);
 			}
 
-			public async Task<Ride> Handle(AddRideCommand request, CancellationToken cancellationToken)
-			{
-				IdGenerator idGenerator = new(IdGeneratorType.Ride);
-				var id = idGenerator.CreateId();
-				var ride = new Ride(new(id),
-					request.OwnerId,
-					request.GroupId,
-					request.Date,
-					request.Price,
-					request.Location
-					?? throw new ApiProblemDetailsException("Ride must have a destination",
-						StatusCodes.Status400BadRequest),
-					request.RideDirection, request.Stops ?? new List<Stop>());
-
-				await _rideRepository.AddAsync(ride, cancellationToken).ConfigureAwait(false);
-
-				if (request.ParticipantsIds != null)
-					ride.Participants = request.ParticipantsIds.Select(x =>
-						{
-							AppUserId userId = new(x.Value);
-							return new UserParticipatedRide(userId, ride.Id);
-						})
-						.ToList();
-
-				try
-				{
-					await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);
-				}
-				catch (DbUpdateException ex)
-				{
-					throw new ApiException(ex);
-				}
-
-				return ride;
-			}
+			return ride;
 		}
 	}
 }

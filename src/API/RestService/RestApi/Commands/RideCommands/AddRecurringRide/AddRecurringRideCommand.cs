@@ -33,7 +33,8 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 			byte weekDays, 
 			DateTime startDate,
 			DateTime endDate,
-			List<Stop>? stops)
+			List<Stop>? stops,
+			byte seatsLimit)
 		{
 			OwnerId = ownerId;
 			ParticipantsIds = participantsIds;
@@ -46,6 +47,7 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 			StartDate = startDate;
 			EndDate = endDate;
 			Stops = stops;
+			SeatsLimit = seatsLimit;
 		}
 		public AppUserId OwnerId { get; }
 		public List<AppUserId>? ParticipantsIds { get; }
@@ -58,6 +60,7 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 		public RideDirection RideDirection { get; }
 		public byte WeekDays { get; }
 		public List<Stop>? Stops { get; }
+		public byte SeatsLimit { get; }
 	}
 	
 	public class AddRecurringRideCommandHandler : IRequestHandler<AddRecurringRideCommand, IReadOnlyCollection<RideId>>
@@ -102,7 +105,8 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 						request.Price,
 						new Location(request.Location.Longitude, request.Location.Latitude),
 						request.RideDirection,
-						request.Stops ?? new List<Stop>());
+						request.Stops ?? new List<Stop>(),
+							request.SeatsLimit);
 					await _rideRepository.AddAsync(ride, cancellationToken);
 					if (request.ParticipantsIds != null)
 						ride.Participants = request.ParticipantsIds.Select(x =>
