@@ -1,10 +1,11 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {colors, sheet} from '../../../styles';
 import {CircleButton, StandardButton} from '../../../components/common/buttons';
 import {AddRideContext, AddRideContextActions} from './context';
+import {GoBack} from '../../../components/navigation';
 
 const MIN_VALUE = 1;
 const MAX_VALUE = 4;
@@ -13,6 +14,14 @@ const SetSeats = ({navigation}) => {
   const [seats, setSeats] = useState(MIN_VALUE);
 
   const {dispatch} = useContext(AddRideContext);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <GoBack style={{marginLeft: 16}} onPress={navigation.goBack} />
+      ),
+    });
+  }, []);
 
   const onSubmit = () => {
     dispatch({type: AddRideContextActions.SET_SEATS, payload: seats});
@@ -62,7 +71,7 @@ const SetSeats = ({navigation}) => {
         <StandardButton
           width="65%"
           onPress={onSubmit}
-          title="Submit"
+          title="Next"
           color={colors.blue}
         />
       </View>

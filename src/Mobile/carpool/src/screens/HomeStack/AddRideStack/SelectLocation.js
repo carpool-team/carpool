@@ -8,6 +8,7 @@ import {StandardButton} from '../../../components/common/buttons';
 import {PointMinimap} from '../../../components/Route';
 import {geocodingClient} from '../../../maps/mapbox';
 import {parseCoords} from '../../../utils/coords';
+import {GoBack} from '../../../components/navigation';
 
 const config = {
   autocomplete: false,
@@ -24,6 +25,20 @@ const SelectLocation = ({navigation}) => {
   const {addRideState, dispatch} = useContext(AddRideContext);
   const {swap} = addRideState;
 
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <GoBack style={{marginLeft: 16}} onPress={navigation.goBack} />
+      ),
+    });
+  }, []);
+
+  useEffect(() => {
+    if (results.length && !query.length) {
+      setResults([]);
+    }
+  }, [query]);
+
   const onSearch = () => {
     setLoading(true);
     geocodingClient
@@ -39,12 +54,6 @@ const SelectLocation = ({navigation}) => {
         setLoading(false);
       });
   };
-
-  useEffect(() => {
-    if (results.length && !query.length) {
-      setResults([]);
-    }
-  }, [query]);
 
   const onItemPress = item => {
     const stGeo = {

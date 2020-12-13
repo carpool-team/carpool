@@ -1,10 +1,11 @@
-import React, {useState, useContext, useMemo} from 'react';
+import React, {useState, useContext, useMemo, useEffect} from 'react';
 import {View, Text, SafeAreaView, Switch, StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
 import DatePicker from 'react-native-date-picker';
 import PickDays from '../../../components/Driver/AddRide/PickDays';
 import {StandardButton} from '../../../components/common/buttons';
 import {AddRideContext, AddRideContextActions} from './context';
+import {GoBack} from '../../../components/navigation';
 
 const PickTime = ({navigation}) => {
   const [isRegular, setIsRegular] = useState(false);
@@ -13,6 +14,14 @@ const PickTime = ({navigation}) => {
   const [days, setDays] = useState([0, 0, 0, 0, 0, 0, 0]);
 
   const {dispatch} = useContext(AddRideContext);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <GoBack style={{marginLeft: 16}} onPress={navigation.goBack} />
+      ),
+    });
+  }, []);
 
   const canSubmit = useMemo(() => {
     return days.includes(1);
@@ -23,6 +32,7 @@ const PickTime = ({navigation}) => {
       type: AddRideContextActions.SET_DATE,
       payload: date,
     });
+    dispatch({type: AddRideContextActions.SET_REGULAR, payload: false});
     navigation.navigate('SetSeats');
   };
 

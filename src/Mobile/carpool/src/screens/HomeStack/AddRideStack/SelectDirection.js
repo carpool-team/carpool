@@ -12,6 +12,7 @@ import {AddRideContext, AddRideContextActions} from './context';
 import {UpView} from '../../../components/common';
 import {useReverseGeocoding} from '../../../hooks';
 import {parseCoords} from '../../../utils/coords';
+import {GoBack} from '../../../components/navigation';
 
 const SelectDirection = ({navigation}) => {
   const [placeName, setPlaceName] = useState(null);
@@ -23,6 +24,11 @@ const SelectDirection = ({navigation}) => {
 
   useEffect(() => {
     _getPlaceName(parseCoords(group.location));
+    navigation.setOptions({
+      headerLeft: () => (
+        <GoBack style={{marginLeft: 16}} onPress={navigation.goBack} />
+      ),
+    });
   }, []);
 
   useEffect(() => {

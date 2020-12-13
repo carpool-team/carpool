@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import {StandardButton} from '../../../components/common/buttons';
 import {useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
+import {GoBack} from '../../../components/navigation';
 
 const RideSummary = ({navigation}) => {
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,14 @@ const RideSummary = ({navigation}) => {
   } = addRideState;
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <GoBack style={{marginLeft: 16}} onPress={navigation.goBack} />
+      ),
+    });
+  }, []);
 
   const convertDays = () => {
     let arr = days
