@@ -1,22 +1,41 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import sheet from '../../../styles/sheet';
 import colors from '../../../styles/colors';
 import UpView from '../../../components/common/UpView';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {parseCoords} from '../../../utils/coords';
 import {GoBack} from '../../../components/navigation';
 import {PointMinimap} from '../../../components/Route';
+import {useReverseGeocoding} from '../../../hooks';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
+  const [placeName, setPlaceName] = useState(null);
+
+  const [results, loading, error, _getPlaceName] = useReverseGeocoding();
 
   useEffect(() => {
     if (route.params) {
       setGroup(route.params.group);
+      _getPlaceName(parseCoords(route.params.group.location));
     }
   }, []);
+
+  useEffect(() => {
+    if (results) {
+      results.body.features.length &&
+        setPlaceName(results.body.features[0].place_name);
+    }
+  }, [results]);
 
   navigation.setOptions({
     headerLeft: () => <GoBack onPress={() => navigation.navigate('Groups')} />,
@@ -55,6 +74,21 @@ const GroupDetails = ({navigation, route}) => {
               <Text style={styles.cardLabel}>Your rides</Text>
             </View>
           </UpView>
+        </View>
+        <View style={styles.addressWrapper}>
+          <Icon
+            name="map-marker"
+            color={colors.blue}
+            size={32}
+            style={styles.icon}
+          />
+          {loading ? (
+            <ActivityIndicator color={colors.blue} size="small" />
+          ) : (
+            <Text numberOfLines={2} style={styles.placeName}>
+              {placeName}
+            </Text>
+          )}
         </View>
         <View style={styles.flexed}>
           <PointMinimap coordinates={parseCoords(group.location)} />
@@ -123,6 +157,20 @@ const styles = StyleSheet.create({
     height: 135,
   },
   flexed: {
+    flex: 1,
+  },
+  addressWrapper: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    ...sheet.rowCenter,
+  },
+  icon: {
+    marginRight: 12,
+  },
+  placeName: {
+    ...sheet.textMedium,
+    color: colors.grayDark,
+    fontSize: 16,
     flex: 1,
   },
 });
