@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
+import {Header} from '../../../../components/navigation';
+import {useIsFocused} from '@react-navigation/native';
 import {
   GroupDetails,
   Groups,
   Invitations,
-} from '../../../../screens/drawer/Groups';
-import {Header} from '../../../../components/navigation';
-import {useIsFocused} from '@react-navigation/native';
+} from '../../../../screens/BottomTabs';
 
 const {useEffect} = React;
 const Stack = createStackNavigator();
