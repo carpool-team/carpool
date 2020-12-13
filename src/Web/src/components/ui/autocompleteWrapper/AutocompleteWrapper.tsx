@@ -8,6 +8,7 @@ import { Resource } from "./enums/Resource";
 
 interface IAutocompleteTextInputProps extends IReactI18nProps {
 	placeholder: string;
+	value: string;
 	onChange: (newValue: string) => void;
 	onSelect?: () => void;
 	autocompleteCallback: (value: string) => Promise<string[]>;
@@ -19,7 +20,6 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 	const { t } = props;
 	const [open, setOpen] = useState(false);
 	const [options, setOptions] = useState<string[]>([]);
-	const [value, setValue] = useState<string>(null);
 	const [refresh, setRefresh] = useState<boolean>(false);
 	const loading = open && refresh;
 
@@ -28,7 +28,7 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 		if (!loading || !refresh) {
 			return undefined;
 		}
-		props.autocompleteCallback(value).then(res => {
+		props.autocompleteCallback(props.value).then(res => {
 			setOptions(res);
 		});
 		setRefresh(false);
@@ -44,11 +44,13 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 	}, [open]);
 
 	useEffect(() => {
-		setRefresh(true);
-	}, [value]);
+		if (open) {
+			setRefresh(true);
+		}
+	}, [props.value]);
 
-	const onChangeInput: (event: React.ChangeEvent) => void = event => {
-		props.onChange(event.target.nodeValue);
+	const onChangeInput: (event: React.ChangeEvent<HTMLInputElement>) => void = event => {
+		props.onChange(event.target.value);
 	};
 
 	return (
@@ -60,7 +62,6 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 			}}
 			onClose={(_event, reason) => {
 				setOpen(false);
-				setValue(null);
 			}}
 			getOptionSelected={(option, newValue) => option === newValue}
 			getOptionLabel={(option) => option}
@@ -73,7 +74,7 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 				props.onChange(newValue);
 			}}
 			onInputChange={(_event, newValue, _reason) => {
-				setValue(newValue);
+				props.onChange(newValue);
 			}}
 			noOptionsText={t(Resource.NoOptionsText)}
 			renderInput={(params) => (
@@ -90,6 +91,10 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 								{params.InputProps.endAdornment}
 							</React.Fragment>
 						),
+					}}
+					inputProps={{
+						...params.inputProps,
+						value: props.value ?? ""
 					}}
 				/>
 			)}
