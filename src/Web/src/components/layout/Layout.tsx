@@ -15,7 +15,8 @@ interface ILayoutProps extends RouteComponentProps, StateProps, DispatchProps { 
 
 class Layout extends Component<ILayoutProps> {
 	private cssClasses = {
-		main: "main"
+		main: "main",
+		mainFlex: "main--flex",
 	};
 
 	private mainPaths: string[] = ["/", ""];
@@ -29,11 +30,16 @@ class Layout extends Component<ILayoutProps> {
 			this.props.redirected();
 		}
 		const mainHeight: number = document.querySelector(".main")?.clientHeight;
+		const mainCssClasses: string[] = [this.cssClasses.main];
+		// main page should have different height differently
+		if (this.mainPaths.includes(pathname)) {
+			mainCssClasses.push(this.cssClasses.mainFlex);
+		}
 		return (
 			<React.Fragment>
 				<NavBar />
 				<ToastContainer />
-				<main className={this.cssClasses.main}>
+				<main className={mainCssClasses.join(" ")}>
 					<LoaderSplash
 						active={this.props.loaderVisible}
 						height={mainHeight}
