@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontSize: 16,
     marginBottom: 75,
+    lineHeight: 25,
   },
 });
 

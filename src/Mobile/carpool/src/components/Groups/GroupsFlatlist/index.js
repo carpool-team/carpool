@@ -3,6 +3,7 @@ import {RefreshControl, FlatList, Text, View} from 'react-native';
 import {colors} from '../../../styles';
 import {styles} from './index.styles';
 import ListItem from './ListItem';
+import {ListEmptyComponent} from '../../common/lists';
 
 const GroupsFlatlist = ({data, loading, onItemPress}) => (
   <FlatList
@@ -17,6 +18,9 @@ const GroupsFlatlist = ({data, loading, onItemPress}) => (
         tintColor={colors.green}
         refreshing={loading}
       />
+    }
+    ListEmptyComponent={
+      <ListEmptyComponent title="You are not a member of any group yet. You will be able to create a new ride once you join one." />
     }
   />
 );
