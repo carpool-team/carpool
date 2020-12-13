@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ActivityIndicator, SafeAreaView} from 'react-native';
+import {View, Text, ActivityIndicator} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/native';
 import {RideDetailsCard} from '../../Ride';
@@ -7,6 +7,7 @@ import {useSelector} from 'react-redux';
 import {ListEmptyComponent} from '../../common/lists';
 import {ThreeGroupsList} from '../../Groups';
 import {styles} from './index.styles';
+import {SafeScroll} from '../../common/wrappers';
 
 const DriversHome = () => {
   const navigation = useNavigation();
@@ -22,7 +23,7 @@ const DriversHome = () => {
   }, [driversRides]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeScroll minHeight={500}>
       <View style={styles.container}>
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Upcoming ride</Text>
@@ -83,7 +84,7 @@ const DriversHome = () => {
           )}
         </View>
       </View>
-    </SafeAreaView>
+    </SafeScroll>
   );
 };
 
