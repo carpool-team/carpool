@@ -1,8 +1,10 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import DriversRides from '../../../../screens/drawer/RidesStack/DriversRides';
-import DriversRideDetails from '../../../../screens/drawer/RidesStack/DriversRideDetails';
-import PassengersRideDetails from '../../../../screens/drawer/RidesStack/PassengersRideDetails';
+import {
+  DriversRideDetails,
+  DriversRides,
+  PassengersRideDetails,
+} from '../../../../screens/BottomTabs/RidesStack';
 import {Header} from '../../../../components/navigation';
 import {useIsFocused} from '@react-navigation/native';
 
