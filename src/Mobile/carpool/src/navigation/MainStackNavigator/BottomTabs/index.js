@@ -32,6 +32,7 @@ const BottomTabs = () => {
         labelStyle: {
           marginBottom: bottom > 0 ? 0 : 5,
         },
+        keyboardHidesTabBar: true,
       }}>
       <Tabs.Screen
         name="HomeStack"
