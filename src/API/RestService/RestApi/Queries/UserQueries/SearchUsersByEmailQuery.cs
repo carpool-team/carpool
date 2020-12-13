@@ -38,7 +38,8 @@ namespace RestApi.Queries.UserQueries
 
 			var userDtos = users.Select(x => new InviteUserDto(x.Id,
 					x.FirstName,
-					x.LastName))
+					x.LastName,
+					x.Email))
 				.ToList();
 
 			return userDtos;
