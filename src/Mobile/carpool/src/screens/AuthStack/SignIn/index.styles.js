@@ -7,6 +7,11 @@ export const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: colors.background,
   },
+  container: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+  },
   title: {
     ...sheet.textSemiBold,
     fontSize: 36,
