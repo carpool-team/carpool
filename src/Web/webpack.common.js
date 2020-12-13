@@ -75,6 +75,7 @@ module.exports = {
 
 	optimization: {
 		splitChunks: {
+			chunks: "all",
 			cacheGroups: {
 				vendor: {
 					test: /[\\/]node_modules[\\/]/,
@@ -94,7 +95,7 @@ module.exports = {
 		},
 		minimizer: [
 			new TerserPlugin({
-				sourceMap: true,
+				sourceMap: devMode ? true : false,
 				terserOptions: {
 					compress: {
 						drop_console: devMode ? false : true,
