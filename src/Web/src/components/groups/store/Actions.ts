@@ -20,6 +20,7 @@ import {
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
 	IAddRideAction,
+	IAddInvitesAction,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
@@ -120,12 +121,12 @@ export function getInvitesError(error: Error): IGetInvitesActionError {
 	};
 }
 
-export function addInvite(groupId: string, userIds: string[]) {
+export function addInvites(groupId: string, userIds: string[]): IAddInvitesAction {
 	return {
 		type: InvitesActionTypes.AddInvites,
 		groupId,
 		userIds,
-	}
+	};
 }
 //#endregion
 
