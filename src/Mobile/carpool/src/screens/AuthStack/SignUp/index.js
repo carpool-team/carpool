@@ -1,11 +1,12 @@
 import React, {useReducer, useEffect, useState} from 'react';
-import {Text, SafeAreaView} from 'react-native';
+import {Text} from 'react-native';
 import {NameSection, PasswordSection, SuccessSection} from './sections';
 import {reducer, initialState, SignUpActions} from './reducer';
 import {styles} from './index.styles';
 import * as actions from '../../../store/actions/auth';
 import {useDispatch} from 'react-redux';
 import {FullScreenLoading} from '../../../components/common/loaders';
+import {SafeScroll} from '../../../components/common/wrappers';
 
 const SignUp = props => {
   const [apiError, setApiError] = useState(null);
@@ -75,10 +76,10 @@ const SignUp = props => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeScroll minHeight={600}>
       <Text style={styles.title}>Carpool</Text>
       {renderSection()}
-    </SafeAreaView>
+    </SafeScroll>
   );
 };
 
