@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {MAP_LIGHT} from '@env';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {colors} from '../../styles';
+import {colors} from '../../../styles';
 
 const PointMinimap = ({coordinates}) => (
   <View style={styles.container}>

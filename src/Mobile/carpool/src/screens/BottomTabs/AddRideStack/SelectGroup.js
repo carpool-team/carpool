@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {View, Text, SafeAreaView, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
-import {GroupsFlatlist} from '../../../components/Locations';
+import {GroupsFlatlist} from '../../../components/Groups';
 import {colors, sheet} from '../../../styles';
 import {AddRideContext, AddRideContextActions} from './context';
 

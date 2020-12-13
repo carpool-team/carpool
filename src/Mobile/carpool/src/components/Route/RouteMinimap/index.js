@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {View, ActivityIndicator, StyleSheet, Alert} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import bbox from '@turf/bbox';
-import {activeRouteStyle, colors, sheet} from '../../styles';
-import {BlueMarker} from '../common/map';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {MAP_LIGHT} from '@env';
-import {directionsClient} from '../../maps/mapbox';
+import {colors, sheet, activeRouteStyle} from '../../../styles';
+import {BlueMarker} from '../../common/map';
+import {directionsClient} from '../../../maps/mapbox';
 
 const dirConfig = {
   profile: 'driving',
