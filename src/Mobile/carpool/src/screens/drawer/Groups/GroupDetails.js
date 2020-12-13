@@ -16,6 +16,7 @@ import {parseCoords} from '../../../utils/coords';
 import {GoBack} from '../../../components/navigation';
 import {PointMinimap} from '../../../components/Route';
 import {useReverseGeocoding} from '../../../hooks';
+import {SafeScroll} from '../../../components/common/wrappers';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
@@ -42,7 +43,7 @@ const GroupDetails = ({navigation, route}) => {
   });
 
   return group ? (
-    <SafeAreaView style={styles.flexed}>
+    <SafeScroll minHeight={500}>
       <View style={styles.upperContainer}>
         <Text style={styles.name} numberOfLines={1}>
           {group.name}
@@ -94,7 +95,7 @@ const GroupDetails = ({navigation, route}) => {
           <PointMinimap coordinates={parseCoords(group.location)} />
         </View>
       </View>
-    </SafeAreaView>
+    </SafeScroll>
   ) : null;
 };
 
