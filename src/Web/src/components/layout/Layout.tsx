@@ -31,7 +31,7 @@ class Layout extends Component<ILayoutProps> {
 		}
 		const mainHeight: number = document.querySelector(".main")?.clientHeight;
 		const mainCssClasses: string[] = [this.cssClasses.main];
-		// main page should have different height differently
+		// main page should have different height
 		if (this.mainPaths.includes(pathname)) {
 			mainCssClasses.push(this.cssClasses.mainFlex);
 		}
