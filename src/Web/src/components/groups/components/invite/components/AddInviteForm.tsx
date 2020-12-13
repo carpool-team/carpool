@@ -13,15 +13,23 @@ import { ButtonSmallColor } from "../../../../ui/buttonSmall/enums/ButtonSmallCo
 import { ButtonSmallIcon } from "../../../../ui/buttonSmall/enums/ButtonSmallIcon";
 import AutocompleteWrapper from "../../../../ui/autocompleteWrapper/AutocompleteWrapper";
 import { IInviteUser } from "../interfaces/IInviteUser";
-
-import colors from "scss_path/_colors.scss";
 import { UserAutocompleteRequest } from "../../../api/userAutocomplete/UserAutocompleteRequest";
+import { result } from "lodash";
 
 interface IAddInviteFormProps extends IReactI18nProps {
 	addUserToInvite: (user: IInviteUser) => void;
 	removeUser: (user: IInviteUser) => void;
 	users: IInviteUser[];
 	onConfirm: () => void;
+	currentAppUserId: string;
+}
+
+interface IUserAutocompleteData {
+	[email: string]: {
+		firstName: string;
+		lastName: string;
+		appUserId: string;
+	};
 }
 
 const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
@@ -31,6 +39,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	});
 	const [email, setEmail] = useState<string>(null);
 	const [submitted, setSubmitted] = useState(false);
+	const [emailsDict, setEmailsDict] = useState<IUserAutocompleteData>({});
 
 	const clearInputs = () => {
 		setEmail(null);
@@ -38,7 +47,10 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 
 	const onAdd = () => {
 		if (each(inputsValid, i => i)) {
-			props.addUserToInvite({ email });
+			props.addUserToInvite({
+				email,
+				...emailsDict[email],
+			});
 			setInputsValid(draft => {
 				draft.email = false;
 			});
@@ -90,14 +102,28 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	};
 
 	const autocompleteCallback: (value: string) => Promise<string[]> = async (value) => {
-		const request = new UserAutocompleteRequest({
-			queries: {
-				email: value,
-			},
-		});
-		const response = await request.send();
-		console.log(response);
-		return ["test@o2.pl"];
+		setEmailsDict({});
+		const result: string[] = [];
+		if (value && value.length > 0) {
+			const request = new UserAutocompleteRequest({
+				queries: {
+					email: value,
+				},
+			});
+			const response = await request.send();
+			if (!response.isError) {
+				response.result.forEach(u => {
+					if (u.appUserId !== props.currentAppUserId) {
+						// result.push(u.email);
+						// TEMPORARY
+						const tmpMail: string = `TEST.${u.firstName}.${u.lastName}@o2.pl`;
+						result.push(tmpMail);
+						emailsDict[tmpMail] = { ...u };
+					}
+				});
+			}
+		}
+		return result;
 	};
 
 	const selectedOptionCallback = () => {
@@ -155,7 +181,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 						<li key={idx}>
 							<div className={cssClasses.userListItem} style={color}>
 								<div className={cssClasses.userListItemName}>
-									{user.email}
+									{`${user.firstName} ${user.lastName} (${user.email})`}
 								</div>
 								<ButtonSmall
 									icon={ButtonSmallIcon.Close}

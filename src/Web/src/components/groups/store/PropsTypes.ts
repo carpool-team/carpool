@@ -28,7 +28,7 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 	ridesParticipated: state.groups.ridesParticipated,
 	ridesOwnedPast: state.groups.ridesOwnedPast,
 	ridesParticipatedPast: state.groups.ridesParticipatedPast,
-	authId: state.auth.tokenInfo?.payload?.jti,
+	authId: state.auth.tokenInfo?.payload?.sub,
 });
 
 interface IDispatchPropsType {

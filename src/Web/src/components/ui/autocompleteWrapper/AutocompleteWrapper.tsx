@@ -58,8 +58,10 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 			onOpen={() => {
 				setOpen(true);
 			}}
-			onClose={() => {
-				setOpen(false);
+			onClose={(_event, reason) => {
+				if (reason === "select-option" || reason === "toggleInput") {
+					setOpen(false);
+				}
 			}}
 			getOptionSelected={(option, newValue) => option === newValue}
 			getOptionLabel={(option) => option}
