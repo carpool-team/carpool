@@ -30,6 +30,11 @@
             "login": "Zaloguj się",
             "rememberLogin": "Pamiętaj logowanie"
         },
+        "autocomplete": {
+            "wrapper": {
+                "nooptions": "Brak wyników"
+            }
+        },
         "groups": {
             "addGroupForm": {
                 "code": "Kod grupy",

@@ -102,7 +102,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	};
 
 	const autocompleteCallback: (value: string) => Promise<string[]> = async (value) => {
-		setEmailsDict({});
+		const updatedDict: IUserAutocompleteData = {};
 		const result: string[] = [];
 		if (value && value.length > 0) {
 			const request = new UserAutocompleteRequest({
@@ -118,11 +118,12 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 						// TEMPORARY
 						const tmpMail: string = `TEST.${u.firstName}.${u.lastName}@o2.pl`;
 						result.push(tmpMail);
-						emailsDict[tmpMail] = { ...u };
+						updatedDict[tmpMail] = { ...u };
 					}
 				});
 			}
 		}
+		setEmailsDict(updatedDict);
 		return result;
 	};
 
