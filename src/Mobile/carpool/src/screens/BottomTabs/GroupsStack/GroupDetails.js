@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
 import sheet from '../../../styles/sheet';
 import colors from '../../../styles/colors';
 import UpView from '../../../components/common/UpView';
@@ -13,7 +7,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {parseCoords} from '../../../utils/coords';
-import {GoBack} from '../../../components/navigation';
+import {GoBack, Header} from '../../../components/navigation';
 import {PointMinimap} from '../../../components/Route';
 import {useReverseGeocoding} from '../../../hooks';
 import {SafeScroll} from '../../../components/common/wrappers';
@@ -29,6 +23,12 @@ const GroupDetails = ({navigation, route}) => {
       setGroup(route.params.group);
       _getPlaceName(parseCoords(route.params.group.location));
     }
+    navigation.setOptions({
+      headerLeft: () => (
+        <GoBack onPress={() => navigation.navigate('Groups')} />
+      ),
+      header: props => <Header {...props} hideSwitch />,
+    });
   }, []);
 
   useEffect(() => {
@@ -37,10 +37,6 @@ const GroupDetails = ({navigation, route}) => {
         setPlaceName(results.body.features[0].place_name);
     }
   }, [results]);
-
-  navigation.setOptions({
-    headerLeft: () => <GoBack onPress={() => navigation.navigate('Groups')} />,
-  });
 
   return group ? (
     <SafeScroll minHeight={500}>

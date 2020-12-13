@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -16,18 +16,21 @@ import moment from 'moment';
 import PassengersList from '../../../components/Driver/PassengersList';
 import * as actions from '../../../store/actions';
 import {useDispatch} from 'react-redux';
-import {GoBack} from '../../../components/navigation';
+import {GoBack, Header} from '../../../components/navigation';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
 
   const dispatch = useDispatch();
 
-  navigation.setOptions({
-    headerLeft: () => (
-      <GoBack onPress={() => navigation.navigate('DriversRides')} />
-    ),
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <GoBack onPress={() => navigation.navigate('DriversRides')} />
+      ),
+      header: props => <Header {...props} hideSwitch />,
+    });
+  }, []);
 
   const onDeletePress = () =>
     Alert.alert('Warning!', 'Are you sure you want to delete this ride?', [

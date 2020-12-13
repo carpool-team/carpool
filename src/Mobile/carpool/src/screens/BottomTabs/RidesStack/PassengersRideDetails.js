@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,16 +13,19 @@ import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {RouteMinimap} from '../../../components/Route';
 import {GroupWaypoints} from '../../../components/Ride';
-import {GoBack} from '../../../components/navigation';
+import {GoBack, Header} from '../../../components/navigation';
 
 const PassengersRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
 
-  navigation.setOptions({
-    headerLeft: () => (
-      <GoBack onPress={() => navigation.navigate('DriversRides')} />
-    ),
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <GoBack onPress={() => navigation.navigate('DriversRides')} />
+      ),
+      header: props => <Header {...props} hideSwitch />,
+    });
+  }, []);
 
   const onResignPress = () =>
     Alert.alert('Warning!', 'Are you sure you want to resign?', [
