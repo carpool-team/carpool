@@ -1,7 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {View, Text, SafeAreaView, StyleSheet, TextInput} from 'react-native';
 import {AddRideContext, AddRideContextActions} from './context';
-import {StartLocationsFlatList} from '../../../components/FindRoute';
 import {colors, sheet} from '../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {StandardButton} from '../../../components/common/buttons';
@@ -9,6 +8,7 @@ import {PointMinimap} from '../../../components/Route';
 import {geocodingClient} from '../../../maps/mapbox';
 import {parseCoords} from '../../../utils/coords';
 import {GoBack} from '../../../components/navigation';
+import {StartLocationsFlatList} from '../../../components/Driver';
 
 const config = {
   autocomplete: false,
