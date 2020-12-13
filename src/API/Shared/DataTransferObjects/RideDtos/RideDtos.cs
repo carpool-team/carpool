@@ -22,5 +22,6 @@ namespace RestApi.DTOs.Ride
 		[JsonProperty("rideDirection")]RideDirection RideDirection,
 		[JsonProperty("stops")]List<StopDto> stops,
 		[JsonProperty("rideDate")]DateTime RideDate,
-		[JsonProperty("rideId")]RideId RideId);
+		[JsonProperty("rideId")]RideId RideId,
+		[JsonProperty("seatsLimit")]byte SeatsLimit);
 }
