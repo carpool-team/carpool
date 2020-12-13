@@ -44,9 +44,6 @@ const AddRideStack = ({navigation}) => {
           ...sheet.textMedium,
           color: colors.grayVeryDark,
         },
-        headerStyle: {
-          height: 110,
-        },
         gestureEnabled: false,
       }}>
       <Stack.Screen name="SelectGroup" component={SelectGroup} />
