@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   center: {
-    flex: 1,
+    flex: 2,
     alignItems: 'center',
   },
   title: {

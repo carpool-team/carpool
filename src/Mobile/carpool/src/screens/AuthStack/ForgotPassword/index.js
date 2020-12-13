@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, SafeAreaView, View} from 'react-native';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
@@ -6,6 +6,7 @@ import StandardInput from '../../../components/common/inputs/StandardInput';
 import {colors} from '../../../styles';
 import {StandardButton} from '../../../components/common/buttons';
 import {styles} from './index.styles';
+import {GoBack} from '../../../components/navigation';
 
 const ValidationSchema = Yup.object().shape({
   email: Yup.string()
@@ -24,6 +25,12 @@ const ForgotPassword = ({navigation}) => {
       navigation.navigate('SignIn');
     },
   });
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => <GoBack onPress={navigation.goBack} />,
+    });
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeArea}>
