@@ -68,6 +68,7 @@ const RideSummary = ({navigation}) => {
           rideDirection: swap ? 1 : 0,
           weekDays: days,
           rideTime: moment(time).format('HH:mm'),
+          seatsLimit: seats,
         }),
       )
         .then(() => {
@@ -84,6 +85,7 @@ const RideSummary = ({navigation}) => {
           date: date,
           rideDirection: swap ? 1 : 0,
           location: location.coordinates,
+          seatsLimit: seats,
         }),
       )
         .then(() => {

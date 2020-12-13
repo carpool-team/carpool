@@ -8,7 +8,7 @@ import {AddRideContext, AddRideContextActions} from './context';
 import {GoBack} from '../../../components/navigation';
 
 const MIN_VALUE = 1;
-const MAX_VALUE = 4;
+const MAX_VALUE = 23;
 
 const SetSeats = ({navigation}) => {
   const [seats, setSeats] = useState(MIN_VALUE);
