@@ -9,4 +9,5 @@ export interface IAddRideInput {
 	rideDirection: RideDirection;
 	date: Date;
 	location: ILocation;
+	seatsLimit: number;
 }

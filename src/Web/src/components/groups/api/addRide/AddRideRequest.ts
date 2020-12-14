@@ -19,9 +19,13 @@ export interface IAddRideRequestBody {
 	groupId: string;
 	location: ILocation;
 	rideDirection: RideDirection;
-	date: Date;
-	weekDays?: number;
+	date?: string;
 	price: number;
+	seatsLimit: number;
+	weekDays?: number;
+	rideTime?: string;
+	startDate?: string;
+	endDate?: string;
 }
 
 export class AddRideRequest extends RequestBase<IAddRideRequestBody> {
