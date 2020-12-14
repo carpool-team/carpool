@@ -49,6 +49,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		buttonsOutline: "groupsManagementButtonsContainer--outline",
 		buttonActive: "groupsManagementButtonActive",
 		mapBox: "groupsManagementMapBox",
+		listWraper: "groupsManagementList__wraper"
 	};
 
 	private ids = {
@@ -139,7 +140,9 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 					</ButtonLink>
 				</div>
 				<div className={this.cssClasses.buttonsOutline}></div>
-				{list}
+				<div className={this.cssClasses.listWraper}>
+					{list}
+				</div>
 			</div>
 		);
 	}
