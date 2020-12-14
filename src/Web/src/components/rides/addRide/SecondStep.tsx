@@ -140,14 +140,17 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 			latitude: location[1],
 			longitude: location[0],
 		},
+		seatsLimit: +seats,
 		date: selectedDate,
 	}
 
 	useEffect(() => {
 		props.setRide(userRide)
-	}, [selectedDate, location, direction, days, selectedScreen])
+	}, [selectedDate, location, direction, days, selectedScreen, seats])
 
 	const [submitted, setSubmitted] = useState(false);
+
+
 
 	const trySendForm = () => {
 		if (each(inputsValid, (i) => i)) {
@@ -160,6 +163,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 					latitude: location[1],
 					longitude: location[0],
 				},
+				seatsLimit: +seats,
 				date: selectedDate,
 			};
 			props.setRide(input);

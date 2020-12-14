@@ -312,19 +312,45 @@ const addRideEpic: Epic<RideAction | GenericAction> = (action$, state$) => actio
 				weekdays += 1000000;
 			}
 		}
-		console.log(action.input);
-		const request: AddRideRequest = new AddRideRequest({
-			body: {
-				rideDirection: action.input.rideDirection,
-				date: action.input.date,
-				weekDays: weekdays,
-				ownerId: uid,
-				groupId: action.input.groupId,
-				location: action.input.location,
-				price: 0,
-			},
-			recurring: action.input.recurring,
-		});
+		const mappedDays: number = parseInt(weekdays.toString(), 2);
+		let request: AddRideRequest;
+
+		// TODO zastanowić się czy planujemy dać użytkownikowi wybór tego
+		const currentDate = new Date();
+		const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+		//END
+
+		if (action.input.recurring) {
+			request = new AddRideRequest({
+				body: {
+					rideDirection: action.input.rideDirection,
+					weekDays: mappedDays,
+					ownerId: uid,
+					groupId: action.input.groupId,
+					location: action.input.location,
+					price: 0,
+					seatsLimit: action.input.seatsLimit,
+					rideTime: (action.input.date.getHours() + ":" + action.input.date.getMinutes()),
+					startDate: currentDate.toISOString(),
+					endDate: nextMonthDate.toISOString()
+				},
+				recurring: action.input.recurring
+			});
+		} else {
+			request = new AddRideRequest({
+				body: {
+					rideDirection: action.input.rideDirection,
+					date: action.input.date.toISOString(),
+					ownerId: uid,
+					groupId: action.input.groupId,
+					location: action.input.location,
+					price: 0,
+					seatsLimit: action.input.seatsLimit,
+				},
+				recurring: action.input.recurring,
+			});
+		}
+
 		const response: AddRideResponse = await request.send();
 		if (response.isError) {
 			return <IApiErrorAction>{
