@@ -18,14 +18,19 @@ namespace AuthServer
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration) 
-			=> _configuration = configuration;
+		private readonly JwtOptions _jwtOptions;
+		
+		public Startup(IConfiguration configuration)
+		{
+			_configuration = configuration;
+			_jwtOptions = GetJwtOptions();
+		}
 
 		private readonly IConfiguration _configuration;
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.Configure<JwtOptions>(_configuration);
+			services.AddSingleton(_jwtOptions);
 			
 			services.AddCors();
 

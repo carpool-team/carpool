@@ -30,11 +30,11 @@ namespace AuthServer.Controllers
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly SignInManager<AuthUser> _signInManager;
+
+		private readonly ITokenGenerator _tokenGenerator;
 		private readonly IUserManagementService _userManagementService;
 		private readonly UserManager<AuthUser> _userManager;
 
-		private readonly ITokenGenerator _tokenGenerator;
-		
 		public AuthController(UserManager<AuthUser> userManager,
 			SignInManager<AuthUser> signInManager,
 			ApplicationDbContext dbContext,
@@ -130,18 +130,22 @@ namespace AuthServer.Controllers
 			var deserializedRefreshToken =
 				JsonConvert.DeserializeObject<RefreshToken>(Encoding.ASCII.GetString(refreshTokenBytes));
 
-			var user = await _dbContext.AuthUsers
-				.Include(x => x.RefreshTokens)
-				.Where(x => x.RefreshTokens
-					.Any(a => a.Token == deserializedRefreshToken.Token && a.IsActive))
-				.FirstOrDefaultAsync();
+			AuthUser user = await _dbContext.AuthUsers
+					.Include(x => x.RefreshTokens)
+					.Where(x => x.RefreshTokens.Any(a => a.Token == deserializedRefreshToken.Token))
+					.SingleOrDefaultAsync();
 
-			_ = user ?? throw new ApiException("Provided token is invalid", StatusCodes.Status401Unauthorized);
+			_ = user ?? throw new ApiException("Provided token was invalid or not found", StatusCodes.Status401Unauthorized);
 
+			var loadedToken = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);
+
+			if (!loadedToken.IsActive)
+				throw new ApiException("Provided token was ivnalid or not found", StatusCodes.Status401Unauthorized);
+			
 			var token = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);
 			// ReSharper disable once PossibleNullReferenceException
 			token.Revoked = DateTime.Now;
-			
+
 			var newJwtToken = _tokenGenerator.GenerateJwtToken(user.AppUserId);
 			var newRefreshToken = _tokenGenerator.GenerateRefreshToken();
 

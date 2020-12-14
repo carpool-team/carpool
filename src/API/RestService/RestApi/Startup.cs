@@ -29,7 +29,7 @@ namespace RestApi
 		private readonly IConfiguration _configuration;
 		private readonly JwtOptions _jwtOptions;
 
-		public Startup(IConfiguration configuration, JwtOptions jwtOptions)
+		public Startup(IConfiguration configuration)
 		{
 			_configuration = configuration;
 			_jwtOptions = GetJwtOptions();
@@ -39,12 +39,11 @@ namespace RestApi
 		public void ConfigureServices(IServiceCollection services)
 		{
 			Log.Information("Configuring services...");
-
-			services.Configure<JwtOptions>(_configuration);
-
-			services.AddCors();
-
+			
+			services.AddSingleton(_jwtOptions);
 			services.AddSingleton(_configuration);
+			
+			services.AddCors();
 
 			services.AddDbContext<CarpoolDbContext>(options =>
 				options.UseSqlServer(_configuration.GetConnectionString("RestDbConnectionString")));
