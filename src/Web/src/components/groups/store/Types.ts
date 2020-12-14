@@ -4,6 +4,10 @@ import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
 
+export enum GenericActionTypes {
+	ApiError = "GROUPS_STORE_API_ERROR"
+}
+
 /** Enum of groups actions */
 export enum GroupsActionTypes {
 	AddGroup = "GROUPS_ADD_GROUP",
@@ -35,6 +39,12 @@ export enum RidesActionTypes {
 	ParticipateInRideError = "RIDES_PARTICIPATE_IN_RIDE_ERROR",
 	AddRide = "RIDES_ADD",
 }
+
+//#region GENERIC
+export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
+	errorMessage: string;
+}
+//#endregion
 
 //#region GROUPS
 /** Action for adding group */
@@ -153,9 +163,12 @@ export interface IAddRideAction extends Action<RidesActionTypes.AddRide> {
 }
 //#endregion
 
+export type GenericAction =
+	IApiErrorAction;
+
 /** Type of group action */
 export type GroupsAction =
-	| IAddGroupAction
+	IAddGroupAction
 	| IAddGroupActionSuccess
 	| IAddGroupActionError
 	| IGetGroupsAction
