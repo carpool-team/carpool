@@ -30,19 +30,22 @@ namespace AuthServer.Controllers
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly SignInManager<AuthUser> _signInManager;
-
 		private readonly IUserManagementService _userManagementService;
 		private readonly UserManager<AuthUser> _userManager;
 
+		private readonly ITokenGenerator _tokenGenerator;
+		
 		public AuthController(UserManager<AuthUser> userManager,
 			SignInManager<AuthUser> signInManager,
 			ApplicationDbContext dbContext,
-			IUserManagementService userManagementService)
+			IUserManagementService userManagementService,
+			ITokenGenerator tokenGenerator)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_dbContext = dbContext;
 			_userManagementService = userManagementService;
+			_tokenGenerator = tokenGenerator;
 		}
 
 		[HttpPost("register")]
@@ -95,9 +98,8 @@ namespace AuthServer.Controllers
 
 			var user = await _userManager.FindByNameAsync(model.Email);
 
-			TokenGenerator tokenGenerator = new();
-			var token = tokenGenerator.GenerateJwtToken(user.AppUserId);
-			var refreshToken = tokenGenerator.GenerateRefreshToken();
+			var token = _tokenGenerator.GenerateJwtToken(user.AppUserId);
+			var refreshToken = _tokenGenerator.GenerateRefreshToken();
 
 			user.RefreshTokens.Add(refreshToken);
 			_dbContext.Set<AuthUser>().Update(user);
@@ -139,12 +141,9 @@ namespace AuthServer.Controllers
 			var token = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);
 			// ReSharper disable once PossibleNullReferenceException
 			token.Revoked = DateTime.Now;
-
-			TokenGenerator tokenGenerator = new();
-
-			var newJwtToken = tokenGenerator.GenerateJwtToken(user.AppUserId);
-
-			var newRefreshToken = tokenGenerator.GenerateRefreshToken();
+			
+			var newJwtToken = _tokenGenerator.GenerateJwtToken(user.AppUserId);
+			var newRefreshToken = _tokenGenerator.GenerateRefreshToken();
 
 			user.RefreshTokens.Add(newRefreshToken);
 			_dbContext.Set<AuthUser>().Update(user);

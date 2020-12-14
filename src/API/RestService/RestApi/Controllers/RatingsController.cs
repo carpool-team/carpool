@@ -4,9 +4,11 @@ using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
 using RestApi.DTOs.Rating;
+using RestApi.Extensions;
 using RestApi.Queries.RatingQueries;
 
 namespace RestApi.Controllers
@@ -32,9 +34,11 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost("~/api/users/{appUserId}/ratings")]
-		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingDto model, [FromRoute] AppUserId userId)
+		public async Task<ApiResponse> AddUserRating([FromBody] AddUserRatingDto model, [FromRoute] AppUserId appUserId)
 		{
-			AddUserRatingCommand request = new(userId, model.Value);
+			if (User.GetUserId() != appUserId)
+				throw new ApiException("User cannot evaluate himself.", StatusCodes.Status403Forbidden);
+			AddUserRatingCommand request = new(appUserId, model.Value);
 
 			var rating = await _mediator.Send(request);
 

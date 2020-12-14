@@ -1,6 +1,8 @@
 using Auth.DataAccessLayer.DatabaseContexts;
 using AuthDomain.Entities;
 using AuthServer.Services;
+using AuthServer.Utilities;
+using AuthShared.Options;
 using AutoWrapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,18 +18,20 @@ namespace AuthServer
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration) => Configuration = configuration;
+		public Startup(IConfiguration configuration) 
+			=> _configuration = configuration;
 
-		public IConfiguration Configuration { get; }
+		private readonly IConfiguration _configuration;
 
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.Configure<JwtOptions>(_configuration);
+			
 			services.AddCors();
 
 			services.AddDbContext<ApplicationDbContext>(options =>
 			{
-				options.UseSqlServer(Configuration.GetConnectionString("IdentityDbConnectionString"));
+				options.UseSqlServer(_configuration.GetConnectionString("IdentityDbConnectionString"));
 			});
 
 			services.AddIdentity<AuthUser, IdentityRole>()
@@ -35,7 +39,8 @@ namespace AuthServer
 				.AddDefaultTokenProviders();
 
 			services.AddTransient(_ => RestClient.For<IUserManagementService>("https://carpool-rest.azurewebsites.net"));
-
+			services.AddTransient<ITokenGenerator, TokenGenerator>();
+			
 			services.AddControllers();
 			services.AddSwaggerGen(c =>
 			{
@@ -69,5 +74,9 @@ namespace AuthServer
 
 			app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 		}
+
+		private JwtOptions GetJwtOptions()
+			=> _configuration.GetSection(nameof(JwtOptions))
+				.Get<JwtOptions>();
 	}
 }

@@ -15,10 +15,14 @@ namespace RestApi.Commands.RideCommands
 	public class DeleteRideCommand : IRequest<Ride>
 	{
 		[JsonConstructor]
-		public DeleteRideCommand(RideId rideId)
-			=> RideId = rideId;
+		public DeleteRideCommand(RideId rideId, AppUserId appUserId)
+		{
+			RideId = rideId;
+			AppUserId = appUserId;
+		}
 
 		public RideId RideId { get; }
+		public AppUserId AppUserId { get; }
 	}
 
 	public class DeleteRideCommandHandler : IRequestHandler<DeleteRideCommand, Ride>
@@ -38,6 +42,9 @@ namespace RestApi.Commands.RideCommands
 				?? throw new ApiException($"Ride with id {request.RideId} does not exist",
 					StatusCodes.Status404NotFound);
 
+			if (ride.OwnerId != request.AppUserId)
+				throw new ApiException("User cannot delete other user ride.", StatusCodes.Status403Forbidden);
+			
 			_rideRepository.Delete(ride);
 
 			try

@@ -10,6 +10,7 @@ using RestApi.Commands.RideCommands;
 using RestApi.Commands.RideCommands.AddRecurringRide;
 using RestApi.Commands.RideCommands.RemoveUserFromRide;
 using RestApi.DTOs.Ride;
+using RestApi.Extensions;
 using RestApi.Queries.RideQueries;
 
 namespace RestApi.Controllers
@@ -36,7 +37,10 @@ namespace RestApi.Controllers
         [HttpGet("~/api/users/{appUserId}/rides")]
         public async Task<ApiResponse> GetUserParticipatedRides([FromRoute] AppUserId appUserId,
             [FromQuery] bool past = false, [FromQuery]bool owned = false,[FromQuery]bool participated = false)
-        {
+		{
+			if (User.GetUserId() != appUserId)
+				throw new ApiException("User does not have permissions to view other user rides.",
+					StatusCodes.Status403Forbidden);
 			if (owned)
 			{
                 GetUserOwnedRidesQuery getUserOwnedRides = new(appUserId, past);
@@ -64,10 +68,13 @@ namespace RestApi.Controllers
 		[HttpPut("{rideId}")]
 		public async Task<ApiResponse> PutRide([FromRoute] RideId rideId, [FromBody] UpdateRideDto model)
 		{
+			var appUserId = User.GetUserId();
+			
 			UpdateRideCommand updateRide = new(rideId,
 				model.ParticipantIds,
 				model.Date,
-				model.Price);
+				model.Price,
+				appUserId);
 
 			var ride = await _mediator.Send(updateRide).ConfigureAwait(false);
 
@@ -80,6 +87,9 @@ namespace RestApi.Controllers
 		[HttpPost]
 		public async Task<ApiResponse> PostRide([FromBody] AddRideCommand request)
 		{
+			if (User.GetUserId() != request.OwnerId)
+				throw new ApiException("User does not have permission to add other user ride",
+					StatusCodes.Status403Forbidden);
 			var ride = await _mediator.Send(request);
 			return new ApiResponse(ride, StatusCodes.Status201Created);
 		}
@@ -87,25 +97,28 @@ namespace RestApi.Controllers
 		[HttpPost("recurring")]
 		public async Task<ApiResponse> AddRecurringRide([FromBody] AddRecurringRideCommand request)
 		{
+			if (User.GetUserId() != request.OwnerId)
+				throw new ApiException("User does not have permission to add other user ride",
+					StatusCodes.Status403Forbidden);
 			var rideIds = await _mediator.Send(request);
 			return new ApiResponse(rideIds, StatusCodes.Status201Created);
 		}
 
-        [HttpPost("{rideId}/users")]
-        public async Task<ApiResponse> AddParticipant([FromRoute] RideId rideId,
-            [FromBody] AddRideParticipantCommand addRideParticipant)
-        {
-            addRideParticipant.RideId = rideId;
-            await _mediator.Send(addRideParticipant).ConfigureAwait(false);
-
-            return new ApiResponse("Added user to the ride", StatusCodes.Status201Created);
-        }
+        // [HttpPost("{rideId}/users")]
+        // public async Task<ApiResponse> AddParticipant([FromRoute] RideId rideId,
+        //     [FromBody] AddRideParticipantCommand addRideParticipant)
+        // {
+        //     addRideParticipant.RideId = rideId;
+        //     await _mediator.Send(addRideParticipant).ConfigureAwait(false);
+        //
+        //     return new ApiResponse("Added user to the ride", StatusCodes.Status201Created);
+        // }
 
 		// DELETE: api/Rides/5
 		[HttpDelete("{rideId}")]
 		public async Task<ApiResponse> DeleteRide(RideId rideId)
 		{
-            DeleteRideCommand deleteRide = new(rideId);
+            DeleteRideCommand deleteRide = new(rideId, User.GetUserId());
 			var ride = await _mediator.Send(deleteRide).ConfigureAwait(false);
 
 			return new ApiResponse(ride);
@@ -115,8 +128,8 @@ namespace RestApi.Controllers
         [HttpDelete("{rideId}/users/{appUserId}")]
 		public async Task<ApiResponse> RemoveUserFromRide([FromRoute] RideId rideId, [FromRoute] AppUserId appUserId)
 		{
-            RemoveUserFromRideCommand removeUserFromRide = new(rideId, appUserId);
-			var response = await _mediator.Send(removeUserFromRide).ConfigureAwait(false);
+            RemoveUserFromRideCommand removeUserFromRide = new(rideId, appUserId, User.GetUserId());
+			await _mediator.Send(removeUserFromRide).ConfigureAwait(false);
 
 			return new ApiResponse($"User with id {appUserId} has been deleted from ride with id {rideId}");
 		}
