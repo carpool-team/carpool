@@ -5,14 +5,15 @@ import LoaderSpinner from "../../ui/loaderSpinner/LoaderSpinner";
 import Groups from "../../groups/Groups";
 import LoginPanel from "../../auth/login/LoginPanel";
 import RegisterPanel from "../../auth/register/RegisterPanel";
-import Rides from "../../rides/Rides";
+import RidesRouter from "../../rides/RidesRouter";
+import PrivateRoute from "../../system/PrivateRoute";
 
 export const mainRoutes = {
 	groups: "groups/",
 	default: "",
 	register: "register/",
 	login: "login/",
-	rides: "rides/"
+	rides: "rides/",
 };
 
 const LayoutRouter = (props: RouteComponentProps) => {
@@ -21,10 +22,10 @@ const LayoutRouter = (props: RouteComponentProps) => {
 		<Suspense fallback={<LoaderSpinner />}>
 			<Switch>
 				<Route exact path={path} component={HomeScreen} />
-				<Route path={path + mainRoutes.groups} component={Groups} />
+				<PrivateRoute path={path + mainRoutes.groups} component={Groups} />
 				<Route exact path={path + mainRoutes.register} component={RegisterPanel} />
 				<Route exact path={path + mainRoutes.login} component={LoginPanel} />
-				<Route path = {path + mainRoutes.rides} component = {Rides} />
+				<PrivateRoute path={path + mainRoutes.rides} component={RidesRouter} />
 			</Switch>
 		</Suspense>
 	);

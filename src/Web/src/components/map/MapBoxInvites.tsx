@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CSSProperties} from "react";
+import { CSSProperties } from "react";
 import ReactMapboxGl, { Popup, Marker } from "react-mapbox-gl";
 import { IInvite } from "../groups/interfaces/IInvite";
 import mapConfig from "./mapConfig";
@@ -74,7 +74,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	}
 
 	private onStyleLoad = (map: any) => {
-		const onStyleLoad  = this.props.onStyleLoad;
+		const onStyleLoad = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
 	}
 
@@ -108,53 +108,53 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		let colorIndex = 0;
 
 		return (
-		<Mapbox
+			<Mapbox
 				style={mapConfig.mapLight}
 				onStyleLoad={this.onStyleLoad}
 				fitBounds={fitBounds}
-				fitBoundsOptions = {boundsOptions}
+				fitBoundsOptions={boundsOptions}
 				center={center}
 				zoom={zoom}
 				onDrag={this.onDrag}
 				containerStyle={containerStyle}
 				flyToOptions={flyToOptions}
-				>
-			<>
-			{invites.map((g) => {
-				++colorIndex;
-				const color = colorList[colorIndex % colorList.length];
+			>
+				<>
+					{invites.map((g) => {
+						++colorIndex;
+						const color = colorList[colorIndex % colorList.length];
 
-				const markerStyle: CSSProperties = {
-					fontSize: "40px",
-					color: color
-				};
+						const markerStyle: CSSProperties = {
+							fontSize: "40px",
+							color: color
+						};
 
-				return (
-					<Marker
-						key={g.id}
-						// coordinates={[g.location.latitude, g.location.longitude]}
-						coordinates={[0, 0]}
-						anchor="bottom"
-						onClick={this.markerClick.bind(this, g)}
-						>
-						<i className={"fa fa-map-marker"} style={markerStyle}></i>
-					</Marker>
-				);
-			})}
+						return (
+							<Marker
+								key={g.groupInviteId}
+								// coordinates={[g.location.latitude, g.location.longitude]}
+								coordinates={[0, 0]}
+								anchor="bottom"
+								onClick={this.markerClick.bind(this, g)}
+							>
+								<i className={"fa fa-map-marker"} style={markerStyle}></i>
+							</Marker>
+						);
+					})}
 
-			{invite && (
-				// <Popup key={invite.id} coordinates={[invite.location.latitude, invite.location.longitude]}>
-				<Popup key={invite.id} coordinates={[0, 0]}>
-					<div style={popupStyle}>
-					{invite.groupId}
-					</div>
-					<div style={popupStyle}>
-					Od: {invite.invitingUserId}
-					</div>
-				</Popup>
-			)}
-			</>
-		</Mapbox>
+					{invite && (
+						// <Popup key={invite.id} coordinates={[invite.location.latitude, invite.location.longitude]}>
+						<Popup key={invite.groupInviteId} coordinates={[0, 0]}>
+							<div style={popupStyle}>
+								{invite.groupDto.groupId}
+							</div>
+							<div style={popupStyle}>
+								Od: {invite.invitingUser.appUserId}
+							</div>
+						</Popup>
+					)}
+				</>
+			</Mapbox>
 		);
 	}
 }

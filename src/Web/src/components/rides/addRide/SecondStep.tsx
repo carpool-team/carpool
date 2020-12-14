@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { initReactI18next } from "react-i18next";
-import { IGroup } from "../../interfaces/IGroup";
-import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
+import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import MapBoxRides from "../../../map/MapBoxRides";
-import Button from "../../../ui/button/Button";
-import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
-import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
-import { ButtonIcon } from "../../../ui/button/enums/ButtonIcon";
+import MapBoxRides from "../../map/MapBoxRides";
+import Button from "../../ui/button/Button";
+import { ButtonColor } from "../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
+import { ButtonIcon } from "../../ui/button/enums/ButtonIcon";
 import MediaQuery from "react-responsive";
-import Input from "../../../ui/input/Input";
-import { InputIcon } from "../../../ui/input/enums/InputIcon";
-import { InputType } from "../../../ui/input/enums/InputType";
+import Input from "../../ui/input/Input";
+import { InputIcon } from "../../ui/input/enums/InputIcon";
+import { InputType } from "../../ui/input/enums/InputType";
 import { IRide } from "components/groups/interfaces/IRide";
 import DateFnsUtils from "@date-io/date-fns";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -25,30 +24,26 @@ import {
 	KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { useImmer } from "use-immer";
-import { each, isValidDate } from "../../../../helpers/UniversalHelper";
-import { ValidationType } from "../../../ui/input/enums/ValidationType";
-import { address } from "faker";
+import { each, isValidDate } from "../../../helpers/UniversalHelper";
+import { ValidationType } from "../../ui/input/enums/ValidationType";
+import { address, date } from "faker";
 import { IAddRideInput } from "./interfaces/IAddRideInput";
 import { RouteComponentProps, withRouter } from "react-router";
-import LayoutRouter, { mainRoutes } from "../../../layout/components/LayoutRouter";
-import GroupsRouter from "../GroupsRouter";
-import { RideDirection } from "../../api/addRide/AddRideRequest";
-import {parseCoords} from "../../../../helpers/UniversalHelper";
+import LayoutRouter, {
+	mainRoutes,
+} from "../../layout/components/LayoutRouter";
+import { parseCoords } from "../../../helpers/UniversalHelper";
+import { IGroup } from "../../groups/interfaces/IGroup";
+import { RideDirection } from "../../groups/api/addRide/AddRideRequest";
+import { IRideDays } from "./interfaces/IRideDays";
+import { ILocation } from "../../groups/interfaces/ILocation";
 
-export interface IRideDays {
-	all: boolean;
-	monday: boolean;
-	tuesday: boolean;
-	wednesday: boolean;
-	thursday: boolean;
-	friday: boolean;
-	saturday: boolean;
-	sunday: boolean;
-}
+
 
 export interface IAddRideProps extends IReactI18nProps, RouteComponentProps {
 	group: IGroup;
-	addRide: (input: IAddRideInput) => void;
+	addRide: () => void;
+	setRide: (ride: IAddRideInput) => void;
 }
 
 enum PanelType {
@@ -56,19 +51,17 @@ enum PanelType {
 	Cyclic = "CYCLIC",
 }
 
-const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
+const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 	const [inputsValid, setInputsValid] = useImmer({
 		date: true,
 		time: true,
 		targetAddress: true,
-		fromAddress: true,
 		seatsNumber: true,
 	});
 
 	const resources = {
 		disposableBtn: "rides.disposableBtn",
 		cyclicBtn: "rides.cyclicBtn",
-		addRideLabel: "rides.addRideLabel",
 		fromOrTo: "rides.fromOrTo",
 		from: "rides.from",
 		to: "rides.to",
@@ -85,7 +78,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 		friday: "common.friday",
 		saturday: "common.saturday",
 		sunday: "common.sunday",
-		all: "common.all"
+		all: "common.all",
 	};
 
 	const cssClasses = {
@@ -104,52 +97,81 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 		input: "ridesAddRideForm__input",
 		button: "ridesAddRideForm__button",
 		daysContainer: "ridesAddRideForm__daysContainer",
-		daysColumn: "ridesAddRideForm__daysContainer--column"
+		daysColumn: "ridesAddRideForm__daysContainer--column",
 	};
 
 	const ids = {
 		disposableBtn: "disposableBtn",
 		cyclicBtn: "cyclicBtn",
 		to: "toId",
-		from: "fromId"
+		from: "fromId",
 	};
 
 	const { t } = props;
 
-	const [switchCssClass, setSwitchCssClass] = useState({ from: cssClasses.switchActive, to: null });
+	const [switchCssClass, setSwitchCssClass] = useState({
+		from: cssClasses.switchActive,
+		to: null,
+	});
 	const [selectedScreen, setSelectedScreen] = useState(PanelType.Disposable);
-
 	const [startgroup, setStartGroup] = useState(false);
-
-	const [fromAddressCoordinates, setFromAddressCoordinates] = useState(parseCoords(props.group.location));
-	const [toAddressCoordinates, setToAddressCoordinates] = useState(parseCoords(props.group.location));
-
+	const [location, setLocation] = useState(parseCoords(props.group.location));
+	const [direction, setDirection] = useState(RideDirection.To);
 	const [userAddressName, setUserAddresName] = useState<string>("");
 	const [seats, setSeats] = useState<string>("");
+	const [selectedDate, setSelectedDate] = useState(new Date());
+	const [days, setDays] = useImmer<IRideDays>({
+		all: false,
+		monday: false,
+		tuesday: false,
+		wednesday: false,
+		thursday: false,
+		friday: false,
+		saturday: false,
+		sunday: false,
+	});
 
-	const [selectedDate, setSelectedDate] = useState(new Date("2014-08-18T21:11:54"));
-	const [days, setDays] = useState<IRideDays>({ all: false, monday: false, tuesday: false, wednesday: false, thursday: false, friday: false, saturday: false, sunday: false });
+	const userRide: IAddRideInput = {
+		recurring: selectedScreen === PanelType.Cyclic,
+		weekDays: days,
+		groupId: props.group.groupId.toString(),
+		rideDirection: direction,
+		location: {
+			latitude: location[1],
+			longitude: location[0],
+		},
+		seatsLimit: +seats,
+		date: selectedDate,
+	}
+
+	useEffect(() => {
+		props.setRide(userRide)
+	}, [selectedDate, location, direction, days, selectedScreen, seats])
 
 	const [submitted, setSubmitted] = useState(false);
 
+
+
 	const trySendForm = () => {
-		if (each(inputsValid, i => i)) {
+		if (each(inputsValid, (i) => i)) {
 			const input: IAddRideInput = {
 				recurring: selectedScreen === PanelType.Cyclic,
 				weekDays: days,
-				groupId: props.group.id.toString(),
-				to: startgroup,
+				groupId: props.group.groupId.toString(),
+				rideDirection: direction,
 				location: {
-					latitude: toAddressCoordinates[1],
-					longitude: toAddressCoordinates[0],
+					latitude: location[1],
+					longitude: location[0],
 				},
+				seatsLimit: +seats,
 				date: selectedDate,
 			};
-			console.log(input);
-			props.addRide(input);
-			props.history.push(`/${mainRoutes.groups}${GroupsRouter.routes.rides}`);
+			props.setRide(input);
+			props.addRide();
+			props.history.push(`/${mainRoutes.rides}`);
 		} else {
 			console.log(inputsValid);
+			console.log(userRide)
 			setSubmitted(false);
 		}
 	};
@@ -162,29 +184,6 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 
 	const handleDateChange = (date: Date) => {
 		setSelectedDate(date);
-		console.log(date);
-	};
-
-	const ride: IRide = {
-		rideId: "fdsfds",
-		owner: {
-			id: "fdasfda",
-			firstName: "Maciej",
-			lastName: "Sobkowiak",
-			vehicle: "Mazda",
-			rating: 0,
-		},
-		location: {
-			latitude: toAddressCoordinates[1],
-			longitude: toAddressCoordinates[0]
-		},
-		rideDate: new Date(),
-		group: {
-			...props.group,
-			groupId: props.group.id.toString(),
-		},
-		rideDirection: RideDirection.To,
-		price: 0,
 	};
 
 	const setCurrentList = (list: PanelType) => {
@@ -198,42 +197,36 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 	};
 
 	const setUserCoordinates = (coords: [number, number]) => {
-		if (!startgroup) {
-			setFromAddressCoordinates(parseCoords(props.group.location));
-			setToAddressCoordinates(coords);
-		} else {
-			setFromAddressCoordinates(coords);
-			setToAddressCoordinates(parseCoords(props.group.location));
-		}
+		setLocation(coords);
 	};
 
 	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const address1 = fromAddressCoordinates;
-		const address2 = toAddressCoordinates;
-		setFromAddressCoordinates(address2);
-		setToAddressCoordinates(address1);
 		setStartGroup(event.target.checked);
 		if (event.target.checked) {
 			setSwitchCssClass({ from: null, to: cssClasses.switchActive });
+			setDirection(RideDirection.From);
 		} else {
 			setSwitchCssClass({ from: cssClasses.switchActive, to: null });
+			setDirection(RideDirection.To);
 		}
 	};
 
 	const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.name === "all") {
-			setDays({
-				...days, monday: event.target.checked,
-				tuesday: event.target.checked,
-				wednesday: event.target.checked,
-				thursday: event.target.checked,
-				friday: event.target.checked,
-				saturday: event.target.checked,
-				sunday: event.target.checked,
-				all: event.target.checked,
+			setDays(draft => {
+				draft.monday = event.target.checked;
+				draft.tuesday = event.target.checked;
+				draft.wednesday = event.target.checked;
+				draft.thursday = event.target.checked;
+				draft.friday = event.target.checked;
+				draft.saturday = event.target.checked;
+				draft.sunday = event.target.checked;
+				draft.all = event.target.checked;
 			});
 		} else {
-			setDays({ ...days, [event.target.name]: event.target.checked });
+			setDays(draft => {
+				draft[event.target.name] = event.target.checked
+			});
 		}
 	};
 
@@ -248,7 +241,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 			},
 			"& + $track": {
 				backgroundColor: "#707070",
-			}
+			},
 		},
 		checked: {},
 		track: {},
@@ -265,14 +258,13 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 			},
 			"& + $track": {
 				backgroundColor: "#707070",
-			}
+			},
 		},
 		checked: {},
 		track: {},
 	})(Switch);
 
 	const renderDisposablePanel = () => {
-
 		return (
 			<div className={cssClasses.inputs}>
 				<MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -287,7 +279,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 						value={selectedDate}
 						onChange={(date: Date, value?: string) => {
 							handleDateChange(date);
-							setInputsValid(draft => {
+							setInputsValid((draft) => {
 								draft.date = isValidDate(date);
 							});
 						}}
@@ -304,7 +296,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 						value={selectedDate}
 						onChange={(date: Date, value?: string) => {
 							handleDateChange(date);
-							setInputsValid(draft => {
+							setInputsValid((draft) => {
 								draft.time = isValidDate(date);
 							});
 						}}
@@ -314,66 +306,78 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 						}}
 					/>
 				</MuiPickersUtilsProvider>
-				<div className={cssClasses.checkboxLabel}>
-					{t(resources.fromOrTo)}
-				</div>
+				<div className={cssClasses.checkboxLabel}>{t(resources.fromOrTo)}</div>
 				<div className={cssClasses.checkboxContainer}>
-					<span className={switchCssClass.from} id={ids.from}> {t(resources.from)}</span>
+					<span className={switchCssClass.from} id={ids.from}>
+						{" "}
+						{t(resources.from)}
+					</span>
 					<FormControlLabel
-						control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
+						control={
+							<LocationSwitch
+								size="medium"
+								checked={startgroup}
+								onChange={handleSwitchChange}
+							/>
+						}
 						label=""
 					/>
-					<span className={switchCssClass.to} id={ids.to}> {t(resources.to)}</span>
+					<span className={switchCssClass.to} id={ids.to}>
+						{" "}
+						{t(resources.to)}
+					</span>
 				</div>
-				{startgroup ?
+				{startgroup ? (
 					<Input
 						style={cssClasses.input}
 						type={InputType.Address}
-						changeHandler={newValue => setUserAddresName(newValue)}
+						changeHandler={(newValue) => setUserAddresName(newValue)}
 						placeholder={"Adres " + t(resources.from)}
-						value={(userAddressName)}
+						value={userAddressName}
 						icon={InputIcon.Location}
-						addressCords={coords => setUserCoordinates(coords)}
+						addressCords={(coords) => setUserCoordinates(coords)}
 						validation={{
 							validate: submitted,
 							type: ValidationType.Address,
 							isValidCallback: (isValid) => {
-								setInputsValid(draft => {
-									draft.fromAddress = isValid;
-								});
-							},
-						}}
-					/> : <Input
-						style={cssClasses.input}
-						type={InputType.Address}
-						changeHandler={newValue => setUserAddresName(newValue)}
-						placeholder={"Adres " + t(resources.to) + " przejazdu"}
-						value={(userAddressName)}
-						icon={InputIcon.Location}
-						addressCords={coords => setUserCoordinates(coords)}
-						validation={{
-							validate: submitted,
-							type: ValidationType.Address,
-							isValidCallback: (isValid) => {
-								setInputsValid(draft => {
+								setInputsValid((draft) => {
 									draft.targetAddress = isValid;
 								});
 							},
 						}}
 					/>
-				}
+				) : (
+						<Input
+							style={cssClasses.input}
+							type={InputType.Address}
+							changeHandler={(newValue) => setUserAddresName(newValue)}
+							placeholder={"Adres " + t(resources.to) + " przejazdu"}
+							value={userAddressName}
+							icon={InputIcon.Location}
+							addressCords={(coords) => setUserCoordinates(coords)}
+							validation={{
+								validate: submitted,
+								type: ValidationType.Address,
+								isValidCallback: (isValid) => {
+									setInputsValid((draft) => {
+										draft.targetAddress = isValid;
+									});
+								},
+							}}
+						/>
+					)}
 				<Input
 					style={cssClasses.input}
 					type={InputType.Text}
-					changeHandler={newValue => setSeats(newValue)}
+					changeHandler={(newValue) => setSeats(newValue)}
 					placeholder={t(resources.seats)}
-					value={(seats)}
+					value={seats}
 					icon={InputIcon.Seats}
 					validation={{
 						validate: submitted,
 						type: ValidationType.Numeric,
 						isValidCallback: (isValid) => {
-							setInputsValid(draft => {
+							setInputsValid((draft) => {
 								draft.seatsNumber = isValid;
 							});
 						},
@@ -383,16 +387,15 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 					className={cssClasses.button}
 					onClick={() => trySendForm()}
 					color={ButtonColor.White}
-					background={ButtonBackground.Blue}>
+					background={ButtonBackground.Blue}
+				>
 					{t(resources.addBtn)}
 				</Button>
-
 			</div>
 		);
 	};
 
 	const renderCyclicPanel = () => {
-
 		return (
 			<div className={cssClasses.inputs}>
 				<MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -404,7 +407,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 						value={selectedDate}
 						onChange={(date: Date, value?: string) => {
 							handleDateChange(date);
-							setInputsValid(draft => {
+							setInputsValid((draft) => {
 								draft.time = isValidDate(date);
 							});
 						}}
@@ -416,102 +419,169 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 				<div className={cssClasses.daysContainer}>
 					<div className={cssClasses.daysColumn}>
 						<FormControlLabel
-							control={<DaysSwitch size="medium" checked={days.all} onChange={handleDayChange} name="all" />}
+							control={
+								<DaysSwitch
+									size="medium"
+									checked={days.all}
+									onChange={handleDayChange}
+									name="all"
+								/>
+							}
 							label={t(resources.all)}
 						/>
 						<FormControlLabel
-							control={<DaysSwitch size="medium" checked={days.monday} onChange={handleDayChange} name="monday" />}
+							control={
+								<DaysSwitch
+									size="medium"
+									checked={days.monday}
+									onChange={handleDayChange}
+									name="monday"
+								/>
+							}
 							label={t(resources.monday)}
 						/>
 						<FormControlLabel
-							control={<DaysSwitch size="medium" checked={days.tuesday} onChange={handleDayChange} name="tuesday" />}
+							control={
+								<DaysSwitch
+									size="medium"
+									checked={days.tuesday}
+									onChange={handleDayChange}
+									name="tuesday"
+								/>
+							}
 							label={t(resources.tuesday)}
 						/>
 						<FormControlLabel
-							control={<DaysSwitch size="medium" checked={days.wednesday} onChange={handleDayChange} name="wednesday" />}
+							control={
+								<DaysSwitch
+									size="medium"
+									checked={days.wednesday}
+									onChange={handleDayChange}
+									name="wednesday"
+								/>
+							}
 							label={t(resources.wednesday)}
 						/>
 					</div>
 					<div className={cssClasses.daysColumn}>
 						<FormControlLabel
-							control={<DaysSwitch size="medium" checked={days.thursday} onChange={handleDayChange} name="thursday" />}
+							control={
+								<DaysSwitch
+									size="medium"
+									checked={days.thursday}
+									onChange={handleDayChange}
+									name="thursday"
+								/>
+							}
 							label={t(resources.thursday)}
 						/>
 						<FormControlLabel
-							control={<DaysSwitch size="medium" checked={days.friday} onChange={handleDayChange} name="friday" />}
+							control={
+								<DaysSwitch
+									size="medium"
+									checked={days.friday}
+									onChange={handleDayChange}
+									name="friday"
+								/>
+							}
 							label={t(resources.friday)}
 						/>
 						<FormControlLabel
-							control={<DaysSwitch size="medium" checked={days.saturday} onChange={handleDayChange} name="saturday" />}
+							control={
+								<DaysSwitch
+									size="medium"
+									checked={days.saturday}
+									onChange={handleDayChange}
+									name="saturday"
+								/>
+							}
 							label={t(resources.saturday)}
 						/>
 						<FormControlLabel
-							control={<DaysSwitch size="medium" checked={days.sunday} onChange={handleDayChange} name="sunday" />}
+							control={
+								<DaysSwitch
+									size="medium"
+									checked={days.sunday}
+									onChange={handleDayChange}
+									name="sunday"
+								/>
+							}
 							label={t(resources.sunday)}
 						/>
 					</div>
 				</div>
-				<div className={cssClasses.checkboxLabel}>
-					{t(resources.fromOrTo)}
-				</div>
+				<div className={cssClasses.checkboxLabel}>{t(resources.fromOrTo)}</div>
 				<div className={cssClasses.checkboxContainer}>
-					<span className={switchCssClass.from} id={ids.from}> {t(resources.from)}</span>
+					<span className={switchCssClass.from} id={ids.from}>
+						{" "}
+						{t(resources.from)}
+					</span>
 					<FormControlLabel
-						control={<LocationSwitch size="medium" checked={startgroup} onChange={handleSwitchChange} />}
+						control={
+							<LocationSwitch
+								size="medium"
+								checked={startgroup}
+								onChange={handleSwitchChange}
+							/>
+						}
 						label=""
 					/>
-					<span className={switchCssClass.to} id={ids.to}> {t(resources.to)}</span>
+					<span className={switchCssClass.to} id={ids.to}>
+						{" "}
+						{t(resources.to)}
+					</span>
 				</div>
-				{startgroup ?
+				{startgroup ? (
 					<Input
 						style={cssClasses.input}
 						type={InputType.Address}
-						changeHandler={newValue => setUserAddresName(newValue)}
+						changeHandler={(newValue) => setUserAddresName(newValue)}
 						placeholder={"Adres " + t(resources.from)}
-						value={(userAddressName)}
+						value={userAddressName}
 						icon={InputIcon.Location}
-						addressCords={coords => setUserCoordinates(coords)}
+						addressCords={(coords) => setUserCoordinates(coords)}
 						validation={{
 							validate: submitted,
 							type: ValidationType.Address,
 							isValidCallback: (isValid) => {
-								setInputsValid(draft => {
-									draft.fromAddress = isValid;
-								});
-							},
-						}}
-					/> :
-					<Input
-						style={cssClasses.input}
-						type={InputType.Address}
-						changeHandler={newValue => setUserAddresName(newValue)}
-						placeholder={"Adres " + t(resources.to) + " przejazdu"}
-						value={(userAddressName)}
-						icon={InputIcon.Location}
-						addressCords={coords => setUserCoordinates(coords)}
-						validation={{
-							validate: submitted,
-							type: ValidationType.Address,
-							isValidCallback: (isValid) => {
-								setInputsValid(draft => {
-									draft.fromAddress = isValid;
+								setInputsValid((draft) => {
+									draft.targetAddress = isValid;
 								});
 							},
 						}}
 					/>
-				}
+				) : (
+						<Input
+							style={cssClasses.input}
+							type={InputType.Address}
+							changeHandler={(newValue) => setUserAddresName(newValue)}
+							placeholder={"Adres " + t(resources.to) + " przejazdu"}
+							value={userAddressName}
+							icon={InputIcon.Location}
+							addressCords={(coords) => setUserCoordinates(coords)}
+							validation={{
+								validate: submitted,
+								type: ValidationType.Address,
+								isValidCallback: (isValid) => {
+									setInputsValid((draft) => {
+										draft.targetAddress = isValid;
+									});
+								},
+							}}
+						/>
+					)}
 				<Input
 					style={cssClasses.input}
 					type={InputType.Text}
-					changeHandler={newValue => setSeats(newValue)}
+					changeHandler={(newValue) => setSeats(newValue)}
 					placeholder={t(resources.seats)}
-					value={(seats)}
+					value={seats}
 					icon={InputIcon.Seats}
 					validation={{
 						validate: submitted,
 						type: ValidationType.Numeric,
 						isValidCallback: (isValid) => {
-							setInputsValid(draft => {
+							setInputsValid((draft) => {
 								draft.seatsNumber = isValid;
 							});
 						},
@@ -521,66 +591,51 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = props => {
 					className={cssClasses.button}
 					onClick={() => trySendForm()}
 					color={ButtonColor.White}
-					background={ButtonBackground.Blue}>
+					background={ButtonBackground.Blue}
+				>
 					{t(resources.addBtn)}
 				</Button>
-
 			</div>
 		);
 	};
 
-	const renderMap = () => {
-		return (
-			<MapBoxRides ride={ride} />
-		);
-	};
+	let list: JSX.Element;
 
-	const renderLeftPanel = () => {
-		const { t } = props;
-
-		let list: JSX.Element;
-
-		switch (selectedScreen) {
-			case PanelType.Disposable:
-				list = renderDisposablePanel();
-				break;
-			case PanelType.Cyclic:
-			default:
-				list = renderCyclicPanel();
-				break;
-		}
-		return (
-			<div className={cssClasses.listContainer}>
-				<div className={cssClasses.buttonsLabel}>
-					{t(resources.addRideLabel)}
-					<span> {props.group.name}</span>
-				</div>
-				<div className={cssClasses.buttonsContainer}>
-					<Button id={ids.disposableBtn} background={ButtonBackground.Gray} className={cssClasses.buttonActive} color={ButtonColor.Gray} onClick={() => setCurrentList(PanelType.Disposable)}>
-						{t(resources.disposableBtn)}
-					</Button>
-					<Button id={ids.cyclicBtn} background={ButtonBackground.Gray} color={ButtonColor.Gray} onClick={() => setCurrentList(PanelType.Cyclic)}>
-						{t(resources.cyclicBtn)}
-					</Button>
-				</div>
-				<div className={cssClasses.buttonsOutline}></div>
-				{list}
-			</div>
-		);
-	};
+	switch (selectedScreen) {
+		case PanelType.Disposable:
+			list = renderDisposablePanel();
+			break;
+		case PanelType.Cyclic:
+		default:
+			list = renderCyclicPanel();
+			break;
+	}
 
 	return (
-		<div className={cssClasses.container}>
-			{renderLeftPanel()}
-			<MediaQuery query="(min-width: 900px)">
-				<div className={cssClasses.mapBox}>
-					{renderMap()}
-				</div>
-			</MediaQuery>
+		<div className={cssClasses.listContainer}>
+			<div className={cssClasses.buttonsContainer}>
+				<Button
+					id={ids.disposableBtn}
+					background={ButtonBackground.Gray}
+					className={cssClasses.buttonActive}
+					color={ButtonColor.Gray}
+					onClick={() => setCurrentList(PanelType.Disposable)}
+				>
+					{t(resources.disposableBtn)}
+				</Button>
+				<Button
+					id={ids.cyclicBtn}
+					background={ButtonBackground.Gray}
+					color={ButtonColor.Gray}
+					onClick={() => setCurrentList(PanelType.Cyclic)}
+				>
+					{t(resources.cyclicBtn)}
+				</Button>
+			</div>
+			<div className={cssClasses.buttonsOutline}></div>
+			{list}
 		</div>
 	);
 };
 
-export default withRouter(
-	withTranslation()(AddRideFormScreen)
-);
+export default withRouter(withTranslation()(AddRideFormScreen));

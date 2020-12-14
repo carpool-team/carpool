@@ -8,11 +8,10 @@ import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { IRide } from "components/groups/interfaces/IRide";
 import mapboxDirections from "@mapbox/mapbox-sdk/services/directions";
 import { RideDirection } from "../groups/api/addRide/AddRideRequest";
-import {parseCoords} from "../../helpers/UniversalHelper";
+import { parseCoords } from "../../helpers/UniversalHelper";
 
 const Mapbox = ReactMapboxGl({
-	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
-	minZoom: 8,
+	minZoom: 2,
 	maxZoom: 15,
 	accessToken: mapConfig.mapboxKey
 });
@@ -61,17 +60,18 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 							coordinates: parseCoords(ride.location),
 						},
 						{
-							coordinates: parseCoords(ride.group.location)
+							coordinates: parseCoords(ride.group?.location)
 						},
 					],
 					overview: "full",
 					geometries: "geojson",
 				})
 				.send();
-			this.setState(produce((draft: any) => {
-				draft.route = response.body.routes[0].geometry.coordinates;
-			}));
-
+			if (response.body.code === "Ok") {
+				this.setState(produce((draft: any) => {
+					draft.route = response.body.routes[0].geometry.coordinates;
+				}));
+			}
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -95,8 +95,8 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	}
 
 	private getBounds = (ride: IRide) => {
-		const allCoords = [[ride.location.longitude, ride.group.location.longitude], [ride.group.location.latitude, ride.location.latitude]];
-		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
+		const allCoords = [[ride.location?.longitude, ride.group?.location.longitude], [ride.group?.location.latitude, ride.location?.latitude]];
+		let bbox: [[number, number], [number, number]] = [[16.89, 52.41], [16.89, 52.41]];
 		if (allCoords[0][0] && allCoords[1][1] && allCoords[0][1] && allCoords[1][0]) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);
@@ -177,21 +177,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 				}
 				{ride !== null &&
 					<>
-						{/* <Marker
-					style= {toMarkerStyle}
-					coordinates={[ride.destination.latitude, ride.destination.longitude]}
-					anchor="bottom"
-					>
-					<i className={"fa fa-map-marker"}></i>
-				</Marker>
-				<Marker
-					style= {fromMarkerStyle}
-					coordinates={[ride.startingLocation.latitude, ride.startingLocation.longitude]}
-					anchor="bottom"
-					>
-					<i className={"fa fa-map-marker"}></i>
-				</Marker> */}
-						<Popup coordinates={parseCoords(ride.group.location)}>
+						<Popup coordinates={parseCoords(ride.group?.location)}>
 							<div style={popupStyle}>
 								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "początkowa" : "końcowa"}`}
 							</div>

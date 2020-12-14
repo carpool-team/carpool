@@ -28,8 +28,9 @@ namespace RestApi.DTOs.User
         [JsonProperty("lastName")] string LastName);
 
     public record InviteUserDto([JsonProperty("id")] AppUserId AppUserId,
-        [JsonProperty("firstName")] string FistName,
-        [JsonProperty("lastName")] string LastName);
+        [JsonProperty("firstName")] string FirstName,
+        [JsonProperty("lastName")] string LastName,
+        [JsonProperty("email")] string Email);
 
     public record UserSettingsDto([JsonProperty("id")] AppUserId AppUserId,
         [JsonProperty("firstName")] string FirstName,

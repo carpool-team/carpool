@@ -20,6 +20,8 @@ import {
 	mapDispatchToProps,
 } from "../store/PropsTypes";
 import { useImmer } from "use-immer";
+import { FormControlClassKey } from "@material-ui/core";
+import { Event } from "react-toastify/dist/core";
 
 interface ILoginPanelProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps { }
 
@@ -53,6 +55,19 @@ const LoginPanel = (props: ILoginPanelProps) => {
 			setSubmitted(false);
 		}
 	};
+
+	const enterFunction = (event) => {
+		if (event.keyCode === 13) {
+			setSubmitted(true);
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener("keydown", enterFunction, false);
+		return () => {
+			document.removeEventListener("keydown", enterFunction, false);
+		};
+	}, []);
 
 	useEffect(() => {
 		if (submitted) {
@@ -123,7 +138,8 @@ const LoginPanel = (props: ILoginPanelProps) => {
 							validate: submitted
 						}}
 					/>
-					<Input
+					{/* Temporarily disable "remember me" checkobx until handled */}
+					{/*<Input
 						changeHandler={newValue => { setRememberLogin(newValue === "true"); }}
 						value={String(rememberLogin)}
 						type={InputType.Checkbox}
@@ -131,7 +147,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 							text: t(resources.rememberLogin),
 							inputId: inputKeys.rememberPassword,
 						}}
-					/>
+					/> */}
 					<Button
 						additionalCssClass={cssClasses.button}
 						onClick={onClickSubmit}

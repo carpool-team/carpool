@@ -2,11 +2,11 @@
 @import "scss/addGroupForm";
 @import "scss/ridesForm";
 @import "scss/detailedView";
-@import "scss/addRideForm";
 @import "~scss_path/colors";
 
 .groupsContainer {
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 93vh;
 }

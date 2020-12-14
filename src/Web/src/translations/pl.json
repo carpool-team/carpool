@@ -30,6 +30,11 @@
             "login": "Zaloguj się",
             "rememberLogin": "Pamiętaj logowanie"
         },
+        "autocomplete": {
+            "wrapper": {
+                "nooptions": "Brak wyników"
+            }
+        },
         "groups": {
             "addGroupForm": {
                 "code": "Kod grupy",
@@ -42,7 +47,8 @@
                 "name": "Imię",
                 "surname": "Nazwisko",
                 "basicInfo": "Podstawowe informacje",
-                "basicInfo2": "Zaproś użytkowników"
+                "basicInfo2": "Zaproś użytkowników",
+                "confirmBtn": "Zatwierdź"
             },
             "list": {
                 "editGroup": "Edytuj grupę",
@@ -65,7 +71,10 @@
             "time": "Wybierz godzinę przejazdu.",
             "invalidDate": "Niewłaściwa data przejazdu",
             "invalidTime": "Niewłaściwa godzina przejazdu",
-            "addBtn": "Utwórz"
+            "addBtn": "Utwórz",
+            "pastBtn": "Przeszłe",
+            "futureBtn": "Przyszłe",
+            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd."
         },
         "footer": {
             "services": "Usługi",

@@ -19,7 +19,7 @@ import {
 	IGetRidesActionSuccess,
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
-	IParticipateInRideActionError, IAddGroupActionError, IAddRideAction
+	IParticipateInRideActionError, IAddGroupActionError, IAddRideAction, IAddInvitesAction, IApiErrorAction, GenericActionTypes, GenericAction
 } from "./Types";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -37,10 +37,11 @@ import { ParticipateInRideResponse } from "../api/participateInRide/ParticipateI
 import { ParticipateInRideRequest } from "../api/participateInRide/ParticipateInRideRequest";
 import { getId } from "../../../helpers/UniversalHelper";
 import { IAuthState } from "../../auth/store/State";
-import { UpdateGroupRequest } from "../api/updateGroup/UpdateGroupRequest";
-import { UpdateGroupResponse } from "../api/updateGroup/UpdateGroupResponse";
-import { AddRideRequest, RideDirection } from "../api/addRide/AddRideRequest";
+import { AddRideRequest } from "../api/addRide/AddRideRequest";
 import { AddRideResponse } from "../api/addRide/AddRideResponse";
+import { AddInviteRequest } from "../api/addInvite/AddInviteRequest";
+import { IRedirectAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
+import { mainRoutes } from "../../layout/components/LayoutRouter";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -140,7 +141,7 @@ const getInvitesEpic: Epic<InviteAction> = (action$, state$) =>
 		)
 	);
 
-const answerInviteEpic: Epic<InviteAction> = (action$) =>
+const answerInviteEpic: Epic<InviteAction | GroupsAction> = (action$) =>
 	action$.pipe(
 		ofType(InvitesActionTypes.AnswerInvite),
 		switchMap(async (action: IAnswerInviteAction) => {
@@ -150,12 +151,12 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 			});
 			const response: AnswerInviteResponse = await request.send();
 			return {
-				response: response.status,
+				success: !response.isError,
 				id: action.inviteId,
 			};
 		}),
 		mergeMap((result) => {
-			if (result.response === 200) {
+			if (result.success) {
 				return [
 					<IAnswerInviteActionSuccess>{
 						type: InvitesActionTypes.AnswerInviteSuccess,
@@ -163,6 +164,10 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 					},
 					<IGetGroupsAction>{
 						type: GroupsActionTypes.GetGroups,
+						userOnly: true,
+					},
+					<IGetInvitesAction>{
+						type: InvitesActionTypes.GetInvites,
 						userOnly: true,
 					}
 				];
@@ -191,11 +196,25 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 				userId: uid,
 				participated: true,
 			});
+			const ownedPastRequest: GetRidesRequest = new GetRidesRequest({
+				userId: uid,
+				owned: true,
+				past: true
+			});
+			const participatedPastRequest: GetRidesRequest = new GetRidesRequest({
+				userId: uid,
+				participated: true,
+				past: true
+			});
 			const responseOwned: GetRidesResponse = await ownedRequest.send();
 			const responseParticipated: GetRidesResponse = await participatedRequest.send();
+			const responsePastOwned: GetRidesResponse = await ownedPastRequest.send();
+			const responsePastParticipated: GetRidesResponse = await participatedPastRequest.send();
 			return {
 				owned: responseOwned.result,
 				participated: responseParticipated.result,
+				ownedPast: responsePastOwned.result,
+				participatedPast: responsePastParticipated.result
 			};
 		}),
 		mergeMap((response) => {
@@ -203,7 +222,9 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 				<IGetRidesActionSuccess>{
 					type: RidesActionTypes.GetRidesSuccess,
 					ridesOwned: response.owned,
-					ridesParticipated: response.participated
+					ridesParticipated: response.participated,
+					ridesOwnedPast: response.ownedPast,
+					ridesParticipatedPast: response.participatedPast
 				},
 			];
 		}),
@@ -261,7 +282,7 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 		})
 	);
 
-const addRideEpic: Epic<RideAction> = (action$, state$) => action$.pipe(
+const addRideEpic: Epic<RideAction | GenericAction> = (action$, state$) => action$.pipe(
 	ofType(RidesActionTypes.AddRide),
 	switchMap(async (action: IAddRideAction) => {
 		const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
@@ -291,25 +312,107 @@ const addRideEpic: Epic<RideAction> = (action$, state$) => action$.pipe(
 				weekdays += 1000000;
 			}
 		}
-		console.log(action.input);
-		const request: AddRideRequest = new AddRideRequest({
-			body: {
-				rideDirection: action.input.to ? RideDirection.To : RideDirection.From,
-				date: action.input.date,
-				weekDays: weekdays,
-				ownerId: uid,
-				groupId: action.input.groupId,
-				location: action.input.location,
-				price: 0,
-			},
-			recurring: action.input.recurring,
-		});
+		const mappedDays: number = parseInt(weekdays.toString(), 2);
+		let request: AddRideRequest;
+
+		// TODO zastanowić się czy planujemy dać użytkownikowi wybór tego
+		const currentDate = new Date();
+		const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+		//END
+
+		if (action.input.recurring) {
+			request = new AddRideRequest({
+				body: {
+					rideDirection: action.input.rideDirection,
+					weekDays: mappedDays,
+					ownerId: uid,
+					groupId: action.input.groupId,
+					location: action.input.location,
+					price: 0,
+					seatsLimit: action.input.seatsLimit,
+					rideTime: (action.input.date.getHours() + ":" + action.input.date.getMinutes()),
+					startDate: currentDate.toISOString(),
+					endDate: nextMonthDate.toISOString()
+				},
+				recurring: action.input.recurring
+			});
+		} else {
+			request = new AddRideRequest({
+				body: {
+					rideDirection: action.input.rideDirection,
+					date: action.input.date.toISOString(),
+					ownerId: uid,
+					groupId: action.input.groupId,
+					location: action.input.location,
+					price: 0,
+					seatsLimit: action.input.seatsLimit,
+				},
+				recurring: action.input.recurring,
+			});
+		}
+
 		const response: AddRideResponse = await request.send();
-		return <IGetRidesAction>{
-			type: RidesActionTypes.GetRides,
-		};
+		if (response.isError) {
+			return <IApiErrorAction>{
+				type: GenericActionTypes.ApiError,
+				errorMessage: "Error while adding ride. Try again."
+			};
+		} else {
+			return <IGetRidesAction>{
+				type: RidesActionTypes.GetRides,
+			};
+		}
 	}),
 	mergeMap(res => [res]),
+);
+
+const addInviteEpic: Epic<InviteAction | GenericAction | LayoutAction> = (action$, state$) => action$.pipe(
+	ofType(InvitesActionTypes.AddInvites),
+	mergeMap(async (action: IAddInvitesAction) => {
+		const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
+		try {
+			action.userIds.forEach(id => {
+				const request: AddInviteRequest = new AddInviteRequest({
+					body: {
+						groupId: action.groupId,
+						inviterId: uid,
+						invitedAppUserId: id,
+					}
+				});
+				request.send().then(response => {
+					if (response.isError) {
+						throw "Error while inviting. Try again.";
+					}
+				});
+			});
+		} catch (e) {
+			return [<IApiErrorAction>{
+				type: GenericActionTypes.ApiError,
+				errorMessage: e,
+			}];
+		}
+		return [
+			<IGetInvitesAction>{
+				type: InvitesActionTypes.GetInvites,
+				userOnly: true,
+			},
+			<IRedirectAction>{
+				type: LayoutActionTypes.Redirect,
+				to: "/" + mainRoutes.groups,
+			}
+		];
+	}),
+	switchMap(res => res)
+);
+
+const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
+	ofType(GenericActionTypes.ApiError),
+	mergeMap(async (action: IApiErrorAction) => {
+		await (async () => {
+			toast.error(action.errorMessage);
+		})();
+		return action;
+	})
 );
 
 export const groupEpics = [
@@ -320,4 +423,6 @@ export const groupEpics = [
 	getRidesEpic,
 	participateInRideEpic,
 	addRideEpic,
+	addInviteEpic,
+	apiErrorEpic,
 ];

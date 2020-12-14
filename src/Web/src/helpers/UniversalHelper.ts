@@ -1,3 +1,4 @@
+import { ILocation } from "../components/groups/interfaces/ILocation";
 import { getState } from "../store/Index";
 
 export function isAuthorized(): boolean {
@@ -53,9 +54,37 @@ export function parseJwt(token): any {
 
 	return JSON.parse(jsonPayload);
 }
-export const parseCoords = (coords): [number, number] => {
+export const parseCoords: (coords: ILocation) => [number, number] = coords => {
 
-		const {longitude, latitude} = coords;
+	if (coords) {
+		const { longitude, latitude } = coords;
 		return [longitude, latitude];
+	} else {
+		// if ("geolocation" in navigator) {
+		// 	let userCoords: [number, number] = [52.41, 16.89];
+		// 	navigator.geolocation.getCurrentPosition(function (position) {
+		// 		userCoords = [position.coords.longitude, position.coords.latitude];
+		// 	});
+		// 	console.log(userCoords)
+		// 	return userCoords
 
+		// } else {
+		// 	// LngLat of Pozen
+		return [52.41, 16.89];
+	}
+	// }
+};
+
+export const convertDate = (date: string) => {
+	if (date) {
+		let d = new Date(date);
+		let dateOutput =
+			d.getUTCFullYear() + "/" +
+			("0" + (d.getUTCMonth() + 1)).slice(-2) + "/" +
+			("0" + d.getUTCDate()).slice(-2) + " " +
+			("0" + d.getUTCHours()).slice(-2) + ":" +
+			("0" + d.getUTCMinutes()).slice(-2) + ":" +
+			("0" + d.getUTCSeconds()).slice(-2);
+		return dateOutput;
+	}
 };

@@ -8,7 +8,6 @@ import GroupInvite from "./invite/GroupInvite";
 import GroupEdit from "./edit/GroupEdit";
 import GroupRides from "./rides/GroupRides";
 import { IGroup } from "../interfaces/IGroup";
-import AddRideFormScreen from "./addRideForm/AddRideForm";
 import { IRide } from "../interfaces/IRide";
 
 interface IGroupsRouterProps extends RouteComponentProps {
@@ -23,16 +22,20 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 		rides: "rides/",
 		edit: "edit/",
 		invite: "invite/",
-		addRide: "add/"
+		addRide: "add/",
 	};
 
 	render = () => {
 		const { path } = this.props.match;
 		let rides: IRide[] = [];
 		if (this.props.selectedGroup) {
-			const selGroupId: string = this.props.selectedGroup.id.toString();
-			const ridesOwned: IRide[] = this.props.callbacks.getRides(true).filter(r => r.group.groupId === selGroupId);
-			const ridesParticipated: IRide[] = this.props.callbacks.getRides(false).filter(r => r.group.groupId === selGroupId);
+			const selGroupId: string = this.props.selectedGroup.groupId.toString();
+			const ridesOwned: IRide[] = this.props.callbacks
+				.getRides(true)
+				.filter((r) => r.group.groupId === selGroupId);
+			const ridesParticipated: IRide[] = this.props.callbacks
+				.getRides(false)
+				.filter((r) => r.group.groupId === selGroupId);
 			rides = [...ridesOwned, ...ridesParticipated];
 		}
 		return (
@@ -50,35 +53,26 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 							userId={this.props.authId}
 						/>
 					</Route>
-					{this.props.selectedGroup ?
+					{this.props.selectedGroup ? (
 						<>
 							<Route path={path + GroupsRouter.routes.edit}>
-								<GroupEdit
-									group={this.props.selectedGroup}
-									rides={rides}
-								/>
+								<GroupEdit group={this.props.selectedGroup} rides={rides} />
 							</Route>
 							<Route path={path + GroupsRouter.routes.invite}>
 								<GroupInvite
 									group={this.props.selectedGroup}
 									rides={rides}
+									addInvitesCallback={(groupId, userIds) => this.props.callbacks.addInvites(groupId, userIds)}
+									currentAppUserId={this.props.authId}
 								/>
 							</Route>
 							<Route exact path={path + GroupsRouter.routes.rides}>
-								<GroupRides
-									group={this.props.selectedGroup}
-									rides={rides}
-								/>
+								<GroupRides group={this.props.selectedGroup} rides={rides} />
 							</Route>
-							<Route path={path + GroupsRouter.routes.rides + GroupsRouter.routes.addRide}>
-								<AddRideFormScreen
-									group={this.props.selectedGroup}
-									addRide={this.props.callbacks.addRide}
-								/>
-							</Route>
-						</> : null}
+						</>
+					) : null}
 				</Switch>
-			</Suspense >
+			</Suspense>
 		);
 	}
 }

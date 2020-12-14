@@ -8,4 +8,5 @@ export interface IRequestQueries {
 	owned?: boolean;
 	participated?: boolean;
 	past?: boolean;
+	email?: string;
 }

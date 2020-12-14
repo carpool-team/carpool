@@ -1,8 +1,12 @@
 import { Action } from "redux";
-import { IAddRideInput } from "../components/addRideForm/interfaces/IAddRideInput";
+import { IAddRideInput } from "../../rides/addRide/interfaces/IAddRideInput";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
+
+export enum GenericActionTypes {
+	ApiError = "GROUPS_STORE_API_ERROR"
+}
 
 /** Enum of groups actions */
 export enum GroupsActionTypes {
@@ -22,6 +26,7 @@ export enum InvitesActionTypes {
 	GetInvites = "INVITES_GET_INVITES",
 	GetInvitesSuccess = "INVITES_GET_INVITES_SUCCESS",
 	GetInvitesError = "INVITES_GET_INVITES_ERROR",
+	AddInvites = "INVITES_ADD",
 }
 
 /** Enum of rides actions */
@@ -34,6 +39,12 @@ export enum RidesActionTypes {
 	ParticipateInRideError = "RIDES_PARTICIPATE_IN_RIDE_ERROR",
 	AddRide = "RIDES_ADD",
 }
+
+//#region GENERIC
+export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
+	errorMessage: string;
+}
+//#endregion
 
 //#region GROUPS
 /** Action for adding group */
@@ -107,6 +118,11 @@ export interface IGetInvitesActionError
 	extends Action<InvitesActionTypes.GetInvitesError> {
 	error: Error;
 }
+
+export interface IAddInvitesAction extends Action<InvitesActionTypes.AddInvites> {
+	groupId: string;
+	userIds: string[];
+}
 //#endregion
 
 //#region RIDES
@@ -118,6 +134,8 @@ export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
 export interface IGetRidesActionSuccess extends Action<RidesActionTypes.GetRidesSuccess> {
 	ridesOwned: IRide[];
 	ridesParticipated: IRide[];
+	ridesOwnedPast: IRide[];
+	ridesParticipatedPast: IRide[];
 }
 
 /** Action for getting rides error */
@@ -145,9 +163,12 @@ export interface IAddRideAction extends Action<RidesActionTypes.AddRide> {
 }
 //#endregion
 
+export type GenericAction =
+	IApiErrorAction;
+
 /** Type of group action */
 export type GroupsAction =
-	| IAddGroupAction
+	IAddGroupAction
 	| IAddGroupActionSuccess
 	| IAddGroupActionError
 	| IGetGroupsAction
@@ -160,7 +181,8 @@ export type InviteAction =
 	| IAnswerInviteActionError
 	| IGetInvitesAction
 	| IGetInvitessActionSuccess
-	| IGetInvitesActionError;
+	| IGetInvitesActionError
+	| IAddInvitesAction;
 
 export type RideAction =
 	IGetRidesAction

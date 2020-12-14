@@ -11,7 +11,7 @@ import mapConfig from "../../map/mapConfig";
 
 import "./Input.scss";
 
-interface IINputProps extends IReactI18nProps {
+export interface IInputBaseProps {
 	changeHandler: (newValue: string) => void;
 	type: InputType;
 	value: string;
@@ -25,6 +25,8 @@ interface IINputProps extends IReactI18nProps {
 	validation?: IValidation;
 	addressCords?: (cords: [number, number]) => void;
 	cssProps?: React.CSSProperties;
+}
+interface IInputProps extends IInputBaseProps, IReactI18nProps {
 }
 interface IAddress {
 	place_name: string;
@@ -73,7 +75,7 @@ const validateInput = (data: IInputValidationData) => {
 	}
 };
 
-const Input = (props: IINputProps) => {
+const Input = (props: IInputProps) => {
 	const [isValid, setIsValid] = useState(true);
 	const [autocompleteList, setAutocompleteList] = useState<IAddress[]>(null);
 	const [isAutoCompleted, setIsAutoCompleted] = useState(false);

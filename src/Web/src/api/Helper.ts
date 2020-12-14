@@ -2,7 +2,10 @@ import { RequestType } from "./enum/RequestType";
 import { RequestEndpoint } from "./enum/RequestEndpoint";
 import { IRequestQueries } from "./interfaces/IRequestQueries";
 
-export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQueries) => string = (endpoint, queries) => {
+export const getRequestEndpoint: (
+	endpoint: RequestEndpoint,
+	queries?: IRequestQueries
+) => string = (endpoint, queries) => {
 	let ep: string = (() => {
 		switch (endpoint) {
 			case RequestEndpoint.POST_ADD_GROUP:
@@ -16,7 +19,7 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 			case RequestEndpoint.DELETE_GROUP_BY_ID:
 				return `/groups/${queries?.groupId}`;
 			case RequestEndpoint.GET_INVITES_BY_USER_ID:
-				return `/users/${queries?.userId}/groupInvites`;
+				return `/users/${queries?.userId}/group-invites`;
 			case RequestEndpoint.GET_ALL_INVITES:
 				return `/groupinvites`;
 			case RequestEndpoint.POST_INVITE:
@@ -39,34 +42,31 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 				return "/rides/";
 			case RequestEndpoint.POST_RIDE_RECURRING:
 				return "/rides/recurring";
+			case RequestEndpoint.AUTOCOMPLETE_USER:
+				return "/users";
 			default:
 				throw "Unhandled endpoint";
 		}
 	})();
-	if (queries?.page) {
-		ep += "?page=" + queries.page;
+	const query = [];
+	if (queries) {
+		Object.keys(queries).forEach((key) => {
+			if (queries[key]) {
+				query.push(`${key}=${queries[key]}`);
+			}
+		});
 	}
-
-	if (queries?.count) {
-		ep += "?count=" + queries.count;
+	if (query.length > 0) {
+		ep += "?" + query.join("&");
 	}
-
-	if (queries?.owned) {
-		ep += "?owned=" + queries.owned;
-	}
-
-	if (queries?.past) {
-		ep += "?past=" + queries.past;
-	}
-
-	if (queries?.participated) {
-		ep += "?participated=" + queries.participated;
-	}
-
 	return ep;
 };
 
-export const getRequestType: (type: RequestType) => string = (type) => {
+type AllowedRequestVerb = "POST" | "PUT" | "DELETE" | "GET";
+
+export const getRequestType: (type: RequestType) => AllowedRequestVerb = (
+	type
+) => {
 	switch (type) {
 		case RequestType.GET:
 			return "GET";
@@ -81,7 +81,7 @@ export const getRequestType: (type: RequestType) => string = (type) => {
 	}
 };
 
-export const isAuthEndpoint: (endpoint: RequestEndpoint) => boolean = ep => {
+export const isAuthEndpoint: (endpoint: RequestEndpoint) => boolean = (ep) => {
 	switch (ep) {
 		case RequestEndpoint.LOGIN_USER:
 		case RequestEndpoint.REGISTER_USER:

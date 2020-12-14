@@ -1,11 +1,18 @@
+import { IInviteUser } from "../components/invite/interfaces/IInviteUser";
 import { IGroup } from "./IGroup";
+import { ILocation } from "./ILocation";
 /** Group interface */
 export interface IInvite {
-	id: string;
-	isPending: boolean;
-	groupId: string;
-	invitedUserId: string;
-	invitingUserId: string;
+	groupInviteId: string;
+	invitedUser: IInviteUser;
+	invitingUser: IInviteUser;
 	isAccepted: boolean;
-	dateAdded: string;
+	isPending: boolean;
+	groupDto: {
+		groupId: string;
+		location: ILocation;
+		name: string;
+		userCount: number;
+	};
+	dateAdded: Date;
 }

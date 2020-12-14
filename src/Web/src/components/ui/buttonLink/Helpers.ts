@@ -29,6 +29,8 @@ export const getBackgroundClass: (type?: ButtonLinkBackground) => string = (back
 			return "buttonLink__background--blue";
 		case ButtonLinkBackground.Green:
 			return "buttonLink__background--green";
+		case ButtonLinkBackground.GrayDark:
+			return "buttonLink__background--grayDark";
 		default:
 			return "buttonLink__background--transparent";
 	}

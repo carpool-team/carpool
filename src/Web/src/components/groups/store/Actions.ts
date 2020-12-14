@@ -20,11 +20,12 @@ import {
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
 	IAddRideAction,
+	IAddInvitesAction,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
-import { IAddRideInput } from "../components/addRideForm/interfaces/IAddRideInput";
+import { IAddRideInput } from "../../rides/addRide/interfaces/IAddRideInput";
 
 //#region GROUPS
 export function addGroup(group: IGroup): IAddGroupAction {
@@ -119,6 +120,14 @@ export function getInvitesError(error: Error): IGetInvitesActionError {
 		error,
 	};
 }
+
+export function addInvites(groupId: string, userIds: string[]): IAddInvitesAction {
+	return {
+		type: InvitesActionTypes.AddInvites,
+		groupId,
+		userIds,
+	};
+}
 //#endregion
 
 //#region RIDES
@@ -128,11 +137,13 @@ export function getRides(): IGetRidesAction {
 	};
 }
 
-export function getRidesSuccess(ridesOwned: IRide[], ridesParticipated: IRide[]): IGetRidesActionSuccess {
+export function getRidesSuccess(ridesOwned: IRide[], ridesParticipated: IRide[], ridesOwnedPast: IRide[], ridesParticipatedPast: IRide[]): IGetRidesActionSuccess {
 	return {
 		type: RidesActionTypes.GetRidesSuccess,
 		ridesOwned,
 		ridesParticipated,
+		ridesOwnedPast,
+		ridesParticipatedPast
 	};
 }
 

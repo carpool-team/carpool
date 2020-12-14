@@ -1,0 +1,29 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.dateBar {
+	width: 100%;
+	background-color: $white;
+	margin-bottom: 10px;
+	height: 35px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+
+	&__range {
+		padding-right:10px;
+		font-size: 17px;
+		font-weight: $medium;
+		color: $grayDark;
+	}
+	&__arrow:hover{
+		color: $blue;
+	}
+}
+.buttonDisable {
+	cursor: not-allowed;
+	pointer-events: none;
+	color: $backgroundDarker;
+}
+
