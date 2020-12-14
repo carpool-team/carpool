@@ -5,7 +5,7 @@ import { TFunction } from "i18next";
 import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
 import "./AddRide.scss"
-import { IGroup } from "components/groups/interfaces/IGroup";
+import { IGroup } from "../../groups/interfaces/IGroup";
 
 interface IGroupsListProps extends IReactI18nProps {
 	groups: IGroup[];
@@ -23,6 +23,7 @@ const FirstStep = (props: IGroupsListProps) => {
 	const labelCssClass: string = "groupsItem__default--label";
 	const buttonCssClass: string = "groupsItem__default--button";
 	const pinCssClass: string = "groupsItem__default--pin";
+	const listwraper: string = "groupsManagementList__wraper";
 
 	const groups: IGroup[] = props.groups;
 
@@ -50,20 +51,23 @@ const FirstStep = (props: IGroupsListProps) => {
 	};
 
 	return (
-		<ul className={listCssClass}>
-			{groups.map((group) => {
-				++colorIndex;
-				const color = colorList[colorIndex % colorList.length];
-				const { t } = props;
-				return (
-					<DefaultItem
-						group={group}
-						color={color}
-						setGroup={() => props.setGroupSelected(group)}
-						t={t}
-					/>);
-			})}
-		</ul>
+		<div className={listwraper}	>
+			<ul className={listCssClass}>
+				{groups.map((group) => {
+					++colorIndex;
+					const color = colorList[colorIndex % colorList.length];
+					const { t } = props;
+					return (
+						<DefaultItem
+							group={group}
+							color={color}
+							setGroup={() => props.setGroupSelected(group)}
+							t={t}
+						/>);
+				})}
+			</ul>
+		</div>
+
 	);
 };
 
