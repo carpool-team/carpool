@@ -62,7 +62,8 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 								<GroupInvite
 									group={this.props.selectedGroup}
 									rides={rides}
-									onConfirm={(_users) => { }}
+									addInvitesCallback={(groupId, userIds) => this.props.callbacks.addInvites(groupId, userIds)}
+									currentAppUserId={this.props.authId}
 								/>
 							</Route>
 							<Route exact path={path + GroupsRouter.routes.rides}>
@@ -73,7 +74,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 				</Switch>
 			</Suspense>
 		);
-	};
+	}
 }
 
 export default GroupsRouter;

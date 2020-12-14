@@ -25,7 +25,7 @@ const LayoutRouter = (props: RouteComponentProps) => {
 				<PrivateRoute path={path + mainRoutes.groups} component={Groups} />
 				<Route exact path={path + mainRoutes.register} component={RegisterPanel} />
 				<Route exact path={path + mainRoutes.login} component={LoginPanel} />
-				<PrivateRoute path = {path + mainRoutes.rides} component = {RidesRouter} />
+				<PrivateRoute path={path + mainRoutes.rides} component={RidesRouter} />
 			</Switch>
 		</Suspense>
 	);

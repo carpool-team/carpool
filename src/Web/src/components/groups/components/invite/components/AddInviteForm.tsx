@@ -1,11 +1,8 @@
-import Autocomplete from "@material-ui/lab/Autocomplete/Autocomplete";
 import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
-import MediaQuery from "react-responsive";
 import { useImmer } from "use-immer";
 import { Key } from "../../../../../constants/Key";
 import { each } from "../../../../../helpers/UniversalHelper";
-import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
 import Button from "../../../../ui/button/Button";
 import ButtonSmall from "../../../../ui/buttonSmall/ButtonSmall";
 import { ButtonSmallBackground } from "../../../../ui/buttonSmall/enums/ButtonSmallBackground";
@@ -13,26 +10,65 @@ import { ButtonSmallColor } from "../../../../ui/buttonSmall/enums/ButtonSmallCo
 import { ButtonSmallIcon } from "../../../../ui/buttonSmall/enums/ButtonSmallIcon";
 import AutocompleteWrapper from "../../../../ui/autocompleteWrapper/AutocompleteWrapper";
 import { IInviteUser } from "../interfaces/IInviteUser";
-
-import colors from "scss_path/_colors.scss";
+import { UserAutocompleteRequest } from "../../../api/userAutocomplete/UserAutocompleteRequest";
+import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
 
 interface IAddInviteFormProps extends IReactI18nProps {
 	addUserToInvite: (user: IInviteUser) => void;
 	removeUser: (user: IInviteUser) => void;
 	users: IInviteUser[];
 	onConfirm: () => void;
+	currentAppUserId: string;
 }
 
+interface IUserAutocompleteData {
+	[email: string]: {
+		firstName: string;
+		lastName: string;
+		appUserId: string;
+	};
+}
+
+const resources = {
+	addBtn: "addBtn",
+	prevBtn: "prevBtn",
+	createBtn: "groups.addGroupForm.createBtn",
+	emailInput: "groups.addGroupForm.email",
+	emailInputComment: "groups.addGroupForm.emailComment",
+	nameInput: "groups.addGroupForm.name",
+	surnameInput: "groups.addGroupForm.surname",
+	basicInfo: "groups.addGroupForm.basicInfo2",
+	confirm: "groups.addGroupForm.confirmBtn",
+};
+
+const cssClasses = {
+	container: "addGroupContainerSecond",
+	inputs: "addGroupSecondSide__inputs",
+	userList: "addGroupSecondSide__userList",
+	userListItem: "addGroupSecondSide__userListItem",
+	userListItemName: "addGroupSecondSide__userListItemName",
+	buttonsGroup: "addGroupSecondSide__buttonsGroup",
+};
+
 const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
+	const { t } = props;
 	const [inputsValid, setInputsValid] = useImmer({
 		email: true,
 	});
-	const [email, setEmail] = useState<string>("");
+	const [email, setEmail] = useState<string>(null);
 	const [submitted, setSubmitted] = useState(false);
+	const [emailsDict, setEmailsDict] = useState<IUserAutocompleteData>({});
+
+	const clearInputs = () => {
+		setEmail(null);
+	};
 
 	const onAdd = () => {
 		if (each(inputsValid, i => i)) {
-			props.addUserToInvite({ email });
+			props.addUserToInvite({
+				email,
+				...emailsDict[email],
+			});
 			setInputsValid(draft => {
 				draft.email = false;
 			});
@@ -56,72 +92,69 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	};
 
 	useEffect(() => {
-		document.addEventListener("keypress", onEnter)
+		document.addEventListener("keypress", onEnter);
 		return () => {
 			document.removeEventListener("keypress", onEnter);
-		}
+		};
 	}, []);
 
-	const cssClasses = {
-		container: "addGroupContainerSecond",
-		inputs: "addGroupSecondSide__inputs",
-		userList: "addGroupSecondSide__userList",
-		userListItem: "addGroupSecondSide__userListItem",
-		userListItemName: "addGroupSecondSide__userListItemName",
-		buttonsGroup: "addGroupSecondSide__buttonsGroup"
+	const autocompleteCallback: (value: string) => Promise<string[]> = async (value) => {
+		const updatedDict: IUserAutocompleteData = {};
+		const result: string[] = [];
+		if (value && value.length > 0) {
+			const request = new UserAutocompleteRequest({
+				queries: {
+					email: value,
+				},
+			});
+			const response = await request.send();
+			if (!response.isError) {
+				response.result.forEach(u => {
+					if (u.appUserId !== props.currentAppUserId) {
+						result.push(u.email);
+						updatedDict[u.email] = { ...u };
+					}
+				});
+			}
+		}
+		setEmailsDict(updatedDict);
+		return result;
 	};
 
-	const resources = {
-		addBtn: "addBtn",
-		prevBtn: "prevBtn",
-		createBtn: "groups.addGroupForm.createBtn",
-		emailInput: "groups.addGroupForm.email",
-		emailInputComment: "groups.addGroupForm.emailComment",
-		nameInput: "groups.addGroupForm.name",
-		surnameInput: "groups.addGroupForm.surname",
-		basicInfo: "groups.addGroupForm.basicInfo2",
-		confirm: "groups.addGroupForm.confirmBtn",
+	const selectedOptionCallback = () => {
+		setInputsValid(draft => {
+			draft.email = true;
+		});
 	};
 
-	const clearInputs = () => {
-		setEmail("");
-	}
+	const confirmButtonClick = () => {
+		props.onConfirm();
+	};
 
-	const { t } = props;
+	const addButtonClick = () => {
+		setSubmitted(true);
+	};
+
+	const onEmailInputChange: (newValue: string) => void = newValue => {
+		setEmail(newValue);
+	};
 
 	const renderInputs = () => (
 		<div className={cssClasses.inputs}>
 			<span> {t(resources.basicInfo)}</span>
 			<AutocompleteWrapper
-				onChange={newValue => setEmail(newValue)}
-				wrapperStyle={{
-					width: "400px",
-				}}
-				textFieldStyle={{
-				}}
+				onChange={onEmailInputChange}
+				wrapperStyle={{ width: "400px" }}
 				placeholder={t(resources.emailInput)}
-				onSelect={() => {
-					console.log("SELECTED");
-					setInputsValid(draft => {
-						draft.email = true;
-					})
-				}}
-				autocompleteCallback={async () => {
-					const response = await fetch('https://country.register.gov.uk/records.json?page-size=5000');
-					const json = await response.json();
-					return Object.keys(json).map((key) => json[key].item[0].name)
-					// todo: podpiąc emaile
-				}}
+				onSelect={selectedOptionCallback}
+				value={email}
+				autocompleteCallback={autocompleteCallback}
 			/>
 			<div className={cssClasses.buttonsGroup}>
-				<Button onClick={() => {
-					setSubmitted(true);
-				}}>
+				<Button onClick={addButtonClick}>
 					{t(resources.addBtn)}
 				</Button>
-				<Button onClick={() => {
-					props.onConfirm();
-				}}>
+				<Button onClick={confirmButtonClick}>
 					{t(resources.confirm)}
 				</Button>
 			</div>
@@ -143,7 +176,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 						<li key={idx}>
 							<div className={cssClasses.userListItem} style={color}>
 								<div className={cssClasses.userListItemName}>
-									{user.email}
+									{`${user.firstName} ${user.lastName} (${user.email})`}
 								</div>
 								<ButtonSmall
 									icon={ButtonSmallIcon.Close}

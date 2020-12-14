@@ -1,15 +1,25 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const devMode = process.env.NODE_ENV !== "production";
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+const devMode = process.env.NODE_ENV !== "production";
 
 module.exports = {
-	entry: path.resolve(__dirname, "src/index"),
+	stats: 'errors-warnings',
+
+	devServer: {
+		historyApiFallback: true
+	},
+
+	entry: path.resolve(__dirname, "src/index.tsx"),
 
 	output: {
 		path: path.resolve(__dirname, "dist"),
-		filename: "bundle.js",
-		publicPath: "/",
+		chunkFilename: '[name].bundle.js',
+		filename: 'app.js',
+		pathinfo: false,
 	},
 
 	resolve: {
@@ -24,19 +34,13 @@ module.exports = {
 		rules: [
 			// we use babel-loader to load our ts and tsx files
 			{
-				test: /\.tsx?$/,
+				test: /\.(t|j)sx?$/,
 				exclude: /node_modules/,
 				use: [
 					{
 						loader: "ts-loader",
 						options: {
 							transpileOnly: true,
-						},
-					},
-					{
-						loader: "babel-loader",
-						options: {
-							exclude: /node_modules/,
 						},
 					},
 				],
@@ -68,6 +72,39 @@ module.exports = {
 			},
 		],
 	},
+
+	optimization: {
+		splitChunks: {
+			chunks: "all",
+			cacheGroups: {
+				vendor: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendors',
+					chunks: 'all',
+					priority: 20
+				},
+				common: {
+					name: 'common',
+					minChunks: 2,
+					chunks: 'async',
+					priority: 10,
+					reuseExistingChunk: true,
+					enforce: true
+				}
+			}
+		},
+		minimizer: [
+			new TerserPlugin({
+				sourceMap: devMode ? true : false,
+				terserOptions: {
+					compress: {
+						drop_console: devMode ? false : true,
+					},
+				},
+			}),
+		],
+	},
+
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: "./src/index.html",
@@ -82,8 +119,12 @@ module.exports = {
 					declaration: true,
 					global: true,
 				},
-				profile: true,
+				configFile: path.resolve(__dirname, "../Web/tsconfig.json"),
 			},
 		}),
+		new MiniCssExtractPlugin({
+			filename: 'bundle.css',
+			chunkFilename: '[id].css'
+		})
 	],
 };

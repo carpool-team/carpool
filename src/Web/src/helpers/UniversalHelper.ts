@@ -70,7 +70,7 @@ export const parseCoords: (coords: ILocation) => [number, number] = coords => {
 
 		// } else {
 		// 	// LngLat of Pozen
-		return [52.41, 16.89]
+		return [52.41, 16.89];
 	}
 	// }
 };

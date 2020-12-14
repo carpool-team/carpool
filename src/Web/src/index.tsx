@@ -6,7 +6,7 @@ import i18n from "./i18n";
 import store from "./store/Index";
 
 new Promise((resolve, _reject) => {
-	resolve();
+	resolve(undefined);
 }).then(() => {
 	import("./App").then(App => {
 		const Root: () => JSX.Element = () => (

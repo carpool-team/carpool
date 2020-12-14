@@ -4,9 +4,9 @@ import RequestBase from "../../../../api/requests/RequestBase";
 import { AddInviteResponse } from "./AddInviteResponse";
 
 export interface IAddInviteRequestBody {
-	groupId: string,
-	inviteAppUserId: string,
-	inviterId: string,
+	groupId: string;
+	invitedAppUserId: string;
+	inviterId: string;
 }
 
 export class AddInviteRequest extends RequestBase<IAddInviteRequestBody> {

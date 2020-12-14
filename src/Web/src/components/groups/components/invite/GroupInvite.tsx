@@ -6,7 +6,8 @@ import AddInviteForm from "./components/AddInviteForm";
 import { IInviteUser } from "./interfaces/IInviteUser";
 
 interface IGroupInviteProps extends IGroupDetailedViewProps {
-	onConfirm: (users: IInviteUser[]) => void;
+	addInvitesCallback: (groupId: string, userIds: string[]) => void;
+	currentAppUserId: string;
 }
 
 const GroupInvite = (props: IGroupInviteProps) => {
@@ -26,7 +27,8 @@ const GroupInvite = (props: IGroupInviteProps) => {
 				users={users}
 				addUserToInvite={addUserCallback}
 				removeUser={removeUserCallback}
-				onConfirm={() => props.onConfirm(users)}
+				onConfirm={() => props.addInvitesCallback(props.group.groupId, users.map(u => u.appUserId))}
+				currentAppUserId={props.currentAppUserId}
 			/>
 		</GroupDetailedView>
 	);
