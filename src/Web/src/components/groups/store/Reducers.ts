@@ -31,7 +31,7 @@ const reducer: Reducer<IGroupsState> = (
 				draft.groups = action.groups;
 				break;
 			case InvitesActionTypes.AnswerInviteSuccess:
-				idx = draft.invites.findIndex(i => i.id === action.inviteId);
+				idx = draft.invites.findIndex(i => i.groupInviteId === action.inviteId);
 				if (idx > -1) {
 					draft.invites[idx].isPending = true;
 				}
