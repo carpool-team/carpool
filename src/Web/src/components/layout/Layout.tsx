@@ -7,7 +7,6 @@ import { ToastContainer } from "react-toastify";
 import { connect } from "react-redux";
 import { DispatchProps, mapDispatchToProps, mapStateToProps, StateProps } from "./store/PropsTypes";
 import LoaderSplash from "../ui/loaderSplash/LoaderSplash";
-import { CssClass } from "./enums/CssClass";
 
 import "./Layout.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,6 +14,10 @@ import "react-toastify/dist/ReactToastify.css";
 interface ILayoutProps extends RouteComponentProps, StateProps, DispatchProps { }
 
 const Layout: (props: ILayoutProps) => JSX.Element = props => {
+	const cssClasses = {
+		main: "main",
+	};
+
 	// current url
 	const { pathname } = props.location;
 	useEffect(() => {
@@ -29,17 +32,11 @@ const Layout: (props: ILayoutProps) => JSX.Element = props => {
 
 	const mainHeight: number = document.querySelector(".main")?.clientHeight;
 
-	const mainCssClasses: string[] = [CssClass.Main];
-	// main page should have different height
-	if (mainPaths.includes(pathname)) {
-		mainCssClasses.push(CssClass.MainFlex);
-	}
-
 	return (
 		<React.Fragment>
 			<NavBar />
 			<ToastContainer />
-			<main className={mainCssClasses.join(" ")}>
+			<main className={!mainPaths.includes(pathname) ? (cssClasses.main) : (null)}>
 				<LoaderSplash
 					active={props.loaderVisible}
 					height={mainHeight}

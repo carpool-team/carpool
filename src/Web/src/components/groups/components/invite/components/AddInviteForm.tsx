@@ -11,8 +11,6 @@ import { ButtonSmallIcon } from "../../../../ui/buttonSmall/enums/ButtonSmallIco
 import AutocompleteWrapper from "../../../../ui/autocompleteWrapper/AutocompleteWrapper";
 import { IInviteUser } from "../interfaces/IInviteUser";
 import { UserAutocompleteRequest } from "../../../api/userAutocomplete/UserAutocompleteRequest";
-import { CssClass } from "../enums/CssClass";
-import { Resource } from "../enums/Resource";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
 
 interface IAddInviteFormProps extends IReactI18nProps {
@@ -30,6 +28,27 @@ interface IUserAutocompleteData {
 		appUserId: string;
 	};
 }
+
+const resources = {
+	addBtn: "addBtn",
+	prevBtn: "prevBtn",
+	createBtn: "groups.addGroupForm.createBtn",
+	emailInput: "groups.addGroupForm.email",
+	emailInputComment: "groups.addGroupForm.emailComment",
+	nameInput: "groups.addGroupForm.name",
+	surnameInput: "groups.addGroupForm.surname",
+	basicInfo: "groups.addGroupForm.basicInfo2",
+	confirm: "groups.addGroupForm.confirmBtn",
+};
+
+const cssClasses = {
+	container: "addGroupContainerSecond",
+	inputs: "addGroupSecondSide__inputs",
+	userList: "addGroupSecondSide__userList",
+	userListItem: "addGroupSecondSide__userListItem",
+	userListItemName: "addGroupSecondSide__userListItemName",
+	buttonsGroup: "addGroupSecondSide__buttonsGroup",
+};
 
 const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	const { t } = props;
@@ -121,22 +140,22 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	};
 
 	const renderInputs = () => (
-		<div className={CssClass.Inputs}>
-			<span> {t(Resource.BasicInfo)}</span>
+		<div className={cssClasses.inputs}>
+			<span> {t(resources.basicInfo)}</span>
 			<AutocompleteWrapper
 				onChange={onEmailInputChange}
 				wrapperStyle={{ width: "400px" }}
-				placeholder={t(Resource.EmailInput)}
+				placeholder={t(resources.emailInput)}
 				onSelect={selectedOptionCallback}
 				value={email}
 				autocompleteCallback={autocompleteCallback}
 			/>
-			<div className={CssClass.ButtonsGroup}>
+			<div className={cssClasses.buttonsGroup}>
 				<Button onClick={addButtonClick}>
-					{t(Resource.AddBtn)}
+					{t(resources.addBtn)}
 				</Button>
 				<Button onClick={confirmButtonClick}>
-					{t(Resource.Confirm)}
+					{t(resources.confirm)}
 				</Button>
 			</div>
 		</div>
@@ -147,7 +166,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 		let colorIndex: number = 0;
 
 		return (
-			<ul className={CssClass.UserList}>
+			<ul className={cssClasses.userList}>
 				{props.users.map((user, idx) => {
 					++colorIndex;
 					const color = {
@@ -155,8 +174,8 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 					};
 					return (
 						<li key={idx}>
-							<div className={CssClass.UserListItem} style={color}>
-								<div className={CssClass.UserListItemName}>
+							<div className={cssClasses.userListItem} style={color}>
+								<div className={cssClasses.userListItemName}>
 									{`${user.firstName} ${user.lastName} (${user.email})`}
 								</div>
 								<ButtonSmall
@@ -174,7 +193,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	};
 
 	return (
-		<div className={CssClass.Container}>
+		<div className={cssClasses.container}>
 			{renderInputs()}
 			{renderUserList()}
 		</div>

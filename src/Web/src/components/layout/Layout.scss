@@ -1,9 +1,5 @@
 @import "~scss_path/variables";
+
 .main {
 	height: $mainHeight;
-	&--flex {
-		flex: 1 1 auto;
-		min-height: $mainHeight;
-		height: initial;
-	}
 }
