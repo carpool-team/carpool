@@ -33,7 +33,7 @@ class Layout extends Component<ILayoutProps> {
 			<React.Fragment>
 				<NavBar />
 				<ToastContainer />
-				<main className={this.cssClasses.main}>
+				<main className={!this.mainPaths.includes(pathname) ? (this.cssClasses.main) : (null)}>
 					<LoaderSplash
 						active={this.props.loaderVisible}
 						height={mainHeight}
