@@ -37,13 +37,11 @@ import { ParticipateInRideResponse } from "../api/participateInRide/ParticipateI
 import { ParticipateInRideRequest } from "../api/participateInRide/ParticipateInRideRequest";
 import { getId } from "../../../helpers/UniversalHelper";
 import { IAuthState } from "../../auth/store/State";
-import { AddRideRequest, RideDirection } from "../api/addRide/AddRideRequest";
+import { AddRideRequest } from "../api/addRide/AddRideRequest";
 import { AddRideResponse } from "../api/addRide/AddRideResponse";
-import { AddInviteRequest, IAddInviteRequestBody } from "../api/addInvite/AddInviteRequest";
-import { AddInviteResponse } from "../api/addInvite/AddInviteResponse";
+import { AddInviteRequest } from "../api/addInvite/AddInviteRequest";
 import { IRedirectAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
-import GroupsRouter from "../components/GroupsRouter";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -143,7 +141,7 @@ const getInvitesEpic: Epic<InviteAction> = (action$, state$) =>
 		)
 	);
 
-const answerInviteEpic: Epic<InviteAction> = (action$) =>
+const answerInviteEpic: Epic<InviteAction | GroupsAction> = (action$) =>
 	action$.pipe(
 		ofType(InvitesActionTypes.AnswerInvite),
 		switchMap(async (action: IAnswerInviteAction) => {
@@ -153,12 +151,12 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 			});
 			const response: AnswerInviteResponse = await request.send();
 			return {
-				response: response.status,
+				success: !response.isError,
 				id: action.inviteId,
 			};
 		}),
 		mergeMap((result) => {
-			if (result.response === 200) {
+			if (result.success) {
 				return [
 					<IAnswerInviteActionSuccess>{
 						type: InvitesActionTypes.AnswerInviteSuccess,
@@ -166,6 +164,10 @@ const answerInviteEpic: Epic<InviteAction> = (action$) =>
 					},
 					<IGetGroupsAction>{
 						type: GroupsActionTypes.GetGroups,
+						userOnly: true,
+					},
+					<IGetInvitesAction>{
+						type: InvitesActionTypes.GetInvites,
 						userOnly: true,
 					}
 				];
@@ -377,7 +379,7 @@ const addInviteEpic: Epic<InviteAction | GenericAction | LayoutAction> = (action
 	switchMap(res => res)
 );
 
-export const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
+const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
 	ofType(GenericActionTypes.ApiError),
 	mergeMap(async (action: IApiErrorAction) => {
 		await (async () => {

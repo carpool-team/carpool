@@ -32,7 +32,7 @@ const InvitesList = (props: IInvitesListProps) => {
 						<div className={pinCssClass} style={color}>
 						</div>
 						<div className={labelCssClass}>
-							{invite.groupDto.groupId}
+							{invite.groupDto.name}
 						</div>
 						<button className={buttonAcceptCssClass} onClick={() => props.answerInviteCallback(true, invite.groupInviteId)}></button>
 						<button className={buttonDeclineCssClass} onClick={() => props.answerInviteCallback(false, invite.groupInviteId)}></button>
