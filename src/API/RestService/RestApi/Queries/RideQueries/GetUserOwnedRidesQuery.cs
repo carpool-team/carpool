@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataTransferObjects;
 using DataTransferObjects.GroupDtos;
+using DataTransferObjects.VehicleDtos;
 using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using RestApi.DTOs.Ride;
 using RestApi.DTOs.Stop;
 using RestApi.DTOs.User;
-using RestApi.DTOs.Vehicle;
 
 namespace RestApi.Queries.RideQueries
 {
@@ -62,7 +62,7 @@ namespace RestApi.Queries.RideQueries
 							.ToList();
 					rideDtos.Add(new RideDto(ownerDto, groupDto,
 						new LocationDto(ride.Location.Longitude, ride.Location.Latitude), ride.Price,
-						ride.RideDirection, stopDtos, ride.Date, ride.Id));
+						ride.RideDirection, stopDtos, ride.Date, ride.Id, ride.SeatsLimit));
 				}
 
 				return rideDtos;

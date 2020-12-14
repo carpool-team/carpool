@@ -7,7 +7,6 @@ using Domain.Enums;
 using IdentifiersShared.Identifiers;
 using RestApi.DTOs.Stop;
 using RestApi.DTOs.User;
-using RestApi.DTOs.Vehicle;
 
 namespace RestApi.DTOs.Ride
 {
@@ -22,5 +21,6 @@ namespace RestApi.DTOs.Ride
 		[JsonProperty("rideDirection")]RideDirection RideDirection,
 		[JsonProperty("stops")]List<StopDto> stops,
 		[JsonProperty("rideDate")]DateTime RideDate,
-		[JsonProperty("rideId")]RideId RideId);
+		[JsonProperty("rideId")]RideId RideId,
+		[JsonProperty("seatsLimit")]byte SeatsLimit);
 }

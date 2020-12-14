@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.GroupInviteCommands;
 using RestApi.DTOs.GroupInvites;
+using RestApi.Extensions;
 using RestApi.Queries.GroupInviteQueries;
 
 namespace RestApi.Controllers
@@ -24,7 +25,11 @@ namespace RestApi.Controllers
 
         [HttpGet("~/api/users/{appUserId}/group-invites")]
         public async Task<ApiResponse> GetUserGroupInvites([FromRoute] AppUserId appUserId)
-        {
+		{
+			if (User.GetUserId() != appUserId)
+				throw new ApiException("User does not have access to other user group invites",
+					StatusCodes.Status401Unauthorized);
+			
             var request = new GetUserGroupInvitesQuery(appUserId);
 
             var response = await _mediator.Send(request).ConfigureAwait(false);
@@ -36,7 +41,7 @@ namespace RestApi.Controllers
 		[HttpGet("{groupInviteId}")]
 		public async Task<ApiResponse> GetGroupInvite([FromRoute] long groupInviteId)
 		{
-			GetGroupInviteQuery request = new(new GroupInviteId(groupInviteId));
+			GetGroupInviteQuery request = new(new GroupInviteId(groupInviteId), User.GetUserId());
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
@@ -51,7 +56,7 @@ namespace RestApi.Controllers
 			[FromRoute] long groupInviteId)
 		{
 			GroupInviteId typedGroupInviteId = new(groupInviteId);
-			UpdateGroupInviteCommand request = new(typedGroupInviteId, model.IsAccepted);
+			UpdateGroupInviteCommand request = new(typedGroupInviteId, model.IsAccepted, User.GetUserId());
 
 			await _mediator.Send(request).ConfigureAwait(false);
 
@@ -64,6 +69,9 @@ namespace RestApi.Controllers
 		[HttpPost]
 		public async Task<ApiResponse> PostGroupInvite(AddGroupInviteCommand request)
 		{
+			if (request.InviterId != User.GetUserId())
+				throw new ApiException("Only owner can invite users to a group.", StatusCodes.Status403Forbidden);
+			
 			var groupInvite = await _mediator.Send(request).ConfigureAwait(false);
 			return new ApiResponse($"Group Invite was created with id: {groupInvite}", groupInvite,
 				StatusCodes.Status201Created);
@@ -74,7 +82,7 @@ namespace RestApi.Controllers
 		public async Task<ApiResponse> DeleteGroupInvite(long groupInviteId)
 		{
 			GroupInviteId typedGroupInviteId = new(groupInviteId);
-			var request = new DeleteGroupInviteCommand(typedGroupInviteId);
+			var request = new DeleteGroupInviteCommand(typedGroupInviteId, User.GetUserId());
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse($"Group Invite with id: {response} has been deleted");

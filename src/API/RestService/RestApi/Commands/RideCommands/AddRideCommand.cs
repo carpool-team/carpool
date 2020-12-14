@@ -16,7 +16,6 @@ using IdGen;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace RestApi.Commands.RideCommands

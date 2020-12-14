@@ -1,7 +1,7 @@
 ﻿#nullable enable
+using DataTransferObjects.VehicleDtos;
 using IdentifiersShared.Identifiers;
 using Newtonsoft.Json;
-using RestApi.DTOs.Vehicle;
 
 namespace RestApi.DTOs.User
 {
@@ -31,4 +31,9 @@ namespace RestApi.DTOs.User
         [JsonProperty("firstName")] string FirstName,
         [JsonProperty("lastName")] string LastName,
         [JsonProperty("email")] string Email);
+
+    public record UserSettingsDto([JsonProperty("id")] AppUserId AppUserId,
+        [JsonProperty("firstName")] string FirstName,
+        [JsonProperty("lastName")] string LastName,
+        [JsonProperty("vehicle")] IndexVehicleDto Vehicle);
 }

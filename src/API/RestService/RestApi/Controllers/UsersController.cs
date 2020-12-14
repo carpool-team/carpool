@@ -3,9 +3,11 @@ using AutoWrapper.Wrappers;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
 using RestApi.DTOs.User;
+using RestApi.Extensions;
 using RestApi.Queries.UserQueries;
 
 namespace RestApi.Controllers
@@ -23,9 +25,9 @@ namespace RestApi.Controllers
 		}
 
         [HttpGet("{appUserId}")]
-		public async Task<ApiResponse> GetUser([FromRoute] AppUserId userId)
+		public async Task<ApiResponse> GetUser([FromRoute] AppUserId appUserId)
 		{
-			var request = new GetUserByIdQuery(userId);
+			var request = new GetUserByIdQuery(appUserId);
 			var response = await _mediator.Send(request);
 
 			return new ApiResponse(response);
@@ -75,9 +77,12 @@ namespace RestApi.Controllers
 		}
 
 		[HttpDelete("{appUserId}")]
-		public async Task<ApiResponse> DeleteUser([FromRoute] AppUserId userId)
+		public async Task<ApiResponse> DeleteUser([FromRoute] AppUserId appUserId)
 		{
-			var request = new DeleteUserCommand(userId);
+			var tokenUserId = User.GetUserId();
+			if (tokenUserId != appUserId)
+				throw new ApiException("User does not have permissions to delete other user", StatusCodes.Status403Forbidden);
+			var request = new DeleteUserCommand(appUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
