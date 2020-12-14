@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const Dotenv = require('dotenv-webpack');
 
 const devMode = process.env.NODE_ENV !== "production";
 
@@ -125,6 +126,7 @@ module.exports = {
 		new MiniCssExtractPlugin({
 			filename: 'bundle.css',
 			chunkFilename: '[id].css'
-		})
+		}),
+		new Dotenv(),
 	],
 };

@@ -1,16 +1,16 @@
 import * as React from "react";
 import { CSSProperties } from "react";
 import ReactMapboxGl, { Popup } from "react-mapbox-gl";
-import mapConfig from "./mapConfig";
 import { Marker } from "react-mapbox-gl";
 import produce from "immer";
 import { parseCoords } from "../../helpers/UniversalHelper";
 import { ILocation } from "../groups/interfaces/ILocation";
+import { mapboxKey, mapboxStyle } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 8,
 	maxZoom: 15,
-	accessToken: mapConfig.mapboxKey
+	accessToken: mapboxKey,
 });
 
 export interface IMapState {
@@ -77,10 +77,9 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 			border: "2px",
 		};
 
-
 		return (
 			<Mapbox
-				style={mapConfig.mapLight}
+				style={mapboxStyle}
 				onStyleLoad={this.onStyleLoad}
 				center={parseCoords(center)}
 				zoom={zoom}

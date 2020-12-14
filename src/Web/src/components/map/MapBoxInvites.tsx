@@ -2,15 +2,15 @@ import * as React from "react";
 import { CSSProperties } from "react";
 import ReactMapboxGl, { Popup, Marker } from "react-mapbox-gl";
 import { IInvite } from "../groups/interfaces/IInvite";
-import mapConfig from "./mapConfig";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
+import { mapboxKey, mapboxStyle } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 2,
 	maxZoom: 15,
-	accessToken: mapConfig.mapboxKey
+	accessToken: mapboxKey,
 });
 
 export interface IMapState {
@@ -109,7 +109,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 		return (
 			<Mapbox
-				style={mapConfig.mapLight}
+				style={mapboxStyle}
 				onStyleLoad={this.onStyleLoad}
 				fitBounds={fitBounds}
 				fitBoundsOptions={boundsOptions}

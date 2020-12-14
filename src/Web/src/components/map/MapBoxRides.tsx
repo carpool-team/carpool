@@ -1,22 +1,20 @@
 import * as React from "react";
 import { CSSProperties } from "react";
-import ReactMapboxGl, { Layer, Feature, Popup, Marker, GeoJSONLayer } from "react-mapbox-gl";
-import mapConfig from "./mapConfig";
-import { colorList } from "../../scss/colorList";
+import ReactMapboxGl, { Popup, GeoJSONLayer } from "react-mapbox-gl";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { IRide } from "components/groups/interfaces/IRide";
-import mapboxDirections from "@mapbox/mapbox-sdk/services/directions";
 import { RideDirection } from "../groups/api/addRide/AddRideRequest";
 import { parseCoords } from "../../helpers/UniversalHelper";
+import { getDirectionsClient, mapboxKey, mapboxStyle } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 2,
 	maxZoom: 15,
-	accessToken: mapConfig.mapboxKey
+	accessToken: mapboxKey,
 });
 
-const directionsClient = mapboxDirections({ accessToken: mapConfig.mapboxKey });
+const directionsClient = getDirectionsClient();
 
 export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
@@ -161,7 +159,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 		return (
 			<Mapbox
-				style={mapConfig.mapLight}
+				style={mapboxStyle}
 				onStyleLoad={this.onStyleLoad}
 				fitBounds={fitBounds}
 				fitBoundsOptions={boundsOptions}
