@@ -11,8 +11,7 @@ import { RideDirection } from "../groups/api/addRide/AddRideRequest";
 import { parseCoords } from "../../helpers/UniversalHelper";
 
 const Mapbox = ReactMapboxGl({
-	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
-	minZoom: 8,
+	minZoom: 2,
 	maxZoom: 15,
 	accessToken: mapConfig.mapboxKey
 });
@@ -68,10 +67,11 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					geometries: "geojson",
 				})
 				.send();
-			this.setState(produce((draft: any) => {
-				draft.route = response.body.routes[0].geometry.coordinates;
-			}));
-
+			if (response.body.code === "Ok") {
+				this.setState(produce((draft: any) => {
+					draft.route = response.body.routes[0].geometry.coordinates;
+				}));
+			}
 		} catch (err) {
 			console.log(err);
 		} finally {
@@ -177,20 +177,6 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 				}
 				{ride !== null &&
 					<>
-						{/* <Marker
-					style= {toMarkerStyle}
-					coordinates={[ride.destination.latitude, ride.destination.longitude]}
-					anchor="bottom"
-					>
-					<i className={"fa fa-map-marker"}></i>
-				</Marker>
-				<Marker
-					style= {fromMarkerStyle}
-					coordinates={[ride.startingLocation.latitude, ride.startingLocation.longitude]}
-					anchor="bottom"
-					>
-					<i className={"fa fa-map-marker"}></i>
-				</Marker> */}
 						<Popup coordinates={parseCoords(ride.group?.location)}>
 							<div style={popupStyle}>
 								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "początkowa" : "końcowa"}`}

@@ -32,7 +32,7 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		location: false,
 	});
 	const [validate, setValidate] = useState(false);
-	const [addressCoordinates, setAddressCoordinates] = useState<ILocation>({ latitude: 52.41, longitude: 16.89 });
+	const [addressCoordinates, setAddressCoordinates] = useState<ILocation>(null);
 
 	const cssClasses = {
 		container: "addGroupContainer",

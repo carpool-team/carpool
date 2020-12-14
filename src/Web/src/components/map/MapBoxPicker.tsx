@@ -14,7 +14,7 @@ const Mapbox = ReactMapboxGl({
 });
 
 export interface IMapState {
-	center?: [number, number];
+	center?: ILocation;
 	zoom?: [number];
 }
 
@@ -34,7 +34,10 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 		super(props);
 		this.state = {
 			zoom: [11],
-			center: [16.926712, 52.408141]
+			center: {
+				latitude: 52.408141,
+				longitude: 16.926712,
+			}
 		};
 	}
 
@@ -44,10 +47,10 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 	}
 	componentDidUpdate() {
 		if (this.props.location) {
-			if (parseCoords(this.props.location) !== this.state.center) {
+			if (this.props.location !== this.state.center) {
 				this.setState(produce((draft: IMapState) => {
 					draft.zoom = [14];
-					draft.center = parseCoords(this.props.location);
+					draft.center = this.props.location;
 				}));
 			}
 		}
@@ -79,7 +82,7 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 			<Mapbox
 				style={mapConfig.mapLight}
 				onStyleLoad={this.onStyleLoad}
-				center={center}
+				center={parseCoords(center)}
 				zoom={zoom}
 				containerStyle={containerStyle}
 				flyToOptions={flyToOptions}
@@ -93,7 +96,7 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 				}
 				{location && !label &&
 					<Marker
-						coordinates={[location[0], location[1]]}
+						coordinates={parseCoords(location)}
 						anchor="bottom"
 					>
 						<i className={"fa fa-map-marker"} style={markerStyle}></i>
