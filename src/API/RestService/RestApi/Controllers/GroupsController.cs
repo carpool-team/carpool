@@ -27,7 +27,7 @@ namespace RestApi.Controllers
 		[HttpGet("{groupId}")]
 		public async Task<ApiResponse> GetGroup([FromRoute] GroupId groupId)
 		{
-			var request = new GetGroupQuery(groupId);
+			var request = new GetGroupQuery(groupId, User.GetUserId());
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 			return new ApiResponse(response);
 		}
