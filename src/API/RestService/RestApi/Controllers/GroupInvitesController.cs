@@ -82,7 +82,7 @@ namespace RestApi.Controllers
 		public async Task<ApiResponse> DeleteGroupInvite(long groupInviteId)
 		{
 			GroupInviteId typedGroupInviteId = new(groupInviteId);
-			var request = new DeleteGroupInviteCommand(typedGroupInviteId, User.GetUserId());
+			DeleteGroupInviteCommand request = new(typedGroupInviteId, User.GetUserId());
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 
 			return new ApiResponse($"Group Invite with id: {response} has been deleted");

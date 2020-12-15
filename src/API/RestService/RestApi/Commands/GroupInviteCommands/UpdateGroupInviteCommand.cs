@@ -41,7 +41,7 @@ namespace RestApi.Commands.GroupInviteCommands
 			var groupInvite = await _groupInviteRepository.GetByIdAsync(request.GroupInviteId, cancellationToken)
 				.ConfigureAwait(false);
 
-			if(request.AppUserId != groupInvite.InvitedAppUserId || request.AppUserId != groupInvite.InvitingAppUserId)
+			if(request.AppUserId != groupInvite.InvitedAppUserId && request.AppUserId != groupInvite.InvitingAppUserId)
 				throw new ApiException("User does not have access to view group invite",
 					StatusCodes.Status403Forbidden);
 				
