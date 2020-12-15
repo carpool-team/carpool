@@ -17,10 +17,6 @@ const ListItem = ({item, onItemPress}) => (
         <Text style={styles.name} numberOfLines={1}>
           {item.name}
         </Text>
-        <Text
-          style={
-            styles.since
-          }>{`Since ${new Date().toLocaleDateString()}`}</Text>
       </View>
       <View style={styles.bottomRow}>
         <View style={sheet.rowCenter}>

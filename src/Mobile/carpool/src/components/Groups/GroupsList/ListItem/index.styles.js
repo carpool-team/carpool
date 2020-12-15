@@ -4,7 +4,7 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   card: {
     width: '100%',
-    height: 160,
+    height: 140,
     marginBottom: 30,
   },
   container: {
