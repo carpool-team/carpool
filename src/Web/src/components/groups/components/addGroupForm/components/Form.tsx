@@ -111,14 +111,22 @@ const Form: (props: IFirstStepProps) => JSX.Element = props => {
 					value={props.data.group.address}
 					icon={InputIcon.Location}
 					addressCords={coords => {
-						props.callbacks.handleChange({
-							latitude: coords[1],
-							longitude: coords[0],
-						}, dataKeys.location);
-						setAddressCoordinates({
-							latitude: coords[1],
-							longitude: coords[0],
-						});
+						if (coords) {
+							setAddressCoordinates({
+								latitude: coords[1],
+								longitude: coords[0],
+							});
+							props.callbacks.handleChange({
+								latitude: coords[1],
+								longitude: coords[0],
+							}, dataKeys.location);
+						} else {
+							setAddressCoordinates(null);
+							props.callbacks.handleChange({
+								latitude: null,
+								longitude: null,
+							}, dataKeys.location);
+						}
 					}}
 					validation={{
 						type: ValidationType.Address,

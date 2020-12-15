@@ -77,14 +77,19 @@ export default class MapBoxGroups extends React.Component<
 			);
 		}
 
-		if (this.props.group && this.props.group?.groupId !== this.currentGroupId) {
-			this.currentGroupId = this.props.group.groupId;
-			this.setState(
-				produce((draft: IMapState) => {
-					draft.center = parseCoords(this.props.group.location);
-					draft.zoom = [14];
-				})
-			);
+		if (this.props.group?.groupId !== this.currentGroupId) {
+			this.currentGroupId = this.props.group?.groupId;
+			if (this.props.group) {
+				this.setState(
+					produce((draft: IMapState) => {
+						draft.center = parseCoords(this.props.group.location);
+						draft.zoom = [14];
+					})
+				);
+			} else if (this.state.groups?.length) {
+				this.getBounds(groups)
+			}
+
 		}
 	}
 
