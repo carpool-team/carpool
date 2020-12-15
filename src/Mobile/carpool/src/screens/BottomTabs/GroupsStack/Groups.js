@@ -74,8 +74,7 @@ const styles = StyleSheet.create({
   button: {
     ...sheet.rowCenterSplit,
     width: '100%',
-    marginBottom: 36,
-    paddingHorizontal: 16,
+    padding: 16,
   },
   number: {
     ...sheet.textSemiBold,
