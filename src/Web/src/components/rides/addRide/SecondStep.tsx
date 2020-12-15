@@ -197,7 +197,11 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 	};
 
 	const setUserCoordinates = (coords: [number, number]) => {
-		setLocation(coords);
+		if (coords) {
+			setLocation(coords);
+		} else {
+			setLocation(parseCoords(props.group.location));
+		}
 	};
 
 	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {

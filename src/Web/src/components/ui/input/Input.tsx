@@ -102,6 +102,15 @@ const Input = (props: IInputProps) => {
 		validate();
 	}, [props.value, props.validation?.validate]);
 
+	useEffect(() => {
+		if (props.type === InputType.Address && !props.value) {
+			props.addressCords(null);
+			props.changeHandler("");
+			setAutocompleteList(null);
+			setIsAutoCompleted(false);
+		}
+	}, [props.value])
+
 	const inputBaseClassName: string = "input__input";
 	const inputInvalidClassName: string = "input__input--invalid";
 	const inputInvalidContainerClassName: string = "input__container--invalid";
@@ -202,7 +211,7 @@ const Input = (props: IInputProps) => {
 					<div
 						key={address.place_name}
 						className={inputAddressClassName}
-						onClick={() =>
+						onMouseDown={() =>
 							onAutocompleteClick(address.place_name, address.center)
 						}
 					>
