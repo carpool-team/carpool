@@ -318,7 +318,7 @@ const addRideEpic: Epic<RideAction | GenericAction> = (action$, state$) => actio
 		// TODO zastanowić się czy planujemy dać użytkownikowi wybór tego
 		const currentDate = new Date();
 		const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-		//END
+		// END
 
 		if (action.input.recurring) {
 			request = new AddRideRequest({

@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { colorList } from "../../../../../scss/colorList";
-import { TFunction } from "i18next";
-import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
-import { withTranslation } from "react-i18next";
-import { IRide } from "components/groups/interfaces/IRide";
-import mapboxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
-import mapConfig from "../../../../map/mapConfig";
+import React, { useState } from "react";
 import Button from "../../../../ui/button/Button";
 import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
-import moment from "moment";
-import { RideDirection } from "../../../../groups/api/addRide/AddRideRequest";
-import {parseCoords} from "../../../../../helpers/UniversalHelper";
-import {convertDate} from "../../../../../helpers/UniversalHelper";
-
+import { parseCoords } from "../../../../../helpers/UniversalHelper";
+import { convertDate } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
+import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 
-const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
+const geocodingClient = getGeocodingClient();
 
 const ActiveItemParticipant = (props: IListItemProps) => {
 
@@ -48,7 +39,7 @@ const ActiveItemParticipant = (props: IListItemProps) => {
 				})
 				.send();
 			const result = response.body.features[0];
-			if ( result !== undefined && result.hasOwnProperty("place_name")){
+			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
 				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
@@ -101,12 +92,12 @@ const ActiveItemParticipant = (props: IListItemProps) => {
 					<div className={cssClasses.icon} style={color}>	</div>
 					<div className={cssClasses.address} >
 						<div className={cssClasses.fromLabel}>
-						{!loading &&
+							{!loading &&
 								fromName
 							}
 						</div>
 						<div className={cssClasses.toLabel}>
-							{ !loading &&
+							{!loading &&
 								toName
 							}
 						</div>
@@ -134,4 +125,4 @@ const ActiveItemParticipant = (props: IListItemProps) => {
 	);
 };
 
-export default (ActiveItemParticipant)
+export default (ActiveItemParticipant);

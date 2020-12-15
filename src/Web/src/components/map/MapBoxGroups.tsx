@@ -1,18 +1,18 @@
 import * as React from "react";
 import { CSSProperties } from "react";
-import ReactMapboxGl, { Layer, Feature, Popup, Marker } from "react-mapbox-gl";
+import ReactMapboxGl, { Popup, Marker } from "react-mapbox-gl";
 import { IGroup } from "../groups/interfaces/IGroup";
-import mapConfig from "./mapConfig";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { parseCoords } from "../../helpers/UniversalHelper";
+import { mapboxKey, mapboxStyle } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
 	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
 	minZoom: 2,
 	maxZoom: 15,
-	accessToken: mapConfig.mapboxKey,
+	accessToken: mapboxKey,
 });
 
 export interface IMapState {
@@ -41,7 +41,7 @@ export interface IMapProps {
 export default class MapBoxGroups extends React.Component<
 	IMapProps,
 	IMapState
-> {
+	> {
 	private currentGroupId: string;
 
 	constructor(props: IMapProps) {
@@ -111,18 +111,18 @@ export default class MapBoxGroups extends React.Component<
 				})
 			);
 		}
-	};
+	}
 
 	private onDrag = () => {
 		if (this.props.group) {
 			this.props.setSelectedGroupCallback(undefined);
 		}
-	};
+	}
 
 	private onStyleLoad = (map: any) => {
 		const onStyleLoad = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
-	};
+	}
 
 	private markerClick = (group: IGroup) => {
 		this.setState({
@@ -131,7 +131,7 @@ export default class MapBoxGroups extends React.Component<
 		});
 
 		this.props.setSelectedGroupCallback(group.groupId);
-	};
+	}
 
 	public render() {
 		const { fitBounds, center, zoom, groups } = this.state;
@@ -156,7 +156,7 @@ export default class MapBoxGroups extends React.Component<
 
 		return (
 			<Mapbox
-				style={mapConfig.mapLight}
+				style={mapboxStyle}
 				onStyleLoad={this.onStyleLoad}
 				fitBounds={fitBounds}
 				fitBoundsOptions={boundsOptions}

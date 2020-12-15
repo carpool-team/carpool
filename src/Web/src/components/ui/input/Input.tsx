@@ -6,8 +6,7 @@ import { IValidation } from "./interfaces/IValidation";
 import { ValidationType } from "./enums/ValidationType";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
-import mapboxGeocoding from "@mapbox/mapbox-sdk/services/geocoding";
-import mapConfig from "../../map/mapConfig";
+import { getGeocodingClient } from "../../map/MapBoxHelper";
 
 import "./Input.scss";
 
@@ -46,7 +45,7 @@ const regexes = {
 	[ValidationType.Numeric]: /^\d+$/,
 };
 
-const geocodingClient = mapboxGeocoding({ accessToken: mapConfig.mapboxKey });
+const geocodingClient = getGeocodingClient();
 
 interface IInputValidationData {
 	value: string;
