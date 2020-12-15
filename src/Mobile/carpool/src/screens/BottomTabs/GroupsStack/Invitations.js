@@ -17,17 +17,13 @@ const Invitations = ({navigation}) => {
 
   const onAccept = item => {
     dispatch(actions.acceptInvitation(item.groupInviteId))
-      .then(res => {
-        console.log('SUCCESS');
-      })
+      .then(() => navigation.goBack())
       .catch(err => alert('Error ocurred'));
   };
 
   const onDecline = async item => {
     dispatch(actions.declineInvitation(item.groupInviteId))
-      .then(res => {
-        console.log('SUCCESS');
-      })
+      .then(() => navigation.goBack())
       .catch(err => alert('Error ocurred'));
   };
 
