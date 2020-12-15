@@ -2,7 +2,6 @@ import { toast } from "react-toastify";
 import { Epic, ofType } from "redux-observable";
 import { of } from "rxjs";
 import { switchMap, mergeMap, catchError } from "rxjs/operators";
-import { tempClientId } from "../../../api/requests/RequestCore";
 import { parseJwt } from "../../../helpers/UniversalHelper";
 import i18n from "../../../i18n";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
@@ -82,7 +81,6 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 			const request: LoginRequest = new LoginRequest({
 				body: {
 					...action.data,
-					clientId: tempClientId
 				}
 			});
 			try {

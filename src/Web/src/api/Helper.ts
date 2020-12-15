@@ -81,12 +81,12 @@ export const getRequestType: (type: RequestType) => AllowedRequestVerb = (
 	}
 };
 
-export const isAuthEndpoint: (endpoint: RequestEndpoint) => boolean = (ep) => {
+export const getUrl: (endpoint: RequestEndpoint) => string = (ep) => {
 	switch (ep) {
 		case RequestEndpoint.LOGIN_USER:
 		case RequestEndpoint.REGISTER_USER:
-			return true;
+			return process.env.AUTH_URL;
 		default:
-			return false;
+			return process.env.REST_URL;
 	}
 };
