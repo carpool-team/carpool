@@ -1,10 +1,8 @@
+import { ILocation } from "./ILocation";
+
 export interface IGroupBase {
 	groupId: string;
-	// location: ILocation[];
-	location: {
-		longitude: number;
-		latitude: number;
-	};
+	location: ILocation;
 	rideCount: number;
 	name: string;
 }

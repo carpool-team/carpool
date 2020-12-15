@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import MediaQuery from "react-responsive";
-import Input from "../../../ui/input/Input";
-import Button from "../../../ui/button/Button";
-import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
-import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
-import { IFormData } from "./interfaces/IFormData";
+import Input from "../../../../ui/input/Input";
+import Button from "../../../../ui/button/Button";
+import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
+import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
+import { IFormData } from "../interfaces/IFormData";
 import { withTranslation } from "react-i18next";
-import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
-import { InputType } from "../../../ui/input/enums/InputType";
-import { InputIcon } from "../../../ui/input/enums/InputIcon";
-import MapBoxPicker from "../../../map/MapBoxPicker";
-import { ValidationType } from "../../../ui/input/enums/ValidationType";
-import { each } from "../../../../helpers/UniversalHelper";
+import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
+import { InputType } from "../../../../ui/input/enums/InputType";
+import { InputIcon } from "../../../../ui/input/enums/InputIcon";
+import MapBoxPicker from "../../../../map/MapBoxPicker";
+import { ValidationType } from "../../../../ui/input/enums/ValidationType";
 import { useImmer } from "use-immer";
-import { ILocation } from "../../interfaces/ILocation";
+import { ILocation } from "../../../interfaces/ILocation";
+import { each } from "../../../../../helpers/UniversalHelper";
 
 interface IFirstStepCallbacks {
 	handleChange: (newValue: string | { latitude: number, longitude: number }, key: string) => void;
-	incrementStep: () => void;
+	createGroup: () => void;
 }
 
 interface IFirstStepProps extends IReactI18nProps {
@@ -25,7 +25,7 @@ interface IFirstStepProps extends IReactI18nProps {
 	callbacks: IFirstStepCallbacks;
 }
 
-const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
+const Form: (props: IFirstStepProps) => JSX.Element = props => {
 	const [inputsValid, setInputsValid] = useImmer({
 		name: false,
 		code: false,
@@ -33,6 +33,15 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 	});
 	const [validate, setValidate] = useState(false);
 	const [addressCoordinates, setAddressCoordinates] = useState<ILocation>(null);
+
+	const createBtnClick = () => {
+		if (each(inputsValid, i => i)) {
+			props.callbacks.createGroup();
+			setValidate(false);
+		} else {
+			setValidate(true);
+		}
+	};
 
 	const cssClasses = {
 		container: "addGroupContainer",
@@ -53,17 +62,10 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 		groupCodeInput: "groups.addGroupForm.code",
 		groupCodeInputComment: "groups.addGroupForm.codeInputComment",
 		addressInput: "groups.addGroupForm.address",
-		basicInfo: "groups.addGroupForm.basicInfo"
+		basicInfo: "groups.addGroupForm.basicInfo",
+		createBtn: "groups.addGroupForm.createBtn",
 	};
 
-	const incrementStepClick = () => {
-		if (each(inputsValid, i => i)) {
-			props.callbacks.incrementStep();
-			setValidate(false);
-		} else {
-			setValidate(true);
-		}
-	};
 	const { t } = props;
 
 	return (
@@ -128,8 +130,12 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 						validate
 					}}
 				/>
-				<Button onClick={incrementStepClick} color={ButtonColor.White} background={ButtonBackground.Blue}>
-					{t(resources.nextBtn)}
+				<Button
+					onClick={createBtnClick}
+					color={ButtonColor.White}
+					background={ButtonBackground.Blue}
+				>
+					{t(resources.createBtn)}
 				</Button>
 			</div>
 			<MediaQuery query="(min-width: 900px)">
@@ -141,4 +147,4 @@ const FirstStep: (props: IFirstStepProps) => JSX.Element = props => {
 	);
 };
 
-export default withTranslation()(FirstStep);
+export default withTranslation()(Form);
