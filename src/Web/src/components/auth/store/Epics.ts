@@ -13,7 +13,9 @@ import { RegisterResponse } from "../api/register/RegisterResponse";
 import { ITokenInfo } from "../interfaces/ITokenInfo";
 import { ILoginAction, ILoginErrorAction, ILoginSuccessAction, IRegisterAction, IRegisterErrorAction, IRegisterSuccessAction, LoginAction, LoginActionTypes, RegisterAction, RegisterActionTypes } from "./Types";
 
-const genericErrorCode: string = "unknownGeneric";
+const loginGenericErrorCode: string = "loginGeneric";
+const registerGenericErrorCode: string = "registerGeneric";
+const loginInvalidErrorCode: string = "loginInvalid";
 
 const registerEpic: Epic<RegisterAction> = (action$) =>
 	action$.pipe(
@@ -47,13 +49,8 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 					}
 				];
 			} else {
-				if (response) {
-					const msg: string = i18n.t("error." + response.responseException[0]?.code);
-					toast.error(msg);
-				} else {
-					const msg: string = i18n.t("error." + genericErrorCode);
-					toast.error(msg);
-				}
+				const msg: string = i18n.t("error." + registerGenericErrorCode);
+				toast.error(msg);
 				return [
 					<IRegisterErrorAction>{
 						type: RegisterActionTypes.RegisterError,
@@ -115,13 +112,8 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 					}
 				];
 			} else {
-				if (response) {
-					const msg: string = i18n.t("error." + response.responseException[0]?.code);
-					toast.error(msg);
-				} else {
-					const msg: string = i18n.t("error." + genericErrorCode);
-					toast.error(msg);
-				}
+				const msg: string = i18n.t("error." + loginInvalidErrorCode);
+				toast.error(msg);
 				return [
 					<ILoginErrorAction>{
 						type: LoginActionTypes.LoginError,

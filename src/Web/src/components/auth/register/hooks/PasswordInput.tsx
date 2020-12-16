@@ -26,6 +26,8 @@ const cssClasses = {
 	validation: "auth__inputs--validation"
 };
 
+const minScore: number = 3;
+
 const usePassword = () => {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,7 +35,7 @@ const usePassword = () => {
 	const [score, setScore] = useState(0);
 
 	useEffect(() => {
-		if (score === 4 && password === confirmPassword) {
+		if (score >= minScore && password === confirmPassword) {
 			setIsValid(true);
 		} else {
 			setIsValid(false);
@@ -41,7 +43,7 @@ const usePassword = () => {
 	}, [password, confirmPassword]);
 
 	const renderValidationMessage = () => {
-		if (score === 4 && password !== confirmPassword) {
+		if (score >= minScore && password !== confirmPassword) {
 			return (
 				<div className={cssClasses.validation}>
 					<span >
@@ -49,7 +51,7 @@ const usePassword = () => {
 					</span>
 				</div>
 			);
-		} else if (score > 0 && score < 4) {
+		} else if (score > 0 && score < minScore) {
 			return (
 				<div className={cssClasses.validation}>
 					<span >
@@ -82,7 +84,7 @@ const usePassword = () => {
 					i18n.t(resources.scoreWords.strong),
 				]}
 				shortScoreWord={i18n.t(resources.scoreWords.short)}
-				onChangeScore={s => { setScore(s); }}
+				onChangeScore={s => setScore(s)}
 			/>
 			<Input
 				style={cssClasses.input}

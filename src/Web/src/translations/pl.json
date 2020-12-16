@@ -17,8 +17,8 @@
                 "passwordTooWeak": "Hasło jest za słabe",
                 "scoreWords": {
                     "short": "Za krótkie",
-                    "weak": "Słabe",
-                    "okay": "Ok",
+                    "weak": "Bardzo słabe",
+                    "okay": "Słabe",
                     "good": "Dobre",
                     "strong": "Silne"
                 }
@@ -132,7 +132,10 @@
         },
         "error": {
             "DuplicateUserName": "Wybrany e-mail jest już zajęty!",
-            "unknownGeneric": "Nieznany błąd serwera. Spróbuj ponownie!"
+            "unknownGeneric": "Nieznany błąd serwera. Spróbuj ponownie!",
+            "loginGeneric": "Błąd logowania. Spróbuj ponownie!",
+            "registerGeneric": "Nieznany błąd rejestracji.",
+            "loginInvalid": "Błędny e-mail lub hasło."
         }
     }
 }
