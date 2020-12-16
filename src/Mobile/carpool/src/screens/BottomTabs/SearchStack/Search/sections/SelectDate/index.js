@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {colors} from '../../../../../styles';
-import {StandardButton} from '../../../../../components/common/buttons';
+import {colors} from '../../../../../../styles';
+import {StandardButton} from '../../../../../../components/common/buttons';
 
 const SelectDate = ({onSubmit}) => {
   const [date, setDate] = useState(new Date());

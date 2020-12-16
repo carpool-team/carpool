@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
-import {colors, sheet} from '../../../../../styles';
-import {GroupsFlatlist} from '../../../../../components/Groups';
+import {colors, sheet} from '../../../../../../styles';
+import {GroupsFlatlist} from '../../../../../../components/Groups';
 
 const SelectGroup = ({onSubmit}) => {
   const groups = useSelector(state => state.accountReducer.groups);

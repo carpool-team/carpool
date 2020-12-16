@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
-import {geocodingClient} from '../../../../../maps/mapbox';
-import {colors, sheet} from '../../../../../styles';
+import {geocodingClient} from '../../../../../../maps/mapbox';
+import {colors, sheet} from '../../../../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {PointMinimap} from '../../../../../components/Route';
-import {StandardButton} from '../../../../../components/common/buttons';
-import {StartLocationsFlatList} from '../../../../../components/Driver';
-import {parseCoords} from '../../../../../utils/coords';
+import {PointMinimap} from '../../../../../../components/Route';
+import {StandardButton} from '../../../../../../components/common/buttons';
+import {StartLocationsFlatList} from '../../../../../../components/Driver';
+import {parseCoords} from '../../../../../../utils/coords';
 
 const config = {
   autocomplete: false,

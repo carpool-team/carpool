@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, ActivityIndicator, StyleSheet} from 'react-native';
-import {useReverseGeocoding} from '../../../../../hooks';
-import {parseCoords} from '../../../../../utils/coords';
-import {colors, sheet} from '../../../../../styles';
-import {UpView} from '../../../../../components/common';
+import {parseCoords} from '../../../../../../utils/coords';
+import {colors, sheet} from '../../../../../../styles';
+import {UpView} from '../../../../../../components/common';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useReverseGeocoding} from '../../../../../../hooks';
 
 const SelectDirection = ({onSubmit, state}) => {
   const [placeName, setPlaceName] = useState(null);
