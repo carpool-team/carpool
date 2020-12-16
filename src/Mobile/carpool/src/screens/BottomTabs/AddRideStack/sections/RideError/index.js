@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {sheet, colors} from '../../../../../styles';
+import {View, Text} from 'react-native';
+import {colors} from '../../../../../styles';
 import {StandardButton} from '../../../../../components/common/buttons';
+import {styles} from './index.styles';
 
 const RideError = ({onPress}) => (
   <View style={styles.container}>
@@ -12,24 +13,5 @@ const RideError = ({onPress}) => (
     <StandardButton onPress={onPress} color={colors.red} title="OK" />
   </View>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  success: {
-    ...sheet.textSemiBold,
-    color: colors.green,
-    fontSize: 40,
-  },
-  info: {
-    ...sheet.textMedium,
-    color: colors.red,
-    fontSize: 16,
-  },
-});
 
 export default RideError;

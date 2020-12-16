@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text} from 'react-native';
 import {StandardButton} from '../../../../../components/common/buttons';
-import {sheet, colors} from '../../../../../styles';
+import {colors} from '../../../../../styles';
+import {styles} from './index.styles';
 
 const RideCreated = ({onPress}) => (
   <View style={styles.container}>
@@ -12,24 +13,5 @@ const RideCreated = ({onPress}) => (
     <StandardButton onPress={onPress} color={colors.blue} title="OK" />
   </View>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-  },
-  success: {
-    ...sheet.textSemiBold,
-    color: colors.green,
-    fontSize: 40,
-  },
-  info: {
-    ...sheet.textMedium,
-    color: colors.grayDark,
-    fontSize: 16,
-  },
-});
 
 export default RideCreated;

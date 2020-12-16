@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text} from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import {colors, sheet} from '../../../../../styles';
@@ -8,6 +8,7 @@ import {
   StandardButton,
 } from '../../../../../components/common/buttons';
 import {AddRideActions} from '../../reducer';
+import {styles} from './index.styles';
 
 const MIN_VALUE = 1;
 const MAX_VALUE = 23;
@@ -63,35 +64,5 @@ const SetSeats = ({dispatch}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: 24,
-    paddingTop: 36,
-    paddingBottom: 54,
-  },
-  seats: {
-    ...sheet.textSemiBold,
-    color: colors.grayDark,
-    fontSize: 24,
-  },
-  carWrapper: {
-    width: '100%',
-  },
-  car: {
-    flex: 2,
-  },
-  buttonsWrapper: {
-    flex: 3,
-  },
-  numOfSeats: {
-    ...sheet.textSemiBold,
-    color: colors.blue,
-    fontSize: 32,
-  },
-});
 
 export default SetSeats;

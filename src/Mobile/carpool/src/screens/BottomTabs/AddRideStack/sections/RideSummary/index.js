@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, ActivityIndicator} from 'react-native';
 import RouteMinimap from '../../../../../components/Route/RouteMinimap';
 import {sheet, colors} from '../../../../../styles';
 import GroupWaypoints from '../../../../../components/Ride/GroupWaypoints';
@@ -10,6 +10,7 @@ import {StandardButton} from '../../../../../components/common/buttons';
 import {useDispatch} from 'react-redux';
 import * as actions from '../../../../../store/actions';
 import {AddRideActions} from '../../reducer';
+import {styles} from './index.styles';
 
 const RideSummary = ({state, rdispatch}) => {
   const [loading, setLoading] = useState(false);
@@ -139,67 +140,5 @@ const RideSummary = ({state, rdispatch}) => {
     )
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-  },
-  mapWrapper: {
-    width: '100%',
-    // height: 300,
-    flex: 1,
-  },
-  waypoints: {
-    width: '100%',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.gray,
-  },
-  bottomWrapper: {
-    width: '100%',
-    marginTop: 16,
-    paddingHorizontal: 16,
-  },
-  detailsWrapper: {
-    ...sheet.rowCenterSplit,
-    marginTop: 16,
-  },
-  time: {
-    ...sheet.textSemiBold,
-    color: colors.green,
-    fontSize: 22,
-  },
-  date: {
-    ...sheet.textSemiBold,
-    color: colors.grayDark,
-    fontSize: 16,
-    marginTop: 5,
-  },
-  seats: {
-    ...sheet.textSemiBold,
-    color: colors.grayDark,
-    fontSize: 22,
-    marginLeft: 12,
-  },
-  buttonsWrapper: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: '15%',
-    paddingHorizontal: 16,
-    paddingTop: 20,
-  },
-  buttonsContainer: {
-    ...sheet.rowCenterSplit,
-    width: '100%',
-  },
-  loadingWrapper: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default RideSummary;

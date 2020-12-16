@@ -1,10 +1,11 @@
 import React, {useState, useMemo} from 'react';
-import {View, Text, Switch, StyleSheet} from 'react-native';
+import {View, Text, Switch} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import PickDays from '../../../../../components/Driver/AddRide/PickDays';
 import {StandardButton} from '../../../../../components/common/buttons';
-import {colors, sheet} from '../../../../../styles';
+import {colors} from '../../../../../styles';
 import {AddRideActions} from '../../reducer';
+import {styles} from './index.styles';
 
 const PickTime = ({dispatch}) => {
   const [isRegular, setIsRegular] = useState(false);
@@ -94,38 +95,5 @@ const PickTime = ({dispatch}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  singularContainer: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  regularContainer: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 36,
-    paddingBottom: 54,
-  },
-  switchRow: {
-    ...sheet.rowCenterSplit,
-    width: '100%',
-  },
-  regularRide: {
-    ...sheet.textSemiBold,
-    fontSize: 18,
-    color: colors.grayVeryDark,
-  },
-  picker: {
-    marginTop: 40,
-  },
-});
 
 export default PickTime;
