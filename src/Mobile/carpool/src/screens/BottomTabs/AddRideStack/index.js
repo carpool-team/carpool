@@ -6,6 +6,7 @@ import SelectDirection from './SelectDirection';
 import SelectGroup from './SelectGroup';
 import SelectLocation from './SelectLocation';
 import SetSeats from './SetSeats';
+import AddRide from './AddRide';
 
 export {
   PickTime,
@@ -16,4 +17,5 @@ export {
   SelectGroup,
   SelectLocation,
   SetSeats,
+  AddRide,
 };

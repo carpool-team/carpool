@@ -9,6 +9,7 @@ import {
   RideSummary,
   RideCreated,
   RideError,
+  AddRide,
 } from '../../../../screens/BottomTabs';
 import {useIsFocused} from '@react-navigation/native';
 import {Header} from '../../../../components/navigation';
@@ -38,12 +39,14 @@ const AddRideStack = ({navigation}) => {
 
   return (
     <Stack.Navigator
-      initialRouteName="SelectGroup"
+      // initialRouteName="SelectGroup"
+      initialRouteName="AddRide"
       screenOptions={{
         title: 'New ride',
         header: props => <Header {...props} hideSwitch />,
         gestureEnabled: false,
       }}>
+      <Stack.Screen name="AddRide" component={AddRide} />
       <Stack.Screen name="SelectGroup" component={SelectGroup} />
       <Stack.Screen name="SelectDirection" component={SelectDirection} />
       <Stack.Screen name="SelectLocation" component={SelectLocation} />
