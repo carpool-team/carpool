@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
-import {colors, sheet} from '../../../../../../styles';
 import {GroupsFlatlist} from '../../../../../../components/Groups';
+import {styles} from './index.styles';
 
 const SelectGroup = ({onSubmit}) => {
   const groups = useSelector(state => state.accountReducer.groups);
@@ -18,20 +18,5 @@ const SelectGroup = ({onSubmit}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    paddingHorizontal: 24,
-    paddingTop: 40,
-  },
-  title: {
-    fontSize: 30,
-    color: colors.orange,
-    ...sheet.textSemiBold,
-    marginBottom: 20,
-  },
-});
 
 export default SelectGroup;

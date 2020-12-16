@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {colors} from '../../../../../../styles';
 import {StandardButton} from '../../../../../../components/common/buttons';
+import {styles} from './index.styles';
 
 const SelectDate = ({onSubmit}) => {
   const [date, setDate] = useState(new Date());
@@ -33,24 +34,5 @@ const SelectDate = ({onSubmit}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  singularContainer: {
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingTop: 36,
-    paddingBottom: 54,
-  },
-  button: {
-    marginTop: 50,
-  },
-});
 
 export default SelectDate;

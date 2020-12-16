@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, TextInput} from 'react-native';
 import {geocodingClient} from '../../../../../../maps/mapbox';
 import {colors, sheet} from '../../../../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,6 +7,7 @@ import {PointMinimap} from '../../../../../../components/Route';
 import {StandardButton} from '../../../../../../components/common/buttons';
 import {StartLocationsFlatList} from '../../../../../../components/Driver';
 import {parseCoords} from '../../../../../../utils/coords';
+import {styles} from './index.styles';
 
 const config = {
   autocomplete: false,
@@ -132,53 +133,5 @@ const SelectLocation = ({onSubmit, state}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-  },
-  title: {
-    fontSize: 30,
-    color: colors.orange,
-    ...sheet.textSemiBold,
-  },
-  placeWrapper: {
-    flex: 1,
-    paddingTop: 30,
-  },
-  placeName: {
-    ...sheet.textSemiBold,
-    marginLeft: 12,
-    color: colors.grayDark,
-    fontSize: 18,
-  },
-  mapWrapper: {
-    width: '100%',
-    flex: 1,
-    marginTop: 16,
-    marginBottom: 32,
-  },
-  input: {
-    width: '100%',
-    borderBottomWidth: 2,
-    borderColor: colors.grayDark,
-    paddingVertical: 8,
-    ...sheet.textMedium,
-    fontSize: 18,
-    color: colors.grayVeryDark,
-  },
-  listWrapper: {
-    // flex: 1,
-    width: '100%',
-  },
-  buttonWrapper: {
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 50,
-  },
-});
 
 export default SelectLocation;
