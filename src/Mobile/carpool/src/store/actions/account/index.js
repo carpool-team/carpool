@@ -11,6 +11,13 @@ export const GetGroups = {
   Error: 'GET_GROUPS_ERROR',
 };
 
+export const GetUser = {
+  Trigger: 'GET_USER',
+  Success: 'GET_USER_SUCCESS',
+  Loading: 'GET_USER_LOADING',
+  Error: 'GET_USER_ERROR',
+};
+
 export const GetInvitations = {
   Trigger: 'GET_INVITATIONS',
   Success: 'GET_INVITATIONS_SUCCESS',
@@ -78,3 +85,11 @@ export const acceptInvitation = payload =>
 
 export const declineInvitation = payload =>
   createPromiseAction(DeclineInvitation.Trigger)(payload);
+
+export const getUser = () => ({type: GetUser.Trigger});
+
+export const getUserSuccess = payload => ({type: GetUser.Success, payload});
+
+export const getUserError = payload => ({type: GetUser.Error, payload});
+
+export const getUserLoading = () => ({type: GetUser.Loading});

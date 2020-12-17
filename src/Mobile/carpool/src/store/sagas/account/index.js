@@ -154,6 +154,35 @@ export function* declineInvitationAsync(action) {
   }
 }
 
+export function* getUserAsync() {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const res = yield instance.get(`/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('getUserAsync RES', res);
+
+      yield put(actions.getUserSuccess(res.data.result));
+    }
+  } catch (err) {
+    console.log('getUserAsync ERR', err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getUser());
+        return;
+      }
+    }
+    yield put(actions.getUserError(err));
+  }
+}
+
 export function* watchInvitationsAsync() {
   while (true) {
     const token = yield call(readData, STORAGE_KEYS.token);
@@ -172,6 +201,7 @@ const accountSagas = [
   takeLatest(actions.GetInvitations.Watch, watchInvitationsAsync),
   takeLatest(actions.AcceptInvitation.PromiseTrigger, acceptInvitationAsync),
   takeLatest(actions.DeclineInvitation.PromiseTrigger, declineInvitationAsync),
+  takeLatest(actions.GetUser.Trigger, getUserAsync),
 ];
 
 export default accountSagas;
