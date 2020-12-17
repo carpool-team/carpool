@@ -18,6 +18,12 @@ export const GetUser = {
   Error: 'GET_USER_ERROR',
 };
 
+export const EditUser = {
+  Trigger: 'EDIT_USER',
+
+  PromiseTrigger: 'EDIT_USER.TRIGGER',
+};
+
 export const GetInvitations = {
   Trigger: 'GET_INVITATIONS',
   Success: 'GET_INVITATIONS_SUCCESS',
@@ -93,3 +99,6 @@ export const getUserSuccess = payload => ({type: GetUser.Success, payload});
 export const getUserError = payload => ({type: GetUser.Error, payload});
 
 export const getUserLoading = () => ({type: GetUser.Loading});
+
+export const editUser = payload =>
+  createPromiseAction(EditUser.Trigger)(payload);

@@ -165,12 +165,10 @@ export function* getUserAsync() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('getUserAsync RES', res);
 
       yield put(actions.getUserSuccess(res.data.result));
     }
   } catch (err) {
-    console.log('getUserAsync ERR', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
@@ -180,6 +178,48 @@ export function* getUserAsync() {
       }
     }
     yield put(actions.getUserError(err));
+  }
+}
+
+export function* editUserAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const res = yield instance.put(
+        `/Users/${userId}`,
+        {
+          ...action.payload,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log('editUserAsync RES', res);
+
+      yield put(actions.getUser());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('editUserAsync ERR', err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.editUser(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
   }
 }
 
@@ -202,6 +242,7 @@ const accountSagas = [
   takeLatest(actions.AcceptInvitation.PromiseTrigger, acceptInvitationAsync),
   takeLatest(actions.DeclineInvitation.PromiseTrigger, declineInvitationAsync),
   takeLatest(actions.GetUser.Trigger, getUserAsync),
+  takeLatest(actions.EditUser.PromiseTrigger, editUserAsync),
 ];
 
 export default accountSagas;
