@@ -16,6 +16,7 @@ export const GetInvitations = {
   Success: 'GET_INVITATIONS_SUCCESS',
   Loading: 'GET_INVITATIONS_LOADING',
   Error: 'GET_INVITATIONS_ERROR',
+  Watch: 'WATCH_INVITATIONS',
 };
 
 export const AcceptInvitation = {
@@ -69,6 +70,8 @@ export const getInvitationsError = payload => ({
 export const getInvitationsLoading = () => ({
   type: GetInvitations.Loading,
 });
+
+export const watchInvitations = () => ({type: GetInvitations.Watch});
 
 export const acceptInvitation = payload =>
   createPromiseAction(AcceptInvitation.Trigger)(payload);

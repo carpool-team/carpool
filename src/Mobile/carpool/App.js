@@ -14,6 +14,7 @@ import {createStore, applyMiddleware} from 'redux';
 import {rootReducer} from './src/store/reducers';
 import rootSaga from './src/store/sagas';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import * as actions from './src/store/actions';
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [promiseMiddleware, sagaMiddleware];
@@ -31,6 +32,8 @@ const App = () => {
   useEffect(() => {
     MapboxGL.setTelemetryEnabled(false);
     BackHandler.addEventListener('hardwareBackPress', () => true);
+
+    store.dispatch(actions.watchInvitations());
 
     return () =>
       BackHandler.removeEventListener('hardwareBackPress', () => true);

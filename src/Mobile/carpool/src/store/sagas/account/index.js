@@ -5,6 +5,7 @@ import {
   call,
   take,
   putResolve,
+  delay,
 } from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
@@ -13,6 +14,7 @@ import {
   rejectPromiseAction,
   resolvePromiseAction,
 } from '@adobe/redux-saga-promise';
+import {readData, STORAGE_KEYS} from '../../../storage';
 
 export function* getGroupsAsync() {
   try {
@@ -152,9 +154,22 @@ export function* declineInvitationAsync(action) {
   }
 }
 
+export function* watchInvitationsAsync() {
+  while (true) {
+    const token = yield call(readData, STORAGE_KEYS.token);
+
+    if (token) {
+      yield put(actions.getInvitations());
+    }
+
+    yield delay(60000);
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetGroups.Trigger, getGroupsAsync),
   takeLatest(actions.GetInvitations.Trigger, getInvitationsAsync),
+  takeLatest(actions.GetInvitations.Watch, watchInvitationsAsync),
   takeLatest(actions.AcceptInvitation.PromiseTrigger, acceptInvitationAsync),
   takeLatest(actions.DeclineInvitation.PromiseTrigger, declineInvitationAsync),
 ];
