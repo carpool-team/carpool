@@ -9,6 +9,7 @@ import {colors} from '../../../styles';
 import WeekRidesList from '../WeekRidesList';
 import {styles} from './index.styles';
 import {useActiveAccount} from '../../../hooks';
+import PastRides from '../PastRides';
 
 const Rides = () => {
   const navigation = useNavigation();
@@ -65,24 +66,28 @@ const Rides = () => {
         dateRange={dateRange}
         offset={offset}
       />
-      <ScrollView
-        style={styles.scrollView}
-        refreshControl={
-          <RefreshControl
-            onRefresh={onRefreshRides}
-            colors={[colors.blue]}
-            refreshing={
-              isPassenger ? passengersRides.loading : driversRides.loading
-            }
-            tintColor={colors.blue}
+      {offset > -1 ? (
+        <ScrollView
+          style={styles.scrollView}
+          refreshControl={
+            <RefreshControl
+              onRefresh={onRefreshRides}
+              colors={[colors.blue]}
+              refreshing={
+                isPassenger ? passengersRides.loading : driversRides.loading
+              }
+              tintColor={colors.blue}
+            />
+          }>
+          <WeekRidesList
+            weekDays={weekDays}
+            rides={isPassenger ? passengersRides.data : driversRides.data}
+            onItemPress={onItemPress}
           />
-        }>
-        <WeekRidesList
-          weekDays={weekDays}
-          rides={isPassenger ? passengersRides.data : driversRides.data}
-          onItemPress={onItemPress}
-        />
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        <PastRides />
+      )}
     </>
   );
 };

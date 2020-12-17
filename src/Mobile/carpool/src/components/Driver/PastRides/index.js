@@ -1,10 +1,8 @@
 import React, {useEffect} from 'react';
-import {View} from 'react-native';
 import RidesList from '../RidesList';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
 import {useNavigation} from '@react-navigation/native';
-import {styles} from './index.styles';
 import {useActiveAccount} from '../../../hooks';
 
 const PastRides = () => {
@@ -40,16 +38,14 @@ const PastRides = () => {
   };
 
   return (
-    <View style={styles.flatlistWrapper}>
-      <RidesList
-        data={isPassenger ? passengersPastRides.data : driversPastRides.data}
-        loading={
-          isPassenger ? passengersPastRides.loading : driversPastRides.loading
-        }
-        onRefresh={onRefreshPastRides}
-        onItemPress={onItemPress}
-      />
-    </View>
+    <RidesList
+      data={isPassenger ? passengersPastRides.data : driversPastRides.data}
+      loading={
+        isPassenger ? passengersPastRides.loading : driversPastRides.loading
+      }
+      onRefresh={onRefreshPastRides}
+      onItemPress={onItemPress}
+    />
   );
 };
 
