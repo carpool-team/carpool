@@ -99,7 +99,9 @@
             "btnGroups": "Dowiedz się więcej o grupach",
             "groups": "Grupy",
             "reports": "Raporty",
-            "rides": "Przejazdy"
+            "rides": "Przejazdy",
+            "help": "Jeżeli natrafiłeś na błąd, lub masz jakieś sugestie do działania aplikacji, jako zespół Carpool będziemy bardzo wdzięczni jeżeli opiszesz nam problem korzystając z naszego formularza.",
+            "helpBtn": "Dodaj zgłoszenie"
         },
         "common": {
             "groups": "Grupy",

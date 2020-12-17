@@ -7,6 +7,9 @@ import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
 import { ButtonLinkUnderline } from "../ui/buttonLink/enums/ButtonLinkUnderline";
 import "./HomeScreen.scss";
+import Button from "../ui/button/Button";
+import { ButtonColor } from "../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../ui/button/enums/ButtonBackground";
 
 class HomeScreen extends Component<IReactI18nProps> {
 	private cssClasses = {
@@ -21,7 +24,10 @@ class HomeScreen extends Component<IReactI18nProps> {
 		homeScreenOverlap: "homeScreenOverlap",
 		homeScreenGroupsImgGroup: "homeScreenGroupsImg homeScreenGroupsImg--group",
 		homeScreenGroupsImgRides: "homeScreenGroupsImg homeScreenGroupsImg--rides",
-		homeScreenGroupsImgReports: "homeScreenGroupsImg homeScreenGroupsImg--reports"
+		homeScreenGroupsImgReports: "homeScreenGroupsImg homeScreenGroupsImg--reports",
+		homeScreenHelpContainer: "homeScreenHelpContainer",
+		homeScreenHelpText: "homeScreenHelpContainer--text",
+		homeScreenHelpButton: "homeScreenHelpContainer--button"
 	};
 
 	private resources = {
@@ -35,19 +41,33 @@ class HomeScreen extends Component<IReactI18nProps> {
 		btnGroups: "homeScreen.btnGroups",
 		groups: "homeScreen.groups",
 		reports: "homeScreen.reports",
-		rides: "homeScreen.rides"
+		rides: "homeScreen.rides",
+		help: "homeScreen.help",
+		helpBtn: "homeScreen.helpBtn"
 	};
 
 	render: () => JSX.Element = () => {
 		const { t } = this.props;
 		return (
 			<div className={this.cssClasses.homeScreenContainer}>
+				<div className={this.cssClasses.homeScreenHelpContainer}>
+					<div className={this.cssClasses.homeScreenHelpText}>{t(this.resources.help)}</div>
+					<Button
+						additionalCssClass={this.cssClasses.homeScreenHelpButton}
+						onClick={() => { }}
+						color={ButtonColor.Gray}
+						background={ButtonBackground.White}
+					>
+						{t(this.resources.helpBtn)}
+					</Button>
+				</div>
 				<div className={this.cssClasses.homeScreenOverlap}></div>
 				<div className={this.cssClasses.homeScreenMap}>
 					<div className={this.cssClasses.homeScreenQuote}>
 						{t(this.resources.quote)}
 					</div>
 				</div>
+
 				<div className={this.cssClasses.homeScreenGroups}>
 					<div className={this.cssClasses.homeScreenGroupsRectangle}>
 						<div className={this.cssClasses.homeScreenGroupsTitle}>
