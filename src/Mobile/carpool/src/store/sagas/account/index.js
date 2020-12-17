@@ -223,6 +223,42 @@ export function* editUserAsync(action) {
   }
 }
 
+export function* deleteAccountAsync() {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const res = yield instance.delete(`/Users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('deleteAccountAsync RES', res);
+
+      yield put(actions.logoutUser());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('deleteAccountAsync ERR', err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.deleteAccount());
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 export function* watchInvitationsAsync() {
   while (true) {
     const token = yield call(readData, STORAGE_KEYS.token);
@@ -243,6 +279,7 @@ const accountSagas = [
   takeLatest(actions.DeclineInvitation.PromiseTrigger, declineInvitationAsync),
   takeLatest(actions.GetUser.Trigger, getUserAsync),
   takeLatest(actions.EditUser.PromiseTrigger, editUserAsync),
+  takeLatest(actions.DeleteAccount.PromiseTrigger, deleteAccountAsync),
 ];
 
 export default accountSagas;

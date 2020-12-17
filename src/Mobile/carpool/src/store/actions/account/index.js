@@ -44,6 +44,12 @@ export const DeclineInvitation = {
   PromiseTrigger: 'DECLINE_INVITATION.TRIGGER',
 };
 
+export const DeleteAccount = {
+  Trigger: 'DELETE_ACCOUNT',
+
+  PromiseTrigger: 'DELETE_ACCOUNT.TRIGGER',
+};
+
 export const toggleActiveAccount = () => ({
   type: ToggleActiveAccount.Trigger,
 });
@@ -102,3 +108,5 @@ export const getUserLoading = () => ({type: GetUser.Loading});
 
 export const editUser = payload =>
   createPromiseAction(EditUser.Trigger)(payload);
+
+export const deleteAccount = () => createPromiseAction(DeleteAccount.Trigger)();
