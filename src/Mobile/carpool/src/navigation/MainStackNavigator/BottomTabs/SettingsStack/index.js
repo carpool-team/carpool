@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 const SettingsStack = () => (
   <Stack.Navigator
     screenOptions={{
-      header: props => <Header {...props} />,
+      header: props => <Header {...props} hideSwitch />,
       title: 'Settings',
     }}>
     <Stack.Screen name="Settings" component={Settings} />

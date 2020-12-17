@@ -1,3 +1,4 @@
 import Settings from './Settings';
+import EditUser from './EditUser';
 
-export {Settings};
+export {Settings, EditUser};
