@@ -9,6 +9,7 @@ import GroupEdit from "./edit/GroupEdit";
 import GroupRides from "./rides/GroupRides";
 import { IGroup } from "../interfaces/IGroup";
 import { IRide } from "../interfaces/IRide";
+import FallbackRoute from "../../system/FallbackRoute";
 
 interface IGroupsRouterProps extends RouteComponentProps {
 	callbacks: IGroupCallbacks;
@@ -71,6 +72,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 							</Route>
 						</>
 					) : null}
+					<FallbackRoute />
 				</Switch>
 			</Suspense>
 		);
