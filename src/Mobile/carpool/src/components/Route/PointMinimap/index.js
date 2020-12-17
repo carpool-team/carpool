@@ -16,7 +16,7 @@ const PointMinimap = ({coordinates}) => (
       pitchEnabled={false}
       rotateEnabled={false}>
       <MapboxGL.Camera
-        zoomLevel={14}
+        zoomLevel={10}
         animationMode="flyTo"
         animationDuration={1000}
         centerCoordinate={coordinates}
