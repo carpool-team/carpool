@@ -10,7 +10,7 @@ import {FullScreenLoading} from '../../../../components/common/loaders';
 import {SafeScroll} from '../../../../components/common/wrappers';
 import {styles} from './index.styles';
 
-const Settings = () => {
+const Settings = ({navigation}) => {
   const user = useSelector(state => state.accountReducer.user);
 
   const dispatch = useDispatch();
@@ -38,6 +38,8 @@ const Settings = () => {
       ],
     );
 
+  const onEdit = () => navigation.navigate('EditUser');
+
   return (
     <SafeScroll minHeight={500}>
       {user.loading || !user.data ? (
@@ -58,7 +60,7 @@ const Settings = () => {
                 <Icon name="person" color={colors.grayDark} size={65} />
               </UpView>
               <View style={styles.flexCenter}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={onEdit}>
                   <Text style={styles.edit}>Edit</Text>
                 </TouchableOpacity>
               </View>
