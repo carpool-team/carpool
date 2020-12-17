@@ -160,6 +160,8 @@ export function* getUserAsync() {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
+      yield put(actions.getUserLoading());
+
       const res = yield instance.get(`/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -223,7 +225,7 @@ export function* editUserAsync(action) {
   }
 }
 
-export function* deleteAccountAsync() {
+export function* deleteAccountAsync(action) {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
     const userId = jwt_decode(token).sub.toString();
