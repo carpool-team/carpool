@@ -88,6 +88,12 @@
             "login": "Zaloguj się",
             "logout": "Wyloguj się"
         },
+        "helpForm": {
+            "titleInput": "Tytuł zgłoszenia",
+            "bodyInput": "Treść zgłoszenia",
+            "application": "Typ aplikacji",
+            "send": "Wyślij"
+        },
         "homeScreen": {
             "quote": "Nie jedź\n sam!",
             "join": "Dołącz do grupy",

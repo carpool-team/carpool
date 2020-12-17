@@ -1,0 +1,29 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.helpForm {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-bottom: 1vh;
+	margin-top: 1vh;
+	height: 91vh;
+	background-color: $background;
+	justify-content: center;
+	align-items: center;
+	&--input {
+		background-color: $white !important;
+		margin-bottom: 20px !important;
+		// border: 1px solid $grayDark !important;
+		border-radius: 10px !important;
+		padding: 3px !important;
+	}
+	&--form {
+		margin-left: 10vw;
+		margin-right: 10vw;
+		width: auto;
+	}
+	&--combo {
+		min-width: 200px !important;
+	}
+}

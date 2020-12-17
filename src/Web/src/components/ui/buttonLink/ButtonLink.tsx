@@ -16,6 +16,7 @@ interface IButtonLinkProps {
 	onClick?: () => void;
 	to?: string;
 	style?: ButtonLinkStyle;
+	additionalCssClass?: string;
 }
 
 const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
@@ -29,17 +30,20 @@ const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
 	};
 
 	const baseCssClass: string = "buttonLink";
-	const cssClasses: string = [
+	const cssClasses: string[] = [
 		baseCssClass,
 		getColorClass(props.color),
 		getBackgroundClass(props.background),
 		getIconClass(props.icon),
 		getUnderlineClass(props.undeline),
 		getStyleClass(props.style)
-	].join(" ");
+	]
+	if (props.additionalCssClass) {
+		cssClasses.push(props.additionalCssClass);
+	}
 
 	return (
-		<Link to={props.to ?? "#"} className={cssClasses} onClick={btnClick}>
+		<Link to={props.to ?? "#"} className={cssClasses.join(" ")} onClick={btnClick}>
 			{props.children}
 		</Link>
 	);
