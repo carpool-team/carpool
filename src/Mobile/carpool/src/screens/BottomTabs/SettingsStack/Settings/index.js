@@ -40,7 +40,7 @@ const Settings = () => {
 
   return (
     <SafeScroll minHeight={500}>
-      {user.loading ? (
+      {user.loading || !user.data ? (
         <FullScreenLoading />
       ) : (
         <View style={styles.container}>
