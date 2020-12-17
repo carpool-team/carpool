@@ -2,7 +2,7 @@ import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
   DriversRideDetails,
-  DriversRides,
+  RidesList,
   PassengersRideDetails,
 } from '../../../../screens/BottomTabs/RidesStack';
 import {Header} from '../../../../components/navigation';
@@ -19,21 +19,21 @@ const RidesStack = ({navigation}) => {
     if (!isFocused) {
       navigation.reset({
         index: 0,
-        routes: [{name: 'DriversRides'}],
+        routes: [{name: 'RidesList'}],
       });
     }
   }, [isFocused]);
 
   return (
     <Stack.Navigator
-      initialRouteName="DriversRides"
+      initialRouteName="RidesList"
       screenOptions={{
         header: props => <Header {...props} />,
         title: 'Rides',
       }}>
       <Stack.Screen
-        name="DriversRides"
-        component={DriversRides}
+        name="RidesList"
+        component={RidesList}
         options={{
           headerTitle: 'Your rides',
         }}

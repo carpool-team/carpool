@@ -21,7 +21,7 @@ const PassengersRideDetails = ({navigation, route}) => {
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <GoBack onPress={() => navigation.navigate('DriversRides')} />
+        <GoBack onPress={() => navigation.navigate('RidesList')} />
       ),
       header: props => <Header {...props} hideSwitch />,
     });

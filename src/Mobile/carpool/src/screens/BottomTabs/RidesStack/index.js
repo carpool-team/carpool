@@ -1,5 +1,5 @@
 import DriversRideDetails from './DriversRideDetails';
-import DriversRides from './DriversRides';
+import RidesList from './RidesList';
 import PassengersRideDetails from './PassengersRideDetails';
 
-export {DriversRideDetails, DriversRides, PassengersRideDetails};
+export {DriversRideDetails, RidesList, PassengersRideDetails};
