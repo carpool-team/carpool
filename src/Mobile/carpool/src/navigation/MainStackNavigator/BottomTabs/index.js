@@ -6,15 +6,22 @@ import GroupsStack from './GroupsStack';
 import HomeStack from './HomeStack';
 import RidesStack from './RidesStack';
 import AddRideStack from './AddRideStack';
-import {colors} from '../../../styles';
+import {colors, sheet} from '../../../styles';
 import {useActiveAccount} from '../../../hooks';
 import SearchStack from './SearchStack';
 import SettingsStack from './SettingsStack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSelector} from 'react-redux';
 
 const Tabs = createBottomTabNavigator();
 
 const BottomTabs = () => {
+  const invitationCount = useSelector(store =>
+    store.accountReducer.invitations.data
+      ? store.accountReducer.invitations.data.length
+      : 0,
+  );
+
   const {activeAccount} = useActiveAccount();
   const isPassenger = activeAccount === 'passenger';
   const {bottom} = useSafeAreaInsets();
@@ -52,6 +59,12 @@ const BottomTabs = () => {
             <MaterialIcon name="group" size={size} color={color} />
           ),
           tabBarLabel: 'Groups',
+          tabBarBadge: invitationCount > 0 ? invitationCount : undefined,
+          tabBarBadgeStyle: {
+            color: '#fff',
+            ...sheet.textBold,
+            backgroundColor: colors.blue,
+          },
         }}
       />
       {isPassenger ? (
