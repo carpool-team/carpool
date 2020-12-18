@@ -240,7 +240,7 @@ const Input = (props: IInputProps) => {
 	};
 
 	const renderTextInput = () => (
-		<div className={inputGroupContainerClassName}>
+		<div className={[inputGroupContainerClassName, props.style].join(" ")}>
 			<div className={baseContainerClasses.join(" ")}>
 				<div className={getIconClass(props.icon)}></div>
 				<input
