@@ -1,21 +1,56 @@
 import React, {useReducer, useEffect, useMemo} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import {initialState, SearchActions, reducer} from '../reducer';
+import {GoBack} from '../../../../components/navigation';
 import {
   SelectGroup,
   SelectDirection,
   SelectLocation,
   SelectDate,
 } from './sections';
+import {useIsFocused} from '@react-navigation/native';
+import {styles} from './index.styles';
 
-const Search = () => {
+const Search = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const isFocused = useIsFocused();
 
   const isEmpty = useMemo(() => {
     return Object.keys(state)
       .map(item => state[item])
       .some(x => x === null);
   }, [state]);
+
+  useEffect(() => {
+    if (state.group) {
+      const onPress = () => {
+        if (state.location) {
+          dispatch({type: SearchActions.SET_LOCATION, payload: null});
+          return;
+        }
+        if (state.swap !== null) {
+          dispatch({type: SearchActions.SET_SWAP, payload: null});
+          return;
+        }
+        if (state.group) {
+          dispatch({type: SearchActions.SET_GROUP, payload: null});
+          return;
+        }
+      };
+
+      navigation.setOptions({
+        headerLeft: () => <GoBack onPress={onPress} />,
+      });
+    } else {
+      navigation.setOptions({
+        headerLeft: undefined,
+      });
+    }
+  }, [state]);
+
+  useEffect(() => {
+    !isFocused && dispatch({type: SearchActions.CLEAN_STATE});
+  }, [isFocused]);
 
   useEffect(() => {
     !isEmpty && console.log('SUBMIT');
@@ -48,12 +83,5 @@ const Search = () => {
 
   return <SafeAreaView style={styles.safeArea}>{renderSection()}</SafeAreaView>;
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    width: '100%',
-  },
-});
 
 export default Search;
