@@ -15,8 +15,6 @@ import {
 const AddRide = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  console.log(state);
-
   const renderSection = () => {
     if (!state.group) {
       return <SelectGroup dispatch={dispatch} />;
