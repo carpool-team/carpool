@@ -1,4 +1,5 @@
 import {GetDriversRideRequests} from '../driver';
+import {createPromiseAction} from '@adobe/redux-saga-promise';
 
 export const GetAllRides = {
   Trigger: 'GET_ALL_RIDES',
@@ -28,6 +29,12 @@ export const GetPassengersRideRequests = {
   Loading: 'GET_PASSENGERS_RIDE_REQUESTS_LOADING',
 
   Watch: 'WATCH_PASSENGERS_RIDE_REQUESTS',
+};
+
+export const CreateRideRequest = {
+  Trigger: 'CREATE_RIDE_REQUEST',
+
+  PromiseTrigger: 'CREATE_RIDE_REQUEST.TRIGGER',
 };
 
 export const getAllRides = () => ({
@@ -103,3 +110,6 @@ export const getPassengersRideRequestsLoading = () => ({
 export const watchPassengersRideRequests = () => ({
   type: GetPassengersRideRequests.Watch,
 });
+
+export const createRideRequest = payload =>
+  createPromiseAction(CreateRideRequest.Trigger)(payload);
