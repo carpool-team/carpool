@@ -289,6 +289,68 @@ export function* watchDriversRideRequestsAsync() {
   }
 }
 
+export function* acceptRideRequestAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      // yield instance.put(...action.payload)
+
+      yield put(actions.getDriversRideRequests());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.acceptRideRequest(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+      yield call(rejectPromiseAction, action, err.response);
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
+export function* rejectRideRequestAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      // yield instance.put(...action.payload)
+
+      yield put(actions.getDriversRideRequests());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.rejectRideRequest(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+      yield call(rejectPromiseAction, action, err.response);
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetDriversRides.Trigger, getDriversRidesAsync),
   takeLatest(actions.GetDriversPastRides.Trigger, getDriversPastRidesAsync),
@@ -304,6 +366,8 @@ const accountSagas = [
     actions.GetDriversRideRequests.Watch,
     watchDriversRideRequestsAsync,
   ),
+  takeLatest(actions.AcceptRideRequest.PromiseTrigger, acceptRideRequestAsync),
+  takeLatest(actions.RejectRideRequest.PromiseTrigger, rejectRideRequestAsync),
 ];
 
 export default accountSagas;

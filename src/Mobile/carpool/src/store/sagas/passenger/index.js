@@ -1,4 +1,12 @@
-import {takeLatest, put, select, take, delay, call} from 'redux-saga/effects';
+import {
+  takeLatest,
+  put,
+  select,
+  take,
+  delay,
+  call,
+  putResolve,
+} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import jwt_decode from 'jwt-decode';

@@ -47,6 +47,18 @@ export const CreateRegularRide = {
   PromiseTrigger: 'CREATE_REGULAR_RIDE.TRIGGER',
 };
 
+export const AcceptRideRequest = {
+  Trigger: 'ACCEPT_RIDE_REQUEST',
+
+  PromiseTrigger: 'ACCEPT_RIDE_REQUEST.TRIGGER',
+};
+
+export const RejectRideRequest = {
+  Trigger: 'REJECT_RIDE_REQUEST',
+
+  PromiseTrigger: 'REJECT_RIDE_REQUEST.TRIGGER',
+};
+
 export const getDriversRides = () => ({
   type: GetDriversRides.Trigger,
 });
@@ -116,3 +128,9 @@ export const getDriversRideRequestsLoading = () => ({
 export const watchDriversRideRequests = () => ({
   type: GetDriversRideRequests.Watch,
 });
+
+export const acceptRideRequest = payload =>
+  createPromiseAction(AcceptRideRequest.Trigger)(payload);
+
+export const rejectRideRequest = payload =>
+  createPromiseAction(RejectRideRequest.Trigger)(payload);
