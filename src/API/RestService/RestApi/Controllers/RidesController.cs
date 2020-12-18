@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
+using Domain.Enums;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +26,20 @@ namespace RestApi.Controllers
 
 		public RidesController(IMediator mediator) => _mediator = mediator;
 
+		[HttpGet]
+		public async Task<ApiResponse> GetRides([FromQuery] GroupId groupId,
+			[FromQuery] RideDirection rideDirection,
+			[FromQuery] DateTime dateTime)
+		{
+			GetRidesQuery getRides = new(groupId,
+				rideDirection,
+				dateTime,
+				User.GetUserId());
+			var rides = await _mediator.Send(getRides);
+
+			return new ApiResponse(rides);
+		}
+		
 		// GET: api/Rides/5
 		[HttpGet("{rideId}")]
 		public async Task<ApiResponse> GetRide(RideId rideId)
