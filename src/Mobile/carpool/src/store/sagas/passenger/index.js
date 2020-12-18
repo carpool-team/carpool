@@ -1,7 +1,9 @@
-import {takeLatest, put, select, take} from 'redux-saga/effects';
+import {takeLatest, put, select, take, delay, call} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import jwt_decode from 'jwt-decode';
+import {readData, STORAGE_KEYS} from '../../../storage';
+import moment from 'moment';
 
 export function* getAllRidesAsync() {
   try {
@@ -134,6 +136,19 @@ export function* getPassengersRideRequestsAsync() {
   }
 }
 
+export function* watchPassengersRideRequestsAsync() {
+  while (true) {
+    const token = yield call(readData, STORAGE_KEYS.token);
+
+    if (token) {
+      yield put(actions.getPassengersRideRequests());
+    }
+
+    // Every 5 minutes
+    yield delay(300000);
+  }
+}
+
 const passengerActions = [
   takeLatest(actions.GetAllRides.Trigger, getAllRidesAsync),
   takeLatest(actions.GetUsersRides.Trigger, getUsersRidesAsync),
@@ -141,6 +156,10 @@ const passengerActions = [
   takeLatest(
     actions.GetPassengersRideRequests.Trigger,
     getPassengersRideRequestsAsync,
+  ),
+  takeLatest(
+    actions.GetPassengersRideRequests.Watch,
+    watchPassengersRideRequestsAsync,
   ),
 ];
 

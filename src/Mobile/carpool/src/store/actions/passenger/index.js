@@ -1,3 +1,5 @@
+import {GetDriversRideRequests} from '../driver';
+
 export const GetAllRides = {
   Trigger: 'GET_ALL_RIDES',
   Success: 'GET_ALL_RIDES_SUCCESS',
@@ -24,6 +26,8 @@ export const GetPassengersRideRequests = {
   Success: 'GET_PASSENGERS_RIDE_REQUESTS_SUCCESS',
   Error: 'GET_PASSENGERS_RIDE_REQUESTS_ERROR',
   Loading: 'GET_PASSENGERS_RIDE_REQUESTS_LOADING',
+
+  Watch: 'WATCH_PASSENGERS_RIDE_REQUESTS',
 };
 
 export const getAllRides = () => ({
@@ -94,4 +98,8 @@ export const getPassengersRideRequestsError = payload => ({
 
 export const getPassengersRideRequestsLoading = () => ({
   type: GetPassengersRideRequests.Loading,
+});
+
+export const watchPassengersRideRequests = () => ({
+  type: GetPassengersRideRequests.Watch,
 });

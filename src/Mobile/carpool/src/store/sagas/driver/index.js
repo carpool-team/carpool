@@ -5,6 +5,7 @@ import {
   call,
   putResolve,
   take,
+  delay,
 } from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
@@ -14,6 +15,7 @@ import {
   rejectPromiseAction,
   resolvePromiseAction,
 } from '@adobe/redux-saga-promise';
+import {readData, STORAGE_KEYS} from '../../../storage';
 
 export function* getDriversRidesAsync() {
   try {
@@ -274,6 +276,19 @@ export function* getDriversRideRequestsAsync() {
   }
 }
 
+export function* watchDriversRideRequestsAsync() {
+  while (true) {
+    const token = yield call(readData, STORAGE_KEYS.token);
+
+    if (token) {
+      yield put(actions.getDriversRideRequests());
+    }
+
+    // Every 5 minutes
+    yield delay(300000);
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetDriversRides.Trigger, getDriversRidesAsync),
   takeLatest(actions.GetDriversPastRides.Trigger, getDriversPastRidesAsync),
@@ -284,6 +299,10 @@ const accountSagas = [
   takeLatest(
     actions.GetDriversRideRequests.Trigger,
     getDriversRideRequestsAsync,
+  ),
+  takeLatest(
+    actions.GetDriversRideRequests.Watch,
+    watchDriversRideRequestsAsync,
   ),
 ];
 

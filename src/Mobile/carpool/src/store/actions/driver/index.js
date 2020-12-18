@@ -19,6 +19,8 @@ export const GetDriversRideRequests = {
   Success: 'GET_DRIVERS_RIDE_REQUESTS_SUCCESS',
   Error: 'GET_DRIVERS_RIDE_REQUESTS_ERROR',
   Loading: 'GET_DRIVERS_RIDE_REQUESTS_LOADING',
+
+  Watch: 'WATCH_DRIVERS_RIDE_REQUESTS',
 };
 
 export const DeleteRide = {
@@ -109,4 +111,8 @@ export const getDriversRideRequestsError = payload => ({
 
 export const getDriversRideRequestsLoading = () => ({
   type: GetDriversRideRequests.Loading,
+});
+
+export const watchDriversRideRequests = () => ({
+  type: GetDriversRideRequests.Watch,
 });

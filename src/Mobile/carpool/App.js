@@ -34,6 +34,8 @@ const App = () => {
     BackHandler.addEventListener('hardwareBackPress', () => true);
 
     store.dispatch(actions.watchInvitations());
+    store.dispatch(actions.watchDriversRideRequests());
+    store.dispatch(actions.watchPassengersRideRequests());
 
     return () =>
       BackHandler.removeEventListener('hardwareBackPress', () => true);
