@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Search} from '../../../../screens/BottomTabs';
+import {Search, SearchResults} from '../../../../screens/BottomTabs';
 import {Header} from '../../../../components/navigation';
 
 const Stack = createStackNavigator();
@@ -13,6 +13,7 @@ const SearchStack = () => (
       gestureEnabled: false,
     }}>
     <Stack.Screen name="Search" component={Search} />
+    <Stack.Screen name="SearchResults" component={SearchResults} />
   </Stack.Navigator>
 );
 

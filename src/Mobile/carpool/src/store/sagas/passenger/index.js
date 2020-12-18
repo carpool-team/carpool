@@ -11,6 +11,10 @@ import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import jwt_decode from 'jwt-decode';
 import {readData, STORAGE_KEYS} from '../../../storage';
+import {
+  rejectPromiseAction,
+  resolvePromiseAction,
+} from '@adobe/redux-saga-promise';
 
 export function* getUsersRidesAsync() {
   try {
