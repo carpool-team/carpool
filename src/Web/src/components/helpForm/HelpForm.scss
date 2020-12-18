@@ -1,29 +1,87 @@
 @import "~scss_path/colors";
 @import "~scss_path/fonts";
+@import "~scss_path/images";
 
 .helpForm {
 	display: flex;
-	flex-direction: column;
-	width: 100%;
 	margin-bottom: 1vh;
 	margin-top: 1vh;
 	height: 91vh;
-	background-color: $background;
-	justify-content: center;
-	align-items: center;
-	&--input {
-		background-color: $white !important;
-		margin-bottom: 20px !important;
-		// border: 1px solid $grayDark !important;
-		border-radius: 10px !important;
-		padding: 3px !important;
+	&__inputs{
+		display: flex;
+		margin-top: 5vh;
+		flex-direction: column;
+		width: 30%;
+		border-radius: 20px;
+		height: 70%;
+		background-color: $background;
+		justify-content: center;
+		align-items: center;
+		padding-left: 20px;
+		padding-right: 20px;
+		margin-left:3vw;
+		& > span {
+			font-size: 19px;
+			font-weight: $medium;
+			color: $grayDark;
+			margin-bottom: 30px;
+			border-bottom: 3px solid $white;
+			padding-bottom: 10px;
+			width: 100%;
+			text-align: center;
+		}
+		&--input {
+			background-color: $white !important;
+			margin-bottom: 20px !important;
+			padding: 3px !important;
+			border-radius: 10px !important;
+		}
+		&--form {
+
+			width: auto;
+		}
+		&--combo {
+			min-width: 200px !important;
+		}
 	}
-	&--form {
-		margin-left: 10vw;
-		margin-right: 10vw;
-		width: auto;
+	&__image{
+		background-color: $white;
+		background-image: $bug-flat-people;
+		background-repeat: repeat-x;
+		background-size: auto 50% !important;
+		background-position:center;
+		width: 70%;
 	}
-	&--combo {
-		min-width: 200px !important;
+}
+@media only screen and (max-width: 900px) {
+	.helpForm {
+		&__inputs{
+			margin-top: 0vh;
+			width: 100%;
+			border-radius:0px;
+			height: 100%;
+			background-color: $background;
+			justify-content: space-evenly;
+			align-items: center;
+			padding-left: 0px;
+			padding-right: 0px;
+			margin-left: 0;
+			& > span {
+				font-size: 19px;
+				font-weight: $medium;
+				color: $grayDark;
+				margin-bottom: 30px;
+				border-bottom: 3px solid $white;
+				padding-bottom: 10px;
+				width: 100%;
+				text-align: center;
+			}
+			&--input {
+				margin-bottom: 1vh !important;
+			}
+		}
+		&__image{
+			width: 0%;
+		}
 	}
 }

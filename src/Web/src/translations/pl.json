@@ -92,7 +92,8 @@
             "titleInput": "Tytuł zgłoszenia",
             "bodyInput": "Treść zgłoszenia",
             "application": "Typ aplikacji",
-            "send": "Wyślij"
+            "send": "Wyślij",
+            "helpLabel": "Pomóż nam udoskonalić naszą platformę!"
         },
         "homeScreen": {
             "quote": "Nie jedź\n sam!",
