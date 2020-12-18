@@ -1,19 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {colors} from '../../../styles';
-import {Rides, PastRides} from '../../../components/Driver';
+import {Rides} from '../../../components/Driver';
 
-const DriversRides = () => {
-  const [isUpcoming, setIsUpcoming] = useState(true);
-
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        {isUpcoming ? <Rides /> : <PastRides />}
-      </View>
-    </SafeAreaView>
-  );
-};
+const DriversRides = () => (
+  <SafeAreaView style={styles.safeArea}>
+    <View style={styles.container}>
+      <Rides />
+    </View>
+  </SafeAreaView>
+);
 
 const styles = StyleSheet.create({
   safeArea: {
