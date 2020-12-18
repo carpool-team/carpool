@@ -152,6 +152,36 @@ export function* createRideRequestAsync(action) {
   }
 }
 
+export function* findRidesAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      // const res = yield instance.get(...action.payload)
+      const res = {data: {result: []}};
+
+      yield call(resolvePromiseAction, action, res.data.result);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.findRides(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+      yield call(rejectPromiseAction, action, err.response);
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 const passengerActions = [
   takeLatest(actions.GetUsersRides.Trigger, getUsersRidesAsync),
   takeLatest(actions.GetUsersPastRides.Trigger, getUsersPastRidesAsync),
@@ -164,6 +194,7 @@ const passengerActions = [
     watchPassengersRideRequestsAsync,
   ),
   takeLatest(actions.CreateRideRequest.PromiseTrigger, createRideRequestAsync),
+  takeLatest(actions.FindRides.PromiseTrigger, findRidesAsync),
 ];
 
 export default passengerActions;

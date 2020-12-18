@@ -29,6 +29,12 @@ export const CreateRideRequest = {
   PromiseTrigger: 'CREATE_RIDE_REQUEST.TRIGGER',
 };
 
+export const FindRides = {
+  Trigger: 'FIND_RIDES',
+
+  PromiseTrigger: 'FIND_RIDES.TRIGGER',
+};
+
 export const getUsersRides = () => ({
   type: GetUsersRides.Trigger,
 });
@@ -87,3 +93,6 @@ export const watchPassengersRideRequests = () => ({
 
 export const createRideRequest = payload =>
   createPromiseAction(CreateRideRequest.Trigger)(payload);
+
+export const findRides = payload =>
+  createPromiseAction(FindRides.Trigger)(payload);
