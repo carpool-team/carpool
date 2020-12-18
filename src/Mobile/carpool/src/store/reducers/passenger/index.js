@@ -5,6 +5,7 @@ const initialState = {
   allRides: initialStoreItem,
   userRides: initialStoreItem,
   userPastRides: initialStoreItem,
+  rideRequests: initialStoreItem,
 };
 
 const reducer = (state = initialState, action) => {
@@ -78,6 +79,30 @@ const reducer = (state = initialState, action) => {
         ...state,
         userPastRides: {
           ...state.userPastRides,
+          loading: true,
+        },
+      };
+    case actions.GetPassengersRideRequests.Success:
+      return {
+        ...state,
+        rideRequests: {
+          ...initialStoreItem,
+          data: action.payload,
+        },
+      };
+    case actions.GetPassengersRideRequests.Error:
+      return {
+        ...state,
+        rideRequests: {
+          ...initialStoreItem,
+          error: action.payload,
+        },
+      };
+    case actions.GetPassengersRideRequests.Loading:
+      return {
+        ...state,
+        rideRequests: {
+          ...state.rideRequests,
           loading: true,
         },
       };

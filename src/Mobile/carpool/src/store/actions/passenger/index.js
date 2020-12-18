@@ -19,6 +19,13 @@ export const GetUsersPastRides = {
   Loading: 'GET_USERS_PAST_RIDES_LOADING',
 };
 
+export const GetPassengersRideRequests = {
+  Trigger: 'GET_PASSENGERS_RIDE_REQUESTS',
+  Success: 'GET_PASSENGERS_RIDE_REQUESTS_SUCCESS',
+  Error: 'GET_PASSENGERS_RIDE_REQUESTS_ERROR',
+  Loading: 'GET_PASSENGERS_RIDE_REQUESTS_LOADING',
+};
+
 export const getAllRides = () => ({
   type: GetAllRides.Trigger,
 });
@@ -69,4 +76,22 @@ export const getUsersPastRidesError = payload => ({
 
 export const getUsersPastRidesLoading = () => ({
   type: GetUsersPastRides.Loading,
+});
+
+export const getPassengersRideRequests = () => ({
+  type: GetPassengersRideRequests.Trigger,
+});
+
+export const getPassengersRideRequestsSuccess = payload => ({
+  type: GetPassengersRideRequests.Success,
+  payload,
+});
+
+export const getPassengersRideRequestsError = payload => ({
+  type: GetPassengersRideRequests.Error,
+  payload,
+});
+
+export const getPassengersRideRequestsLoading = () => ({
+  type: GetPassengersRideRequests.Loading,
 });

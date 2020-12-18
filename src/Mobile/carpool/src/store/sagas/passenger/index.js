@@ -104,10 +104,44 @@ export function* getUsersPastRidesAsync() {
   }
 }
 
+export function* getPassengersRideRequestsAsync() {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      yield put(actions.getPassengersRideRequestsLoading());
+
+      const res = {
+        data: {
+          result: [],
+        },
+      };
+      // const res = yield instance.get(...)
+
+      yield put(actions.getPassengersRideRequestsSuccess(res.data.result));
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getPassengersRideRequests());
+        return;
+      }
+    }
+    yield put(actions.getPassengersRideRequestsError(err));
+  }
+}
+
 const passengerActions = [
   takeLatest(actions.GetAllRides.Trigger, getAllRidesAsync),
   takeLatest(actions.GetUsersRides.Trigger, getUsersRidesAsync),
   takeLatest(actions.GetUsersPastRides.Trigger, getUsersPastRidesAsync),
+  takeLatest(
+    actions.GetPassengersRideRequests.Trigger,
+    getPassengersRideRequestsAsync,
+  ),
 ];
 
 export default passengerActions;
