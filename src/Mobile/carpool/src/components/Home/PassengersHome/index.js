@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text, ActivityIndicator, BackHandler} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/native';
 import {RideDetailsCard} from '../../Ride';
@@ -15,6 +15,13 @@ const PassengersHome = () => {
 
   const userRides = useSelector(state => state.passengerReducer.userRides);
   const groups = useSelector(store => store.accountReducer.groups);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
+
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', () => true);
+  }, []);
 
   useEffect(() => {
     if (userRides.data) {
