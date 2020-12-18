@@ -14,6 +14,13 @@ export const GetDriversPastRides = {
   Loading: 'GET_DRIVERS_PAST_RIDES_LOADING',
 };
 
+export const GetDriversRideRequests = {
+  Trigger: 'GET_DRIVERS_RIDE_REQUESTS',
+  Success: 'GET_DRIVERS_RIDE_REQUESTS_SUCCESS',
+  Error: 'GET_DRIVERS_RIDE_REQUESTS_ERROR',
+  Loading: 'GET_DRIVERS_RIDE_REQUESTS_LOADING',
+};
+
 export const DeleteRide = {
   Trigger: 'DELETE_RIDE',
 
@@ -85,3 +92,21 @@ export const createSingleRide = payload =>
 
 export const createRegularRide = payload =>
   createPromiseAction(CreateRegularRide.Trigger)(payload);
+
+export const getDriversRideRequests = () => ({
+  type: GetDriversRideRequests.Trigger,
+});
+
+export const getDriversRideRequestsSuccess = payload => ({
+  type: GetDriversRideRequests.Success,
+  payload,
+});
+
+export const getDriversRideRequestsError = payload => ({
+  type: GetDriversRideRequests.Error,
+  payload,
+});
+
+export const getDriversRideRequestsLoading = () => ({
+  type: GetDriversRideRequests.Loading,
+});

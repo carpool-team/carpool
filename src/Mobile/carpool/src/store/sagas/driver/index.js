@@ -244,6 +244,36 @@ export function* createRegularRideAsync(action) {
   }
 }
 
+export function* getDriversRideRequestsAsync() {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      yield put(actions.getDriversRideRequestsLoading());
+
+      const res = {
+        data: {
+          result: [],
+        },
+      };
+      // const res = yield instance.get(...)
+
+      yield put(actions.getDriversRideRequestsSuccess(res.data.result));
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getDriversRideRequests());
+        return;
+      }
+    }
+    yield put(actions.getDriversRideRequestsError(err));
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetDriversRides.Trigger, getDriversRidesAsync),
   takeLatest(actions.GetDriversPastRides.Trigger, getDriversPastRidesAsync),
@@ -251,6 +281,10 @@ const accountSagas = [
   takeLatest(actions.DeleteParticipant.PromiseTrigger, deleteParticipantAsync),
   takeLatest(actions.CreateSingleRide.PromiseTrigger, createSingleRideAsync),
   takeLatest(actions.CreateRegularRide.PromiseTrigger, createRegularRideAsync),
+  takeLatest(
+    actions.GetDriversRideRequests.Trigger,
+    getDriversRideRequestsAsync,
+  ),
 ];
 
 export default accountSagas;
