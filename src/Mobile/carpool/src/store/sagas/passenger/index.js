@@ -11,42 +11,6 @@ import * as actions from '../../actions';
 import instance from '../../../axios/instance';
 import jwt_decode from 'jwt-decode';
 import {readData, STORAGE_KEYS} from '../../../storage';
-import moment from 'moment';
-
-export function* getAllRidesAsync() {
-  try {
-    const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
-
-    if (token) {
-      yield put(actions.getAllRidesLoading());
-
-      // const res = yield instance.get(
-      //   `${ENDPOINTS.GET_ALL_RIDES}?userId=${userId}`,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   },
-      // );
-
-      // console.log('RES', res);
-
-      // yield put(actions.getAllRidesSuccess(res.data.result));
-      yield put(actions.getAllRidesSuccess([]));
-    }
-  } catch (err) {
-    if (err.response) {
-      if (err.response.status === 401) {
-        yield put(actions.refreshToken());
-        yield take(actions.GetToken.Success);
-        yield put(actions.getAllRides());
-        return;
-      }
-    }
-    yield put(actions.getAllRidesError(err));
-  }
-}
 
 export function* getUsersRidesAsync() {
   try {
@@ -189,7 +153,6 @@ export function* createRideRequestAsync(action) {
 }
 
 const passengerActions = [
-  takeLatest(actions.GetAllRides.Trigger, getAllRidesAsync),
   takeLatest(actions.GetUsersRides.Trigger, getUsersRidesAsync),
   takeLatest(actions.GetUsersPastRides.Trigger, getUsersPastRidesAsync),
   takeLatest(

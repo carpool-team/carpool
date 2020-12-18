@@ -10,30 +10,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.GetAllRides.Success:
-      return {
-        ...state,
-        allRides: {
-          ...initialStoreItem,
-          data: action.payload,
-        },
-      };
-    case actions.GetAllRides.Error:
-      return {
-        ...state,
-        allRides: {
-          ...initialStoreItem,
-          error: action.payload,
-        },
-      };
-    case actions.GetAllRides.Loading:
-      return {
-        ...state,
-        allRides: {
-          ...state.allRides,
-          loading: true,
-        },
-      };
     case actions.GetUsersRides.Success:
       return {
         ...state,
