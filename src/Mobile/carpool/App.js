@@ -5,7 +5,6 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import {LightTheme} from './src/styles';
 import MainStackNavigator from './src/navigation/MainStackNavigator/index';
 import {enableScreens} from 'react-native-screens';
-import {AddRideStore} from './src/screens/BottomTabs/AddRideStack/context';
 
 import {Provider} from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
@@ -44,11 +43,9 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer theme={LightTheme}>
-        <AddRideStore>
-          <Provider store={store}>
-            <MainStackNavigator />
-          </Provider>
-        </AddRideStore>
+        <Provider store={store}>
+          <MainStackNavigator />
+        </Provider>
       </NavigationContainer>
     </SafeAreaProvider>
   );
