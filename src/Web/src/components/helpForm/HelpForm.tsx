@@ -26,7 +26,8 @@ const resources = {
 	body: "helpForm.bodyInput",
 	send: "helpForm.send",
 	application: "helpForm.application",
-	helpLabel: "helpForm.helpLabel"
+	helpLabel: "helpForm.helpLabel",
+	validateMsg: "helpForm.validateMsg"
 };
 
 const cssClasses = {
@@ -53,10 +54,25 @@ const HelpForm: (props: IHelpFormProps) => JSX.Element = props => {
 	const [title, setTitle] = useState<string>("");
 	const [body, setBody] = useState<string>("");
 	const [app, setApp] = useState<string>(application.Web);
+	const [validateBody, setValidateBody] = useState({ error: true, helper: "" });
+	const [validateTitle, setValidateTitle] = useState({ error: true, helper: "" });
 
 	const handleCombobox = (event: React.ChangeEvent<{ value: unknown }>) => {
 		setApp(event.target.value as string);
 	}
+
+	useEffect(() => {
+		if (!title) {
+			setValidateTitle({ error: true, helper: t(resources.validateMsg) });
+		} else {
+			setValidateTitle({ error: false, helper: "" })
+		}
+		if (!body) {
+			setValidateBody({ error: true, helper: t(resources.validateMsg) });
+		} else {
+			setValidateBody({ error: false, helper: "" });
+		}
+	}, [title, body])
 
 	const templateParams = {
 		subject: title,
@@ -64,10 +80,14 @@ const HelpForm: (props: IHelpFormProps) => JSX.Element = props => {
 	};
 
 	const trySend = () => {
-		if (app === application.Mobile) {
-			emailjs.send(emailServiceID, mobileTemplateID, templateParams, emailUserID)
-		} else {
-			emailjs.send(emailServiceID, webTemplateID, templateParams, emailUserID)
+
+
+		if (!validateBody.error && !validateTitle.error) {
+			if (app === application.Mobile) {
+				emailjs.send(emailServiceID, mobileTemplateID, templateParams, emailUserID)
+			} else {
+				emailjs.send(emailServiceID, webTemplateID, templateParams, emailUserID)
+			}
 		}
 	}
 
@@ -89,6 +109,8 @@ const HelpForm: (props: IHelpFormProps) => JSX.Element = props => {
 						</Select>
 					</FormControl>
 					<TextField
+						error={validateTitle.error}
+						helperText={validateTitle.helper}
 						label={t(resources.title)}
 						fullWidth
 						className={cssClasses.input}
@@ -97,7 +119,9 @@ const HelpForm: (props: IHelpFormProps) => JSX.Element = props => {
 						onChange={event => setTitle(event.target.value)}
 					/>
 					<TextField
+						error={validateBody.error}
 						label={t(resources.body)}
+						helperText={validateBody.helper}
 						multiline
 						fullWidth
 						className={cssClasses.input}

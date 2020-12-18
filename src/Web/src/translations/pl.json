@@ -93,7 +93,8 @@
             "bodyInput": "Treść zgłoszenia",
             "application": "Typ aplikacji",
             "send": "Wyślij",
-            "helpLabel": "Pomóż nam udoskonalić naszą platformę!"
+            "helpLabel": "Pomóż nam udoskonalić naszą platformę!",
+            "validateMsg": "Pole wymagane."
         },
         "homeScreen": {
             "quote": "Nie jedź\n sam!",

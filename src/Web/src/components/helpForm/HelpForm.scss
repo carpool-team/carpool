@@ -9,13 +9,13 @@
 	height: 91vh;
 	&__inputs{
 		display: flex;
-		margin-top: 5vh;
+		margin-top: 3vh;
+		margin-bottom: 3vh;
 		flex-direction: column;
 		width: 30%;
 		border-radius: 20px;
-		height: 70%;
 		background-color: $background;
-		justify-content: center;
+		justify-content: space-evenly;
 		align-items: center;
 		padding-left: 20px;
 		padding-right: 20px;
@@ -24,7 +24,6 @@
 			font-size: 19px;
 			font-weight: $medium;
 			color: $grayDark;
-			margin-bottom: 30px;
 			border-bottom: 3px solid $white;
 			padding-bottom: 10px;
 			width: 100%;
@@ -32,13 +31,16 @@
 		}
 		&--input {
 			background-color: $white !important;
-			margin-bottom: 20px !important;
 			padding: 3px !important;
 			border-radius: 10px !important;
 		}
 		&--form {
-
-			width: auto;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+			align-items: flex-start;
+			gap: 2vh;
+			width: 100%;
 		}
 		&--combo {
 			min-width: 200px !important;
@@ -48,7 +50,7 @@
 		background-color: $white;
 		background-image: $bug-flat-people;
 		background-repeat: repeat-x;
-		background-size: auto 50% !important;
+		background-size: auto 70% !important;
 		background-position:center;
 		width: 70%;
 	}
@@ -70,7 +72,7 @@
 				font-size: 19px;
 				font-weight: $medium;
 				color: $grayDark;
-				margin-bottom: 30px;
+				// margin-bottom: 30px;
 				border-bottom: 3px solid $white;
 				padding-bottom: 10px;
 				width: 100%;
@@ -78,6 +80,9 @@
 			}
 			&--input {
 				margin-bottom: 1vh !important;
+			}
+			&--form {
+				gap: 1px;
 			}
 		}
 		&__image{
