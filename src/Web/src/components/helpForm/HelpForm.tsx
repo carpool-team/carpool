@@ -48,7 +48,7 @@ const webTemplateID: string = "template_x449sek"
 const mobileTemplateID: string = "template_pd6ylot"
 
 
-const HelpForm: (props: IHelpFormProps) => JSX.Element = props => {
+const HelpForm: React.FC<IHelpFormProps> = (props) => {
 	const { t } = props;
 
 	const [title, setTitle] = useState<string>("");
