@@ -26,6 +26,10 @@ namespace Domain.Contracts.Repositories
 
 		Task<bool> AnyWithIdAsync(GroupId groupId, CancellationToken cancellation = default);
 
+		Task<bool> DoesUserExistsInGroup(GroupId groupId,
+			AppUserId appUserId,
+			CancellationToken cancellationToken = default);
+
 		Task AddAsync(Group group, CancellationToken cancellationToken);
 
 		void Delete(Group group);
