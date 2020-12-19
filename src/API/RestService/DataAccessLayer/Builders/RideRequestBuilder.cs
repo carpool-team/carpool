@@ -23,9 +23,9 @@ namespace DataAccessLayer.Builders
 				.OnDelete(DeleteBehavior.NoAction)
 				.IsRequired();
 
-			builder.HasOne(x => x.RideOwnerId)
+			builder.HasOne(x => x.RideOwner)
 				.WithMany()
-				.HasForeignKey(x => x.RideOwner)
+				.HasForeignKey(x => x.RideOwnerId)
 				.OnDelete(DeleteBehavior.NoAction)
 				.IsRequired();
 

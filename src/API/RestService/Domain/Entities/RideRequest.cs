@@ -23,6 +23,20 @@ namespace Domain.Entities
 			DateAdded = dateAdded;
 		}
 
+		public RideRequest(bool isAccepted, bool isPending, RideId rideId, Ride ride, AppUserId requestingUserId, ApplicationUser requestingUser, AppUserId rideOwnerId, ApplicationUser rideOwner, DateTime dateAdded)
+		{
+			IsAccepted = isAccepted;
+			IsPending = isPending;
+			RideId = rideId;
+			Ride = ride;
+			RequestingUserId = requestingUserId;
+			RequestingUser = requestingUser;
+			RideOwnerId = rideOwnerId;
+			RideOwner = rideOwner;
+			DateAdded = dateAdded;
+		}
+		
+		public RideRequest(){}
 		public bool IsAccepted { get; set; }
 
 		public bool IsPending { get; set; }
