@@ -167,10 +167,12 @@ export function* getUserAsync() {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('RES', res);
 
       yield put(actions.getUserSuccess(res.data.result));
     }
   } catch (err) {
+    console.log('Err', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());

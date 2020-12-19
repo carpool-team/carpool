@@ -50,4 +50,9 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 5,
   },
+  version: {
+    alignSelf: 'center',
+    color: colors.grayDark,
+    marginTop: 10,
+  },
 });

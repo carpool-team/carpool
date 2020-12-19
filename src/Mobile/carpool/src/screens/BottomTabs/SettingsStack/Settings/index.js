@@ -70,11 +70,14 @@ const Settings = ({navigation}) => {
             }`}</Text>
             <Text style={styles.email}>{user.data.email}</Text>
           </View>
-          <StandardButton
-            title="Logout"
-            color={colors.red}
-            onPress={onLogout}
-          />
+          <View>
+            <StandardButton
+              title="Logout"
+              color={colors.red}
+              onPress={onLogout}
+            />
+            <Text style={styles.version}>Version: 0.5 beta</Text>
+          </View>
         </View>
       )}
     </SafeScroll>
