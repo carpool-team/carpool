@@ -71,6 +71,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		login: "navBar.login",
 		logout: "navBar.logout",
 		register: "navBar.register",
+		profile: "navBar.profile"
 	};
 
 	constructor(props: INavBarProps) {
@@ -123,6 +124,16 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						color={ButtonColor.Gray}
 						background={ButtonBackground.None}
 						icon={ButtonIcon.User}
+						onClick={() => { }}
+						to={`/${mainRoutes.profile}`}
+					>
+						<span>
+							{t(this.resources.profile)}
+						</span>
+					</Button>
+					<Button
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}
 						onClick={() => { this.props.logout(); }}
 					>
 						<span>

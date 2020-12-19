@@ -86,7 +86,8 @@
         "navBar": {
             "register": "Zarejestruj się",
             "login": "Zaloguj się",
-            "logout": "Wyloguj się"
+            "logout": "Wyloguj się",
+            "profile": "Profil"
         },
         "helpForm": {
             "titleInput": "Tytuł zgłoszenia",
