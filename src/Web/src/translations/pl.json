@@ -94,7 +94,8 @@
             "application": "Typ aplikacji",
             "send": "Wyślij",
             "helpLabel": "Pomóż nam udoskonalić naszą platformę!",
-            "validateMsg": "Pole wymagane."
+            "validateMsg": "Pole wymagane.",
+            "helpToast": "Dziękujemy za zgłoszenie."
         },
         "homeScreen": {
             "quote": "Nie jedź\n sam!",

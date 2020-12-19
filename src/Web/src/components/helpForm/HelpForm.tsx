@@ -11,9 +11,12 @@ import Button from "../ui/button/Button";
 import { ButtonBackground } from "../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../ui/button/enums/ButtonColor";
 import * as emailjs from "emailjs-com";
+import { toast } from "react-toastify";
+import { withRouter, RouteComponentProps, useHistory } from "react-router-dom";
+import { mainRoutes } from "../layout/components/LayoutRouter";
 
 
-interface IHelpFormProps extends IReactI18nProps {
+interface IHelpFormProps extends RouteComponentProps, IReactI18nProps {
 }
 
 interface IEmailData {
@@ -27,7 +30,8 @@ const resources = {
 	send: "helpForm.send",
 	application: "helpForm.application",
 	helpLabel: "helpForm.helpLabel",
-	validateMsg: "helpForm.validateMsg"
+	validateMsg: "helpForm.validateMsg",
+	helpToast: "helpForm.helpToast"
 };
 
 const cssClasses = {
@@ -50,6 +54,7 @@ const mobileTemplateID: string = "template_pd6ylot"
 
 const HelpForm: React.FC<IHelpFormProps> = (props) => {
 	const { t } = props;
+	const history = useHistory();
 
 	const [title, setTitle] = useState<string>("");
 	const [body, setBody] = useState<string>("");
@@ -88,6 +93,8 @@ const HelpForm: React.FC<IHelpFormProps> = (props) => {
 			} else {
 				emailjs.send(emailServiceID, webTemplateID, templateParams, emailUserID)
 			}
+			history.push(`/${mainRoutes.default}`)
+			toast.success(t(resources.helpToast));
 		}
 	}
 
@@ -144,4 +151,4 @@ const HelpForm: React.FC<IHelpFormProps> = (props) => {
 	);
 };
 
-export default withTranslation()(HelpForm);
+export default withTranslation()(withRouter(HelpForm));
