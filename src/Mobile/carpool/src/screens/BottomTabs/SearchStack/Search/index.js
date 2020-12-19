@@ -1,5 +1,5 @@
-import React, {useReducer, useEffect, useState} from 'react';
-import {SafeAreaView, Alert} from 'react-native';
+import React, {useReducer, useEffect} from 'react';
+import {SafeAreaView} from 'react-native';
 import {initialState, SearchActions, reducer} from '../reducer';
 import {GoBack} from '../../../../components/navigation';
 import {
@@ -10,19 +10,12 @@ import {
 } from './sections';
 import {useIsFocused} from '@react-navigation/native';
 import {styles} from './index.styles';
-import {useDispatch} from 'react-redux';
-import * as actions from '../../../../store/actions';
-import {FullScreenLoading} from '../../../../components/common/loaders';
 
 const Search = ({navigation}) => {
-  const [loading, setLoading] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
   const isFocused = useIsFocused();
 
-  const rdispatch = useDispatch();
-
   useEffect(() => {
-    console.log(state);
     if (state.group) {
       const onPress = () => {
         if (state.location) {
@@ -49,7 +42,7 @@ const Search = ({navigation}) => {
     }
 
     if (state.group && state.location && state.date && state.swap !== null) {
-      onSubmit();
+      navigation.navigate('SearchResults', {data: state});
     }
   }, [state]);
 
@@ -69,27 +62,6 @@ const Search = ({navigation}) => {
   const onSubmitDate = date =>
     dispatch({type: SearchActions.SET_DATE, payload: date});
 
-  const onSubmit = () => {
-    setLoading(true);
-    rdispatch(actions.findRides(state))
-      .then(res => {
-        navigation.navigate('SearchResults', {results: res});
-      })
-      .catch(err => {
-        Alert.alert(
-          'Error',
-          'An error ocurred when trying to fetch rides from the server. Please try again.',
-          [
-            {
-              style: 'default',
-              text: 'Try again',
-              onPress: () => dispatch({type: SearchActions.CLEAN_STATE}),
-            },
-          ],
-        );
-      });
-  };
-
   const renderSection = () => {
     if (!state.group) {
       return <SelectGroup onSubmit={onSubmitGroup} />;
@@ -99,9 +71,6 @@ const Search = ({navigation}) => {
     }
     if (!state.location) {
       return <SelectLocation onSubmit={onSubmitLocation} state={state} />;
-    }
-    if (loading) {
-      return <FullScreenLoading />;
     }
     return <SelectDate onSubmit={onSubmitDate} />;
   };

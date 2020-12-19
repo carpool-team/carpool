@@ -162,12 +162,20 @@ export function* findRidesAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      // const res = yield instance.get(...action.payload)
-      const res = {data: {result: []}};
+      const {groupId, rideDirection, dateTime} = action.payload;
+      const endpoint = `/Rides?groupId=${groupId}&rideDirection=${rideDirection}&dateTime=${dateTime}`;
+      console.log(endpoint);
+      const res = yield instance.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('RES', res);
 
       yield call(resolvePromiseAction, action, res.data.result);
     }
   } catch (err) {
+    console.log('ERR', err.response);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());

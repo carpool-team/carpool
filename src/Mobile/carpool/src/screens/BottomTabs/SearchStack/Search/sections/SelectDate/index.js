@@ -4,11 +4,12 @@ import DatePicker from 'react-native-date-picker';
 import {colors} from '../../../../../../styles';
 import {StandardButton} from '../../../../../../components/common/buttons';
 import {styles} from './index.styles';
+import moment from 'moment';
 
 const SelectDate = ({onSubmit}) => {
   const [date, setDate] = useState(new Date());
 
-  const onSubmitSingular = () => onSubmit(date);
+  const onSubmitSingular = () => onSubmit(moment(date).toISOString());
 
   return (
     <View style={styles.container}>
