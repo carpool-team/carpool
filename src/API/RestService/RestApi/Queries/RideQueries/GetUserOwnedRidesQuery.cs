@@ -49,7 +49,7 @@ namespace RestApi.Queries.RideQueries
 				{
 					var owner = ride.Owner;
 					IndexVehicleDto? vehicleDto = owner.Vehicle != null ? new(owner.Vehicle.Name) : (IndexVehicleDto?)null;
-					OwnerDto ownerDto = new(owner.Rating, owner.FirstName, owner.LastName, owner.Id, vehicleDto);
+					RideOwnerDto rideOwnerDto = new(owner.Rating, owner.FirstName, owner.LastName, owner.Id, vehicleDto);
 
 					var group = ride.Group;
 					GroupDto groupDto = new(group.UserGroups.Count,
@@ -60,7 +60,7 @@ namespace RestApi.Queries.RideQueries
 					List<StopDto> stopDtos =
 						ride.Stops.Select(x => new StopDto(new LocationDto(x.Location.Longitude, x.Location.Latitude)))
 							.ToList();
-					rideDtos.Add(new RideDto(ownerDto, groupDto,
+					rideDtos.Add(new RideDto(rideOwnerDto, groupDto,
 						new LocationDto(ride.Location.Longitude, ride.Location.Latitude), ride.Price,
 						ride.RideDirection, stopDtos, ride.Date, ride.Id, ride.SeatsLimit));
 				}

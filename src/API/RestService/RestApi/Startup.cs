@@ -92,6 +92,7 @@ namespace RestApi
 			services.AddScoped<IGroupRepository, GroupRepository>();
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IRideRepository, RideRepository>();
+			services.AddScoped<IRideRequestRepository, RideRequestRepository>();
 			services.AddScoped<IGroupInviteRepository, GroupInviteRepository>();
 			services.AddScoped<IRideParticipantRepository, RideParticipantRepository>();
 			services.AddScoped<IUserGroupRepository, UserGroupRepository>();
