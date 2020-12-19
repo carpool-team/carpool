@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq.Expressions;
 using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -29,11 +30,8 @@ namespace IdentifiersShared.Converters
 				mappingHints) { }
 	}
 
-	public class UserIdTypeConverter : TypeConverter
-	{
-		
-	}
-	
+	public class UserIdTypeConverter : TypeConverter { }
+
 	public class GroupIdValueConverter : ValueConverter<GroupId, long>
 	{
 		public GroupIdValueConverter(ConverterMappingHints mappingHints = null)
@@ -55,6 +53,14 @@ namespace IdentifiersShared.Converters
 		public GroupInviteIdValueConverter(ConverterMappingHints mappingHints = null)
 			: base(id => id.Value,
 				value => new GroupInviteId(value),
+				mappingHints) { }
+	}
+
+	public class RideRequestIdValueConverter : ValueConverter<RideRequestId, long>
+	{
+		public RideRequestIdValueConverter(ConverterMappingHints mappingHints = null)
+			: base(id => id.Value,
+				value => new RideRequestId(value),
 				mappingHints) { }
 	}
 }

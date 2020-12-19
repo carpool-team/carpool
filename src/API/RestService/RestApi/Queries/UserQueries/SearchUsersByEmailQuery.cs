@@ -8,7 +8,7 @@ using RestApi.DTOs.User;
 
 namespace RestApi.Queries.UserQueries
 {
-	public class SearchUsersByEmailQuery : IRequest<IReadOnlyCollection<InviteUserDto>>
+	public class SearchUsersByEmailQuery : IRequest<IReadOnlyCollection<UserGroupInviteDto>>
 	{
 		public SearchUsersByEmailQuery(string email, int page, int count)
 		{
@@ -22,21 +22,21 @@ namespace RestApi.Queries.UserQueries
 	}
 
 	public class SearchUsersByEmailQueryHandler 
-		: IRequestHandler<SearchUsersByEmailQuery, IReadOnlyCollection<InviteUserDto>>
+		: IRequestHandler<SearchUsersByEmailQuery, IReadOnlyCollection<UserGroupInviteDto>>
 	{
 		private readonly IUserRepository _userRepository;
 
 		public SearchUsersByEmailQueryHandler(IUserRepository userRepository) 
 			=> _userRepository = userRepository;
 
-		public async Task<IReadOnlyCollection<InviteUserDto>> Handle(SearchUsersByEmailQuery request,
+		public async Task<IReadOnlyCollection<UserGroupInviteDto>> Handle(SearchUsersByEmailQuery request,
 			CancellationToken cancellationToken)
 		{
 			var users = await _userRepository.GetUsersByEmail(request.Email,
 				request.Page,
 				request.Count);
 
-			var userDtos = users.Select(x => new InviteUserDto(x.Id,
+			var userDtos = users.Select(x => new UserGroupInviteDto(x.Id,
 					x.FirstName,
 					x.LastName,
 					x.Email))
