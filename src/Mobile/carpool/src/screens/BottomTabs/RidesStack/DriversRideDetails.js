@@ -147,11 +147,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   container: {
-    paddingVertical: 27,
+    paddingBottom: 30,
   },
   topRow: {
-    marginBottom: 27,
-    marginHorizontal: 16,
+    padding: 16,
     ...sheet.rowCenterSplit,
   },
   singleRide: {
