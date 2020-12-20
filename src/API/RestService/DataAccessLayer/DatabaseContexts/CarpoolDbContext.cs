@@ -25,6 +25,7 @@ namespace DataAccessLayer.DatabaseContexts
 			modelBuilder.UseValueConverter(new RideIdValueConverter());
 			modelBuilder.UseValueConverter(new StopIdValueConverter());
 			modelBuilder.UseValueConverter(new VehicleIdValueConverter());
+			modelBuilder.UseValueConverter(new RideRequestIdValueConverter());
 		}
 
 		#region Intersections
@@ -40,9 +41,14 @@ namespace DataAccessLayer.DatabaseContexts
 		public DbSet<ApplicationUser> Users { get; set; }
 		public DbSet<Group> Groups { get; set; }
 		public DbSet<Ride> Rides { get; set; }
+		
 		public DbSet<Stop> Stops { get; set; }
+		
 		public DbSet<Vehicle> Vehicles { get; set; }
+		
 		public DbSet<GroupInvite> GroupInvites { get; set; }
+		
+		public DbSet<RideRequest> RideRequests { get; set; }
 
 		#endregion Models
 	}

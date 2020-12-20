@@ -14,7 +14,7 @@ namespace RestApi.DTOs.Ride
         [property: JsonProperty("date")] DateTime? Date,
         [property: JsonProperty("price")] double? Price);
 
-	public record RideDto([property: JsonProperty("owner")] OwnerDto Owner,
+	public record RideDto([property: JsonProperty("owner")] RideOwnerDto RideOwner,
 		[property: JsonProperty("group")]GroupDto Group,
 		[property: JsonProperty("location")]LocationDto Location,
 		[JsonProperty("price")]double Price,
@@ -23,4 +23,10 @@ namespace RestApi.DTOs.Ride
 		[JsonProperty("rideDate")]DateTime RideDate,
 		[JsonProperty("rideId")]RideId RideId,
 		[JsonProperty("seatsLimit")]byte SeatsLimit);
+
+	public record RideRequestRideDto([JsonProperty("rideId")] RideId RideId,
+		[JsonProperty("date")] DateTime Date,
+		[JsonProperty("location")] LocationDto Location,
+		[JsonProperty("group")] MinimalGroupDto Group,
+		[JsonProperty("rideDirection")] RideDirection RideDirection);
 }

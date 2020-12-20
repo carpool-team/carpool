@@ -22,4 +22,8 @@ namespace DataTransferObjects.GroupDtos
         [JsonProperty("location")] LocationDto Location,
         [JsonProperty("name")] string Name,
         [JsonProperty("rideCount")] int RideCount);
+
+    public record MinimalGroupDto([JsonProperty("groupId")] GroupId GroupId,
+        [JsonProperty("location")] LocationDto Location,
+        [JsonProperty("name")] string Name);
 }

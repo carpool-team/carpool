@@ -21,6 +21,7 @@ module.exports = {
 		chunkFilename: '[name].bundle.js',
 		filename: 'app.js',
 		pathinfo: false,
+		publicPath: "/"
 	},
 
 	resolve: {

@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using DataTransferObjects;
+using DataTransferObjects.GroupDtos;
+using DataTransferObjects.VehicleDtos;
 using Domain.Contracts.Repositories;
-using Domain.Entities;
 using Domain.Enums;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using RestApi.DTOs.Ride;
+using RestApi.DTOs.Stop;
+using RestApi.DTOs.User;
 
 namespace RestApi.Queries.RideQueries
 {
-	public class GetRidesQuery : IRequest<IEnumerable<Ride>>
+	public class GetRidesQuery : IRequest<IEnumerable<RideDto>>
 	{
 		public GetRidesQuery(GroupId groupId,
 			RideDirection rideDirection,
@@ -32,7 +38,7 @@ namespace RestApi.Queries.RideQueries
 		public AppUserId TokenUserId { get; }
 	}
 
-	public class GetRidesQueryHandler : IRequestHandler<GetRidesQuery, IEnumerable<Ride>>
+	public class GetRidesQueryHandler : IRequestHandler<GetRidesQuery, IEnumerable<RideDto>>
 	{
 		private readonly IGroupRepository _groupRepository;
 		private readonly IRideRepository _rideRepository;
@@ -43,7 +49,7 @@ namespace RestApi.Queries.RideQueries
 			_groupRepository = groupRepository;
 		}
 
-		public async Task<IEnumerable<Ride>> Handle(GetRidesQuery request,
+		public async Task<IEnumerable<RideDto>> Handle(GetRidesQuery request,
 			CancellationToken cancellationToken)
 		{
 			var isUserInGroup = await _groupRepository.DoesUserExistsInGroup(request.GroupId,
@@ -54,11 +60,32 @@ namespace RestApi.Queries.RideQueries
 				throw new ApiException("User does not have access to this group rides", StatusCodes.Status403Forbidden);
 
 			var rides = await _rideRepository.GetPartAsNoTrackingAsync(request.GroupId,
-					request.RideDirection,
-					request.DateTime,
-					cancellationToken);
-			
-			return rides;
+				request.RideDirection,
+				request.DateTime,
+				cancellationToken);
+			try
+			{
+				var rideDtos = rides.Select(x => new RideDto(new RideOwnerDto(x.Owner.Rating,
+						x.Owner.FirstName,
+						x.Owner.LastName,
+						x.Owner.Id),
+					new GroupDto(x.Group.UserGroups.Count, x.Group.Id,
+						new LocationDto(x.Group.Location.Longitude, x.Group.Location.Latitude), x.Group.Name),
+					new LocationDto(x.Location.Longitude, x.Location.Latitude),
+					x.Price,
+					x.RideDirection,
+					x.Stops.Select(a => new StopDto(new LocationDto(a.Location.Longitude, a.Location.Latitude)))
+						.ToList(),
+					x.Date,
+					x.Id,
+					x.SeatsLimit));
+
+				return rideDtos;
+			}
+			catch (Exception ex)
+			{
+				throw new ApiException(ex);
+			}
 		}
 	}
 }

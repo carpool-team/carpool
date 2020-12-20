@@ -118,6 +118,7 @@ namespace DataAccessLayer.Repositories
 				.Select(x => x.UserGroups)
 				.AnyAsync(x => x.Any(y => y.AppUserId == appUserId), cancellationToken);
 
+
 		public async Task AddAsync(Group group, CancellationToken cancellationToken)
 		{
 			IdGenerator idGenerator = new(IdGeneratorType.Group);

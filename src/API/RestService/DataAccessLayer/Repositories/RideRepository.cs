@@ -53,6 +53,9 @@ namespace DataAccessLayer.Repositories
 				.Include(ride => ride.Participants)
 				.Include(ride => ride.Location)
 				.Include(ride => ride.Group)
+					.ThenInclude(group => group.UserGroups)
+				.Include(ride => ride.Owner)
+					.ThenInclude(owner => owner.Vehicle)
 				.Where(ride => ride.Date.Date == dateTime.Date
 							   && ride.Date.TimeOfDay >= dateTime.TimeOfDay
 							   && ride.GroupId == groupId
