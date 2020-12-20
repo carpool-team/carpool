@@ -88,6 +88,15 @@
             "login": "Zaloguj się",
             "logout": "Wyloguj się"
         },
+        "helpForm": {
+            "titleInput": "Tytuł zgłoszenia",
+            "bodyInput": "Treść zgłoszenia",
+            "application": "Typ aplikacji",
+            "send": "Wyślij",
+            "helpLabel": "Pomóż nam udoskonalić naszą platformę!",
+            "validateMsg": "Pole wymagane.",
+            "helpToast": "Dziękujemy za zgłoszenie."
+        },
         "homeScreen": {
             "quote": "Nie jedź\n sam!",
             "join": "Dołącz do grupy",
@@ -99,7 +108,9 @@
             "btnGroups": "Dowiedz się więcej o grupach",
             "groups": "Grupy",
             "reports": "Raporty",
-            "rides": "Przejazdy"
+            "rides": "Przejazdy",
+            "help": "Jeżeli natrafiłeś na błąd, lub masz jakieś sugestie do działania aplikacji, jako zespół Carpool będziemy bardzo wdzięczni jeżeli opiszesz nam problem korzystając z naszego formularza.",
+            "helpBtn": "Dodaj zgłoszenie"
         },
         "common": {
             "groups": "Grupy",

@@ -109,6 +109,16 @@ namespace DataAccessLayer.Repositories
 		public Task<bool> AnyWithIdAsync(GroupId groupId, CancellationToken cancellation = default)
 			=> _context.Set<Group>().AnyAsync(x => x.Id == groupId, cancellation);
 
+		public async Task<bool> DoesUserExistsInGroup(GroupId groupId,
+			AppUserId appUserId,
+			CancellationToken cancellationToken = default)
+			=> await _context.Set<Group>()
+				.Include(x => x.UserGroups)
+				.Where(x => x.Id == groupId)
+				.Select(x => x.UserGroups)
+				.AnyAsync(x => x.Any(y => y.AppUserId == appUserId), cancellationToken);
+
+
 		public async Task AddAsync(Group group, CancellationToken cancellationToken)
 		{
 			IdGenerator idGenerator = new(IdGeneratorType.Group);

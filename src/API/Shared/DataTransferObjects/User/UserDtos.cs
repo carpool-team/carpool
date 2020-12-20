@@ -13,11 +13,10 @@ namespace RestApi.DTOs.User
         [property: JsonProperty("lastName")]string LastName,
         [property: JsonProperty("email")]string Email);
 
-    public record OwnerDto([JsonProperty("rating")] double Rating,
+    public record RideOwnerDto([JsonProperty("rating")] double Rating,
         [JsonProperty("firstName")] string FirstName,
         [JsonProperty("lastName")]string LastName,
-        [JsonProperty("id")] AppUserId Id,
-        [JsonProperty("vehicle")]IndexVehicleDto? Vehicle);
+        [JsonProperty("id")] AppUserId Id);
 
     public record InvitingUserDto([JsonProperty("id")] AppUserId AppUserId,
         [JsonProperty("firstName")] string FirstName,
@@ -27,7 +26,7 @@ namespace RestApi.DTOs.User
         [JsonProperty("firstName")] string FirstName,
         [JsonProperty("lastName")] string LastName);
 
-    public record InviteUserDto([JsonProperty("id")] AppUserId AppUserId,
+    public record UserGroupInviteDto([JsonProperty("id")] AppUserId AppUserId,
         [JsonProperty("firstName")] string FirstName,
         [JsonProperty("lastName")] string LastName,
         [JsonProperty("email")] string Email);
@@ -36,4 +35,8 @@ namespace RestApi.DTOs.User
         [JsonProperty("firstName")] string FirstName,
         [JsonProperty("lastName")] string LastName,
         [JsonProperty("vehicle")] IndexVehicleDto Vehicle);
+
+    public record RideRequestingUserDto([JsonProperty("id")] AppUserId AppUserId,
+        [JsonProperty("firstName")] string FirstName,
+        [JsonProperty("lastName")] string LastName);
 }

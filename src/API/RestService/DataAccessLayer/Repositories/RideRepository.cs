@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DataAccessLayer.DatabaseContexts;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
+using Domain.Enums;
 using IdentifiersShared.Identifiers;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,14 +43,23 @@ namespace DataAccessLayer.Repositories
 			return _context.Rides.AsNoTracking().FirstOrDefault(ride => ride.Id == id);
 		}
 
-		public async Task<IEnumerable<Ride>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken)
+		public async Task<IEnumerable<Ride>> GetPartAsNoTrackingAsync(GroupId groupId,
+			RideDirection rideDirection,
+			DateTime dateTime,
+			CancellationToken cancellationToken)
 		{
 			return await _context.Rides
 				.Include(ride => ride.Stops)
 				.Include(ride => ride.Participants)
 				.Include(ride => ride.Location)
 				.Include(ride => ride.Group)
-				.Where(ride => ride.Date >= DateTime.Now)
+					.ThenInclude(group => group.UserGroups)
+				.Include(ride => ride.Owner)
+					.ThenInclude(owner => owner.Vehicle)
+				.Where(ride => ride.Date.Date == dateTime.Date
+							   && ride.Date.TimeOfDay >= dateTime.TimeOfDay
+							   && ride.GroupId == groupId
+							   && ride.RideDirection == rideDirection)
 				.OrderBy(ride => ride.Date)
 				.ToListAsync(cancellationToken);
 		}

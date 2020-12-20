@@ -7,6 +7,7 @@ import LoginPanel from "../../auth/login/LoginPanel";
 import RegisterPanel from "../../auth/register/RegisterPanel";
 import RidesRouter from "../../rides/RidesRouter";
 import PrivateRoute from "../../system/PrivateRoute";
+import HelpForm from "../../helpForm/HelpForm";
 import FallbackRoute from "../../system/FallbackRoute";
 
 export const mainRoutes = {
@@ -15,6 +16,7 @@ export const mainRoutes = {
 	register: "register/",
 	login: "login/",
 	rides: "rides/",
+	help: "help/"
 };
 
 const LayoutRouter = (props: RouteComponentProps) => {
@@ -27,6 +29,7 @@ const LayoutRouter = (props: RouteComponentProps) => {
 				<Route exact path={path + mainRoutes.register} component={RegisterPanel} />
 				<Route exact path={path + mainRoutes.login} component={LoginPanel} />
 				<PrivateRoute path={path + mainRoutes.rides} component={RidesRouter} />
+				<Route exact path={path + mainRoutes.help} component={HelpForm} />
 				<FallbackRoute />
 			</Switch>
 		</Suspense>

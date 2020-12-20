@@ -73,6 +73,8 @@
         "@material-ui/pickers": "^3.2.10",
         "@turf/bbox": "^6.0.1",
         "date-fns": "^2.16.1",
+        "emailjs": "^3.4.0",
+        "emailjs-com": "^2.6.4",
         "faker": "^5.1.0",
         "i18next": "^19.8.4",
         "i18next-browser-languagedetector": "^4.3.1",

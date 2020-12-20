@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Entities;
+using Domain.Enums;
 using IdentifiersShared.Identifiers;
 
 namespace Domain.Contracts.Repositories
@@ -14,7 +16,10 @@ namespace Domain.Contracts.Repositories
 		Ride GetById(RideId id);
 		Ride GetByAsNoTrackingId(RideId id);
 
-		Task<IEnumerable<Ride>> GetPartAsNoTrackingAsync(CancellationToken cancellationToken);
+		Task<IEnumerable<Ride>> GetPartAsNoTrackingAsync(GroupId groupId,
+			RideDirection rideDirection,
+			DateTime dateTime,
+			CancellationToken cancellationToken = default);
 
 		Task<IEnumerable<Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			bool past,
