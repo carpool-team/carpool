@@ -4,18 +4,12 @@ on:
   push:
     branches:
       - development
-    paths-ignore:
-      - 'src/API/**'
-      - 'src/Mobile/**'
     paths:
       - 'src/Web/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - development
-    paths-ignore:
-      - 'src/API/**'
-      - 'src/Mobile/**'
     paths:
       - 'src/Web/**'
 
