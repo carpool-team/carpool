@@ -9,7 +9,7 @@
         "start": "webpack-dev-server -d --mode development --open --hot --config webpack.dev.js",
         "run-prod": "cross-env NODE_ENV=production webpack-dev-server -p --mode production --open --hot --config webpack.prod.js",
         "run-mobile": "webpack-dev-server -d --mode development --open --hot --config webpack.mobile.js",
-        "build": "cross-env NODE_ENV=production webpack --mode production --config webpack.prod.js",
+        "build": "cross-env NODE_ENV=production webpack --mode production --config webpack.prod.js && cp ./routes.jsw ./dist/routes.jsw",
         "check-types": "tsc"
     },
     "keywords": [],
