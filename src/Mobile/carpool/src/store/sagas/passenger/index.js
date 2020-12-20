@@ -131,13 +131,25 @@ export function* createRideRequestAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      // yield instance.post(...action.payload)
+      const res = yield instance.post(
+        '/RideRequests',
+        {
+          ...action.payload,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log('createRideRequestAsync res', res);
 
       yield put(actions.getPassengersRideRequests());
 
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
+    console.log('createRideRequestAsync err', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
