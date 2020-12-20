@@ -37,14 +37,23 @@ jobs:
           packageManager: npm
       - name: Create .env
         working-directory: ${{ env.wd }}
+        shell: bash
+        env:
+          MAPBOX_STYLE: ${{ secrets.MAPBOX_STYLE }}
+          MAPBOX_KEY: ${{ secrets.MAPBOX_KEY }}
+          REST_URL: ${{ secrets.REST_URL }}
+          AUTH_URL: ${{ secrets.AUTH_URL }}
+          EMAIL: ${{ secrets.HELP_MAIL }}
+          EMAIL_USER_ID: ${{ secrets.HELP_USERID }}
+          EMAIL_SERVICE_ID: ${{ secrets.HELP_SERVICEID }}
         run: |
-          echo MAPLIGHT=${{ secrets.MAPBOX_STYLE }} > .env
-          echo MAPBOX_KEY=${{ secrets.MAPBOX_KEY }} >> .env
-          echo REST_URL=${{ secrets.REST_URL }} >> .env
-          echo AUTH_URL=${{ secrets.AUTH_URL }} >> .env
-          echo EMAIL=${{ secrets.HELP_MAIL }} >> .env
-          echo EMAIL_USER_ID=${{ secrets.HELP_USERID }} >> .env
-          echo EMAIL_SERVICE_ID=${{ secrets.HELP_SERVICEID }} >> .env
+          echo MAPLIGHT=$MAPBOX_STYLE > .env
+          echo MAPBOX_KEY=$MAPBOX_KEY >> .env
+          echo REST_URL=$REST_URL >> .env
+          echo AUTH_URL=$AUTH_URL >> .env
+          echo EMAIL=$EMAIL >> .env
+          echo EMAIL_USER_ID=$EMAIL_USER_ID >> .env
+          echo EMAIL_SERVICE_ID=$EMAIL_SERVICE_ID >> .env
       - name: Build
         working-directory: ${{ env.wd }}
         run: npm run build
