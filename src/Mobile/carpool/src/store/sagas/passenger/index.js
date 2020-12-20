@@ -135,6 +135,7 @@ export function* createRideRequestAsync(action) {
         '/RideRequests',
         {
           ...action.payload,
+          requestingUserId: userId,
         },
         {
           headers: {
@@ -144,7 +145,7 @@ export function* createRideRequestAsync(action) {
       );
       console.log('createRideRequestAsync res', res);
 
-      yield put(actions.getPassengersRideRequests());
+      // yield put(actions.getPassengersRideRequests());
 
       yield call(resolvePromiseAction, action);
     }

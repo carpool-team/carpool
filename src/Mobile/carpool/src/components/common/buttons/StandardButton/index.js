@@ -25,7 +25,7 @@ const StandardButton = ({
       style={{width, height, ...style}}
       borderRadius={100}
       contentContainerStyle={contentContainerStyle}
-      onPress={disabled ? undefined : onPress}>
+      onPress={disabled || loading ? undefined : onPress}>
       {loading ? (
         <ActivityIndicator color={color} size="small" />
       ) : (
