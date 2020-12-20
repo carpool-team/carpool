@@ -16,6 +16,9 @@ jobs:
     
     runs-on: ubuntu-latest
     
+    env:
+      wd: ./src/Web
+    
     strategy:
       matrix:
         node-version: [12.x]
@@ -31,10 +34,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: npm install
-        uses: Jaid/action-npm-install@v1.2.4
-        with:
-          working-directory: ${{ env.wd }}
-          packageManager: npm
+        working-directory: ${{ env.wd }}
+        shell: bash
+        run: npm install
       - name: Create .env
         working-directory: ${{ env.wd }}
         shell: bash
