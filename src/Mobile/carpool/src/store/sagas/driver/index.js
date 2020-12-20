@@ -295,13 +295,25 @@ export function* acceptRideRequestAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      // yield instance.put(...action.payload)
+      const res = yield instance.put(
+        '/RideRequests',
+        {
+          isAccepted: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log('acceptRideRequestAsync res', res);
 
       yield put(actions.getDriversRideRequests());
 
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
+    console.log('acceptRideRequestAsync err', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
@@ -326,13 +338,25 @@ export function* rejectRideRequestAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      // yield instance.put(...action.payload)
+      const res = yield instance.put(
+        '/RideRequests',
+        {
+          isAccepted: false,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log('rejectRideRequestAsync res', res);
 
       yield put(actions.getDriversRideRequests());
 
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
+    console.log('rejectRideRequestAsync err', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
