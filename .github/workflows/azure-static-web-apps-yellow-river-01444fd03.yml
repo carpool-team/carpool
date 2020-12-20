@@ -3,7 +3,6 @@ name: Carpool Web CI/CD Azure
 on:
   schedule:
     - cron: '0 0-23 * * *'
-  workflow_dispatch:
   push:
     branches:
       - development
