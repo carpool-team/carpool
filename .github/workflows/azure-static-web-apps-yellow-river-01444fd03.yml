@@ -3,19 +3,20 @@ name: Carpool Web CI/CD Azure
 on:
   schedule:
     - cron: '0 0-23 * * *'
+  workflow_dispatch:
   push:
     branches:
       - development
     paths:
-			- 'src/Web/**'
-			- '.github/workflows/**'
+      - 'src/Web/**'
+      - '.github/workflows/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
       - development
     paths:
       - 'src/Web/**'
-			- '.github/workflows/**'
+      - '.github/workflows/**'
 
 jobs:
   build_and_deploy_job:
