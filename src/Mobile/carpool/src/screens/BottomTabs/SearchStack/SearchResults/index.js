@@ -1,18 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  SafeAreaView,
-  RefreshControl,
-  Alert,
-  StyleSheet,
-} from 'react-native';
+import {View, SafeAreaView, Alert, Text} from 'react-native';
 import {GoBack} from '../../../../components/navigation';
-import {ListEmptyComponent} from '../../../../components/common/lists';
 import * as actions from '../../../../store/actions';
 import {useDispatch} from 'react-redux';
-import {colors} from '../../../../styles';
+import RidesList from '../../../../components/Driver/RidesList';
+import {styles} from './index.styles';
 
 const SearchResults = ({navigation, route}) => {
   const [loading, setLoading] = useState(false);
@@ -60,44 +52,16 @@ const SearchResults = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <FlatList
-          style={styles.flatlist}
-          contentContainerStyle={styles.contentContainer}
+        <Text style={styles.select}>Select a ride</Text>
+        <RidesList
           data={results}
-          keyExtractor={({item}) => item.id}
-          renderItem={item => <Text>{item.toString()}</Text>}
-          refreshControl={
-            <RefreshControl
-              colors={[colors.blue]}
-              tintColor={colors.blue}
-              refreshing={loading}
-              onRefresh={onRefresh}
-            />
-          }
-          ListEmptyComponent={
-            !loading && <ListEmptyComponent title="No rides were found." />
-          }
+          loading={loading}
+          onRefresh={onRefresh}
+          onItemPress={() => {}}
         />
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    width: '100%',
-  },
-  container: {
-    flex: 1,
-    paddingHorizontal: 16,
-  },
-  flatlist: {
-    paddingTop: 32,
-  },
-  contentContainer: {
-    flex: 1,
-  },
-});
 
 export default SearchResults;
