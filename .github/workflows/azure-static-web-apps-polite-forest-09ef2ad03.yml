@@ -3,11 +3,21 @@ name: Azure Static Web Apps CI/CD
 on:
   push:
     branches:
-      - fix/web/routing
+      - development
+    paths-ignore:
+      - 'src/API/**'
+      - 'src/Mobile/**'
+    paths:
+      - 'src/Web/**'
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches:
-      - fix/web/routing
+      - development
+    paths-ignore:
+      - 'src/API/**'
+      - 'src/Mobile/**'
+    paths:
+      - 'src/Web/**'
 
 jobs:
   build_and_deploy_job:
