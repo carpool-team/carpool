@@ -20,6 +20,12 @@ namespace Domain.Contracts.Repositories
 			RideDirection rideDirection,
 			DateTime dateTime,
 			CancellationToken cancellationToken = default);
+		
+		Task<IEnumerable<Ride>> GetPartWhereUserNotParticipantAsNoTrackingAsync(GroupId groupId,
+			AppUserId appUserId,
+			RideDirection rideDirection,
+			DateTime dateTime,
+			CancellationToken cancellationToken = default);
 
 		Task<IEnumerable<Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			bool past,
