@@ -4,6 +4,7 @@ import {
   DriversRideDetails,
   RidesList,
   PassengersRideDetails,
+  RideRequests,
 } from '../../../../screens/BottomTabs/RidesStack';
 import {Header} from '../../../../components/navigation';
 import {useIsFocused} from '@react-navigation/native';
@@ -50,6 +51,13 @@ const RidesStack = ({navigation}) => {
         component={PassengersRideDetails}
         options={{
           headerTitle: 'Ride details',
+        }}
+      />
+      <Stack.Screen
+        name="RideRequests"
+        component={RideRequests}
+        options={{
+          headerTitle: 'Ride requests',
         }}
       />
     </Stack.Navigator>

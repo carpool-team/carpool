@@ -1,11 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, RefreshControl} from 'react-native';
+import {
+  ScrollView,
+  RefreshControl,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import WeekPicker from '../WeekPicker';
 import {getDates} from '../../../utils/date';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
 import {useNavigation} from '@react-navigation/native';
-import {colors} from '../../../styles';
+import {colors, sheet} from '../../../styles';
 import WeekRidesList from '../WeekRidesList';
 import {styles} from './index.styles';
 import {useActiveAccount} from '../../../hooks';
@@ -58,8 +64,15 @@ const Rides = () => {
 
   const onDecrement = () => setOffset(offset => offset - 1);
 
+  const onRideRequestsPress = () => navigation.navigate('RideRequests');
+
   return (
     <>
+      <View style={styles.topRow}>
+        <TouchableOpacity onPress={onRideRequestsPress}>
+          <Text style={styles.rideRequests}>Ride requests</Text>
+        </TouchableOpacity>
+      </View>
       <WeekPicker
         onDecrement={onDecrement}
         onIncrement={onIncrement}
