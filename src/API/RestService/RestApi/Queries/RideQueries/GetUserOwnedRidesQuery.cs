@@ -48,8 +48,7 @@ namespace RestApi.Queries.RideQueries
 				foreach (var ride in rides)
 				{
 					var owner = ride.Owner;
-					IndexVehicleDto? vehicleDto = owner.Vehicle != null ? new(owner.Vehicle.Name) : (IndexVehicleDto?)null;
-					RideOwnerDto rideOwnerDto = new(owner.Rating, owner.FirstName, owner.LastName, owner.Id, vehicleDto);
+					RideOwnerDto rideOwnerDto = new(owner.Rating, owner.FirstName, owner.LastName, owner.Id);
 
 					var group = ride.Group;
 					GroupDto groupDto = new(group.UserGroups.Count,

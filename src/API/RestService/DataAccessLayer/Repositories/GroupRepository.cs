@@ -112,19 +112,12 @@ namespace DataAccessLayer.Repositories
 		public async Task<bool> DoesUserExistsInGroup(GroupId groupId,
 			AppUserId appUserId,
 			CancellationToken cancellationToken = default)
-		{
-			var a = await _context.Set<Group>()
-				.ToListAsync();
-
-			var b = a.Any(x => x.UserGroups.Any(a => a.AppUserId == appUserId));
-			
-			var x = await _context.Set<Group>()
+			=> await _context.Set<Group>()
 				.Include(x => x.UserGroups)
 				.Where(x => x.Id == groupId)
 				.Select(x => x.UserGroups)
 				.AnyAsync(x => x.Any(y => y.AppUserId == appUserId), cancellationToken);
-			return x;
-		}
+
 
 		public async Task AddAsync(Group group, CancellationToken cancellationToken)
 		{

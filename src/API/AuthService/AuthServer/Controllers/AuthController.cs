@@ -83,18 +83,25 @@ namespace AuthServer.Controllers
 		{
 			if (!ModelState.IsValid)
 				throw new ApiException(ModelState.AllErrors());
-
-			var result = await _signInManager.PasswordSignInAsync(model.Email,
-				model.Password,
-				model.RememberLogin,
-				false);
-
-			if (!result.Succeeded)
+			try
 			{
-				ModelState.AddModelError(string.Empty, "Invalid email or password");
+				var result = await _signInManager.PasswordSignInAsync(model.Email,
+					model.Password,
+					model.RememberLogin,
+					false);
+				if (!result.Succeeded)
+				{
+					ModelState.AddModelError(string.Empty, "Invalid email or password");
 
-				throw new ApiException(ModelState);
+					throw new ApiException(ModelState);
+				}
 			}
+			catch (Exception ex)
+			{
+				throw new ApiException(ex);
+			}
+
+
 
 			var user = await _userManager.FindByNameAsync(model.Email);
 
