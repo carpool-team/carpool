@@ -54,6 +54,8 @@ namespace RestApi.Queries.RideRequestQueries
 						x.IsAccepted,
 						x.IsPending))
 				.ToList();
+
+			return rideRequestDtos;
 		}
 	}
 }
