@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from "react";
+import React, { Suspense } from "react";
 import { Switch, Route, RouteComponentProps, withRouter } from "react-router";
 import HomeScreen from "../../homeScreen/HomeScreen";
 import LoaderSpinner from "../../ui/loaderSpinner/LoaderSpinner";
@@ -8,6 +8,7 @@ import RegisterPanel from "../../auth/register/RegisterPanel";
 import RidesRouter from "../../rides/RidesRouter";
 import PrivateRoute from "../../system/PrivateRoute";
 import HelpForm from "../../helpForm/HelpForm";
+import FallbackRoute from "../../system/FallbackRoute";
 
 export const mainRoutes = {
 	groups: "groups/",
@@ -29,6 +30,7 @@ const LayoutRouter = (props: RouteComponentProps) => {
 				<Route exact path={path + mainRoutes.login} component={LoginPanel} />
 				<PrivateRoute path={path + mainRoutes.rides} component={RidesRouter} />
 				<Route exact path={path + mainRoutes.help} component={HelpForm} />
+				<FallbackRoute />
 			</Switch>
 		</Suspense>
 	);
