@@ -31,7 +31,6 @@ const SearchResults = ({navigation, route}) => {
       }),
     )
       .then(res => {
-        console.log('RES', res);
         setResults(res);
       })
       .catch(err =>
@@ -49,6 +48,12 @@ const SearchResults = ({navigation, route}) => {
       )
       .finally(() => setLoading(false));
 
+  const onItemPress = ride =>
+    navigation.navigate('SelectedRideDetails', {
+      ride,
+      data,
+    });
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -57,7 +62,7 @@ const SearchResults = ({navigation, route}) => {
           data={results}
           loading={loading}
           onRefresh={onRefresh}
-          onItemPress={() => {}}
+          onItemPress={onItemPress}
         />
       </View>
     </SafeAreaView>
