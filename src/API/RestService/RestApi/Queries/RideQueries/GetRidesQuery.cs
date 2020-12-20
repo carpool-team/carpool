@@ -59,7 +59,8 @@ namespace RestApi.Queries.RideQueries
 			if (!isUserInGroup)
 				throw new ApiException("User does not have access to this group rides", StatusCodes.Status403Forbidden);
 
-			var rides = await _rideRepository.GetPartAsNoTrackingAsync(request.GroupId,
+			var rides = await _rideRepository.GetPartWhereUserNotParticipantAsNoTrackingAsync(request.GroupId,
+				request.TokenUserId,
 				request.RideDirection,
 				request.DateTime,
 				cancellationToken);

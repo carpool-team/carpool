@@ -22,8 +22,15 @@ namespace RestApi.Controllers
 		public RideRequestsController(IMediator mediator) => _mediator = mediator;
 
 		[HttpGet]
-		public async Task<ApiResponse> GetRideRequests()
+		public async Task<ApiResponse> GetRideRequests([FromQuery]bool isOwner = false)
 		{
+			if (isOwner)
+			{
+				GetOwnerRideRequestsQuery getOwnerRideRequests = new(User.GetUserId());
+				var ownerRideRequests = await _mediator.Send(getOwnerRideRequests);
+
+				return new ApiResponse(ownerRideRequests);
+			}		
 			GetRideRequestsQuery getRideRequests = new(User.GetUserId());
 			var rideRequests = await _mediator.Send(getRideRequests);
 

@@ -1,34 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using DataTransferObjects;
-using DataTransferObjects.GroupDtos;
 using DataTransferObjects.RideRequest;
 using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
-using RestApi.DTOs.Ride;
-using RestApi.DTOs.User;
 
 namespace RestApi.Queries.RideRequestQueries
 {
-	public class GetRideRequestsQuery : IRequest<IEnumerable<RideRequestDto>>
+	public class GetOwnerRideRequestsQuery : IRequest<IEnumerable<RideRequestDto>>
 	{
-		public GetRideRequestsQuery(AppUserId tokenUserId)
+		public GetOwnerRideRequestsQuery(AppUserId tokenUserId) 
 			=> TokenUserId = tokenUserId;
-
+		
 		public AppUserId TokenUserId { get; }
 	}
-
-	public class GetRideRequestsQueryHandler : IRequestHandler<GetRideRequestsQuery, IEnumerable<RideRequestDto>>
+	
+	public class GetOwnerRideRequestsQueryHandler : IRequestHandler<GetOwnerRideRequestsQuery, IEnumerable<RideRequestDto>>
 	{
 		private readonly IRideRequestRepository _rideRequestRepository;
-
-		public GetRideRequestsQueryHandler(IRideRequestRepository rideRequestRepository)
+		
+		public GetOwnerRideRequestsQueryHandler(IRideRequestRepository rideRequestRepository) 
 			=> _rideRequestRepository = rideRequestRepository;
 
-		public async Task<IEnumerable<RideRequestDto>> Handle(GetRideRequestsQuery request,
+		public async Task<IEnumerable<RideRequestDto>> Handle(GetOwnerRideRequestsQuery request,
 			CancellationToken cancellationToken)
 		{
 			var rideRequests = await _rideRequestRepository.GetUserPendingRideRequestAsNoTrackingAsync(
@@ -53,8 +49,6 @@ namespace RestApi.Queries.RideRequestQueries
 						x.IsAccepted,
 						x.IsPending))
 				.ToList();
-
-			return rideRequestDtos;
 		}
 	}
 }

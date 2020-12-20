@@ -47,22 +47,41 @@ namespace DataAccessLayer.Repositories
 			RideDirection rideDirection,
 			DateTime dateTime,
 			CancellationToken cancellationToken)
-		{
-			return await _context.Rides
+			=> await _context.Rides
 				.Include(ride => ride.Stops)
 				.Include(ride => ride.Participants)
 				.Include(ride => ride.Location)
 				.Include(ride => ride.Group)
-					.ThenInclude(group => group.UserGroups)
+				.ThenInclude(group => @group.UserGroups)
 				.Include(ride => ride.Owner)
-					.ThenInclude(owner => owner.Vehicle)
+				.ThenInclude(owner => owner.Vehicle)
 				.Where(ride => ride.Date.Date == dateTime.Date
 							   && ride.Date.TimeOfDay >= dateTime.TimeOfDay
 							   && ride.GroupId == groupId
 							   && ride.RideDirection == rideDirection)
 				.OrderBy(ride => ride.Date)
 				.ToListAsync(cancellationToken);
-		}
+
+		public async Task<IEnumerable<Ride>> GetPartWhereUserNotParticipantAsNoTrackingAsync(GroupId groupId,
+			AppUserId appUserId,
+			RideDirection rideDirection,
+			DateTime dateTime,
+			CancellationToken cancellationToken = default)
+			=>  await _context.Rides
+			.Include(ride => ride.Stops)
+			.Include(ride => ride.Participants)
+			.Include(ride => ride.Location)
+			.Include(ride => ride.Group)
+			.ThenInclude(group => group.UserGroups)
+			.Include(ride => ride.Owner)
+			.ThenInclude(owner => owner.Vehicle)
+			.Where(ride => ride.Date.Date == dateTime.Date
+		&& ride.Date.TimeOfDay >= dateTime.TimeOfDay
+		&& ride.GroupId == groupId
+		&& ride.RideDirection == rideDirection
+		&& ride.Participants.All(x => x.AppUserId != appUserId))
+		.OrderBy(ride => ride.Date)
+			.ToListAsync(cancellationToken);
 
 		public async Task<IEnumerable<Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			bool past = false,
