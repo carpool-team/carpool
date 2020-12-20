@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DataTransferObjects;
+using DataTransferObjects.GroupDtos;
 using DataTransferObjects.RideRequest;
 using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
+using RestApi.DTOs.Ride;
+using RestApi.DTOs.User;
 
 namespace RestApi.Queries.RideRequestQueries
 {
