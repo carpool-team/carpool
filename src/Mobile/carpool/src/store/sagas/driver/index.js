@@ -35,7 +35,6 @@ export function* getDriversRidesAsync() {
       // yield put(actions.getDriversRidesSuccess(exampleRides));
     }
   } catch (err) {
-    console.log('getDriversRidesAsync ERR', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
@@ -254,12 +253,11 @@ export function* getDriversRideRequestsAsync() {
     if (token) {
       yield put(actions.getDriversRideRequestsLoading());
 
-      const res = {
-        data: {
-          result: [],
+      const res = yield instance.get('/RideRequests?isOwner=true', {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      };
-      // const res = yield instance.get(...)
+      });
 
       yield put(actions.getDriversRideRequestsSuccess(res.data.result));
     }

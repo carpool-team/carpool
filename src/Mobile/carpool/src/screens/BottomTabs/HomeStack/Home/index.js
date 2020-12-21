@@ -60,6 +60,9 @@ const Home = () => {
     dispatch(actions.getUsersRides());
     dispatch(actions.getGroups());
 
+    dispatch(actions.getDriversRideRequests());
+    dispatch(actions.getPassengersRideRequests());
+
     if (Platform.OS === 'android') {
       requestLocationPermission();
     }

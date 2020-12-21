@@ -90,12 +90,11 @@ export function* getPassengersRideRequestsAsync() {
     if (token) {
       yield put(actions.getPassengersRideRequestsLoading());
 
-      const res = {
-        data: {
-          result: [],
+      const res = yield instance.get('/RideRequests', {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      };
-      // const res = yield instance.get(...)
+      });
 
       yield put(actions.getPassengersRideRequestsSuccess(res.data.result));
     }
@@ -143,14 +142,12 @@ export function* createRideRequestAsync(action) {
           },
         },
       );
-      console.log('createRideRequestAsync res', res);
 
-      // yield put(actions.getPassengersRideRequests());
+      yield put(actions.getPassengersRideRequests());
 
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('createRideRequestAsync err', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
@@ -177,18 +174,16 @@ export function* findRidesAsync(action) {
     if (token) {
       const {groupId, rideDirection, dateTime} = action.payload;
       const endpoint = `/Rides?groupId=${groupId}&rideDirection=${rideDirection}&dateTime=${dateTime}`;
-      console.log(endpoint);
+
       const res = yield instance.get(endpoint, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('RES', res);
 
       yield call(resolvePromiseAction, action, res.data.result);
     }
   } catch (err) {
-    console.log('ERR', err.response);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
