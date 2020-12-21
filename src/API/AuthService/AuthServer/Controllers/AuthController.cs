@@ -93,15 +93,13 @@ namespace AuthServer.Controllers
 				{
 					ModelState.AddModelError(string.Empty, "Invalid email or password");
 
-					throw new ApiException(ModelState);
+					throw new ApiProblemDetailsException(ModelState);
 				}
 			}
 			catch (Exception ex)
 			{
 				throw new ApiException(ex);
 			}
-
-
 
 			var user = await _userManager.FindByNameAsync(model.Email);
 
