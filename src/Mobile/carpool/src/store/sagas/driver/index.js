@@ -297,6 +297,7 @@ export function* acceptRideRequestAsync(action) {
         '/RideRequests',
         {
           isAccepted: true,
+          rideRequestId: action.payload,
         },
         {
           headers: {
@@ -340,6 +341,7 @@ export function* rejectRideRequestAsync(action) {
         '/RideRequests',
         {
           isAccepted: false,
+          rideRequestId: action.payload,
         },
         {
           headers: {
