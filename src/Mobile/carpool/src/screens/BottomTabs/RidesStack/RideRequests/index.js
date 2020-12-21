@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
-import {View, Text, SafeAreaView, StyleSheet, FlatList} from 'react-native';
+import {Text, SafeAreaView} from 'react-native';
 import {useActiveAccount} from '../../../../hooks';
 import {GoBack} from '../../../../components/navigation';
-import {useSelector} from 'react-redux';
-import UpView from '../../../../components/common/UpView';
+import {useSelector, useDispatch} from 'react-redux';
 import {PassengersRideRequests} from '../../../../components/RideRequests';
+import {styles} from './index.styles';
+import * as actions from '../../../../store/actions';
 
 const RideRequests = ({navigation}) => {
   const {activeAccount} = useActiveAccount();
@@ -16,8 +17,9 @@ const RideRequests = ({navigation}) => {
   const driversRequests = useSelector(
     state => state.driverReducer.rideRequests,
   );
-  console.log(passengersRequests);
   console.log(driversRequests);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     navigation.setOptions({
@@ -25,13 +27,16 @@ const RideRequests = ({navigation}) => {
     });
   }, []);
 
+  const onRefreshPassenger = () =>
+    dispatch(actions.getPassengersRideRequests());
+
   return (
     <SafeAreaView style={styles.safeArea}>
       {isPassenger ? (
         <PassengersRideRequests
           data={passengersRequests.data}
           loading={passengersRequests.loading}
-          onRefresh={() => null}
+          onRefresh={onRefreshPassenger}
         />
       ) : (
         <Text>Drivers ride requests</Text>
@@ -39,19 +44,5 @@ const RideRequests = ({navigation}) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    width: '100%',
-    flex: 1,
-  },
-  flatlist: {
-    width: '100%',
-  },
-  contentContainer: {
-    paddingTop: 30,
-    paddingHorizontal: 16,
-  },
-});
 
 export default RideRequests;
