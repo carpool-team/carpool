@@ -1,9 +1,12 @@
 import React, {useEffect} from 'react';
-import {Text, SafeAreaView} from 'react-native';
+import {SafeAreaView} from 'react-native';
 import {useActiveAccount} from '../../../../hooks';
 import {GoBack} from '../../../../components/navigation';
 import {useSelector, useDispatch} from 'react-redux';
-import {PassengersRideRequests} from '../../../../components/RideRequests';
+import {
+  PassengersRideRequests,
+  DriversRideRequests,
+} from '../../../../components/RideRequests';
 import {styles} from './index.styles';
 import * as actions from '../../../../store/actions';
 
@@ -17,7 +20,6 @@ const RideRequests = ({navigation}) => {
   const driversRequests = useSelector(
     state => state.driverReducer.rideRequests,
   );
-  console.log(driversRequests);
 
   const dispatch = useDispatch();
 
@@ -30,6 +32,8 @@ const RideRequests = ({navigation}) => {
   const onRefreshPassenger = () =>
     dispatch(actions.getPassengersRideRequests());
 
+  const onRefreshDriver = () => dispatch(actions.getDriversRideRequests());
+
   return (
     <SafeAreaView style={styles.safeArea}>
       {isPassenger ? (
@@ -39,7 +43,11 @@ const RideRequests = ({navigation}) => {
           onRefresh={onRefreshPassenger}
         />
       ) : (
-        <Text>Drivers ride requests</Text>
+        <DriversRideRequests
+          data={driversRequests.data}
+          loading={driversRequests.loading}
+          onRefresh={onRefreshDriver}
+        />
       )}
     </SafeAreaView>
   );
