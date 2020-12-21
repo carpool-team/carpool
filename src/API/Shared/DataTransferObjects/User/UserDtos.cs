@@ -6,7 +6,8 @@ using Newtonsoft.Json;
 namespace RestApi.DTOs.User
 {
     public record UpdateUserDto([property: JsonProperty("firstName")] string FirstName,
-        [property: JsonProperty("lastName")] string LastName);
+        [property: JsonProperty("lastName")] string LastName,
+        [JsonProperty("email")] string Email);
 
     public record AddUserDto([property: JsonProperty("id")]AppUserId AppUserId, 
         [property: JsonProperty("firstName")]string FirstName,
