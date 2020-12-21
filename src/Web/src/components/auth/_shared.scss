@@ -27,6 +27,20 @@
 	height:93vh;
 	background-image: $login_flat_people;
 }
+.auth__popover{
+	width: 25vw;
+	background-color: $backgroundOnHover;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	& > span {
+		margin-top: 20px;
+		font-size: 22px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-align: center;
+	}
+}
 .auth__inputs{
 	border-radius: 20px;
 	display: flex;
@@ -58,6 +72,14 @@
 	&--input{
 		margin-top: 15px;
 	}
+	&--buttonContainer{
+		display: flex;
+		justify-content: space-evenly;
+		// gap: 5px;
+	}
+	&--buttonOffset {
+		padding-left: 15px;
+	}
 	&--button{
 		margin-top: 30px;
 		align-self: center;
@@ -84,6 +106,10 @@
 	.auth__image--register{
 		background-image: none;
 		height: 89vh;
+	}
+	.auth__popover{
+		width: 90vw;
+		height: 40vh;
 	}
 	.auth__inputs{
 		width: 100%;
