@@ -18,6 +18,9 @@ namespace Domain.Contracts.Repositories
 
 		Task<IEnumerable<RideRequest>> GetUserPendingRideRequestAsNoTrackingAsync(AppUserId appUserId,
 			CancellationToken cancellationToken = default);
+		
+		Task<IEnumerable<RideRequest>> GetOwnerPendingRideRequestAsNoTrackingAsync(AppUserId appUserId,
+			CancellationToken cancellationToken = default);
 
 		Task AddAsync(RideRequest groupInvite, CancellationToken cancellationToken);
 

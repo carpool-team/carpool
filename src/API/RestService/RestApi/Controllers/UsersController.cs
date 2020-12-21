@@ -55,9 +55,13 @@ namespace RestApi.Controllers
 		[HttpPut("{appUserId}")]
 		public async Task<ApiResponse> PutUser([FromRoute] AppUserId userId, [FromBody] UpdateUserDto model)
 		{
+			if (userId != User.GetUserId())
+				throw new ApiException(StatusCodes.Status403Forbidden);
+			
 			UpdateUserCommand request = new(userId,
 				model.FirstName,
-				model.LastName);
+				model.LastName,
+				model.Email);
 
 			var response = await _mediator.Send(request);
 

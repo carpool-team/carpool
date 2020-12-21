@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,7 +31,7 @@ namespace RestApi.Queries.RideRequestQueries
 		public async Task<IEnumerable<RideRequestDto>> Handle(GetOwnerRideRequestsQuery request,
 			CancellationToken cancellationToken)
 		{
-			var rideRequests = await _rideRequestRepository.GetUserPendingRideRequestAsNoTrackingAsync(
+			var rideRequests = await _rideRequestRepository.GetOwnerPendingRideRequestAsNoTrackingAsync(
 				request.TokenUserId,
 				cancellationToken);
 
