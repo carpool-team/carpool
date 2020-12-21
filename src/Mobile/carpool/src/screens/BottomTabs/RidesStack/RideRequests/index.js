@@ -27,6 +27,8 @@ const RideRequests = ({navigation}) => {
     navigation.setOptions({
       headerLeft: () => <GoBack onPress={navigation.goBack} />,
     });
+    onRefreshPassenger();
+    onRefreshDriver();
   }, []);
 
   const onRefreshPassenger = () =>
