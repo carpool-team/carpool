@@ -131,8 +131,8 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						<span>
 							{t(this.resources.profile)}
 						</span>
-					</Button>
-					<Button
+					</NavButton>
+					<NavButton
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}
 						onClick={() => { this.props.logout(); }}

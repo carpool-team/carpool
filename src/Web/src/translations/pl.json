@@ -23,6 +23,14 @@
                     "strong": "Silne"
                 }
             },
+            "userProfile": {
+                "delete": "Usuń konto",
+                "save": "Zapisz",
+                "settings": "Ustawienia",
+                "changePassword": "Zmień hasło",
+                "currentPassword": "Aktualne hasło",
+                "deleteConfirm": "Czy usunąć konto?"
+            },
             "submit": "Wyślij",
             "register": "Zarejestruj się",
             "registerSuccess": "Rejestracja pomyślna!",
@@ -130,6 +138,8 @@
         "createBtn": "Utwórz",
         "addBtn": "Dodaj",
         "nextBtn": "Dalej",
+        "yes": "Tak",
+        "no": "Nie",
         "loadingScreen": {
             "quote": "Share a ride",
             "join": "Grupy"
