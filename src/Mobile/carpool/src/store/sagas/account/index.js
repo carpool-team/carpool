@@ -9,6 +9,7 @@ import {
 } from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
+import authInstance from '../../../axios/authInstance';
 import jwt_decode from 'jwt-decode';
 import {
   rejectPromiseAction,
@@ -191,7 +192,7 @@ export function* editUserAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      const res = yield instance.put(
+      yield authInstance.put(
         `/Users/${userId}`,
         {
           ...action.payload,
@@ -202,14 +203,12 @@ export function* editUserAsync(action) {
           },
         },
       );
-      console.log('editUserAsync RES', res);
 
       yield put(actions.getUser());
 
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('editUserAsync ERR', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());

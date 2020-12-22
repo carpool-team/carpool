@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo} from 'react';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
@@ -65,7 +65,28 @@ const EditUser = ({navigation}) => {
   });
 
   const onSubmit = vals => {
-    console.log(diff);
+    dispatch(actions.editUser(vals))
+      .then(() => {
+        Alert.alert('Success!', 'Your account was successfully updated.', [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ]);
+      })
+      .catch(err => {
+        Alert.alert(
+          'Error',
+          'An error ocurred when trying to update your profile. Please try again',
+          [
+            {
+              text: 'Ok',
+              style: 'default',
+            },
+          ],
+        );
+      })
+      .finally(() => setSubmitting(false));
   };
 
   const diff = useMemo(() => {
@@ -118,6 +139,7 @@ const EditUser = ({navigation}) => {
             color={colors.blue}
             onPress={handleSubmit}
             disabled={!isNotEmptyObject(diff)}
+            loading={isSubmitting}
           />
         </View>
       )}
