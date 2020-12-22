@@ -44,6 +44,8 @@ export const getRequestEndpoint: (
 				return "/rides/recurring";
 			case RequestEndpoint.AUTOCOMPLETE_USER:
 				return "/users";
+			case RequestEndpoint.GET_USER_BY_APPUSERID:
+				return "/users/" + queries.userId;
 			default:
 				throw "Unhandled endpoint";
 		}

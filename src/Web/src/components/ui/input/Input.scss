@@ -16,6 +16,9 @@
 			background-color: $white;
 			display: flex;
 		}
+		&--disabled {
+			background-color: $gray;
+		}
 		&--address {
 			border-bottom: 3px solid $blue;
 			width: 100%;

@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { withTranslation } from "react-i18next";
 import { useImmer } from "use-immer";
-import { connect } from "react-redux";
-import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
-import { each } from "../../../../helpers/UniversalHelper";
-import Input from "../../../ui/input/Input";
-import { InputType } from "../../../ui/input/enums/InputType";
-import { InputIcon } from "../../../ui/input/enums/InputIcon";
-import { ValidationType } from "../../../ui/input/enums/ValidationType";
-import Button from "../../../ui/button/Button";
-import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
-import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
+import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
+import { each } from "../../../helpers/UniversalHelper";
+import Input from "../../ui/input/Input";
+import { InputType } from "../../ui/input/enums/InputType";
+import { ValidationType } from "../../ui/input/enums/ValidationType";
+import Button from "../../ui/button/Button";
+import { ButtonColor } from "../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
 import { ProfileList } from "../enums/ProfileList";
-import ButtonLink from "../../../ui/buttonLink/ButtonLink";
-import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
-import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
-import { ButtonLinkUnderline } from "../../../ui/buttonLink/enums/ButtonLinkUnderline";
-import usePassword from "../../register/hooks/PasswordInput";
+import usePassword from "../../ui/hooks/PasswordInput";
+import { IChangePasswordFormData } from "../interfaces/IChangePasswordFormData";
 
 interface IUserPasswordProps extends IReactI18nProps {
 	setCurrentList: (List: ProfileList) => void;
@@ -40,7 +35,7 @@ const UserPassword: React.FC<IUserPasswordProps> = (props) => {
 		label: "auth__inputs--label",
 	};
 
-	const [currentPassword, setCurrentPassword] = useState<string>()
+	const [currentPassword, setCurrentPassword] = useState<string>();
 	const [password, isPasswordValid, renderPasswordInputs] = usePassword();
 	const [validate, setValidate] = useState(false);
 	const [inputsValid, setInputsValid] = useImmer({
@@ -64,16 +59,18 @@ const UserPassword: React.FC<IUserPasswordProps> = (props) => {
 
 	const onClickSubmit = () => {
 		if (validateForm()) {
-
-		};
-		//TODO wysyłać request jak użytkownik wyśle dane.
+			const data: IChangePasswordFormData = {
+				password
+			};
+		}
+		// TODO wysyłać request jak użytkownik wyśle dane.
 		// props.register(data);
 		// props.setLoaderVisible(true);
 	};
 
 	const onClickBack = () => {
 		props.setCurrentList(ProfileList.Data);
-	}
+	};
 
 	return (
 		<div className={cssClasses.inputs}>

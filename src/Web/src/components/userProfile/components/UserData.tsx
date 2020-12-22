@@ -1,35 +1,52 @@
 import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { useImmer } from "use-immer";
-import { connect } from "react-redux";
-import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
-import { each } from "../../../../helpers/UniversalHelper";
-import Input from "../../../ui/input/Input";
-import { InputType } from "../../../ui/input/enums/InputType";
-import { InputIcon } from "../../../ui/input/enums/InputIcon";
-import { ValidationType } from "../../../ui/input/enums/ValidationType";
-import Button from "../../../ui/button/Button";
-import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
-import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
+import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
+import { each } from "../../../helpers/UniversalHelper";
+import Input from "../../ui/input/Input";
+import { InputType } from "../../ui/input/enums/InputType";
+import { InputIcon } from "../../ui/input/enums/InputIcon";
+import { ValidationType } from "../../ui/input/enums/ValidationType";
+import Button from "../../ui/button/Button";
+import { ButtonColor } from "../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
 import { ProfileList } from "../enums/ProfileList";
-import ButtonLink from "../../../ui/buttonLink/ButtonLink";
-import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
-import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
-import { ButtonLinkUnderline } from "../../../ui/buttonLink/enums/ButtonLinkUnderline";
+import ButtonLink from "../../ui/buttonLink/ButtonLink";
+import { ButtonLinkColor } from "../../ui/buttonLink/enums/ButtonLinkColor";
+import { ButtonLinkBackground } from "../../ui/buttonLink/enums/ButtonLinkBackground";
 import { Popover } from "@material-ui/core";
+import { IUserProfileFormData } from "../interfaces/IUserProfileFormData";
+import { connect } from "react-redux";
+import { DispatchProps, mapDispatchToProps, mapStateToProps, StateProps } from "../store/PropsTypes";
 
-interface IUserDataProps extends IReactI18nProps {
+interface IUserDataProps extends IReactI18nProps, StateProps, DispatchProps {
 	setCurrentList: (List: ProfileList) => void;
-}
-
-export interface IUserProfileFormData {
-	firstName: string;
-	lastName: string;
-	email: string;
 }
 
 const UserData: React.FC<IUserDataProps> = (props) => {
 	const { t } = props;
+
+	const [firstName, setFirstName] = useState<string>(props.userData.firstName);
+	const [lastName, setLastName] = useState<string>(props.userData.lastName);
+	const [email, setEmail] = useState<string>(props.userData.email);
+	const [inputsValid, setInputsValid] = useImmer({
+		name: false,
+		surname: false,
+		email: false,
+	});
+	const [validate, setValidate] = useState(false);
+	const [popover, setPopover] = useState<boolean>(false);
+
+	useEffect(() => {
+		props.setLoaderVisible(true);
+		props.getData();
+	}, []);
+
+	useEffect(() => {
+		setEmail(props.userData.email);
+		setLastName(props.userData.lastName);
+		setFirstName(props.userData.firstName);
+	}, [props.userData]);
 
 	const resources = {
 		email: "auth.registerPanel.email",
@@ -56,18 +73,6 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 		popoverContainer: "auth__popover"
 	};
 
-	//TODO init te hooki z wartością pobraną z api
-	const [firstName, setFirstName] = useState<string>();
-	const [lastName, setLastName] = useState<string>();
-	const [email, setEmail] = useState<string>();
-	const [inputsValid, setInputsValid] = useImmer({
-		name: false,
-		surname: false,
-		email: false,
-	});
-	const [validate, setValidate] = useState(false);
-	const [popover, setPopover] = useState<boolean>(false);
-
 	const validateForm = () => {
 		let isFormValid: boolean = true;
 		if (each(inputsValid, i => i)) {
@@ -80,35 +85,43 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 		return isFormValid;
 	};
 
-	//TODO wysyłać request jak użytkownik wpisze dane.
 	const onClickSubmit = () => {
 		if (validateForm()) {
+			const initialData: IUserProfileFormData = {
+				firstName: props.userData.firstName,
+				lastName: props.userData.lastName,
+				email: props.userData.email,
+			};
+
 			const data: IUserProfileFormData = {
 				firstName: firstName,
 				lastName: lastName,
 				email: email,
 			};
 
-			// props.register(data);
-			// props.setLoaderVisible(true);
+			// Send req only after changes
+			if (JSON.stringify(initialData) !== JSON.stringify(data)) {
+				props.updateData(data);
+				props.setLoaderVisible(true);
+			}
 		}
 	};
-	const onDeleteSubmit = () => {
 
-
-
-		handleClosePopover()
-	}
 	const handleOpenPopover = () => {
 		setPopover(true);
 	};
+
 	const handleClosePopover = () => {
 		setPopover(false);
-	}
+	};
+
+	const onDeleteSubmit = () => {
+		handleClosePopover();
+	};
 
 	const onClickPassword = () => {
 		props.setCurrentList(ProfileList.Password);
-	}
+	};
 
 	return (
 		<div className={cssClasses.inputs}>
@@ -150,7 +163,9 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 			<Input
 				style={cssClasses.input}
 				type={InputType.Text}
-				changeHandler={newValue => { setEmail(newValue); }}
+				changeHandler={newValue => {
+					// setEmail(newValue); // temporary disable email update
+				}}
 				placeholder={t(resources.email)}
 				value={email}
 				icon={InputIcon.Mail}
@@ -163,6 +178,7 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 					},
 					validate,
 				}}
+				disabled={true}
 			/>
 			<ButtonLink
 				onClick={onClickPassword}
@@ -194,12 +210,12 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 				open={popover}
 				onClose={handleClosePopover}
 				anchorOrigin={{
-					vertical: 'center',
-					horizontal: 'center',
+					vertical: "center",
+					horizontal: "center",
 				}}
 				transformOrigin={{
-					vertical: 'center',
-					horizontal: 'center',
+					vertical: "center",
+					horizontal: "center",
 				}}
 			>
 				<div className={cssClasses.popoverContainer}>
@@ -228,4 +244,6 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 	);
 };
 
-export default withTranslation()(UserData);
+export default withTranslation()(
+	connect(mapStateToProps, mapDispatchToProps)(UserData)
+);

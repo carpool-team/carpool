@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { withTranslation } from "react-i18next";
 import { RouteComponentProps, withRouter } from "react-router";
-import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
+import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import UserData from "./components/UserData";
 import UserPassword from "./components/UserPassword";
 import { ProfileList } from "./enums/ProfileList";
+
 interface IUserProfileProps extends IReactI18nProps, RouteComponentProps {
 }
-
 
 const UserProfile: React.FC<IUserProfileProps> = (props) => {
 
@@ -20,10 +20,10 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
 
 	const renderDataList = () => (
 		<UserData setCurrentList={setCurrentList} />
-	)
+	);
 	const renderPasswordList = () => (
 		<UserPassword setCurrentList={setCurrentList} />
-	)
+	);
 
 	const renderList = () => {
 		const { t } = props;
@@ -38,8 +38,8 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
 				list = renderDataList();
 				break;
 		}
-		return list
-	}
+		return list;
+	};
 
 	return (
 		<div className={cssClasses.container}>

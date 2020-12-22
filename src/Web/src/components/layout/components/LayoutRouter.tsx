@@ -8,7 +8,7 @@ import RegisterPanel from "../../auth/register/RegisterPanel";
 import RidesRouter from "../../rides/RidesRouter";
 import PrivateRoute from "../../system/PrivateRoute";
 import HelpForm from "../../helpForm/HelpForm";
-import UserProfile from "../../auth/userProfile/UserProfile";
+import UserProfile from "../../userProfile/UserProfile";
 import FallbackRoute from "../../system/FallbackRoute";
 
 export const mainRoutes = {
