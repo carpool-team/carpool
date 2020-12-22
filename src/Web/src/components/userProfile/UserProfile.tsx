@@ -30,9 +30,10 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
 
 		let list: JSX.Element;
 		switch (currentList) {
-			case ProfileList.Password:
-				list = renderPasswordList();
-				break;
+			// TEMPORARILY disable password changing panel
+			// case ProfileList.Password:
+			// 	list = renderPasswordList();
+			// 	break;
 			case ProfileList.Data:
 			default:
 				list = renderDataList();

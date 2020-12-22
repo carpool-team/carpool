@@ -180,14 +180,15 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 				}}
 				disabled={true}
 			/>
-			<ButtonLink
+			{// temporarily disable password changing
+			/* <ButtonLink
 				onClick={onClickPassword}
 				color={ButtonLinkColor.Gray}
 				background={ButtonLinkBackground.Gray}
 				additionalCssClass={cssClasses.buttonOffset}
 			>
 				{t(resources.password)}
-			</ButtonLink>
+			</ButtonLink> */}
 			<div className={cssClasses.buttonContainer}>
 				<Button
 					additionalCssClass={cssClasses.button}
