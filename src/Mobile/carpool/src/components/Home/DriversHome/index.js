@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/native';
 import {RideDetailsCard} from '../../Ride';
@@ -8,6 +8,7 @@ import {ListEmptyComponent} from '../../common/lists';
 import {ThreeGroupsList} from '../../Groups';
 import {styles} from './index.styles';
 import {SafeScroll} from '../../common/wrappers';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const DriversHome = () => {
   const navigation = useNavigation();
@@ -15,6 +16,11 @@ const DriversHome = () => {
 
   const driversRides = useSelector(state => state.driverReducer.driversRides);
   const groups = useSelector(store => store.accountReducer.groups);
+  const requestsCount = useSelector(store =>
+    store.driverReducer.rideRequests.data
+      ? store.driverReducer.rideRequests.data.length
+      : 0,
+  );
 
   useEffect(() => {
     if (driversRides.data) {
@@ -22,14 +28,31 @@ const DriversHome = () => {
     }
   }, [driversRides]);
 
+  const onRideRequestsPress = () =>
+    navigation.navigate('RidesStack', {
+      screen: 'RideRequests',
+    });
+
+  const onAllRidesPress = () => navigation.navigate('RidesStack');
+
+  const onAllGroupsPress = () => navigation.navigate('GroupsStack');
+
   return (
-    <SafeScroll minHeight={500}>
+    <SafeScroll minHeight={600}>
+      {!!requestsCount && (
+        <TouchableOpacity
+          onPress={onRideRequestsPress}
+          style={styles.topButton}>
+          <Text style={styles.count}>{`${requestsCount} pending ride request${
+            requestsCount > 1 ? 's' : ''
+          }`}</Text>
+          <MaterialIcon name="add-location" color={colors.green} size={32} />
+        </TouchableOpacity>
+      )}
       <View style={styles.container}>
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Upcoming ride</Text>
-          <Text
-            onPress={() => navigation.navigate('RidesStack')}
-            style={styles.seeAll}>
+          <Text onPress={onAllRidesPress} style={styles.seeAll}>
             See all
           </Text>
         </View>
@@ -54,13 +77,7 @@ const DriversHome = () => {
         </View>
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Your groups</Text>
-          <Text
-            onPress={() =>
-              navigation.navigate('GroupsStack', {
-                screen: 'Groups',
-              })
-            }
-            style={styles.seeAll}>
+          <Text onPress={onAllGroupsPress} style={styles.seeAll}>
             More
           </Text>
         </View>

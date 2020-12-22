@@ -21,6 +21,11 @@ const BottomTabs = () => {
       ? store.accountReducer.invitations.data.length
       : 0,
   );
+  const requestsCount = useSelector(store =>
+    store.driverReducer.rideRequests.data
+      ? store.driverReducer.rideRequests.data.length
+      : 0,
+  );
 
   const {activeAccount} = useActiveAccount();
   const isPassenger = activeAccount === 'passenger';
@@ -98,6 +103,12 @@ const BottomTabs = () => {
             <MaterialIcon name="directions" size={size} color={color} />
           ),
           tabBarLabel: 'Rides',
+          tabBarBadge: requestsCount > 0 ? requestsCount : undefined,
+          tabBarBadgeStyle: {
+            color: '#fff',
+            ...sheet.textBold,
+            backgroundColor: colors.blue,
+          },
         }}
       />
       <Tabs.Screen

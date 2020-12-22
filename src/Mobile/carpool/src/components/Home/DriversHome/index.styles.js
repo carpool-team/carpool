@@ -39,4 +39,15 @@ export const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  topButton: {
+    ...sheet.rowCenterSplit,
+    width: '100%',
+    paddingTop: 16,
+    paddingHorizontal: 16,
+  },
+  count: {
+    ...sheet.textSemiBold,
+    fontSize: 14,
+    color: colors.blue,
+  },
 });

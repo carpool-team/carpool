@@ -36,8 +36,6 @@ const ListItem = ({item}) => {
     setRejectLoading(true);
   };
 
-  console.log(item);
-
   const disabled = acceptLoading || rejectLoading;
 
   return (
