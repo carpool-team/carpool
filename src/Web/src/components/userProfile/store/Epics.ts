@@ -5,9 +5,11 @@ import { IAuthState } from "../../auth/store/State";
 import { ISetLoaderVisibleAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
 import { GetDataRequest } from "../api/GetDataRequest";
 import { GetDataResponse } from "../api/GetDataResponse";
+import { UpdateDataRequest } from "../api/UpdateDataRequest";
+import { UpdateDataResponse } from "../api/UpdateDataResponse";
 import { IUserData } from "../interfaces/IUserData";
 import { IUserProfileState } from "./State";
-import { IGetDataErrorAction, IGetDataSuccessAction, UserProfileAction, UserProfileActionTypes } from "./Types";
+import { IGetDataAction, IGetDataErrorAction, IGetDataSuccessAction, IUpdateDataAction, IUpdateDataErrorAction, IUpdateDataSuccessAction, UserProfileAction, UserProfileActionTypes } from "./Types";
 
 const getDataEpic: Epic<UserProfileAction> = (action$, state$) => action$.pipe(
 	ofType(UserProfileActionTypes.GetData),
@@ -35,18 +37,58 @@ const getDataEpic: Epic<UserProfileAction> = (action$, state$) => action$.pipe(
 
 const getDataSuccessEpic: Epic<UserProfileAction | LayoutAction> = (action$) => action$.pipe(
 	ofType(UserProfileActionTypes.GetDataSuccess),
-	switchMap(async (_action: IGetDataSuccessAction) => {
-		return [
-			<ISetLoaderVisibleAction>{
-				type: LayoutActionTypes.SetLoaderVisible,
-				visible: false,
+	mergeMap((_action: IGetDataSuccessAction) => [
+		<ISetLoaderVisibleAction>{
+			type: LayoutActionTypes.SetLoaderVisible,
+			visible: false,
+		}
+	]),
+);
+
+const updateDataEpic: Epic<UserProfileAction> = (action$) => action$.pipe(
+	ofType(UserProfileActionTypes.UpdateData),
+	switchMap(async (action: IUpdateDataAction) => {
+		const request: UpdateDataRequest = new UpdateDataRequest({
+			appUserId: getId(),
+			body: {
+				...action.data,
 			}
-		];
+		});
+		try {
+			const response: UpdateDataResponse = await request.send();
+			if (response.isError) {
+				return <IUpdateDataErrorAction>{
+					type: UserProfileActionTypes.UpdateDataError,
+				};
+			} else {
+				return <IUpdateDataSuccessAction>{
+					type: UserProfileActionTypes.UpdateDataSuccess,
+				};
+			}
+		} catch {
+			return <IUpdateDataErrorAction>{
+				type: UserProfileActionTypes.UpdateDataError,
+			};
+		}
 	}),
-	mergeMap(res => res)
+);
+
+const updateDataSuccesEpic: Epic<UserProfileAction | LayoutAction> = (action$) => action$.pipe(
+	ofType(UserProfileActionTypes.UpdateDataSuccess),
+	mergeMap((_action: IUpdateDataSuccessAction) => [
+		<IGetDataAction>{
+			type: UserProfileActionTypes.GetData,
+		},
+		<ISetLoaderVisibleAction>{
+			type: LayoutActionTypes.SetLoaderVisible,
+			visible: true,
+		}
+	]),
 );
 
 export const userProfileEpics = [
 	getDataEpic,
 	getDataSuccessEpic,
+	updateDataEpic,
+	updateDataSuccesEpic,
 ];

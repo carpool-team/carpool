@@ -22,4 +22,5 @@ export enum RequestEndpoint {
 	LOGIN_USER,
 	AUTOCOMPLETE_USER,
 	GET_USER_BY_APPUSERID,
+	UPDATE_USER_DATA,
 }

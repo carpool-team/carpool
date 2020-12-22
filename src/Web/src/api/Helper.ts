@@ -46,6 +46,8 @@ export const getRequestEndpoint: (
 				return "/users";
 			case RequestEndpoint.GET_USER_BY_APPUSERID:
 				return "/users/" + queries.userId;
+			case RequestEndpoint.UPDATE_USER_DATA:
+				return "/users/" + queries.userId;
 			default:
 				throw "Unhandled endpoint";
 		}
@@ -87,6 +89,7 @@ export const getUrl: (endpoint: RequestEndpoint) => string = (ep) => {
 	switch (ep) {
 		case RequestEndpoint.LOGIN_USER:
 		case RequestEndpoint.REGISTER_USER:
+		case RequestEndpoint.UPDATE_USER_DATA:
 			return process.env.AUTH_URL;
 		default:
 			return process.env.REST_URL;
