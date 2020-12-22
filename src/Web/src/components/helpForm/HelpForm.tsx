@@ -85,8 +85,6 @@ const HelpForm: React.FC<IHelpFormProps> = (props) => {
 	};
 
 	const trySend = () => {
-
-
 		if (!validateBody.error && !validateTitle.error) {
 			if (app === application.Mobile) {
 				emailjs.send(emailServiceID, mobileTemplateID, templateParams, emailUserID)

@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { InputType } from "../../../ui/input/enums/InputType";
-import { InputIcon } from "../../../ui/input/enums/InputIcon";
-import Input from "../../../ui/input/Input";
+import { InputType } from "../input/enums/InputType";
+import { InputIcon } from "../input/enums/InputIcon";
+import Input from "../input/Input";
 import PasswordStrengthBar from "react-password-strength-bar";
-import i18n from "../../../../i18n";
+import i18n from "../../../i18n";
 
 const resources = {
 	password: "auth.passwordInput.password",
