@@ -14,5 +14,9 @@ namespace AuthServer.Services
 		[Put("api/users/{appUserId}")]
 		[Header("Authorization", "Bearer")]
 		Task UpdateUser([Path] long appUserId, [Body]UpdateUserDto updateUserDto);
+		
+		[Delete("api/users/{appUserId}")]
+		[Header("Authorization", "Bearer")]
+		Task<IndexUserDto> DeleteUser([Path] long appUserId);
 	}
 }
