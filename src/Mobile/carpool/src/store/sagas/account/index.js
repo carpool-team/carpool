@@ -232,14 +232,11 @@ export function* deleteAccountAsync(action) {
     const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      const res = yield instance.delete(`/Users/${userId}`, {
+      yield authInstance.delete(`/Users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('deleteAccountAsync RES', res);
-
-      yield put(actions.logoutUser());
 
       yield call(resolvePromiseAction, action);
     }

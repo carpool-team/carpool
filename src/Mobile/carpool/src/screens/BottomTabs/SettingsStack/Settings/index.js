@@ -33,10 +33,20 @@ const Settings = ({navigation}) => {
         {
           style: 'destructive',
           text: 'Delete',
-          onPress: () => dispatch(actions.deleteAccount()),
+          onPress: () => onDeleteAction(),
         },
       ],
     );
+
+  const onDeleteAction = () => {
+    dispatch(actions.deleteAccount())
+      .then(() => {
+        dispatch(actions.logoutUser());
+      })
+      .catch(err => {
+        navigation.goBack();
+      });
+  };
 
   const onEdit = () => navigation.navigate('EditUser');
 
