@@ -133,6 +133,7 @@ const EditUser = ({navigation}) => {
             value={values.email}
             onChangeText={handleChange('email')}
             error={touched.email && errors.email ? errors.email : null}
+            editable={false}
           />
           <StandardButton
             title="Submit"

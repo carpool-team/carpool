@@ -44,7 +44,7 @@ const Settings = ({navigation}) => {
         dispatch(actions.logoutUser());
       })
       .catch(err => {
-        navigation.goBack();
+        dispatch(actions.logoutUser());
       });
   };
 
