@@ -12,13 +12,15 @@ const ListItem = ({item, onAccept, onDecline}) => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.name} numberOfLines={1}>
-            {item.group.name}
+            {item.groupDto.name}
           </Text>
-          <Text style={styles.author}>John Doe invited you</Text>
+          <Text style={styles.author}>{`${item.invitingUser.firstName} ${
+            item.invitingUser.lastName
+          } invited you`}</Text>
         </View>
         <View style={styles.content}>
           <MaterialIcon name="group" size={40} color={colors.grayDark} />
-          <Text style={styles.members}>{item.group.userCount}</Text>
+          <Text style={styles.members}>{item.groupDto.userCount}</Text>
           <View style={styles.bottomRow}>
             <CircleButton
               size={56}

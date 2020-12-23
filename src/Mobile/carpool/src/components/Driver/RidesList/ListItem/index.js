@@ -13,7 +13,7 @@ const ListItem = ({item, onItemPress}) => (
     style={styles.upview}
     contentContainerStyle={styles.container}>
     <View style={sheet.rowCenterSplit}>
-      <Text style={styles.time}>{moment(item.rideDate).format('hh:mm')}</Text>
+      <Text style={styles.time}>{moment(item.rideDate).format('HH:mm')}</Text>
       <Text style={styles.date}>
         {moment(item.rideDate).format('Do MMMM YYYY')}
       </Text>

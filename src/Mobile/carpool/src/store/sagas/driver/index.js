@@ -5,360 +5,17 @@ import {
   call,
   putResolve,
   take,
+  delay,
 } from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
-import {ENDPOINTS} from '../../../hooks';
-import faker from 'faker';
-const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
 import moment from 'moment';
 import jwt_decode from 'jwt-decode';
 import {
   rejectPromiseAction,
   resolvePromiseAction,
 } from '@adobe/redux-saga-promise';
-
-const exampleRides = [
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(1, 'hours')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(1, 'hours')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(1, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(1, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(2, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(3, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-];
-
-const examplePastRides = [
-  {
-    id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.past()).toISOString(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.past()).toISOString(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.past()).toISOString(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-];
+import {readData, STORAGE_KEYS} from '../../../storage';
 
 export function* getDriversRidesAsync() {
   try {
@@ -378,7 +35,6 @@ export function* getDriversRidesAsync() {
       // yield put(actions.getDriversRidesSuccess(exampleRides));
     }
   } catch (err) {
-    console.log('getDriversRidesAsync ERR', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
@@ -589,6 +245,136 @@ export function* createRegularRideAsync(action) {
   }
 }
 
+export function* getDriversRideRequestsAsync() {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      yield put(actions.getDriversRideRequestsLoading());
+
+      const res = yield instance.get('/RideRequests?isOwner=true', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      yield put(actions.getDriversRideRequestsSuccess(res.data.result));
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getDriversRideRequests());
+        return;
+      }
+    }
+    yield put(actions.getDriversRideRequestsError(err));
+  }
+}
+
+export function* watchDriversRideRequestsAsync() {
+  while (true) {
+    const token = yield call(readData, STORAGE_KEYS.token);
+
+    if (token) {
+      yield put(actions.getDriversRideRequests());
+    }
+
+    // Every 5 minutes
+    yield delay(300000);
+  }
+}
+
+export function* acceptRideRequestAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const res = yield instance.put(
+        '/RideRequests',
+        {
+          isAccepted: true,
+          rideRequestId: action.payload,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log('acceptRideRequestAsync res', res);
+
+      yield put(actions.getDriversRideRequests());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('acceptRideRequestAsync err', err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.acceptRideRequest(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+      yield call(rejectPromiseAction, action, err.response);
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
+export function* rejectRideRequestAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const res = yield instance.put(
+        '/RideRequests',
+        {
+          isAccepted: false,
+          rideRequestId: action.payload,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log('rejectRideRequestAsync res', res);
+
+      yield put(actions.getDriversRideRequests());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('rejectRideRequestAsync err', err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.rejectRideRequest(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+      yield call(rejectPromiseAction, action, err.response);
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetDriversRides.Trigger, getDriversRidesAsync),
   takeLatest(actions.GetDriversPastRides.Trigger, getDriversPastRidesAsync),
@@ -596,6 +382,16 @@ const accountSagas = [
   takeLatest(actions.DeleteParticipant.PromiseTrigger, deleteParticipantAsync),
   takeLatest(actions.CreateSingleRide.PromiseTrigger, createSingleRideAsync),
   takeLatest(actions.CreateRegularRide.PromiseTrigger, createRegularRideAsync),
+  takeLatest(
+    actions.GetDriversRideRequests.Trigger,
+    getDriversRideRequestsAsync,
+  ),
+  takeLatest(
+    actions.GetDriversRideRequests.Watch,
+    watchDriversRideRequestsAsync,
+  ),
+  takeLatest(actions.AcceptRideRequest.PromiseTrigger, acceptRideRequestAsync),
+  takeLatest(actions.RejectRideRequest.PromiseTrigger, rejectRideRequestAsync),
 ];
 
 export default accountSagas;

@@ -1,332 +1,20 @@
-import {takeLatest, put, select, take} from 'redux-saga/effects';
+import {
+  takeLatest,
+  put,
+  select,
+  take,
+  delay,
+  call,
+  putResolve,
+} from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
-import faker from 'faker';
-import moment from 'moment';
 import jwt_decode from 'jwt-decode';
-
-const exampleRides = [
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(1, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.807428,
-          longitude: 17.208917,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-    owner: {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    },
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(2, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-    owner: {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    },
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(3, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-    owner: {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    },
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(4, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-    owner: {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    },
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: moment()
-      .add(5, 'days')
-      .format(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-    owner: {
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    },
-  },
-];
-
-const examplePastRides = [
-  {
-    id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.past()).toISOString(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    date: new Date(faker.date.past()).toISOString(),
-    startingLocation: {
-      coordinates: {
-        latitude: 52.40656926303501,
-        longitude: 16.86633729745128,
-      },
-    },
-    destination: {
-      coordinates: {
-        latitude: 53.30656926303501,
-        longitude: 16.76633729745128,
-      },
-    },
-    participants: [
-      {
-        id: faker.random.alphaNumeric(32),
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-      },
-    ],
-    stops: [
-      {
-        coordinates: {
-          latitude: 52.55188,
-          longitude: 16.838128,
-        },
-        user: {
-          id: faker.random.alphaNumeric(32),
-          firstName: faker.name.firstName(),
-          lastName: faker.name.lastName(),
-        },
-      },
-    ],
-  },
-];
-
-export function* getAllRidesAsync() {
-  try {
-    const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
-
-    if (token) {
-      yield put(actions.getAllRidesLoading());
-
-      // const res = yield instance.get(
-      //   `${ENDPOINTS.GET_ALL_RIDES}?userId=${userId}`,
-      //   {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   },
-      // );
-
-      // console.log('RES', res);
-
-      // yield put(actions.getAllRidesSuccess(res.data.result));
-      yield put(actions.getAllRidesSuccess(exampleRides));
-    }
-  } catch (err) {
-    if (err.response) {
-      if (err.response.status === 401) {
-        yield put(actions.refreshToken());
-        yield take(actions.GetToken.Success);
-        yield put(actions.getAllRides());
-        return;
-      }
-    }
-    yield put(actions.getAllRidesError(err));
-  }
-}
+import {readData, STORAGE_KEYS} from '../../../storage';
+import {
+  rejectPromiseAction,
+  resolvePromiseAction,
+} from '@adobe/redux-saga-promise';
 
 export function* getUsersRidesAsync() {
   try {
@@ -394,10 +82,139 @@ export function* getUsersPastRidesAsync() {
   }
 }
 
+export function* getPassengersRideRequestsAsync() {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      yield put(actions.getPassengersRideRequestsLoading());
+
+      const res = yield instance.get('/RideRequests', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      yield put(actions.getPassengersRideRequestsSuccess(res.data.result));
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getPassengersRideRequests());
+        return;
+      }
+    }
+    yield put(actions.getPassengersRideRequestsError(err));
+  }
+}
+
+export function* watchPassengersRideRequestsAsync() {
+  while (true) {
+    const token = yield call(readData, STORAGE_KEYS.token);
+
+    if (token) {
+      yield put(actions.getPassengersRideRequests());
+    }
+
+    // Every 5 minutes
+    yield delay(300000);
+  }
+}
+
+export function* createRideRequestAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const res = yield instance.post(
+        '/RideRequests',
+        {
+          ...action.payload,
+          requestingUserId: userId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      yield put(actions.getPassengersRideRequests());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.createRideRequest(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+      yield call(rejectPromiseAction, action, err.response);
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
+export function* findRidesAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const {groupId, rideDirection, dateTime} = action.payload;
+      const endpoint = `/Rides?groupId=${groupId}&rideDirection=${rideDirection}&dateTime=${dateTime}`;
+
+      const res = yield instance.get(endpoint, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      yield call(resolvePromiseAction, action, res.data.result);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.findRides(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+      yield call(rejectPromiseAction, action, err.response);
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 const passengerActions = [
-  takeLatest(actions.GetAllRides.Trigger, getAllRidesAsync),
   takeLatest(actions.GetUsersRides.Trigger, getUsersRidesAsync),
   takeLatest(actions.GetUsersPastRides.Trigger, getUsersPastRidesAsync),
+  takeLatest(
+    actions.GetPassengersRideRequests.Trigger,
+    getPassengersRideRequestsAsync,
+  ),
+  takeLatest(
+    actions.GetPassengersRideRequests.Watch,
+    watchPassengersRideRequestsAsync,
+  ),
+  takeLatest(actions.CreateRideRequest.PromiseTrigger, createRideRequestAsync),
+  takeLatest(actions.FindRides.PromiseTrigger, findRidesAsync),
 ];
 
 export default passengerActions;

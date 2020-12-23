@@ -6,23 +6,33 @@ import {styles} from './index.styles';
 
 const WeekPicker = ({onDecrement, onIncrement, dateRange, offset}) => (
   <View style={styles.container}>
-    <TouchableOpacity onPress={onDecrement} disabled={offset === 0}>
-      <Icon
-        name="angle-left"
-        color={offset === 0 ? colors.gray : colors.blue}
-        size={35}
-        style={styles.icon}
-      />
-    </TouchableOpacity>
-    <Text style={styles.dateRange}>{dateRange}</Text>
-    <TouchableOpacity onPress={onIncrement}>
-      <Icon
-        name="angle-right"
-        color={colors.blue}
-        size={35}
-        style={styles.icon}
-      />
-    </TouchableOpacity>
+    <View style={styles.flexLeft}>
+      {offset > -1 && (
+        <TouchableOpacity onPress={onDecrement}>
+          <Icon
+            name="angle-left"
+            color={colors.blue}
+            size={35}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      )}
+    </View>
+    {offset > -1 ? (
+      <Text style={styles.dateRange}>{dateRange}</Text>
+    ) : (
+      <Text style={styles.pastRides}>Past rides</Text>
+    )}
+    <View style={styles.flexRight}>
+      <TouchableOpacity onPress={onIncrement}>
+        <Icon
+          name="angle-right"
+          color={colors.blue}
+          size={35}
+          style={styles.icon}
+        />
+      </TouchableOpacity>
+    </View>
   </View>
 );
 

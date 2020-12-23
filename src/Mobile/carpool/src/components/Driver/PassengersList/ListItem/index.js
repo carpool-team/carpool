@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {UpView} from '../../../common';
 import {parseCoords} from '../../../../utils/coords';
 import useReverseGeocoding from '../../../../hooks/useReverseGeocoding';
+import {styles} from './index.styles';
 
 const ListItem = ({stop, onItemPress}) => {
   const [placeName, setPlaceName] = useState(null);
@@ -46,29 +47,5 @@ const ListItem = ({stop, onItemPress}) => {
     </UpView>
   );
 };
-
-const styles = StyleSheet.create({
-  upview: {
-    width: '100%',
-    height: 100,
-    marginTop: 16,
-  },
-  contentContainer: {
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    justifyContent: 'space-between',
-  },
-  name: {
-    ...sheet.textMedium,
-    color: colors.grayVeryDark,
-    fontSize: 18,
-    marginLeft: 8,
-  },
-  placeName: {
-    fontSize: 14,
-    color: colors.grayDark,
-    ...sheet.textSemiBold,
-  },
-});
 
 export default ListItem;

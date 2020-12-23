@@ -11,11 +11,25 @@ export const GetGroups = {
   Error: 'GET_GROUPS_ERROR',
 };
 
+export const GetUser = {
+  Trigger: 'GET_USER',
+  Success: 'GET_USER_SUCCESS',
+  Loading: 'GET_USER_LOADING',
+  Error: 'GET_USER_ERROR',
+};
+
+export const EditUser = {
+  Trigger: 'EDIT_USER',
+
+  PromiseTrigger: 'EDIT_USER.TRIGGER',
+};
+
 export const GetInvitations = {
   Trigger: 'GET_INVITATIONS',
   Success: 'GET_INVITATIONS_SUCCESS',
   Loading: 'GET_INVITATIONS_LOADING',
   Error: 'GET_INVITATIONS_ERROR',
+  Watch: 'WATCH_INVITATIONS',
 };
 
 export const AcceptInvitation = {
@@ -28,6 +42,12 @@ export const DeclineInvitation = {
   Trigger: 'DECLINE_INVITATION',
 
   PromiseTrigger: 'DECLINE_INVITATION.TRIGGER',
+};
+
+export const DeleteAccount = {
+  Trigger: 'DELETE_ACCOUNT',
+
+  PromiseTrigger: 'DELETE_ACCOUNT.TRIGGER',
 };
 
 export const toggleActiveAccount = () => ({
@@ -70,8 +90,23 @@ export const getInvitationsLoading = () => ({
   type: GetInvitations.Loading,
 });
 
+export const watchInvitations = () => ({type: GetInvitations.Watch});
+
 export const acceptInvitation = payload =>
   createPromiseAction(AcceptInvitation.Trigger)(payload);
 
 export const declineInvitation = payload =>
   createPromiseAction(DeclineInvitation.Trigger)(payload);
+
+export const getUser = () => ({type: GetUser.Trigger});
+
+export const getUserSuccess = payload => ({type: GetUser.Success, payload});
+
+export const getUserError = payload => ({type: GetUser.Error, payload});
+
+export const getUserLoading = () => ({type: GetUser.Loading});
+
+export const editUser = payload =>
+  createPromiseAction(EditUser.Trigger)(payload);
+
+export const deleteAccount = () => createPromiseAction(DeleteAccount.Trigger)();

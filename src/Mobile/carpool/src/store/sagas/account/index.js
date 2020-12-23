@@ -5,60 +5,17 @@ import {
   call,
   take,
   putResolve,
+  delay,
 } from 'redux-saga/effects';
 import * as actions from '../../actions';
 import instance from '../../../axios/instance';
-import {ENDPOINTS} from '../../../hooks';
-const userId = 'ba5c33df-0c92-4324-19c7-08d8778cb545';
-import faker from 'faker';
+import authInstance from '../../../axios/authInstance';
 import jwt_decode from 'jwt-decode';
 import {
   rejectPromiseAction,
   resolvePromiseAction,
 } from '@adobe/redux-saga-promise';
-
-const exampleGroups = [
-  {
-    id: faker.random.alphaNumeric(32),
-    location: {
-      latitude: 52.40656926303501,
-      longitude: 16.86633729745128,
-    },
-    name: faker.random.word(),
-    rideCount: faker.random.number({min: 0, max: 100}),
-    userCount: faker.random.number({min: 10, max: 1000}),
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    location: {
-      latitude: 52.40656926303501,
-      longitude: 16.86633729745128,
-    },
-    name: faker.random.word(),
-    rideCount: faker.random.number({min: 0, max: 100}),
-    userCount: faker.random.number({min: 10, max: 1000}),
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    location: {
-      latitude: 52.40656926303501,
-      longitude: 16.86633729745128,
-    },
-    name: faker.random.word(),
-    rideCount: faker.random.number({min: 0, max: 100}),
-    userCount: faker.random.number({min: 10, max: 1000}),
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    location: {
-      latitude: 52.40656926303501,
-      longitude: 16.86633729745128,
-    },
-    name: faker.random.word(),
-    rideCount: faker.random.number({min: 0, max: 100}),
-    userCount: faker.random.number({min: 10, max: 1000}),
-  },
-];
+import {readData, STORAGE_KEYS} from '../../../storage';
 
 export function* getGroupsAsync() {
   try {
@@ -89,30 +46,6 @@ export function* getGroupsAsync() {
   }
 }
 
-const exampleInvitations = [
-  {
-    id: faker.random.alphaNumeric(32),
-    group: {
-      name: faker.random.word(),
-      userCount: faker.random.number({min: 0, max: 100}),
-    },
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    group: {
-      name: faker.random.word(),
-      userCount: faker.random.number({min: 0, max: 100}),
-    },
-  },
-  {
-    id: faker.random.alphaNumeric(32),
-    group: {
-      name: faker.random.word(),
-      userCount: faker.random.number({min: 0, max: 100}),
-    },
-  },
-];
-
 export function* getInvitationsAsync() {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
@@ -121,16 +54,13 @@ export function* getInvitationsAsync() {
     if (token) {
       yield put(actions.getInvitationsLoading());
 
-      // const res = yield instance.get(`/users/${userId}/group-invites`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+      const res = yield instance.get(`/users/${userId}/group-invites`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      // console.log('RES', res);
-
-      // yield put(actions.getInvitationsSuccess(res.data.result));
-      yield put(actions.getInvitationsSuccess(exampleInvitations));
+      yield put(actions.getInvitationsSuccess(res.data.result));
     }
   } catch (err) {
     if (err.response) {
@@ -148,16 +78,20 @@ export function* getInvitationsAsync() {
 export function* acceptInvitationAsync(action) {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      console.log('ACCEPTING INVITATION', action.payload);
+      yield instance.put(
+        `/GroupInvites/${action.payload}`,
+        {
+          isAccepted: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      // yield instance.put(`/GroupInvites/${action.payload}`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // })
       yield put(actions.getInvitations());
       yield put(actions.getGroups());
 
@@ -184,16 +118,20 @@ export function* acceptInvitationAsync(action) {
 export function* declineInvitationAsync(action) {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      console.log('DECLINING INVITATION', action.payload);
+      yield instance.put(
+        `/GroupInvites/${action.payload}`,
+        {
+          isAccepted: false,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      // yield instance.put(`/GroupInvites/${action.payload}`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // })
       yield put(actions.getInvitations());
       yield put(actions.getGroups());
 
@@ -217,11 +155,134 @@ export function* declineInvitationAsync(action) {
   }
 }
 
+export function* getUserAsync() {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      yield put(actions.getUserLoading());
+
+      const res = yield instance.get(`/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('RES', res);
+
+      yield put(actions.getUserSuccess(res.data.result));
+    }
+  } catch (err) {
+    console.log('Err', err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        yield put(actions.getUser());
+        return;
+      }
+    }
+    yield put(actions.getUserError(err));
+  }
+}
+
+export function* editUserAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      yield authInstance.put(
+        `/Users/${userId}`,
+        {
+          ...action.payload,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      yield put(actions.getUser());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.editUser(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
+export function* deleteAccountAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const res = yield instance.delete(`/Users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log('deleteAccountAsync RES', res);
+
+      yield put(actions.logoutUser());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('deleteAccountAsync ERR', err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.deleteAccount());
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
+export function* watchInvitationsAsync() {
+  while (true) {
+    const token = yield call(readData, STORAGE_KEYS.token);
+
+    if (token) {
+      yield put(actions.getInvitations());
+    }
+
+    yield delay(60000);
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetGroups.Trigger, getGroupsAsync),
   takeLatest(actions.GetInvitations.Trigger, getInvitationsAsync),
+  takeLatest(actions.GetInvitations.Watch, watchInvitationsAsync),
   takeLatest(actions.AcceptInvitation.PromiseTrigger, acceptInvitationAsync),
   takeLatest(actions.DeclineInvitation.PromiseTrigger, declineInvitationAsync),
+  takeLatest(actions.GetUser.Trigger, getUserAsync),
+  takeLatest(actions.EditUser.PromiseTrigger, editUserAsync),
+  takeLatest(actions.DeleteAccount.PromiseTrigger, deleteAccountAsync),
 ];
 
 export default accountSagas;

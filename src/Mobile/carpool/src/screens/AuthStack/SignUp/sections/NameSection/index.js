@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, Text} from 'react-native';
+import {Text, View} from 'react-native';
 import StandardInput from '../../../../../components/common/inputs/StandardInput';
 import {colors} from '../../../../../styles';
 import {useFormik} from 'formik';
@@ -23,7 +23,7 @@ const NameSection = ({onSubmitName, initialValues, apiError}) => {
   });
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
+    <View style={styles.container}>
       {!!apiError && <Text style={styles.apiError}>{apiError}</Text>}
       <StandardInput
         returnKeyType="next"
@@ -61,7 +61,7 @@ const NameSection = ({onSubmitName, initialValues, apiError}) => {
         title="Next"
         style={styles.button}
       />
-    </ScrollView>
+    </View>
   );
 };
 
