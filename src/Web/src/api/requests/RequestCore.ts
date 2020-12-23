@@ -24,7 +24,7 @@ export default abstract class RequestCore {
 		this.requestProperties = init.properties;
 	}
 
-	protected async fetch<R extends ResponseCore>(): Promise<R> {
+	protected fetch<R extends ResponseCore>(): Promise<R> {
 		const method = getRequestType(this.requestProperties.method);
 		const endpoint = getRequestEndpoint(
 			this.requestProperties.endpoint,
@@ -38,16 +38,20 @@ export default abstract class RequestCore {
 		const apiUrl: string = getUrl(this.requestProperties.endpoint);
 
 		const url: string = `${apiUrl}${endpoint}`;
-		const res = await fetch(url, {
-			method,
-			headers: new Headers(headers),
-			body: this.requestBody ? JSON.stringify(this.requestBody) : null,
-		});
-		const json = await res.json();
-		console.debug("RESPONSE: ", {
-			url,
-			json,
-		});
-		return json as R;
+		return new Promise((resolve, reject) => resolve(undefined))
+			.then(() => fetch(url, {
+				method,
+				headers: new Headers(headers),
+				body: this.requestBody ? JSON.stringify(this.requestBody) : null,
+			})).then(res => {
+				if (res.ok) {
+					return res.json() as Promise<R>;
+				} else {
+					console.log("Something went wrong");
+				}
+			}).then(res2 => {
+				console.log("Response: ", url, res2);
+				return res2 as R;
+			});
 	}
 }
