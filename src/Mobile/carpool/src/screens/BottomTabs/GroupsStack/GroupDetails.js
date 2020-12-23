@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import sheet from '../../../styles/sheet';
 import colors from '../../../styles/colors';
 import UpView from '../../../components/common/UpView';
@@ -11,12 +18,16 @@ import {GoBack, Header} from '../../../components/navigation';
 import {PointMinimap} from '../../../components/Route';
 import {useReverseGeocoding} from '../../../hooks';
 import {SafeScroll} from '../../../components/common/wrappers';
+import * as actions from '../../../store/actions';
+import {useDispatch} from 'react-redux';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
   const [placeName, setPlaceName] = useState(null);
 
   const [results, loading, error, _getPlaceName] = useReverseGeocoding();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (route.params) {
@@ -38,12 +49,39 @@ const GroupDetails = ({navigation, route}) => {
     }
   }, [results]);
 
+  const onLeaveGroup = () => {
+    Alert.alert(
+      'Warning!',
+      `Are you sure you want to leave ${group.name}? This cannot be undone`,
+      [
+        {
+          text: 'Cancel',
+          style: 'default',
+        },
+        {
+          text: 'Leave group',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(actions.leaveGroup(group.groupId)).then(() => {
+              navigation.goBack();
+            });
+          },
+        },
+      ],
+    );
+  };
+
   return group ? (
     <SafeScroll minHeight={500}>
       <View style={styles.upperContainer}>
-        <Text style={styles.name} numberOfLines={1}>
-          {group.name}
-        </Text>
+        <View style={styles.topRow}>
+          <Text style={styles.name} numberOfLines={1}>
+            {group.name}
+          </Text>
+          <TouchableOpacity onPress={onLeaveGroup}>
+            <MaterialIcon name="exit-to-app" color={colors.orange} size={32} />
+          </TouchableOpacity>
+        </View>
         <View style={styles.statsRow}>
           <View style={sheet.columnCenter}>
             <Text style={styles.totalRides}>
@@ -100,11 +138,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 18,
   },
+  topRow: {
+    ...sheet.rowCenterSplit,
+    paddingHorizontal: 16,
+  },
   name: {
     ...sheet.textBold,
     color: colors.grayDark,
     fontSize: 25,
-    paddingHorizontal: 16,
   },
   statsRow: {
     flexDirection: 'row',

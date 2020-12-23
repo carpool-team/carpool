@@ -259,6 +259,35 @@ export function* deleteAccountAsync(action) {
   }
 }
 
+export function* leaveGroupAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+
+    if (token) {
+      // yield instance.put(..., action.payload)
+
+      yield put(actions.getGroups());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.leaveGroup(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 export function* watchInvitationsAsync() {
   while (true) {
     const token = yield call(readData, STORAGE_KEYS.token);
@@ -280,6 +309,7 @@ const accountSagas = [
   takeLatest(actions.GetUser.Trigger, getUserAsync),
   takeLatest(actions.EditUser.PromiseTrigger, editUserAsync),
   takeLatest(actions.DeleteAccount.PromiseTrigger, deleteAccountAsync),
+  takeLatest(actions.LeaveGroup.PromiseTrigger, leaveGroupAsync),
 ];
 
 export default accountSagas;
