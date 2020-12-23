@@ -1,24 +1,21 @@
 import { IGroup } from "./IGroup";
 import { IParticipant } from "./IParticipant";
 import { ILocation } from "./ILocation";
+import { RideDirection } from "../api/addRide/AddRideRequest";
 
-/** Group interface */
+/** Ride interface */
 export interface IRide {
-	id: string;
+	rideId: string;
+	rideDate: Date;
+	rideDirection: RideDirection;
+	stops?: ILocation[];
+	price: number;
 	owner: IParticipant;
-	ownerId: string;
-	participants: string[];
-	stops: ILocation[];
-	destination: {
-			longitude: number,
-			latitude: number
+	location: ILocation;
+	group: {
+		groupId: string;
+		location: ILocation;
+		name: string;
+		userCount: number;
 	};
-	startingLocation: {
-		longitude: number,
-		latitude: number
-	};
-	date: string;
-	isUserParticipant: boolean;
-	group: IGroup;
-	groupId: string;
 }

@@ -90,6 +90,31 @@
 		background-image: $rides_flat_people;
 	}
 }
+.homeScreenHelpContainer{
+	// height: 100px;
+	margin-top: 20px;
+	display: flex;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+    left: 0;
+	right: 0;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba($blue, 0.45);
+	&--text {
+		color: $grayDark;
+		font-size: 17px;
+		font-weight: $medium;
+		padding-bottom: 15px;
+	}
+	&--button {
+		width: 300px !important;
+		font-size: 17px !important;
+	}
+}
 
 
 @media only screen and (max-width: 900px) {

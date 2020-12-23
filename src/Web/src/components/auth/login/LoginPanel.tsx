@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -19,6 +19,9 @@ import {
 	mapStateToProps,
 	mapDispatchToProps,
 } from "../store/PropsTypes";
+import { useImmer } from "use-immer";
+import { FormControlClassKey } from "@material-ui/core";
+import { Event } from "react-toastify/dist/core";
 
 interface ILoginPanelProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps { }
 
@@ -33,12 +36,44 @@ const LoginPanel = (props: ILoginPanelProps) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [rememberLogin, setRememberLogin] = useState(false);
-	const [inputsValid, setInputsValid] = useState({
+	const [inputsValid, setInputsValid] = useImmer({
 		email: false,
 		password: false
 	});
+	const [submitted, setSubmitted] = useState(false);
 
-	const [validate, setValidate] = useState(false);
+	const trySendForm = () => {
+		if (each(inputsValid, i => i)) {
+			const data: ILoginFormData = {
+				password,
+				email,
+				rememberLogin
+			};
+			props.setLoaderVisible(true);
+			props.login(data);
+		} else {
+			setSubmitted(false);
+		}
+	};
+
+	const enterFunction = (event) => {
+		if (event.keyCode === 13) {
+			setSubmitted(true);
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener("keydown", enterFunction, false);
+		return () => {
+			document.removeEventListener("keydown", enterFunction, false);
+		};
+	}, []);
+
+	useEffect(() => {
+		if (submitted) {
+			trySendForm();
+		}
+	}, [submitted, inputsValid]);
 
 	const cssClasses = {
 		container: "auth__container",
@@ -61,29 +96,8 @@ const LoginPanel = (props: ILoginPanelProps) => {
 		rememberPassword: "rememberPassword",
 	};
 
-	const validateForm = () => {
-		if (each(inputsValid , i => i)) {
-			setValidate(false);
-			return true;
-		}	else {
-			setInputsValid({
-				email: false,
-				password: false
-			});
-			setValidate(true);
-			return false;
-		}
-	};
-
 	const onClickSubmit = () => {
-		if (validateForm()) {
-			const data: ILoginFormData = {
-				password,
-				email,
-				rememberLogin
-			};
-			props.login(data);
-		}
+		setSubmitted(true);
 	};
 
 	return (
@@ -101,12 +115,11 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						validation={{
 							type: ValidationType.Email,
 							isValidCallback: isValid => {
-								setInputsValid({
-									...inputsValid,
-									password: isValid,
+								setInputsValid(draft => {
+									draft.email = isValid;
 								});
 							},
-							validate
+							validate: submitted
 						}}
 					/>
 					<Input
@@ -118,15 +131,15 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						validation={{
 							type: ValidationType.Required,
 							isValidCallback: isValid => {
-								setInputsValid({
-									...inputsValid,
-									email: isValid,
+								setInputsValid(draft => {
+									draft.password = isValid;
 								});
 							},
-							validate
+							validate: submitted
 						}}
 					/>
-					<Input
+					{/* Temporarily disable "remember me" checkobx until handled */}
+					{/*<Input
 						changeHandler={newValue => { setRememberLogin(newValue === "true"); }}
 						value={String(rememberLogin)}
 						type={InputType.Checkbox}
@@ -134,7 +147,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 							text: t(resources.rememberLogin),
 							inputId: inputKeys.rememberPassword,
 						}}
-					/>
+					/> */}
 					<Button
 						additionalCssClass={cssClasses.button}
 						onClick={onClickSubmit}

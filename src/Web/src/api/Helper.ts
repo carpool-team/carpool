@@ -2,27 +2,24 @@ import { RequestType } from "./enum/RequestType";
 import { RequestEndpoint } from "./enum/RequestEndpoint";
 import { IRequestQueries } from "./interfaces/IRequestQueries";
 
-export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQueries) => string = (endpoint, queries) => {
+export const getRequestEndpoint: (
+	endpoint: RequestEndpoint,
+	queries?: IRequestQueries
+) => string = (endpoint, queries) => {
 	let ep: string = (() => {
 		switch (endpoint) {
 			case RequestEndpoint.POST_ADD_GROUP:
 				return "/groups";
+			case RequestEndpoint.PUT_UPDATE_GROUP:
+				return `/groups/${queries.groupId}/`;
 			case RequestEndpoint.GET_GROUP_BY_ID:
 				return `/groups/${queries?.groupId}`;
 			case RequestEndpoint.GET_USER_GROUPS:
 				return `/users/${queries?.userId}/groups`;
-			case RequestEndpoint.GET_ALL_GROUPS:
-				return `/groups`;
-			case RequestEndpoint.PUT_ADD_RIDE_TO_GROUP:
-				return `/groups/${queries?.groupId}/rides`;
-			case RequestEndpoint.PUT_ADD_USER_TO_GROUP:
-				return `/groups/${queries?.groupId}/users`;
-			case RequestEndpoint.PUT_ADD_LOCATION_TO_GROUP:
-				return `/groups/${queries?.groupId}/locations`;
 			case RequestEndpoint.DELETE_GROUP_BY_ID:
 				return `/groups/${queries?.groupId}`;
 			case RequestEndpoint.GET_INVITES_BY_USER_ID:
-				return `/users/${queries?.userId}/groupInvites`;
+				return `/users/${queries?.userId}/group-invites`;
 			case RequestEndpoint.GET_ALL_INVITES:
 				return `/groupinvites`;
 			case RequestEndpoint.POST_INVITE:
@@ -33,35 +30,47 @@ export const getRequestEndpoint: (endpoint: RequestEndpoint, queries?: IRequestQ
 				return `/groupinvites/${queries?.inviteId}`;
 			case RequestEndpoint.DELETE_INVITE_BY_ID:
 				return `/groupinvites/${queries?.inviteId}`;
-			case RequestEndpoint.GET_RIDES_AVAILABLE_BY_USER_ID:
-				return queries?.userId ? `/rides?userId=${queries.userId}` : "/rides";
-			case RequestEndpoint.GET_RIDES_PARTICIPATED_BY_USER_ID:
-				return `/users/${queries?.userId}/rides/participated`;
-			case RequestEndpoint.GET_RIDES_OWNED_BY_USER_ID:
-				return `/users/${queries?.userId}/rides/owned`;
+			case RequestEndpoint.GET_RIDES_BY_USER_ID:
+				return `/users/${queries.userId}/rides`;
 			case RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT:
 				return `/rides/${queries?.rideId}/users`;
-			case RequestEndpoint.GET_ALL_RIDES:
-				return "/rides";
 			case RequestEndpoint.LOGIN_USER:
 				return "/auth/login";
 			case RequestEndpoint.REGISTER_USER:
 				return "/auth/register";
+			case RequestEndpoint.POST_RIDE:
+				return "/rides/";
+			case RequestEndpoint.POST_RIDE_RECURRING:
+				return "/rides/recurring";
+			case RequestEndpoint.AUTOCOMPLETE_USER:
+				return "/users";
+			case RequestEndpoint.GET_USER_BY_APPUSERID:
+				return "/users/" + queries.userId;
+			case RequestEndpoint.UPDATE_USER_DATA:
+				return "/users/" + queries.userId;
 			default:
 				throw "Unhandled endpoint";
 		}
 	})();
-	if (queries?.page) {
-		ep += "?page=" + queries.page;
+	const query = [];
+	if (queries) {
+		Object.keys(queries).forEach((key) => {
+			if (queries[key]) {
+				query.push(`${key}=${queries[key]}`);
+			}
+		});
 	}
-
-	if (queries?.count) {
-		ep += "?count=" + queries.count;
+	if (query.length > 0) {
+		ep += "?" + query.join("&");
 	}
 	return ep;
 };
 
-export const getRequestType: (type: RequestType) => string = (type) => {
+type AllowedRequestVerb = "POST" | "PUT" | "DELETE" | "GET";
+
+export const getRequestType: (type: RequestType) => AllowedRequestVerb = (
+	type
+) => {
 	switch (type) {
 		case RequestType.GET:
 			return "GET";
@@ -76,12 +85,13 @@ export const getRequestType: (type: RequestType) => string = (type) => {
 	}
 };
 
-export const isAuthEndpoint: (endpoint: RequestEndpoint) => boolean = ep => {
+export const getUrl: (endpoint: RequestEndpoint) => string = (ep) => {
 	switch (ep) {
 		case RequestEndpoint.LOGIN_USER:
 		case RequestEndpoint.REGISTER_USER:
-			return true;
+		case RequestEndpoint.UPDATE_USER_DATA:
+			return process.env.AUTH_URL;
 		default:
-			return false;
+			return process.env.REST_URL;
 	}
 };

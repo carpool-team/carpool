@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataTransferObjects;
 using DataTransferObjects.GroupDtos;
+using DataTransferObjects.VehicleDtos;
 using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using RestApi.DTOs.Ride;
 using RestApi.DTOs.Stop;
 using RestApi.DTOs.User;
-using RestApi.DTOs.Vehicle;
 
 namespace RestApi.Queries.RideQueries
 {
@@ -48,8 +48,7 @@ namespace RestApi.Queries.RideQueries
 				foreach (var ride in rides)
 				{
 					var owner = ride.Owner;
-					IndexVehicleDto? vehicleDto = owner.Vehicle != null ? new(owner.Vehicle.Name) : (IndexVehicleDto?)null;
-					OwnerDto ownerDto = new(owner.Rating, owner.FirstName, owner.LastName, owner.Id, vehicleDto);
+					RideOwnerDto rideOwnerDto = new(owner.Rating, owner.FirstName, owner.LastName, owner.Id);
 
 					var group = ride.Group;
 					GroupDto groupDto = new(group.UserGroups.Count,
@@ -60,9 +59,9 @@ namespace RestApi.Queries.RideQueries
 					List<StopDto> stopDtos =
 						ride.Stops.Select(x => new StopDto(new LocationDto(x.Location.Longitude, x.Location.Latitude)))
 							.ToList();
-					rideDtos.Add(new RideDto(ownerDto, groupDto,
+					rideDtos.Add(new RideDto(rideOwnerDto, groupDto,
 						new LocationDto(ride.Location.Longitude, ride.Location.Latitude), ride.Price,
-						ride.RideDirection, stopDtos, ride.Date, ride.Id));
+						ride.RideDirection, stopDtos, ride.Date, ride.Id, ride.SeatsLimit));
 				}
 
 				return rideDtos;

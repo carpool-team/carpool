@@ -33,7 +33,7 @@ namespace RestApi.Commands.UserCommands
 
 		public async Task<Rating> Handle(AddUserRatingCommand request, CancellationToken cancellationToken)
 		{
-			var userId = (AppUserId) request.UserId;
+			var userId = request.UserId;
 			var user = await _userRepository.GetByIdAsNoTrackingAsync(userId, cancellationToken).ConfigureAwait(false);
 			_ = user ?? throw new NullReferenceException(nameof(user));
 

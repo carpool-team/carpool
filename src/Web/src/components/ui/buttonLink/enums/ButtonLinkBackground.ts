@@ -3,5 +3,7 @@ export enum ButtonLinkBackground {
 	Tansparent,
 	Gray,
 	Green,
-	Blue
+	Blue,
+	GrayDark,
+	White
 }

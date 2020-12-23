@@ -10,8 +10,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AuthServer.Utilities
 {
-	public class TokenGenerator
+	public class TokenGenerator : ITokenGenerator
 	{
+		private readonly JwtOptions _jwtOptions;
+		
+		public TokenGenerator(JwtOptions jwtOptions) 
+			=> _jwtOptions = jwtOptions;
+
 		public JwtSecurityToken GenerateJwtToken(AppUserId userId)
 		{
 			var authClaims = new[]
@@ -22,14 +27,34 @@ namespace AuthServer.Utilities
 				new Claim("scope", "carpool_rest_api")
 			};
 
-			var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key));
+			var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
 
-			var token = new JwtSecurityToken(JwtOptions.Issuer,
-				JwtOptions.Audience,
+			var token = new JwtSecurityToken(_jwtOptions.Issuer,
+				_jwtOptions.Audience,
 				expires: DateTime.Now.AddDays(30),
 				claims: authClaims,
-				signingCredentials: new SigningCredentials(authSigningKey,
-					SecurityAlgorithms.HmacSha256));
+				signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
+
+			return token;
+		}
+		
+		public JwtSecurityToken GenerateIdpJwtToken()
+		{
+			var authClaims = new[]
+			{
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+				new Claim(JwtRegisteredClaimNames.Sub, "790688245242396672"),
+				new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
+				new Claim("scope", "carpool_rest_api")
+			};
+
+			var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
+
+			var token = new JwtSecurityToken(_jwtOptions.Issuer,
+				_jwtOptions.Audience,
+				expires: DateTime.Now.AddSeconds(30),
+				claims: authClaims,
+				signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
 
 			return token;
 		}

@@ -6,7 +6,10 @@ import { GroupsAction, GroupsActionTypes, InviteAction, InvitesActionTypes, Ride
 const initialState: IGroupsState = {
 	groups: [],
 	invites: [],
-	rides: [],
+	ridesOwned: [],
+	ridesParticipated: [],
+	ridesOwnedPast: [],
+	ridesParticipatedPast: []
 };
 
 /**
@@ -28,7 +31,7 @@ const reducer: Reducer<IGroupsState> = (
 				draft.groups = action.groups;
 				break;
 			case InvitesActionTypes.AnswerInviteSuccess:
-				idx = draft.invites.findIndex(i => i.id === action.inviteId);
+				idx = draft.invites.findIndex(i => i.groupInviteId === action.inviteId);
 				if (idx > -1) {
 					draft.invites[idx].isPending = true;
 				}
@@ -37,13 +40,16 @@ const reducer: Reducer<IGroupsState> = (
 				draft.invites = action.invites;
 				break;
 			case RidesActionTypes.GetRidesSuccess:
-				draft.rides = action.rides;
+				draft.ridesOwned = action.ridesOwned;
+				draft.ridesParticipated = action.ridesParticipated;
+				draft.ridesOwnedPast = action.ridesOwnedPast;
+				draft.ridesParticipatedPast = action.ridesParticipatedPast;
 				break;
 			case RidesActionTypes.ParticipateInRideSuccess:
-				idx = draft.rides.findIndex(r => r.id === action.rideId);
-				if (idx > -1) {
-					draft.rides[idx].isUserParticipant = true;
-				}
+				// idx = draft.rides.findIndex(r => r.id === action.rideId);
+				// if (idx > -1) {
+				// 	draft.rides[idx].isUserParticipant = true;
+				// }
 				break;
 			default:
 				break;

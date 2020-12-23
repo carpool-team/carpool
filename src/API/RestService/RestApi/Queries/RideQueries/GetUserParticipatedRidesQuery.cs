@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 using DataTransferObjects;
 using DataTransferObjects.GroupDtos;
 using Domain.Contracts.Repositories;
-using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using RestApi.DTOs.Ride;
 using RestApi.DTOs.Stop;
 using RestApi.DTOs.User;
-using RestApi.DTOs.Vehicle;
 
 namespace RestApi.Queries.RideQueries
 {
@@ -26,10 +24,9 @@ namespace RestApi.Queries.RideQueries
 		public AppUserId AppUserId { get; }
 		public bool Past { get; }
 	}
-	
+
 	public class GetUserParticipatedRidesQueryHandler 
-		: IRequestHandler<GetUserParticipatedRidesQuery,
-			IEnumerable<RideDto>>
+		: IRequestHandler<GetUserParticipatedRidesQuery, IEnumerable<RideDto>>
 	{
 		private readonly IRideRepository _repository;
 
@@ -39,16 +36,17 @@ namespace RestApi.Queries.RideQueries
 		public async Task<IEnumerable<RideDto>> Handle(GetUserParticipatedRidesQuery request,
 			CancellationToken cancellationToken)
 		{
-			var userRides =
-				await _repository.GetParticipatedRidesByUserIdAsNoTrackingAsync(request.AppUserId, request.Past,
-						cancellationToken)
-					.ConfigureAwait(false);
+			var userRides = await _repository.GetParticipatedRidesByUserIdAsNoTrackingAsync(request.AppUserId,
+					request.Past,
+					cancellationToken)
+				.ConfigureAwait(false);
+			
 			List<RideDto> rideDtos = new();
+			
 			foreach (var ride in userRides)
 			{
 				var owner = ride.Owner;
-				IndexVehicleDto? vehicleDto = owner.Vehicle != null ? new(owner.Vehicle.Name) : (IndexVehicleDto?)null;
-				OwnerDto ownerDto = new(owner.Rating, owner.FirstName, owner.LastName, owner.Id, vehicleDto);
+				RideOwnerDto rideOwnerDto = new(owner.Rating, owner.FirstName, owner.LastName, owner.Id);
 
 				var group = ride.Group;
 				GroupDto groupDto = new(group.UserGroups.Count,
@@ -56,12 +54,13 @@ namespace RestApi.Queries.RideQueries
 					new LocationDto(group.Location.Longitude, group.Location.Latitude),
 					group.Name);
 
-				List<StopDto> stopDtos =
-					ride.Stops.Select(x => new StopDto(new LocationDto(x.Location.Longitude, x.Location.Latitude)))
+				List<StopDto> stopDtos = ride.Stops
+					.Select(x => new StopDto(new LocationDto(x.Location.Longitude, x.Location.Latitude)))
 						.ToList();
-				rideDtos.Add(new RideDto(ownerDto, groupDto,
+				
+				rideDtos.Add(new RideDto(rideOwnerDto, groupDto,
 					new LocationDto(ride.Location.Longitude, ride.Location.Latitude), ride.Price,
-					ride.RideDirection, stopDtos, ride.Date, ride.Id));
+					ride.RideDirection, stopDtos, ride.Date, ride.Id, ride.SeatsLimit));
 			}
 
 			return rideDtos;

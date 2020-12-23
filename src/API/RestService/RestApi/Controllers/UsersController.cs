@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataAccessLayer.DatabaseContexts;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
 using RestApi.DTOs.User;
+using RestApi.Extensions;
 using RestApi.Queries.UserQueries;
 
 namespace RestApi.Controllers
@@ -16,24 +17,33 @@ namespace RestApi.Controllers
 	[Authorize]
 	public class UsersController : Controller
 	{
-		private readonly CarpoolDbContext _context;
 		private readonly IMediator _mediator;
 
-		public UsersController(CarpoolDbContext context, IMediator mediator)
+		public UsersController(IMediator mediator)
 		{
-			_context = context;
 			_mediator = mediator;
 		}
 
         [HttpGet("{appUserId}")]
-		public async Task<ApiResponse> GetUser([FromRoute] AppUserId userId)
+		public async Task<ApiResponse> GetUser([FromRoute] AppUserId appUserId)
 		{
-			var request = new GetUserByIdQuery(userId);
+			var request = new GetUserByIdQuery(appUserId);
 			var response = await _mediator.Send(request);
 
 			return new ApiResponse(response);
 		}
 
+		[HttpGet]
+		public async Task<ApiResponse> GetUsers([FromQuery] string email, 
+			[FromQuery]int page = 0,
+			[FromQuery]int count = 5)
+		{
+			SearchUsersByEmailQuery request = new(email, page, count);
+			var users = await _mediator.Send(request);
+
+			return new ApiResponse(users);
+		}
+		
 		[HttpGet("~/api/groups/{groupId}/users")]
 		public async Task<ApiResponse> GetGroupUsers([FromRoute] GroupId groupId)
 		{
@@ -43,11 +53,15 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPut("{appUserId}")]
-		public async Task<ApiResponse> PutUser([FromRoute] AppUserId userId, [FromBody] UpdateUserDto model)
+		public async Task<ApiResponse> PutUser([FromRoute] AppUserId appUserId, [FromBody] UpdateUserDto model)
 		{
-			UpdateUserCommand request = new(userId,
+			// if (appUserId != User.GetUserId())
+			// 	throw new ApiException(StatusCodes.Status403Forbidden);
+			
+			UpdateUserCommand request = new(appUserId,
 				model.FirstName,
-				model.LastName);
+				model.LastName,
+				model.Email);
 
 			var response = await _mediator.Send(request);
 
@@ -55,21 +69,24 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost]
-		[AllowAnonymous]
 		public async Task<ApiResponse> PostUser([FromBody] AddUserDto model)
 		{
-			AddUserCommand addUser = new(new AppUserId(model.appUserId),
-				model.firstName,
-				model.lastName,
-				model.email);
+			AddUserCommand addUser = new(new AppUserId(model.AppUserId.Value),
+				model.FirstName,
+				model.LastName,
+				model.Email);
 			var response = await _mediator.Send(addUser);
 			return new ApiResponse(response);
 		}
 
 		[HttpDelete("{appUserId}")]
-		public async Task<ApiResponse> DeleteUser([FromRoute] AppUserId userId)
+		public async Task<ApiResponse> DeleteUser([FromRoute] AppUserId appUserId)
 		{
-			var request = new DeleteUserCommand(userId);
+			// TODO: Identity provider authentication
+			// var tokenUserId = User.GetUserId();
+			// if (tokenUserId != appUserId)
+			// 	throw new ApiException("User does not have permissions to delete other user", StatusCodes.Status403Forbidden);
+			var request = new DeleteUserCommand(appUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 

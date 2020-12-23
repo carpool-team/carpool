@@ -1,21 +1,31 @@
 import * as React from "react";
-import {CSSProperties} from "react";
-import ReactMapboxGl from "react-mapbox-gl";
-import mapConfig from "./mapConfig";
+import { CSSProperties } from "react";
+import ReactMapboxGl, { Popup } from "react-mapbox-gl";
+import { Marker } from "react-mapbox-gl";
+import produce from "immer";
+import { parseCoords } from "../../helpers/UniversalHelper";
+import { ILocation } from "../groups/interfaces/ILocation";
+import { mapboxKey, mapboxStyle } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
-	minZoom: 2,
+	minZoom: 8,
 	maxZoom: 15,
-	accessToken: mapConfig.mapboxKey
+	accessToken: mapboxKey,
 });
 
 export interface IMapState {
-	center?: [number, number];
+	center?: ILocation;
 	zoom?: [number];
 }
 
+const flyToOptions = {
+	speed: 1
+};
+
 export interface IMapProps {
 	onStyleLoad?: (map: any) => any;
+	location?: ILocation;
+	label?: string;
 }
 
 export default class MapBoxPicker extends React.Component<IMapProps, IMapState> {
@@ -24,31 +34,74 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 		super(props);
 		this.state = {
 			zoom: [11],
-			center: [-0.109970527, 51.52916347],
+			center: {
+				latitude: 52.408141,
+				longitude: 16.926712,
+			}
 		};
 	}
 
 	private onStyleLoad = (map: any) => {
-		const onStyleLoad  = this.props.onStyleLoad;
+		const onStyleLoad = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
+	}
+	componentDidUpdate() {
+		if (this.props.location) {
+			if (this.props.location !== this.state.center) {
+				this.setState(produce((draft: IMapState) => {
+					draft.zoom = [14];
+					draft.center = this.props.location;
+				}));
+			}
+		}
 	}
 
 	public render() {
-		const {center, zoom} = this.state;
+		const { center, zoom } = this.state;
+		const location = this.props.location;
+		const label = this.props.label;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
 		};
 
+		const markerStyle: CSSProperties = {
+			fontSize: "50px",
+			color: "#6b98d1"
+		};
+
+		const popupStyle: CSSProperties = {
+			background: "white",
+			color: "gray",
+			fontWeight: 400,
+			border: "2px",
+		};
+
 		return (
-		<Mapbox
-				style={mapConfig.mapLight}
+			<Mapbox
+				style={mapboxStyle}
 				onStyleLoad={this.onStyleLoad}
-				center={center}
+				center={parseCoords(center)}
 				zoom={zoom}
 				containerStyle={containerStyle}
-				>
-		</Mapbox>
+				flyToOptions={flyToOptions}
+			>
+				{location && label &&
+					<Popup coordinates={parseCoords(location)}>
+						<div style={popupStyle}>
+							{label}
+						</div>
+					</Popup>
+				}
+				{location && !label &&
+					<Marker
+						coordinates={parseCoords(location)}
+						anchor="bottom"
+					>
+						<i className={"fa fa-map-marker"} style={markerStyle}></i>
+					</Marker>
+				}
+			</Mapbox>
 		);
 	}
 }

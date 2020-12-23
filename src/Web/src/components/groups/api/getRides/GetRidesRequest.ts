@@ -1,18 +1,24 @@
 import { RequestEndpoint } from "../../../../api/enum/RequestEndpoint";
 import { RequestType } from "../../../../api/enum/RequestType";
-import RequestCore, { tempUserId } from "../../../../api/requests/RequestCore";
+import RequestCore from "../../../../api/requests/RequestCore";
 import { GetRidesResponse } from "./GetRidesResponse";
 
 export class GetRidesRequest extends RequestCore {
 	constructor(init: {
-		userOnly: boolean,
+		userId: string,
+		owned?: boolean;
+		participated?: boolean;
+		past?: boolean;
 	}) {
 		super({
 			properties: {
 				method: RequestType.GET,
-				endpoint: init.userOnly ? RequestEndpoint.GET_RIDES_AVAILABLE_BY_USER_ID : RequestEndpoint.GET_ALL_RIDES,
+				endpoint: RequestEndpoint.GET_RIDES_BY_USER_ID,
 				queries: {
-					userId: init.userOnly ? tempUserId : undefined
+					userId: init.userId,
+					owned: init.owned,
+					past: init.past,
+					participated: init.participated,
 				},
 			}
 		});

@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoWrapper.Wrappers;
 using DataAccessLayer.Repositories;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
+using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
+using IdGen;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace RestApi.Commands.GroupInviteCommands
@@ -31,20 +35,32 @@ namespace RestApi.Commands.GroupInviteCommands
 	public class AddGroupInviteCommandHandler : IRequestHandler<AddGroupInviteCommand, GroupInviteId>
 	{
 		private readonly IGroupInviteRepository _groupInviteRepository;
+		private readonly IGroupRepository _groupRepository;
 		private readonly IUnitOfWork _unitOfWork;
 
-		public AddGroupInviteCommandHandler(IGroupInviteRepository groupInviteRepository, IUnitOfWork unitOfWork)
-			=> (_groupInviteRepository, _unitOfWork)
-				= (groupInviteRepository, unitOfWork);
+		public AddGroupInviteCommandHandler(IGroupInviteRepository groupInviteRepository, IUnitOfWork unitOfWork, IGroupRepository groupRepository)
+		{
+			_groupInviteRepository = groupInviteRepository;
+			_unitOfWork = unitOfWork;
+			_groupRepository = groupRepository;
+		}
 
 		public async Task<GroupInviteId> Handle(AddGroupInviteCommand request,
 			CancellationToken cancellationToken)
 		{
+			var group = _groupRepository.GetByIdAsNoTracking(request.GroupId);
+			
+			if(group.OwnerId != request.InviterId)
+				throw new ApiException("Only owner can invite users to a group.", StatusCodes.Status403Forbidden);
+			
+			IdGenerator idGenerator = new IdGenerator(IdGeneratorType.GroupInvite);
 			var groupInvite = new GroupInvite
 			{
+				Id = new GroupInviteId(idGenerator.CreateId()),
 				InvitingAppUserId = request.InviterId,
 				InvitedAppUserId = request.InvitedAppUserId,
 				IsAccepted = false,
+				IsPending = true,
 				DateAdded = DateTime.Now,
 				GroupId = request.GroupId
 			};

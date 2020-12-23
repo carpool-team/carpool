@@ -28,14 +28,14 @@ const InvitesList = (props: IInvitesListProps) => {
 					color: colorList[colorIndex % colorList.length]
 				};
 				return (
-					<li key={invite.id}>
+					<li key={invite.groupInviteId}>
 						<div className={pinCssClass} style={color}>
 						</div>
 						<div className={labelCssClass}>
-							{invite.groupId}
+							{invite.groupDto.name}
 						</div>
-						<button className={buttonAcceptCssClass} onClick={() => props.answerInviteCallback(true, invite.id)}></button>
-						<button className={buttonDeclineCssClass} onClick={() => props.answerInviteCallback(false, invite.id)}></button>
+						<button className={buttonAcceptCssClass} onClick={() => props.answerInviteCallback(true, invite.groupInviteId)}></button>
+						<button className={buttonDeclineCssClass} onClick={() => props.answerInviteCallback(false, invite.groupInviteId)}></button>
 					</li>
 				);
 			})}

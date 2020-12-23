@@ -5,4 +5,8 @@ export interface IRequestQueries {
 	rideId?: string;
 	count?: number;
 	page?: number;
+	owned?: boolean;
+	participated?: boolean;
+	past?: boolean;
+	email?: string;
 }

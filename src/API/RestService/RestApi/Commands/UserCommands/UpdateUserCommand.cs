@@ -12,16 +12,18 @@ namespace RestApi.Commands.UserCommands
 	public class UpdateUserCommand : IRequest<AppUserId>
 	{
 		[JsonConstructor]
-		public UpdateUserCommand(AppUserId appUserId, string firstName, string lastName)
+		public UpdateUserCommand(AppUserId appUserId, string firstName, string lastName, string email)
 		{
 			AppUserId = appUserId;
 			FirstName = firstName;
 			LastName = lastName;
+			Email = email;
 		}
 
 		public AppUserId AppUserId { get; }
 		public string FirstName { get; }
 		public string LastName { get; }
+		public string Email { get; }
 	}
 
 	public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, AppUserId>

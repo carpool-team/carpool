@@ -1,6 +1,6 @@
 import { ButtonColor } from "./enums/ButtonColor";
-import {ButtonBackground} from "./enums/ButtonBackground";
-import {ButtonIcon} from "./enums/ButtonIcon";
+import { ButtonBackground } from "./enums/ButtonBackground";
+import { ButtonIcon } from "./enums/ButtonIcon";
 
 export const getColorClass: (type?: ButtonColor) => string = (color) => {
 	switch (color) {
@@ -13,7 +13,7 @@ export const getColorClass: (type?: ButtonColor) => string = (color) => {
 		case ButtonColor.White:
 			return "button__text--white";
 		case ButtonColor.Black:
-				return "button__text--black";
+			return "button__text--black";
 		default:
 			return "button__text--gray";
 	}
@@ -29,6 +29,12 @@ export const getBackgroundClass: (type?: ButtonBackground) => string = (backgrou
 			return "button__background--blue";
 		case ButtonBackground.Green:
 			return "button__background--green";
+		case ButtonBackground.White:
+			return "button__background--white";
+		case ButtonBackground.GrayDark:
+			return "button__background--grayDark";
+		case ButtonBackground.Red:
+			return "button__background--red";
 		default:
 			return "button__background--transparent";
 	}

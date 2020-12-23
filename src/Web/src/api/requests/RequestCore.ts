@@ -1,39 +1,26 @@
-import store, { getState } from "../../store/Index";
+import { getState } from "../../store/Index";
 import { AppState } from "../../store/Reducers";
-import { getRequestEndpoint, getRequestType, isAuthEndpoint } from "../Helper";
-import { IRequest } from "../interfaces/IRequest";
+import { getRequestEndpoint, getRequestType, getUrl } from "../Helper";
 import { IRequestProperties } from "../interfaces/IRequestProperties";
 import ResponseCore from "../responses/ResponseCore";
 import RequestBody from "./RequestBody";
 
-export const tempUserId: string = "ba5c33df-0c92-4324-19c7-08d8778cb545";
 export const tempCoords = {
 	latitude: 0,
 	longitude: 0,
 };
-export const tempClientId: string = "TYMCZASOWE_ID_KLIENTA"; // todo: zaorać
 
 export default abstract class RequestCore {
 	//#region class fields
 	requestProperties: IRequestProperties;
 	requestBody?: RequestBody;
 
-	private static config = {
-		devUrl: "https://carpool-rest-api.azurewebsites.net/api",
-		devAuthUrl: "https://carpool-auth.azurewebsites.net/api",
-		userId: tempUserId,
-	};
-	private static proxyUrl: string = "https://cors-anywhere.herokuapp.com/";
-	private static headers = {
-		"Content-Type": "application/json",
-	};
+	private static headers: string[][] = [["Content-Type", "application/json"]];
 	//#endregion
 
 	abstract send(): Promise<any>;
 
-	constructor(init: {
-		properties: IRequestProperties
-	}) {
+	constructor(init: { properties: IRequestProperties }) {
 		this.requestProperties = init.properties;
 	}
 
@@ -43,30 +30,24 @@ export default abstract class RequestCore {
 			this.requestProperties.endpoint,
 			this.requestProperties.queries
 		);
-		const headers: { [key: string]: string } = { ...RequestCore.headers };
+		const headers = [...RequestCore.headers];
 		const state: AppState = getState();
 		if (state.auth?.tokenInfo?.token) {
-			// headers["Authorization"] = `Bearer ${state.auth.tokenInfo.token}`;
+			headers.push(["Authorization", `Bearer ${state.auth.tokenInfo.token}`]);
 		}
-		const request: IRequest = {
+		const apiUrl: string = getUrl(this.requestProperties.endpoint);
+
+		const url: string = `${apiUrl}${endpoint}`;
+		const res = await fetch(url, {
 			method,
-			headers
-		};
-		if (this.requestBody) {
-			request.body = JSON.stringify(this.requestBody);
-		}
-		const apiUrl: string = isAuthEndpoint(this.requestProperties.endpoint)
-			? RequestCore.config.devAuthUrl
-			: RequestCore.config.devUrl;
-		const url: string = `${RequestCore.proxyUrl}${apiUrl}${endpoint}`;
-		const res = await fetch(url, request);
+			headers: new Headers(headers),
+			body: this.requestBody ? JSON.stringify(this.requestBody) : null,
+		});
 		const json = await res.json();
 		console.debug("RESPONSE: ", {
-			request,
 			url,
-			json
+			json,
 		});
 		return json as R;
 	}
-
 }

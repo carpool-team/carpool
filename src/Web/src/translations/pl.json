@@ -17,11 +17,19 @@
                 "passwordTooWeak": "Hasło jest za słabe",
                 "scoreWords": {
                     "short": "Za krótkie",
-                    "weak": "Słabe",
-                    "okay": "Ok",
+                    "weak": "Bardzo słabe",
+                    "okay": "Słabe",
                     "good": "Dobre",
                     "strong": "Silne"
                 }
+            },
+            "userProfile": {
+                "delete": "Usuń konto",
+                "save": "Zapisz",
+                "settings": "Ustawienia",
+                "changePassword": "Zmień hasło",
+                "currentPassword": "Aktualne hasło",
+                "deleteConfirm": "Czy usunąć konto?"
             },
             "submit": "Wyślij",
             "register": "Zarejestruj się",
@@ -29,6 +37,11 @@
             "loginSuccess": "Logowanie pomyślne!",
             "login": "Zaloguj się",
             "rememberLogin": "Pamiętaj logowanie"
+        },
+        "autocomplete": {
+            "wrapper": {
+                "nooptions": "Brak wyników"
+            }
         },
         "groups": {
             "addGroupForm": {
@@ -42,7 +55,8 @@
                 "name": "Imię",
                 "surname": "Nazwisko",
                 "basicInfo": "Podstawowe informacje",
-                "basicInfo2": "Zaproś użytkowników"
+                "basicInfo2": "Zaproś użytkowników",
+                "confirmBtn": "Zatwierdź"
             },
             "list": {
                 "editGroup": "Edytuj grupę",
@@ -53,6 +67,23 @@
             "ridesBtn": "Przejazdy",
             "invitesBtn": "Zaproszenia"
         },
+        "rides": {
+            "cyclicBtn": "Cykliczny",
+            "disposableBtn": "Jednorazowy",
+            "addRideLabel": "Dodaj przejazd do grupy",
+            "fromOrTo": "Lokalizacja grupy jako punkt: ",
+            "from": "początkowy",
+            "to": "końcowy",
+            "seats": "Ilość miejsc w samochodzie",
+            "date": "Wybierz datę przejazdu.",
+            "time": "Wybierz godzinę przejazdu.",
+            "invalidDate": "Niewłaściwa data przejazdu",
+            "invalidTime": "Niewłaściwa godzina przejazdu",
+            "addBtn": "Utwórz",
+            "pastBtn": "Przeszłe",
+            "futureBtn": "Przyszłe",
+            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd."
+        },
         "footer": {
             "services": "Usługi",
             "environment": "Środowisko",
@@ -62,7 +93,18 @@
         },
         "navBar": {
             "register": "Zarejestruj się",
-            "login": "Zaloguj się"
+            "login": "Zaloguj się",
+            "logout": "Wyloguj się",
+            "profile": "Profil"
+        },
+        "helpForm": {
+            "titleInput": "Tytuł zgłoszenia",
+            "bodyInput": "Treść zgłoszenia",
+            "application": "Typ aplikacji",
+            "send": "Wyślij",
+            "helpLabel": "Pomóż nam udoskonalić naszą platformę!",
+            "validateMsg": "Pole wymagane.",
+            "helpToast": "Dziękujemy za zgłoszenie."
         },
         "homeScreen": {
             "quote": "Nie jedź\n sam!",
@@ -75,17 +117,29 @@
             "btnGroups": "Dowiedz się więcej o grupach",
             "groups": "Grupy",
             "reports": "Raporty",
-            "rides": "Przejazdy"
+            "rides": "Przejazdy",
+            "help": "Jeżeli natrafiłeś na błąd, lub masz jakieś sugestie do działania aplikacji, jako zespół Carpool będziemy bardzo wdzięczni jeżeli opiszesz nam problem korzystając z naszego formularza.",
+            "helpBtn": "Dodaj zgłoszenie"
         },
         "common": {
             "groups": "Grupy",
             "passenger": "Pasażer",
-            "driver": "Kierowca"
+            "driver": "Kierowca",
+            "monday": "Poniedziałek",
+            "tuesday": "Wtorek",
+            "wednesday": "Środa",
+            "thursday": "Czwartek",
+            "friday": "Piątek",
+            "saturday": "Sobota",
+            "sunday": "Niedziela",
+            "all": "Codziennie"
         },
         "prevBtn": "Wstecz",
         "createBtn": "Utwórz",
         "addBtn": "Dodaj",
         "nextBtn": "Dalej",
+        "yes": "Tak",
+        "no": "Nie",
         "loadingScreen": {
             "quote": "Share a ride",
             "join": "Grupy"
@@ -93,11 +147,17 @@
         "input": {
             "validation": {
                 "emailInvalid": "Nieprawidłowy adres e-mail",
-                "fieldRequired": "Pole wymagane"
+                "fieldRequired": "Pole wymagane",
+                "address": "Niepoprawny adres, proszę wybrać adres z podpowiedzi",
+                "numeric": "Niepoprawna liczba"
             }
         },
         "error": {
-            "DuplicateUserName": "Wybrany e-mail jest już zajęty!"
+            "DuplicateUserName": "Wybrany e-mail jest już zajęty!",
+            "unknownGeneric": "Nieznany błąd serwera. Spróbuj ponownie!",
+            "loginGeneric": "Błąd logowania. Spróbuj ponownie!",
+            "registerGeneric": "Nieznany błąd rejestracji.",
+            "loginInvalid": "Błędny e-mail lub hasło."
         }
     }
 }

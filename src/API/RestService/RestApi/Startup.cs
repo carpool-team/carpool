@@ -10,7 +10,6 @@ using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Repositories.Intersections;
 using FluentValidation.AspNetCore;
-using IdentifiersShared.Converters;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -27,24 +26,27 @@ namespace RestApi
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
-			=> Configuration = configuration;
+		private readonly IConfiguration _configuration;
+		private readonly JwtOptions _jwtOptions;
 
-		public IConfiguration Configuration { get; }
+		public Startup(IConfiguration configuration)
+		{
+			_configuration = configuration;
+			_jwtOptions = GetJwtOptions();
+		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
 			Log.Information("Configuring services...");
-			services.AddCors(options =>
-			{
-				options.AddDefaultPolicy(builder => { builder.WithOrigins("http://localhost:8080"); });
-			});
-
-			services.AddSingleton(Configuration);
+			
+			services.AddSingleton(_jwtOptions);
+			services.AddSingleton(_configuration);
+			
+			services.AddCors();
 
 			services.AddDbContext<CarpoolDbContext>(options =>
-				options.UseSqlServer(Configuration.GetConnectionString("RestDbConnectionString")));
+				options.UseSqlServer(_configuration.GetConnectionString("RestDbConnectionString")));
 
 			services.AddHttpContextAccessor();
 
@@ -64,14 +66,14 @@ namespace RestApi
 					options.SaveToken = true;
 					options.TokenValidationParameters = new TokenValidationParameters
 					{
-						//TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+						//TokenDecryptionKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key)),
 						ValidateLifetime = true,
 						ValidateIssuer = true,
-						ValidIssuer = JwtOptions.Issuer,
+						ValidIssuer = _jwtOptions.Issuer,
 						ValidateIssuerSigningKey = true,
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtOptions.Key)),
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key)),
 						ValidateAudience = true,
-						ValidAudience = JwtOptions.Audience,
+						ValidAudience = _jwtOptions.Audience,
 						ClockSkew = TimeSpan.FromMinutes(1)
 					};
 				});
@@ -85,11 +87,12 @@ namespace RestApi
 				});
 			});
 
-			services.AddSingleton(Configuration);
+			services.AddSingleton(_configuration);
 
 			services.AddScoped<IGroupRepository, GroupRepository>();
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IRideRepository, RideRepository>();
+			services.AddScoped<IRideRequestRepository, RideRequestRepository>();
 			services.AddScoped<IGroupInviteRepository, GroupInviteRepository>();
 			services.AddScoped<IRideParticipantRepository, RideParticipantRepository>();
 			services.AddScoped<IUserGroupRepository, UserGroupRepository>();
@@ -132,7 +135,12 @@ namespace RestApi
 
 			app.UseRouting();
 
-			app.UseCors();
+			app.UseCors(x =>
+			{
+				x.AllowAnyMethod()
+					.AllowAnyHeader()
+					.SetIsOriginAllowed(origin => true); // allow any origin
+			});
 
 			app.UseAuthentication();
 
@@ -140,5 +148,9 @@ namespace RestApi
 
 			app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 		}
+		
+		private JwtOptions GetJwtOptions()
+			=> _configuration.GetSection(nameof(JwtOptions))
+				.Get<JwtOptions>();
 	}
 }

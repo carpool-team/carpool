@@ -13,7 +13,6 @@ using AutoWrapper.Wrappers;
 using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
 using IdGen;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -30,23 +29,23 @@ namespace AuthServer.Controllers
 	public class AuthController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
-		private readonly IAuthenticationSchemeProvider _schemeProvider;
 		private readonly SignInManager<AuthUser> _signInManager;
 
+		private readonly ITokenGenerator _tokenGenerator;
 		private readonly IUserManagementService _userManagementService;
 		private readonly UserManager<AuthUser> _userManager;
 
 		public AuthController(UserManager<AuthUser> userManager,
 			SignInManager<AuthUser> signInManager,
-			IAuthenticationSchemeProvider schemeProvider,
 			ApplicationDbContext dbContext,
-			IUserManagementService userManagementService)
+			IUserManagementService userManagementService,
+			ITokenGenerator tokenGenerator)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
-			_schemeProvider = schemeProvider;
 			_dbContext = dbContext;
 			_userManagementService = userManagementService;
+			_tokenGenerator = tokenGenerator;
 		}
 
 		[HttpPost("register")]
@@ -63,7 +62,7 @@ namespace AuthServer.Controllers
 			if (!result.Succeeded)
 				throw new ApiException(result.Errors);
 
-			var addUser = new AddUserDto(user.AppUserId.Value,
+			var addUser = new AddUserDto(user.AppUserId,
 				user.FirstName,
 				user.LastName,
 				user.Email);
@@ -83,25 +82,29 @@ namespace AuthServer.Controllers
 		public async Task<ApiResponse> Login([FromBody] LoginModel model)
 		{
 			if (!ModelState.IsValid)
-				throw new ApiException(ModelState.AllErrors());
-
-			var result = await _signInManager.PasswordSignInAsync(model.Email,
-				model.Password,
-				model.RememberLogin,
-				false);
-
-			if (!result.Succeeded)
+				throw new ApiException(ModelState.AllErrors(), StatusCodes.Status401Unauthorized);
+			try
 			{
-				ModelState.AddModelError(string.Empty, "Invalid email or password");
+				var result = await _signInManager.PasswordSignInAsync(model.Email,
+					model.Password,
+					model.RememberLogin,
+					false);
+				if (!result.Succeeded)
+				{
+					ModelState.AddModelError(string.Empty, "Invalid email or password");
 
-				throw new ApiException(ModelState);
+					throw new ApiProblemDetailsException(ModelState, StatusCodes.Status401Unauthorized);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new ApiException(ex);
 			}
 
 			var user = await _userManager.FindByNameAsync(model.Email);
 
-			TokenGenerator tokenGenerator = new();
-			var token = tokenGenerator.GenerateJwtToken(user.AppUserId);
-			var refreshToken = tokenGenerator.GenerateRefreshToken();
+			var token = _tokenGenerator.GenerateJwtToken(user.AppUserId);
+			var refreshToken = _tokenGenerator.GenerateRefreshToken();
 
 			user.RefreshTokens.Add(refreshToken);
 			_dbContext.Set<AuthUser>().Update(user);
@@ -125,30 +128,31 @@ namespace AuthServer.Controllers
 		}
 
 		[HttpPost("refresh-token")]
-		public async Task<ApiResponse> RefreshToken([FromBody] string refreshToken)
+		public async Task<ApiResponse> RefreshToken([FromBody] RefreshTokenModel refreshToken)
 		{
-			var refreshTokenBytes = Convert.FromBase64String(refreshToken);
-		
+			var refreshTokenBytes = Convert.FromBase64String(refreshToken.Value);
+
 			var deserializedRefreshToken =
 				JsonConvert.DeserializeObject<RefreshToken>(Encoding.ASCII.GetString(refreshTokenBytes));
 
-			var user = await _dbContext.AuthUsers
-				.Include(x =>x.RefreshTokens)
-				.Where(x => x.RefreshTokens
-					.Any(a => a.Token == deserializedRefreshToken.Token && a.IsActive))
-				.FirstOrDefaultAsync();
-				
-				_ = user ?? throw new ApiException("Provided token is invalid", StatusCodes.Status401Unauthorized);
+			AuthUser user = await _dbContext.AuthUsers
+					.Include(x => x.RefreshTokens)
+					.Where(x => x.RefreshTokens.Any(a => a.Token == deserializedRefreshToken.Token))
+					.SingleOrDefaultAsync();
 
-				var token = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);			
+			_ = user ?? throw new ApiException("Provided token was invalid or not found", StatusCodes.Status401Unauthorized);
+
+			var loadedToken = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);
+
+			if (!loadedToken.IsActive)
+				throw new ApiException("Provided token was ivnalid or not found", StatusCodes.Status401Unauthorized);
+			
+			var token = user.RefreshTokens.SingleOrDefault(x => x.Token == deserializedRefreshToken.Token);
 			// ReSharper disable once PossibleNullReferenceException
 			token.Revoked = DateTime.Now;
 
-			TokenGenerator tokenGenerator = new();
-
-			var newJwtToken = tokenGenerator.GenerateJwtToken(user.AppUserId);
-
-			var newRefreshToken = tokenGenerator.GenerateRefreshToken();
+			var newJwtToken = _tokenGenerator.GenerateJwtToken(user.AppUserId);
+			var newRefreshToken = _tokenGenerator.GenerateRefreshToken();
 
 			user.RefreshTokens.Add(newRefreshToken);
 			_dbContext.Set<AuthUser>().Update(user);

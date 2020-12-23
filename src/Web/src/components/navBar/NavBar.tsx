@@ -1,15 +1,44 @@
 import React from "react";
 import "./NavBar.scss";
-import Button from "./navButton/NavButton";
+import NavButton from "./navButton/NavButton";
 import { ButtonColor } from "./navButton/enums/ButtonColor";
 import { ButtonBackground } from "./navButton/enums/ButtonBackground";
 import { ButtonIcon } from "./navButton/enums/ButtonIcon";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import LayoutRouter, { mainRoutes } from "../layout/components/LayoutRouter";
-import { isAuthorized } from "../../helpers/UniversalHelper";
+import { mainRoutes } from "../layout/components/LayoutRouter";
+import { ILogoutAction } from "../auth/store/Types";
+import { connect } from "react-redux";
+import { logout } from "../auth/store/Actions";
+import { IAuthState } from "../auth/store/State";
+import { ITokenInfo } from "../auth/interfaces/ITokenInfo";
+import { Link } from "react-router-dom";
+import App from "../../App";
 
-interface INavBarProps extends IReactI18nProps { }
+interface IStatePropsType {
+	auth: IAuthState;
+}
+
+interface IStateFromProps {
+	tokenInfo: ITokenInfo;
+}
+
+export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (state) => ({
+	tokenInfo: state.auth.tokenInfo,
+});
+
+interface IDispatchPropsType {
+	logout: () => ILogoutAction;
+}
+
+const mapDispatchToProps: IDispatchPropsType = {
+	logout,
+};
+
+type DispatchProps = typeof mapDispatchToProps;
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+interface INavBarProps extends IReactI18nProps, DispatchProps, StateProps { }
 
 interface INavBarState {
 	logged: boolean;
@@ -38,11 +67,12 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 	};
 
 	private resources = {
-		passenger: "common.passenger",
-		driver: "common.driver",
+		rides: "groups.ridesBtn",
 		groups: "common.groups",
 		login: "navBar.login",
+		logout: "navBar.logout",
 		register: "navBar.register",
+		profile: "navBar.profile"
 	};
 
 	constructor(props: INavBarProps) {
@@ -62,11 +92,11 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 
 	private renderAccountContainer = () => {
 		const { t } = this.props;
-
-		if (isAuthorized() === false) {
+		console.log("TOKEN INFO: ", this.props.tokenInfo);
+		if (!this.props.tokenInfo?.token) { // unathorized
 			return (
 				<div className={this.cssClasses.navBarAccountContainer}>
-					<Button
+					<NavButton
 						color={ButtonColor.Gray}
 						background={ButtonBackground.None}
 						icon={ButtonIcon.User}
@@ -76,20 +106,43 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						<span>
 							{t(this.resources.login)}
 						</span>
-					</Button>
+					</NavButton>
 
-					<Button
+					<NavButton
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}
 						onClick={() => { }}
 						to={`/${mainRoutes.register}`}
 					>
 						{t(this.resources.register)}
-					</Button>
+					</NavButton>
 				</div>
 			);
 		} else {
-			return null;
+			return (
+				<div className={this.cssClasses.navBarAccountContainer}>
+					<NavButton
+						color={ButtonColor.Gray}
+						background={ButtonBackground.None}
+						icon={ButtonIcon.User}
+						onClick={() => { }}
+						to={`/${mainRoutes.profile}`}
+					>
+						<span>
+							{t(this.resources.profile)}
+						</span>
+					</NavButton>
+					<NavButton
+						color={ButtonColor.White}
+						background={ButtonBackground.Blue}
+						onClick={() => { this.props.logout(); }}
+					>
+						<span>
+							{t(this.resources.logout)}
+						</span>
+					</NavButton>
+				</div>
+			);
 		}
 	}
 
@@ -99,32 +152,26 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		return (
 			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
 				<div className={this.cssClasses.navBarTabContainer}>
-					<a href={`/${mainRoutes.default}`}>
+					<Link to={App.rootRoute}>
 						<div className={this.cssClasses.logoContainer}></div>
-					</a>
+					</Link>
 					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
-						<Button
+						<NavButton
 							color={ButtonColor.Gray}
 							background={ButtonBackground.None}
 							onClick={this.handleHamburgerClick.bind(this)}
+							to={`/${mainRoutes.rides}`}
 						>
-							{t(this.resources.passenger)}
-						</Button>
-						<Button
-							color={ButtonColor.Gray}
-							background={ButtonBackground.None}
-							onClick={this.handleHamburgerClick.bind(this)}
-						>
-							{t(this.resources.driver)}
-						</Button>
-						<Button
+							{t(this.resources.rides)}
+						</NavButton>
+						<NavButton
 							color={ButtonColor.Gray}
 							background={ButtonBackground.None}
 							onClick={this.handleHamburgerClick.bind(this)}
 							to={`/${mainRoutes.groups}`}
 						>
 							{t(this.resources.groups)}
-						</Button>
+						</NavButton>
 					</div>
 				</div>
 
@@ -143,4 +190,4 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 	}
 }
 
-export default withTranslation()(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NavBar));

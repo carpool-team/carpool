@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoWrapper.Wrappers;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace RestApi.Queries.GroupInviteQueries
 {
 	public class GetGroupInviteQuery : IRequest<GroupInvite>
 	{
-		public GetGroupInviteQuery(GroupInviteId groupInviteId)
-			=> GroupInviteId = groupInviteId;
+		public GetGroupInviteQuery(GroupInviteId groupInviteId, AppUserId appUserId)
+		{
+			GroupInviteId = groupInviteId;
+			AppUserId = appUserId;
+		}
 
 		public GroupInviteId GroupInviteId { get; }
+		public AppUserId AppUserId { get; }
 	}
 	
 	public class GetGroupInviteQueryHandler : IRequestHandler<GetGroupInviteQuery, GroupInvite>
@@ -33,6 +39,10 @@ namespace RestApi.Queries.GroupInviteQueries
 			if (groupInvite is null)
 				throw new NullReferenceException();
 
+			if (request.AppUserId != groupInvite.InvitedAppUserId || request.AppUserId != groupInvite.InvitingAppUserId)
+				throw new ApiException("User does not have access to view group invite",
+					StatusCodes.Status403Forbidden);
+			
 			return groupInvite;
 		}
 	}

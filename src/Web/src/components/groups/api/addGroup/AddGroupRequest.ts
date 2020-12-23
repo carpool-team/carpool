@@ -4,11 +4,13 @@ import RequestBase from "../../../../api/requests/RequestBase";
 import { AddGroupResponse } from "./AddGroupResponse";
 
 export interface IAddGroupRequestBody {
-	name: string;
-	code: string;
 	ownerId: string;
-	latitude: number;
-	longitude: number;
+	location: {
+		latitude: number;
+		longitude: number;
+	};
+	code: string;
+	name: string;
 }
 
 export class AddGroupRequest extends RequestBase<IAddGroupRequestBody> {

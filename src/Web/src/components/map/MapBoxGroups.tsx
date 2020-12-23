@@ -1,17 +1,18 @@
 import * as React from "react";
 import { CSSProperties } from "react";
-import ReactMapboxGl, { Layer, Feature, Popup, Marker } from "react-mapbox-gl";
+import ReactMapboxGl, { Popup, Marker } from "react-mapbox-gl";
 import { IGroup } from "../groups/interfaces/IGroup";
-import mapConfig from "./mapConfig";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
+import { parseCoords } from "../../helpers/UniversalHelper";
+import { mapboxKey, mapboxStyle } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
 	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
 	minZoom: 2,
 	maxZoom: 15,
-	accessToken: mapConfig.mapboxKey
+	accessToken: mapboxKey,
 });
 
 export interface IMapState {
@@ -22,12 +23,12 @@ export interface IMapState {
 }
 
 const flyToOptions = {
-	speed: 0.8
+	speed: 0.8,
 };
 
 const defaults = {
-	zoom: [11] as [number],
-	center: [-0.109970527, 51.52916347] as [number, number],
+	zoom: undefined as [number],
+	center: undefined as [number, number],
 };
 
 export interface IMapProps {
@@ -37,7 +38,10 @@ export interface IMapProps {
 	group?: IGroup;
 }
 
-export default class MapBoxGroups extends React.Component<IMapProps, IMapState> {
+export default class MapBoxGroups extends React.Component<
+	IMapProps,
+	IMapState
+	> {
 	private currentGroupId: string;
 
 	constructor(props: IMapProps) {
@@ -50,32 +54,54 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		this.currentGroupId = undefined;
 	}
 
+	componentDidMount() {
+		const groups: IGroup[] = this.props.getGroupsCallback();
+		if (groups && this.state.groups?.length !== groups.length) {
+			this.getBounds(groups);
+			this.setState(
+				produce((draft: IMapState) => {
+					draft.groups = groups;
+				})
+			);
+		}
+	}
+
 	componentDidUpdate() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
-		if (this.state.groups !== groups) {
-			this.setState(produce((draft: IMapState) => {
-				draft.groups = groups;
-				draft.fitBounds = this.getBounds(groups);
-			}));
-		}
-		if (this.props.group?.id !== this.currentGroupId) {
-			this.currentGroupId = this.props.group?.id ?? undefined;
-			this.setState(produce((draft: IMapState) => {
-				if (this.props.group) {
-					draft.center = [this.props.group.location.latitude, this.props.group.location.longitude];
-					draft.zoom = [14];
-				} else {
-					draft.fitBounds = this.getBounds(groups);
-				}
-			}));
+		if (groups && this.state.groups?.length !== groups.length) {
+			this.getBounds(groups);
+			this.setState(
+				produce((draft: IMapState) => {
+					draft.groups = groups;
+				})
+			);
 		}
 
+		if (this.props.group?.groupId !== this.currentGroupId) {
+			this.currentGroupId = this.props.group?.groupId;
+			if (this.props.group) {
+				this.setState(
+					produce((draft: IMapState) => {
+						draft.center = parseCoords(this.props.group.location);
+						draft.zoom = [14];
+					})
+				);
+			} else if (this.state.groups?.length) {
+				this.getBounds(groups)
+			}
+
+		}
 	}
 
 	private getBounds = (groups: IGroup[]) => {
-		const allCoords = [groups.map(g => g.location.latitude), groups.map(g => g.location.longitude)];
-		console.log(allCoords);
-		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
+		const allCoords = [
+			groups.map((g) => g.location.longitude),
+			groups.map((g) => g.location.latitude),
+		];
+		let bbox: [[number, number], [number, number]] = [
+			[0, 0],
+			[0, 0],
+		];
 
 		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
@@ -83,8 +109,13 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);
 			bbox[1][1] = Math.max.apply(null, allCoords[1]);
 		}
-
-		return bbox;
+		if (this.state.fitBounds !== bbox) {
+			this.setState(
+				produce((draft: IMapState) => {
+					draft.fitBounds = bbox;
+				})
+			);
+		}
 	}
 
 	private onDrag = () => {
@@ -100,11 +131,11 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	private markerClick = (group: IGroup) => {
 		this.setState({
-			center: [group.location.latitude, group.location.longitude],
+			center: parseCoords(group.location),
 			zoom: [14],
 		});
 
-		this.props.setSelectedGroupCallback(group.id);
+		this.props.setSelectedGroupCallback(group.groupId);
 	}
 
 	public render() {
@@ -116,21 +147,21 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		};
 
 		const boundsOptions: FitBoundsOptions = {
-			padding: 100
+			padding: 100,
 		};
 
 		const popupStyle: CSSProperties = {
 			background: "white",
 			color: "gray",
 			fontWeight: 400,
-			border: "2px"
+			border: "2px",
 		};
 
 		let colorIndex = 0;
 
 		return (
 			<Mapbox
-				style={mapConfig.mapLight}
+				style={mapboxStyle}
 				onStyleLoad={this.onStyleLoad}
 				fitBounds={fitBounds}
 				fitBoundsOptions={boundsOptions}
@@ -147,13 +178,13 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 						const markerStyle: CSSProperties = {
 							fontSize: "40px",
-							color: color
+							color: color,
 						};
 
 						return (
 							<Marker
-								key={g.id}
-								coordinates={[g.location.latitude, g.location.longitude]}
+								key={g.groupId}
+								coordinates={parseCoords(g.location)}
 								anchor="bottom"
 								onClick={this.markerClick.bind(this, g)}
 							>
@@ -163,13 +194,12 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					})}
 
 					{group && (
-						<Popup key={group.id} coordinates={[group.location.latitude, group.location.longitude]}>
-							<div style={popupStyle}>
-								{group.name}
-							</div>
-							<div style={popupStyle}>
-								{"Adres:TODO"}
-							</div>
+						<Popup
+							key={group.groupId}
+							coordinates={parseCoords(group.location)}
+						>
+							<div style={popupStyle}>{group.name}</div>
+							<div style={popupStyle}>{"Adres:TODO"}</div>
 						</Popup>
 					)}
 				</>

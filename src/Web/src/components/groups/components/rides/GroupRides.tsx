@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import GroupDetailedView, { IGroupDetailedViewProps } from "../detailedView/GroupDetailedView";
-import RidesList from "./components/RidesList";
 import { useHistory } from "react-router";
 import Button from "../../../ui/button/Button";
 import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
+import ButtonLink from "../../../ui/buttonLink/ButtonLink";
+import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
+import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
+import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle";
 import { mainRoutes } from "../../../layout/components/LayoutRouter";
-import ridesExample from "../../../../examples/exampleRides";
 import { IRide } from "../../../../components/groups/interfaces/IRide";
 import MediaQuery from "react-responsive";
 import MapBoxRides from "../../../map/MapBoxRides";
+import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withTranslation } from "react-i18next";
+import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
+import GroupsRouter from "../GroupsRouter";
+import RidesList from "../../../shared/ridesList/RidesList";
+import { RidesListType } from "../../../shared/ridesList/enums/RidesListType";
 
-interface IGroupRidesProps extends IGroupDetailedViewProps {
+interface IGroupRidesProps extends IGroupDetailedViewProps, RouteComponentProps, IReactI18nProps {
 
 }
 
@@ -28,8 +36,13 @@ const GroupRides = (props: IGroupRidesProps) => {
 		leftOutline: "rides--leftPanel__outline",
 		leftLabelsText: "rides--leftPanel__text"
 	};
+	const resources = {
+		add: "addBtn",
+		back: "prevBtn",
+		participant: "rides.participantOnly",
+		owner: "rides.ownerOnly"
+	};
 
-	const rides: IRide[] = ridesExample;
 	const [selectedRide, setSelectedRide] = useState(null);
 
 	const setRide = (ride: IRide) => {
@@ -38,9 +51,16 @@ const GroupRides = (props: IGroupRidesProps) => {
 		}
 	};
 
+	const { url } = props.match;
+	const { t } = props;
+
 	return (
-		<GroupDetailedView group={props.group}>
+		<GroupDetailedView
+			group={props.group}
+			rides={props.rides}
+		>
 			<div className={cssClasses.leftPanel}>
+				<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
 				<div className={cssClasses.leftLabels}>
 					<Button onClick={() => {
 						history.push(`/${mainRoutes.groups}`);
@@ -48,16 +68,12 @@ const GroupRides = (props: IGroupRidesProps) => {
 						background={ButtonBackground.Blue}
 						color={ButtonColor.White}
 					>
-						{"Wróć"}
+						{t(resources.back)}
 					</Button>
-					<Button background={ButtonBackground.Blue} color={ButtonColor.White}>
-						Dodaj
-				</Button>
-					<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<div className={cssClasses.leftList}>
-					<RidesList rideSelected={selectedRide} setRide={setRide} rides={rides} />
+					<RidesList listType={RidesListType.Default} rideSelected={selectedRide} setRide={setRide} rides={props.rides ?? []} />
 				</div>
 			</div>
 			<MediaQuery query="(min-width: 900px)">
@@ -70,4 +86,4 @@ const GroupRides = (props: IGroupRidesProps) => {
 	);
 };
 
-export default GroupRides;
+export default withTranslation()(withRouter(GroupRides));

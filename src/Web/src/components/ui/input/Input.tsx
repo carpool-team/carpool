@@ -4,12 +4,13 @@ import { InputIcon } from "./enums/InputIcon";
 import { getIconClass } from "./Helpers";
 import { IValidation } from "./interfaces/IValidation";
 import { ValidationType } from "./enums/ValidationType";
-
-import "./Input.scss";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
+import { getGeocodingClient } from "../../map/MapBoxHelper";
 
-interface IINputProps extends IReactI18nProps {
+import "./Input.scss";
+
+export interface IInputBaseProps {
 	changeHandler: (newValue: string) => void;
 	type: InputType;
 	value: string;
@@ -21,87 +22,234 @@ interface IINputProps extends IReactI18nProps {
 		inputId: string;
 	};
 	validation?: IValidation;
+	addressCords?: (cords: [number, number]) => void;
+	cssProps?: React.CSSProperties;
+	disabled?: boolean;
+}
+interface IInputProps extends IInputBaseProps, IReactI18nProps {
+}
+interface IAddress {
+	place_name: string;
+	center: [number, number];
 }
 
 const defaultValidationTextKeys = {
 	[ValidationType.Email]: "input.validation.emailInvalid",
 	[ValidationType.Required]: "input.validation.fieldRequired",
+	[ValidationType.Address]: "input.validation.address",
+	[ValidationType.Numeric]: "input.validation.numeric",
 };
 
 const regexes = {
 	[ValidationType.Email]: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 	[ValidationType.PostalCode]: /^\d{2}\-\d{3}$/,
+	[ValidationType.Numeric]: /^\d+$/,
 };
 
-const validateInput = (value: string, type: ValidationType, customValidation?: (value: string) => boolean) => {
-	if (type === ValidationType.Custom && !customValidation) {
+const geocodingClient = getGeocodingClient();
+
+interface IInputValidationData {
+	value: string;
+	type: ValidationType;
+	customValidation?: (value: string) => boolean;
+	isAddressPicked?: boolean;
+}
+
+const validateInput = (data: IInputValidationData) => {
+	if (data.type === ValidationType.Custom && !data.customValidation) {
 		throw "Custom validation not provided!";
 	}
-	switch (type) {
+	switch (data.type) {
 		case ValidationType.Email:
-			return regexes[type].test(value);
+			return regexes[data.type].test(data.value);
 		case ValidationType.Required:
-			return Boolean(value);
+			return Boolean(data.value);
 		case ValidationType.Custom:
-			return customValidation(value);
+			return data.customValidation(data.value);
+		case ValidationType.Address:
+			return data.isAddressPicked;
+		case ValidationType.Numeric:
+			return regexes[data.type].test(data.value);
 		default:
 			return true;
 	}
 };
 
-const Input = (props: IINputProps) => {
+const Input = (props: IInputProps) => {
 	const [isValid, setIsValid] = useState(true);
+	const [autocompleteList, setAutocompleteList] = useState<IAddress[]>(null);
+	const [isAutoCompleted, setIsAutoCompleted] = useState(false);
 
-	useEffect(() => {
-		if (props.validation?.validate) {
-			const valid: boolean = validateInput(props.value, props.validation.type, props.validation.customValidation);
+	const validate = () => {
+		if (props.validation) {
+			const valid: boolean = validateInput({
+				value: props.value,
+				type: props.validation.type,
+				customValidation: props.validation.customValidation,
+				isAddressPicked: isAutoCompleted,
+			});
 			setIsValid(valid);
 			if (props.validation.isValidCallback) {
 				props.validation.isValidCallback(valid);
 			}
 		}
+	};
+
+	useEffect(() => {
+		validate();
+	}, []);
+
+	useEffect(() => {
+		validate();
 	}, [props.value, props.validation?.validate]);
 
+	useEffect(() => {
+		if (props.type === InputType.Address && !props.value) {
+			props.addressCords(null);
+			props.changeHandler("");
+			setAutocompleteList(null);
+			setIsAutoCompleted(false);
+		}
+	}, [props.value]);
+
 	const inputBaseClassName: string = "input__input";
+	const inputDisabledClassName: string = "input__input--disabled";
+	const inputDisabledContainerClassName: string = "input__container--disabled";
 	const inputInvalidClassName: string = "input__input--invalid";
 	const inputInvalidContainerClassName: string = "input__container--invalid";
 	const inputInvalidTextClassName: string = "input__invalidText";
-	const inputBaseContainerClassName: string = "input__container input__container::before--user";
+	const inputBaseContainerClassName: string =
+		"input__container input__container::before--user";
 	const inputGroupContainerClassName: string = "input__groupContainer";
 	const inputCommentClassName: string = "input__comment";
+	const inputAddressClassName: string = "input__address";
+	const inputAddressContainerClassName: string = "input__container--address";
 	const checkboxClassName: string = "input__checkbox";
 	const checkboxBoxClassName: string = "input__checkbox--box";
 
 	const generalChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (props.type === InputType.Checkbox) {
-			props.changeHandler(String(event.target.checked));
-		} else {
-			props.changeHandler(event.target.value);
+		if (!props.disabled) {
+			if (props.type === InputType.Checkbox) {
+				props.changeHandler(String(event.target.checked));
+			} else {
+				props.changeHandler(event.target.value);
+			}
 		}
 	};
 
 	let baseInputClasses = [inputBaseClassName];
 	let baseContainerClasses = [inputBaseContainerClassName];
-	if (!isValid) {
+	if (props.validation?.validate && !isValid) {
 		baseInputClasses = [inputInvalidClassName];
 		baseContainerClasses = [inputInvalidContainerClassName];
 	}
+	if (autocompleteList !== null) {
+		baseContainerClasses = [inputAddressContainerClassName];
+	}
+	if (props.disabled) {
+		baseContainerClasses.push(inputDisabledContainerClassName);
+		baseInputClasses.push(inputDisabledClassName);
+	}
 
-	const renderValidationMessage = () => {
-		const { t } = props;
-		if (!isValid) {
-			return (
-				<span className={inputInvalidTextClassName}>
-					{props.validation.validationText ?? t(defaultValidationTextKeys[props.validation?.type])}
-				</span>
+	const onAutocompleteName = async (text: string) => {
+		try {
+			const response = await geocodingClient
+				.forwardGeocode({
+					query: text,
+					autocomplete: true,
+					limit: 3,
+					mode: "mapbox.places",
+				})
+				.send();
+			const result: Array<any> = response.body.features;
+			const addresses: IAddress[] = result.map(
+				(item: { place_name: string; center: [number, number] }) => {
+					return {
+						place_name: item.place_name,
+						center: item.center,
+					};
+				}
 			);
+			setAutocompleteList(addresses);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const addressChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+		props.changeHandler(event.target.value);
+		setIsAutoCompleted(false);
+		if (event.target.value.length > 3) {
+			onAutocompleteName(event.target.value);
+		} else {
+			setAutocompleteList(null);
+		}
+	};
+
+	const onAutocompleteClick = (placeName: string, coords: [number, number]) => {
+		props.addressCords(coords);
+		props.changeHandler(placeName);
+		setAutocompleteList(null);
+		setIsAutoCompleted(true);
+	};
+
+	const submitAddressFocusOut = () => {
+		if (autocompleteList !== null) {
+			props.addressCords(autocompleteList[0].center);
+			props.changeHandler(autocompleteList[0].place_name);
+			setAutocompleteList(null);
+			setIsAutoCompleted(true);
+		}
+	};
+
+	const submitAdressEnter = (e) => {
+		if (e.key === "Enter") {
+			if (autocompleteList !== null) {
+				props.addressCords(autocompleteList[0].center);
+				props.changeHandler(autocompleteList[0].place_name);
+				setAutocompleteList(null);
+				setIsAutoCompleted(true);
+			}
+		}
+	};
+
+	const renderAutocompleteAddress = () => {
+		if (autocompleteList !== null && autocompleteList.length !== 0) {
+			return autocompleteList.map((address: IAddress) => {
+				return (
+					<div
+						key={address.place_name}
+						className={inputAddressClassName}
+						onMouseDown={() =>
+							onAutocompleteClick(address.place_name, address.center)
+						}
+					>
+						{address.place_name}
+					</div>
+				);
+			});
 		} else {
 			return null;
 		}
 	};
 
+	const renderValidationMessage = () => {
+		const { t } = props;
+		if (props.validation?.validate) {
+			if (!isValid) {
+				return (
+					<span className={inputInvalidTextClassName}>
+						{props.validation.validationText ??
+							t(defaultValidationTextKeys[props.validation?.type])}
+					</span>
+				);
+			}
+		}
+		return null;
+	};
+
 	const renderTextInput = () => (
-		<div className={inputGroupContainerClassName}>
+		<div className={[inputGroupContainerClassName, props.style].join(" ")}>
 			<div className={baseContainerClasses.join(" ")}>
 				<div className={getIconClass(props.icon)}></div>
 				<input
@@ -109,6 +257,8 @@ const Input = (props: IINputProps) => {
 					placeholder={props.placeholder}
 					onChange={generalChangeHandler}
 					value={props.value}
+					style={props.cssProps}
+					disabled={props.disabled}
 				/>
 			</div>
 			{renderValidationMessage()}
@@ -125,14 +275,34 @@ const Input = (props: IINputProps) => {
 					onChange={generalChangeHandler}
 					value={props.value}
 					type={"password"}
+					disabled={props.disabled}
 				/>
 			</div>
 			{renderValidationMessage()}
 		</div>
 	);
 
+	const renderAddressInput = () => (
+		<div className={[inputGroupContainerClassName, props.style].join(" ")}>
+			<div className={baseContainerClasses.join(" ")}>
+				<div className={getIconClass(props.icon)}></div>
+				<input
+					className={inputBaseClassName}
+					placeholder={props.placeholder}
+					onChange={addressChangeHandler}
+					value={props.value}
+					onBlur={submitAddressFocusOut}
+					onKeyPress={submitAdressEnter}
+					disabled={props.disabled}
+				/>
+			</div>
+			{renderAutocompleteAddress()}
+			{renderValidationMessage()}
+		</div>
+	);
+
 	const renderCheckbox = () => (
-		<div className={checkboxClassName}>
+		<div className={[checkboxClassName, props.style].join(" ")}>
 			<input
 				className={checkboxBoxClassName}
 				placeholder={props.placeholder}
@@ -140,8 +310,11 @@ const Input = (props: IINputProps) => {
 				value={props.value}
 				type={"checkbox"}
 				id={props.label?.inputId}
+				disabled={props.disabled}
 			/>
-			{props.label ? <span id={props.label.inputId}>{props.label.text}</span> : null}
+			{props.label ? (
+				<span id={props.label.inputId}>{props.label.text}</span>
+			) : null}
 		</div>
 	);
 
@@ -153,16 +326,14 @@ const Input = (props: IINputProps) => {
 				return renderPasswordInput();
 			case InputType.Checkbox:
 				return renderCheckbox();
+			case InputType.Address:
+				return renderAddressInput();
 			default:
 				throw "Unhandled input type";
 		}
 	};
 
-	return (
-		<>
-			{renderInput()}
-		</>
-	);
+	return <>{renderInput()}</>;
 };
 
 export default withTranslation()(Input);

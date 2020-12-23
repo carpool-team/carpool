@@ -89,6 +89,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.HasIndex("InvitedAppUserId");
 
                     b.HasIndex("InvitingAppUserId");
@@ -151,6 +153,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("RideDirection")
                         .HasColumnType("int");
 
+                    b.Property<byte>("SeatsLimit")
+                        .HasColumnType("tinyint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
@@ -158,6 +163,40 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Rides");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RideRequest", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAccepted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPending")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("RequestingUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RideId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RideOwnerId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestingUserId");
+
+                    b.HasIndex("RideId");
+
+                    b.HasIndex("RideOwnerId");
+
+                    b.ToTable("RideRequests");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stop", b =>
@@ -260,6 +299,12 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.GroupInvite", b =>
                 {
+                    b.HasOne("Domain.Entities.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.ApplicationUser", "InvitedApplicationUser")
                         .WithMany()
                         .HasForeignKey("InvitedAppUserId")
@@ -271,6 +316,8 @@ namespace DataAccessLayer.Migrations
                         .HasForeignKey("InvitingAppUserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Group");
 
                     b.Navigation("InvitedApplicationUser");
 
@@ -358,6 +405,33 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RideRequest", b =>
+                {
+                    b.HasOne("Domain.Entities.ApplicationUser", "RequestingUser")
+                        .WithMany()
+                        .HasForeignKey("RequestingUserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Ride", "Ride")
+                        .WithMany()
+                        .HasForeignKey("RideId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.ApplicationUser", "RideOwner")
+                        .WithMany()
+                        .HasForeignKey("RideOwnerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("RequestingUser");
+
+                    b.Navigation("Ride");
+
+                    b.Navigation("RideOwner");
                 });
 
             modelBuilder.Entity("Domain.Entities.Stop", b =>

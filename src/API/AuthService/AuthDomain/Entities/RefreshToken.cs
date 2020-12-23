@@ -22,7 +22,7 @@ namespace AuthDomain.Entities
 
 		[NotMapped] 
 		[JsonIgnore]
-		public bool IsActive => Revoked == null && !IsExpired;
+		public bool IsActive => Revoked is null && !IsExpired;
 
 		protected override IEnumerable<object> GetEqualityComponents()
 		{

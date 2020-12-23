@@ -12,10 +12,14 @@ namespace RestApi.Commands.GroupCommands
 {
 	public class DeleteGroupCommand : IRequest
 	{
-		public DeleteGroupCommand(GroupId groupId)
-			=> GroupId = groupId;
+		public DeleteGroupCommand(GroupId groupId, AppUserId appUserId)
+		{
+			GroupId = groupId;
+			AppUserId = appUserId;
+		}
 
 		public GroupId GroupId { get; }
+		public AppUserId AppUserId { get; }
 	}
 	
 	public class DeleteGroupCommandHandler : AsyncRequestHandler<DeleteGroupCommand>
@@ -35,6 +39,10 @@ namespace RestApi.Commands.GroupCommands
 					$"Group with id: {request.GroupId} does not exist so it cannot be deleted.",
 					StatusCodes.Status400BadRequest);
 
+			if (group.OwnerId != request.AppUserId)
+				throw new ApiException("User does not have access to delete group with owner other than himself.",
+					StatusCodes.Status403Forbidden);
+			
 			_groupRepository.Delete(group);
 
 			try

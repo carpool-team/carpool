@@ -11,10 +11,10 @@ import {
 	mapStateToProps,
 	mapDispatchToProps,
 } from "./store/PropsTypes";
+import produce from "immer";
 
 import "./Groups.scss";
-import { tempUserId } from "../../api/requests/RequestCore";
-import produce from "immer";
+import { IAddRideInput } from "../rides/addRide/interfaces/IAddRideInput";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
@@ -36,28 +36,29 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 		this.props.getRides(false);
 	}
 
-	/** Handles adding group */
-	addGroupHandler = (group: IGroup) => {
-		this.props.addGroup(group);
+	getGroupsHandler = () => {
+		return this.props.groups ?? [];
 	}
 
-	getGroupsHandler = () => this.props.groups;
+	getInvitesHandler = () => this.props.invites ?? [];
 
-	getInvitesHandler = () => this.props.invites;
-
-	getRidesHandler = () => {
-		return this.props.rides.filter(r => r.group?.id === this.state.selectedGroup.id && (!r.isUserParticipant || r.owner.userId === tempUserId));
+	getRidesHandler = (owned: boolean) => {
+		return (owned ? this.props.ridesOwned : this.props.ridesParticipated) ?? [];
 	}
 
 	setSelectedGroupHandler = (id: string) => {
-		this.setState(produce((draft: IGroupsState) => {
-			draft.selectedGroup = this.props.groups.find(g => g.id === id);
-		}));
+		this.setState(
+			produce((draft: IGroupsState) => {
+				draft.selectedGroup = this.getGroupsHandler().find(
+					(g) => g.groupId === id
+				);
+			})
+		);
 	}
 
 	render() {
 		let callbacks: IGroupCallbacks = {
-			addGroup: this.addGroupHandler,
+			addGroup: this.props.addGroup,
 			getGroups: this.getGroupsHandler,
 			getInvites: this.getInvitesHandler,
 			answerInvite: (answer, id) => this.props.answerInvite(answer, id),
@@ -65,6 +66,8 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 			getRides: this.getRidesHandler,
 			participateInRide: this.props.participateInRide,
 			setGroupSelected: (id) => this.setSelectedGroupHandler(id),
+			addRide: this.props.addRide,
+			addInvites: this.props.addInvites,
 		};
 
 		return (
@@ -76,6 +79,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 					location={this.props.location}
 					callbacks={callbacks}
 					selectedGroup={this.state.selectedGroup}
+					authId={this.props.authId}
 				/>
 			</section>
 		);
