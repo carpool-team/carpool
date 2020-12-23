@@ -82,9 +82,10 @@ namespace RestApi.Controllers
 		[HttpDelete("{appUserId}")]
 		public async Task<ApiResponse> DeleteUser([FromRoute] AppUserId appUserId)
 		{
-			var tokenUserId = User.GetUserId();
-			if (tokenUserId != appUserId)
-				throw new ApiException("User does not have permissions to delete other user", StatusCodes.Status403Forbidden);
+			// TODO: Identity provider authentication
+			// var tokenUserId = User.GetUserId();
+			// if (tokenUserId != appUserId)
+			// 	throw new ApiException("User does not have permissions to delete other user", StatusCodes.Status403Forbidden);
 			var request = new DeleteUserCommand(appUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);

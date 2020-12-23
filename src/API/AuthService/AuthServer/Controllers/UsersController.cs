@@ -37,5 +37,17 @@ namespace AuthServer.Controllers
 
 			return new ApiResponse(StatusCodes.Status204NoContent);
 		}
+
+		[HttpDelete("{appUserId}")]
+		public async Task<ApiResponse> Delete([FromRoute]AppUserId appUserId)
+		{
+			if (User.GetUserId() != appUserId)
+				throw new ApiException(StatusCodes.Status403Forbidden);
+
+			DeleteUserCommand request = new(appUserId);
+			var user = await _mediator.Send(request);
+
+			return new ApiResponse(user, StatusCodes.Status200OK);
+		}
 	}
 }

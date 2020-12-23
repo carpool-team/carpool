@@ -128,9 +128,9 @@ namespace AuthServer.Controllers
 		}
 
 		[HttpPost("refresh-token")]
-		public async Task<ApiResponse> RefreshToken([FromBody] string refreshToken)
+		public async Task<ApiResponse> RefreshToken([FromBody] RefreshTokenModel refreshToken)
 		{
-			var refreshTokenBytes = Convert.FromBase64String(refreshToken);
+			var refreshTokenBytes = Convert.FromBase64String(refreshToken.Value);
 
 			var deserializedRefreshToken =
 				JsonConvert.DeserializeObject<RefreshToken>(Encoding.ASCII.GetString(refreshTokenBytes));
