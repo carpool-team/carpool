@@ -82,7 +82,7 @@ namespace AuthServer.Controllers
 		public async Task<ApiResponse> Login([FromBody] LoginModel model)
 		{
 			if (!ModelState.IsValid)
-				throw new ApiException(ModelState.AllErrors());
+				throw new ApiException(ModelState.AllErrors(), StatusCodes.Status401Unauthorized);
 			try
 			{
 				var result = await _signInManager.PasswordSignInAsync(model.Email,
@@ -93,7 +93,7 @@ namespace AuthServer.Controllers
 				{
 					ModelState.AddModelError(string.Empty, "Invalid email or password");
 
-					throw new ApiProblemDetailsException(ModelState);
+					throw new ApiProblemDetailsException(ModelState, StatusCodes.Status401Unauthorized);
 				}
 			}
 			catch (Exception ex)
