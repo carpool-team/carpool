@@ -4,12 +4,14 @@ import LoaderSpinner from "../ui/loaderSpinner/LoaderSpinner";
 import Rides from "./rides/Rides";
 import AddRide from "./addRide/AddRide";
 import FallbackRoute from "../system/FallbackRoute";
+import RideRequest from "./rideRequest/RideRequest";
 
 interface IGroupsRouterProps extends RouteComponentProps {
 	authId: string;
 }
 export const rideRoutes = {
-	addRide: "addRide/"
+	addRide: "addRide/",
+	requests: "requests/"
 };
 
 class RidesRouter extends Component<IGroupsRouterProps> {
@@ -25,6 +27,9 @@ class RidesRouter extends Component<IGroupsRouterProps> {
 					</Route>
 					<Route path={path + rideRoutes.addRide}>
 						<AddRide />
+					</Route>
+					<Route path={path + rideRoutes.requests}>
+						<RideRequest />
 					</Route>
 					<FallbackRoute />
 				</Switch>
