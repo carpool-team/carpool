@@ -1,8 +1,8 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { colorList } from "../../../../../scss/colorList";
 import { withTranslation } from "react-i18next";
 import { IRide } from "components/groups/interfaces/IRide";
-import {IRidesListProps} from "../../interfaces/IRidesListProps";
+import { IRidesListProps } from "../../interfaces/IRidesListProps";
 import ActiveItemJoin from "../items/ActiveItemJoin";
 import ActiveItemDefault from "../items/ActiveItemDefault";
 import DefaultItem from "../items/DefaultItem";
@@ -21,60 +21,60 @@ const RidesListDefault = (props: IRidesListProps) => {
 	const [searchKey, setSearchKey] = useState(null);
 
 	const renderJoinItem = (color: string, ride: IRide) => {
-			if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
-				return (
-					<React.Fragment key={ride.rideId}>
-						<ActiveItemJoin
-							ride={ride}
-							color={color}
-							t={t}
-							setRide={props.setRide}
-						/>
-					</React.Fragment>
-				);
-			} else {
-				return (
-					<React.Fragment key={ride.rideId}>
-						<DefaultItem
-							ride={ride}
-							color={color}
-							t={t}
-							setRide={props.setRide}
-						/>
-					</React.Fragment>
-				);
-			}
-		};
+		if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
+			return (
+				<React.Fragment key={ride.rideId}>
+					<ActiveItemJoin
+						ride={ride}
+						color={color}
+						t={t}
+						setRide={props.setRide}
+					/>
+				</React.Fragment>
+			);
+		} else {
+			return (
+				<React.Fragment key={ride.rideId}>
+					<DefaultItem
+						ride={ride}
+						color={color}
+						t={t}
+						setRide={props.setRide}
+					/>
+				</React.Fragment>
+			);
+		}
+	};
 
 	const renderDefaultItem = (color: string, ride: IRide) => {
-			if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
-				return (
-					<React.Fragment key={ride.rideId}>
-						<ActiveItemDefault
-							ride={ride}
-							color={color}
-							t={t}
-							setRide={props.setRide}
-						/>
-					</React.Fragment>
-				);
-			} else {
-				return (
-					<React.Fragment key={ride.rideId}>
-						<DefaultItem
-							ride={ride}
-							color={color}
-							t={t}
-							setRide={props.setRide}
-						/>
-					</React.Fragment>
-				);
-			}
+		if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
+			return (
+				<React.Fragment key={ride.rideId}>
+					<ActiveItemDefault
+						ride={ride}
+						color={color}
+						t={t}
+						setRide={props.setRide}
+					/>
+				</React.Fragment>
+			);
+		} else {
+			return (
+				<React.Fragment key={ride.rideId}>
+					<DefaultItem
+						ride={ride}
+						color={color}
+						t={t}
+						setRide={props.setRide}
+					/>
+				</React.Fragment>
+			);
+		}
 	};
 
 	const renderItem = (color: string, ride: IRide) => {
 		let item: JSX.Element;
-		switch(props.listType){
+		switch (props.listType) {
 			case RidesListType.Join: {
 				item = renderJoinItem(color, ride);
 				break;
@@ -88,8 +88,8 @@ const RidesListDefault = (props: IRidesListProps) => {
 	}
 
 	let colorIndex: number = 0;
-	const rides: IRide[] = props.rides;	
-	
+	const rides: IRide[] = props.rides;
+
 	return (
 		<ul className={cssClasses.list}>
 			<SearchBar
@@ -109,4 +109,4 @@ const RidesListDefault = (props: IRidesListProps) => {
 	);
 };
 
-	export default withTranslation()(RidesListDefault);
+export default withTranslation()(RidesListDefault);

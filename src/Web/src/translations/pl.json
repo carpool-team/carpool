@@ -79,6 +79,11 @@
             "myRides": "Moje przejazdy.",
             "requestsBtn": "Prośby o przejazd"
         },
+        "requests": {
+            "accepted": "Zaakceptowane",
+            "pending": "Oczekujące",
+            "declined": "Odrzucone"
+        },
         "footer": {
             "services": "Usługi",
             "environment": "Środowisko",
