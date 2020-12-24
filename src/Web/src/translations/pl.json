@@ -71,6 +71,7 @@
             "time": "Wybierz godzinę przejazdu.",
             "invalidDate": "Niewłaściwa data przejazdu",
             "invalidTime": "Niewłaściwa godzina przejazdu",
+            "addRide": "Dodaj przejazd",
             "addBtn": "Utwórz",
             "pastBtn": "Przeszłe",
             "futureBtn": "Przyszłe",
