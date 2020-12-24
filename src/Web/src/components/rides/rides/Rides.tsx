@@ -92,7 +92,8 @@ const Rides = (props: IRidesProps) => {
 		participant: "common.passenger",
 		owner: "common.driver",
 		pastBtn: "rides.pastBtn",
-		futureBtn: "rides.futureBtn"
+		futureBtn: "rides.futureBtn",
+		label: "rides.myRides"
 	};
 	const ids = {
 		to: "toId",
@@ -235,14 +236,9 @@ const Rides = (props: IRidesProps) => {
 		<div className={cssClasses.container}>
 			<div className={cssClasses.leftPanel}>
 				<div className={cssClasses.leftLabels}>
-					<ButtonLink
-						style={ButtonLinkStyle.Button}
-						color={ButtonLinkColor.White}
-						background={ButtonLinkBackground.Blue}
-						to={`${url}${rideRoutes.addRide}`}
-					>
-						{t(resources.add)}
-					</ButtonLink>
+					<span>
+						{t(resources.label)}
+					</span>
 					<ButtonLink
 						style={ButtonLinkStyle.Button}
 						color={ButtonLinkColor.White}

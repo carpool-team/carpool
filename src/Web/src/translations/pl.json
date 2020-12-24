@@ -75,7 +75,8 @@
             "addBtn": "Utwórz",
             "pastBtn": "Przeszłe",
             "futureBtn": "Przyszłe",
-            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd."
+            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd.",
+            "myRides": "Moje przejazdy."
         },
         "footer": {
             "services": "Usługi",
