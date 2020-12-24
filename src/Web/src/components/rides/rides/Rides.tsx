@@ -27,7 +27,7 @@ import { ButtonColor } from "../../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
 import { ButtonIcon } from "../../ui/button/enums/ButtonIcon";
 import RidesList from "../../shared/ridesList/RidesList";
-import {RidesListType} from "../../shared/ridesList/enums/RidesListType";
+import { RidesListType } from "../../shared/ridesList/enums/RidesListType";
 import { rideRoutes } from "../RidesRouter";
 
 interface IStatePropsType {
@@ -40,16 +40,12 @@ interface IStateToProps {
 	ridesPastOwner: IRide[];
 	ridesPastParticipated: IRide[];
 }
-enum Lists {
-	Future = "FUTURE",
-	Past = "PAST",
-}
 
 const mapStateToProps = (state: IStatePropsType): IStateToProps => ({
 	ridesOwned: state.groups.ridesOwned,
 	ridesParticipated: state.groups.ridesParticipated,
-	ridesPastParticipated : state.groups.ridesParticipatedPast,
-	ridesPastOwner : state.groups.ridesOwnedPast
+	ridesPastParticipated: state.groups.ridesParticipatedPast,
+	ridesPastOwner: state.groups.ridesOwnedPast
 });
 
 interface IDispatchPropsType {
@@ -92,7 +88,7 @@ const Rides = (props: IRidesProps) => {
 	};
 
 	const resources = {
-		add: "addBtn",
+		add: "rides.addRide",
 		participant: "common.passenger",
 		owner: "common.driver",
 		pastBtn: "rides.pastBtn",
@@ -108,27 +104,11 @@ const Rides = (props: IRidesProps) => {
 	const [selectedRide, setSelectedRide] = useState(null);
 	const [userOwner, setUserOwner] = useState(false);
 	const [switchCssClass, setSwitchCssClass] = useState({ from: cssClasses.switchActive, to: null });
-	const [activeList, setActiveList] = useState(Lists.Future);
-	const [buttonCssClass, setButtonCssClass] = useState({ future: cssClasses.buttonActive, past: null });
-	const [buttonDisable, setButtonDisable] = useState(cssClasses.buttonDisable);
+	const [buttonDisable, setButtonDisable] = useState(null);
 
 	const setRide = (ride: IRide) => {
 		if (ride !== null) {
 			setSelectedRide(ride);
-		}
-	};
-
-	const	setCurrentList = (list: Lists) => {
-		if (list !== activeList) {
-			if (list === Lists.Future) {
-				setButtonCssClass({future: cssClasses.buttonActive, past: null});
-				setActiveList(Lists.Future);
-				setSelectedRide(null);
-			} else {
-				setButtonCssClass({future: null, past: cssClasses.buttonActive});
-				setActiveList(Lists.Past);
-				setSelectedRide(null);
-			}
 		}
 	};
 
@@ -161,9 +141,14 @@ const Rides = (props: IRidesProps) => {
 	};
 	const getDates = (offset: number) => {
 		const week = getWeek(offset);
-		const range = `${moment(week[0]).format("DD.MM")} - ${moment(week[6]).format(
-			"DD.MM",
-		)}`;
+		let range: string;
+		if (offset === -1) {
+			range = "Przeszłe";
+		} else {
+			range = `${moment(week[0]).format("DD.MM")} - ${moment(week[6]).format(
+				"DD.MM",
+			)}`;
+		}
 
 		const firstDay = moment(week[0]).format();
 		const lastDay = moment(week[6]).format();
@@ -189,7 +174,7 @@ const Rides = (props: IRidesProps) => {
 		setDate(getDates(newOffset));
 		setDateOffset(newOffset);
 		setSelectedRide(null);
-		if (newOffset === 0) {
+		if (newOffset === -1) {
 			setButtonDisable(cssClasses.buttonDisable);
 		}
 	};
@@ -228,13 +213,13 @@ const Rides = (props: IRidesProps) => {
 
 		let list: JSX.Element;
 		if (userOwner) {
-			if (activeList === Lists.Future) {
+			if (dateOffset >= 0) {
 				list = renderOwnerList();
 			} else {
 				list = renderPastOwnerList();
 			}
 		} else {
-			if (activeList === Lists.Future) {
+			if (dateOffset >= 0) {
 				list = renderParticipantList();
 			} else {
 				list = renderPastParticipantList();
@@ -250,17 +235,19 @@ const Rides = (props: IRidesProps) => {
 		<div className={cssClasses.container}>
 			<div className={cssClasses.leftPanel}>
 				<div className={cssClasses.leftLabels}>
-					<Button id={ids.past} background={ButtonBackground.White}  color={ButtonColor.Gray} className={buttonCssClass.past} onClick={() => setCurrentList(Lists.Past)}>
-						{t(resources.pastBtn)}
-					</Button>
-					<Button id={ids.future} background={ButtonBackground.White} className={buttonCssClass.future} color={ButtonColor.Gray} onClick={() => setCurrentList(Lists.Future)}>
-						{t(resources.futureBtn)}
-					</Button>
 					<ButtonLink
 						style={ButtonLinkStyle.Button}
-						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
-					  to={`${url}${rideRoutes.addRide}`}
+						color={ButtonLinkColor.White}
+						background={ButtonLinkBackground.Blue}
+						to={`${url}${rideRoutes.addRide}`}
+					>
+						{t(resources.add)}
+					</ButtonLink>
+					<ButtonLink
+						style={ButtonLinkStyle.Button}
+						color={ButtonLinkColor.White}
+						background={ButtonLinkBackground.Blue}
+						to={`${url}${rideRoutes.addRide}`}
 					>
 						{t(resources.add)}
 					</ButtonLink>
@@ -273,7 +260,6 @@ const Rides = (props: IRidesProps) => {
 					/>
 					<span className={switchCssClass.to} id={ids.to}> {t(resources.owner)}</span>
 				</div>
-				{activeList === Lists.Future &&
 				<div className={cssClasses.dateBar}>
 					<div>
 						<ButtonSmall
@@ -295,7 +281,6 @@ const Rides = (props: IRidesProps) => {
 						/>
 					</div>
 				</div>
-				}
 				<div className={cssClasses.leftOutline}></div>
 				<div className={cssClasses.leftList}>
 					{renderList()}
