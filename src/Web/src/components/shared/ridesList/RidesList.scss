@@ -195,6 +195,20 @@
 			padding-right: 7px;
 			content:"\f073";
 		}
+		&__status{
+			font-size: 15px;
+			font-weight: $medium;
+			color: $grayDark;
+			text-decoration: none;
+			margin-left: 10px;
+		}
+		&__status::before{
+			align-items: center;
+			font-family: FontAwesome;
+			font-size: 15px;
+			padding-right: 7px;
+			content:"\f106";
+		}
 	}
 }
 

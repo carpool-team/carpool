@@ -28,6 +28,8 @@ import { ButtonIcon } from "../../ui/button/enums/ButtonIcon";
 import RidesList from "../../shared/ridesList/RidesList";
 import { RidesListType } from "../../shared/ridesList/enums/RidesListType";
 import { rideRoutes } from "../RidesRouter";
+import { IRideRequest } from "../../groups/interfaces/IRideRequest";
+import { exampleRidesRequest } from "../../../examples/exampleRidesRequest";
 
 
 interface IRideRequestProps extends RouteComponentProps, IReactI18nProps {
@@ -37,7 +39,17 @@ interface IRideRequestProps extends RouteComponentProps, IReactI18nProps {
 const RideRequest = (props: IRideRequestProps) => {
 
 	const cssClasses = {
-
+		container: "rides--container",
+		leftPanel: "rides--leftPanel",
+		rightPanel: "rides--rightPanel",
+		rightTopPanel: "rides--rightPanel__top",
+		rightBottomPanel: "rides--rightPanel__bottom",
+		leftLabels: "rides--leftPanel__label",
+		leftList: "rides--leftPanel__list",
+		leftOutline: "rides--leftPanel__outline",
+		leftLabelsText: "rides--leftPanel__text",
+		switchActive: "rides--leftPanel__switchActive",
+		switch: "rides--leftPanel__switch",
 	};
 
 	const resources = {
@@ -49,14 +61,103 @@ const RideRequest = (props: IRideRequestProps) => {
 		label: "rides.myRides"
 	};
 	const ids = {
-
+		to: "toId",
+		from: "fromId",
 	};
 
 	const { url } = props.match;
 	const { t } = props;
 
+
+
+	const [selectedRide, setSelectedRide] = useState<IRide>(null);
+	const [selectedRequest, setSelectedRequest] = useState<IRideRequest>(null);
+	const [userOwner, setUserOwner] = useState<boolean>(false);
+	const [switchCssClass, setSwitchCssClass] = useState({ from: cssClasses.switchActive, to: null });
+
+	useEffect(() => {
+		if (selectedRequest && selectedRequest.ride !== selectedRide) {
+			setSelectedRide(selectedRequest.ride)
+		}
+	}, [selectedRequest])
+
+	const setRequest = (request: IRideRequest) => {
+		if (request !== null) {
+			setSelectedRequest(request);
+		}
+	};
+
+	const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setUserOwner(event.target.checked);
+		setSelectedRequest(null);
+		if (event.target.checked) {
+			setSwitchCssClass({ from: null, to: cssClasses.switchActive });
+		} else {
+			setSwitchCssClass({ from: cssClasses.switchActive, to: null });
+		}
+	};
+
+	const UserSwitch = withStyles({
+		switchBase: {
+			color: "#6b98d1",
+			"&$checked": {
+				color: "#6b98d1",
+			},
+			"&$checked + $track": {
+				backgroundColor: "#707070",
+			},
+			"& + $track": {
+				backgroundColor: "#707070",
+			}
+		},
+		checked: {},
+		track: {},
+	})(Switch);
+
+	const renderOwnerList = () => (
+		<RidesList listType={RidesListType.RequestOwner} requests={/*props.requestOwned ??*/ exampleRidesRequest ?? []} requestSelected={selectedRequest} setRequest={setRequest} />
+	);
+	const renderParticipantList = () => (
+		<RidesList listType={RidesListType.RequestParticipant} requests={ /*props.requestParticipated ?? */exampleRidesRequest ?? []} requestSelected={selectedRequest} setRequest={setRequest} />
+	);
+
+	const renderList = () => {
+		let list: JSX.Element;
+		if (userOwner) {
+			list = renderParticipantList();
+		} else {
+			list = renderOwnerList();
+		}
+		return list;
+	};
+
 	return (
-		<div>chuj</div>
+		<div className={cssClasses.container}>
+			<div className={cssClasses.leftPanel}>
+				<div className={cssClasses.leftLabels}>
+					<span>
+						{t(resources.label)}
+					</span>
+				</div>
+				<div className={cssClasses.switch}>
+					<span className={switchCssClass.from} id={ids.from}> {t(resources.participant)}</span>
+					<FormControlLabel
+						control={<UserSwitch size="medium" checked={userOwner} onChange={handleSwitchChange} />}
+						label=""
+					/>
+					<span className={switchCssClass.to} id={ids.to}> {t(resources.owner)}</span>
+				</div>
+				<div className={cssClasses.leftOutline}></div>
+				<div className={cssClasses.leftList}>
+					{renderList()}
+				</div>
+			</div>
+			<MediaQuery query="(min-width: 900px)">
+				<div className={cssClasses.rightPanel}>
+					<MapBoxRides ride={selectedRide}></MapBoxRides>
+				</div>
+			</MediaQuery>
+		</div>
 	);
 };
 
