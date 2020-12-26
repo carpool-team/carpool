@@ -6,7 +6,7 @@ import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { parseCoords } from "../../helpers/UniversalHelper";
-import { getGeocodingClient, mapboxKey, mapboxStyle } from "./MapBoxHelper";
+import { getGeocodingClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 1,
@@ -88,7 +88,7 @@ export default class MapBoxGroups extends React.Component<
 						draft.zoom = [14];
 					})
 				);
-				this.onGetName(parseCoords(this.props.group.location)).then(res => {
+				onGetName(parseCoords(this.props.group.location)).then(res => {
 					this.setState(
 						produce((draft: IMapState) => {
 							draft.groupAddress = res
@@ -98,28 +98,8 @@ export default class MapBoxGroups extends React.Component<
 			} else if (this.state.groups?.length) {
 				this.getBounds(groups)
 			}
-
 		}
 	}
-	private onGetName = async (coords: [number, number]): Promise<string> => {
-		try {
-			const response = await geocodingClient
-				.reverseGeocode({
-					query: coords,
-					mode: "mapbox.places",
-				})
-				.send();
-			const result = response.body.features[0];
-			if (result !== undefined && result.hasOwnProperty("place_name")) {
-				return (result.place_name);
-			} else {
-				return (" Błąd pobrania nazwy lokalizacji ");
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
 
 	private getBounds = (groups: IGroup[]) => {
 		const allCoords = [
