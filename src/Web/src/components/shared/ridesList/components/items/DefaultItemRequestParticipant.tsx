@@ -24,6 +24,7 @@ const DefaultItemRequestParticipant = (props: IRequestsItemProps) => {
 		accepted: "requests.accepted",
 		pending: "requests.pending",
 		declined: "requests.declined",
+		status: "requests.status"
 	}
 
 	const [loading, setLoading] = useState<boolean>(null);
@@ -41,7 +42,6 @@ const DefaultItemRequestParticipant = (props: IRequestsItemProps) => {
 			}
 		}
 	}
-
 
 	const onGetName = async (coords: [number, number]) => {
 		try {
@@ -125,7 +125,7 @@ const DefaultItemRequestParticipant = (props: IRequestsItemProps) => {
 				</div>
 				<div className={cssClasses.bottomRow}>
 					<div className={cssClasses.driver}>
-						{status}
+						{t(resources.status) + status}
 					</div>
 				</div>
 			</button>

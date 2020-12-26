@@ -6,6 +6,8 @@ import { RidesListType } from "../../enums/RidesListType";
 import { IRideRequest } from "../../../../groups/interfaces/IRideRequest";
 import DefaultItemRequestParticipant from "../items/DefaultItemRequestParticipant";
 import DefaultItemRequestOwner from "../items/DefaultItemRequestOwner";
+import ActiveItemRequestParticipant from "../items/ActiveItemRequestParticipant";
+import ActiveItemRequestOwner from "../items/ActiveItemRequestOwner";
 
 const RequestsListDefault = (props: IRequestsListProps) => {
 
@@ -19,12 +21,12 @@ const RequestsListDefault = (props: IRequestsListProps) => {
 		if (props.requestSelected && props.requestSelected.rideRequestId === request.rideRequestId) {
 			return (
 				<React.Fragment key={request.rideRequestId}>
-					{/* <ActiveItemRequestOwner
+					<ActiveItemRequestOwner
 						request={request}
 						color={color}
 						t={t}
-						setRide={props.setRequest}
-					/> */}
+						setRequest={props.setRequest}
+					/>
 				</React.Fragment>
 			);
 		} else {
@@ -45,12 +47,12 @@ const RequestsListDefault = (props: IRequestsListProps) => {
 		if (props.requestSelected && props.requestSelected.rideRequestId === request.rideRequestId) {
 			return (
 				<React.Fragment key={request.rideRequestId}>
-					{/* <ActiveItemRequestParticipant
+					<ActiveItemRequestParticipant
 						request={request}
 						color={color}
 						t={t}
 						setRequest={props.setRequest}
-					/> */}
+					/>
 				</React.Fragment>
 			);
 		} else {
@@ -74,7 +76,7 @@ const RequestsListDefault = (props: IRequestsListProps) => {
 				item = renderRequestParticipantItem(color, request);
 				break;
 			}
-			case RidesListType.Default: {
+			case RidesListType.RequestOwner: {
 				item = renderRequestOwnerItem(color, request);
 				break;
 			}

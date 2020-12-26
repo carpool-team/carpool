@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 import IRequestsItemProps from "../../interfaces/IRequestsItemProps";
+import ButtonSmall from "../../../../ui/buttonSmall/ButtonSmall";
+import { ButtonSmallBackground } from "../../../../ui/buttonSmall/enums/ButtonSmallBackground";
+import { ButtonSmallColor } from "../../../../ui/buttonSmall/enums/ButtonSmallColor";
+import { ButtonSmallIcon } from "../../../../ui/buttonSmall/enums/ButtonSmallIcon";
 
 const geocodingClient = getGeocodingClient();
 
 const DefaultItemRequestOwner = (props: IRequestsItemProps) => {
+
+	const { t } = props;
 
 	const cssClasses = {
 		mainRow: "ridesList--mainRow",
@@ -15,8 +21,11 @@ const DefaultItemRequestOwner = (props: IRequestsItemProps) => {
 		icon: "ridesList--mainRow__icon",
 		toLabel: "ridesList--mainRow__to",
 		fromLabel: "ridesList--mainRow__from",
-		driver: "ridesList--bottomRow__driver",
+		driver: "ridesList--bottomRow__status",
 	};
+	const resources = {
+		requestFrom: "requests.requestFrom"
+	}
 
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
@@ -99,7 +108,7 @@ const DefaultItemRequestOwner = (props: IRequestsItemProps) => {
 				</div>
 				<div className={cssClasses.bottomRow}>
 					<div className={cssClasses.driver}>
-						{props.request.requestingUser.firstName + " " + props.request.requestingUser.lastName}
+						{t(resources.requestFrom) + props.request.requestingUser.firstName + " " + props.request.requestingUser.lastName}
 					</div>
 				</div>
 			</button>
