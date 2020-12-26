@@ -8,6 +8,7 @@ export const getRequestEndpoint: (
 ) => string = (endpoint, queries) => {
 	let ep: string = (() => {
 		switch (endpoint) {
+			//#region GROUPS
 			case RequestEndpoint.POST_ADD_GROUP:
 				return "/groups";
 			case RequestEndpoint.PUT_UPDATE_GROUP:
@@ -18,6 +19,8 @@ export const getRequestEndpoint: (
 				return `/users/${queries?.userId}/groups`;
 			case RequestEndpoint.DELETE_GROUP_BY_ID:
 				return `/groups/${queries?.groupId}`;
+			//#endregion
+			//#region GROUP INVITES
 			case RequestEndpoint.GET_INVITES_BY_USER_ID:
 				return `/users/${queries?.userId}/group-invites`;
 			case RequestEndpoint.GET_ALL_INVITES:
@@ -30,6 +33,8 @@ export const getRequestEndpoint: (
 				return `/groupinvites/${queries?.inviteId}`;
 			case RequestEndpoint.DELETE_INVITE_BY_ID:
 				return `/groupinvites/${queries?.inviteId}`;
+			//#endregion
+			//#region USERS
 			case RequestEndpoint.GET_RIDES_BY_USER_ID:
 				return `/users/${queries.userId}/rides`;
 			case RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT:
@@ -38,16 +43,27 @@ export const getRequestEndpoint: (
 				return "/auth/login";
 			case RequestEndpoint.REGISTER_USER:
 				return "/auth/register";
-			case RequestEndpoint.POST_RIDE:
-				return "/rides/";
-			case RequestEndpoint.POST_RIDE_RECURRING:
-				return "/rides/recurring";
 			case RequestEndpoint.AUTOCOMPLETE_USER:
 				return "/users";
 			case RequestEndpoint.GET_USER_BY_APPUSERID:
 				return "/users/" + queries.userId;
 			case RequestEndpoint.UPDATE_USER_DATA:
 				return "/users/" + queries.userId;
+			//#endregion
+			//#region RIDES
+			case RequestEndpoint.POST_RIDE:
+				return "/rides/";
+			case RequestEndpoint.POST_RIDE_RECURRING:
+				return "/rides/recurring";
+			//#endregion
+			//#region RIDE REQUESTS
+			case RequestEndpoint.GET_RIDE_REQS:
+				return "/riderequests";
+			case RequestEndpoint.PUT_UPDATE_RIDE_REQ:
+				return "/riderequests";
+			case RequestEndpoint.POST_ADD_RIDE_REQ:
+				return "/riderequests";
+			//#endregion
 			default:
 				throw "Unhandled endpoint";
 		}
