@@ -6,7 +6,7 @@ import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { IRide } from "components/groups/interfaces/IRide";
 import { RideDirection } from "../groups/api/addRide/AddRideRequest";
 import { parseCoords } from "../../helpers/UniversalHelper";
-import { getDirectionsClient, mapboxKey, mapboxStyle } from "./MapBoxHelper";
+import { defaultBounds, getDirectionsClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 2,
@@ -20,6 +20,8 @@ export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
 	ride: IRide;
 	route: any;
+	fromName: string
+	toName: string
 }
 
 const flyToOptions = {
@@ -27,7 +29,10 @@ const flyToOptions = {
 };
 
 const defaults = {
-	route: null
+	route: null,
+	fitBounds: defaultBounds,
+	fromName: null,
+	toName: null,
 };
 
 export interface IMapProps {
@@ -40,7 +45,6 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
-			fitBounds: undefined,
 			ride: this.props.ride,
 			...defaults,
 		};
@@ -84,6 +88,28 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		if (this.state.ride !== this.props.ride) {
 			if (this.props.ride) {
 				this.getBounds(this.props.ride);
+				onGetName(parseCoords(this.props.ride.location)).then(res => {
+					this.setState(
+						produce((draft: IMapState) => {
+							if (this.props.ride.rideDirection === RideDirection.To) {
+								draft.toName = res
+							} else {
+								draft.fromName = res
+							}
+						})
+					);
+				})
+				onGetName(parseCoords(this.props.ride.group.location)).then(res => {
+					this.setState(
+						produce((draft: IMapState) => {
+							if (this.props.ride.rideDirection === RideDirection.To) {
+								draft.fromName = res
+							} else {
+								draft.toName = res
+							}
+						})
+					);
+				})
 			}
 			this.onFindRoute(this.props.ride);
 			this.setState(produce((draft: IMapState) => {
@@ -112,7 +138,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	}
 
 	public render() {
-		const { fitBounds, ride, route } = this.state;
+		const { fitBounds, ride, route, fromName, toName } = this.state;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
@@ -121,20 +147,18 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		const boundsOptions: FitBoundsOptions = {
 			padding: 100
 		};
-
-		const popupStyle: CSSProperties = {
+		const addressStyle: CSSProperties = {
 			background: "white",
 			color: "gray",
 			fontWeight: 400,
 			border: "2px",
 		};
-		const fromMarkerStyle: CSSProperties = {
-			fontSize: "40px",
-			color: "#10ac84"
-		};
-		const toMarkerStyle: CSSProperties = {
-			fontSize: "40px",
-			color: "#ee5253"
+		const nameStyle: CSSProperties = {
+			background: "white",
+			color: "gray",
+			fontWeight: 600,
+			border: "2px",
+			fontSize: "17px"
 		};
 		const lineLayout = {
 			"line-cap": "round",
@@ -176,14 +200,16 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 				{ride !== null &&
 					<>
 						<Popup coordinates={parseCoords(ride.group?.location)}>
-							<div style={popupStyle}>
+							<div style={nameStyle}>
 								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "początkowa" : "końcowa"}`}
 							</div>
+							<div style={addressStyle}>{ride.rideDirection === RideDirection.To ? fromName : toName}</div>
 						</Popup>
 						<Popup coordinates={parseCoords(ride.location)}>
-							<div style={popupStyle}>
+							<div style={nameStyle}>
 								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "końcowa" : "początkowa"}`}
 							</div>
+							<div style={addressStyle}>{ride.rideDirection === RideDirection.To ? toName : fromName}</div>
 						</Popup>
 					</>
 				}
