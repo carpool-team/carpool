@@ -6,20 +6,21 @@ import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { parseCoords } from "../../helpers/UniversalHelper";
-import { mapboxKey, mapboxStyle } from "./MapBoxHelper";
+import { getGeocodingClient, mapboxKey, mapboxStyle } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
-	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
-	minZoom: 2,
+	minZoom: 1,
 	maxZoom: 15,
 	accessToken: mapboxKey,
 });
+const geocodingClient = getGeocodingClient();
 
 export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
 	center?: [number, number];
 	zoom?: [number];
 	groups: IGroup[];
+	groupAddress: string
 }
 
 const flyToOptions = {
@@ -29,6 +30,7 @@ const flyToOptions = {
 const defaults = {
 	zoom: undefined as [number],
 	center: undefined as [number, number],
+	groupAddress: undefined as string,
 };
 
 export interface IMapProps {
@@ -86,12 +88,38 @@ export default class MapBoxGroups extends React.Component<
 						draft.zoom = [14];
 					})
 				);
+				this.onGetName(parseCoords(this.props.group.location)).then(res => {
+					this.setState(
+						produce((draft: IMapState) => {
+							draft.groupAddress = res
+						})
+					);
+				})
 			} else if (this.state.groups?.length) {
 				this.getBounds(groups)
 			}
 
 		}
 	}
+	private onGetName = async (coords: [number, number]): Promise<string> => {
+		try {
+			const response = await geocodingClient
+				.reverseGeocode({
+					query: coords,
+					mode: "mapbox.places",
+				})
+				.send();
+			const result = response.body.features[0];
+			if (result !== undefined && result.hasOwnProperty("place_name")) {
+				return (result.place_name);
+			} else {
+				return (" Błąd pobrania nazwy lokalizacji ");
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 
 	private getBounds = (groups: IGroup[]) => {
 		const allCoords = [
@@ -139,7 +167,7 @@ export default class MapBoxGroups extends React.Component<
 	}
 
 	public render() {
-		const { fitBounds, center, zoom, groups } = this.state;
+		const { fitBounds, center, zoom, groups, groupAddress } = this.state;
 		const { group } = this.props;
 
 		const containerStyle: CSSProperties = {
@@ -150,11 +178,18 @@ export default class MapBoxGroups extends React.Component<
 			padding: 100,
 		};
 
-		const popupStyle: CSSProperties = {
+		const addressStyle: CSSProperties = {
 			background: "white",
 			color: "gray",
 			fontWeight: 400,
 			border: "2px",
+		};
+		const nameStyle: CSSProperties = {
+			background: "white",
+			color: "gray",
+			fontWeight: 600,
+			border: "2px",
+			fontSize: "17px"
 		};
 
 		let colorIndex = 0;
@@ -198,8 +233,8 @@ export default class MapBoxGroups extends React.Component<
 							key={group.groupId}
 							coordinates={parseCoords(group.location)}
 						>
-							<div style={popupStyle}>{group.name}</div>
-							<div style={popupStyle}>{"Adres:TODO"}</div>
+							<div style={nameStyle}>{group.name}</div>
+							<div style={addressStyle}>{groupAddress}</div>
 						</Popup>
 					)}
 				</>
