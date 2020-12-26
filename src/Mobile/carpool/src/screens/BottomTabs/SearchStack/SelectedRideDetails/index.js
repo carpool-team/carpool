@@ -28,6 +28,7 @@ const SelectedRideDetails = ({navigation, route}) => {
       actions.createRideRequest({
         rideId: ride.rideId,
         rideOwnerId: ride.owner.id,
+        location: data.location.coordinates,
       }),
     )
       .then(() => {
