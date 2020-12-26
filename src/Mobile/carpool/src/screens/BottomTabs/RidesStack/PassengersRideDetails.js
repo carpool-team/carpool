@@ -10,13 +10,17 @@ import {
 } from 'react-native';
 import {colors, sheet} from '../../../styles';
 import moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {RouteMinimap} from '../../../components/Route';
-import {GroupWaypoints} from '../../../components/Ride';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import {GroupWaypointsStop} from '../../../components/Ride';
 import {GoBack, Header} from '../../../components/navigation';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import {useSelector} from 'react-redux';
 
 const PassengersRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
+
+  const userId = useSelector(state => state.accountReducer.user.data.id);
 
   useEffect(() => {
     navigation.setOptions({
@@ -56,11 +60,10 @@ const PassengersRideDetails = ({navigation, route}) => {
           </View>
           {!past && (
             <TouchableOpacity onPress={onResignPress}>
-              <Icon
-                name="trash"
+              <MaterialIcon
+                name="exit-to-app"
                 size={32}
-                color={colors.red}
-                style={styles.moreIcon}
+                color={colors.orange}
               />
             </TouchableOpacity>
           )}
@@ -82,11 +85,24 @@ const PassengersRideDetails = ({navigation, route}) => {
           />
         </View>
         <View style={styles.waypoints}>
-          <GroupWaypoints
+          <GroupWaypointsStop
             group={ride.group}
             location={{coordinates: ride.location}}
             swap={ride.rideDirection}
+            stop={ride.stops.find(
+              item => item.participant.participantId === userId,
+            )}
           />
+        </View>
+        <View style={styles.driverWrapper}>
+          <FontAwesomeIcon
+            name="drivers-license"
+            color={colors.grayDark}
+            size={32}
+          />
+          <Text style={styles.driver}>{`${ride.owner.firstName} ${
+            ride.owner.lastName
+          }`}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -128,6 +144,16 @@ const styles = StyleSheet.create({
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: colors.gray,
+  },
+  driverWrapper: {
+    ...sheet.rowCenter,
+    padding: 16,
+  },
+  driver: {
+    ...sheet.textMedium,
+    color: colors.grayVeryDark.slic,
+    fontSize: 18,
+    marginLeft: 16,
   },
 });
 

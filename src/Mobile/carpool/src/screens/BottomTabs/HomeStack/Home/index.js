@@ -60,6 +60,8 @@ const Home = () => {
     dispatch(actions.getUsersRides());
     dispatch(actions.getGroups());
 
+    dispatch(actions.getUser());
+
     dispatch(actions.getDriversRideRequests());
     dispatch(actions.getPassengersRideRequests());
 
