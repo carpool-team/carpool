@@ -8,7 +8,7 @@ export interface IRideRequest {
 		appUserId: string;
 		firstName: string;
 		lastName: string;
-	}
+	};
 	ride: IRide;
 	rideOwner: IParticipant;
 	rideRequestId: string;
