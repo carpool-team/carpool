@@ -54,9 +54,11 @@ namespace RestApi.Commands.RideRequestCommands
 
 			if (request.IsAccepted)
 			{
-				var stops = await _stopRepository.GetStopsByRideId(rideRequest.RideId,
+				await _stopRepository.AddStopToRideAsync(
+					new Stop(rideRequest.RequestingUserId,
+						rideRequest.Location,
+						rideRequest.RideId),
 					cancellationToken);
-				stops.Add(new Stop(rideRequest.RequestingUserId, rideRequest.Location, rideRequest.RideId));
 			}
 
 			try

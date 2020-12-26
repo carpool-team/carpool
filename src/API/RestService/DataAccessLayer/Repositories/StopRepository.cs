@@ -22,5 +22,8 @@ namespace DataAccessLayer.Repositories
 			                   .Include(a => a.Participant)
 			                   .ToListAsync(cancellationToken)
 			                   .ConfigureAwait(false);
+
+		public async Task AddStopToRideAsync(Stop stop, CancellationToken cancellationToken = default)
+			=> await _dbContext.Set<Stop>().AddAsync(stop, cancellationToken);
 	}
 }
