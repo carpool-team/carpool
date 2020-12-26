@@ -4,5 +4,6 @@ export enum ButtonSmallColor {
 	Blue,
 	Gray,
 	White,
-	Black
+	Black,
+	Red
 }
