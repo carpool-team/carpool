@@ -11,6 +11,7 @@ namespace Domain.Entities
 	public class Ride : BaseEntity<RideId>
 	{
 		private Ride(){}
+		
 		public Ride(RideId rideId, 
 			AppUserId ownerId, 
 			GroupId groupId,
@@ -31,9 +32,9 @@ namespace Domain.Entities
 			Stops = stops;
 			SeatsLimit = seatsLimit;
 		}
+		
 		public AppUserId OwnerId { get; set; }
 		public ApplicationUser Owner { get; set; }
-		public List<UserParticipatedRide> Participants { get; set; }
 		public GroupId GroupId { get; set; }
 		public Group Group { get; set; }
 		public DateTime Date { get; set; }

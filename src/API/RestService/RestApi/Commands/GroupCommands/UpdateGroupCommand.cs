@@ -18,7 +18,7 @@ namespace RestApi.Commands.GroupCommands
 		public UpdateGroupCommand(GroupId groupId, LocationDto? location, string name, string code, AppUserId? ownerId)
 		{
 			GroupId = groupId;
-			Location = location != null ? new Location(location.longitude, location.latitude) : null;
+			Location = location != null ? new Location(location.Longitude, location.Latitude) : null;
 			Name = name;
 			Code = code;
 			OwnerId = ownerId;

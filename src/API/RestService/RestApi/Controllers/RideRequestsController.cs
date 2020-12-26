@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataTransferObjects.RideRequest;
+using Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +43,8 @@ namespace RestApi.Controllers
 		{
 			AddRideRequestCommand request = new(addRideRequestDto.RideId,
 				User.GetUserId(),
-				addRideRequestDto.RideOwnerId);
+				addRideRequestDto.RideOwnerId,
+				new Location(addRideRequestDto.Location.Longitude, addRideRequestDto.Location.Latitude));
 			var rideRequestId = await _mediator.Send(request);
 
 			return new ApiResponse(rideRequestId, StatusCodes.Status201Created);

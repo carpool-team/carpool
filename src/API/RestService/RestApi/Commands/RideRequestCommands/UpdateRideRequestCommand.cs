@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
+using Domain.Entities;
 using Domain.Entities.Intersections;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -27,17 +28,17 @@ namespace RestApi.Commands.RideRequestCommands
 
 	public class UpdateRideRequestCommandHandler : AsyncRequestHandler<UpdateRideRequestCommand>
 	{
-		private readonly IRideParticipantRepository _rideParticipantRepository;
+		private readonly IStopRepository _stopRepository;
 		private readonly IRideRequestRepository _rideRequestRepository;
 		private readonly IUnitOfWork _unitOfWork;
 
 		public UpdateRideRequestCommandHandler(IRideRequestRepository rideRequestRepository,
 			IUnitOfWork unitOfWork,
-			IRideParticipantRepository rideParticipantRepository)
+			IStopRepository stopRepository)
 		{
 			_rideRequestRepository = rideRequestRepository;
 			_unitOfWork = unitOfWork;
-			_rideParticipantRepository = rideParticipantRepository;
+			_stopRepository = stopRepository;
 		}
 
 		protected override async Task Handle(UpdateRideRequestCommand request, CancellationToken cancellationToken)
@@ -53,9 +54,9 @@ namespace RestApi.Commands.RideRequestCommands
 
 			if (request.IsAccepted)
 			{
-				var rideParticipants = await _rideParticipantRepository.GetParticipantsByRideId(rideRequest.RideId,
+				var stops = await _stopRepository.GetStopsByRideId(rideRequest.RideId,
 					cancellationToken);
-				rideParticipants.Add(new UserParticipatedRide(request.TokenUserId, rideRequest.RideId));
+				stops.Add(new Stop(rideRequest.RequestingUserId, rideRequest.Location, rideRequest.RideId));
 			}
 
 			try

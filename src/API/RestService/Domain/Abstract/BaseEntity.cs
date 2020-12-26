@@ -7,4 +7,9 @@ namespace Domain.Abstract
 	{
 		[Key] public T Id { get; set; }
 	}
+
+	public abstract class BaseEntity : IBaseEntity
+	{
+		
+	}
 }

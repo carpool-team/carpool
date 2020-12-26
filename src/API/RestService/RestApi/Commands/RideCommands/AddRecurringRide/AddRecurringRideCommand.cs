@@ -9,7 +9,6 @@ using AutoWrapper.Wrappers;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
-using Domain.Entities.Intersections;
 using Domain.Enums;
 using Domain.ValueObjects;
 using IdentifiersShared.Generator;
@@ -17,6 +16,7 @@ using IdentifiersShared.Identifiers;
 using IdGen;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using RestApi.DTOs.Stop;
 
 namespace RestApi.Commands.RideCommands.AddRecurringRide
 {
@@ -24,17 +24,17 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 	{
 		[JsonConstructor]
 		public AddRecurringRideCommand(AppUserId ownerId,
-			List<AppUserId>? participantsIds,
-			GroupId groupId,
-			TimeSpan rideTime, 
-			double price, 
-			Location location, 
-			RideDirection rideDirection, 
-			byte weekDays, 
-			DateTime startDate,
-			DateTime endDate,
-			List<Stop>? stops,
-			byte seatsLimit)
+		                               List<AppUserId>? participantsIds,
+		                               GroupId groupId,
+		                               TimeSpan rideTime,
+		                               double price,
+		                               Location location,
+		                               RideDirection rideDirection,
+		                               byte weekDays,
+		                               DateTime startDate,
+		                               DateTime endDate,
+		                               List<AddStopDto>? stops,
+		                               byte seatsLimit)
 		{
 			OwnerId = ownerId;
 			ParticipantsIds = participantsIds;
@@ -49,6 +49,7 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 			Stops = stops;
 			SeatsLimit = seatsLimit;
 		}
+
 		public AppUserId OwnerId { get; }
 		public List<AppUserId>? ParticipantsIds { get; }
 		public GroupId GroupId { get; }
@@ -59,10 +60,10 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 		public Location Location { get; }
 		public RideDirection RideDirection { get; }
 		public byte WeekDays { get; }
-		public List<Stop>? Stops { get; }
+		public List<AddStopDto>? Stops { get; }
 		public byte SeatsLimit { get; }
 	}
-	
+
 	public class AddRecurringRideCommandHandler : IRequestHandler<AddRecurringRideCommand, IReadOnlyCollection<RideId>>
 	{
 		private readonly IRideRepository _rideRepository;
@@ -75,17 +76,18 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 		}
 
 		public async Task<IReadOnlyCollection<RideId>> Handle(AddRecurringRideCommand request,
-			CancellationToken cancellationToken)
+		                                                      CancellationToken cancellationToken)
 		{
 			var weekDays = WeekDay.GetDays(request.WeekDays);
 			var startDate = request.StartDate;
-			
+
 			var dates = Enumerable
-				.Range(0, int.MaxValue)
-				.Where(index => weekDays.Contains(startDate.AddDays(index).DayOfWeek))
-				.Select(index => startDate.AddDays(index))
-				.TakeWhile(date => date <= request.EndDate)
-				.ToList();
+			            .Range(0, int.MaxValue)
+			            .Where(index => weekDays.Contains(startDate.AddDays(index).DayOfWeek))
+			            .Select(index => startDate.AddDays(index))
+			            .TakeWhile(date => date <= request.EndDate)
+			            .ToList();
+
 			List<Ride> rides = new();
 			IdGenerator rideIdGenerator = new(IdGeneratorType.Ride);
 
@@ -93,38 +95,37 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 			var recurringRideId = recurringRideIdGenerator.CreateId();
 			var ids = rideIdGenerator.Take(dates.Count);
 			var i = 0;
-			foreach(var date in dates)
-			{
+			foreach (var date in dates)
 				try
 				{
 					var dateTime = new DateTime(date.Year, date.Month, date.Day, request.RideTime.Hours,
 						request.RideTime.Minutes, 0);
+
 					if (request.Location == null)
 						throw new ApiException("xd");
-					var ride = new Ride(new(ids.ElementAt(i)),
-							request.OwnerId,
+
+					var ride = new Ride(new RideId(ids.ElementAt(i)),
+						request.OwnerId,
 						request.GroupId,
 						dateTime,
 						request.Price,
 						new Location(request.Location.Longitude, request.Location.Latitude),
 						request.RideDirection,
-						request.Stops ?? new List<Stop>(),
-							request.SeatsLimit);
+						request.Stops?.Select(x => new Stop(x.ParticipantId,
+							       new Location(x.Location.Longitude, x.Location.Latitude),
+							       new RideId(ids.ElementAt(i))))
+						       .ToList() ?? new List<Stop>(),
+						request.SeatsLimit);
+
 					await _rideRepository.AddAsync(ride, cancellationToken);
-					if (request.ParticipantsIds != null)
-						ride.Participants = request.ParticipantsIds.Select(x =>
-							{
-								AppUserId userId = new(x.Value);
-								return new UserParticipatedRide(userId, ride.Id);
-							})
-							.ToList();
+
 					i++;
 				}
 				catch (Exception ex)
 				{
 					throw new ApiException(ex.InnerException);
 				}
-			}
+
 			try
 			{
 				await _unitOfWork.SaveAsync(cancellationToken);
@@ -133,6 +134,7 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 			{
 				throw new ApiException(ex.InnerException);
 			}
+
 			return rides.Select(x => x.Id).ToImmutableList();
 		}
 	}
@@ -147,53 +149,53 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 		public static byte Friday => 16;
 		public static byte Saturday => 32;
 		public static byte Sunday => 64;
-		
+
 		public static List<DayOfWeek> GetDays(byte weekDays)
 		{
-			List<DayOfWeek> dayOfWeeks = new List<DayOfWeek>();
-			if (weekDays - WeekDay.Sunday >= 0)
+			List<DayOfWeek> dayOfWeeks = new();
+			if (weekDays - Sunday >= 0)
 			{
-				weekDays -= WeekDay.Sunday;
+				weekDays -= Sunday;
 				dayOfWeeks.Add(DayOfWeek.Sunday);
 			}
 
-			if (weekDays - WeekDay.Saturday >= 0)
+			if (weekDays - Saturday >= 0)
 			{
-				weekDays -= WeekDay.Saturday;
+				weekDays -= Saturday;
 				dayOfWeeks.Add(DayOfWeek.Saturday);
 			}
 
-			if (weekDays - WeekDay.Friday >= 0)
+			if (weekDays - Friday >= 0)
 			{
-				weekDays -= WeekDay.Friday;
+				weekDays -= Friday;
 				dayOfWeeks.Add(DayOfWeek.Friday);
-			}			
-			
-			if (weekDays - WeekDay.Thursday >= 0)
+			}
+
+			if (weekDays - Thursday >= 0)
 			{
-				weekDays -= WeekDay.Thursday;
+				weekDays -= Thursday;
 				dayOfWeeks.Add(DayOfWeek.Thursday);
-			}			
-			
-			if (weekDays - WeekDay.Wednesday >= 0)
+			}
+
+			if (weekDays - Wednesday >= 0)
 			{
-				weekDays -= WeekDay.Wednesday;
+				weekDays -= Wednesday;
 				dayOfWeeks.Add(DayOfWeek.Wednesday);
-			}	
-			
-			if (weekDays - WeekDay.Tuesday >= 0)
+			}
+
+			if (weekDays - Tuesday >= 0)
 			{
-				weekDays -= WeekDay.Tuesday;
+				weekDays -= Tuesday;
 				dayOfWeeks.Add(DayOfWeek.Tuesday);
-			}	
-			
-			if (weekDays - WeekDay.Monday >= 0)
+			}
+
+			if (weekDays - Monday >= 0)
 			{
-				weekDays -= WeekDay.Monday;
+				weekDays -= Monday;
 				dayOfWeeks.Add(DayOfWeek.Monday);
 			}
 
 			return dayOfWeeks;
-		}	
+		}
 	}
 }
