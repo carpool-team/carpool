@@ -121,6 +121,8 @@ namespace AuthServer
 
 			app.UseHttpsRedirection();
 
+			app.UseApiResponseAndExceptionWrapper();
+
 			app.UseRouting();
 			
 			app.UseCors(x =>
@@ -130,8 +132,6 @@ namespace AuthServer
 					.SetIsOriginAllowed(origin => true); // allow any origin
 			});
 			
-			app.UseApiResponseAndExceptionWrapper();
-
 			app.UseStaticFiles();
 
 			app.UseAuthentication();

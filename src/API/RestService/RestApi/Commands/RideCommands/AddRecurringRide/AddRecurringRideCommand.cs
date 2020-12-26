@@ -87,8 +87,11 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 				.TakeWhile(date => date <= request.EndDate)
 				.ToList();
 			List<Ride> rides = new();
-			IdGenerator idGenerator = new(IdGeneratorType.Ride);
-			var ids = idGenerator.Take(dates.Count);
+			IdGenerator rideIdGenerator = new(IdGeneratorType.Ride);
+
+			IdGenerator recurringRideIdGenerator = new(IdGeneratorType.RecurringRide);
+			var recurringRideId = recurringRideIdGenerator.CreateId();
+			var ids = rideIdGenerator.Take(dates.Count);
 			var i = 0;
 			foreach(var date in dates)
 			{

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace AuthServer.Models
 {
@@ -13,6 +14,7 @@ namespace AuthServer.Models
 			Password = password;
 		}
 
+		[EmailAddress]
 		public string Email { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }

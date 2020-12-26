@@ -63,4 +63,12 @@ namespace IdentifiersShared.Converters
 				value => new RideRequestId(value),
 				mappingHints) { }
 	}
+	
+	public class RecurringRideIdValueConverter : ValueConverter<RecurringRideId, long>
+	{
+		public RecurringRideIdValueConverter(ConverterMappingHints mappingHints = null)
+			: base(id => id.Value,
+				value => new RecurringRideId(value),
+				mappingHints) { }
+	}
 }

@@ -7,5 +7,6 @@
         public static int Group => 2;
         public static int GroupInvite => 3;
         public static int RideRequest => 4;
+        public static int RecurringRide => 5;
     }
 }

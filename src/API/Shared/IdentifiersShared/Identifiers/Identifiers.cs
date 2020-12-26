@@ -15,4 +15,6 @@
 	public sealed record IdentityUserId(string Value) : StronglyTypedId<string>(Value);
 
 	public sealed record RideRequestId(long Value) : StronglyTypedId<long>(Value);
+
+	public sealed record RecurringRideId(long Value) : StronglyTypedId<long>(Value);
 }
