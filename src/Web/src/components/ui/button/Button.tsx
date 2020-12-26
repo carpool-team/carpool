@@ -15,6 +15,8 @@ interface IButtonLinkProps {
 	className?: string;
 	style?: React.CSSProperties;
 	additionalCssClass?: string;
+	type?: "submit" | "reset" | "button";
+	buttonRef?: React.LegacyRef<HTMLButtonElement>;
 }
 
 const Button: FunctionComponent<IButtonLinkProps> = (props) => {
@@ -40,7 +42,14 @@ const Button: FunctionComponent<IButtonLinkProps> = (props) => {
 	}
 
 	return (
-		<button id={props.id} style={props.style} className={cssClasses.join(" ")} onClick={btnClick}>
+		<button
+			id={props.id}
+			style={props.style}
+			className={cssClasses.join(" ")}
+			onClick={btnClick}
+			type={props.type}
+			ref={props.buttonRef}
+		>
 			{props.children}
 		</button>
 	);
