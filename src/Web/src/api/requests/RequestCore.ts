@@ -47,10 +47,11 @@ export default abstract class RequestCore {
 				if (res.ok) {
 					return res.json() as Promise<R>;
 				} else {
-					console.log("Something went wrong");
+					console.log("Something went wrong...");
+					return res.json() as Promise<R>;
 				}
 			}).then(res2 => {
-				console.log("Response: ", url, res2);
+				console.log("Response for url " + url + " -> ", res2);
 				return res2 as R;
 			});
 	}

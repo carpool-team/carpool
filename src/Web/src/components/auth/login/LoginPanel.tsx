@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -20,8 +20,7 @@ import {
 	mapDispatchToProps,
 } from "../store/PropsTypes";
 import { useImmer } from "use-immer";
-import { FormControlClassKey } from "@material-ui/core";
-import { Event } from "react-toastify/dist/core";
+import useCallbackRef from "../../../hooks/UseRefWithCallback";
 
 interface ILoginPanelProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps { }
 
@@ -40,40 +39,46 @@ const LoginPanel = (props: ILoginPanelProps) => {
 		email: false,
 		password: false
 	});
-	const [submitted, setSubmitted] = useState(false);
+	const [validate, setValidate] = useState(false);
+	const btnRef = useRef<HTMLButtonElement>(null);
 
-	const trySendForm = () => {
+	useEffect(() => {
+		const onEnter = (event: KeyboardEvent) => {
+			if (event.key.toLowerCase() === "enter") {
+				console.log(event);
+				btnRef.current.click();
+			}
+		};
+		document.addEventListener("keydown", onEnter);
+		return () => {
+			document.removeEventListener("keydown", onEnter);
+		};
+	}, []);
+
+	const validateForm = () => {
+		let isFormValid: boolean = true;
 		if (each(inputsValid, i => i)) {
+			isFormValid = true;
+			setValidate(false);
+		} else {
+			isFormValid = false;
+			setValidate(true);
+		}
+		return isFormValid;
+	};
+
+	const onClickSubmit = () => {
+		if (validateForm()) {
+			console.log(" s;ubmiting");
 			const data: ILoginFormData = {
 				password,
 				email,
 				rememberLogin
 			};
-			props.setLoaderVisible(true);
 			props.login(data);
-		} else {
-			setSubmitted(false);
+			props.setLoaderVisible(true);
 		}
 	};
-
-	const enterFunction = (event) => {
-		if (event.keyCode === 13) {
-			setSubmitted(true);
-		}
-	};
-
-	useEffect(() => {
-		document.addEventListener("keydown", enterFunction, false);
-		return () => {
-			document.removeEventListener("keydown", enterFunction, false);
-		};
-	}, []);
-
-	useEffect(() => {
-		if (submitted) {
-			trySendForm();
-		}
-	}, [submitted, inputsValid]);
 
 	const cssClasses = {
 		container: "auth__container",
@@ -96,10 +101,6 @@ const LoginPanel = (props: ILoginPanelProps) => {
 		rememberPassword: "rememberPassword",
 	};
 
-	const onClickSubmit = () => {
-		setSubmitted(true);
-	};
-
 	return (
 		<div className={cssClasses.container}>
 			<div className={cssClasses.image}>
@@ -119,7 +120,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 									draft.email = isValid;
 								});
 							},
-							validate: submitted
+							validate
 						}}
 					/>
 					<Input
@@ -135,7 +136,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 									draft.password = isValid;
 								});
 							},
-							validate: submitted
+							validate
 						}}
 					/>
 					{/* Temporarily disable "remember me" checkobx until handled */}
@@ -153,6 +154,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						onClick={onClickSubmit}
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}
+						buttonRef={btnRef}
 					>
 						{t(resources.submit)}
 					</Button>

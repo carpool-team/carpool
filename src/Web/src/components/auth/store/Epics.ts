@@ -76,14 +76,13 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 		ofType(LoginActionTypes.Login),
 		switchMap(async (action: ILoginAction) => {
 			const request: LoginRequest = new LoginRequest({
-				body: {
-					...action.data,
-				}
+				body: { ...action.data, }
 			});
 			try {
 				const response: LoginResponse = await request.send();
 				return response;
-			} catch {
+			} catch (err) {
+				console.log(err);
 				return undefined;
 			}
 		}),
@@ -125,15 +124,15 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 				];
 			}
 		}),
-		catchError((err: Error) =>
-			of(<any>{
+		catchError((err: Error) => {
+			return of(<any>{
 				type: LoginActionTypes.LoginError,
 				error: err,
-			})
-		)
+			});
+		})
 	);
 
 export const authEpics = [
 	registerEpic,
-	loginEpic
+	loginEpic,
 ];
