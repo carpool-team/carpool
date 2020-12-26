@@ -34,6 +34,15 @@ const ListItem = ({item}) => {
 
   const onReject = () => {
     setRejectLoading(true);
+    dispatch(actions.rejectRideRequest(item.rideRequestId))
+      .then(() => {
+        console.log('SUCCESS');
+        navigation.navigate('RidesStack');
+      })
+      .catch(err => {
+        console.log('ERROR');
+        setAcceptLoading(false);
+      });
   };
 
   const disabled = acceptLoading || rejectLoading;
