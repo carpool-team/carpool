@@ -1,8 +1,9 @@
 import React from 'react';
-import {sheet} from '../../../../styles';
+import {sheet, colors} from '../../../../styles';
 import UpView from '../../UpView';
+import {ActivityIndicator} from 'react-native';
 
-const CircleButton = ({style, icon, onPress, size = 64}) => (
+const CircleButton = ({style, icon, onPress, size = 64, loading, disabled}) => (
   <UpView
     style={{
       width: size,
@@ -11,8 +12,8 @@ const CircleButton = ({style, icon, onPress, size = 64}) => (
     }}
     contentContainerStyle={sheet.center}
     borderRadius={9999}
-    onPress={onPress}>
-    {icon}
+    onPress={loading || disabled ? undefined : onPress}>
+    {loading ? <ActivityIndicator size="small" color={colors.blue} /> : icon}
   </UpView>
 );
 

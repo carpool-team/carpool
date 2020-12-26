@@ -5,6 +5,7 @@ const initialState = {
   activeAccount: 'passenger',
   groups: initialStoreItem,
   invitations: initialStoreItem,
+  user: initialStoreItem,
 };
 
 const reducer = (state = initialState, action) => {
@@ -60,6 +61,30 @@ const reducer = (state = initialState, action) => {
         ...state,
         invitations: {
           ...state.invitations,
+          loading: true,
+        },
+      };
+    case actions.GetUser.Success:
+      return {
+        ...state,
+        user: {
+          ...initialStoreItem,
+          data: action.payload,
+        },
+      };
+    case actions.GetUser.Error:
+      return {
+        ...state,
+        user: {
+          ...initialStoreItem,
+          error: action.payload,
+        },
+      };
+    case actions.GetUser.Loading:
+      return {
+        ...state,
+        user: {
+          ...state.user,
           loading: true,
         },
       };

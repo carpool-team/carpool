@@ -24,6 +24,7 @@ export interface IInputBaseProps {
 	validation?: IValidation;
 	addressCords?: (cords: [number, number]) => void;
 	cssProps?: React.CSSProperties;
+	disabled?: boolean;
 }
 interface IInputProps extends IInputBaseProps, IReactI18nProps {
 }
@@ -109,9 +110,11 @@ const Input = (props: IInputProps) => {
 			setAutocompleteList(null);
 			setIsAutoCompleted(false);
 		}
-	}, [props.value])
+	}, [props.value]);
 
 	const inputBaseClassName: string = "input__input";
+	const inputDisabledClassName: string = "input__input--disabled";
+	const inputDisabledContainerClassName: string = "input__container--disabled";
 	const inputInvalidClassName: string = "input__input--invalid";
 	const inputInvalidContainerClassName: string = "input__container--invalid";
 	const inputInvalidTextClassName: string = "input__invalidText";
@@ -125,10 +128,12 @@ const Input = (props: IInputProps) => {
 	const checkboxBoxClassName: string = "input__checkbox--box";
 
 	const generalChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		if (props.type === InputType.Checkbox) {
-			props.changeHandler(String(event.target.checked));
-		} else {
-			props.changeHandler(event.target.value);
+		if (!props.disabled) {
+			if (props.type === InputType.Checkbox) {
+				props.changeHandler(String(event.target.checked));
+			} else {
+				props.changeHandler(event.target.value);
+			}
 		}
 	};
 
@@ -140,6 +145,10 @@ const Input = (props: IInputProps) => {
 	}
 	if (autocompleteList !== null) {
 		baseContainerClasses = [inputAddressContainerClassName];
+	}
+	if (props.disabled) {
+		baseContainerClasses.push(inputDisabledContainerClassName);
+		baseInputClasses.push(inputDisabledClassName);
 	}
 
 	const onAutocompleteName = async (text: string) => {
@@ -249,6 +258,7 @@ const Input = (props: IInputProps) => {
 					onChange={generalChangeHandler}
 					value={props.value}
 					style={props.cssProps}
+					disabled={props.disabled}
 				/>
 			</div>
 			{renderValidationMessage()}
@@ -265,6 +275,7 @@ const Input = (props: IInputProps) => {
 					onChange={generalChangeHandler}
 					value={props.value}
 					type={"password"}
+					disabled={props.disabled}
 				/>
 			</div>
 			{renderValidationMessage()}
@@ -282,6 +293,7 @@ const Input = (props: IInputProps) => {
 					value={props.value}
 					onBlur={submitAddressFocusOut}
 					onKeyPress={submitAdressEnter}
+					disabled={props.disabled}
 				/>
 			</div>
 			{renderAutocompleteAddress()}
@@ -298,6 +310,7 @@ const Input = (props: IInputProps) => {
 				value={props.value}
 				type={"checkbox"}
 				id={props.label?.inputId}
+				disabled={props.disabled}
 			/>
 			{props.label ? (
 				<span id={props.label.inputId}>{props.label.text}</span>

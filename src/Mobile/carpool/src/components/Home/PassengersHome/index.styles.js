@@ -1,0 +1,42 @@
+import {StyleSheet} from 'react-native';
+import {sheet, colors} from '../../../styles';
+
+export const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    width: '100%',
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  topRow: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: 8,
+  },
+  title: {
+    ...sheet.textMedium,
+    color: colors.grayVeryDark,
+    fontSize: 20,
+    paddingVertical: 8,
+  },
+  seeAll: {
+    ...sheet.textMedium,
+    color: colors.blue,
+    fontSize: 16,
+  },
+  loadingWrapper: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  flexed: {
+    width: '100%',
+    flex: 1,
+  },
+});

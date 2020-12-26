@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, Text} from 'react-native';
+import {View, Text} from 'react-native';
 import StandardInput from '../../../../../components/common/inputs/StandardInput';
 import {colors} from '../../../../../styles';
 import {useFormik} from 'formik';
@@ -32,7 +32,7 @@ const PasswordSection = ({onSubmtiPassword, initialValues}) => {
   });
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollView}>
+    <View style={styles.container}>
       <StandardInput
         autoFocus
         returnKeyType="next"
@@ -69,7 +69,7 @@ const PasswordSection = ({onSubmtiPassword, initialValues}) => {
         title="Sign up"
         style={styles.button}
       />
-    </ScrollView>
+    </View>
   );
 };
 

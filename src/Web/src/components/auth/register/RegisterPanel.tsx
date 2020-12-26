@@ -10,7 +10,7 @@ import { ButtonColor } from "../../ui/button/enums/ButtonColor";
 import { InputIcon } from "../../ui/input/enums/InputIcon";
 import { InputType } from "../../ui/input/enums/InputType";
 import Input from "../../ui/input/Input";
-import usePassword from "./hooks/PasswordInput";
+import usePassword from "../../ui/hooks/PasswordInput";
 import { ValidationType } from "../../ui/input/enums/ValidationType";
 import { each } from "../../../helpers/UniversalHelper";
 import {

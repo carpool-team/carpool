@@ -10,10 +10,11 @@ const styles = StyleSheet.create({
   },
   title: {
     ...sheet.textMedium,
-    color: colors.grayVeryDark,
+    color: colors.grayDark,
     textTransform: 'uppercase',
     fontSize: 16,
     marginBottom: 75,
+    lineHeight: 25,
   },
 });
 

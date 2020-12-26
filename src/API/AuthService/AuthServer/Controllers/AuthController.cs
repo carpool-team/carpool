@@ -82,7 +82,7 @@ namespace AuthServer.Controllers
 		public async Task<ApiResponse> Login([FromBody] LoginModel model)
 		{
 			if (!ModelState.IsValid)
-				throw new ApiException(ModelState.AllErrors());
+				throw new ApiException(ModelState.AllErrors(), StatusCodes.Status401Unauthorized);
 			try
 			{
 				var result = await _signInManager.PasswordSignInAsync(model.Email,
@@ -93,15 +93,13 @@ namespace AuthServer.Controllers
 				{
 					ModelState.AddModelError(string.Empty, "Invalid email or password");
 
-					throw new ApiException(ModelState);
+					throw new ApiProblemDetailsException(ModelState, StatusCodes.Status401Unauthorized);
 				}
 			}
 			catch (Exception ex)
 			{
 				throw new ApiException(ex);
 			}
-
-
 
 			var user = await _userManager.FindByNameAsync(model.Email);
 
@@ -130,9 +128,9 @@ namespace AuthServer.Controllers
 		}
 
 		[HttpPost("refresh-token")]
-		public async Task<ApiResponse> RefreshToken([FromBody] string refreshToken)
+		public async Task<ApiResponse> RefreshToken([FromBody] RefreshTokenModel refreshToken)
 		{
-			var refreshTokenBytes = Convert.FromBase64String(refreshToken);
+			var refreshTokenBytes = Convert.FromBase64String(refreshToken.Value);
 
 			var deserializedRefreshToken =
 				JsonConvert.DeserializeObject<RefreshToken>(Encoding.ASCII.GetString(refreshTokenBytes));

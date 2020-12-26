@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text, ActivityIndicator} from 'react-native';
 import UpView from '../../UpView';
 import {colors, sheet} from '../../../../styles';
 
@@ -11,6 +11,8 @@ const StandardButton = ({
   style,
   onPress,
   backgroundColor,
+  disabled,
+  loading,
 }) => {
   let contentContainerStyle = {...sheet.center};
 
@@ -23,10 +25,20 @@ const StandardButton = ({
       style={{width, height, ...style}}
       borderRadius={100}
       contentContainerStyle={contentContainerStyle}
-      onPress={onPress}>
-      <Text style={{color, fontSize: 0.33 * height, ...sheet.textBold}}>
-        {title}
-      </Text>
+      onPress={disabled || loading ? undefined : onPress}>
+      {loading ? (
+        <ActivityIndicator color={color} size="small" />
+      ) : (
+        <Text
+          style={{
+            color,
+            fontSize: 0.33 * height,
+            opacity: disabled ? 0.3 : 1,
+            ...sheet.textBold,
+          }}>
+          {title}
+        </Text>
+      )}
     </UpView>
   );
 };
