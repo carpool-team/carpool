@@ -99,6 +99,7 @@ namespace DataAccessLayer.Repositories
 			                     .Include(x => x.Group)
 			                     .ThenInclude(a => a.UserGroups)
 			                     .Include(x => x.Stops)
+			                     .ThenInclude(a => a.Participant)
 			                     .AsNoTracking()
 			                     .Where(x => x.Stops.Any(y => y.ParticipantId == appUserId)
 			                                 && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
@@ -117,6 +118,7 @@ namespace DataAccessLayer.Repositories
 			                     .Include(x => x.Group)
 			                     .ThenInclude(a => a.UserGroups)
 			                     .Include(x => x.Stops)
+			                     .ThenInclude(a => a.Participant)
 			                     .Where(x => x.OwnerId == appUserId
 			                                 && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
 			                     .ToListAsync(cancellationToken);
