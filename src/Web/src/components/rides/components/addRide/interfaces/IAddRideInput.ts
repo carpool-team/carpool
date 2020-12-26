@@ -1,6 +1,6 @@
 import { IRideDays } from "./IRideDays";
-import { ILocation } from "../../../groups/interfaces/ILocation";
-import { RideDirection } from "../../../groups/api/addRide/AddRideRequest";
+import { ILocation } from "../../../../groups/interfaces/ILocation";
+import { RideDirection } from "../../../../groups/api/addRide/AddRideRequest";
 
 export interface IAddRideInput {
 	recurring: boolean;

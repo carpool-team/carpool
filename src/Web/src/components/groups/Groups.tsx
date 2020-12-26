@@ -14,7 +14,6 @@ import {
 import produce from "immer";
 
 import "./Groups.scss";
-import { IAddRideInput } from "../rides/addRide/interfaces/IAddRideInput";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 

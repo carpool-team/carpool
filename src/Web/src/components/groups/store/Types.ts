@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { IAddRideInput } from "../../rides/addRide/interfaces/IAddRideInput";
+import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
