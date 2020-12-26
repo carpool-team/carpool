@@ -9,7 +9,11 @@ const PassengersList = ({ride, onItemPress}) => (
     <Text style={styles.title}>Passengers</Text>
     {ride.stops.length ? (
       ride.stops.map(stop => (
-        <ListItem key={stop.user.id} stop={stop} onItemPress={onItemPress} />
+        <ListItem
+          key={stop.participant.participantId}
+          stop={stop}
+          onItemPress={onItemPress}
+        />
       ))
     ) : (
       <View style={styles.empty}>
