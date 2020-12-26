@@ -6,7 +6,7 @@ import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { IRide } from "components/groups/interfaces/IRide";
 import { RideDirection } from "../groups/api/addRide/AddRideRequest";
 import { parseCoords } from "../../helpers/UniversalHelper";
-import { defaultBounds, getDirectionsClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
+import { getDefaultBounds, getDirectionsClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 2,
@@ -30,7 +30,7 @@ const flyToOptions = {
 
 const defaults = {
 	route: null,
-	fitBounds: defaultBounds,
+	fitBounds: getDefaultBounds(),
 	fromName: null,
 	toName: null,
 };
@@ -120,7 +120,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	private getBounds = (ride: IRide) => {
 		const allCoords = [[ride.location?.longitude, ride.group?.location.longitude], [ride.group?.location.latitude, ride.location?.latitude]];
-		let bbox: [[number, number], [number, number]] = [[16.89, 52.41], [16.89, 52.41]];
+		let bbox: [[number, number], [number, number]] = getDefaultBounds();
 		if (allCoords[0][0] && allCoords[1][1] && allCoords[0][1] && allCoords[1][0]) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);

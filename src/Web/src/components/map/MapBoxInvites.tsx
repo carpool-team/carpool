@@ -5,7 +5,8 @@ import { IInvite } from "../groups/interfaces/IInvite";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
-import { mapboxKey, mapboxStyle } from "./MapBoxHelper";
+import { getDefaultBounds, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
+import { parseCoords } from "../../helpers/UniversalHelper";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 2,
@@ -17,59 +18,108 @@ export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
 	center?: [number, number];
 	zoom?: [number];
-	invite?: IInvite;
 	invites: IInvite[];
+	inviteAddress: string;
 }
 
 const flyToOptions = {
 	speed: 0.8
 };
 
+const defaults = {
+	zoom: undefined as [number],
+	center: undefined as [number, number],
+	inviteAddress: undefined as string,
+	fitBounds: getDefaultBounds(),
+};
 export interface IMapProps {
 	onStyleLoad?: (map: any) => any;
 	getInvitesCallback: () => IInvite[];
+	setSelectedInviteCallback: (invite: IInvite) => void;
+	invite?: IInvite;
 }
-
 export default class MapBoxGroups extends React.Component<IMapProps, IMapState> {
+
+	private currentInviteId: string;
 
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
-			fitBounds: undefined,
 			invites: this.props.getInvitesCallback(),
-			zoom: [11],
-			center: [-0.109970527, 51.52916347],
-			invite: undefined,
+			...defaults,
 		};
+		this.currentInviteId = undefined;
 	}
 
-	componentDidUpdate() {
-		if (this.state.invites !== this.props.getInvitesCallback()) {
-			this.setState(produce((draft: IMapState) => {
-				draft.invites = this.props.getInvitesCallback();
-				draft.fitBounds = this.getBounds(this.props.getInvitesCallback());
-			}));
+	componentDidMount() {
+		const invites: IInvite[] = this.props.getInvitesCallback();
+		if (invites && this.state.invites !== invites) {
+			this.getBounds(invites);
+			this.setState(
+				produce((draft: IMapState) => {
+					draft.invites = invites;
+				})
+			);
 		}
 	}
 
+	componentDidUpdate() {
+		const invites: IInvite[] = this.props.getInvitesCallback()
+		if (invites && this.state.invites !== invites) {
+			this.getBounds(invites);
+			this.setState(produce((draft: IMapState) => {
+				draft.invites = invites;
+			}));
+		}
+
+		if (this.props.invite?.groupInviteId !== this.currentInviteId) {
+			this.currentInviteId = this.props.invite?.groupInviteId;
+			if (this.props.invite) {
+				this.setState(
+					produce((draft: IMapState) => {
+						draft.center = parseCoords(this.props.invite.groupDto.location);
+						draft.zoom = [14];
+					})
+				);
+				onGetName(parseCoords(this.props.invite.groupDto.location)).then(res => {
+					this.setState(
+						produce((draft: IMapState) => {
+							draft.inviteAddress = res
+						})
+					);
+				})
+			} else if (this.state.invites) {
+				this.getBounds(invites)
+			}
+		}
+
+	}
+
 	private getBounds = (invites: IInvite[]) => {
-		// const allCoords = [invites.map(g => g.location.latitude), invites.map(g => g.location.longitude)];
-		const allCoords = [[0], [0]];
-		let bbox: [[number, number], [number, number]] = [[0, 0], [0, 0]];
+		const allCoords = [
+			invites.map((g) => g.groupDto.location.longitude),
+			invites.map((g) => g.groupDto.location.latitude),
+		];
+		let bbox: [[number, number], [number, number]] = getDefaultBounds();
 
 		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
-			bbox[0][1] = Math.min.apply(null, allCoords[0]);
+			bbox[0][0] = Math.min.apply(null, allCoords[0]);
 			bbox[1][0] = Math.max.apply(null, allCoords[0]);
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);
 			bbox[1][1] = Math.max.apply(null, allCoords[1]);
 		}
-
-		return bbox;
+		if (this.state.fitBounds !== bbox) {
+			this.setState(
+				produce((draft: IMapState) => {
+					draft.fitBounds = bbox;
+				})
+			);
+		}
 	}
 
 	private onDrag = () => {
-		if (this.state.invite) {
-			this.setState({ invite: undefined });
+		if (this.props.invite) {
+			this.props.setSelectedInviteCallback(undefined);
 		}
 	}
 
@@ -80,15 +130,15 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	private markerClick = (invite: IInvite) => {
 		this.setState({
-			// center: [invite.location.latitude, invite.location.longitude],
-			center: [0, 0],
+			center: parseCoords(invite.groupDto.location),
 			zoom: [14],
-			invite
 		});
+		this.props.setSelectedInviteCallback(invite);
 	}
 
 	public render() {
-		const { fitBounds, center, zoom, invites, invite } = this.state;
+		const { fitBounds, center, zoom, invites, inviteAddress } = this.state;
+		const { invite } = this.props;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
@@ -98,11 +148,18 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			padding: 100
 		};
 
-		const popupStyle: CSSProperties = {
+		const addressStyle: CSSProperties = {
 			background: "white",
 			color: "gray",
 			fontWeight: 400,
-			border: "2px"
+			border: "2px",
+		};
+		const nameStyle: CSSProperties = {
+			background: "white",
+			color: "gray",
+			fontWeight: 600,
+			border: "2px",
+			fontSize: "17px"
 		};
 
 		let colorIndex = 0;
@@ -132,8 +189,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 						return (
 							<Marker
 								key={g.groupInviteId}
-								// coordinates={[g.location.latitude, g.location.longitude]}
-								coordinates={[0, 0]}
+								coordinates={parseCoords(g.groupDto.location)}
 								anchor="bottom"
 								onClick={this.markerClick.bind(this, g)}
 							>
@@ -143,14 +199,10 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					})}
 
 					{invite && (
-						// <Popup key={invite.id} coordinates={[invite.location.latitude, invite.location.longitude]}>
-						<Popup key={invite.groupInviteId} coordinates={[0, 0]}>
-							<div style={popupStyle}>
-								{invite.groupDto.groupId}
-							</div>
-							<div style={popupStyle}>
-								Od: {invite.invitingUser.appUserId}
-							</div>
+						<Popup key={invite.groupInviteId} coordinates={parseCoords(invite.groupDto.location)}>
+							<div style={nameStyle}>{invite.groupDto.name}</div>
+							<div style={addressStyle}>Od: {invite.invitingUser.firstName + " " + invite.invitingUser.lastName}</div>
+							<div style={addressStyle}>{inviteAddress}</div>
 						</Popup>
 					)}
 				</>

@@ -19,6 +19,7 @@ import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import GroupsList from "./components/GroupsList";
 import InvitesList from "./components/InvitesList";
 import { IGroup } from "../../interfaces/IGroup";
+import { IInvite } from "../../interfaces/IInvite";
 
 enum Lists {
 	Invites = "INVITES",
@@ -33,6 +34,7 @@ interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
 interface IManageScreenState {
 	selectedScreen: Lists;
 	selectedGroup: IGroup;
+	selectedInvite: IInvite;
 }
 
 class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
@@ -61,6 +63,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		super(props);
 		this.state = {
 			selectedGroup: null,
+			selectedInvite: null,
 			selectedScreen: Lists.Groups
 		};
 	}
@@ -76,12 +79,27 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			draft.selectedScreen = list;
 		}));
 	}
+	setCurrentInvite = (invite: IInvite) => {
+		if (this.state.selectedInvite !== invite) {
+			this.setState(
+				produce((draft: IManageScreenState) => {
+					draft.selectedInvite = invite;
+				})
+			);
+		} else {
+			this.setState(
+				produce((draft: IManageScreenState) => {
+					draft.selectedInvite = null;
+				})
+			);
+		}
+	}
 
 	renderInvitesList = () => (
 		<InvitesList
 			answerInviteCallback={this.props.callbacks.answerInvite}
 			getInvitesCallback={this.props.callbacks.getInvites}
-			getGroupsCallback={this.props.callbacks.getGroups}
+			setInviteSelected={this.setCurrentInvite}
 		/>
 	)
 
@@ -102,7 +120,11 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	)
 
 	renderInvitesMap = () => (
-		<MapBoxInvites getInvitesCallback={this.props.callbacks.getInvites} />
+		<MapBoxInvites
+			getInvitesCallback={this.props.callbacks.getInvites}
+			setSelectedInviteCallback={this.setCurrentInvite}
+			invite={this.state.selectedInvite}
+		/>
 	)
 
 	renderLeftPanel = () => {

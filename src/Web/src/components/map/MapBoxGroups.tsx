@@ -6,15 +6,13 @@ import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { parseCoords } from "../../helpers/UniversalHelper";
-import { getGeocodingClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
+import { getDefaultBounds, getGeocodingClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 1,
 	maxZoom: 15,
 	accessToken: mapboxKey,
 });
-const geocodingClient = getGeocodingClient();
-
 export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
 	center?: [number, number];
@@ -31,6 +29,7 @@ const defaults = {
 	zoom: undefined as [number],
 	center: undefined as [number, number],
 	groupAddress: undefined as string,
+	fitBounds: getDefaultBounds(),
 };
 
 export interface IMapProps {
@@ -49,7 +48,6 @@ export default class MapBoxGroups extends React.Component<
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
-			fitBounds: undefined,
 			groups: this.props.getGroupsCallback(),
 			...defaults,
 		};
@@ -58,7 +56,7 @@ export default class MapBoxGroups extends React.Component<
 
 	componentDidMount() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
-		if (groups && this.state.groups?.length !== groups.length) {
+		if (groups && this.state.groups !== groups) {
 			this.getBounds(groups);
 			this.setState(
 				produce((draft: IMapState) => {
@@ -70,7 +68,7 @@ export default class MapBoxGroups extends React.Component<
 
 	componentDidUpdate() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
-		if (groups && this.state.groups?.length !== groups.length) {
+		if (groups && this.state.groups !== groups) {
 			this.getBounds(groups);
 			this.setState(
 				produce((draft: IMapState) => {
@@ -106,10 +104,7 @@ export default class MapBoxGroups extends React.Component<
 			groups.map((g) => g.location.longitude),
 			groups.map((g) => g.location.latitude),
 		];
-		let bbox: [[number, number], [number, number]] = [
-			[0, 0],
-			[0, 0],
-		];
+		let bbox: [[number, number], [number, number]] = getDefaultBounds();
 
 		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
