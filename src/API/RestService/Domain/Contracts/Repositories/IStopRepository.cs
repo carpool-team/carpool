@@ -9,5 +9,6 @@ namespace Domain.Contracts.Repositories
 	public interface IStopRepository
 	{
 		Task<List<Stop>> GetStopsByRideId(RideId rideId, CancellationToken cancellationToken);
+		Task AddStopToRideAsync(Stop stop, CancellationToken cancellationToken = default);
 	}
 }
