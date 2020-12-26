@@ -1,14 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, RefreshControl} from 'react-native';
+import {
+  ScrollView,
+  RefreshControl,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import WeekPicker from '../WeekPicker';
 import {getDates} from '../../../utils/date';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
 import {useNavigation} from '@react-navigation/native';
-import {colors} from '../../../styles';
+import {colors, sheet} from '../../../styles';
 import WeekRidesList from '../WeekRidesList';
 import {styles} from './index.styles';
 import {useActiveAccount} from '../../../hooks';
+import PastRides from '../PastRides';
 
 const Rides = () => {
   const navigation = useNavigation();
@@ -47,9 +54,9 @@ const Rides = () => {
 
   const onItemPress = ride => {
     if (isPassenger) {
-      navigation.navigate('PassengersRideDetails', {ride, past: false});
+      navigation.push('PassengersRideDetails', {ride, past: false});
     } else {
-      navigation.navigate('DriversRideDetails', {ride, past: false});
+      navigation.push('DriversRideDetails', {ride, past: false});
     }
   };
 
@@ -57,32 +64,43 @@ const Rides = () => {
 
   const onDecrement = () => setOffset(offset => offset - 1);
 
+  const onRideRequestsPress = () => navigation.navigate('RideRequests');
+
   return (
     <>
+      <View style={styles.topRow}>
+        <TouchableOpacity onPress={onRideRequestsPress}>
+          <Text style={styles.rideRequests}>Ride requests</Text>
+        </TouchableOpacity>
+      </View>
       <WeekPicker
         onDecrement={onDecrement}
         onIncrement={onIncrement}
         dateRange={dateRange}
         offset={offset}
       />
-      <ScrollView
-        style={styles.scrollView}
-        refreshControl={
-          <RefreshControl
-            onRefresh={onRefreshRides}
-            colors={[colors.blue]}
-            refreshing={
-              isPassenger ? passengersRides.loading : driversRides.loading
-            }
-            tintColor={colors.blue}
+      {offset > -1 ? (
+        <ScrollView
+          style={styles.scrollView}
+          refreshControl={
+            <RefreshControl
+              onRefresh={onRefreshRides}
+              colors={[colors.blue]}
+              refreshing={
+                isPassenger ? passengersRides.loading : driversRides.loading
+              }
+              tintColor={colors.blue}
+            />
+          }>
+          <WeekRidesList
+            weekDays={weekDays}
+            rides={isPassenger ? passengersRides.data : driversRides.data}
+            onItemPress={onItemPress}
           />
-        }>
-        <WeekRidesList
-          weekDays={weekDays}
-          rides={isPassenger ? passengersRides.data : driversRides.data}
-          onItemPress={onItemPress}
-        />
-      </ScrollView>
+        </ScrollView>
+      ) : (
+        <PastRides />
+      )}
     </>
   );
 };

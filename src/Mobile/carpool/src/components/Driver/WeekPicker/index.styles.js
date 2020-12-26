@@ -18,4 +18,23 @@ export const styles = StyleSheet.create({
     color: colors.grayVeryDark,
     fontSize: 18,
   },
+  past: {
+    ...sheet.textMedium,
+    color: colors.blue,
+    fontSize: 16,
+    paddingHorizontal: 15,
+  },
+  flexLeft: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  flexRight: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  pastRides: {
+    ...sheet.textSemiBold,
+    color: colors.orange,
+    fontSize: 18,
+  },
 });

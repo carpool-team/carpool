@@ -8,17 +8,22 @@ import { IAuthState } from "../components/auth/store/State";
 import { authEpics } from "../components/auth/store/Epics";
 import { ILayoutState } from "../components/layout/store/State";
 import { layoutReducer } from "../components/layout/store/Reducers";
+import { userProfileReducer } from "../components/userProfile/store/Reducers";
+import { IUserProfileState } from "../components/userProfile/store/State";
+import { userProfileEpics } from "../components/userProfile/store/Epics";
 
 export type RootReducerType = {
 	groups: Reducer<IGroupsState>,
 	auth: Reducer<IAuthState>,
 	layout: Reducer<ILayoutState>,
+	userProfile: Reducer<IUserProfileState>,
 };
 
 export const rootReducer: RootReducerType = {
 	groups: groupsReducer,
 	auth: authReducer,
 	layout: layoutReducer,
+	userProfile: userProfileReducer,
 };
 
 export function getMainReduxModule(): IEpicModule<any> {
@@ -27,7 +32,8 @@ export function getMainReduxModule(): IEpicModule<any> {
 		reducerMap: rootReducer,
 		epics: [
 			...groupEpics,
-			...authEpics
+			...authEpics,
+			...userProfileEpics,
 		]
 	};
 }
@@ -38,4 +44,5 @@ export type AppState = {
 	groups: IGroupsState;
 	auth: IAuthState;
 	layout: ILayoutState;
+	userProfile: IUserProfileState;
 };

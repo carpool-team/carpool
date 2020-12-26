@@ -5,5 +5,6 @@ export enum ButtonBackground {
 	Green,
 	Blue,
 	White,
-	GrayDark
+	GrayDark,
+	Red
 }

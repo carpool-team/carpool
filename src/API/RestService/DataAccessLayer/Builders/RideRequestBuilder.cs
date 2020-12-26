@@ -32,6 +32,8 @@ namespace DataAccessLayer.Builders
 			builder.HasOne(x => x.Ride)
 				.WithMany()
 				.HasForeignKey(x => x.RideId);
+
+			builder.OwnsOne(x => x.Location);
 		}
 	}
 }

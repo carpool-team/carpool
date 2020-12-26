@@ -53,12 +53,12 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPut("{appUserId}")]
-		public async Task<ApiResponse> PutUser([FromRoute] AppUserId userId, [FromBody] UpdateUserDto model)
+		public async Task<ApiResponse> PutUser([FromRoute] AppUserId appUserId, [FromBody] UpdateUserDto model)
 		{
-			if (userId != User.GetUserId())
-				throw new ApiException(StatusCodes.Status403Forbidden);
+			// if (appUserId != User.GetUserId())
+			// 	throw new ApiException(StatusCodes.Status403Forbidden);
 			
-			UpdateUserCommand request = new(userId,
+			UpdateUserCommand request = new(appUserId,
 				model.FirstName,
 				model.LastName,
 				model.Email);
@@ -69,7 +69,6 @@ namespace RestApi.Controllers
 		}
 
 		[HttpPost]
-		[AllowAnonymous]
 		public async Task<ApiResponse> PostUser([FromBody] AddUserDto model)
 		{
 			AddUserCommand addUser = new(new AppUserId(model.AppUserId.Value),
@@ -83,9 +82,10 @@ namespace RestApi.Controllers
 		[HttpDelete("{appUserId}")]
 		public async Task<ApiResponse> DeleteUser([FromRoute] AppUserId appUserId)
 		{
-			var tokenUserId = User.GetUserId();
-			if (tokenUserId != appUserId)
-				throw new ApiException("User does not have permissions to delete other user", StatusCodes.Status403Forbidden);
+			// TODO: Identity provider authentication
+			// var tokenUserId = User.GetUserId();
+			// if (tokenUserId != appUserId)
+			// 	throw new ApiException("User does not have permissions to delete other user", StatusCodes.Status403Forbidden);
 			var request = new DeleteUserCommand(appUserId);
 
 			var response = await _mediator.Send(request).ConfigureAwait(false);

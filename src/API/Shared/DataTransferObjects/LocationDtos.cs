@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace DataTransferObjects
 {
-    public record LocationDto([property: JsonProperty("longitude")]double longitude,
-        [property: JsonProperty("latitude")]double latitude);
+    public record LocationDto([property: JsonProperty("longitude")]double Longitude,
+        [property: JsonProperty("latitude")]double Latitude);
 }

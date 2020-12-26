@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../../styles';
 
 export const styles = StyleSheet.create({
-  scrollView: {
+  container: {
     alignItems: 'center',
     marginVertical: 20,
     paddingHorizontal: 32,

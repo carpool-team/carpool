@@ -26,6 +26,7 @@ namespace DataAccessLayer.DatabaseContexts
 			modelBuilder.UseValueConverter(new StopIdValueConverter());
 			modelBuilder.UseValueConverter(new VehicleIdValueConverter());
 			modelBuilder.UseValueConverter(new RideRequestIdValueConverter());
+			modelBuilder.UseValueConverter(new RecurringRideIdValueConverter());
 		}
 
 		#region Intersections

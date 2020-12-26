@@ -17,6 +17,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using RestApi.DTOs.Stop;
 
 namespace RestApi.Commands.RideCommands
 {
@@ -24,25 +25,23 @@ namespace RestApi.Commands.RideCommands
 	{
 		[JsonConstructor]
 		public AddRideCommand(AppUserId ownerId,
-			List<AppUserId>? participantsIds,
 			GroupId groupId,
 			DateTime date,
 			double price,
 			Location location,
 			RideDirection rideDirection,
-			List<Stop>? stops,
+			List<AddStopDto>? stops,
 			byte seatsLimit)
-			=> (OwnerId, ParticipantsIds, GroupId, Date, Price, Location, RideDirection, Stops, SeatsLimit)
-				= (ownerId, participantsIds, groupId, date, price, location, rideDirection, stops, seatsLimit);
+			=> (OwnerId, GroupId, Date, Price, Location, RideDirection, Stops, SeatsLimit)
+				= (ownerId, groupId, date, price, location, rideDirection, stops, seatsLimit);
 
 		public AppUserId OwnerId { get; }
-		public List<AppUserId>? ParticipantsIds { get; }
 		public GroupId GroupId { get; }
 		public DateTime Date { get; }
 		public double Price { get; }
 		public Location Location { get; }
 		public RideDirection RideDirection { get; }
-		public List<Stop>? Stops { get; }
+		public List<AddStopDto>? Stops { get; }
 		public byte SeatsLimit { get; }
 	}
 
@@ -59,9 +58,10 @@ namespace RestApi.Commands.RideCommands
 
 		public async Task<Ride> Handle(AddRideCommand request, CancellationToken cancellationToken)
 		{
-			IdGenerator idGenerator = new(IdGeneratorType.Ride);
-			var id = idGenerator.CreateId();
-			var ride = new Ride(new RideId(id),
+			IdGenerator rideIdGenerator = new(IdGeneratorType.Ride);
+			var rideId = rideIdGenerator.CreateId();
+			
+			var ride = new Ride(new RideId(rideId),
 				request.OwnerId,
 				request.GroupId,
 				request.Date,
@@ -69,18 +69,14 @@ namespace RestApi.Commands.RideCommands
 				request.Location
 				?? throw new ApiProblemDetailsException("Ride must have a destination",
 					StatusCodes.Status400BadRequest),
-				request.RideDirection, request.Stops ?? new List<Stop>(),
+				request.RideDirection,
+				request.Stops?.Select(x => new Stop(x.ParticipantId,
+					       new Location(x.Location.Longitude, x.Location.Latitude),
+					       new RideId(rideId)))
+				       .ToList() ?? new List<Stop>(),
 				request.SeatsLimit);
 
 			await _rideRepository.AddAsync(ride, cancellationToken).ConfigureAwait(false);
-
-			if (request.ParticipantsIds != null)
-				ride.Participants = request.ParticipantsIds.Select(x =>
-					{
-						AppUserId userId = new(x.Value);
-						return new UserParticipatedRide(userId, ride.Id);
-					})
-					.ToList();
 
 			try
 			{
