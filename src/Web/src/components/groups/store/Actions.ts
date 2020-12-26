@@ -25,7 +25,7 @@ import {
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
-import { IAddRideInput } from "../../rides/addRide/interfaces/IAddRideInput";
+import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 
 //#region GROUPS
 export function addGroup(group: IGroup): IAddGroupAction {

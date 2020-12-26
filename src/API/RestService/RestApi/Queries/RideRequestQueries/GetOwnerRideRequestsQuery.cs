@@ -36,7 +36,8 @@ namespace RestApi.Queries.RideRequestQueries
 				cancellationToken);
 
 			var rideRequestDtos = rideRequests.Select(x
-					=> new RideRequestDto(new RideRequestRideDto(x.RideId,
+					=> new RideRequestDto(x.Id,
+						new RideRequestRideDto(x.RideId,
 							x.Ride.Date,
 							new LocationDto(x.Ride.Location.Longitude, x.Ride.Location.Latitude),
 							new MinimalGroupDto(x.Ride.GroupId,

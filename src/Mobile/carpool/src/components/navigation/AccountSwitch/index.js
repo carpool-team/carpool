@@ -6,10 +6,16 @@ import {CircleButton} from '../../common/buttons';
 import {styles} from './index.styles';
 import {useActiveAccount} from '../../../hooks';
 
-const activeSize = 36;
-const inactiveSize = 28;
+const activeSize = 28;
+const inactiveSize = 20;
+const activeCircle = 45;
+const inactiveCircle = 32;
+// const activeSize = 36;
+// const inactiveSize = 28;
+// const activeCircle = 64;
+// const inactiveCircle = 48;
 
-const AccountSwitch = () => {
+const AccountSwitch = ({style}) => {
   const {activeAccount, toggleActiveAccount} = useActiveAccount();
 
   const onDriverPress = () => {
@@ -29,32 +35,30 @@ const AccountSwitch = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={sheet.rowCenter}>
-        <CircleButton
-          style={styles.circleButton}
-          size={activeAccount === 'driver' ? 64 : 48}
-          onPress={onDriverPress}
-          icon={
-            <Ionicon
-              name="ios-car"
-              color={colors.grayDark}
-              size={activeAccount === 'driver' ? activeSize : inactiveSize}
-            />
-          }
-        />
-        <CircleButton
-          size={activeAccount === 'passenger' ? 64 : 48}
-          onPress={onPassengerPress}
-          icon={
-            <Ionicon
-              name="md-person"
-              color={colors.grayDark}
-              size={activeAccount === 'passenger' ? activeSize : inactiveSize}
-            />
-          }
-        />
-      </View>
+    <View style={{...sheet.rowCenter, ...style}}>
+      <CircleButton
+        style={styles.circleButton}
+        size={activeAccount === 'driver' ? activeCircle : inactiveCircle}
+        onPress={onDriverPress}
+        icon={
+          <Ionicon
+            name="ios-car"
+            color={colors.grayDark}
+            size={activeAccount === 'driver' ? activeSize : inactiveSize}
+          />
+        }
+      />
+      <CircleButton
+        size={activeAccount === 'passenger' ? activeCircle : inactiveCircle}
+        onPress={onPassengerPress}
+        icon={
+          <Ionicon
+            name="md-person"
+            color={colors.grayDark}
+            size={activeAccount === 'passenger' ? activeSize : inactiveSize}
+          />
+        }
+      />
     </View>
   );
 };

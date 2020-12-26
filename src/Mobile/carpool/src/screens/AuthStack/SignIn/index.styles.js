@@ -2,21 +2,20 @@ import {StyleSheet} from 'react-native';
 import {colors, sheet} from '../../../styles';
 
 export const styles = StyleSheet.create({
-  safeArea: {
+  container: {
     flex: 1,
     width: '100%',
-    backgroundColor: colors.background,
+    alignItems: 'center',
   },
   title: {
     ...sheet.textSemiBold,
-    fontSize: 45,
+    fontSize: 36,
     color: colors.blue,
     alignSelf: 'center',
-    marginVertical: 25,
+    marginVertical: 24,
   },
   scrollView: {
-    alignItems: 'center',
-    marginVertical: 20,
+    marginBottom: 20,
     paddingHorizontal: 32,
   },
   inputWrapper: {

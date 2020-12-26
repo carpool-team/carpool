@@ -1,30 +1,34 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {SignUp, SignIn, ForgotPassword} from '../../../screens/AuthStack';
+import {Header} from '../../../components/navigation';
 
 const Stack = createStackNavigator();
 
 const AuthStack = () => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      header: props => <Header {...props} hideSwitch />,
+    }}>
     <Stack.Screen
       name="SignIn"
       component={SignIn}
       options={{
-        headerTitle: 'Sign in',
+        title: 'Sign in',
       }}
     />
     <Stack.Screen
       name="SignUp"
       component={SignUp}
       options={{
-        headerTitle: 'Sign up',
+        title: 'Sign up',
       }}
     />
     <Stack.Screen
       name="ForgotPassword"
       component={ForgotPassword}
       options={{
-        headerTitle: 'Reset password',
+        title: 'Reset password',
       }}
     />
   </Stack.Navigator>
