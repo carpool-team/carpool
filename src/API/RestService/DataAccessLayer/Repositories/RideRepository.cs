@@ -21,16 +21,21 @@ namespace DataAccessLayer.Repositories
 
 		public async Task<Ride> GetByIdAsync(RideId id, CancellationToken cancellationToken = default)
 		{
-			return await _context.Rides.FirstOrDefaultAsync(ride => ride.Id == id, cancellationToken)
-				.ConfigureAwait(false);
+			return await _context.Rides.Include(x => x.Owner)
+			                     .Include(x => x.Group)
+									.ThenInclude(a => a.UserGroups)
+			                     .Include(x => x.Stops)
+									.ThenInclude(a => a.Participant)
+			                     .FirstOrDefaultAsync(ride => ride.Id == id, cancellationToken)
+			                     .ConfigureAwait(false);
 		}
 
 		public async Task<Ride> GetByIdAsNoTrackingAsync(RideId id,
-			CancellationToken cancellationToken = default)
+		                                                 CancellationToken cancellationToken = default)
 		{
 			return await _context.Rides.AsNoTracking()
-				.FirstOrDefaultAsync(ride => ride.Id == id, cancellationToken)
-				.ConfigureAwait(false);
+			                     .FirstOrDefaultAsync(ride => ride.Id == id, cancellationToken)
+			                     .ConfigureAwait(false);
 		}
 
 		public Ride GetById(RideId id)
@@ -44,64 +49,60 @@ namespace DataAccessLayer.Repositories
 		}
 
 		public async Task<IEnumerable<Ride>> GetPartAsNoTrackingAsync(GroupId groupId,
-			RideDirection rideDirection,
-			DateTime dateTime,
-			CancellationToken cancellationToken)
+		                                                              RideDirection rideDirection,
+		                                                              DateTime dateTime,
+		                                                              CancellationToken cancellationToken)
 			=> await _context.Rides
-				.Include(ride => ride.Stops)
-				.Include(ride => ride.Participants)
-				.Include(ride => ride.Location)
-				.Include(ride => ride.Group)
-				.ThenInclude(group => @group.UserGroups)
-				.Include(ride => ride.Owner)
-				.ThenInclude(owner => owner.Vehicle)
-				.Where(ride => ride.Date.Date == dateTime.Date
-							   && ride.Date.TimeOfDay >= dateTime.TimeOfDay
-							   && ride.GroupId == groupId
-							   && ride.RideDirection == rideDirection)
-				.OrderBy(ride => ride.Date)
-				.ToListAsync(cancellationToken);
+			                 .Include(ride => ride.Stops)
+			                 .Include(ride => ride.Location)
+			                 .Include(ride => ride.Group)
+			                 .ThenInclude(group => group.UserGroups)
+			                 .Include(ride => ride.Owner)
+			                 .ThenInclude(owner => owner.Vehicle)
+			                 .Where(ride => ride.Date.Date == dateTime.Date
+			                                && ride.Date.TimeOfDay >= dateTime.TimeOfDay
+			                                && ride.GroupId == groupId
+			                                && ride.RideDirection == rideDirection)
+			                 .OrderBy(ride => ride.Date)
+			                 .ToListAsync(cancellationToken);
 
 		public async Task<IEnumerable<Ride>> GetPartWhereUserNotParticipantAsNoTrackingAsync(GroupId groupId,
 			AppUserId appUserId,
 			RideDirection rideDirection,
 			DateTime dateTime,
 			CancellationToken cancellationToken = default)
-			=>  await _context.Rides
-			.Include(ride => ride.Stops)
-			.Include(ride => ride.Participants)
-			.Include(ride => ride.Location)
-			.Include(ride => ride.Group)
-			.ThenInclude(group => group.UserGroups)
-			.Include(ride => ride.Owner)
-			.ThenInclude(owner => owner.Vehicle)
-			.Where(ride => ride.Date.Date == dateTime.Date
-		&& ride.Date.TimeOfDay >= dateTime.TimeOfDay
-		&& ride.GroupId == groupId
-		&& ride.RideDirection == rideDirection
-		&& ride.Participants.All(x => x.AppUserId != appUserId))
-		.OrderBy(ride => ride.Date)
-			.ToListAsync(cancellationToken);
+			=> await _context.Rides
+			                 .Include(ride => ride.Stops)
+								.ThenInclude(stop => stop.Participant)
+			                 .Include(ride => ride.Location)
+			                 .Include(ride => ride.Group)
+								.ThenInclude(group => group.UserGroups)
+			                 .Include(ride => ride.Owner)
+								.ThenInclude(owner => owner.Vehicle)
+			                 .Where(ride => ride.Date.Date == dateTime.Date
+			                                && ride.Date.TimeOfDay >= dateTime.TimeOfDay
+			                                && ride.GroupId == groupId
+			                                && ride.RideDirection == rideDirection
+			                                && ride.Stops.All(x => x.ParticipantId != appUserId))
+			                 .OrderBy(ride => ride.Date)
+			                 .ToListAsync(cancellationToken);
 
 		public async Task<IEnumerable<Ride>> GetParticipatedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
 			bool past = false,
 			CancellationToken cancellationToken = default)
 		{
 			return await _context.Rides
-				.Include(x => x.Owner)
-				.ThenInclude(a => a.Ratings)
-				.Include(x => x.Owner)
-				.ThenInclude(a => a.Vehicle)
-				.Include(x => x.Group)
-				.ThenInclude(a => a.UserGroups)
-				.Include(x => x.Participants)
-				.Include(x => x.Stops)
-				.AsNoTracking()
-				.Where(x => x.Participants.Any(y => y.AppUserId == appUserId)
-							&& (past
-								? x.Date <= DateTime.Now
-								: x.Date >= DateTime.Now))
-				.ToListAsync(cancellationToken);
+			                     .Include(x => x.Owner)
+			                     .ThenInclude(a => a.Ratings)
+			                     .Include(x => x.Owner)
+			                     .ThenInclude(a => a.Vehicle)
+			                     .Include(x => x.Group)
+			                     .ThenInclude(a => a.UserGroups)
+			                     .Include(x => x.Stops)
+			                     .AsNoTracking()
+			                     .Where(x => x.Stops.Any(y => y.ParticipantId == appUserId)
+			                                 && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
+			                     .ToListAsync(cancellationToken);
 		}
 
 		public async Task<IEnumerable<Ride>> GetOwnedRidesByUserIdAsNoTrackingAsync(AppUserId appUserId,
@@ -109,25 +110,28 @@ namespace DataAccessLayer.Repositories
 			CancellationToken cancellationToken)
 		{
 			return await _context.Rides.AsNoTracking()
-				.Include(x => x.Owner)
-				.ThenInclude(a => a.Ratings)
-				.Include(x => x.Owner)
-				.ThenInclude(a => a.Vehicle)
-				.Include(x => x.Group)
-				.ThenInclude(a => a.UserGroups)
-				.Include(x => x.Participants)
-				.Include(x => x.Stops)
-				.Where(x => x.OwnerId == appUserId && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
-				.ToListAsync(cancellationToken);
+			                     .Include(x => x.Owner)
+			                     .ThenInclude(a => a.Ratings)
+			                     .Include(x => x.Owner)
+			                     .ThenInclude(a => a.Vehicle)
+			                     .Include(x => x.Group)
+			                     .ThenInclude(a => a.UserGroups)
+			                     .Include(x => x.Stops)
+			                     .Where(x => x.OwnerId == appUserId
+			                                 && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
+			                     .ToListAsync(cancellationToken);
 		}
 
 		public async Task RemoveUserFromRide(AppUserId appUserId,
-			RideId rideId,
-			CancellationToken cancellationToken = default)
+		                                     RideId rideId,
+		                                     CancellationToken cancellationToken = default)
 		{
 			var rideParticipant = await _context.UserParticipatedRides
-				.FirstOrDefaultAsync(x => x.RideId == rideId && x.AppUserId == appUserId, cancellationToken)
-				.ConfigureAwait(false);
+			                                    .FirstOrDefaultAsync(
+				                                    x => x.RideId == rideId && x.AppUserId == appUserId,
+				                                    cancellationToken)
+			                                    .ConfigureAwait(false);
+
 			_context.UserParticipatedRides.Remove(rideParticipant);
 		}
 

@@ -75,7 +75,8 @@ namespace RestApi.Queries.RideQueries
 					new LocationDto(x.Location.Longitude, x.Location.Latitude),
 					x.Price,
 					x.RideDirection,
-					x.Stops.Select(a => new StopDto(new LocationDto(a.Location.Longitude, a.Location.Latitude)))
+					x.Stops.Select(a => new StopDto(new LocationDto(a.Location.Longitude, a.Location.Latitude),
+						 new ParticipantDto(a.Participant.Id, a.Participant.FirstName, a.Participant.LastName)))
 						.ToList(),
 					x.Date,
 					x.Id,

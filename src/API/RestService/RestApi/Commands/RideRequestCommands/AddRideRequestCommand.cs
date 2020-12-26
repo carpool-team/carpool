@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DataTransferObjects;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
+using Domain.ValueObjects;
 using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
 using IdGen;
@@ -15,16 +17,19 @@ namespace RestApi.Commands.RideRequestCommands
 	{
 		public AddRideRequestCommand(RideId rideId,
 			AppUserId requestingUserId,
-			AppUserId rideOwnerId)
+			AppUserId rideOwnerId,
+			Location location)
 		{
 			RideId = rideId;
 			RequestingUserId = requestingUserId;
 			RideOwnerId = rideOwnerId;
+			Location = location;
 		}
 
 		public RideId RideId { get; }
 		public AppUserId RequestingUserId { get; }
 		public AppUserId RideOwnerId { get; }
+		public Location Location { get; }
 	}
 
 	public class AddRideRequestCommandHandler : IRequestHandler<AddRideRequestCommand, RideRequestId>
@@ -47,7 +52,8 @@ namespace RestApi.Commands.RideRequestCommands
 				request.RideId,
 				request.RequestingUserId,
 				request.RideOwnerId,
-				DateTime.Now);
+				DateTime.Now,
+				request.Location);
 
 			await _rideRequestRepository.AddAsync(rideRequest, cancellationToken);
 			await _unitOfWork.SaveAsync(cancellationToken);

@@ -4,14 +4,16 @@ using DataAccessLayer.DatabaseContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(CarpoolDbContext))]
-    partial class CarpoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201226154558_AddedParticipantToStop")]
+    partial class AddedParticipantToStop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,13 +198,18 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Stop", b =>
                 {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("ParticipantId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("RideId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("ParticipantId", "RideId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParticipantId");
 
                     b.HasIndex("RideId");
 
@@ -460,10 +467,7 @@ namespace DataAccessLayer.Migrations
 
                     b.OwnsOne("Domain.ValueObjects.Location", "Location", b1 =>
                         {
-                            b1.Property<long>("StopParticipantId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<long>("StopRideId")
+                            b1.Property<long>("StopId")
                                 .HasColumnType("bigint");
 
                             b1.Property<double>("Latitude")
@@ -472,12 +476,12 @@ namespace DataAccessLayer.Migrations
                             b1.Property<double>("Longitude")
                                 .HasColumnType("float");
 
-                            b1.HasKey("StopParticipantId", "StopRideId");
+                            b1.HasKey("StopId");
 
                             b1.ToTable("Stops");
 
                             b1.WithOwner()
-                                .HasForeignKey("StopParticipantId", "StopRideId");
+                                .HasForeignKey("StopId");
                         });
 
                     b.Navigation("Location")

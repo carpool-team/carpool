@@ -4,4 +4,9 @@
 	{
 		T Id { get; set; }
 	}
+
+	public interface IBaseEntity
+	{
+		
+	}
 }
