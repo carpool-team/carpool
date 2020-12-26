@@ -120,25 +120,21 @@ namespace RestApi.Controllers
 			return new ApiResponse(rideIds, StatusCodes.Status201Created);
 		}
 
-        // [HttpPost("{rideId}/users")]
-        // public async Task<ApiResponse> AddParticipant([FromRoute] RideId rideId,
-        //     [FromBody] AddRideParticipantCommand addRideParticipant)
-        // {
-        //     addRideParticipant.RideId = rideId;
-        //     await _mediator.Send(addRideParticipant).ConfigureAwait(false);
-        //
-        //     return new ApiResponse("Added user to the ride", StatusCodes.Status201Created);
-        // }
-
 		// DELETE: api/Rides/5
 		[HttpDelete("{rideId}")]
-		public async Task<ApiResponse> DeleteRide(RideId rideId)
+		public async Task<ApiResponse> DeleteRide([FromRoute]RideId rideId)
 		{
             DeleteRideCommand deleteRide = new(rideId, User.GetUserId());
 			var ride = await _mediator.Send(deleteRide).ConfigureAwait(false);
 
 			return new ApiResponse(ride);
 		}
+
+		// [HttpDelete("recurring/{recurringRideId")]
+		// public async Task<ApiResponse> DeleteRecurringRide([FromRoute] RecurringRideId recurringRideId)
+		// {
+		// 	
+		// }
 
 
         [HttpDelete("{rideId}/users/{appUserId}")]
