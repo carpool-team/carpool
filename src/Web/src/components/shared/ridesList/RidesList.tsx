@@ -22,10 +22,16 @@ const RidesList = (props: IListProps) => {
 		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} />
 	);
 	const renderRequestParticipantList = () => (
-		<RequestsListDefault listType={props.listType} requestSelected={props.requestSelected} requests={props.requests} setRequest={props.setRequest} />
+		<RequestsListDefault
+			answerCallback={props.answerRequestCallback} listType={props.listType}
+			requestSelected={props.requestSelected} requests={props.requests} setRequest={props.setRequest}
+		/>
 	);
 	const renderRequestOwnerList = () => (
-		<RequestsListDefault listType={props.listType} requestSelected={props.requestSelected} requests={props.requests} setRequest={props.setRequest} />
+		<RequestsListDefault
+			answerCallback={props.answerRequestCallback} listType={props.listType}
+			requestSelected={props.requestSelected} requests={props.requests} setRequest={props.setRequest}
+		/>
 	);
 
 

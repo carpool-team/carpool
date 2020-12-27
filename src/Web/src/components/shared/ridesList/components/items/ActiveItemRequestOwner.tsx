@@ -10,7 +10,11 @@ import IRequestsItemProps from "../../interfaces/IRequestsItemProps";
 
 const geocodingClient = getGeocodingClient();
 
-const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
+interface IActiveItemRequestParticipantProps extends IRequestsItemProps {
+	answerCallback: (requestId: string, accepted: boolean) => void;
+}
+
+const ActiveItemRequestParticipant = (props: IActiveItemRequestParticipantProps) => {
 
 	const { t } = props;
 
@@ -34,7 +38,7 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 
 	const resources = {
 		requestFrom: "requests.requestFrom"
-	}
+	};
 
 	const [loading, setLoading] = useState(null);
 	const [placeName, setPlaceName] = useState(null);
@@ -60,14 +64,14 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 			setLoading(false);
 		}
 	};
-	//TODO wysyłać odpowiedź
+
 	const onAccept = () => {
-		console.log("accept")
-	}
+		props.answerCallback(props.request.rideRequestId, true);
+	};
 
 	const onDecline = () => {
-		console.log("decline")
-	}
+		props.answerCallback(props.request.rideRequestId, false);
+	};
 
 	const color = {
 		color: props.color

@@ -13,5 +13,6 @@ export interface IListProps extends IReactI18nProps {
 	listType: RidesListType;
 	firstDay?: string;
 	lastDay?: string;
+	answerRequestCallback?: (requestId: string, accepted: boolean) => void;
 }
 

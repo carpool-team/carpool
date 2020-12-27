@@ -6,5 +6,6 @@ export interface IRequestsListProps extends IReactI18nProps {
 	requests: IRideRequest[];
 	requestSelected: IRideRequest;
 	setRequest: (request: IRideRequest) => void;
-	listType: RidesListType
+	listType: RidesListType;
+	answerCallback?: (requestId: string, accepted: boolean) => void;
 }

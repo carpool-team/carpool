@@ -19,6 +19,9 @@ const RequestsListDefault = (props: IRequestsListProps) => {
 
 	const renderRequestOwnerItem = (color: string, request: IRideRequest) => {
 		if (props.requestSelected && props.requestSelected.rideRequestId === request.rideRequestId) {
+			if (!props.answerCallback) {
+				throw "Answer callback for request not supplied!";
+			}
 			return (
 				<React.Fragment key={request.rideRequestId}>
 					<ActiveItemRequestOwner
@@ -26,6 +29,7 @@ const RequestsListDefault = (props: IRequestsListProps) => {
 						color={color}
 						t={t}
 						setRequest={props.setRequest}
+						answerCallback={props.answerCallback}
 					/>
 				</React.Fragment>
 			);
@@ -80,9 +84,11 @@ const RequestsListDefault = (props: IRequestsListProps) => {
 				item = renderRequestOwnerItem(color, request);
 				break;
 			}
+			default:
+				throw "Unexpected list type";
 		}
 		return item;
-	}
+	};
 
 	let colorIndex: number = 0;
 	const rides: IRideRequest[] = props.requests;

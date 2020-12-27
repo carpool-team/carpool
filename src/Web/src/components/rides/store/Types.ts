@@ -10,6 +10,9 @@ export enum RideRequestsActionTypes {
 	GetRideRequests = "RIDES_GET_REQUESTS",
 	GetRideRequestsSuccess = "RIDES_GET_REQUESTS_SUCCESS",
 	GetRideRequestsError = "RIDES_GET_REQUESTS_ERROR",
+	AnswerRideRequest = "RIDES_ANSWER_REQUEST",
+	AnswerRideRequestSuccess = "RIDES_ANSWER_REQUEST_SUCCESS",
+	AnswerRideRequestError = "RIDES_ANSWER_REQUEST_ERROR",
 }
 
 //#region GENERIC
@@ -34,6 +37,21 @@ export interface IGetRideRequestsSuccessAction extends Action<RideRequestsAction
 export interface IGetRideRequestsErrorAction extends Action<RideRequestsActionTypes.GetRideRequestsError> {
 	requests: IRideRequest[];
 }
+
+/** Action for answering ride req */
+export interface IAnswerRideRequestAction extends Action<RideRequestsActionTypes.AnswerRideRequest> {
+	id: string;
+	isAccepted: boolean;
+	owned: boolean;
+}
+
+/** Action for answering ride req success */
+export interface IAnswerRideRequestSuccessAction extends Action<RideRequestsActionTypes.AnswerRideRequestSuccess> {
+}
+
+/** Action for answering ride req error */
+export interface IAnswerRideRequestErrorAction extends Action<RideRequestsActionTypes.AnswerRideRequestError> {
+}
 //#endregion
 
 export type GenericAction =
@@ -43,4 +61,7 @@ export type GenericAction =
 export type RideRequestsAction =
 	IGetRideRequestsAction
 	| IGetRideRequestsSuccessAction
-	| IGetRideRequestsErrorAction;
+	| IGetRideRequestsErrorAction
+	| IAnswerRideRequestAction
+	| IAnswerRideRequestSuccessAction
+	| IAnswerRideRequestErrorAction;

@@ -97,12 +97,18 @@ const RideRequest = (props: IRideRequestProps) => {
 		track: {},
 	})(Switch);
 
+	const answerRequestCallback: (id: string, accepted: boolean, owned: boolean) => void = (id, accepted, owned) => {
+		props.setLoaderVisible(true);
+		props.answerRideRequest(id, accepted, owned);
+	};
+
 	const renderOwnerList = () => (
 		<RidesList
 			listType={RidesListType.RequestOwner}
 			requests={props.requestsOwner}
 			requestSelected={selectedRequest}
 			setRequest={setRequest}
+			answerRequestCallback={(id, accepted) => answerRequestCallback(id, accepted, true)}
 		/>
 	);
 	const renderParticipantList = () => (
@@ -111,6 +117,7 @@ const RideRequest = (props: IRideRequestProps) => {
 			requests={props.requestsParticipant}
 			requestSelected={selectedRequest}
 			setRequest={setRequest}
+			answerRequestCallback={(id, accepted) => answerRequestCallback(id, accepted, false)}
 		/>
 	);
 
