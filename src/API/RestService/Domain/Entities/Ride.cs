@@ -20,7 +20,8 @@ namespace Domain.Entities
 			Location location,
 			RideDirection rideDirection,
 			List<Stop> stops,
-			byte seatsLimit)
+			byte seatsLimit,
+			RecurringRideId? recurringRideId = null)
 		{
 			Id = rideId;
 			OwnerId = ownerId;
@@ -31,6 +32,7 @@ namespace Domain.Entities
 			RideDirection = rideDirection;
 			Stops = stops;
 			SeatsLimit = seatsLimit;
+			RecurringRideId = recurringRideId;
 		}
 		
 		public AppUserId OwnerId { get; set; }
@@ -43,5 +45,6 @@ namespace Domain.Entities
 		public RideDirection RideDirection { get; set; }
 		public List<Stop> Stops { get; set; }
 		public byte SeatsLimit { get; set; }
+		public RecurringRideId? RecurringRideId { get; set; }
 	}
 }
