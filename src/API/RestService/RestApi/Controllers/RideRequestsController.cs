@@ -32,8 +32,8 @@ namespace RestApi.Controllers
 
 				return new ApiResponse(ownerRideRequests);
 			}		
-			GetRideRequestsQuery getRideRequests = new(User.GetUserId());
-			var rideRequests = await _mediator.Send(getRideRequests);
+			GetParticipantRideRequestsQuery getParticipantRideRequests = new(User.GetUserId());
+			var rideRequests = await _mediator.Send(getParticipantRideRequests);
 
 			return new ApiResponse(rideRequests);
 		}

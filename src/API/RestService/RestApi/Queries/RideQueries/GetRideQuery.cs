@@ -53,7 +53,7 @@ namespace RestApi.Queries.RideQueries
 			
 			RideDto rideDto = new RideDto(rideOwnerDto, groupDto,
 				new LocationDto(ride.Location.Longitude, ride.Location.Latitude), ride.Price,
-				ride.RideDirection, stopDtos, ride.Date, ride.Id, ride.SeatsLimit);
+				ride.RideDirection, stopDtos, ride.Date, ride.Id, ride.SeatsLimit, ride.RecurringRideId);
 			
 			return rideDto;
 		}

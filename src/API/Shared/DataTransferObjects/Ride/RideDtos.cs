@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿#nullable enable
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using DataTransferObjects;
@@ -19,10 +20,11 @@ namespace RestApi.DTOs.Ride
 		[property: JsonProperty("location")]LocationDto Location,
 		[JsonProperty("price")]double Price,
 		[JsonProperty("rideDirection")]RideDirection RideDirection,
-		[JsonProperty("stops")]List<StopDto> stops,
+		[JsonProperty("stops")]List<StopDto> Stops,
 		[JsonProperty("rideDate")]DateTime RideDate,
 		[JsonProperty("rideId")]RideId RideId,
-		[JsonProperty("seatsLimit")]byte SeatsLimit);
+		[JsonProperty("seatsLimit")]byte SeatsLimit,
+		[JsonProperty("recurringRideId")]RecurringRideId? RecurringRideId);
 
 	public record RideRequestRideDto([JsonProperty("rideId")] RideId RideId,
 		[JsonProperty("date")] DateTime Date,
