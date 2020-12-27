@@ -24,3 +24,4 @@ sketch
 # End of https://www.gitignore.io/api/react
 
 .env
+__snapshots__

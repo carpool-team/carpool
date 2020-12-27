@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./NavBar.scss";
 import NavButton from "./navButton/NavButton";
 import { ButtonColor } from "./navButton/enums/ButtonColor";
@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { logout } from "../auth/store/Actions";
 import { IAuthState } from "../auth/store/State";
 import { ITokenInfo } from "../auth/interfaces/ITokenInfo";
-import { Link } from "react-router-dom";
 import App from "../../App";
 import { rideRoutes } from "../rides/RidesRouter";
 
@@ -154,9 +153,9 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		return (
 			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
 				<div className={this.cssClasses.navBarTabContainer}>
-					<Link to={App.rootRoute}>
+					<a href={App.rootRoute}>
 						<div className={this.cssClasses.logoContainer}></div>
-					</Link>
+					</a>
 					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
 						<NavButton
 							color={ButtonColor.Gray}
