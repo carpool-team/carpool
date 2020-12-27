@@ -7,6 +7,7 @@ import { RideDirection } from "../api/addRide/AddRideRequest";
 export interface IRide {
 	rideId: string;
 	rideDate: Date;
+	date?: string;
 	rideDirection: RideDirection;
 	stops?: ILocation[];
 	price: number;
