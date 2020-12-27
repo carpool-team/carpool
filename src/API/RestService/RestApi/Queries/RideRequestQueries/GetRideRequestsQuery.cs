@@ -41,7 +41,7 @@ namespace RestApi.Queries.RideRequestQueries
 							x.Ride.Date,
 							new LocationDto(x.Ride.Location.Longitude, x.Ride.Location.Latitude),
 							new MinimalGroupDto(x.Ride.GroupId,
-								new LocationDto(x.Ride.Location.Longitude, x.Ride.Location.Latitude),
+								new LocationDto(x.Ride.Group.Location.Longitude, x.Ride.Group.Location.Latitude),
 								x.Ride.Group.Name),
 							x.Ride.RideDirection),
 						new RideOwnerDto(x.Ride.Owner.Rating,

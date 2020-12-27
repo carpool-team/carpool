@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.RideCommands;
 using RestApi.Commands.RideCommands.AddRecurringRide;
+using RestApi.Commands.RideCommands.DeleteRecurringRide;
 using RestApi.Commands.RideCommands.RemoveUserFromRide;
 using RestApi.DTOs.Ride;
 using RestApi.Extensions;
@@ -130,11 +131,15 @@ namespace RestApi.Controllers
 			return new ApiResponse(ride);
 		}
 
-		// [HttpDelete("recurring/{recurringRideId")]
-		// public async Task<ApiResponse> DeleteRecurringRide([FromRoute] RecurringRideId recurringRideId)
-		// {
-		// 	
-		// }
+		[HttpDelete("recurring/{recurringRideId}")]
+		public async Task<ApiResponse> DeleteRecurringRide([FromRoute] RecurringRideId recurringRideId)
+		{
+			DeleteRecurringRideCommand deleteRecurringRide = new(recurringRideId);
+
+			var response = await _mediator.Send(deleteRecurringRide);
+
+			return new ApiResponse("Rides has been deleted.");
+		}
 
 
         [HttpDelete("{rideId}/users/{appUserId}")]
