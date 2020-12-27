@@ -80,7 +80,8 @@ namespace RestApi.Queries.RideQueries
 						.ToList(),
 					x.Date,
 					x.Id,
-					x.SeatsLimit));
+					x.SeatsLimit,
+					x.RecurringRideId));
 
 				return rideDtos;
 			}

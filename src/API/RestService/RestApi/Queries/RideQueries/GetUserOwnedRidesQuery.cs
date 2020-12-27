@@ -60,9 +60,16 @@ namespace RestApi.Queries.RideQueries
 						ride.Stops.Select(x => new StopDto(new LocationDto(x.Location.Longitude, x.Location.Latitude),
 							    new ParticipantDto(x.Participant.Id, x.Participant.FirstName, x.Participant.LastName)))
 							.ToList();
-					rideDtos.Add(new RideDto(rideOwnerDto, groupDto,
-						new LocationDto(ride.Location.Longitude, ride.Location.Latitude), ride.Price,
-						ride.RideDirection, stopDtos, ride.Date, ride.Id, ride.SeatsLimit));
+					rideDtos.Add(new RideDto(rideOwnerDto,
+						groupDto,
+						new LocationDto(ride.Location.Longitude, ride.Location.Latitude),
+						ride.Price,
+						ride.RideDirection,
+						stopDtos, 
+						ride.Date,
+						ride.Id,
+						ride.SeatsLimit,
+						ride.RecurringRideId));
 				}
 
 				return rideDtos;
