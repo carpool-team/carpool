@@ -13,25 +13,25 @@ using RestApi.DTOs.User;
 
 namespace RestApi.Queries.RideRequestQueries
 {
-	public class GetRideRequestsQuery : IRequest<IEnumerable<RideRequestDto>>
+	public class GetParticipantRideRequestsQuery : IRequest<IEnumerable<RideRequestDto>>
 	{
-		public GetRideRequestsQuery(AppUserId tokenUserId)
+		public GetParticipantRideRequestsQuery(AppUserId tokenUserId)
 			=> TokenUserId = tokenUserId;
 
 		public AppUserId TokenUserId { get; }
 	}
 
-	public class GetRideRequestsQueryHandler : IRequestHandler<GetRideRequestsQuery, IEnumerable<RideRequestDto>>
+	public class GetParticipantRideRequestsQueryHandler : IRequestHandler<GetParticipantRideRequestsQuery, IEnumerable<RideRequestDto>>
 	{
 		private readonly IRideRequestRepository _rideRequestRepository;
 
-		public GetRideRequestsQueryHandler(IRideRequestRepository rideRequestRepository)
+		public GetParticipantRideRequestsQueryHandler(IRideRequestRepository rideRequestRepository)
 			=> _rideRequestRepository = rideRequestRepository;
 
-		public async Task<IEnumerable<RideRequestDto>> Handle(GetRideRequestsQuery request,
+		public async Task<IEnumerable<RideRequestDto>> Handle(GetParticipantRideRequestsQuery request,
 			CancellationToken cancellationToken)
 		{
-			var rideRequests = await _rideRequestRepository.GetUserPendingRideRequestAsNoTrackingAsync(
+			var rideRequests = await _rideRequestRepository.GetParticipantPendingRideRequestAsNoTrackingAsync(
 				request.TokenUserId,
 				cancellationToken);
 
