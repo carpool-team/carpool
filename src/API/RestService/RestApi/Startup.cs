@@ -97,6 +97,7 @@ namespace RestApi
 			services.AddScoped<IRideParticipantRepository, RideParticipantRepository>();
 			services.AddScoped<IUserGroupRepository, UserGroupRepository>();
 			services.AddScoped<IStopRepository, StopRepository>();
+			services.AddScoped<IRecurringRidesRepository, RecurringRidesRepository>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 			services.AddMediatR(Assembly.GetExecutingAssembly());

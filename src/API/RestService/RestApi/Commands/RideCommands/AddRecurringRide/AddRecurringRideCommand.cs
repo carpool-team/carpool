@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using Domain.Aggregates;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
@@ -15,16 +16,17 @@ using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
 using IdGen;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 using RestApi.DTOs.Stop;
 
 namespace RestApi.Commands.RideCommands.AddRecurringRide
 {
-	public class AddRecurringRideCommand : IRequest<IReadOnlyCollection<RideId>>
+	public class AddRecurringRideCommand : IRequest<RecurringRideId>
 	{
 		[JsonConstructor]
 		public AddRecurringRideCommand(AppUserId ownerId,
-		                               List<AppUserId>? participantsIds,
 		                               GroupId groupId,
 		                               TimeSpan rideTime,
 		                               double price,
@@ -37,7 +39,6 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 		                               byte seatsLimit)
 		{
 			OwnerId = ownerId;
-			ParticipantsIds = participantsIds;
 			GroupId = groupId;
 			RideTime = rideTime;
 			Price = price;
@@ -51,7 +52,6 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 		}
 
 		public AppUserId OwnerId { get; }
-		public List<AppUserId>? ParticipantsIds { get; }
 		public GroupId GroupId { get; }
 		public TimeSpan RideTime { get; }
 		public DateTime StartDate { get; }
@@ -64,18 +64,22 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 		public byte SeatsLimit { get; }
 	}
 
-	public class AddRecurringRideCommandHandler : IRequestHandler<AddRecurringRideCommand, IReadOnlyCollection<RideId>>
+	public class AddRecurringRideCommandHandler : IRequestHandler<AddRecurringRideCommand, RecurringRideId>
 	{
 		private readonly IRideRepository _rideRepository;
+		private readonly IRecurringRidesRepository _recurringRidesRepository;
 		private readonly IUnitOfWork _unitOfWork;
 
-		public AddRecurringRideCommandHandler(IRideRepository rideRepository, IUnitOfWork unitOfWork)
+		public AddRecurringRideCommandHandler(IRideRepository rideRepository,
+		                                      IUnitOfWork unitOfWork, 
+		                                      IRecurringRidesRepository recurringRidesRepository)
 		{
 			_rideRepository = rideRepository;
 			_unitOfWork = unitOfWork;
+			_recurringRidesRepository = recurringRidesRepository;
 		}
 
-		public async Task<IReadOnlyCollection<RideId>> Handle(AddRecurringRideCommand request,
+		public async Task<RecurringRideId> Handle(AddRecurringRideCommand request,
 		                                                      CancellationToken cancellationToken)
 		{
 			var weekDays = WeekDay.GetDays(request.WeekDays);
@@ -88,11 +92,13 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 			            .TakeWhile(date => date <= request.EndDate)
 			            .ToList();
 
-			List<Ride> rides = new();
 			IdGenerator rideIdGenerator = new(IdGeneratorType.Ride);
 
 			IdGenerator recurringRideIdGenerator = new(IdGeneratorType.RecurringRide);
-			var recurringRideId = recurringRideIdGenerator.CreateId();
+			var recurringRideId = new RecurringRideId(recurringRideIdGenerator.CreateId());
+
+			var recurringRides = new RecurringRides(recurringRideId);
+			
 			var ids = rideIdGenerator.Take(dates.Count);
 			var i = 0;
 			foreach (var date in dates)
@@ -102,7 +108,7 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 						request.RideTime.Minutes, 0);
 
 					if (request.Location == null)
-						throw new ApiException("xd");
+						throw new ApiException("Ride location cannot be empty", StatusCodes.Status400BadRequest);
 
 					var ride = new Ride(new RideId(ids.ElementAt(i)),
 						request.OwnerId,
@@ -115,10 +121,11 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 							       new Location(x.Location.Longitude, x.Location.Latitude),
 							       new RideId(ids.ElementAt(i))))
 						       .ToList() ?? new List<Stop>(),
-						request.SeatsLimit);
+						request.SeatsLimit,
+						recurringRideId);
 
-					await _rideRepository.AddAsync(ride, cancellationToken);
-
+					recurringRides.AddRide(ride);
+					
 					i++;
 				}
 				catch (Exception ex)
@@ -128,6 +135,7 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 
 			try
 			{
+				await _recurringRidesRepository.AddAsync(recurringRides, cancellationToken);
 				await _unitOfWork.SaveAsync(cancellationToken);
 			}
 			catch (DbUpdateException ex)
@@ -135,7 +143,7 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 				throw new ApiException(ex.InnerException);
 			}
 
-			return rides.Select(x => x.Id).ToImmutableList();
+			return recurringRides.Id;
 		}
 	}
 
