@@ -1,12 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ButtonSmall from "../../../ui/buttonSmall/ButtonSmall";
-import { ButtonSmallBackground } from "../../../ui/buttonSmall/enums/ButtonSmallBackground";
-import { ButtonSmallColor } from "../../../ui/buttonSmall/enums/ButtonSmallColor";
-import { ButtonSmallIcon } from "../../../ui/buttonSmall/enums/ButtonSmallIcon";
-import ButtonLink from "../../../ui/buttonLink/ButtonLink";
-import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
-import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
-import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle";
 import { IRide } from "../../../groups/interfaces/IRide";
 import MediaQuery from "react-responsive";
 import MapBoxRides from "../../../map/MapBoxRides";
@@ -20,8 +12,10 @@ import RidesList from "../../../shared/ridesList/RidesList";
 import { RidesListType } from "../../../shared/ridesList/enums/RidesListType";
 import { IRideRequest } from "../../../groups/interfaces/IRideRequest";
 import { exampleRidesRequest } from "../../../../examples/exampleRidesRequest";
+import { connect } from "react-redux";
+import { mapDispatchToProps, mapStateToProps, StateProps, DispatchProps } from "../../store/PropsTypes";
 
-interface IRideRequestProps extends RouteComponentProps, IReactI18nProps {
+interface IRideRequestProps extends RouteComponentProps, IReactI18nProps, StateProps, DispatchProps {
 
 }
 
@@ -51,13 +45,18 @@ const RideRequest = (props: IRideRequestProps) => {
 		from: "fromId",
 	};
 
-	const { url } = props.match;
 	const { t } = props;
 
 	const [selectedRide, setSelectedRide] = useState<IRide>(null);
 	const [selectedRequest, setSelectedRequest] = useState<IRideRequest>(null);
 	const [userOwner, setUserOwner] = useState<boolean>(false);
 	const [switchCssClass, setSwitchCssClass] = useState({ from: cssClasses.switchActive, to: null });
+
+	useEffect(() => {
+		props.getRideRequests(true); // get owned requests
+		props.setLoaderVisible(true);
+		props.getRideRequests(false); // get participated requests
+	}, []);
 
 	useEffect(() => {
 		if (selectedRequest && selectedRequest.ride !== selectedRide) {
@@ -99,10 +98,20 @@ const RideRequest = (props: IRideRequestProps) => {
 	})(Switch);
 
 	const renderOwnerList = () => (
-		<RidesList listType={RidesListType.RequestOwner} requests={/*props.requestOwned ??*/ exampleRidesRequest ?? []} requestSelected={selectedRequest} setRequest={setRequest} />
+		<RidesList
+			listType={RidesListType.RequestOwner}
+			requests={props.requestsOwner}
+			requestSelected={selectedRequest}
+			setRequest={setRequest}
+		/>
 	);
 	const renderParticipantList = () => (
-		<RidesList listType={RidesListType.RequestParticipant} requests={ /*props.requestParticipated ?? */exampleRidesRequest ?? []} requestSelected={selectedRequest} setRequest={setRequest} />
+		<RidesList
+			listType={RidesListType.RequestParticipant}
+			requests={props.requestsParticipant}
+			requestSelected={selectedRequest}
+			setRequest={setRequest}
+		/>
 	);
 
 	const renderList = () => {
@@ -146,5 +155,7 @@ const RideRequest = (props: IRideRequestProps) => {
 };
 
 export default withTranslation()(
-	withRouter(RideRequest)
+	withRouter(
+		connect(mapStateToProps, mapDispatchToProps)(RideRequest)
+	)
 );
