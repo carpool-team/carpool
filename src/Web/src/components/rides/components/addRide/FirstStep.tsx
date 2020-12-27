@@ -1,11 +1,9 @@
 import React from "react";
-import { colorList } from "../../../scss/colorList";
-import { mainRoutes } from "../../layout/components/LayoutRouter";
-import { TFunction } from "i18next";
-import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
+import { colorList } from "../../../../scss/colorList";
+import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import "./AddRide.scss"
-import { IGroup } from "../../groups/interfaces/IGroup";
+import "./AddRide.scss";
+import { IGroup } from "../../../groups/interfaces/IGroup";
 
 interface IGroupsListProps extends IReactI18nProps {
 	groups: IGroup[];
@@ -15,7 +13,6 @@ interface IListItemProps {
 	group: IGroup;
 	color: string;
 	setGroup: () => void;
-	t: TFunction;
 }
 
 const FirstStep = (props: IGroupsListProps) => {
@@ -56,13 +53,11 @@ const FirstStep = (props: IGroupsListProps) => {
 				{groups.map((group) => {
 					++colorIndex;
 					const color = colorList[colorIndex % colorList.length];
-					const { t } = props;
 					return (
 						<DefaultItem
 							group={group}
 							color={color}
 							setGroup={() => props.setGroupSelected(group)}
-							t={t}
 						/>);
 				})}
 			</ul>

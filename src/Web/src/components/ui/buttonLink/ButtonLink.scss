@@ -14,13 +14,13 @@
 			color: $green !important;
 		}
 		&--blue {
-			color: $blue;
+			color: $blue !important; 
 		}
 		&--gray {
-			color: $grayDark;
+			color: $grayDark !important;
 		}
 		&--white {
-			color: $white;
+			color: $white !important;
 		}
 	}
 	&__background{

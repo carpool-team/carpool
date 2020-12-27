@@ -1,15 +1,17 @@
 import React, { Component, Suspense } from "react";
 import { Switch, Route, RouteComponentProps } from "react-router";
 import LoaderSpinner from "../ui/loaderSpinner/LoaderSpinner";
-import Rides from "./rides/Rides";
-import AddRide from "./addRide/AddRide";
+import Rides from "./components/rides/Rides";
+import AddRide from "./components/addRide/AddRide";
 import FallbackRoute from "../system/FallbackRoute";
+import RideRequest from "./components/rideRequest/RideRequest";
 
 interface IGroupsRouterProps extends RouteComponentProps {
 	authId: string;
 }
 export const rideRoutes = {
-	addRide: "addRide/"
+	addRide: "addRide/",
+	requests: "requests/"
 };
 
 class RidesRouter extends Component<IGroupsRouterProps> {
@@ -25,6 +27,9 @@ class RidesRouter extends Component<IGroupsRouterProps> {
 					</Route>
 					<Route path={path + rideRoutes.addRide}>
 						<AddRide />
+					</Route>
+					<Route path={path + rideRoutes.requests}>
+						<RideRequest />
 					</Route>
 					<FallbackRoute />
 				</Switch>

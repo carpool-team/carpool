@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { initReactI18next } from "react-i18next";
-import { IReactI18nProps } from "../../system/resources/IReactI18nProps";
+import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
-import MapBoxRides from "../../map/MapBoxRides";
-import Button from "../../ui/button/Button";
-import { ButtonColor } from "../../ui/button/enums/ButtonColor";
-import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
-import { ButtonIcon } from "../../ui/button/enums/ButtonIcon";
-import MediaQuery from "react-responsive";
-import Input from "../../ui/input/Input";
-import { InputIcon } from "../../ui/input/enums/InputIcon";
-import { InputType } from "../../ui/input/enums/InputType";
-import { IRide } from "components/groups/interfaces/IRide";
+import Button from "../../../ui/button/Button";
+import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
+import Input from "../../../ui/input/Input";
+import { InputIcon } from "../../../ui/input/enums/InputIcon";
+import { InputType } from "../../../ui/input/enums/InputType";
 import DateFnsUtils from "@date-io/date-fns";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
-import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
-import { purple } from "@material-ui/core/colors";
+import Switch, { } from "@material-ui/core/Switch";
+import { withStyles } from "@material-ui/core/styles";
 import "date-fns";
 import {
 	MuiPickersUtilsProvider,
@@ -24,21 +18,17 @@ import {
 	KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { useImmer } from "use-immer";
-import { each, isValidDate } from "../../../helpers/UniversalHelper";
-import { ValidationType } from "../../ui/input/enums/ValidationType";
-import { address, date } from "faker";
+import { each, isValidDate } from "../../../../helpers/UniversalHelper";
+import { ValidationType } from "../../../ui/input/enums/ValidationType";
 import { IAddRideInput } from "./interfaces/IAddRideInput";
 import { RouteComponentProps, withRouter } from "react-router";
-import LayoutRouter, {
+import {
 	mainRoutes,
-} from "../../layout/components/LayoutRouter";
-import { parseCoords } from "../../../helpers/UniversalHelper";
-import { IGroup } from "../../groups/interfaces/IGroup";
-import { RideDirection } from "../../groups/api/addRide/AddRideRequest";
+} from "../../../layout/components/LayoutRouter";
+import { parseCoords } from "../../../../helpers/UniversalHelper";
+import { IGroup } from "../../../groups/interfaces/IGroup";
+import { RideDirection } from "../../../groups/api/addRide/AddRideRequest";
 import { IRideDays } from "./interfaces/IRideDays";
-import { ILocation } from "../../groups/interfaces/ILocation";
-
-
 
 export interface IAddRideProps extends IReactI18nProps, RouteComponentProps {
 	group: IGroup;
@@ -142,15 +132,13 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		},
 		seatsLimit: +seats,
 		date: selectedDate,
-	}
+	};
 
 	useEffect(() => {
-		props.setRide(userRide)
-	}, [selectedDate, location, direction, days, selectedScreen, seats])
+		props.setRide(userRide);
+	}, [selectedDate, location, direction, days, selectedScreen, seats]);
 
 	const [submitted, setSubmitted] = useState(false);
-
-
 
 	const trySendForm = () => {
 		if (each(inputsValid, (i) => i)) {
@@ -171,7 +159,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 			props.history.push(`/${mainRoutes.rides}`);
 		} else {
 			console.log(inputsValid);
-			console.log(userRide)
+			console.log(userRide);
 			setSubmitted(false);
 		}
 	};
@@ -229,7 +217,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 			});
 		} else {
 			setDays(draft => {
-				draft[event.target.name] = event.target.checked
+				draft[event.target.name] = event.target.checked;
 			});
 		}
 	};
@@ -281,7 +269,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 						id="date-picker-inlie"
 						label={t(resources.date)}
 						value={selectedDate}
-						onChange={(date: Date, value?: string) => {
+						onChange={(date: Date) => {
 							handleDateChange(date);
 							setInputsValid((draft) => {
 								draft.date = isValidDate(date);
@@ -298,7 +286,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 						className={cssClasses.datePicker}
 						label={t(resources.time)}
 						value={selectedDate}
-						onChange={(date: Date, value?: string) => {
+						onChange={(date: Date) => {
 							handleDateChange(date);
 							setInputsValid((draft) => {
 								draft.time = isValidDate(date);
@@ -409,7 +397,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 						className={cssClasses.datePicker}
 						label={t(resources.time)}
 						value={selectedDate}
-						onChange={(date: Date, value?: string) => {
+						onChange={(date: Date) => {
 							handleDateChange(date);
 							setInputsValid((draft) => {
 								draft.time = isValidDate(date);

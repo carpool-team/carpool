@@ -3,5 +3,7 @@ export enum RidesListType {
 	Default,
 	Join,
 	Participant,
-	Owner
+	Owner,
+	RequestOwner,
+	RequestParticipant
 }

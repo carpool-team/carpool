@@ -14,6 +14,7 @@ import { IAuthState } from "../auth/store/State";
 import { ITokenInfo } from "../auth/interfaces/ITokenInfo";
 import { Link } from "react-router-dom";
 import App from "../../App";
+import { rideRoutes } from "../rides/RidesRouter";
 
 interface IStatePropsType {
 	auth: IAuthState;
@@ -69,6 +70,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 	private resources = {
 		rides: "groups.ridesBtn",
 		groups: "common.groups",
+		requests: "rides.requestsBtn",
 		login: "navBar.login",
 		logout: "navBar.logout",
 		register: "navBar.register",
@@ -171,6 +173,14 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 							to={`/${mainRoutes.groups}`}
 						>
 							{t(this.resources.groups)}
+						</NavButton>
+						<NavButton
+							color={ButtonColor.Gray}
+							background={ButtonBackground.None}
+							onClick={this.handleHamburgerClick.bind(this)}
+							to={`/${mainRoutes.rides + rideRoutes.requests}`}
+						>
+							{t(this.resources.requests)}
 						</NavButton>
 					</div>
 				</div>

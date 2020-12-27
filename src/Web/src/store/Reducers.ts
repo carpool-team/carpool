@@ -11,12 +11,16 @@ import { layoutReducer } from "../components/layout/store/Reducers";
 import { userProfileReducer } from "../components/userProfile/store/Reducers";
 import { IUserProfileState } from "../components/userProfile/store/State";
 import { userProfileEpics } from "../components/userProfile/store/Epics";
+import { ridesReducer } from "../components/rides/store/Reducers";
+import { IRidesState } from "../components/rides/store/State";
+import { rideEpics } from "../components/rides/store/Epics";
 
 export type RootReducerType = {
 	groups: Reducer<IGroupsState>,
 	auth: Reducer<IAuthState>,
 	layout: Reducer<ILayoutState>,
 	userProfile: Reducer<IUserProfileState>,
+	rides: Reducer<IRidesState>,
 };
 
 export const rootReducer: RootReducerType = {
@@ -24,6 +28,7 @@ export const rootReducer: RootReducerType = {
 	auth: authReducer,
 	layout: layoutReducer,
 	userProfile: userProfileReducer,
+	rides: ridesReducer,
 };
 
 export function getMainReduxModule(): IEpicModule<any> {
@@ -34,6 +39,7 @@ export function getMainReduxModule(): IEpicModule<any> {
 			...groupEpics,
 			...authEpics,
 			...userProfileEpics,
+			...rideEpics
 		]
 	};
 }

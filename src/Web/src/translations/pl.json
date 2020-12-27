@@ -79,10 +79,21 @@
             "time": "Wybierz godzinę przejazdu.",
             "invalidDate": "Niewłaściwa data przejazdu",
             "invalidTime": "Niewłaściwa godzina przejazdu",
+            "addRide": "Dodaj przejazd",
             "addBtn": "Utwórz",
             "pastBtn": "Przeszłe",
             "futureBtn": "Przyszłe",
-            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd."
+            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd.",
+            "myRides": "Moje przejazdy",
+            "requestsBtn": "Prośby o przejazd"
+        },
+        "requests": {
+            "accepted": "Zaakceptowane",
+            "pending": "Oczekujące",
+            "declined": "Odrzucone",
+            "status": "Status: ",
+            "requestFrom": "Prośba od: ",
+            "myRequests": "Moje prośby o przejazd."
         },
         "footer": {
             "services": "Usługi",

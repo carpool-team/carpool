@@ -1,30 +1,24 @@
-import React, { Component, useEffect, useState } from "react";
-import produce from "immer";
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import { withTranslation } from "react-i18next";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-import { IReactI18nProps } from "../../../components/system/resources/IReactI18nProps";
-import ButtonLink from "../../ui/button/Button";
-import { ButtonLinkColor } from "../../ui/buttonLink/enums/ButtonLinkColor";
-import { ButtonLinkBackground } from "../../ui/buttonLink/enums/ButtonLinkBackground";
-import { mainRoutes } from "../../layout/components/LayoutRouter";
+import { IReactI18nProps } from "../../../../components/system/resources/IReactI18nProps";
+import { mainRoutes } from "../../../layout/components/LayoutRouter";
 import FirstStep from "./FirstStep";
 import SecondStep from "./SecondStep";
 import { IGroup } from "components/groups/interfaces/IGroup";
 import MediaQuery from "react-responsive";
-import MapBoxRides from "../../map/MapBoxRides";
+import MapBoxRides from "../../../map/MapBoxRides";
 import { IRide } from "components/groups/interfaces/IRide";
-import { RideDirection } from "../../../components/groups/api/addRide/AddRideRequest";
-import { ILocation } from "../../groups/interfaces/ILocation";
-import MapBoxPicker from "../../map/MapBoxPicker";
-import { each, parseCoords } from "../../../helpers/UniversalHelper";
-import { IAddRideAction, IGetGroupsAction } from "../../groups/store/Types";
-import { IGroupsState } from "../../groups/store/State";
+import { RideDirection } from "../../../../components/groups/api/addRide/AddRideRequest";
+import { ILocation } from "../../../groups/interfaces/ILocation";
+import { IAddRideAction, IGetGroupsAction } from "../../../groups/store/Types";
+import { IGroupsState } from "../../../groups/store/State";
 import { connect } from "react-redux";
-import { getGroups } from "../../groups/store/Actions";
-import { addRide } from "../../groups/store/Actions";
+import { getGroups } from "../../../groups/store/Actions";
+import { addRide } from "../../../groups/store/Actions";
 import { IAddRideInput } from "./interfaces/IAddRideInput";
-import MapBoxGroups from "../../map/MapBoxGroups";
+import MapBoxGroups from "../../../map/MapBoxGroups";
 
 
 interface IStatePropsType {
