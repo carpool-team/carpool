@@ -99,18 +99,21 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 
 			var recurringRides = new RecurringRides(recurringRideId);
 			
-			var ids = rideIdGenerator.Take(dates.Count);
-			var i = 0;
+			var ids = rideIdGenerator.Take(dates.Count+1);
+			using var rideIdEnumerator = ids.GetEnumerator();
+
 			foreach (var date in dates)
 				try
 				{
+					rideIdEnumerator.MoveNext();
+
 					var dateTime = new DateTime(date.Year, date.Month, date.Day, request.RideTime.Hours,
 						request.RideTime.Minutes, 0);
 
 					if (request.Location == null)
 						throw new ApiException("Ride location cannot be empty", StatusCodes.Status400BadRequest);
 
-					var ride = new Ride(new RideId(ids.ElementAt(i)),
+					var ride = new Ride(new RideId(rideIdEnumerator.Current),
 						request.OwnerId,
 						request.GroupId,
 						dateTime,
@@ -119,14 +122,12 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 						request.RideDirection,
 						request.Stops?.Select(x => new Stop(x.ParticipantId,
 							       new Location(x.Location.Longitude, x.Location.Latitude),
-							       new RideId(ids.ElementAt(i))))
+							       new RideId(rideIdEnumerator.Current)))
 						       .ToList() ?? new List<Stop>(),
 						request.SeatsLimit,
 						recurringRideId);
 
 					recurringRides.AddRide(ride);
-					
-					i++;
 				}
 				catch (Exception ex)
 				{
@@ -142,7 +143,7 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 			{
 				throw new ApiException(ex.InnerException);
 			}
-
+			
 			return recurringRides.Id;
 		}
 	}

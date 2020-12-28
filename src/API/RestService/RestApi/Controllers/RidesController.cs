@@ -128,7 +128,7 @@ namespace RestApi.Controllers
             DeleteRideCommand deleteRide = new(rideId, User.GetUserId());
 			var ride = await _mediator.Send(deleteRide).ConfigureAwait(false);
 
-			return new ApiResponse(ride);
+			return new ApiResponse($"Deleted ride with id: {ride.Id}.");
 		}
 
 		[HttpDelete("recurring/{recurringRideId}")]

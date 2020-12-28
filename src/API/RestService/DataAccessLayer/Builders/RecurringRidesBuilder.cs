@@ -14,7 +14,8 @@ namespace DataAccessLayer.Builders
 
 			builder.HasMany(x => x.Rides)
 			       .WithOne()
-			       .HasForeignKey(a => a.RecurringRideId);
+			       .HasForeignKey(a => a.RecurringRideId)
+			       .OnDelete(DeleteBehavior.Cascade);
 		}
 	}
 }
