@@ -108,7 +108,6 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 	if (!status) {
 		getStatus()
 	}
-
 	return (
 		<li className={cssClasses.activeContainer} key={props.request.rideRequestId}>
 			<div className={cssClasses.activeButtonContainer} >
@@ -132,13 +131,10 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 						{t(resources.status) + status}
 					</div>
 					<div className={cssClasses.activeDate}>
-						{convertDate(props.request.ride.rideDate.toString())}
+						{convertDate(props.request.ride.date.toString())}
 					</div>
 					<div className={cssClasses.activeDriver}>
-						Kierowca: {props.request.ride.owner.firstName} {props.request.ride.owner.lastName}
-					</div>
-					<div className={cssClasses.activeCar}>
-						{props.request.ride.owner.vehicle}
+						Kierowca: {props.request.rideOwner.firstName} {props.request.rideOwner.lastName}
 					</div>
 				</div>
 			</div>
