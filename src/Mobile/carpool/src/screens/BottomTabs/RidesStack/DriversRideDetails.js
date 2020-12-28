@@ -32,22 +32,54 @@ const DriversRideDetails = ({navigation, route}) => {
     });
   }, []);
 
-  const onDeletePress = () =>
-    Alert.alert('Warning!', 'Are you sure you want to delete this ride?', [
-      {
-        text: 'Cancel',
-        style: 'default',
-      },
-      {
-        text: 'Delete',
-        style: 'destructive',
-        onPress: () => {
-          dispatch(actions.deleteRide(ride.rideId))
-            .then(() => navigation.goBack())
-            .catch(err => alert('Error ocurred'));
+  const onDeletePress = () => {
+    if (ride.recurringRideId) {
+      Alert.alert(
+        'Warning!',
+        'This is a regular ride, do you want to delete all rides or just this parcitular one?',
+        [
+          {
+            text: 'Delete one',
+            style: 'destructive',
+            onPress: () => {
+              dispatch(actions.deleteRide(ride.rideId))
+                .then(() => navigation.goBack())
+                .catch(err => alert('Error ocurred'));
+            },
+          },
+          {
+            text: 'Delete all',
+            style: 'destructive',
+            onPress: () => {
+              dispatch(actions.deleteRegularRide(ride.recurringRideId))
+                .then(() => navigation.goBack())
+                .catch(err => alert('Error ocurred'));
+            },
+          },
+          {
+            text: 'Cancel',
+            style: 'default',
+          },
+        ],
+      );
+    } else {
+      Alert.alert('Warning!', 'Are you sure you want to delete this ride?', [
+        {
+          text: 'Cancel',
+          style: 'default',
         },
-      },
-    ]);
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(actions.deleteRide(ride.rideId))
+              .then(() => navigation.goBack())
+              .catch(err => alert('Error ocurred'));
+          },
+        },
+      ]);
+    }
+  };
 
   const onItemPress = item => {
     Alert.alert(
@@ -85,7 +117,11 @@ const DriversRideDetails = ({navigation, route}) => {
         contentContainerStyle={styles.container}>
         <View style={styles.topRow}>
           <View>
-            <Text style={styles.singleRide}>Single ride</Text>
+            {ride.recurringRideId ? (
+              <Text style={styles.regularRide}>Regular ride</Text>
+            ) : (
+              <Text style={styles.singleRide}>Single ride</Text>
+            )}
             <Text style={styles.time}>
               {moment(ride.rideDate).format('HH:mm ')}
             </Text>
@@ -157,6 +193,12 @@ const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     fontSize: 20,
     color: colors.green,
+    marginBottom: 10,
+  },
+  regularRide: {
+    ...sheet.textSemiBold,
+    fontSize: 20,
+    color: colors.orange,
     marginBottom: 10,
   },
   time: {

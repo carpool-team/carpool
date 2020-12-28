@@ -168,7 +168,6 @@ export function* getUserAsync() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('RES', res);
 
       yield put(actions.getUserSuccess(res.data.result));
     }
