@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Domain.Abstract;
 using Domain.Entities.Intersections;
 using Domain.Enums;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
+using Microsoft.AspNetCore.Http;
 
 namespace Domain.Entities
 {
@@ -46,5 +48,15 @@ namespace Domain.Entities
 		public List<Stop> Stops { get; set; }
 		public byte SeatsLimit { get; set; }
 		public RecurringRideId? RecurringRideId { get; set; }
+
+		public void RemoveParticipantFromRide(AppUserId participantId)
+		{
+			var stop = Stops.SingleOrDefault(x => x.ParticipantId == participantId);
+			
+			if (stop == default)
+				throw new Exception("User does not exists in this ride");
+			
+			Stops.Remove(stop);
+		}
 	}
 }

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using Domain.Contracts;
@@ -46,7 +45,8 @@ namespace RestApi.Commands.RideCommands.RemoveUserFromRide
 					&& request.AppUserId != request.RequestingUserId)
 					throw new ApiException("User does not have permissions to remove user from ride", StatusCodes.Status403Forbidden);
 				
-				await _rideRepository.RemoveUserFromRide(request.AppUserId, request.RideId, cancellationToken);
+				ride.RemoveParticipantFromRide(request.AppUserId);
+				
 				await _unitOfWork.SaveAsync(cancellationToken);
 			}
 			catch (DbUpdateException ex)
