@@ -84,8 +84,8 @@ const DriversRideDetails = ({navigation, route}) => {
   const onItemPress = item => {
     Alert.alert(
       'Warning!',
-      `Are you sure you want to delete ${item.user.firstName} ${
-        item.user.lastName
+      `Are you sure you want to delete ${item.participant.firstName} ${
+        item.participant.lastName
       } from this ride?`,
       [
         {
@@ -99,7 +99,7 @@ const DriversRideDetails = ({navigation, route}) => {
             dispatch(
               actions.deleteParticipant({
                 rideId: ride.rideId,
-                userId: item.user.id,
+                userId: item.participant.participantId,
               }),
             )
               .then(() => navigation.goBack())

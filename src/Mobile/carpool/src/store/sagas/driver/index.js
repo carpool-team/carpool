@@ -150,11 +150,13 @@ export function* deleteParticipantAsync(action) {
 
     if (token) {
       const {rideId, userId} = action.payload;
-      // yield instance.delete(`/Rides/${rideId}/users/${userId}`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+
+      yield instance.delete(`/Rides/${rideId}/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       yield put(actions.getDriversRides());
 
       yield call(resolvePromiseAction, action);

@@ -172,7 +172,6 @@ export function* getUserAsync() {
       yield put(actions.getUserSuccess(res.data.result));
     }
   } catch (err) {
-    console.log('Err', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
@@ -240,7 +239,6 @@ export function* deleteAccountAsync(action) {
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('deleteAccountAsync ERR', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
