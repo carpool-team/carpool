@@ -75,6 +75,7 @@ namespace AuthServer.Controllers
 			}
 			catch (Exception ex)
 			{
+				await _userManager.DeleteAsync(user);
 				throw new ApiException(ex);
 			}
 		}
