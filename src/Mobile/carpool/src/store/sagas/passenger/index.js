@@ -202,6 +202,43 @@ export function* findRidesAsync(action) {
   }
 }
 
+export function* resignFromRideAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
+
+    if (token) {
+      const res = yield instance.delete(
+        `/Rides/${action.payload}/users/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      yield put(actions.getUsersRides());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.resignFromRide(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 const passengerActions = [
   takeLatest(actions.GetUsersRides.Trigger, getUsersRidesAsync),
   takeLatest(actions.GetUsersPastRides.Trigger, getUsersPastRidesAsync),
@@ -215,6 +252,7 @@ const passengerActions = [
   ),
   takeLatest(actions.CreateRideRequest.PromiseTrigger, createRideRequestAsync),
   takeLatest(actions.FindRides.PromiseTrigger, findRidesAsync),
+  takeLatest(actions.ResignFromRide.PromiseTrigger, resignFromRideAsync),
 ];
 
 export default passengerActions;

@@ -15,12 +15,15 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {GroupWaypointsStop} from '../../../components/Ride';
 import {GoBack, Header} from '../../../components/navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import * as actions from '../../../store/actions';
 
 const PassengersRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
 
   const userId = useSelector(state => state.accountReducer.user.data.id);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     navigation.setOptions({
@@ -40,7 +43,11 @@ const PassengersRideDetails = ({navigation, route}) => {
       {
         text: 'Resign',
         style: 'destructive',
-        onPress: () => console.log('RESIGN RIDE'),
+        onPress: () => {
+          dispatch(actions.resignFromRide(ride.rideId))
+            .then(() => navigation.goBack())
+            .catch(err => alert('Error ocurred'));
+        },
       },
     ]);
 
