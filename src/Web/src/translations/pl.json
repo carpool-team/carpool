@@ -59,9 +59,11 @@
                 "confirmBtn": "Zatwierdź"
             },
             "list": {
+                "leaveGroup": "Opuść grupę",
                 "editGroup": "Edytuj grupę",
                 "ridesInGroup": "Przejazdy",
-                "inviteToGroup": "Zaproś do grupy"
+                "inviteToGroup": "Zaproś do grupy",
+                "leaveConfirm": "Czy na pewno opuśćić grupę?"
             },
             "addGroupBtn": "Dodaj grupę",
             "ridesBtn": "Przejazdy",

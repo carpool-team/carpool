@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { IGroup } from "../../../interfaces/IGroup";
 import ButtonLink from "../../../../ui/buttonLink/ButtonLink";
 import { colorList } from "../../../../../scss/colorList";
@@ -7,6 +7,10 @@ import GroupsRouter from "../../GroupsRouter";
 import { TFunction } from "i18next";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
+import { Popover } from "@material-ui/core";
+import Button from "../../../../ui/button/Button";
+import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 
 interface IGroupsListProps extends IReactI18nProps {
 	getGroupsCallback: () => IGroup[];
@@ -31,12 +35,35 @@ const GroupsList = (props: IGroupsListProps) => {
 	const activeButtonCssClass: string = "groupsManagementList__active--button";
 	const activeLabelCssClass: string = "groupsManagementList__active--label";
 	const activeMenuCssClass: string = "groupsManagementList__active--menu";
+	const popoverContainer: string = "auth__popover";
+	const button: string = "auth__inputs--button";
+	const buttonContainer: string = "auth__inputs--buttonContainer";
 
 	const resources = {
 		editGroup: "groups.list.editGroup",
 		ridesInGroup: "groups.list.ridesInGroup",
 		inviteToGroup: "groups.list.inviteToGroup",
+		leaveGroup: "groups.list.leaveGroup",
+		yes: "yes",
+		no: "no",
+		leaveConfirm: "groups.list.leaveConfirm"
 	};
+
+	const [popover, setPopover] = useState<boolean>(false);
+
+	const handleOpenPopover = () => {
+		setPopover(true);
+	};
+
+	const handleClosePopover = () => {
+		setPopover(false);
+	};
+
+	const onDeleteSubmit = () => {
+		// TODO wysyłać request o opuszczeniu grupy
+		handleClosePopover();
+	};
+
 
 	const groups: IGroup[] = props.getGroupsCallback();
 
@@ -71,6 +98,46 @@ const GroupsList = (props: IGroupsListProps) => {
 					<ButtonLink to={`/${mainRoutes.groups}${GroupsRouter.routes.invite}`}>
 						{t(resources.inviteToGroup)}
 					</ButtonLink>
+					{/* TODO Sprawdzać czy użytkownik jest ownerem grupy,jeżeeli tak to NIE wyświetlać tego. */}
+					<ButtonLink onClick={handleOpenPopover}>
+						{t(resources.leaveGroup)}
+					</ButtonLink>
+
+					<Popover
+						open={popover}
+						onClose={handleClosePopover}
+						anchorOrigin={{
+							vertical: "center",
+							horizontal: "center",
+						}}
+						transformOrigin={{
+							vertical: "center",
+							horizontal: "center",
+						}}
+					>
+						<div className={popoverContainer}>
+							<span>{t(resources.leaveConfirm)}</span>
+							<div className={buttonContainer}>
+								<Button
+									additionalCssClass={button}
+									onClick={onDeleteSubmit}
+									color={ButtonColor.White}
+									background={ButtonBackground.Red}
+								>
+									{t(resources.yes)}
+								</Button>
+								<Button
+									additionalCssClass={button}
+									onClick={handleClosePopover}
+									color={ButtonColor.White}
+									background={ButtonBackground.Blue}
+								>
+									{t(resources.no)}
+								</Button>
+							</div>
+						</div>
+					</Popover>
+
 				</div>
 			</li>
 		);
