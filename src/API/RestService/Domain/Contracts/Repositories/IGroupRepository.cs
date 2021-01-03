@@ -11,27 +11,19 @@ namespace Domain.Contracts.Repositories
 	{
 		Task<Group> GetByIdAsync(GroupId id, CancellationToken cancellationToken);
 		Task<Group> GetByIdAsNoTrackingAsync(GroupId id, CancellationToken cancellationToken);
-
-		Group GetById(GroupId id);
 		Group GetByIdAsNoTracking(GroupId id);
-
 		Task<bool> GroupCodeExists(string code);
-
-		Task<IEnumerable<Group>> GetRangeAsNoTrackingAsync(int pageCount, int pagesToSkip);
-
 		Task<List<Group>> GetGroupsByUserIdAsNoTrackingAsync(AppUserId appUserId,
-			CancellationToken cancellationToken = default);
+		                                                     CancellationToken cancellationToken = default);
 
 		Task AddUserToGroupAsync(UserGroup userGroup, CancellationToken cancellationToken = default);
-
 		Task<bool> AnyWithIdAsync(GroupId groupId, CancellationToken cancellation = default);
-
 		Task<bool> DoesUserExistsInGroup(GroupId groupId,
-			AppUserId appUserId,
-			CancellationToken cancellationToken = default);
-
+		                                 AppUserId appUserId,
+		                                 CancellationToken cancellationToken = default);
 		Task AddAsync(Group group, CancellationToken cancellationToken);
-
 		void Delete(Group group);
+
+		Task<ICollection<Ride>> GetGroupRides(GroupId groupId, CancellationToken cancellationToken = default);
 	}
 }

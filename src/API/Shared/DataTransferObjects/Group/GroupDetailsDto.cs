@@ -9,7 +9,7 @@ namespace DataTransferObjects.GroupDtos
 {
     public class GroupDetailsDto
     {
-        public GroupDetailsDto(GroupId groupId,
+        public GroupDetailsDto(GroupId id,
             Location location,
             List<RideMinimalDto> rides,
             string name,
@@ -18,7 +18,7 @@ namespace DataTransferObjects.GroupDtos
             int userCount,
             int rideCount)
         {
-            GroupId = groupId;
+            Id = id;
             Location = new LocationDto(location.Longitude, location.Latitude);
             Rides = rides;
             Name = name;
@@ -28,7 +28,7 @@ namespace DataTransferObjects.GroupDtos
             Owner = new IndexUserDto(owner.Id, owner.FirstName, owner.LastName, owner.Vehicle);
         }
 
-        public GroupId GroupId { get; }
+        public GroupId Id { get; }
         public LocationDto? Location { get; }
         public List<RideMinimalDto> Rides { get; }
         public string Name { get; }

@@ -53,7 +53,7 @@ namespace RestApi.Controllers
 		[HttpPut]
 		public async Task<ApiResponse> UpdateRideRequest([FromBody] UpdateRideRequestDto updateRideRequestDto)
 		{
-			UpdateRideRequestCommand request = new(updateRideRequestDto.RideRequestId,
+			UpdateRideRequestCommand request = new(updateRideRequestDto.Id,
 				updateRideRequestDto.IsAccepted,
 				User.GetUserId());
 			

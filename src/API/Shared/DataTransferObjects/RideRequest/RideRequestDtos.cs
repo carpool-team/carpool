@@ -5,7 +5,7 @@ using RestApi.DTOs.User;
 
 namespace DataTransferObjects.RideRequest
 {
-	public record RideRequestDto([JsonProperty("rideRequestId")] RideRequestId RideRequestId,
+	public record RideRequestDto([JsonProperty("rideRequestId")] RideRequestId Id,
 	                             [JsonProperty("ride")] RideRequestRideDto Ride,
 	                             [JsonProperty("rideOwner")] RideOwnerDto RideOwner,
 	                             [JsonProperty("requestingUser")] RideRequestingUserDto RequestingUser,
@@ -17,6 +17,6 @@ namespace DataTransferObjects.RideRequest
 	                                [JsonProperty("rideOwnerId")] AppUserId RideOwnerId,
 	                                [JsonProperty("location")] LocationDto Location);
 
-	public record UpdateRideRequestDto([JsonProperty("rideRequestId")] RideRequestId RideRequestId,
+	public record UpdateRideRequestDto([JsonProperty("rideRequestId")] RideRequestId Id,
 	                                   [JsonProperty("isAccepted")] bool IsAccepted);
 }
