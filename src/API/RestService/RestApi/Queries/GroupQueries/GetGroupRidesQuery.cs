@@ -6,7 +6,6 @@ using AutoWrapper.Wrappers;
 using DataTransferObjects;
 using DataTransferObjects.GroupDtos;
 using Domain.Contracts.Repositories;
-using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using Mapster;
 using MediatR;
@@ -28,7 +27,7 @@ namespace RestApi.Queries.GroupQueries
 		public GroupId GroupId { get; }
 		public AppUserId RequestingUserId { get; }
 	}
-	
+
 	public class GetGroupRidesQueryHandler : IRequestHandler<GetGroupRidesQuery, HashSet<RideDto>>
 	{
 		private readonly IGroupRepository _groupRepository;
@@ -38,11 +37,13 @@ namespace RestApi.Queries.GroupQueries
 
 		public async Task<HashSet<RideDto>> Handle(GetGroupRidesQuery request, CancellationToken cancellationToken)
 		{
-			var doesUserExistsInGroup =  await _groupRepository.DoesUserExistsInGroup(request.GroupId, request.RequestingUserId, cancellationToken: cancellationToken);
+			var doesUserExistsInGroup =
+				await _groupRepository.DoesUserExistsInGroup(request.GroupId, request.RequestingUserId,
+					cancellationToken);
 
 			if (!doesUserExistsInGroup)
 				throw new ApiException(StatusCodes.Status403Forbidden);
-			
+
 			var rides = await _groupRepository.GetGroupRides(request.GroupId, cancellationToken);
 
 			var rideDtos = rides.Select(x => new RideDto(x.Owner.Adapt<RideOwnerDto>(),
@@ -55,7 +56,7 @@ namespace RestApi.Queries.GroupQueries
 				x.Id,
 				x.SeatsLimit,
 				x.RecurringRideId)).ToHashSet();
-			
+
 			return rideDtos;
 		}
 	}
