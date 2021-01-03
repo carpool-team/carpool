@@ -4,11 +4,11 @@ import { IGroup } from "../components/groups/interfaces/IGroup";
 
 const exampleGroups: IGroup[] = [
 	{
-		groupId: faker.random.number(32).toString(),
+		id: faker.random.number(32).toString(),
 		name: faker.random.word(),
-		code: faker.random.alphaNumeric(3),
+		// code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({ min: 0, max: 20 }),
-		owner: faker.random.alphaNumeric(32),
+		// owner: faker.random.alphaNumeric(32),
 		location: {
 			longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 			latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
@@ -16,11 +16,11 @@ const exampleGroups: IGroup[] = [
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 	{
-		groupId: faker.random.number(32).toString(),
+		id: faker.random.number(32).toString(),
 		name: faker.random.word(),
-		code: faker.random.alphaNumeric(3),
+		// code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({ min: 0, max: 20 }),
-		owner: faker.random.alphaNumeric(32),
+		// owner: faker.random.alphaNumeric(32),
 		location: {
 			longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 			latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
@@ -28,11 +28,11 @@ const exampleGroups: IGroup[] = [
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 	{
-		groupId: faker.random.number(32).toString(),
+		id: faker.random.number(32).toString(),
 		name: faker.random.word(),
-		code: faker.random.alphaNumeric(3),
+		// code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({ min: 0, max: 20 }),
-		owner: faker.random.alphaNumeric(32),
+		// owner: faker.random.alphaNumeric(32),
 		location: {
 			longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 			latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
@@ -40,11 +40,11 @@ const exampleGroups: IGroup[] = [
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 	{
-		groupId: faker.random.number(32).toString().toString(),
+		id: faker.random.number(32).toString().toString(),
 		name: faker.random.word(),
-		code: faker.random.alphaNumeric(3),
+		// code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({ min: 0, max: 20 }),
-		owner: faker.random.alphaNumeric(32),
+		// owner: faker.random.alphaNumeric(32),
 		location: {
 			longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 			latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),

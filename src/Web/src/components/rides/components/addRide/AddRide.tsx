@@ -20,7 +20,6 @@ import { addRide } from "../../../groups/store/Actions";
 import { IAddRideInput } from "./interfaces/IAddRideInput";
 import MapBoxGroups from "../../../map/MapBoxGroups";
 
-
 interface IStatePropsType {
 	groups: IGroupsState;
 }
@@ -55,7 +54,7 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 	}, []);
 
 	const { url } = props.match;
-	const { t } = props
+	const { t } = props;
 	const groups: IGroup[] = props.groups;
 
 	const cssClasses = {
@@ -79,9 +78,17 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 	const [location, setLocation] = useState<ILocation>();
 	const [userRide, setUserRide] = useState<IAddRideInput>();
 
+	const incrementStep = () => {
+		setStep(step + 1);
+	};
+
+	const decrementStep = () => {
+		setStep(step - 1);
+	};
+
 	useEffect(() => {
 		if (groupSelected) {
-			incrementStep()
+			incrementStep();
 			setLocation(groupSelected?.location);
 		}
 	}, [groupSelected]);
@@ -107,38 +114,30 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 		props.history.push(`/${mainRoutes.rides}`);
 	};
 
-	const incrementStep = () => {
-		setStep(step + 1);
-	}
-
-	const decrementStep = () => {
-		setStep(step - 1)
-	}
-
 	const setRide = (userRide: IAddRideInput) => {
-		setUserRide(userRide)
-		setLocation(userRide.location)
-		setDirection(userRide.rideDirection)
-	}
+		setUserRide(userRide);
+		setLocation(userRide.location);
+		setDirection(userRide.rideDirection);
+	};
 
 	const renderFirstStep = () => (
 		<FirstStep
 			groups={groups ?? []} setGroupSelected={group => setGroupSelected(group)}
 		/>
-	)
+	);
 
 	const renderSecondStep = () => (
 		<SecondStep
 			group={groupSelected} addRide={SendForm} setRide={setRide}
 		/>
-	)
+	);
 	const renderMapFirstStep = () => (
 		// <MapBoxPicker />
 		<MapBoxGroups getGroupsCallback={() => groups} setSelectedGroupCallback={(id) => (id)} />
-	)
+	);
 	const renderMapSecondStep = () => (
 		<MapBoxRides ride={ride} />
-	)
+	);
 
 	const renderMap = () => {
 		let map: JSX.Element;
@@ -204,8 +203,8 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 				</div>
 			</MediaQuery>
 		</div>
-	)
-}
+	);
+};
 
 export default withTranslation()(
 	withRouter(

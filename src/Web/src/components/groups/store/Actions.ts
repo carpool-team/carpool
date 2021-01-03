@@ -26,9 +26,10 @@ import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
 
 //#region GROUPS
-export function addGroup(group: IGroup): IAddGroupAction {
+export function addGroup(group: IFormGroupData): IAddGroupAction {
 	return {
 		type: GroupsActionTypes.AddGroup,
 		group,

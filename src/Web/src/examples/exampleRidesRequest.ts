@@ -27,9 +27,10 @@ export const exampleRidesRequest: IRideRequest[] = [
 			},
 			rideDate: new Date(),
 			group: {
-				groupId: faker.random.number(32).toString(),
+				id: faker.random.number(32).toString(),
 				name: faker.random.word(),
 				userCount: faker.random.number({ min: 0, max: 20 }),
+				rideCount: faker.random.number({ min: 0, max: 20 }),
 				location: {
 					longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 					latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
@@ -71,9 +72,10 @@ export const exampleRidesRequest: IRideRequest[] = [
 			},
 			rideDate: new Date(),
 			group: {
-				groupId: faker.random.number(32).toString(),
+				id: faker.random.number(32).toString(),
 				name: faker.random.word(),
 				userCount: faker.random.number({ min: 0, max: 20 }),
+				rideCount: faker.random.number({ min: 0, max: 20 }),
 				location: {
 					longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 					latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
@@ -91,4 +93,4 @@ export const exampleRidesRequest: IRideRequest[] = [
 		},
 		rideRequestId: faker.random.alphaNumeric(32)
 	}
-] 
+];

@@ -124,7 +124,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 	const userRide: IAddRideInput = {
 		recurring: selectedScreen === PanelType.Cyclic,
 		weekDays: days,
-		groupId: props.group.groupId.toString(),
+		groupId: props.group.id.toString(),
 		rideDirection: direction,
 		location: {
 			latitude: location[1],
@@ -145,7 +145,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 			const input: IAddRideInput = {
 				recurring: selectedScreen === PanelType.Cyclic,
 				weekDays: days,
-				groupId: props.group.groupId.toString(),
+				groupId: props.group.id.toString(),
 				rideDirection: direction,
 				location: {
 					latitude: location[1],

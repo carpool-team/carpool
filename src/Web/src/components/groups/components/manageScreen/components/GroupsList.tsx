@@ -49,7 +49,7 @@ const GroupsList = (props: IGroupsListProps) => {
 
 		const { t } = props;
 		return (
-			<li className={activeListItemCssClass} key={props.group.groupId}>
+			<li className={activeListItemCssClass} key={props.group.id}>
 				<button
 					onClick={() => props.setGroupSelected()}
 					className={activeButtonCssClass}
@@ -81,7 +81,7 @@ const GroupsList = (props: IGroupsListProps) => {
 			color: props.color,
 		};
 		return (
-			<li key={props.group.groupId}>
+			<li key={props.group.id}>
 				<button
 					onClick={() => props.setGroupSelected()}
 					className={buttonCssClass}
@@ -102,11 +102,11 @@ const GroupsList = (props: IGroupsListProps) => {
 				const color = colorList[colorIndex % colorList.length];
 				const { t } = props;
 				return (
-					<React.Fragment key={group.groupId}>
+					<React.Fragment key={group.id}>
 						{(() => {
 							if (
 								props.groupSelected &&
-								props.groupSelected.groupId === group.groupId
+								props.groupSelected.id === group.id
 							) {
 								return (
 									<ActiveItem
@@ -122,7 +122,7 @@ const GroupsList = (props: IGroupsListProps) => {
 										group={group}
 										color={color}
 										setGroupSelected={() =>
-											props.setGroupSelected(group.groupId)
+											props.setGroupSelected(group.id)
 										}
 										t={t}
 									/>

@@ -56,7 +56,7 @@ const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 						longitude: action.group.location.longitude,
 					},
 					code: action.group.code,
-					name: action.group.name,
+					name: action.group.groupName,
 				}
 			});
 			const response: AddGroupResponse = await request.send();

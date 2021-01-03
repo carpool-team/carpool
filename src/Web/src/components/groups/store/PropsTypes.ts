@@ -6,6 +6,7 @@ import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
 import { IAuthState } from "../../auth/store/State";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
 interface IStatePropsType {
 	groups: IGroupsState;
 	auth: IAuthState;
@@ -32,7 +33,7 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 });
 
 interface IDispatchPropsType {
-	addGroup: (group: IGroup) => IAddGroupAction;
+	addGroup: (group: IFormGroupData) => IAddGroupAction;
 	addRide: (input: IAddRideInput) => IAddRideAction;
 	addInvites: (groupId: string, userIds: string[]) => IAddInvitesAction;
 	getGroups: (userOnly: boolean) => IGetGroupsAction;

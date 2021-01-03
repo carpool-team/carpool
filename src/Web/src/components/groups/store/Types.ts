@@ -1,5 +1,6 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
@@ -49,7 +50,7 @@ export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 //#region GROUPS
 /** Action for adding group */
 export interface IAddGroupAction extends Action<GroupsActionTypes.AddGroup> {
-	group: IGroup;
+	group: IFormGroupData;
 }
 
 /** Action for adding group success */

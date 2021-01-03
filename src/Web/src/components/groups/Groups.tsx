@@ -49,7 +49,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 		this.setState(
 			produce((draft: IGroupsState) => {
 				draft.selectedGroup = this.getGroupsHandler().find(
-					(g) => g.groupId === id
+					(g) => g.id === id
 				);
 			})
 		);
