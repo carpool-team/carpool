@@ -13,7 +13,7 @@ namespace DataTransferObjects.GroupDtos
         [property: JsonProperty("groupId")] GroupId GroupId);
 
     public record GroupDto([JsonProperty("userCount")] int UserCount,
-        [JsonProperty("groupId")] GroupId Id,
+        [property: JsonProperty("groupId")] GroupId Id,
         [JsonProperty("location")] LocationDto Location,
         [JsonProperty("name")] string Name);
 
