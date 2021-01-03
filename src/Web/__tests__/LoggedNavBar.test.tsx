@@ -7,11 +7,6 @@ import loggedokenInfo from "../__mocks__/LoggedIAuthState.mock"
 import mockPaths from "../__mocks__/paths.mock"
 const mockStore = configureStore([]);
 
-jest.mock('mapbox-gl/dist/mapbox-gl', () => ({
-	Map: () => ({})
-
-}));
-
 describe("Logged NavBar", () => {
 	let store;
 	let component;

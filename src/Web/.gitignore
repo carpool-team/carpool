@@ -25,3 +25,5 @@ sketch
 
 .env
 __snapshots__
+
+coverage/
