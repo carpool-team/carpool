@@ -6,10 +6,14 @@ using AutoWrapper;
 using DataAccessLayer.DatabaseContexts;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Repositories.Intersections;
+using DataTransferObjects.GroupDtos;
+using DataTransferObjects.RideRequest;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Repositories.Intersections;
+using Domain.Entities;
 using FluentValidation.AspNetCore;
+using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -20,6 +24,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using RestApi.DTOs.Ride;
+using RestApi.Extensions;
 using Serilog;
 
 namespace RestApi
@@ -118,6 +124,8 @@ namespace RestApi
 						}
 					});
 			});
+
+			MapsterExtensions.RegisterCustomMappings();
 
 			Log.Information("Services configured.");
 		}

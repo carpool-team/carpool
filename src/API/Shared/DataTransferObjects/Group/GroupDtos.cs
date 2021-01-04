@@ -13,17 +13,17 @@ namespace DataTransferObjects.GroupDtos
         [property: JsonProperty("groupId")] GroupId GroupId);
 
     public record GroupDto([JsonProperty("userCount")] int UserCount,
-        [property: JsonProperty("groupId")] GroupId Id,
+        [property: JsonProperty("groupId")] GroupId GroupId,
         [JsonProperty("location")] LocationDto Location,
         [JsonProperty("name")] string Name);
 
     public record IndexGroupDto([JsonProperty("userCount")] int UserCount,
-        [JsonProperty("groupId")] GroupId Id,
+        [JsonProperty("groupId")] GroupId GroupId,
         [JsonProperty("location")] LocationDto Location,
         [JsonProperty("name")] string Name,
         [JsonProperty("rideCount")] int RideCount);
 
-    public record MinimalGroupDto([JsonProperty("groupId")] GroupId Id,
+    public record MinimalGroupDto([JsonProperty("groupId")] GroupId GroupId,
         [JsonProperty("location")] LocationDto Location,
         [JsonProperty("name")] string Name);
 }
