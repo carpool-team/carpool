@@ -53,28 +53,24 @@ const PassengersRideDetails = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <View style={styles.topRow}>
+        <View>
+          <Text style={styles.time}>
+            {moment(ride.rideDate).format('HH:mm ')}
+          </Text>
+          <Text style={styles.date}>
+            {moment(ride.rideDate).format('Do MMMM YYYY')}
+          </Text>
+        </View>
+        {!past && (
+          <TouchableOpacity onPress={onResignPress}>
+            <MaterialIcon name="exit-to-app" size={32} color={colors.orange} />
+          </TouchableOpacity>
+        )}
+      </View>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.container}>
-        <View style={styles.topRow}>
-          <View>
-            <Text style={styles.time}>
-              {moment(ride.rideDate).format('HH:mm ')}
-            </Text>
-            <Text style={styles.date}>
-              {moment(ride.rideDate).format('Do MMMM YYYY')}
-            </Text>
-          </View>
-          {!past && (
-            <TouchableOpacity onPress={onResignPress}>
-              <MaterialIcon
-                name="exit-to-app"
-                size={32}
-                color={colors.orange}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
         <View style={styles.mapWrapper}>
           <RouteMinimap
             stops={
@@ -126,11 +122,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   container: {
-    paddingVertical: 27,
+    paddingBottom: 30,
   },
   topRow: {
-    marginBottom: 27,
-    marginHorizontal: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
     ...sheet.rowCenterSplit,
   },
   time: {

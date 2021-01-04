@@ -31,33 +31,34 @@ const RidesStack = ({navigation}) => {
       screenOptions={{
         header: props => <Header {...props} />,
         title: 'Rides',
-      }}>
+      }}
+      headerMode="screen">
       <Stack.Screen
         name="RidesList"
         component={RidesList}
         options={{
-          headerTitle: 'Your rides',
+          title: 'Your rides',
         }}
       />
       <Stack.Screen
         name="DriversRideDetails"
         component={DriversRideDetails}
         options={{
-          headerTitle: 'Ride details',
+          title: 'Ride details',
         }}
       />
       <Stack.Screen
         name="PassengersRideDetails"
         component={PassengersRideDetails}
         options={{
-          headerTitle: 'Ride details',
+          title: 'Ride details',
         }}
       />
       <Stack.Screen
         name="RideRequests"
         component={RideRequests}
         options={{
-          headerTitle: 'Ride requests',
+          title: 'Ride requests',
         }}
       />
     </Stack.Navigator>

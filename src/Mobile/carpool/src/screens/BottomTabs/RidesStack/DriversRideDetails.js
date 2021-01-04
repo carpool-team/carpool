@@ -29,6 +29,7 @@ const DriversRideDetails = ({navigation, route}) => {
         <GoBack onPress={() => navigation.navigate('RidesList')} />
       ),
       header: props => <Header {...props} hideSwitch />,
+      title: ride.recurringRideId ? 'Regular ride' : 'Single ride',
     });
   }, []);
 
@@ -112,34 +113,29 @@ const DriversRideDetails = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <View style={styles.topRow}>
+        <View>
+          <Text style={styles.time}>
+            {moment(ride.rideDate).format('HH:mm ')}
+          </Text>
+          <Text style={styles.date}>
+            {moment(ride.rideDate).format('Do MMMM YYYY')}
+          </Text>
+        </View>
+        {!past && (
+          <TouchableOpacity onPress={onDeletePress}>
+            <Icon
+              name="trash"
+              size={32}
+              color={colors.red}
+              style={styles.moreIcon}
+            />
+          </TouchableOpacity>
+        )}
+      </View>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.container}>
-        <View style={styles.topRow}>
-          <View>
-            {ride.recurringRideId ? (
-              <Text style={styles.regularRide}>Regular ride</Text>
-            ) : (
-              <Text style={styles.singleRide}>Single ride</Text>
-            )}
-            <Text style={styles.time}>
-              {moment(ride.rideDate).format('HH:mm ')}
-            </Text>
-            <Text style={styles.date}>
-              {moment(ride.rideDate).format('Do MMMM YYYY')}
-            </Text>
-          </View>
-          {!past && (
-            <TouchableOpacity onPress={onDeletePress}>
-              <Icon
-                name="trash"
-                size={32}
-                color={colors.red}
-                style={styles.moreIcon}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
         <View style={styles.mapWrapper}>
           <RouteMinimap
             stops={
@@ -186,24 +182,13 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   topRow: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
     ...sheet.rowCenterSplit,
-  },
-  singleRide: {
-    ...sheet.textSemiBold,
-    fontSize: 20,
-    color: colors.green,
-    marginBottom: 10,
-  },
-  regularRide: {
-    ...sheet.textSemiBold,
-    fontSize: 20,
-    color: colors.orange,
-    marginBottom: 10,
   },
   time: {
     ...sheet.textMedium,
-    fontSize: 20,
+    fontSize: 24,
     color: colors.blue,
   },
   date: {
@@ -220,8 +205,8 @@ const styles = StyleSheet.create({
     height: 300,
   },
   waypoints: {
-    paddingTop: 8,
-    paddingBottom: 16,
+    paddingTop: 16,
+    paddingBottom: 24,
     paddingHorizontal: 16,
   },
   bottomWrapper: {
