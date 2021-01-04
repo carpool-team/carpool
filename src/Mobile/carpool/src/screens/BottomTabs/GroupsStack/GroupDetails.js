@@ -1,12 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator, Alert} from 'react-native';
 import sheet from '../../../styles/sheet';
 import colors from '../../../styles/colors';
 import UpView from '../../../components/common/UpView';
@@ -16,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {parseCoords} from '../../../utils/coords';
 import {GoBack, Header} from '../../../components/navigation';
 import {PointMinimap} from '../../../components/Route';
-import {useReverseGeocoding} from '../../../hooks';
+import {useReverseGeocoding, useActiveAccount} from '../../../hooks';
 import {SafeScroll} from '../../../components/common/wrappers';
 import * as actions from '../../../store/actions';
 import {useDispatch} from 'react-redux';
@@ -26,6 +19,8 @@ const GroupDetails = ({navigation, route}) => {
   const [placeName, setPlaceName] = useState(null);
 
   const [results, loading, error, _getPlaceName] = useReverseGeocoding();
+  const {activeAccount} = useActiveAccount();
+  const isPassenger = activeAccount === 'passenger';
 
   const dispatch = useDispatch();
 
@@ -38,7 +33,7 @@ const GroupDetails = ({navigation, route}) => {
       headerLeft: () => (
         <GoBack onPress={() => navigation.navigate('Groups')} />
       ),
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
     });
   }, []);
 
@@ -48,6 +43,13 @@ const GroupDetails = ({navigation, route}) => {
         setPlaceName(results.body.features[0].place_name);
     }
   }, [results]);
+
+  useEffect(() => {
+    group &&
+      navigation.setOptions({
+        title: group.name,
+      });
+  }, [group]);
 
   const onLeaveGroup = () => {
     Alert.alert(
@@ -71,17 +73,17 @@ const GroupDetails = ({navigation, route}) => {
     );
   };
 
+  const onRidesPress = () => {
+    if (isPassenger) {
+      // Navigate to screen
+    } else {
+      // Navigate to other screen
+    }
+  };
+
   return group ? (
     <SafeScroll minHeight={500}>
       <View style={styles.upperContainer}>
-        <View style={styles.topRow}>
-          <Text style={styles.name} numberOfLines={1}>
-            {group.name}
-          </Text>
-          <TouchableOpacity onPress={onLeaveGroup}>
-            <MaterialIcon name="exit-to-app" color={colors.orange} size={32} />
-          </TouchableOpacity>
-        </View>
         <View style={styles.statsRow}>
           <View style={sheet.columnCenter}>
             <Text style={styles.totalRides}>
@@ -97,16 +99,28 @@ const GroupDetails = ({navigation, route}) => {
           </View>
         </View>
         <View style={styles.cardGrid}>
-          <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
+          <UpView
+            borderRadius={8}
+            style={styles.leaveUpView}
+            onPress={onLeaveGroup}>
             <View style={styles.cardContent}>
-              <MaterialIcon name="settings" size={40} color={colors.blue} />
-              <Text style={styles.cardLabel}>Settings</Text>
+              <MaterialIcon
+                name="exit-to-app"
+                color={colors.orange}
+                size={40}
+              />
+              <Text style={styles.cardLabel}>Leave</Text>
             </View>
           </UpView>
-          <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
+          <UpView
+            borderRadius={8}
+            style={styles.ridesUpView}
+            onPress={onRidesPress}>
             <View style={styles.cardContent}>
               <Ionicon name="ios-car" size={40} color={colors.blue} />
-              <Text style={styles.cardLabel}>Your rides</Text>
+              <Text style={styles.cardLabel}>
+                {isPassenger ? 'Rides' : 'Your rides'}
+              </Text>
             </View>
           </UpView>
         </View>
@@ -136,7 +150,6 @@ const GroupDetails = ({navigation, route}) => {
 const styles = StyleSheet.create({
   upperContainer: {
     flex: 1,
-    paddingTop: 18,
   },
   topRow: {
     ...sheet.rowCenterSplit,
@@ -184,14 +197,19 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   cardLabel: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
     fontSize: 20,
   },
-  upview: {
-    width: '48%',
+  leaveUpView: {
+    width: '35%',
+    height: 100,
+  },
+  ridesUpView: {
+    width: '60%',
     height: 100,
   },
   flexed: {
@@ -199,14 +217,14 @@ const styles = StyleSheet.create({
   },
   addressWrapper: {
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 24,
     ...sheet.rowCenter,
   },
   icon: {
     marginRight: 12,
   },
   placeName: {
-    ...sheet.textMedium,
+    ...sheet.textSemiBold,
     color: colors.grayDark,
     fontSize: 16,
     flex: 1,

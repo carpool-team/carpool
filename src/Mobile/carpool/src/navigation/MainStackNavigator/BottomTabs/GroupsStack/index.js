@@ -29,26 +29,27 @@ const GroupsStack = ({navigation}) => {
       screenOptions={{
         header: props => <Header {...props} />,
         title: 'Groups',
-      }}>
+      }}
+      headerMode="screen">
       <Stack.Screen
         name="Groups"
         component={Groups}
         options={{
-          headerTitle: 'Your groups',
+          title: 'Your groups',
         }}
       />
       <Stack.Screen
         name="Invitations"
         component={Invitations}
         options={{
-          headerTitle: 'Group invitations',
+          title: 'Group invitations',
         }}
       />
       <Stack.Screen
         name="GroupDetails"
         component={GroupDetails}
         options={{
-          headerTitle: 'Group details',
+          title: 'Group details',
         }}
       />
     </Stack.Navigator>
