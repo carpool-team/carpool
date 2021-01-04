@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
@@ -10,11 +10,11 @@ import IRequestsItemProps from "../../interfaces/IRequestsItemProps";
 
 const geocodingClient = getGeocodingClient();
 
-interface IActiveItemRequestParticipantProps extends IRequestsItemProps {
+interface IActiveItemRequestOwnerProps extends IRequestsItemProps {
 	answerCallback: (requestId: string, accepted: boolean) => void;
 }
 
-const ActiveItemRequestParticipant = (props: IActiveItemRequestParticipantProps) => {
+const ActiveItemRequestOwner = (props: IActiveItemRequestOwnerProps) => {
 
 	const { t } = props;
 
@@ -80,9 +80,13 @@ const ActiveItemRequestParticipant = (props: IActiveItemRequestParticipantProps)
 		borderColor: props.color
 	};
 
-	if (!placeName && !loading && placeName !== undefined) {
+	useEffect(() => {
 		onGetName(parseCoords(props.request.ride.location));
-	}
+	}, [])
+
+	// if (!placeName && !loading && placeName !== undefined) {
+	// 	onGetName(parseCoords(props.request.ride.location));
+	// }
 	let fromName: string;
 	let toName: string;
 
@@ -149,4 +153,4 @@ const ActiveItemRequestParticipant = (props: IActiveItemRequestParticipantProps)
 	);
 };
 
-export default (ActiveItemRequestParticipant);
+export default (ActiveItemRequestOwner);

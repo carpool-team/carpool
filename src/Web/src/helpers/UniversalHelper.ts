@@ -1,5 +1,6 @@
 import { ILocation } from "../components/groups/interfaces/ILocation";
 import { getState } from "../store/Index";
+import moment from 'moment'
 
 export function isAuthorized(): boolean {
 	const res: boolean = Boolean(getState().auth?.tokenInfo?.token);
@@ -77,14 +78,6 @@ export const parseCoords: (coords: ILocation) => [number, number] = coords => {
 
 export const convertDate = (date: string) => {
 	if (date) {
-		let d = new Date(date);
-		let dateOutput =
-			d.getUTCFullYear() + "/" +
-			("0" + (d.getUTCMonth() + 1)).slice(-2) + "/" +
-			("0" + d.getUTCDate()).slice(-2) + " " +
-			("0" + d.getUTCHours()).slice(-2) + ":" +
-			("0" + d.getUTCMinutes()).slice(-2) + ":" +
-			("0" + d.getUTCSeconds()).slice(-2);
-		return dateOutput;
+		return moment(date).format('YYYY/MM/DD HH:mm');
 	}
 };
