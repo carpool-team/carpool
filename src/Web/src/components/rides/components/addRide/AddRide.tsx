@@ -94,7 +94,7 @@ const AddRide = (props: IAddRideFormScreenProps) => {
 	}, [groupSelected]);
 
 	const ride: IRide = {
-		rideId: "",
+		id: "",
 		owner: {
 			id: "",
 			firstName: "",

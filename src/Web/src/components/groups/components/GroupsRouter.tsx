@@ -39,6 +39,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 				.filter((r) => r.group.id === selGroupId);
 			rides = [...ridesOwned, ...ridesParticipated];
 		}
+		const ridesAvailable: IRide[] = this.props.callbacks.getRidesAvailable();
 		return (
 			<Suspense fallback={<LoaderSpinner />}>
 				<Switch>
@@ -68,7 +69,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 								/>
 							</Route>
 							<Route exact path={path + GroupsRouter.routes.rides}>
-								<GroupRides group={this.props.selectedGroup} rides={rides} />
+								<GroupRides group={this.props.selectedGroup} rides={ridesAvailable} />
 							</Route>
 						</>
 					) : null}

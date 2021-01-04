@@ -76,7 +76,7 @@ const DefaultItem = (props: IListItemProps) => {
 	}
 
 	return (
-		<li key={props.ride.rideId}>
+		<li key={props.ride.id}>
 			<button
 				className={cssClasses.button}
 				onClick={() => props.setRide(props.ride)}

@@ -3,9 +3,9 @@ import { withTranslation } from "react-i18next";
 import RidesListDefault from "./components/lists/RidesListDefault";
 import RidesListSchedule from "./components/lists/RidesListSchedule";
 import { RidesListType } from "./enums/RidesListType";
-import "./RidesList.scss"
 import RequestsListDefault from "./components/lists/RequestsListDefault";
 import { IListProps } from "./interfaces/IListProps";
+import "./RidesList.scss";
 
 const RidesList = (props: IListProps) => {
 
@@ -33,7 +33,6 @@ const RidesList = (props: IListProps) => {
 			requestSelected={props.requestSelected} requests={props.requests} setRequest={props.setRequest}
 		/>
 	);
-
 
 	const renderList = () => {
 		let list: JSX.Element;
@@ -68,7 +67,7 @@ const RidesList = (props: IListProps) => {
 			}
 		}
 		return list;
-	}
+	};
 
 	return (
 		renderList()

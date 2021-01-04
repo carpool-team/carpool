@@ -35,6 +35,9 @@ export enum RidesActionTypes {
 	GetRides = "RIDES_GET_RIDES",
 	GetRidesSuccess = "RIDES_GET_RIDES_SUCCESS",
 	GetRidesError = "RIDES_GET_RIDES_ERROR",
+	GetRidesAvailable = "RIDES_GET_RIDES_AVAILABLE",
+	GetRidesAvailableSuccess = "RIDES_GET_RIDES_AVAILABLE_SUCCESS",
+	GetRidesAvailableError = "RIDES_GET_RIDES_AVAILABLE_ERROR",
 	ParticipateInRide = "RIDES_PARTICIPATE_IN_RIDE",
 	ParticipateInRideSuccess = "RIDES_PARTICIPATE_IN_RIDE_SUCCESS",
 	ParticipateInRideError = "RIDES_PARTICIPATE_IN_RIDE_ERROR",
@@ -144,6 +147,21 @@ export interface IGetRidesActionError extends Action<RidesActionTypes.GetRidesEr
 	error: Error;
 }
 
+/** Action for getting available rides success */
+export interface IGetRidesAvailableAction extends Action<RidesActionTypes.GetRidesAvailable> {
+	groupId: string;
+}
+
+/** Action for getting available rides success */
+export interface IGetRidesAvailableActionSuccess extends Action<RidesActionTypes.GetRidesAvailableSuccess> {
+	rides: IRide[];
+}
+
+/** Action for getting available rides error */
+export interface IGetRidesAvailableActionError extends Action<RidesActionTypes.GetRidesAvailableError> {
+	error: Error;
+}
+
 /** Action for participating in ride */
 export interface IParticipateInRideAction extends Action<RidesActionTypes.ParticipateInRide> {
 	rideId: string;
@@ -189,6 +207,9 @@ export type RideAction =
 	IGetRidesAction
 	| IGetRidesActionSuccess
 	| IGetRidesActionError
+	| IGetRidesAvailableAction
+	| IGetRidesAvailableActionSuccess
+	| IGetRidesAvailableActionError
 	| IParticipateInRideAction
 	| IParticipateInRideActionSuccess
 	| IParticipateInRideActionError

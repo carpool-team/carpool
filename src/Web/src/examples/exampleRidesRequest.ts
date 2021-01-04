@@ -12,7 +12,7 @@ export const exampleRidesRequest: IRideRequest[] = [
 			lastName: "Doe"
 		},
 		ride: {
-			rideId: faker.random.alphaNumeric(32),
+			id: faker.random.alphaNumeric(32),
 			owner: {
 				id: faker.random.alphaNumeric(32),
 				firstName: "Maciej",
@@ -57,7 +57,7 @@ export const exampleRidesRequest: IRideRequest[] = [
 			lastName: "Doe"
 		},
 		ride: {
-			rideId: faker.random.alphaNumeric(32),
+			id: faker.random.alphaNumeric(32),
 			owner: {
 				id: faker.random.alphaNumeric(32),
 				firstName: "Maciej",

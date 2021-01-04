@@ -15,4 +15,3 @@ export interface IListProps extends IReactI18nProps {
 	lastDay?: string;
 	answerRequestCallback?: (requestId: string, accepted: boolean) => void;
 }
-

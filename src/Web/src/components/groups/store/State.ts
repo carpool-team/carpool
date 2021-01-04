@@ -16,4 +16,6 @@ export interface IGroupsState {
 	ridesOwnedPast: IRide[];
 	/** List of past rides participated by user */
 	ridesParticipatedPast: IRide[];
+	/** List of past rides available for user */
+	ridesAvailable: IRide[];
 }

@@ -19,7 +19,7 @@ import {
 	IGetRidesActionSuccess,
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
-	IParticipateInRideActionError, IAddGroupActionError, IAddRideAction, IAddInvitesAction, IApiErrorAction, GenericActionTypes, GenericAction
+	IParticipateInRideActionError, IAddGroupActionError, IAddRideAction, IAddInvitesAction, IApiErrorAction, GenericActionTypes, GenericAction, IGetRidesAvailableAction, IGetRidesAvailableActionSuccess, IGetRidesAvailableActionError
 } from "./Types";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -42,6 +42,7 @@ import { AddRideResponse } from "../api/addRide/AddRideResponse";
 import { AddInviteRequest } from "../api/addInvite/AddInviteRequest";
 import { IRedirectAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
+import { IGroupsState } from "./State";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -236,6 +237,66 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 		)
 	);
 
+const getRidesAvailableEpic: Epic<GroupsAction | RideAction> = (action$, state$) => action$.pipe(
+	ofType(RidesActionTypes.GetRidesAvailable),
+	switchMap(async (action: IGetRidesAvailableAction) => {
+		const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
+		if (action.groupId) {
+			const request: GetRidesRequest = new GetRidesRequest({
+				userId: uid,
+				groupId: action.groupId,
+			});
+			try {
+				const response: GetRidesResponse = await request.send();
+				const groupsState: IGroupsState = (state$.value.groups as IGroupsState);
+				const rideIds: string[] = groupsState.ridesOwned.map(r => r.id);
+				rideIds.push(...groupsState.ridesOwnedPast.map(r => r.id));
+				rideIds.push(...groupsState.ridesParticipated.map(r => r.id));
+				rideIds.push(...groupsState.ridesParticipatedPast.map(r => r.id));
+				// highly ineffective code
+				// todo: fix this
+				return {
+					error: response.isError ?? false,
+					rides: response.result?.filter(r => !rideIds.includes(r.id)) ?? [],
+				};
+			} catch (err) {
+				return {
+					error: true,
+					rides: [],
+				};
+			}
+		} else {
+			return {
+				error: false,
+				rides: [],
+			};
+		}
+	}),
+	mergeMap((response) => {
+		if (response.error) {
+			return [
+				<IGetRidesAvailableActionError>{
+					type: RidesActionTypes.GetRidesAvailableError,
+					error: null,
+				}
+			];
+		} else {
+			return [
+				<IGetRidesAvailableActionSuccess>{
+					type: RidesActionTypes.GetRidesAvailableSuccess,
+					rides: response.rides,
+				},
+			];
+		}
+	}),
+	catchError((err: Error) =>
+		of(<IGetRidesAvailableActionError>{
+			type: RidesActionTypes.GetRidesAvailableError,
+			error: err,
+		})
+	)
+);
+
 const participateInRideEpic: Epic<RideAction> = (action$) =>
 	action$.pipe(
 		ofType(RidesActionTypes.ParticipateInRide),
@@ -425,4 +486,5 @@ export const groupEpics = [
 	addRideEpic,
 	addInviteEpic,
 	apiErrorEpic,
+	getRidesAvailableEpic,
 ];

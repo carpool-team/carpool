@@ -21,9 +21,9 @@ const RidesListDefault = (props: IRidesListProps) => {
 	const [searchKey, setSearchKey] = useState(null);
 
 	const renderJoinItem = (color: string, ride: IRide) => {
-		if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
+		if (props.rideSelected && props.rideSelected.id === ride.id) {
 			return (
-				<React.Fragment key={ride.rideId}>
+				<React.Fragment key={ride.id}>
 					<ActiveItemJoin
 						ride={ride}
 						color={color}
@@ -34,7 +34,7 @@ const RidesListDefault = (props: IRidesListProps) => {
 			);
 		} else {
 			return (
-				<React.Fragment key={ride.rideId}>
+				<React.Fragment key={ride.id}>
 					<DefaultItem
 						ride={ride}
 						color={color}
@@ -47,9 +47,9 @@ const RidesListDefault = (props: IRidesListProps) => {
 	};
 
 	const renderDefaultItem = (color: string, ride: IRide) => {
-		if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
+		if (props.rideSelected && props.rideSelected.id === ride.id) {
 			return (
-				<React.Fragment key={ride.rideId}>
+				<React.Fragment key={ride.id}>
 					<ActiveItemDefault
 						ride={ride}
 						color={color}
@@ -60,7 +60,7 @@ const RidesListDefault = (props: IRidesListProps) => {
 			);
 		} else {
 			return (
-				<React.Fragment key={ride.rideId}>
+				<React.Fragment key={ride.id}>
 					<DefaultItem
 						ride={ride}
 						color={color}
@@ -85,7 +85,7 @@ const RidesListDefault = (props: IRidesListProps) => {
 			}
 		}
 		return item;
-	}
+	};
 
 	let colorIndex: number = 0;
 	const rides: IRide[] = props.rides;
