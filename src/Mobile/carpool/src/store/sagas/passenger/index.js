@@ -239,7 +239,7 @@ export function* resignFromRideAsync(action) {
   }
 }
 
-const passengerActions = [
+const passengerSagas = [
   takeLatest(actions.GetUsersRides.Trigger, getUsersRidesAsync),
   takeLatest(actions.GetUsersPastRides.Trigger, getUsersPastRidesAsync),
   takeLatest(
@@ -255,4 +255,4 @@ const passengerActions = [
   takeLatest(actions.ResignFromRide.PromiseTrigger, resignFromRideAsync),
 ];
 
-export default passengerActions;
+export default passengerSagas;

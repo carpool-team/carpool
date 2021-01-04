@@ -336,6 +336,7 @@ export function* acceptRideRequestAsync(action) {
       );
 
       yield put(actions.getDriversRideRequests());
+      yield put(actions.getDriversRides());
 
       yield call(resolvePromiseAction, action);
     }
@@ -377,6 +378,7 @@ export function* rejectRideRequestAsync(action) {
       );
 
       yield put(actions.getDriversRideRequests());
+      yield put(actions.getDriversRides());
 
       yield call(resolvePromiseAction, action);
     }
@@ -399,7 +401,7 @@ export function* rejectRideRequestAsync(action) {
   }
 }
 
-const accountSagas = [
+const driverSagas = [
   takeLatest(actions.GetDriversRides.Trigger, getDriversRidesAsync),
   takeLatest(actions.GetDriversPastRides.Trigger, getDriversPastRidesAsync),
   takeLatest(actions.DeleteRide.PromiseTrigger, deleteRideAsync),
@@ -419,4 +421,4 @@ const accountSagas = [
   takeLatest(actions.DeleteRegularRide.PromiseTrigger, deleteRegularRideAsync),
 ];
 
-export default accountSagas;
+export default driverSagas;
