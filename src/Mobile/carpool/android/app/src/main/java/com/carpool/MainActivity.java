@@ -1,4 +1,4 @@
-package com.carpool;
+package com.carpool.wmi;
 
 import com.facebook.react.ReactActivity;
 
