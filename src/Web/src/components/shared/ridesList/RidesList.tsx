@@ -16,7 +16,7 @@ const RidesList = (props: IListProps) => {
 		<RidesListSchedule listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} firstDay={props.firstDay} lastDay={props.lastDay} setRide={props.setRide} />
 	);
 	const renderDefaultList = () => (
-		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} />
+		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} joinRideCallback={props.joinRideCallback} />
 	);
 	const renderJoinList = () => (
 		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} />

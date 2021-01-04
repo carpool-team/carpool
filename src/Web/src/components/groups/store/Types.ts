@@ -3,6 +3,7 @@ import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRid
 import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
+import { ILocation } from "../interfaces/ILocation";
 import { IRide } from "../interfaces/IRide";
 
 export enum GenericActionTypes {
@@ -132,6 +133,8 @@ export interface IAddInvitesAction extends Action<InvitesActionTypes.AddInvites>
 //#region RIDES
 /** Action for getting rides */
 export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
+	refreshRidesAvailable?: boolean;
+	groupId?: string;
 }
 
 /** Action for getting rides success */
@@ -164,7 +167,8 @@ export interface IGetRidesAvailableActionError extends Action<RidesActionTypes.G
 
 /** Action for participating in ride */
 export interface IParticipateInRideAction extends Action<RidesActionTypes.ParticipateInRide> {
-	rideId: string;
+	ride: IRide;
+	location: ILocation;
 }
 
 /** Action for participating in ride success */

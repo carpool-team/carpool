@@ -27,7 +27,7 @@ const GroupInvite = (props: IGroupInviteProps) => {
 				users={users}
 				addUserToInvite={addUserCallback}
 				removeUser={removeUserCallback}
-				onConfirm={() => props.addInvitesCallback(props.group.id, users.map(u => u.appUserId))}
+				onConfirm={() => props.addInvitesCallback(props.group.groupId, users.map(u => u.appUserId))}
 				currentAppUserId={props.currentAppUserId}
 			/>
 		</GroupDetailedView>

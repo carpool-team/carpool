@@ -12,7 +12,7 @@ export const exampleRidesRequest: IRideRequest[] = [
 			lastName: "Doe"
 		},
 		ride: {
-			id: faker.random.alphaNumeric(32),
+			rideId: faker.random.alphaNumeric(32),
 			owner: {
 				id: faker.random.alphaNumeric(32),
 				firstName: "Maciej",
@@ -27,7 +27,7 @@ export const exampleRidesRequest: IRideRequest[] = [
 			},
 			rideDate: new Date(),
 			group: {
-				id: faker.random.number(32).toString(),
+				groupId: faker.random.number(32).toString(),
 				name: faker.random.word(),
 				userCount: faker.random.number({ min: 0, max: 20 }),
 				rideCount: faker.random.number({ min: 0, max: 20 }),
@@ -57,7 +57,7 @@ export const exampleRidesRequest: IRideRequest[] = [
 			lastName: "Doe"
 		},
 		ride: {
-			id: faker.random.alphaNumeric(32),
+			rideId: faker.random.alphaNumeric(32),
 			owner: {
 				id: faker.random.alphaNumeric(32),
 				firstName: "Maciej",
@@ -72,7 +72,7 @@ export const exampleRidesRequest: IRideRequest[] = [
 			},
 			rideDate: new Date(),
 			group: {
-				id: faker.random.number(32).toString(),
+				groupId: faker.random.number(32).toString(),
 				name: faker.random.word(),
 				userCount: faker.random.number({ min: 0, max: 20 }),
 				rideCount: faker.random.number({ min: 0, max: 20 }),

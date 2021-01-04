@@ -31,8 +31,8 @@ const FirstStep = (props: IGroupsListProps) => {
 			color: props.color
 		};
 		return (
-			<React.Fragment key={props.group.id}>
-				<li key={props.group.id}>
+			<React.Fragment key={props.group.groupId}>
+				<li key={props.group.groupId}>
 					<button
 						onClick={() => props.setGroup()}
 						className={buttonCssClass}

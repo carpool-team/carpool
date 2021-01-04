@@ -22,9 +22,9 @@ const RidesListSchedule = (props: IRidesListProps) => {
 
 	const renderOwnerItem = (color: string, ride: IRide, day: string) => {
 		if (moment(ride.rideDate).format("YYYY-MM-DD") === moment(day).format("YYYY-MM-DD")) {
-			if (props.rideSelected && props.rideSelected.id === ride.id) {
+			if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
 				return (
-					<React.Fragment key={ride.id}>
+					<React.Fragment key={ride.rideId}>
 						<ActiveItemOwner
 							ride={ride}
 							color={color}
@@ -35,7 +35,7 @@ const RidesListSchedule = (props: IRidesListProps) => {
 				);
 			} else {
 				return (
-					<React.Fragment key={ride.id}>
+					<React.Fragment key={ride.rideId}>
 						<DefaultItem
 							ride={ride}
 							color={color}
@@ -50,9 +50,9 @@ const RidesListSchedule = (props: IRidesListProps) => {
 
 	const renderParticipantItem = (color: string, ride: IRide, day: string) => {
 		if (moment(ride.rideDate).format("YYYY-MM-DD") === moment(day).format("YYYY-MM-DD")) {
-			if (props.rideSelected && props.rideSelected.id === ride.id) {
+			if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
 				return (
-					<React.Fragment key={ride.id}>
+					<React.Fragment key={ride.rideId}>
 						<ActiveItemParticipant
 							ride={ride}
 							color={color}
@@ -63,7 +63,7 @@ const RidesListSchedule = (props: IRidesListProps) => {
 				);
 			} else {
 				return (
-					<React.Fragment key={ride.id}>
+					<React.Fragment key={ride.rideId}>
 						<DefaultItem
 							ride={ride}
 							color={color}

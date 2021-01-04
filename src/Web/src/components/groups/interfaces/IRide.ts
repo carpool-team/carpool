@@ -5,7 +5,7 @@ import { RideDirection } from "../api/addRide/AddRideRequest";
 
 /** Ride interface */
 export interface IRide {
-	id: string;
+	rideId: string;
 	rideDate: Date;
 	date?: string;
 	rideDirection: RideDirection;

@@ -6,8 +6,8 @@ import ResponseCore from "../responses/ResponseCore";
 import RequestBody from "./RequestBody";
 
 export const tempCoords = {
-	latitude: 0,
-	longitude: 0,
+	latitude: 52.408141,
+	longitude: 16.926712,
 };
 
 export default abstract class RequestCore {

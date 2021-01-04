@@ -86,7 +86,7 @@ const ActiveItemParticipant = (props: IListItemProps) => {
 	}
 
 	return (
-		<li className={cssClasses.activeContainer} key={props.ride.id}>
+		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
 			<div className={cssClasses.activeButtonContainer} >
 				<div className={cssClasses.mainRow} style={borderColor}>
 					<div className={cssClasses.icon} style={color}>	</div>

@@ -1,7 +1,7 @@
 import { ILocation } from "./ILocation";
 
 export interface IGroupBase {
-	id: string;
+	groupId: string;
 	location: ILocation;
 	rideCount: number;
 	name: string;

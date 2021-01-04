@@ -4,6 +4,7 @@ import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroup
 import { IAddGroupAction, IAddInvitesAction, IAddRideAction, IAnswerInviteAction, IParticipateInRideAction } from "../store/Types";
 import { IGroup } from "./IGroup";
 import { IInvite } from "./IInvite";
+import { ILocation } from "./ILocation";
 import { IRide } from "./IRide";
 
 /** Callbacks interface for groups */
@@ -17,6 +18,6 @@ export interface IGroupCallbacks {
 	redirect: (route: string) => void;
 	getRides: (owned: boolean) => IRide[];
 	getRidesAvailable: () => IRide[];
-	participateInRide: (rideId: string) => IParticipateInRideAction;
+	participateInRide: (ride: IRide, location: ILocation) => IParticipateInRideAction;
 	setGroupSelected: (id: string) => void;
 }

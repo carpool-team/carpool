@@ -17,6 +17,7 @@ import {
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
+import { ILocation } from "../interfaces/ILocation";
 
 //#region GROUPS
 export function addGroup(group: IFormGroupData): IAddGroupAction {
@@ -89,10 +90,11 @@ export function getRidesAvailableError(error: Error): IGetRidesAvailableActionEr
 	};
 }
 
-export function participateInRide(rideId: string): IParticipateInRideAction {
+export function participateInRide(ride: IRide, location: ILocation): IParticipateInRideAction {
 	return {
 		type: RidesActionTypes.ParticipateInRide,
-		rideId,
+		ride,
+		location,
 	};
 }
 

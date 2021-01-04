@@ -8,7 +8,7 @@ interface IGroupEditProps extends IGroupDetailedViewProps { }
 const GroupEdit = (props: IGroupEditProps) => {
 	return (
 		<GroupDetailedView group={props.group} rides={props.rides}>
-			GroupEdit: {props.group.id}
+			GroupEdit: {props.group.groupId}
 		</GroupDetailedView>
 	);
 };

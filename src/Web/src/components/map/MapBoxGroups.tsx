@@ -77,8 +77,8 @@ export default class MapBoxGroups extends React.Component<
 			);
 		}
 
-		if (this.props.group?.id !== this.currentGroupId) {
-			this.currentGroupId = this.props.group?.id;
+		if (this.props.group?.groupId !== this.currentGroupId) {
+			this.currentGroupId = this.props.group?.groupId;
 			if (this.props.group) {
 				this.setState(
 					produce((draft: IMapState) => {
@@ -138,7 +138,7 @@ export default class MapBoxGroups extends React.Component<
 			zoom: [14],
 		});
 
-		this.props.setSelectedGroupCallback(group.id);
+		this.props.setSelectedGroupCallback(group.groupId);
 	}
 
 	public render() {
@@ -193,7 +193,7 @@ export default class MapBoxGroups extends React.Component<
 
 						return (
 							<Marker
-								key={g.id}
+								key={g.groupId}
 								coordinates={parseCoords(g.location)}
 								anchor="bottom"
 								onClick={this.markerClick.bind(this, g)}
@@ -205,7 +205,7 @@ export default class MapBoxGroups extends React.Component<
 
 					{group && (
 						<Popup
-							key={group.id}
+							key={group.groupId}
 							coordinates={parseCoords(group.location)}
 						>
 							<div style={nameStyle}>{group.name}</div>

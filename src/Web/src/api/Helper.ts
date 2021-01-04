@@ -51,8 +51,6 @@ export const getRequestEndpoint: (
 				return `/users/${queries.userId}/rides`;
 			case RequestEndpoint.GET_RIDES_BY_GROUP_ID:
 				return `/groups/${queries.groupId}/rides`;
-			case RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT:
-				return `/rides/${queries?.rideId}/users`;
 			case RequestEndpoint.POST_RIDE:
 				return "/rides/";
 			case RequestEndpoint.POST_RIDE_RECURRING:

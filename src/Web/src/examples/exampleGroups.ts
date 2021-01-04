@@ -4,7 +4,7 @@ import { IGroup } from "../components/groups/interfaces/IGroup";
 
 const exampleGroups: IGroup[] = [
 	{
-		id: faker.random.number(32).toString(),
+		groupId: faker.random.number(32).toString(),
 		name: faker.random.word(),
 		// code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({ min: 0, max: 20 }),
@@ -16,7 +16,7 @@ const exampleGroups: IGroup[] = [
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 	{
-		id: faker.random.number(32).toString(),
+		groupId: faker.random.number(32).toString(),
 		name: faker.random.word(),
 		// code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({ min: 0, max: 20 }),
@@ -28,7 +28,7 @@ const exampleGroups: IGroup[] = [
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 	{
-		id: faker.random.number(32).toString(),
+		groupId: faker.random.number(32).toString(),
 		name: faker.random.word(),
 		// code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({ min: 0, max: 20 }),
@@ -40,7 +40,7 @@ const exampleGroups: IGroup[] = [
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 	{
-		id: faker.random.number(32).toString().toString(),
+		groupId: faker.random.number(32).toString().toString(),
 		name: faker.random.word(),
 		// code: faker.random.alphaNumeric(3),
 		userCount: faker.random.number({ min: 0, max: 20 }),

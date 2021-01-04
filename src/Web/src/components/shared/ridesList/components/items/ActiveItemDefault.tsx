@@ -3,6 +3,8 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
+import Button from "../../../../ui/buttonSmall/ButtonSmall";
+import { tempCoords } from "../../../../../api/requests/RequestCore";
 
 const geocodingClient = getGeocodingClient();
 
@@ -83,7 +85,7 @@ const ActiveItemDefault = (props: IListItemProps) => {
 	}
 
 	return (
-		<li className={cssClasses.activeContainer} key={props.ride.id}>
+		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
 			<div className={cssClasses.activeButtonContainer}>
 				<div className={cssClasses.mainRow} style={borderColor}>
 					<div className={cssClasses.icon} style={color}>
@@ -113,6 +115,12 @@ const ActiveItemDefault = (props: IListItemProps) => {
 						{props.ride.owner.vehicle}
 					</div>
 					<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
+					{props.joinRideCallback ?
+						// TODO: LEGIT COORDS
+						<Button onClick={() => props.joinRideCallback(props.ride, tempCoords)}>
+							DOŁĄCZ
+						</Button>
+						: null}
 				</div>
 			</div>
 		</li>
