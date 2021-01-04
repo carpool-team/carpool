@@ -10,7 +10,7 @@ const PassengersRideRequests = ({data, loading, onRefresh}) => (
     data={data}
     style={styles.flatlist}
     contentContainerStyle={styles.contentContainer}
-    keyExtractor={(item, index) => item.ride.rideId + index}
+    keyExtractor={(item, index) => (item.ride.rideId + index).toString()}
     renderItem={({item}) => <ListItem item={item} />}
     refreshControl={
       <RefreshControl
