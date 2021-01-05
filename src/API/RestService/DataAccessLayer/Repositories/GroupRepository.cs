@@ -26,6 +26,7 @@ namespace DataAccessLayer.Repositories
 			                     //.Include(group => group.Rides)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
+			                     .Include(group => group.UserGroups)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
 		}
