@@ -30,6 +30,12 @@ export const styles = StyleSheet.create({
     color: colors.grayVeryDark,
   },
   picker: {
-    marginTop: 40,
+    marginTop: 20,
+  },
+  sectionTitle: {
+    marginBottom: 24,
+    ...sheet.textMedium,
+    color: colors.grayDark,
+    fontSize: 16,
   },
 });

@@ -227,6 +227,15 @@ export function* createRegularRideAsync(action) {
     const token = yield select(state => state.authReducer.tokens.data.token);
     const userId = jwt_decode(token).sub.toString();
 
+    const startDate = moment().format();
+
+    const endDate = moment()
+      .set('hours', 0)
+      .set('minutes', 0)
+      .set('seconds', 0)
+      .add(action.payload.weeks, 'weeks')
+      .format();
+
     if (token) {
       const res = yield instance.post(
         '/Rides/recurring',
@@ -234,17 +243,8 @@ export function* createRegularRideAsync(action) {
           ...action.payload,
           ownerId: userId,
           price: 0,
-          startDate: moment()
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0)
-            .toISOString(),
-          endDate: moment()
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0)
-            .add(1, 'months')
-            .toISOString(),
+          startDate,
+          endDate,
         },
         {
           headers: {
