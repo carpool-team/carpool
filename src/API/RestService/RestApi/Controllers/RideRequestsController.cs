@@ -2,6 +2,7 @@
 using AutoWrapper.Wrappers;
 using DataTransferObjects.RideRequest;
 using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -57,6 +58,16 @@ namespace RestApi.Controllers
 				updateRideRequestDto.IsAccepted,
 				User.GetUserId());
 			
+			await _mediator.Send(request);
+
+			return new ApiResponse(StatusCodes.Status204NoContent);
+		}
+
+		[HttpDelete("{rideRequestId}")]
+		public async Task<ApiResponse> ResignRideRequest([FromRoute] RideRequestId rideRequestId)
+		{
+			ResignRideRequestCommand request = new(User.GetUserId(), rideRequestId);
+
 			await _mediator.Send(request);
 
 			return new ApiResponse(StatusCodes.Status204NoContent);
