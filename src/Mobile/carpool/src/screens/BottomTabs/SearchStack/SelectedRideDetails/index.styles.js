@@ -38,4 +38,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 24,
   },
+  driverWrapper: {
+    ...sheet.rowCenter,
+    padding: 16,
+  },
+  driver: {
+    ...sheet.textMedium,
+    color: colors.grayVeryDark.slic,
+    fontSize: 18,
+    marginLeft: 16,
+  },
 });

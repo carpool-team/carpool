@@ -9,6 +9,7 @@ import {StandardButton} from '../../../../components/common/buttons';
 import {styles} from './index.styles';
 import * as actions from '../../../../store/actions';
 import {useDispatch} from 'react-redux';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const SelectedRideDetails = ({navigation, route}) => {
   const {data, ride} = route.params;
@@ -21,6 +22,8 @@ const SelectedRideDetails = ({navigation, route}) => {
       headerLeft: () => <GoBack onPress={navigation.goBack} />,
     });
   }, []);
+
+  console.log(ride);
 
   const onSelect = () => {
     setLoading(true);
@@ -93,6 +96,16 @@ const SelectedRideDetails = ({navigation, route}) => {
             location={{coordinates: ride.location}}
             swap={ride.rideDirection}
           />
+        </View>
+        <View style={styles.driverWrapper}>
+          <FontAwesomeIcon
+            name="drivers-license"
+            color={colors.grayDark}
+            size={32}
+          />
+          <Text style={styles.driver}>{`${ride.owner.firstName} ${
+            ride.owner.lastName
+          }`}</Text>
         </View>
       </ScrollView>
       <View style={styles.buttonWrapper}>
