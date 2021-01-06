@@ -259,9 +259,14 @@ export function* deleteAccountAsync(action) {
 export function* leaveGroupAsync(action) {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
+    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      // yield instance.put(..., action.payload)
+      yield instance.delete(`/Groups/${action.payload}/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       yield put(actions.getGroups());
 

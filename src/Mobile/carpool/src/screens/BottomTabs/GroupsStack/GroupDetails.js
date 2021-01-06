@@ -64,9 +64,25 @@ const GroupDetails = ({navigation, route}) => {
           text: 'Leave group',
           style: 'destructive',
           onPress: () => {
-            dispatch(actions.leaveGroup(group.groupId)).then(() => {
-              navigation.goBack();
-            });
+            dispatch(actions.leaveGroup(group.groupId))
+              .then(() => {
+                navigation.goBack();
+              })
+              .catch(err => {
+                // Soon to be 403
+                if (err.status === 406) {
+                  Alert.alert(
+                    'Warning!',
+                    'You cannot leave your own group. To delete one of your groups go to https://carpool.com.pl',
+                    [
+                      {
+                        text: 'Ok',
+                        style: 'default',
+                      },
+                    ],
+                  );
+                }
+              });
           },
         },
       ],

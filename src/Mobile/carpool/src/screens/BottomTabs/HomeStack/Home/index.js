@@ -59,6 +59,7 @@ const Home = () => {
     dispatch(actions.getDriversRides());
     dispatch(actions.getUsersRides());
     dispatch(actions.getGroups());
+    dispatch(actions.getInvitations());
 
     dispatch(actions.getUser());
 

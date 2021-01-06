@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {View, Text, ActivityIndicator} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/native';
 import {RideDetailsCard} from '../../Ride';
@@ -8,7 +8,8 @@ import {ListEmptyComponent} from '../../common/lists';
 import {ThreeGroupsList} from '../../Groups';
 import {styles} from './index.styles';
 import {SafeScroll} from '../../common/wrappers';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import NewInvitations from '../NewInvitations';
+import PendingRideRequest from '../PendingRideRequests';
 
 const DriversHome = () => {
   const navigation = useNavigation();
@@ -19,6 +20,11 @@ const DriversHome = () => {
   const requestsCount = useSelector(store =>
     store.driverReducer.rideRequests.data
       ? store.driverReducer.rideRequests.data.length
+      : 0,
+  );
+  const invitationCount = useSelector(store =>
+    store.accountReducer.invitations.data
+      ? store.accountReducer.invitations.data.length
       : 0,
   );
 
@@ -33,22 +39,18 @@ const DriversHome = () => {
       screen: 'RideRequests',
     });
 
+  const onInvitationsPress = () =>
+    navigation.navigate('GroupsStack', {
+      screen: 'Invitations',
+    });
+
   const onAllRidesPress = () => navigation.navigate('RidesStack');
 
   const onAllGroupsPress = () => navigation.navigate('GroupsStack');
 
   return (
-    <SafeScroll minHeight={600}>
-      {!!requestsCount && (
-        <TouchableOpacity
-          onPress={onRideRequestsPress}
-          style={styles.topButton}>
-          <Text style={styles.count}>{`${requestsCount} pending ride request${
-            requestsCount > 1 ? 's' : ''
-          }`}</Text>
-          <MaterialIcon name="add-location" color={colors.green} size={32} />
-        </TouchableOpacity>
-      )}
+    <SafeScroll minHeight={700}>
+      <PendingRideRequest count={requestsCount} onPress={onRideRequestsPress} />
       <View style={styles.container}>
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Upcoming ride</Text>
@@ -75,6 +77,7 @@ const DriversHome = () => {
             <ListEmptyComponent title="You don't have any upcoming rides" />
           )}
         </View>
+        <NewInvitations count={invitationCount} onPress={onInvitationsPress} />
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Your groups</Text>
           <Text onPress={onAllGroupsPress} style={styles.seeAll}>

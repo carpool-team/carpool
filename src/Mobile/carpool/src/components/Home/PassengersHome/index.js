@@ -8,6 +8,7 @@ import {ListEmptyComponent} from '../../common/lists';
 import {ThreeGroupsList} from '../../Groups';
 import {styles} from './index.styles';
 import {SafeScroll} from '../../common/wrappers';
+import NewInvitations from '../NewInvitations';
 
 const PassengersHome = () => {
   const navigation = useNavigation();
@@ -15,6 +16,11 @@ const PassengersHome = () => {
 
   const userRides = useSelector(state => state.passengerReducer.userRides);
   const groups = useSelector(store => store.accountReducer.groups);
+  const invitationCount = useSelector(store =>
+    store.accountReducer.invitations.data
+      ? store.accountReducer.invitations.data.length
+      : 0,
+  );
 
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => true);
@@ -28,6 +34,11 @@ const PassengersHome = () => {
       setRide(userRides.data[0]);
     }
   }, [userRides]);
+
+  const onInvitationsPress = () =>
+    navigation.navigate('GroupsStack', {
+      screen: 'Invitations',
+    });
 
   return (
     <SafeScroll minHeight={500}>
@@ -59,6 +70,7 @@ const PassengersHome = () => {
             <ListEmptyComponent title="You don't have any upcoming rides" />
           )}
         </View>
+        <NewInvitations count={invitationCount} onPress={onInvitationsPress} />
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Your groups</Text>
           <Text
