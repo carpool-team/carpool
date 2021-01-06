@@ -26,7 +26,7 @@ namespace RestApi.DTOs.Ride
 		[JsonProperty("seatsLimit")]byte SeatsLimit,
 		[JsonProperty("recurringRideId")]RecurringRideId? RecurringRideId);
 
-	public record RideRequestRideDto([JsonProperty("rideId")] RideId RideId,
+	public record RideRequestRideDto([JsonProperty("rideId")] RideId Id,
 		[JsonProperty("date")] DateTime Date,
 		[JsonProperty("location")] LocationDto Location,
 		[JsonProperty("group")] MinimalGroupDto Group,

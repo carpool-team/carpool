@@ -20,7 +20,6 @@ namespace AuthServer.Models
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string Password { get; set; }
-		public string ConfirmPassword { get; set; }
 	}
 
 	public class RegisterModelValidator : AbstractValidator<RegisterModel>
@@ -32,11 +31,8 @@ namespace AuthServer.Models
 
 			RuleFor(x => x.FirstName).NotEmpty().WithMessage("First name cannot be empty.");
 			RuleFor(x => x.LastName).NotEmpty().WithMessage("Last name cannot be empty.");
-			RuleFor(x => x.ConfirmPassword).NotEmpty().WithMessage("Confirm password cannot be empty.");
-			
 			RuleFor(x => x.Password).MinimumLength(8).WithMessage("Password is too short.")
-			                        .Matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$").WithMessage("Password does not satisfy rules ")
-			                        .Equal(a => a.ConfirmPassword).WithMessage("Passwords don't match.");
+			                        .Matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$").WithMessage("Password does not satisfy rules ");
 		}
 	}
 }

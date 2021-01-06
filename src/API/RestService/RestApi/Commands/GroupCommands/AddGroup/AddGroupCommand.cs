@@ -9,7 +9,9 @@ using Domain.Contracts.Repositories;
 using Domain.Entities;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;
+using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
+using IdGen;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -54,18 +56,17 @@ namespace RestApi.Commands.GroupCommands.AddGroup
 				throw new ApiProblemDetailsException($"ApplicationUser with id {request.OwnerId} does not exist.",
 					StatusCodes.Status404NotFound);
 
-			var group = new Group 
-			{
-				Name = request.Name, 
-				Code = request.Code,
-				OwnerId = request.OwnerId,
-			};
+			IdGenerator idGenerator = new(IdGeneratorType.Group);
+			var groupId = new GroupId(idGenerator.CreateId());
 
-			group.Location = request.Location ?? throw new ApiException("Group location cannot be empty");
-
+			var group = Group.CreateGroupWithOwner(groupId,
+				request.Name,
+				request.Code,
+				request.OwnerId,
+				request.Location);
+			
 			await _groupRepository.AddAsync(group, cancellationToken).ConfigureAwait(false);
 
-			group.UserGroups = new List<UserGroup>() {new UserGroup(request.OwnerId, group.Id)};
 			try
 			{
 				await _unitOfWork.SaveAsync(cancellationToken).ConfigureAwait(false);

@@ -5,7 +5,7 @@ import { IGroup } from "../groups/interfaces/IGroup";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
-import { parseCoords } from "../../helpers/UniversalHelper";
+import { compareArrays, parseCoords } from "../../helpers/UniversalHelper";
 import { getDefaultBounds, getGeocodingClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
@@ -56,7 +56,7 @@ export default class MapBoxGroups extends React.Component<
 
 	componentDidMount() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
-		if (groups && this.state.groups !== groups) {
+		if (groups && compareArrays(this.state.groups, groups) === false) {
 			this.getBounds(groups);
 			this.setState(
 				produce((draft: IMapState) => {
@@ -68,7 +68,7 @@ export default class MapBoxGroups extends React.Component<
 
 	componentDidUpdate() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
-		if (groups && this.state.groups !== groups) {
+		if (groups && compareArrays(this.state.groups, groups) === false) {
 			this.getBounds(groups);
 			this.setState(
 				produce((draft: IMapState) => {

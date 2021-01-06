@@ -1,5 +1,6 @@
 import { ILocation } from "../components/groups/interfaces/ILocation";
 import { getState } from "../store/Index";
+import moment from "moment";
 
 export function isAuthorized(): boolean {
 	const res: boolean = Boolean(getState().auth?.tokenInfo?.token);
@@ -77,14 +78,29 @@ export const parseCoords: (coords: ILocation) => [number, number] = coords => {
 
 export const convertDate = (date: string) => {
 	if (date) {
-		let d = new Date(date);
-		let dateOutput =
-			d.getUTCFullYear() + "/" +
-			("0" + (d.getUTCMonth() + 1)).slice(-2) + "/" +
-			("0" + d.getUTCDate()).slice(-2) + " " +
-			("0" + d.getUTCHours()).slice(-2) + ":" +
-			("0" + d.getUTCMinutes()).slice(-2) + ":" +
-			("0" + d.getUTCSeconds()).slice(-2);
-		return dateOutput;
+		return moment(date).format("YYYY/MM/DD HH:mm");
 	}
+};
+
+export const compareArrays: (array1: Array<any>, array2: Array<any>) => boolean = (array1, array2) => {
+	// if the other array is a falsy value, return
+	if (!array2)
+		return false;
+
+	// compare lengths - can save a lot of time
+	if (array1.length !== array2.length)
+		return false;
+
+	for (let i = 0, l = array1.length; i < l; i++) {
+		// Check if we have nested arrays
+		if (array1[i] instanceof Array && array2[i] instanceof Array) {
+			// recurse into the nested arrays
+			if (!array1[i].equals(array2[i]))
+				return false;
+		} else if (array1[i] !== array2[i]) {
+			// Warning - two different object instances will never be equal: {x:20} != {x:20}
+			return false;
+		}
+	}
+	return true;
 };

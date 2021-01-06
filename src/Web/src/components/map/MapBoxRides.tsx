@@ -20,8 +20,8 @@ export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
 	ride: IRide;
 	route: any;
-	fromName: string
-	toName: string
+	fromName: string;
+	toName: string;
 }
 
 const flyToOptions = {
@@ -92,24 +92,24 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					this.setState(
 						produce((draft: IMapState) => {
 							if (this.props.ride.rideDirection === RideDirection.To) {
-								draft.toName = res
+								draft.toName = res;
 							} else {
-								draft.fromName = res
+								draft.fromName = res;
 							}
 						})
 					);
-				})
+				});
 				onGetName(parseCoords(this.props.ride.group.location)).then(res => {
 					this.setState(
 						produce((draft: IMapState) => {
 							if (this.props.ride.rideDirection === RideDirection.To) {
-								draft.fromName = res
+								draft.fromName = res;
 							} else {
-								draft.toName = res
+								draft.toName = res;
 							}
 						})
 					);
-				})
+				});
 			}
 			this.onFindRoute(this.props.ride);
 			this.setState(produce((draft: IMapState) => {

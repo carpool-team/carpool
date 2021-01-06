@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./NavBar.scss";
 import NavButton from "./navButton/NavButton";
 import { ButtonColor } from "./navButton/enums/ButtonColor";
@@ -12,9 +12,9 @@ import { connect } from "react-redux";
 import { logout } from "../auth/store/Actions";
 import { IAuthState } from "../auth/store/State";
 import { ITokenInfo } from "../auth/interfaces/ITokenInfo";
-import { Link } from "react-router-dom";
 import App from "../../App";
 import { rideRoutes } from "../rides/RidesRouter";
+import { Link } from "react-router-dom";
 
 interface IStatePropsType {
 	auth: IAuthState;
@@ -94,7 +94,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 
 	private renderAccountContainer = () => {
 		const { t } = this.props;
-		console.log("TOKEN INFO: ", this.props.tokenInfo);
+		// console.log("TOKEN INFO: ", this.props.tokenInfo);
 		if (!this.props.tokenInfo?.token) { // unathorized
 			return (
 				<div className={this.cssClasses.navBarAccountContainer}>
@@ -102,7 +102,6 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						color={ButtonColor.Gray}
 						background={ButtonBackground.None}
 						icon={ButtonIcon.User}
-						onClick={() => { }}
 						to={`/${mainRoutes.login}`}
 					>
 						<span>
@@ -113,7 +112,6 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 					<NavButton
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}
-						onClick={() => { }}
 						to={`/${mainRoutes.register}`}
 					>
 						{t(this.resources.register)}
@@ -127,7 +125,6 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						color={ButtonColor.Gray}
 						background={ButtonBackground.None}
 						icon={ButtonIcon.User}
-						onClick={() => { }}
 						to={`/${mainRoutes.profile}`}
 					>
 						<span>
@@ -199,5 +196,5 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		);
 	}
 }
-
+/* istanbul ignore next */
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NavBar));
