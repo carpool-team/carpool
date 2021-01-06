@@ -84,6 +84,10 @@ const ActiveItemDefault = (props: IListItemProps) => {
 		}
 	}
 
+	const resources = {
+		joinBtnLabel: "common.joinRide",
+	};
+
 	return (
 		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
 			<div className={cssClasses.activeButtonContainer}>
@@ -118,7 +122,7 @@ const ActiveItemDefault = (props: IListItemProps) => {
 					{props.joinRideCallback ?
 						// TODO: LEGIT COORDS
 						<Button onClick={() => props.joinRideCallback(props.ride, tempCoords)}>
-							DOŁĄCZ
+							{props.t(resources.joinBtnLabel)}
 						</Button>
 						: null}
 				</div>
