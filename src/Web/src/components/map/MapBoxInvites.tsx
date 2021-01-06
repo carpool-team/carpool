@@ -6,7 +6,7 @@ import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { getDefaultBounds, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
-import { parseCoords } from "../../helpers/UniversalHelper";
+import { compareArrays, parseCoords } from "../../helpers/UniversalHelper";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 2,
@@ -53,7 +53,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	componentDidMount() {
 		const invites: IInvite[] = this.props.getInvitesCallback();
-		if (invites && this.state.invites !== invites) {
+		if (invites && compareArrays(this.state.invites, invites) === false) {
 			this.getBounds(invites);
 			this.setState(
 				produce((draft: IMapState) => {
@@ -64,8 +64,8 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	}
 
 	componentDidUpdate() {
-		const invites: IInvite[] = this.props.getInvitesCallback()
-		if (invites && this.state.invites !== invites) {
+		const invites: IInvite[] = this.props.getInvitesCallback();
+		if (invites && compareArrays(this.state.invites, invites) === false) {
 			this.getBounds(invites);
 			this.setState(produce((draft: IMapState) => {
 				draft.invites = invites;
@@ -84,12 +84,12 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 				onGetName(parseCoords(this.props.invite.groupDto.location)).then(res => {
 					this.setState(
 						produce((draft: IMapState) => {
-							draft.inviteAddress = res
+							draft.inviteAddress = res;
 						})
 					);
-				})
+				});
 			} else if (this.state.invites) {
-				this.getBounds(invites)
+				this.getBounds(invites);
 			}
 		}
 
