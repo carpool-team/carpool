@@ -169,6 +169,10 @@
             "loginGeneric": "Błąd logowania. Spróbuj ponownie!",
             "registerGeneric": "Nieznany błąd rejestracji.",
             "loginInvalid": "Błędny e-mail lub hasło."
+        },
+        "mapbox": {
+            "fromLabel": "Lokalizacja początkowa",
+            "toLabel": "Lokalizacja końcowa"
         }
     }
 }

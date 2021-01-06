@@ -7,6 +7,8 @@ import { IRide } from "components/groups/interfaces/IRide";
 import { RideDirection } from "../groups/api/addRide/AddRideRequest";
 import { parseCoords } from "../../helpers/UniversalHelper";
 import { getDefaultBounds, getDirectionsClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
+import { IReactI18nProps } from "../system/resources/IReactI18nProps";
+import { withTranslation } from "react-i18next";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 2,
@@ -35,13 +37,12 @@ const defaults = {
 	toName: null,
 };
 
-export interface IMapProps {
+export interface IMapProps extends IReactI18nProps {
 	onStyleLoad?: (map: any) => any;
 	ride: IRide;
 }
 
-export default class MapBoxGroups extends React.Component<IMapProps, IMapState> {
-
+class MapBoxRides extends React.Component<IMapProps, IMapState> {
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
@@ -49,6 +50,12 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			...defaults,
 		};
 	}
+
+	private resources = {
+		toLabel: "mapbox.toLabel",
+		fromLabel: "mapbox.fromLabel"
+	};
+
 	private onFindRoute = async (ride: IRide) => {
 		try {
 			if (!ride) {
@@ -181,6 +188,10 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			]
 		};
 
+		const { t } = this.props;
+		const toLabel: string = t(this.resources.toLabel);
+		const fromLabel: string = t(this.resources.fromLabel);
+
 		return (
 			<Mapbox
 				style={mapboxStyle}
@@ -201,13 +212,13 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 					<>
 						<Popup coordinates={parseCoords(ride.group?.location)}>
 							<div style={nameStyle}>
-								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "początkowa" : "końcowa"}`}
+								{ride.rideDirection === RideDirection.To ? fromLabel : toLabel}
 							</div>
 							<div style={addressStyle}>{ride.rideDirection === RideDirection.To ? fromName : toName}</div>
 						</Popup>
 						<Popup coordinates={parseCoords(ride.location)}>
 							<div style={nameStyle}>
-								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "końcowa" : "początkowa"}`}
+								{ride.rideDirection === RideDirection.To ? toLabel : fromLabel}
 							</div>
 							<div style={addressStyle}>{ride.rideDirection === RideDirection.To ? toName : fromName}</div>
 						</Popup>
@@ -216,3 +227,5 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			</Mapbox>);
 	}
 }
+
+export default withTranslation()(MapBoxRides);
