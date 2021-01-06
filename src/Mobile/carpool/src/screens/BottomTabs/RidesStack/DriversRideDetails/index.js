@@ -1,25 +1,27 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   SafeAreaView,
   TouchableOpacity,
-  StyleSheet,
   Alert,
   ScrollView,
 } from 'react-native';
-import {colors, sheet} from '../../../styles';
-import {RouteMinimap} from '../../../components/Route';
+import {colors} from '../../../../styles';
+import {RouteMinimap} from '../../../../components/Route';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {GroupWaypoints} from '../../../components/Ride';
+import {GroupWaypoints} from '../../../../components/Ride';
 import moment from 'moment';
-import PassengersList from '../../../components/Driver/PassengersList';
-import * as actions from '../../../store/actions';
+import PassengersList from '../../../../components/Driver/PassengersList';
+import * as actions from '../../../../store/actions';
 import {useDispatch} from 'react-redux';
-import {GoBack, Header} from '../../../components/navigation';
+import {GoBack, Header} from '../../../../components/navigation';
+import {sortStops} from '../../../../utils/sortStops';
+import {styles} from './index.styles';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
+  const [stops, setStops] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -32,6 +34,18 @@ const DriversRideDetails = ({navigation, route}) => {
       title: ride.recurringRideId ? 'Regular ride' : 'Single ride',
     });
   }, []);
+
+  useEffect(() => {
+    if (ride) {
+      setStops(
+        sortStops(
+          ride.location,
+          ride.group.location,
+          ride.stops.map(item => item.location),
+        ).map(item => ({coordinates: item})),
+      );
+    }
+  }, [ride]);
 
   const onDeletePress = () => {
     if (ride.recurringRideId) {
@@ -137,20 +151,12 @@ const DriversRideDetails = ({navigation, route}) => {
         style={styles.scrollView}
         contentContainerStyle={styles.container}>
         <View style={styles.mapWrapper}>
-          <RouteMinimap
-            stops={
-              ride.rideDirection
-                ? [
-                    {coordinates: ride.group.location},
-                    {coordinates: ride.location},
-                  ]
-                : [
-                    {coordinates: ride.location},
-                    {coordinates: ride.group.location},
-                  ]
-            }
-            hideDetails={past}
-          />
+          {!!stops && (
+            <RouteMinimap
+              stops={ride.rideDirection ? stops.reverse() : stops}
+              showDetails={!past}
+            />
+          )}
         </View>
         <View style={styles.bottomWrapper}>
           <View style={styles.waypoints}>
@@ -168,60 +174,5 @@ const DriversRideDetails = ({navigation, route}) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  scrollView: {
-    flex: 1,
-    width: '100%',
-  },
-  container: {
-    paddingBottom: 30,
-  },
-  topRow: {
-    paddingHorizontal: 16,
-    paddingVertical: 24,
-    ...sheet.rowCenterSplit,
-  },
-  time: {
-    ...sheet.textMedium,
-    fontSize: 24,
-    color: colors.blue,
-  },
-  date: {
-    ...sheet.textMedium,
-    fontSize: 16,
-    color: colors.grayDark,
-    marginTop: 5,
-  },
-  moreIcon: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  mapWrapper: {
-    height: 300,
-  },
-  waypoints: {
-    paddingTop: 16,
-    paddingBottom: 24,
-    paddingHorizontal: 16,
-  },
-  bottomWrapper: {
-    flex: 1,
-    paddingVertical: 8,
-  },
-  upView: {
-    width: '46%',
-    height: 100,
-  },
-  passengersList: {
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderTopColor: colors.gray,
-  },
-});
 
 export default DriversRideDetails;

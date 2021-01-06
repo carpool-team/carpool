@@ -1,25 +1,27 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   SafeAreaView,
-  StyleSheet,
   ScrollView,
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import {colors, sheet} from '../../../styles';
+import {colors} from '../../../../styles';
 import moment from 'moment';
-import {RouteMinimap} from '../../../components/Route';
+import {RouteMinimap} from '../../../../components/Route';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import {GroupWaypointsStop} from '../../../components/Ride';
-import {GoBack, Header} from '../../../components/navigation';
+import {GroupWaypointsStop} from '../../../../components/Ride';
+import {GoBack, Header} from '../../../../components/navigation';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import {useSelector, useDispatch} from 'react-redux';
-import * as actions from '../../../store/actions';
+import * as actions from '../../../../store/actions';
+import {styles} from './index.styles';
+import {sortStops} from '../../../../utils/sortStops';
 
 const PassengersRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
+  const [stops, setStops] = useState(null);
 
   const userId = useSelector(state => state.accountReducer.user.data.id);
 
@@ -33,6 +35,18 @@ const PassengersRideDetails = ({navigation, route}) => {
       header: props => <Header {...props} hideSwitch />,
     });
   }, []);
+
+  useEffect(() => {
+    if (ride) {
+      setStops(
+        sortStops(
+          ride.location,
+          ride.group.location,
+          ride.stops.map(item => item.location),
+        ).map(item => ({coordinates: item})),
+      );
+    }
+  }, [ride]);
 
   const onResignPress = () =>
     Alert.alert('Warning!', 'Are you sure you want to resign?', [
@@ -72,20 +86,12 @@ const PassengersRideDetails = ({navigation, route}) => {
         style={styles.scrollView}
         contentContainerStyle={styles.container}>
         <View style={styles.mapWrapper}>
-          <RouteMinimap
-            stops={
-              ride.rideDirection
-                ? [
-                    {coordinates: ride.group.location},
-                    {coordinates: ride.location},
-                  ]
-                : [
-                    {coordinates: ride.location},
-                    {coordinates: ride.group.location},
-                  ]
-            }
-            hideDetails={past}
-          />
+          {!!stops && (
+            <RouteMinimap
+              stops={ride.rideDirection ? stops.reverse() : stops}
+              hideDetails={past}
+            />
+          )}
         </View>
         <View style={styles.waypoints}>
           <GroupWaypointsStop
@@ -111,53 +117,5 @@ const PassengersRideDetails = ({navigation, route}) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
-  scrollView: {
-    flex: 1,
-    width: '100%',
-  },
-  container: {
-    paddingBottom: 30,
-  },
-  topRow: {
-    paddingHorizontal: 16,
-    paddingVertical: 24,
-    ...sheet.rowCenterSplit,
-  },
-  time: {
-    ...sheet.textMedium,
-    fontSize: 20,
-    color: colors.blue,
-  },
-  date: {
-    ...sheet.textMedium,
-    fontSize: 16,
-    color: colors.grayDark,
-    marginTop: 5,
-  },
-  mapWrapper: {
-    height: 300,
-  },
-  waypoints: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.gray,
-  },
-  driverWrapper: {
-    ...sheet.rowCenter,
-    padding: 16,
-  },
-  driver: {
-    ...sheet.textMedium,
-    color: colors.grayVeryDark.slic,
-    fontSize: 18,
-    marginLeft: 16,
-  },
-});
 
 export default PassengersRideDetails;

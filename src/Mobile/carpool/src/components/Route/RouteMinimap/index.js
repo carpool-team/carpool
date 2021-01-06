@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, ActivityIndicator, Alert} from 'react-native';
+import {View, ActivityIndicator, Alert, Text, StyleSheet} from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import bbox from '@turf/bbox';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {MAP_LIGHT} from '@env';
-import {colors, activeRouteStyle} from '../../../styles';
+import {colors, activeRouteStyle, sheet} from '../../../styles';
 import {BlueMarker} from '../../common/map';
 import {directionsClient} from '../../../maps/mapbox';
 import {styles} from './index.styles';
+import moment from 'moment';
 
 const dirConfig = {
   profile: 'driving',
@@ -33,7 +34,7 @@ const parseCoords = coords => {
   return [coords.longitude, coords.latitude];
 };
 
-const RouteMinimap = ({stops, hideDetails = false}) => {
+const RouteMinimap = ({stops, showDetails = false}) => {
   const [route, setRoute] = useState(null);
 
   const [results, setResults] = useState([]);
@@ -133,6 +134,18 @@ const RouteMinimap = ({stops, hideDetails = false}) => {
     </View>
   ) : (
     <View style={styles.container}>
+      {showDetails && (
+        <View style={styles.detailsWrapper}>
+          <Text style={styles.distance}>{`${(route.distance / 1000).toFixed(
+            1,
+          )} km`}</Text>
+          <Text style={styles.time}>
+            {moment
+              .utc(moment.duration(route.duration, 'seconds').asMilliseconds())
+              .format('H [hrs] mm [min]')}
+          </Text>
+        </View>
+      )}
       <MapboxGL.MapView
         style={{flex: 1}}
         styleURL={MAP_LIGHT}
