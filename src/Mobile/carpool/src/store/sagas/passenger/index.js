@@ -239,6 +239,42 @@ export function* resignFromRideAsync(action) {
   }
 }
 
+export function* deleteRideRequestAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+
+    if (token) {
+      console.log(action.payload);
+      const res = yield instance.delete(`/RideRequests/${action.payload}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log('RESSSSS', res);
+      yield put(actions.getPassengersRideRequests());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    console.log('ERRRRRRRR', err);
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.deleteRideRequest(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 const passengerSagas = [
   takeLatest(actions.GetUsersRides.Trigger, getUsersRidesAsync),
   takeLatest(actions.GetUsersPastRides.Trigger, getUsersPastRidesAsync),
@@ -253,6 +289,7 @@ const passengerSagas = [
   takeLatest(actions.CreateRideRequest.PromiseTrigger, createRideRequestAsync),
   takeLatest(actions.FindRides.PromiseTrigger, findRidesAsync),
   takeLatest(actions.ResignFromRide.PromiseTrigger, resignFromRideAsync),
+  takeLatest(actions.DeleteRideRequest.PromiseTrigger, deleteRideRequestAsync),
 ];
 
 export default passengerSagas;

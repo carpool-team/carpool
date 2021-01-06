@@ -4,7 +4,7 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   upview: {
     width: '100%',
-    height: 170,
+    height: 200,
     marginBottom: 30,
   },
   contentContainer: {
@@ -21,5 +21,12 @@ export const styles = StyleSheet.create({
     color: colors.grayVeryDark,
     fontSize: 14,
     marginTop: 4,
+  },
+  resign: {
+    ...sheet.textSemiBold,
+    color: colors.red,
+    fontSize: 14,
+    paddingVertical: 8,
+    paddingLeft: 8,
   },
 });
