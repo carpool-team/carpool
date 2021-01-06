@@ -2,10 +2,10 @@ import React, { FunctionComponent } from "react";
 import { ButtonColor } from "./enums/ButtonColor";
 import { ButtonBackground } from "./enums/ButtonBackground";
 import { ButtonIcon } from "./enums/ButtonIcon";
+import { Link } from "react-router-dom";
 import { getBackgroundClass, getColorClass, getIconClass } from "./Helpers";
 
 import "./NavButton.scss";
-import { Link } from "react-router-dom";
 
 interface IButtonProps {
 	color?: ButtonColor;
@@ -19,8 +19,6 @@ const Button: FunctionComponent<IButtonProps> = (props) => {
 	const btnClick = (event: React.MouseEvent) => {
 		if (props.onClick) {
 			props.onClick();
-		} else {
-			event.preventDefault();
 		}
 	};
 
