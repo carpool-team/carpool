@@ -24,6 +24,6 @@ namespace Domain.Contracts.Repositories
 
 		Task AddAsync(RideRequest groupInvite, CancellationToken cancellationToken);
 
-		void Delete(RideRequest groupInvite);
+		void Delete(RideRequest rideRequest);
 	}
 }
