@@ -17,6 +17,11 @@ export const styles = StyleSheet.create({
     color: colors.blue,
     fontSize: 32,
   },
+  disabledIndicator: {
+    ...sheet.textSemiBold,
+    color: colors.gray,
+    fontSize: 32,
+  },
   count: {
     ...sheet.textSemiBold,
     color: colors.grayVeryDark,

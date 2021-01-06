@@ -9,9 +9,11 @@ const PickWeeks = ({weeks, onSubtractWeeks, onAddWeeks}) => (
     <UpView
       style={styles.circle}
       contentContainerStyle={sheet.center}
-      onPress={onSubtractWeeks}
+      onPress={weeks === 2 ? undefined : onSubtractWeeks}
       borderRadius={99999}>
-      <Text style={styles.indicator}>-</Text>
+      <Text style={weeks === 2 ? styles.disabledIndicator : styles.indicator}>
+        -
+      </Text>
     </UpView>
     <Text style={styles.count}>{weeks}</Text>
     <UpView

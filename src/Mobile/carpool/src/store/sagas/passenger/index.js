@@ -244,20 +244,17 @@ export function* deleteRideRequestAsync(action) {
     const token = yield select(state => state.authReducer.tokens.data.token);
 
     if (token) {
-      console.log(action.payload);
-      const res = yield instance.delete(`/RideRequests/${action.payload}`, {
+      yield instance.delete(`/RideRequests/${action.payload}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      console.log('RESSSSS', res);
       yield put(actions.getPassengersRideRequests());
 
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('ERRRRRRRR', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
