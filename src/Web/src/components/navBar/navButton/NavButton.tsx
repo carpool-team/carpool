@@ -5,6 +5,7 @@ import { ButtonIcon } from "./enums/ButtonIcon";
 import { getBackgroundClass, getColorClass, getIconClass } from "./Helpers";
 
 import "./NavButton.scss";
+import { Link } from "react-router-dom";
 
 interface IButtonProps {
 	color?: ButtonColor;
@@ -32,9 +33,9 @@ const Button: FunctionComponent<IButtonProps> = (props) => {
 	].join(" ");
 
 	return (
-		<a href={props.to ?? "#"} className={cssClasses} onClick={btnClick}>
+		<Link to={props.to ?? "#"} className={cssClasses} onClick={btnClick}>
 			{props.children}
-		</a>
+		</Link>
 	);
 };
 

@@ -14,6 +14,7 @@ import { IAuthState } from "../auth/store/State";
 import { ITokenInfo } from "../auth/interfaces/ITokenInfo";
 import App from "../../App";
 import { rideRoutes } from "../rides/RidesRouter";
+import { Link } from "react-router-dom";
 
 interface IStatePropsType {
 	auth: IAuthState;
@@ -150,9 +151,9 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		return (
 			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
 				<div className={this.cssClasses.navBarTabContainer}>
-					<a href={App.rootRoute}>
+					<Link to={App.rootRoute}>
 						<div className={this.cssClasses.logoContainer}></div>
-					</a>
+					</Link>
 					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
 						<NavButton
 							color={ButtonColor.Gray}
