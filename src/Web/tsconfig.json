@@ -35,6 +35,10 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
     },
+    "exclude": [
+        "./__tests__/**/*",
+        "./__mocks__/**/*",
+    ],
     "include": [
         "./**/*"
     ],
