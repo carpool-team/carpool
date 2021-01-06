@@ -16,4 +16,10 @@ export const styles = StyleSheet.create({
     color: colors.grayDark,
     fontSize: 18,
   },
+  flexed: {
+    width: '100%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

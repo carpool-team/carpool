@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, Text, RefreshControl} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/native';
 import {RideDetailsCard} from '../../Ride';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {ListEmptyComponent} from '../../common/lists';
 import {ThreeGroupsList} from '../../Groups';
 import {styles} from './index.styles';
 import {SafeScroll} from '../../common/wrappers';
 import NewInvitations from '../NewInvitations';
 import PendingRideRequest from '../PendingRideRequests';
+import * as actions from '../../../store/actions';
 
 const DriversHome = () => {
   const navigation = useNavigation();
@@ -27,6 +28,8 @@ const DriversHome = () => {
       ? store.accountReducer.invitations.data.length
       : 0,
   );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (driversRides.data) {
@@ -48,8 +51,22 @@ const DriversHome = () => {
 
   const onAllGroupsPress = () => navigation.navigate('GroupsStack');
 
+  const onRefresh = () => {
+    dispatch(actions.getGroups());
+    dispatch(actions.getDriversRides());
+  };
+
   return (
-    <SafeScroll minHeight={700}>
+    <SafeScroll
+      minHeight={700}
+      refreshControl={
+        <RefreshControl
+          onRefresh={onRefresh}
+          colors={[colors.blue]}
+          refreshing={groups.loading || driversRides.loading}
+          tintColor={colors.blue}
+        />
+      }>
       <PendingRideRequest count={requestsCount} onPress={onRideRequestsPress} />
       <View style={styles.container}>
         <View style={sheet.rowCenterSplit}>
@@ -59,11 +76,7 @@ const DriversHome = () => {
           </Text>
         </View>
         <View style={styles.flexed}>
-          {driversRides.loading ? (
-            <View style={styles.loadingWrapper}>
-              <ActivityIndicator color={colors.blue} size="large" />
-            </View>
-          ) : ride ? (
+          {driversRides.loading ? null : ride ? (
             <RideDetailsCard
               ride={ride}
               onItemPress={ride =>
@@ -85,23 +98,16 @@ const DriversHome = () => {
           </Text>
         </View>
         <View style={styles.flexed}>
-          {groups.loading ? (
-            <View style={styles.loadingWrapper}>
-              <ActivityIndicator color={colors.blue} size="large" />
-            </View>
-          ) : groups.data ? (
-            <ThreeGroupsList
-              groups={groups.data}
-              onItemPress={group =>
-                navigation.navigate('GroupsStack', {
-                  screen: 'GroupDetails',
-                  params: {group},
-                })
-              }
-            />
-          ) : (
-            <ListEmptyComponent title="You are not a member of any group yet" />
-          )}
+          <ThreeGroupsList
+            groups={groups.data}
+            loading={groups.loading}
+            onItemPress={group =>
+              navigation.navigate('GroupsStack', {
+                screen: 'GroupDetails',
+                params: {group},
+              })
+            }
+          />
         </View>
       </View>
     </SafeScroll>

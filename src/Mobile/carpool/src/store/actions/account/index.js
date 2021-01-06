@@ -75,7 +75,7 @@ export const getGroupsError = payload => ({
 });
 
 export const getGroupsLoading = () => ({
-  type: GetGroups.Error,
+  type: GetGroups.Loading,
 });
 
 export const getInvitations = () => ({
