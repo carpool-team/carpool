@@ -22,6 +22,7 @@ import {styles} from './index.styles';
 const DriversRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
   const [stops, setStops] = useState(null);
+  const [sorted, setSorted] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -37,13 +38,14 @@ const DriversRideDetails = ({navigation, route}) => {
 
   useEffect(() => {
     if (ride) {
-      setStops(
-        sortStops(
-          ride.location,
-          ride.group.location,
-          ride.stops.map(item => item.location),
-        ).map(item => ({coordinates: item})),
+      const {sortedStops, sortedWaypoints} = sortStops(
+        ride.location,
+        ride.group.location,
+        ride.stops,
       );
+
+      setStops(sortedStops.map(item => ({coordinates: item})));
+      setSorted(sortedWaypoints);
     }
   }, [ride]);
 
@@ -167,7 +169,9 @@ const DriversRideDetails = ({navigation, route}) => {
             />
           </View>
           <View style={styles.passengersList}>
-            <PassengersList ride={ride} onItemPress={onItemPress} />
+            {!!sorted && (
+              <PassengersList stops={sorted} onItemPress={onItemPress} />
+            )}
           </View>
         </View>
       </ScrollView>

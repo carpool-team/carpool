@@ -4,11 +4,11 @@ import ListItem from './ListItem';
 import {styles} from './index.styles';
 import {ListEmptyComponent} from '../../common/lists';
 
-const PassengersList = ({ride, onItemPress}) => (
+const PassengersList = ({stops, onItemPress}) => (
   <View style={styles.container}>
     <Text style={styles.title}>Passengers</Text>
-    {ride.stops.length ? (
-      ride.stops.map(stop => (
+    {stops.length ? (
+      stops.map(stop => (
         <ListItem
           key={stop.participant.participantId}
           stop={stop}

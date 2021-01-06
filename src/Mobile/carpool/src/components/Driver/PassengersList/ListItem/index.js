@@ -36,7 +36,7 @@ const ListItem = ({stop, onItemPress}) => {
           }`}</Text>
         </View>
         <TouchableOpacity onPress={() => onItemPress(stop)}>
-          <Icon name="trash" color={colors.red} size={25} />
+          <Icon name="close" color={colors.red} size={25} />
         </TouchableOpacity>
       </View>
       {placeName ? (
