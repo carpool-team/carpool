@@ -1,0 +1,29 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.container {
+	min-height: 25vh;
+	width: 35vw;
+	background-color: $backgroundOnHover;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	& > span {
+		margin-top: 20px;
+		font-size: 22px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-align: center;
+	}
+}
+.inputs {
+	&__buttonContainer {
+		display: flex;
+		justify-content: space-evenly;
+	}
+	&__button {
+		margin-top: 30px;
+		align-self: center;
+		margin-bottom: 30px;
+	}
+}

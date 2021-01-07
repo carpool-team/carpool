@@ -4,7 +4,7 @@ import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 import Button from "../../../../ui/buttonSmall/ButtonSmall";
-import { tempCoords } from "../../../../../api/requests/RequestCore";
+import AddressModal from "../../../addressModal/AddressModal";
 
 const geocodingClient = getGeocodingClient();
 
@@ -26,6 +26,7 @@ const ActiveItemDefault = (props: IListItemProps) => {
 		activeCar: "ridesListActive--car",
 	};
 
+	const [popover, setPopover] = useState(false);
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
 	const onGetName = async (coords: [number, number]) => {
@@ -120,11 +121,19 @@ const ActiveItemDefault = (props: IListItemProps) => {
 					</div>
 					<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
 					{props.joinRideCallback ?
-						// TODO: LEGIT COORDS
-						<Button onClick={() => props.joinRideCallback(props.ride, tempCoords)}>
-							{props.t(resources.joinBtnLabel)}
-						</Button>
-						: null}
+						<>
+							<Button onClick={() => setPopover(true)}>
+								{props.t(resources.joinBtnLabel)}
+							</Button>
+							<AddressModal
+								open={popover}
+								onCancel={() => setPopover(false)}
+								onConfirm={(coords) => {
+									setPopover(false);
+									props.joinRideCallback(props.ride, coords);
+								}}
+							/>
+						</> : null}
 				</div>
 			</div>
 		</li>
