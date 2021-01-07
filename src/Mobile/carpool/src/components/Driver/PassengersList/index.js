@@ -4,7 +4,7 @@ import ListItem from './ListItem';
 import {styles} from './index.styles';
 import {ListEmptyComponent} from '../../common/lists';
 
-const PassengersList = ({stops, onItemPress}) => (
+const PassengersList = ({stops, onItemPress, past}) => (
   <View style={styles.container}>
     <Text style={styles.title}>Passengers</Text>
     {stops.length ? (
@@ -13,6 +13,7 @@ const PassengersList = ({stops, onItemPress}) => (
           key={stop.participant.participantId}
           stop={stop}
           onItemPress={onItemPress}
+          past={past}
         />
       ))
     ) : (

@@ -170,7 +170,11 @@ const DriversRideDetails = ({navigation, route}) => {
           </View>
           <View style={styles.passengersList}>
             {!!sorted && (
-              <PassengersList stops={sorted} onItemPress={onItemPress} />
+              <PassengersList
+                stops={sorted}
+                onItemPress={onItemPress}
+                past={past}
+              />
             )}
           </View>
         </View>

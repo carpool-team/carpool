@@ -7,7 +7,7 @@ import {parseCoords} from '../../../../utils/coords';
 import useReverseGeocoding from '../../../../hooks/useReverseGeocoding';
 import {styles} from './index.styles';
 
-const ListItem = ({stop, onItemPress}) => {
+const ListItem = ({stop, onItemPress, past}) => {
   const [placeName, setPlaceName] = useState(null);
 
   const [results, loading, error, _getPlaceName] = useReverseGeocoding();
@@ -35,9 +35,11 @@ const ListItem = ({stop, onItemPress}) => {
             stop.participant.lastName
           }`}</Text>
         </View>
-        <TouchableOpacity onPress={() => onItemPress(stop)}>
-          <Icon name="close" color={colors.red} size={25} />
-        </TouchableOpacity>
+        {!past && (
+          <TouchableOpacity onPress={() => onItemPress(stop)}>
+            <Icon name="close" color={colors.red} size={25} />
+          </TouchableOpacity>
+        )}
       </View>
       {placeName ? (
         <Text numberOfLines={2} style={styles.placeName}>
