@@ -9,6 +9,8 @@ export enum LoginActionTypes {
 	LoginSuccess = "AUTH_LOGIN_SUCCESS",
 	LoginError = "AUTH_LOGIN_ERROR",
 	Logout = "AUTH_LOGOUT",
+	Init = "AUTH_INIT",
+	NoToken = "AUTH_NO_TOKEN",
 }
 
 /** Enum of register actions */
@@ -19,6 +21,14 @@ export enum RegisterActionTypes {
 }
 
 //#region LOGIN
+
+/** Invokes initialization of Auth store */
+export interface IAuthInitAction extends Action<LoginActionTypes.Init> {
+}
+
+/** Action when no token present */
+export interface INoTokenAction extends Action<LoginActionTypes.NoToken> {
+}
 
 /** Action for login */
 export interface ILoginAction extends Action<LoginActionTypes.Login> {
@@ -61,7 +71,9 @@ export type LoginAction =
 	ILoginAction |
 	ILoginSuccessAction |
 	ILoginErrorAction |
-	ILogoutAction;
+	ILogoutAction |
+	IAuthInitAction |
+	INoTokenAction;
 
 /** Type of register action */
 export type RegisterAction =
