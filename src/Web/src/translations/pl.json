@@ -67,7 +67,12 @@
             },
             "addGroupBtn": "Dodaj grupę",
             "ridesBtn": "Przejazdy",
-            "invitesBtn": "Zaproszenia"
+            "invitesBtn": "Zaproszenia",
+            "editGroupForm": {
+                "deleteBtn": "Usuń grupę",
+                "deleteConfirm": "Czy usunąć grupę?",
+                "basicInfo": "Edytuj grupę"
+            }
         },
         "rides": {
             "cyclicBtn": "Cykliczny",
