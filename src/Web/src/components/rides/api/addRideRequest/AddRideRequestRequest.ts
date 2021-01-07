@@ -15,7 +15,7 @@ export class AddGroupRequest extends RequestBase<IAddRideRequestRequestBody> {
 	}) {
 		super({
 			properties: {
-				method: RequestType.POST,
+				method: RequestType.Post,
 				endpoint: RequestEndpoint.POST_ADD_RIDE_REQ,
 				queries: null
 			},

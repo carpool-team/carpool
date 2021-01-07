@@ -15,7 +15,7 @@ export class AddInviteRequest extends RequestBase<IAddInviteRequestBody> {
 	}) {
 		super({
 			properties: {
-				method: RequestType.POST,
+				method: RequestType.Post,
 				endpoint: RequestEndpoint.POST_INVITE,
 				queries: null
 			},

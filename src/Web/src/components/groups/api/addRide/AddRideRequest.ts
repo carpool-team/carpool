@@ -35,7 +35,7 @@ export class AddRideRequest extends RequestBase<IAddRideRequestBody> {
 	}) {
 		super({
 			properties: {
-				method: RequestType.POST,
+				method: RequestType.Post,
 				endpoint: init.recurring ? RequestEndpoint.POST_RIDE_RECURRING : RequestEndpoint.POST_RIDE,
 				queries: null
 			},

@@ -20,7 +20,7 @@ export class UpdateGroupRequest extends RequestBase<IUpdateGroupRequestBody> {
 	}) {
 		super({
 			properties: {
-				method: RequestType.POST,
+				method: RequestType.Post,
 				endpoint: RequestEndpoint.PUT_UPDATE_GROUP,
 				queries: {
 					groupId: init.groupId

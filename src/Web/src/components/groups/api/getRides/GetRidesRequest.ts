@@ -12,7 +12,7 @@ export class GetRidesRequest extends RequestCore {
 	}) {
 		super({
 			properties: {
-				method: RequestType.GET,
+				method: RequestType.Get,
 				endpoint: RequestEndpoint.GET_RIDES_BY_USER_ID,
 				queries: {
 					userId: init.userId,

@@ -7,7 +7,7 @@ export class GetDataRequest extends RequestCore {
 	constructor(appUserId: string) {
 		super({
 			properties: {
-				method: RequestType.GET,
+				method: RequestType.Get,
 				endpoint: RequestEndpoint.GET_USER_BY_APPUSERID,
 				queries: {
 					userId: appUserId,

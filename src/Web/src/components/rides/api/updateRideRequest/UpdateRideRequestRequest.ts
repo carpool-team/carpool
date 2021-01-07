@@ -14,7 +14,7 @@ export class UpdateRideRequestRequest extends RequestBase<IUpdateRideRequestRequ
 	}) {
 		super({
 			properties: {
-				method: RequestType.PUT,
+				method: RequestType.Put,
 				endpoint: RequestEndpoint.PUT_UPDATE_RIDE_REQ,
 				queries: null
 			},
