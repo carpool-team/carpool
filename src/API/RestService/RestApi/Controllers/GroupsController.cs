@@ -80,11 +80,24 @@ namespace RestApi.Controllers
 		}
 
         // DELETE: api/Groups/5
-		[HttpDelete("{id}")]
-		public async Task<ApiResponse> DeleteGroup(GroupId groupId)
+		[HttpDelete("{groupId}")]
+		public async Task<ApiResponse> DeleteGroup([FromRoute]GroupId groupId)
 		{
 			var response = await _mediator.Send(new DeleteGroupCommand(groupId, User.GetUserId())).ConfigureAwait(false);
 			return new ApiResponse($"Group with id: {groupId} has been deleted", StatusCodes.Status200OK);
+		}
+
+		[HttpDelete("{groupId}/users/{appUserId}")]
+		public async Task<ApiResponse> DeleteUserFromGroup([FromRoute] GroupId groupId,
+		                                                   [FromRoute] AppUserId appUserId)
+		{
+			RemoveUserFromGroupCommand request = new(User.GetUserId(),
+				appUserId,
+				groupId);
+
+			await _mediator.Send(request);
+
+			return new ApiResponse(StatusCodes.Status204NoContent);
 		}
     }
 }

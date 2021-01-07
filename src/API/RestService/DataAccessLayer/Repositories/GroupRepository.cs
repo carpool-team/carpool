@@ -26,6 +26,7 @@ namespace DataAccessLayer.Repositories
 			                     //.Include(group => group.Rides)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
+			                     .Include(group => group.UserGroups)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
 		}
@@ -95,11 +96,7 @@ namespace DataAccessLayer.Repositories
 
 
 		public async Task AddAsync(Group group, CancellationToken cancellationToken)
-		{
-			IdGenerator idGenerator = new(IdGeneratorType.Group);
-			group.Id = new GroupId(idGenerator.CreateId());
-			await _context.Set<Group>().AddAsync(group, cancellationToken);
-		}
+			=> await _context.Set<Group>().AddAsync(@group, cancellationToken);
 
 		public void Delete(Group group)
 			=> _context.Set<Group>().Remove(group);

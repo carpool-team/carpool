@@ -25,6 +25,7 @@ namespace DataAccessLayer.Repositories
 				.Include(x => x.Ride)
 				.Include(x => x.RequestingUser)
 				.Include(x => x.RideOwner)
+				.AsSplitQuery()
 				.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
 		public async Task<RideRequest> GetByIdAsNoTrackingAsync(RideRequestId id, CancellationToken cancellationToken)
@@ -62,9 +63,8 @@ namespace DataAccessLayer.Repositories
 			=> await _dbContext.Set<RideRequest>()
 				.AddAsync(groupInvite, cancellationToken);
 
-		public void Delete(RideRequest groupInvite)
-		{
-			throw new NotImplementedException();
-		}
+		public void Delete(RideRequest rideRequest)
+			=> _dbContext.Set<RideRequest>()
+			             .Remove(rideRequest);
 	}
 }
