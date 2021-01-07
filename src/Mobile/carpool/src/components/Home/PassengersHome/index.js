@@ -46,6 +46,8 @@ const PassengersHome = () => {
   const onRefresh = () => {
     dispatch(actions.getGroups());
     dispatch(actions.getUsersRides());
+    dispatch(actions.getPassengersRideRequests());
+    dispatch(actions.getInvitations());
   };
 
   return (

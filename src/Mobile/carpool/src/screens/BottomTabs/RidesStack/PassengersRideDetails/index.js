@@ -38,13 +38,12 @@ const PassengersRideDetails = ({navigation, route}) => {
 
   useEffect(() => {
     if (ride) {
-      setStops(
-        sortStops(
-          ride.location,
-          ride.group.location,
-          ride.stops.map(item => item.location),
-        ).map(item => ({coordinates: item})),
+      const {sortedStops} = sortStops(
+        ride.location,
+        ride.group.location,
+        ride.stops,
       );
+      setStops(sortedStops.map(item => ({coordinates: item})));
     }
   }, [ride]);
 

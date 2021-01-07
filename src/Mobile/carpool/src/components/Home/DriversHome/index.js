@@ -54,6 +54,8 @@ const DriversHome = () => {
   const onRefresh = () => {
     dispatch(actions.getGroups());
     dispatch(actions.getDriversRides());
+    dispatch(actions.getDriversRideRequests());
+    dispatch(actions.getInvitations());
   };
 
   return (
