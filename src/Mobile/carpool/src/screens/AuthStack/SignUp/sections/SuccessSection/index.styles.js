@@ -9,12 +9,12 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   success: {
-    fontSize: 40,
+    fontSize: 35,
     color: colors.green,
     ...sheet.textSemiBold,
   },
   message: {
-    fontSize: 16,
+    fontSize: 14,
     color: colors.grayDark,
     ...sheet.textMedium,
     marginTop: 5,

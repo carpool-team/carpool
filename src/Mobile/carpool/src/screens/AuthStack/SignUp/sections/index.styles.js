@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
     textAlign: 'left',
     width: '100%',
     marginBottom: 20,
-    fontSize: 16,
+    fontSize: 14,
     ...sheet.textSemiBold,
     color: colors.red,
   },

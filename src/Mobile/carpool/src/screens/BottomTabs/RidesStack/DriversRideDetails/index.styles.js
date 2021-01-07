@@ -20,12 +20,12 @@ export const styles = StyleSheet.create({
   },
   time: {
     ...sheet.textMedium,
-    fontSize: 24,
+    fontSize: 22,
     color: colors.blue,
   },
   date: {
     ...sheet.textMedium,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.grayDark,
     marginTop: 5,
   },

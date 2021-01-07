@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   },
   name: {
     ...sheet.textSemiBold,
-    fontSize: 20,
+    fontSize: 18,
     color: colors.grayVeryDark,
   },
   author: {
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   members: {
     ...sheet.textSemiBold,
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: 8,
     color: colors.blue,
   },

@@ -11,11 +11,11 @@ export const styles = StyleSheet.create({
   success: {
     ...sheet.textSemiBold,
     color: colors.green,
-    fontSize: 40,
+    fontSize: 35,
   },
   info: {
     ...sheet.textMedium,
     color: colors.grayDark,
-    fontSize: 16,
+    fontSize: 14,
   },
 });

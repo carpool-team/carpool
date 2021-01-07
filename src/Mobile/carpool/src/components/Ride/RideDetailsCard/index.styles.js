@@ -13,11 +13,11 @@ export const styles = StyleSheet.create({
   time: {
     ...sheet.textMedium,
     color: colors.orange,
-    fontSize: 20,
+    fontSize: 18,
   },
   date: {
     ...sheet.textMedium,
     color: colors.grayDark,
-    fontSize: 16,
+    fontSize: 14,
   },
 });

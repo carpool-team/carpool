@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   },
   name: {
     ...sheet.textSemiBold,
-    fontSize: 22,
+    fontSize: 20,
     color: colors.grayVeryDark,
   },
   since: {
@@ -26,19 +26,19 @@ export const styles = StyleSheet.create({
   },
   members: {
     ...sheet.textSemiBold,
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: 8,
     color: colors.blue,
   },
   rides: {
     ...sheet.textSemiBold,
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: 8,
     color: colors.green,
   },
   distance: {
     ...sheet.textSemiBold,
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: 8,
     color: colors.orange,
   },

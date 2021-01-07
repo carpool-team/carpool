@@ -4,7 +4,7 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   placeholder: {
     ...sheet.textMedium,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.grayDark,
   },
   input: {
@@ -14,11 +14,11 @@ export const styles = StyleSheet.create({
     borderColor: colors.grayDark,
     paddingVertical: 8,
     ...sheet.textMedium,
-    fontSize: 18,
+    fontSize: 16,
     color: colors.grayVeryDark,
   },
   error: {
-    fontSize: 16,
+    fontSize: 14,
     ...sheet.textRegular,
     color: colors.red,
     marginTop: 8,

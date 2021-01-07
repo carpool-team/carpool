@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     paddingTop: 40,
   },
   title: {
-    fontSize: 30,
+    fontSize: 26,
     color: colors.orange,
     ...sheet.textSemiBold,
     marginBottom: 20,

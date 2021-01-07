@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   },
   regularRide: {
     ...sheet.textSemiBold,
-    fontSize: 18,
+    fontSize: 16,
     color: colors.grayVeryDark,
   },
   picker: {
@@ -36,6 +36,6 @@ export const styles = StyleSheet.create({
     marginBottom: 24,
     ...sheet.textMedium,
     color: colors.grayDark,
-    fontSize: 16,
+    fontSize: 14,
   },
 });

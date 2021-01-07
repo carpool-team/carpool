@@ -26,17 +26,17 @@ export const styles = StyleSheet.create({
   },
   singleRide: {
     ...sheet.textBold,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.grayDark,
   },
   date: {
     ...sheet.textMedium,
     color: colors.grayDark,
-    fontSize: 16,
+    fontSize: 14,
   },
   time: {
     ...sheet.textMedium,
     color: colors.orange,
-    fontSize: 25,
+    fontSize: 22,
   },
 });

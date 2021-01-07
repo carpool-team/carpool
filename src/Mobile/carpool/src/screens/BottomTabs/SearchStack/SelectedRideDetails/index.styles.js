@@ -18,12 +18,12 @@ export const styles = StyleSheet.create({
   },
   time: {
     ...sheet.textMedium,
-    fontSize: 24,
+    fontSize: 22,
     color: colors.blue,
   },
   date: {
     ...sheet.textMedium,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.grayDark,
     marginTop: 5,
   },
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   driver: {
     ...sheet.textMedium,
     color: colors.grayVeryDark.slic,
-    fontSize: 18,
+    fontSize: 16,
     marginLeft: 16,
   },
 });

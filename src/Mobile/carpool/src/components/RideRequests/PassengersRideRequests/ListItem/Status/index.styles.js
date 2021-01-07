@@ -5,19 +5,19 @@ export const styles = StyleSheet.create({
   pending: {
     ...sheet.textMedium,
     color: colors.orange,
-    fontSize: 16,
+    fontSize: 14,
     textTransform: 'uppercase',
   },
   accepted: {
     ...sheet.textMedium,
     color: colors.green,
-    fontSize: 16,
+    fontSize: 14,
     textTransform: 'uppercase',
   },
   rejected: {
     ...sheet.textMedium,
     color: colors.red,
-    fontSize: 16,
+    fontSize: 14,
     textTransform: 'uppercase',
   },
 });

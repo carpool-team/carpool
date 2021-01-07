@@ -15,6 +15,6 @@ export const styles = StyleSheet.create({
   time: {
     ...sheet.textMedium,
     color: colors.orange,
-    fontSize: 25,
+    fontSize: 22,
   },
 });

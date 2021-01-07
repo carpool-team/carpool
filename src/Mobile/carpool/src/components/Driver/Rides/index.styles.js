@@ -16,6 +16,6 @@ export const styles = StyleSheet.create({
     padding: 8,
     ...sheet.textMedium,
     color: colors.green,
-    fontSize: 18,
+    fontSize: 16,
   },
 });

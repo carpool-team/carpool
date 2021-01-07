@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   time: {
     ...sheet.textMedium,
     color: colors.grayDark,
-    fontSize: 22,
+    fontSize: 20,
   },
   date: {
     ...sheet.textSemiBold,

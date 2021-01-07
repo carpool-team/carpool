@@ -4,7 +4,7 @@ import {sheet, colors} from '../../../styles';
 export const styles = StyleSheet.create({
   text: {
     ...sheet.textMedium,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.blue,
   },
 });

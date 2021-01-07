@@ -22,13 +22,13 @@ export const styles = StyleSheet.create({
     padding: 10,
     color: colors.red,
     ...sheet.textMedium,
-    fontSize: 16,
+    fontSize: 14,
   },
   edit: {
     padding: 10,
     color: colors.blue,
     ...sheet.textMedium,
-    fontSize: 16,
+    fontSize: 14,
   },
   circle: {
     height: 100,
@@ -41,13 +41,13 @@ export const styles = StyleSheet.create({
   name: {
     ...sheet.textMedium,
     color: colors.grayVeryDark,
-    fontSize: 30,
+    fontSize: 26,
     marginTop: 30,
   },
   email: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 18,
+    fontSize: 16,
     marginTop: 5,
   },
   version: {

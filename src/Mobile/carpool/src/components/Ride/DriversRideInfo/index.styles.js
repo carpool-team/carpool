@@ -13,18 +13,18 @@ export const styles = StyleSheet.create({
   },
   regularRide: {
     ...sheet.textBold,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.blue,
     flex: 1,
     marginRight: 4,
   },
   distance: {
     ...sheet.textBold,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.blue,
   },
   leavingIn: {
     ...sheet.textSemiBold,
-    fontSize: 16,
+    fontSize: 14,
   },
 });

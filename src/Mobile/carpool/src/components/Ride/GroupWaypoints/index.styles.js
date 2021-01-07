@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   placeName: {
     ...sheet.textSemiBold,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.grayDark,
   },
   line: {

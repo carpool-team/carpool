@@ -15,16 +15,16 @@ export const styles = StyleSheet.create({
   indicator: {
     ...sheet.textSemiBold,
     color: colors.blue,
-    fontSize: 32,
+    fontSize: 28,
   },
   disabledIndicator: {
     ...sheet.textSemiBold,
     color: colors.gray,
-    fontSize: 32,
+    fontSize: 28,
   },
   count: {
     ...sheet.textSemiBold,
     color: colors.grayVeryDark,
-    fontSize: 24,
+    fontSize: 22,
   },
 });

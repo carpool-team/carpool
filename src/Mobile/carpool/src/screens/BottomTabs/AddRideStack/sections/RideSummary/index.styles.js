@@ -28,18 +28,18 @@ export const styles = StyleSheet.create({
   time: {
     ...sheet.textSemiBold,
     color: colors.green,
-    fontSize: 22,
+    fontSize: 20,
   },
   date: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 16,
+    fontSize: 14,
     marginTop: 5,
   },
   seats: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 22,
+    fontSize: 20,
     marginLeft: 12,
   },
   buttonsWrapper: {
@@ -63,6 +63,6 @@ export const styles = StyleSheet.create({
   until: {
     ...sheet.textMedium,
     color: colors.grayDark,
-    fontSize: 16,
+    fontSize: 14,
   },
 });

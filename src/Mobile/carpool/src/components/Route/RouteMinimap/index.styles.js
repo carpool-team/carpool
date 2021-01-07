@@ -31,11 +31,11 @@ export const styles = StyleSheet.create({
   distance: {
     ...sheet.textSemiBold,
     color: colors.blue,
-    fontSize: 16,
+    fontSize: 14,
   },
   time: {
     ...sheet.textSemiBold,
     color: colors.green,
-    fontSize: 16,
+    fontSize: 14,
   },
 });

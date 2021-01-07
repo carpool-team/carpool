@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   name: {
     ...sheet.textMedium,
     color: colors.grayVeryDark,
-    fontSize: 18,
+    fontSize: 16,
     marginLeft: 8,
   },
   placeName: {

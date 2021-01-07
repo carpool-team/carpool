@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   name: {
     ...sheet.textBold,
     color: colors.grayDark,
-    fontSize: 25,
+    fontSize: 22,
   },
   statsRow: {
     flexDirection: 'row',
@@ -186,22 +186,22 @@ const styles = StyleSheet.create({
   totalRides: {
     ...sheet.textBold,
     color: colors.green,
-    fontSize: 30,
+    fontSize: 26,
   },
   rides: {
     ...sheet.textMedium,
     color: colors.green,
-    fontSize: 16,
+    fontSize: 14,
   },
   totalMembers: {
     ...sheet.textBold,
     color: colors.blue,
-    fontSize: 30,
+    fontSize: 26,
   },
   members: {
     ...sheet.textMedium,
     color: colors.blue,
-    fontSize: 16,
+    fontSize: 14,
   },
   cardGrid: {
     paddingTop: 16,
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   cardLabel: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 20,
+    fontSize: 18,
   },
   leaveUpView: {
     width: '35%',
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   placeName: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 16,
+    fontSize: 14,
     flex: 1,
   },
 });
