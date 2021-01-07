@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
-import { useImmer } from "use-immer";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
-import { InputType } from "../ui/input/enums/InputType";
-import Input from "../ui/input/Input";
-import "./HelpForm.scss"
-import TextField from '@material-ui/core/TextField';
+import "./HelpForm.scss";
+import TextField from "@material-ui/core/TextField";
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 import Button from "../ui/button/Button";
 import { ButtonBackground } from "../ui/button/enums/ButtonBackground";
@@ -15,13 +12,7 @@ import { toast } from "react-toastify";
 import { withRouter, RouteComponentProps, useHistory } from "react-router-dom";
 import { mainRoutes } from "../layout/components/LayoutRouter";
 
-
 interface IHelpFormProps extends RouteComponentProps, IReactI18nProps {
-}
-
-interface IEmailData {
-	title: string;
-	body: string;
 }
 
 const resources = {
@@ -45,12 +36,11 @@ const cssClasses = {
 const application = {
 	Web: "Web",
 	Mobile: "Mobile",
-}
-const emailUserID: string = process.env.EMAIL_USER_ID
-const emailServiceID: string = process.env.EMAIL_SERVICE_ID
-const webTemplateID: string = "template_x449sek"
-const mobileTemplateID: string = "template_pd6ylot"
-
+};
+const emailUserID: string = process.env.EMAIL_USER_ID;
+const emailServiceID: string = process.env.EMAIL_SERVICE_ID;
+const webTemplateID: string = "template_x449sek";
+const mobileTemplateID: string = "template_pd6ylot";
 
 const HelpForm: React.FC<IHelpFormProps> = (props) => {
 	const { t } = props;
@@ -64,20 +54,20 @@ const HelpForm: React.FC<IHelpFormProps> = (props) => {
 
 	const handleCombobox = (event: React.ChangeEvent<{ value: unknown }>) => {
 		setApp(event.target.value as string);
-	}
+	};
 
 	useEffect(() => {
 		if (!title) {
 			setValidateTitle({ error: true, helper: t(resources.validateMsg) });
 		} else {
-			setValidateTitle({ error: false, helper: "" })
+			setValidateTitle({ error: false, helper: "" });
 		}
 		if (!body) {
 			setValidateBody({ error: true, helper: t(resources.validateMsg) });
 		} else {
 			setValidateBody({ error: false, helper: "" });
 		}
-	}, [title, body])
+	}, [title, body]);
 
 	const templateParams = {
 		subject: title,
@@ -87,14 +77,14 @@ const HelpForm: React.FC<IHelpFormProps> = (props) => {
 	const trySend = () => {
 		if (!validateBody.error && !validateTitle.error) {
 			if (app === application.Mobile) {
-				emailjs.send(emailServiceID, mobileTemplateID, templateParams, emailUserID)
+				emailjs.send(emailServiceID, mobileTemplateID, templateParams, emailUserID);
 			} else {
-				emailjs.send(emailServiceID, webTemplateID, templateParams, emailUserID)
+				emailjs.send(emailServiceID, webTemplateID, templateParams, emailUserID);
 			}
-			history.push(`/${mainRoutes.default}`)
+			history.push(`/${mainRoutes.default}`);
 			toast.success(t(resources.helpToast));
 		}
-	}
+	};
 
 	return (
 		<div className={cssClasses.container}>
