@@ -13,7 +13,7 @@ const ThreeGroupsList = ({groups, onItemPress, loading}) => (
           onPress={() => onItemPress(group)}
           key={group.groupId}
           style={styles.button}>
-          <Icon name="circle" color={colors.orange} size={15} />
+          <Icon name="circle" color={colors.orange} size={12} />
           <Text style={styles.name}>{group.name}</Text>
         </TouchableOpacity>
       ))

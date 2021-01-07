@@ -37,11 +37,11 @@ const GroupWaypointsStop = ({group, location, swap, stop}) => {
       {loading || sloading ? null : (
         <View style={styles.wrapper}>
           <View style={styles.columnLeft}>
-            <Icon name="circle" size={14} color={colors.blue} />
+            <Icon name="circle" size={12} color={colors.blue} />
             <View style={styles.line} />
-            <Icon name="circle" size={14} color={colors.orange} />
+            <Icon name="circle" size={12} color={colors.orange} />
             <View style={styles.line} />
-            <Icon name="circle" size={14} color={colors.green} />
+            <Icon name="circle" size={12} color={colors.green} />
           </View>
           {swap ? (
             <View style={styles.columnRight}>

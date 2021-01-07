@@ -70,16 +70,16 @@ const ListItem = ({item}) => {
       />
       <View style={styles.bottomRow}>
         <CircleButton
-          size={45}
-          icon={<MaterialIcon name="close" size={25} color={colors.red} />}
+          size={42}
+          icon={<MaterialIcon name="close" size={24} color={colors.red} />}
           style={styles.circleButton}
           onPress={onReject}
           loading={rejectLoading}
           disabled={disabled}
         />
         <CircleButton
-          size={45}
-          icon={<MaterialIcon name="check" size={25} color={colors.green} />}
+          size={42}
+          icon={<MaterialIcon name="check" size={24} color={colors.green} />}
           onPress={onAccept}
           loading={acceptLoading}
           disabled={disabled}

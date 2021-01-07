@@ -4,7 +4,7 @@ import {colors, sheet} from '../../../../styles';
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingBottom: 30,
+    paddingBottom: 20,
   },
   weekdayWrapper: {
     width: '100%',

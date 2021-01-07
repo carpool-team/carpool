@@ -12,7 +12,7 @@ const WeekPicker = ({onDecrement, onIncrement, dateRange, offset}) => (
           <Icon
             name="angle-left"
             color={colors.blue}
-            size={35}
+            size={32}
             style={styles.icon}
           />
         </TouchableOpacity>
@@ -28,7 +28,7 @@ const WeekPicker = ({onDecrement, onIncrement, dateRange, offset}) => (
         <Icon
           name="angle-right"
           color={colors.blue}
-          size={35}
+          size={32}
           style={styles.icon}
         />
       </TouchableOpacity>

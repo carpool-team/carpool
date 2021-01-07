@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   circle: {
-    width: 50,
-    height: 50,
+    width: 45,
+    height: 45,
   },
   indicator: {
     ...sheet.textSemiBold,

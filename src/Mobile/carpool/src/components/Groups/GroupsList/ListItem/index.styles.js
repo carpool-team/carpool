@@ -4,12 +4,12 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   card: {
     width: '100%',
-    height: 140,
+    height: 120,
     marginBottom: 30,
   },
   container: {
     flex: 1,
-    padding: 20,
+    padding: 16,
     alignItems: 'center',
     justifyContent: 'space-between',
   },

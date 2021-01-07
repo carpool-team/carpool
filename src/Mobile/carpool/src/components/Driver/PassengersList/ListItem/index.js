@@ -37,7 +37,7 @@ const ListItem = ({stop, onItemPress, past}) => {
         </View>
         {!past && (
           <TouchableOpacity onPress={() => onItemPress(stop)}>
-            <Icon name="close" color={colors.red} size={25} />
+            <Icon name="close" color={colors.red} size={20} />
           </TouchableOpacity>
         )}
       </View>

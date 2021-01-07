@@ -40,7 +40,6 @@ const ListItem = ({day, rides, onItemPress}) => {
           <Text style={styles.weekday}>{weekday}</Text>
         )}
       </View>
-      <View style={styles.emptyView} />
     </View>
   );
 };

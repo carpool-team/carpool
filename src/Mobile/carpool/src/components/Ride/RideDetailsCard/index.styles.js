@@ -3,7 +3,7 @@ import {sheet, colors} from '../../../styles';
 
 export const styles = StyleSheet.create({
   upview: {
-    height: 140,
+    height: 120,
     marginTop: 16,
   },
   contentContainer: {

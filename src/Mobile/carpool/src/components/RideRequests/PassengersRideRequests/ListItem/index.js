@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import UpView from '../../../common/UpView';
 import Status from './Status';
 import {GroupWaypoints} from '../../../Ride';
-import {sheet, colors} from '../../../../styles';
+import {sheet} from '../../../../styles';
 import moment from 'moment';
 import {styles} from './index.styles';
 import * as actions from '../../../../store/actions';
