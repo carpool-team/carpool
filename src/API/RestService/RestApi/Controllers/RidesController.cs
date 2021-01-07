@@ -14,6 +14,7 @@ using RestApi.Commands.RideCommands.DeleteRecurringRide;
 using RestApi.Commands.RideCommands.RemoveUserFromRide;
 using RestApi.DTOs.Ride;
 using RestApi.Extensions;
+using RestApi.Queries.GroupQueries;
 using RestApi.Queries.RideQueries;
 
 namespace RestApi.Controllers
@@ -77,6 +78,15 @@ namespace RestApi.Controllers
             var userRides = await _mediator.Send(getUserRides);
 
             return new ApiResponse(userRides);
+        }
+
+        [HttpGet("~/api/groups/{groupId}/rides")]
+        public async Task<ApiResponse> GetGroupRides([FromRoute] GroupId groupId)
+        {
+	        GetGroupRidesQuery request = new(groupId, User.GetUserId());
+	        var rides = await _mediator.Send(request);
+
+	        return new ApiResponse(rides);
         }
 
         // PUT: api/Rides/5

@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransferObjects", "Shar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.DataAccessLayer", "AuthService\Auth.DataAccessLayer\Auth.DataAccessLayer.csproj", "{C6E0DCAF-119A-409D-9758-DD4EBF7C9C2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "RestService\Application\Application.csproj", "{C510CADE-6E27-44C0-9389-136E4B356113}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{C6E0DCAF-119A-409D-9758-DD4EBF7C9C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6E0DCAF-119A-409D-9758-DD4EBF7C9C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6E0DCAF-119A-409D-9758-DD4EBF7C9C2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C510CADE-6E27-44C0-9389-136E4B356113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C510CADE-6E27-44C0-9389-136E4B356113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C510CADE-6E27-44C0-9389-136E4B356113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C510CADE-6E27-44C0-9389-136E4B356113}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +96,7 @@ Global
 		{A710C1C2-F728-42E8-89C8-0F27360281D2} = {7E81CA78-C2A3-4B25-B0CD-08CD369E3D0C}
 		{AAB1F15E-04DF-4D8C-B50C-6AC2AE4109BB} = {7E81CA78-C2A3-4B25-B0CD-08CD369E3D0C}
 		{C6E0DCAF-119A-409D-9758-DD4EBF7C9C2B} = {5408BE24-1AF6-4152-B5F6-E5A8C1E2ABCD}
+		{C510CADE-6E27-44C0-9389-136E4B356113} = {44C405DE-BC69-456E-9CB1-50FC100E4FE9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E10CFF1-92B5-4B10-B141-37041A158210}

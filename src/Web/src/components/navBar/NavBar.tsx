@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import "./NavBar.scss";
 import NavButton from "./navButton/NavButton";
 import { ButtonColor } from "./navButton/enums/ButtonColor";
@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { logout } from "../auth/store/Actions";
 import { IAuthState } from "../auth/store/State";
 import { ITokenInfo } from "../auth/interfaces/ITokenInfo";
-import { Link } from "react-router-dom";
 import App from "../../App";
 import { rideRoutes } from "../rides/RidesRouter";
 
@@ -94,7 +93,7 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 
 	private renderAccountContainer = () => {
 		const { t } = this.props;
-		console.log("TOKEN INFO: ", this.props.tokenInfo);
+		// console.log("TOKEN INFO: ", this.props.tokenInfo);
 		if (!this.props.tokenInfo?.token) { // unathorized
 			return (
 				<div className={this.cssClasses.navBarAccountContainer}>
@@ -102,7 +101,6 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						color={ButtonColor.Gray}
 						background={ButtonBackground.None}
 						icon={ButtonIcon.User}
-						onClick={() => { }}
 						to={`/${mainRoutes.login}`}
 					>
 						<span>
@@ -113,7 +111,6 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 					<NavButton
 						color={ButtonColor.White}
 						background={ButtonBackground.Blue}
-						onClick={() => { }}
 						to={`/${mainRoutes.register}`}
 					>
 						{t(this.resources.register)}
@@ -127,7 +124,6 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 						color={ButtonColor.Gray}
 						background={ButtonBackground.None}
 						icon={ButtonIcon.User}
-						onClick={() => { }}
 						to={`/${mainRoutes.profile}`}
 					>
 						<span>
@@ -154,9 +150,9 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		return (
 			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
 				<div className={this.cssClasses.navBarTabContainer}>
-					<Link to={App.rootRoute}>
+					<a href={App.rootRoute}>
 						<div className={this.cssClasses.logoContainer}></div>
-					</Link>
+					</a>
 					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
 						<NavButton
 							color={ButtonColor.Gray}
@@ -199,5 +195,5 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		);
 	}
 }
-
+/* istanbul ignore next */
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NavBar));

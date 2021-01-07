@@ -6,7 +6,7 @@ using IdentifiersShared.Identifiers;
 
 namespace Domain.Aggregates
 {
-	public class RecurringRides : AggregateRoot<RecurringRideId>
+	public class RecurringRides : AggregateRoot
 	{
 		public RecurringRides(RecurringRideId recurringRideId, IEnumerable<Ride>? rides = null)
 		{
@@ -14,6 +14,7 @@ namespace Domain.Aggregates
 			_rides = (rides ?? Enumerable.Empty<Ride>()).ToList();
 		}
 		
+		public RecurringRideId Id { get; set; }
 		
 		private RecurringRides(){}
 		

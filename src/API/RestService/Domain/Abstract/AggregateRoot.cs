@@ -2,8 +2,7 @@
 
 namespace Domain.Abstract
 {
-	public class AggregateRoot<T>
+	public class AggregateRoot
 	{
-		[Key] public T Id { get; set; }
 	}
 }
