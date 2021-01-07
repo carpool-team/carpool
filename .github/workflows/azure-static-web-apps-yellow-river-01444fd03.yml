@@ -46,6 +46,7 @@ jobs:
           EMAIL: ${{ secrets.HELP_MAIL }}
           EMAIL_USER_ID: ${{ secrets.HELP_USERID }}
           EMAIL_SERVICE_ID: ${{ secrets.HELP_SERVICEID }}
+          TOKEN_STORAGE_KEY: ${{ secrets.TOKEN_STORAGE_KEY }}
         run: |
           echo MAPLIGHT=$MAPBOX_STYLE > .env
           echo MAPBOX_KEY=$MAPBOX_KEY >> .env
@@ -54,6 +55,7 @@ jobs:
           echo EMAIL=$EMAIL >> .env
           echo EMAIL_USER_ID=$EMAIL_USER_ID >> .env
           echo EMAIL_SERVICE_ID=$EMAIL_SERVICE_ID >> .env
+          echo TOKEN_STORAGE_KEY=$TOKEN_STORAGE_KEY >> .env
       - name: Install dependencies, Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
