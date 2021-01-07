@@ -40,7 +40,9 @@ namespace RestApi.Commands.GroupCommands
 		{
 			var group = await _groupRepository.GetByIdAsync(request.GroupId, cancellationToken);
 
-			if (group.OwnerId != request.RequestingUserId && request.AppUserId != request.RequestingUserId)
+			if (group.OwnerId != request.RequestingUserId 
+			    && request.AppUserId != request.RequestingUserId
+			    || group.OwnerId == request.AppUserId)
 				throw new ApiException(StatusCodes.Status403Forbidden);
 
 			if (group.OwnerId == request.AppUserId)
