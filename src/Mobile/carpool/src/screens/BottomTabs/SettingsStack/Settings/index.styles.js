@@ -31,8 +31,8 @@ export const styles = StyleSheet.create({
     fontSize: 14,
   },
   circle: {
-    height: 100,
-    width: 100,
+    height: 80,
+    width: 80,
   },
   contentContainer: {
     alignItems: 'center',

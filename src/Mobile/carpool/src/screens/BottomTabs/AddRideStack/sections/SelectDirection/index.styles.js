@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   upview: {
-    height: 80,
+    height: 60,
     width: '46%',
   },
   contentContainer: {
@@ -37,7 +37,8 @@ export const styles = StyleSheet.create({
     ...sheet.textMedium,
     color: colors.grayDark,
     fontSize: 28,
-    marginTop: 20,
+    marginTop: 30,
+    marginBottom: 5,
   },
   placeName: {
     ...sheet.textSemiBold,

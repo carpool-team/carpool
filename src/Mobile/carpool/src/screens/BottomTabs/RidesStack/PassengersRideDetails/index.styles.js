@@ -14,8 +14,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   topRow: {
-    paddingHorizontal: 16,
-    paddingVertical: 24,
+    padding: 16,
     ...sheet.rowCenterSplit,
   },
   time: {

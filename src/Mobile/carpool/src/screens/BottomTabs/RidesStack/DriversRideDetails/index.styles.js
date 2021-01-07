@@ -14,8 +14,7 @@ export const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   topRow: {
-    paddingHorizontal: 16,
-    paddingVertical: 24,
+    padding: 16,
     ...sheet.rowCenterSplit,
   },
   time: {
@@ -37,8 +36,8 @@ export const styles = StyleSheet.create({
     height: 300,
   },
   waypoints: {
-    paddingTop: 16,
-    paddingBottom: 24,
+    paddingTop: 8,
+    paddingBottom: 12,
     paddingHorizontal: 16,
   },
   bottomWrapper: {

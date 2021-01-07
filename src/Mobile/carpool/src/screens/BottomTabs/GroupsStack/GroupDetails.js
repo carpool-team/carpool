@@ -123,7 +123,7 @@ const GroupDetails = ({navigation, route}) => {
               <MaterialIcon
                 name="exit-to-app"
                 color={colors.orange}
-                size={40}
+                size={32}
               />
               <Text style={styles.cardLabel}>Leave</Text>
             </View>
@@ -133,7 +133,7 @@ const GroupDetails = ({navigation, route}) => {
             style={styles.ridesUpView}
             onPress={onRidesPress}>
             <View style={styles.cardContent}>
-              <Ionicon name="ios-car" size={40} color={colors.blue} />
+              <Ionicon name="ios-car" size={32} color={colors.blue} />
               <Text style={styles.cardLabel}>
                 {isPassenger ? 'Rides' : 'Your rides'}
               </Text>
@@ -211,22 +211,21 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     flex: 1,
-    padding: 16,
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   cardLabel: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 18,
+    fontSize: 16,
   },
   leaveUpView: {
     width: '35%',
-    height: 100,
+    height: 80,
   },
   ridesUpView: {
     width: '60%',
-    height: 100,
+    height: 80,
   },
   flexed: {
     flex: 1,

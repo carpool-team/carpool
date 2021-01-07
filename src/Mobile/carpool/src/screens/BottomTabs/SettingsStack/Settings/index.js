@@ -67,7 +67,7 @@ const Settings = ({navigation}) => {
                 style={styles.circle}
                 borderRadius={9999}
                 contentContainerStyle={styles.contentContainer}>
-                <Icon name="person" color={colors.grayDark} size={65} />
+                <Icon name="person" color={colors.grayDark} size={55} />
               </UpView>
               <View style={styles.flexCenter}>
                 <TouchableOpacity onPress={onEdit}>
