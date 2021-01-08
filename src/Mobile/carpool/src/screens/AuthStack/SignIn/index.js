@@ -78,12 +78,12 @@ const SignIn = ({navigation}) => {
           error={touched.password && errors.password ? errors.password : null}
           onSubmitEditing={handleSubmit}
         />
-        <View style={styles.forgotWrapper}>
+        {/* <View style={styles.forgotWrapper}>
           <TouchableOpacity
             onPress={() => navigation.navigate('ForgotPassword')}>
             <Text style={styles.forgot}>Forgot your password?</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <StandardButton
           color={colors.blue}
           onPress={handleSubmit}

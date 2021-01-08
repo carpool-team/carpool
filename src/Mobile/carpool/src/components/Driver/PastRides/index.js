@@ -45,6 +45,7 @@ const PastRides = () => {
       }
       onRefresh={onRefreshPastRides}
       onItemPress={onItemPress}
+      reverse
     />
   );
 };

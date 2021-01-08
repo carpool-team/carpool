@@ -5,9 +5,9 @@ import {ListEmptyComponent} from '../../common/lists';
 import ListItem from './ListItem';
 import {styles} from './index.styles';
 
-const RidesList = ({data, loading, onRefresh, onItemPress}) => (
+const RidesList = ({data, loading, onRefresh, onItemPress, reverse}) => (
   <FlatList
-    data={data}
+    data={reverse && data ? data.reverse() : data}
     style={styles.flatlist}
     contentContainerStyle={styles.contentContainer}
     keyExtractor={item => item.rideId.toString()}
@@ -21,7 +21,9 @@ const RidesList = ({data, loading, onRefresh, onItemPress}) => (
       />
     }
     ListEmptyComponent={
-      <ListEmptyComponent title="no rides found" onRefresh={onRefresh} />
+      !loading && (
+        <ListEmptyComponent title="no rides found" onRefresh={onRefresh} />
+      )
     }
   />
 );
