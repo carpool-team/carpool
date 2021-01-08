@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - mobileci
+    paths:
+      - "src/Mobile/carpool/**"
+      - ".github/workflows/**"
 
 jobs:
   test:
