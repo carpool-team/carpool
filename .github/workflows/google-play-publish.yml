@@ -1,7 +1,7 @@
 name: Publish Android app to Google Play Store
 
 on:
-  pull_request:
+  push:
     branches:
       - mobileci
 
