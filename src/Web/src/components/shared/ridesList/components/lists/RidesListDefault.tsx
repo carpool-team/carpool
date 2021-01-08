@@ -22,9 +22,11 @@ const RidesListDefault = (props: IRidesListProps) => {
 
 	const renderJoinItem = (color: string, ride: IRide) => {
 		if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
+			console.log("FDSAFad")
 			return (
 				<React.Fragment key={ride.rideId}>
 					<ActiveItemJoin
+						joinRideCallback={props.joinRideCallback}
 						ride={ride}
 						color={color}
 						t={t}

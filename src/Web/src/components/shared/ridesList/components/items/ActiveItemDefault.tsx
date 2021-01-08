@@ -26,9 +26,9 @@ const ActiveItemDefault = (props: IListItemProps) => {
 		activeCar: "ridesListActive--car",
 	};
 
-	const [popover, setPopover] = useState(false);
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
+
 	const onGetName = async (coords: [number, number]) => {
 		try {
 			setLoading(true);
@@ -85,10 +85,6 @@ const ActiveItemDefault = (props: IListItemProps) => {
 		}
 	}
 
-	const resources = {
-		joinBtnLabel: "common.joinRide",
-	};
-
 	return (
 		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
 			<div className={cssClasses.activeButtonContainer}>
@@ -120,20 +116,6 @@ const ActiveItemDefault = (props: IListItemProps) => {
 						{props.ride.owner.vehicle}
 					</div>
 					<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
-					{props.joinRideCallback ?
-						<>
-							<Button onClick={() => setPopover(true)}>
-								{props.t(resources.joinBtnLabel)}
-							</Button>
-							<AddressModal
-								open={popover}
-								onCancel={() => setPopover(false)}
-								onConfirm={(coords) => {
-									setPopover(false);
-									props.joinRideCallback(props.ride, coords);
-								}}
-							/>
-						</> : null}
 				</div>
 			</div>
 		</li>

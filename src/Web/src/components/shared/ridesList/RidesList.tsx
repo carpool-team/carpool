@@ -19,7 +19,7 @@ const RidesList = (props: IListProps) => {
 		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} joinRideCallback={props.joinRideCallback} />
 	);
 	const renderJoinList = () => (
-		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} />
+		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} joinRideCallback={props.joinRideCallback} />
 	);
 	const renderRequestParticipantList = () => (
 		<RequestsListDefault

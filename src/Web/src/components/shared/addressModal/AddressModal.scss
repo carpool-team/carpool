@@ -2,8 +2,8 @@
 @import "~scss_path/fonts";
 
 .container {
-	min-height: 25vh;
-	width: 35vw;
+	padding-top: 30px;
+	width: 40vw;
 	background-color: $backgroundOnHover;
 	display: flex;
 	justify-content: center;
@@ -26,4 +26,10 @@
 		align-self: center;
 		margin-bottom: 30px;
 	}
+}
+@media only screen and (max-width: 900px) {
+	.container {
+		width:90vw;
+	}
+
 }
