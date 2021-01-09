@@ -34,7 +34,6 @@ namespace DataAccessLayer.Builders
 				.OnDelete(DeleteBehavior.NoAction);
 			
 			builder.OwnsOne(x => x.Location);
-
 		}
 	}
 }

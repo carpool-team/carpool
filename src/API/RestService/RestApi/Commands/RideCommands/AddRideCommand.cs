@@ -74,7 +74,8 @@ namespace RestApi.Commands.RideCommands
 					       new Location(x.Location.Longitude, x.Location.Latitude),
 					       new RideId(rideId)))
 				       .ToList() ?? new List<Stop>(),
-				request.SeatsLimit);
+				request.SeatsLimit,
+				new List<RideRequest>());
 
 			await _rideRepository.AddAsync(ride, cancellationToken).ConfigureAwait(false);
 

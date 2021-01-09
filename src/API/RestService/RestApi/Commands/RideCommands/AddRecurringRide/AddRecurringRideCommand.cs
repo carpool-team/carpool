@@ -125,6 +125,7 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 							       new RideId(rideIdEnumerator.Current)))
 						       .ToList() ?? new List<Stop>(),
 						request.SeatsLimit,
+						new List<RideRequest>(),
 						recurringRideId);
 
 					recurringRides.AddRide(ride);

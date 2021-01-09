@@ -5,18 +5,16 @@ using RestEase;
 
 namespace AuthServer.Services
 {
+	[Header("Authorization", "Bearer")]
 	public interface IUserManagementService
 	{
 		[Post("api/users")]
-		[Header("Authorization", "Bearer")]
 		Task CreateUser([Body] AddUserDto addUser);
 
 		[Put("api/users/{appUserId}")]
-		[Header("Authorization", "Bearer")]
 		Task UpdateUser([Path] long appUserId, [Body]UpdateUserDto updateUserDto);
 		
 		[Delete("api/users/{appUserId}")]
-		[Header("Authorization", "Bearer")]
 		Task<IndexUserDto> DeleteUser([Path] long appUserId);
 	}
 }

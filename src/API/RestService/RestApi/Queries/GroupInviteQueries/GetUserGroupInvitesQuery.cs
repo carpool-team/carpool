@@ -47,6 +47,7 @@ namespace RestApi.Queries.GroupInviteQueries
 						new GroupDto(x.Group.UserGroups.Count,
 							x.Group.Id,
 							new LocationDto(x.Group.Location.Longitude, x.Group.Location.Latitude),
+							x.Group.OwnerId,
 							x.Group.Name),
 						new InvitingUserDto(x.InvitingApplicationUser.Id,
 							x.InvitingApplicationUser.FirstName,
