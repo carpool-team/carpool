@@ -21,9 +21,9 @@ namespace RestApi.Queries.RideQueries
 	public class GetRidesQuery : IRequest<IEnumerable<RideDto>>
 	{
 		public GetRidesQuery(GroupId groupId,
-			RideDirection rideDirection,
 			DateTime dateTime,
-			AppUserId tokenUserId)
+			AppUserId tokenUserId,
+			RideDirection? rideDirection)
 		{
 			GroupId = groupId;
 			RideDirection = rideDirection;
@@ -32,9 +32,8 @@ namespace RestApi.Queries.RideQueries
 		}
 
 		public GroupId GroupId { get; }
-		public RideDirection RideDirection { get; }
+		public RideDirection? RideDirection { get; }
 		public DateTime DateTime { get; }
-
 		public AppUserId TokenUserId { get; }
 	}
 
@@ -72,8 +71,11 @@ namespace RestApi.Queries.RideQueries
 						x.Owner.FirstName,
 						x.Owner.LastName,
 						x.Owner.Id),
-					new GroupDto(x.Group.UserGroups.Count, x.Group.Id,
-						new LocationDto(x.Group.Location.Longitude, x.Group.Location.Latitude), x.Group.Name),
+					new GroupDto(x.Group.UserGroups.Count,
+						x.Group.Id,
+						new LocationDto(x.Group.Location.Longitude, x.Group.Location.Latitude),
+						x.OwnerId,
+						x.Group.Name),
 					new LocationDto(x.Location.Longitude, x.Location.Latitude),
 					x.Price,
 					x.RideDirection,
