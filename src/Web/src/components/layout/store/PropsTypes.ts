@@ -1,3 +1,5 @@
+import { init } from "../../auth/store/Actions";
+import { IAuthInitAction } from "../../auth/store/Types";
 import { redirect, redirected, setLoaderVisible } from "./Actions";
 import { ILayoutState } from "./State";
 import { IRedirectAction, IRedirectedAction, ISetLoaderVisibleAction } from "./Types";
@@ -20,12 +22,14 @@ interface IDispatchPropsType {
 	redirect: (to: string) => IRedirectAction;
 	redirected: () => IRedirectedAction;
 	setLoaderVisible: (visible: boolean) => ISetLoaderVisibleAction;
+	authInit: () => IAuthInitAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
 	redirect,
 	redirected,
 	setLoaderVisible,
+	authInit: init,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;

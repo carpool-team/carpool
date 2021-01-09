@@ -14,6 +14,11 @@ import "react-toastify/dist/ReactToastify.css";
 interface ILayoutProps extends RouteComponentProps, StateProps, DispatchProps { }
 
 const Layout: (props: ILayoutProps) => JSX.Element = props => {
+	useEffect(() => {
+		props.authInit();
+		return () => { };
+	}, []);
+
 	const cssClasses = {
 		main: "main",
 	};

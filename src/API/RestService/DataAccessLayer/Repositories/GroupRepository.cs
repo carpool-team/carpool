@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -107,6 +108,9 @@ namespace DataAccessLayer.Repositories
 			                 .Include(x => x.Owner)
 			                 .Include(x => x.Group)
 			                 .Include(x => x.Stops)
-			                 .Where(x => x.GroupId == groupId).ToListAsync(cancellationToken);
+			                 .Where(x => x.GroupId == groupId
+			                 && x.Date > DateTime.Now)
+			                 .OrderBy(x => x.Date)
+			                 .ToListAsync(cancellationToken);
 	}
 }

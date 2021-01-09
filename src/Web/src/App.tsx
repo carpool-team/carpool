@@ -9,6 +9,11 @@ import "./scss/main.scss";
 
 export default class App extends Component {
 	public static rootRoute: string = "/";
+
+	public static storageKeys = {
+		tokenInfoStorage: "TOKEN_STORAGE_KEY",
+	};
+
 	render() {
 		return (
 			<React.Fragment>

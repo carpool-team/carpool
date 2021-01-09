@@ -30,13 +30,13 @@ namespace RestApi.Controllers
 
 		[HttpGet]
 		public async Task<ApiResponse> GetRides([FromQuery] GroupId groupId,
-			[FromQuery] RideDirection rideDirection,
-			[FromQuery] DateTime dateTime)
+			[FromQuery] DateTime dateTime,
+			[FromQuery] RideDirection? rideDirection = null)
 		{
 			GetRidesQuery getRides = new(groupId,
-				rideDirection,
 				dateTime,
-				User.GetUserId());
+				User.GetUserId(),
+				rideDirection);
 			var rides = await _mediator.Send(getRides);
 
 			return new ApiResponse(rides);
