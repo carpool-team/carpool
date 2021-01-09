@@ -71,7 +71,8 @@
             "editGroupForm": {
                 "deleteBtn": "Usuń grupę",
                 "deleteConfirm": "Czy usunąć grupę?",
-                "basicInfo": "Edytuj grupę"
+                "basicInfo": "Edytuj grupę",
+                "btnUsers": "Edytuj użytkowników grupy"
             }
         },
         "rides": {

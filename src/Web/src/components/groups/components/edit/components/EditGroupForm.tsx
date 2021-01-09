@@ -16,6 +16,12 @@ import { each, parseCoords } from "../../../../../helpers/UniversalHelper";
 import { IGroup } from "../../../interfaces/IGroup";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 import { Popover } from "@material-ui/core";
+import { ButtonLinkColor } from "../../../../ui/buttonLink/enums/ButtonLinkColor";
+import ButtonLink from "../../../../ui/buttonLink/ButtonLink";
+import { ButtonLinkBackground } from "../../../../ui/buttonLink/enums/ButtonLinkBackground";
+import { ButtonLinkUnderline } from "../../../../ui/buttonLink/enums/ButtonLinkUnderline";
+import { mainRoutes } from "../../../../layout/components/LayoutRouter";
+import GroupsRouter from "../../GroupsRouter";
 
 const geocodingClient = getGeocodingClient();
 
@@ -114,7 +120,8 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 		deleteBtn: "groups.editGroupForm.deleteBtn",
 		deleteConfirm: "groups.editGroupForm.deleteConfirm",
 		yes: "yes",
-		no: "no"
+		no: "no",
+		btnUsers: "groups.editGroupForm.btnUsers"
 	};
 
 	const { t } = props;
@@ -181,6 +188,16 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 					>
 						{t(resources.deleteBtn)}
 					</Button>
+				</div>
+				<div >
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						undeline={ButtonLinkUnderline.Solid}
+						to={`/${mainRoutes.groups}${GroupsRouter.routes.users}`}
+					>
+						{t(resources.btnUsers)}
+					</ButtonLink>
 				</div>
 				<Popover
 					open={popover}
