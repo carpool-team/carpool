@@ -45,6 +45,8 @@ export const getRequestEndpoint: (
 				return "/auth/login";
 			case RequestEndpoint.REGISTER_USER:
 				return "/auth/register";
+			case RequestEndpoint.REFRESH_TOKEN:
+				return "/auth/refresh-token";
 			case RequestEndpoint.AUTOCOMPLETE_USER:
 				return "/users";
 			case RequestEndpoint.GET_USER_BY_APPUSERID:
@@ -82,25 +84,6 @@ export const getRequestEndpoint: (
 		ep += "?" + query.join("&");
 	}
 	return ep;
-};
-
-type AllowedRequestVerb = "POST" | "PUT" | "DELETE" | "GET";
-
-export const getRequestType: (type: RequestType) => AllowedRequestVerb = (
-	type
-) => {
-	switch (type) {
-		case RequestType.GET:
-			return "GET";
-		case RequestType.POST:
-			return "POST";
-		case RequestType.PUT:
-			return "PUT";
-		case RequestType.DELETE:
-			return "DELETE";
-		default:
-			throw "Unhandled request type";
-	}
 };
 
 export const getUrl: (endpoint: RequestEndpoint) => string = (ep) => {

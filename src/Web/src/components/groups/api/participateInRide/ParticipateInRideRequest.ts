@@ -15,7 +15,7 @@ export class ParticipateInRideRequest extends RequestBase<IParticipateInRideRequ
 	}) {
 		super({
 			properties: {
-				method: RequestType.POST,
+				method: RequestType.Post,
 				endpoint: RequestEndpoint.PUT_RIDE_ADD_PARTICIPANT,
 				queries: {
 					rideId: init.rideId

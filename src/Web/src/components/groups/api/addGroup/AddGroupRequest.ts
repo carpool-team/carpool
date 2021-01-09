@@ -19,7 +19,7 @@ export class AddGroupRequest extends RequestBase<IAddGroupRequestBody> {
 	}) {
 		super({
 			properties: {
-				method: RequestType.POST,
+				method: RequestType.Post,
 				endpoint: RequestEndpoint.POST_ADD_GROUP,
 				queries: null
 			},

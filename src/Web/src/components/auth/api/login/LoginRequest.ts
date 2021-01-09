@@ -13,7 +13,7 @@ export class LoginRequest extends RequestBase<ILoginRequestBody> {
 	}) {
 		super({
 			properties: {
-				method: RequestType.POST,
+				method: RequestType.Post,
 				endpoint: RequestEndpoint.LOGIN_USER,
 				queries: null
 			},
