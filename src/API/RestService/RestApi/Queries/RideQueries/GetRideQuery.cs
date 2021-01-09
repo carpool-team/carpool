@@ -44,6 +44,7 @@ namespace RestApi.Queries.RideQueries
 			GroupDto groupDto = new(group.UserGroups.Count,
 				group.Id,
 				new LocationDto(group.Location.Longitude, group.Location.Latitude),
+				group.OwnerId,
 				group.Name);
 
 			List<StopDto> stopDtos =
