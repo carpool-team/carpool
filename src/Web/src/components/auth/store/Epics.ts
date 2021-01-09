@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import { Epic, ofType } from "redux-observable";
 import { of } from "rxjs";
 import { switchMap, mergeMap, catchError } from "rxjs/operators";
+import App from "../../../App";
 import { parseJwt } from "../../../helpers/UniversalHelper";
 import i18n from "../../../i18n";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
@@ -11,11 +12,28 @@ import { LoginResponse } from "../api/login/LoginResponse";
 import { RegisterRequest } from "../api/register/RegisterRequest";
 import { RegisterResponse } from "../api/register/RegisterResponse";
 import { ITokenInfo } from "../interfaces/ITokenInfo";
-import { ILoginAction, ILoginErrorAction, ILoginSuccessAction, IRegisterAction, IRegisterErrorAction, IRegisterSuccessAction, LoginAction, LoginActionTypes, RegisterAction, RegisterActionTypes } from "./Types";
+import { IAuthInitAction, ILoginAction, ILoginErrorAction, ILoginSuccessAction, ILogoutAction, INoTokenAction, IRegisterAction, IRegisterErrorAction, IRegisterSuccessAction, LoginAction, LoginActionTypes, RegisterAction, RegisterActionTypes } from "./Types";
 
 const loginGenericErrorCode: string = "loginGeneric";
 const registerGenericErrorCode: string = "registerGeneric";
 const loginInvalidErrorCode: string = "loginInvalid";
+
+const authInitEpic: Epic<LoginAction> = (action$) => action$.pipe(
+	ofType(LoginActionTypes.Init),
+	switchMap((_action: IAuthInitAction) => {
+		const tokenInfoString: string = window.localStorage.getItem(process.env[App.storageKeys.tokenInfoStorage]);
+		if (tokenInfoString) {
+			return [<ILoginSuccessAction>{
+				type: LoginActionTypes.LoginSuccess,
+				tokenInfo: JSON.parse(tokenInfoString),
+			}];
+		} else {
+			return [<INoTokenAction>{
+				type: LoginActionTypes.NoToken,
+			}];
+		}
+	}),
+);
 
 const registerEpic: Epic<RegisterAction> = (action$) =>
 	action$.pipe(
@@ -95,6 +113,9 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 					expires: response.result.expires,
 					payload: parseJwt(response.result.token),
 				};
+
+				window.localStorage.setItem(process.env[App.storageKeys.tokenInfoStorage], JSON.stringify(tokenInfo));
+
 				console.log("TOKEN PAYLOAD: ", tokenInfo.payload);
 				return [
 					<ILoginSuccessAction>{
@@ -132,7 +153,17 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 		})
 	);
 
+const logoutEpic: Epic<LoginAction> = (action$) => action$.pipe(
+	ofType(LoginActionTypes.Logout),
+	switchMap((_action: ILogoutAction) => {
+		window.localStorage.removeItem(process.env[App.storageKeys.tokenInfoStorage]);
+		return [];
+	}),
+);
+
 export const authEpics = [
 	registerEpic,
 	loginEpic,
+	authInitEpic,
+	logoutEpic,
 ];
