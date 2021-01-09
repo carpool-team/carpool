@@ -460,4 +460,5 @@ export const groupEpics = [
 	addRideEpic,
 	addInviteEpic,
 	apiErrorEpic,
+	getGroupUsersEpic,
 ];

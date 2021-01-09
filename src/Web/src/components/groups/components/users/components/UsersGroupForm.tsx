@@ -8,18 +8,6 @@ import { getGroupUsers } from "../../../store/Actions";
 import { IGroupsState } from "../../../store/State";
 import { IGetGroupUsersAction } from "../../../store/Types";
 
-interface IStatePropsType {
-	groups: IGroupsState;
-}
-
-interface IStateToProps {
-	users: IParticipant;
-}
-
-const mapStateToProps: (state: IStatePropsType) => IStateToProps = state => ({
-	users: state.groups.groups[0].userCount as any as IParticipant
-});
-
 interface IDispatchPropsType {
 	getGroupUsers: (groupId: string) => IGetGroupUsersAction;
 }
@@ -29,9 +17,7 @@ export const mapDispatchToProps: IDispatchPropsType = {
 };
 
 export type DispatchProps = typeof mapDispatchToProps;
-export type StateProps = ReturnType<typeof mapStateToProps>;
-
-interface IUsersGroupProps extends IReactI18nProps, DispatchProps, StateProps {
+interface IUsersGroupProps extends IReactI18nProps, DispatchProps {
 	group: IGroup;
 }
 
@@ -39,6 +25,11 @@ const UsersGroupForm: (props: IUsersGroupProps) => JSX.Element = props => {
 	useEffect(() => {
 		props.getGroupUsers(props.group.groupId);
 	}, []);
+
+	// userzy w props.group.users po pobraniu
+	useEffect(() => {
+		console.log(props.group?.users);
+	}, [props.group?.users]);
 
 	const { t } = props;
 
@@ -49,6 +40,6 @@ const UsersGroupForm: (props: IUsersGroupProps) => JSX.Element = props => {
 	);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(null, mapDispatchToProps)(
 	withTranslation()(UsersGroupForm)
 );

@@ -1,6 +1,7 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 import { IGroup } from "../interfaces/IGroup";
+import { IGroupUser } from "../interfaces/IGroupUser";
 import { IInvite } from "../interfaces/IInvite";
 import { IParticipant } from "../interfaces/IParticipant";
 import { IRide } from "../interfaces/IRide";
@@ -95,7 +96,7 @@ export interface IGetGroupUsersAction extends Action<GroupsActionTypes.GetGroupU
 /** Action for getting group users success */
 export interface IGetGroupUsersSuccessAction extends Action<GroupsActionTypes.GetGroupUsersSuccess> {
 	groupId: string;
-	users: IParticipant[];
+	users: IGroupUser[];
 }
 
 /** Action for getting group users error */

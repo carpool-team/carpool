@@ -1,6 +1,6 @@
 import ResponseBase from "../../../../api/responses/ResponseBase";
-import { IParticipant } from "../../interfaces/IParticipant";
+import { IGroupUser } from "../../interfaces/IGroupUser";
 
-export class GetGroupUsersResponse extends ResponseBase<IParticipant[]> {
+export class GetGroupUsersResponse extends ResponseBase<IGroupUser[]> {
 
 }
