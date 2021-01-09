@@ -19,7 +19,7 @@ import {
 	IGetRidesActionSuccess,
 	IParticipateInRideAction,
 	IParticipateInRideActionSuccess,
-	IParticipateInRideActionError, IAddGroupActionError, IAddRideAction, IAddInvitesAction, IApiErrorAction, GenericActionTypes, GenericAction
+	IParticipateInRideActionError, IAddGroupActionError, IAddRideAction, IAddInvitesAction, IApiErrorAction, GenericActionTypes, GenericAction, IGetGroupUsersAction, IGetGroupUsersErrorAction, IGetGroupUsersSuccessAction
 } from "./Types";
 import _ from "lodash";
 import { toast } from "react-toastify";
@@ -42,6 +42,7 @@ import { AddRideResponse } from "../api/addRide/AddRideResponse";
 import { AddInviteRequest } from "../api/addInvite/AddInviteRequest";
 import { IRedirectAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
+import { GetGroupUsersRequest } from "../api/getGroupUsers/GetGroupUsersRequest";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -403,6 +404,40 @@ const addInviteEpic: Epic<InviteAction | GenericAction | LayoutAction> = (action
 		];
 	}),
 	switchMap(res => res)
+);
+
+const getGroupUsersEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+	ofType(GroupsActionTypes.GetGroupUsers),
+	switchMap(async (action: IGetGroupUsersAction) => {
+		try {
+			const req = new GetGroupUsersRequest(action.groupId);
+			const res = await req.send();
+			if (res.isError || res.status >= 300) {
+				return [
+					<IGetGroupUsersErrorAction>{
+						type: GroupsActionTypes.GetGroupUsersError,
+						error: null,
+					},
+				];
+			} else {
+				return [
+					<IGetGroupUsersSuccessAction>{
+						type: GroupsActionTypes.GetGroupUsersSuccess,
+						users: res.result,
+						groupId: action.groupId,
+					}
+				];
+			}
+		} catch (err) {
+			return [
+				<IGetGroupUsersErrorAction>{
+					type: GroupsActionTypes.GetGroupUsersError,
+					error: err,
+				},
+			];
+		}
+	}),
+	mergeMap(res => res)
 );
 
 const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(

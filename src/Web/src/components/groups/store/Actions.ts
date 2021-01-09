@@ -21,6 +21,7 @@ import {
 	IParticipateInRideActionSuccess,
 	IAddRideAction,
 	IAddInvitesAction,
+	IGetGroupUsersAction,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
@@ -35,20 +36,6 @@ export function addGroup(group: IGroup): IAddGroupAction {
 	};
 }
 
-export function addGroupSuccess(newGroup: IGroup): IAddGroupActionSuccess {
-	return {
-		type: GroupsActionTypes.AddGroupSuccess,
-		newGroup,
-	};
-}
-
-export function addGroupError(error: Error): IAddGroupActionError {
-	return {
-		type: GroupsActionTypes.AddGroupError,
-		error,
-	};
-}
-
 export function getGroups(userOnly: boolean, count?: number, page?: number): IGetGroupsAction {
 	return {
 		type: GroupsActionTypes.GetGroups,
@@ -58,19 +45,10 @@ export function getGroups(userOnly: boolean, count?: number, page?: number): IGe
 	};
 }
 
-export function getGroupsSuccess(groups: IGroup[]): IGetGroupsActionSuccess {
-	return {
-		type: GroupsActionTypes.GetGroupsSuccess,
-		groups,
-	};
-}
-
-export function getGroupsError(error: Error): IGetGroupsActionError {
-	return {
-		type: GroupsActionTypes.GetGroupsError,
-		error,
-	};
-}
+export const getGroupUsers: (groupId: string) => IGetGroupUsersAction = groupId => ({
+	type: GroupsActionTypes.GetGroupUsers,
+	groupId,
+});
 //#endregion
 
 //#region INVITES

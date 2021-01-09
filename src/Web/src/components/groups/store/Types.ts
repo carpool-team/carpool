@@ -2,6 +2,7 @@ import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
+import { IParticipant } from "../interfaces/IParticipant";
 import { IRide } from "../interfaces/IRide";
 
 export enum GenericActionTypes {
@@ -16,6 +17,9 @@ export enum GroupsActionTypes {
 	GetGroups = "GROUPS_GET_GROUPS",
 	GetGroupsSuccess = "GROUPS_GET_GROUPS_SUCCESS",
 	GetGroupsError = "GROUPS_GET_GROUPS_ERROR",
+	GetGroupUsers = "GROUPS_GET_GROUP_USERS",
+	GetGroupUsersSuccess = "GROUPS_GET_GROUP_USERS_SUCCESS",
+	GetGroupUsersError = "GROUPS_GET_GROUP_USERS_ERROR",
 }
 
 /** Enum of invites actions */
@@ -80,6 +84,22 @@ export interface IGetGroupsActionSuccess
 /** Action for getting groups error */
 export interface IGetGroupsActionError
 	extends Action<GroupsActionTypes.GetGroupsError> {
+	error: Error;
+}
+
+/** Action for getting group users */
+export interface IGetGroupUsersAction extends Action<GroupsActionTypes.GetGroupUsers> {
+	groupId: string;
+}
+
+/** Action for getting group users success */
+export interface IGetGroupUsersSuccessAction extends Action<GroupsActionTypes.GetGroupUsersSuccess> {
+	groupId: string;
+	users: IParticipant[];
+}
+
+/** Action for getting group users error */
+export interface IGetGroupUsersErrorAction extends Action<GroupsActionTypes.GetGroupUsersError> {
 	error: Error;
 }
 //#endregion
@@ -173,7 +193,10 @@ export type GroupsAction =
 	| IAddGroupActionError
 	| IGetGroupsAction
 	| IGetGroupsActionSuccess
-	| IGetGroupsActionError;
+	| IGetGroupsActionError
+	| IGetGroupUsersAction
+	| IGetGroupUsersSuccessAction
+	| IGetGroupUsersErrorAction;
 
 export type InviteAction =
 	IAnswerInviteAction

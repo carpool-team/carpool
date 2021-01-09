@@ -19,6 +19,8 @@ export const getRequestEndpoint: (
 				return `/users/${queries?.userId}/groups`;
 			case RequestEndpoint.DELETE_GROUP_BY_ID:
 				return `/groups/${queries?.groupId}`;
+			case RequestEndpoint.GET_GROUP_USERS:
+				return `/groups/${queries.groupId}/users`;
 			//#endregion
 			//#region GROUP INVITES
 			case RequestEndpoint.GET_INVITES_BY_USER_ID:

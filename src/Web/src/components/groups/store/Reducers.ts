@@ -51,6 +51,9 @@ const reducer: Reducer<IGroupsState> = (
 				// 	draft.rides[idx].isUserParticipant = true;
 				// }
 				break;
+			case GroupsActionTypes.GetGroupUsersSuccess:
+				draft.groups.find(g => g.groupId === action.groupId).users = action.users;
+				break;
 			default:
 				break;
 		}
