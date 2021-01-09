@@ -80,7 +80,7 @@ namespace DataAccessLayer.Repositories
 				.Include(ride => ride.Owner)
 					.ThenInclude(owner => owner.Vehicle)
 				.Include(ride => ride.RideRequests)
-				.Where(ride => ride.Date.Date = dateTime.Date
+				.Where(ride => ride.Date.Date == dateTime.Date
 				               && ride.Date.TimeOfDay >= dateTime.TimeOfDay
 				               && ride.GroupId == groupId
 				               && (rideDirection == null || ride.RideDirection == rideDirection)
