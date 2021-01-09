@@ -84,6 +84,7 @@ namespace DataAccessLayer.Repositories
 				               && ride.GroupId == groupId
 				               && ride.RideDirection == rideDirection
 				               && ride.Stops.All(x => x.ParticipantId != appUserId)
+				               && ride.RideRequests.All(x => x.RequestingUserId != appUserId)
 				               && ride.SeatsLimit > ride.Stops.Count)
 				.OrderBy(ride => ride.Date)
 				.ToListAsync(cancellationToken);
