@@ -18,6 +18,7 @@ import {useDispatch} from 'react-redux';
 import {GoBack, Header} from '../../../../components/navigation';
 import {sortStops} from '../../../../utils/sortStops';
 import {styles} from './index.styles';
+import {StandardButton} from '../../../../components/common/buttons';
 
 const DriversRideDetails = ({navigation, route}) => {
   const {ride, past} = route.params;
@@ -171,7 +172,7 @@ const DriversRideDetails = ({navigation, route}) => {
           <View style={styles.passengersList}>
             {!!sorted && (
               <PassengersList
-                stops={sorted}
+                stops={ride.rideDirection ? sorted.reverse() : sorted}
                 onItemPress={onItemPress}
                 past={past}
               />
@@ -179,6 +180,15 @@ const DriversRideDetails = ({navigation, route}) => {
           </View>
         </View>
       </ScrollView>
+      {!past && (
+        <View style={styles.startButton}>
+          <StandardButton
+            title="Start"
+            color={colors.green}
+            onPress={() => navigation.navigate('RideDashboard', {ride})}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

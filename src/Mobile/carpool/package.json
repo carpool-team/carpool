@@ -32,6 +32,7 @@
     "@turf/line-slice": "^5.1.5",
     "@turf/nearest": "^4.7.3",
     "@turf/nearest-point-on-line": "^6.0.2",
+    "@turf/point-to-line-distance": "^6.0.0",
     "axios": "^0.21.0",
     "color": "^3.1.2",
     "faker": "^5.1.0",

@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   container: {
-    paddingBottom: 30,
+    paddingBottom: 80,
   },
   topRow: {
     padding: 16,
@@ -52,5 +52,11 @@ export const styles = StyleSheet.create({
     paddingVertical: 16,
     borderTopWidth: 1,
     borderTopColor: colors.gray,
+  },
+  startButton: {
+    position: 'absolute',
+    bottom: 20,
+    width: '100%',
+    alignItems: 'center',
   },
 });
