@@ -20,11 +20,8 @@ const reducer: Reducer<IRidesState> = (
 	return produce<IRidesState>(state, (draft) => {
 		switch (action.type) {
 			case RideRequestsActionTypes.GetRideRequestsSuccess:
-				if (action.owner) {
-					draft.requestsOwner = action.requests;
-				} else {
-					draft.requestsParticipant = action.requests;
-				}
+				draft.requestsOwner = action.requestsOwner;
+				draft.requestsParticipant = action.requestsParticipant;
 				break;
 			default:
 				break;

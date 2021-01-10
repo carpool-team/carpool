@@ -23,7 +23,7 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 });
 
 interface IDispatchPropsType {
-	getRideRequests: (owner: boolean) => IGetRideRequestsAction;
+	getRideRequests: () => IGetRideRequestsAction;
 	answerRideRequest: (id: string, isAccepted: boolean, owned: boolean) => IAnswerRideRequestAction;
 	setLoaderVisible: (visible: boolean) => ISetLoaderVisibleAction;
 }
