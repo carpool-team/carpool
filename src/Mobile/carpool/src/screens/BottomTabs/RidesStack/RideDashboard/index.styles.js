@@ -60,6 +60,13 @@ export const styles = StyleSheet.create({
     padding: 16,
     zIndex: 10,
   },
+  moveTo: {
+    position: 'absolute',
+    bottom: 15,
+    right: 0,
+    padding: 16,
+    zIndex: 10,
+  },
   distance: {
     ...sheet.textSemiBold,
     color: colors.blue,

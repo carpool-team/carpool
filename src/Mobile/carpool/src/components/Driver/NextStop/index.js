@@ -3,7 +3,6 @@ import {View, Text, ActivityIndicator} from 'react-native';
 import {useReverseGeocoding} from '../../../hooks';
 import {parseCoords} from '../../../utils/coords';
 import {sheet, colors} from '../../../styles';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {styles} from './index.styles';
 
 const NextStop = ({location}) => {
@@ -28,7 +27,6 @@ const NextStop = ({location}) => {
     </View>
   ) : (
     <View style={sheet.rowCenter}>
-      <Icon name="map-marker" color={colors.orange} size={20} />
       <Text numberOfLines={2} style={styles.placeName}>
         {placeName}
       </Text>

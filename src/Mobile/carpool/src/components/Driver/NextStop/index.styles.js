@@ -6,6 +6,5 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.grayDark,
     ...sheet.textSemiBold,
-    marginLeft: 12,
   },
 });

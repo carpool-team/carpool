@@ -1,40 +1,24 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {
-  View,
-  Text,
-  Alert,
-  SafeAreaView,
-  ActivityIndicator,
-  TouchableOpacity,
-} from 'react-native';
-// import Geolocation from '@react-native-community/geolocation';
+import {View, Alert, SafeAreaView, TouchableOpacity} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import {GoBack, Header} from '../../../../components/navigation';
 import {parseCoords} from '../../../../utils/coords';
-import {sortStops, equalCoordinates} from '../../../../utils/sortStops';
+import {sortStops} from '../../../../utils/sortStops';
 import {directionsClient} from '../../../../maps/mapbox';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {MAP_LIGHT} from '@env';
 import {FullScreenLoading} from '../../../../components/common/loaders';
-import {activeRouteStyle, sheet, colors} from '../../../../styles';
+import {activeRouteStyle, colors} from '../../../../styles';
 import pointToLineDistance from '@turf/point-to-line-distance';
-import {point, lineString, featureCollection} from '@turf/helpers';
-import Ionicon from 'react-native-vector-icons/Ionicons';
+import {point, lineString} from '@turf/helpers';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
-import NextStop from '../../../../components/Driver/NextStop';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import lineSlice from '@turf/line-slice';
 import length from '@turf/length';
 import {styles} from './index.styles';
-import {StandardButton} from '../../../../components/common/buttons';
-import {
-  GO_BACK_THERESHOLD,
-  NEW_ROUTE_THERESHOLD,
-  NEXT_STEP_THERESHOLD,
-  NEXT_STOP_THERESHOLD,
-  dirConfig,
-  icons,
-  parseDistance,
-} from './utils';
+import {NEW_ROUTE_THERESHOLD, NEXT_STEP_THERESHOLD, dirConfig} from './utils';
+import DashboardHeader from '../../../../components/Driver/DashboardHeader';
+import DashboardFooter from '../../../../components/Driver/DashboardFooter';
 
 const RideDashboard = props => {
   const {navigation} = props;
@@ -49,6 +33,18 @@ const RideDashboard = props => {
   const [steps, setSteps] = useState(null);
   const [stopDistance, setStopDistance] = useState(null);
   const [stepDistance, setStepDistance] = useState(null);
+
+  const _camera = useRef();
+
+  const onMoveToUser = () => {
+    if (_camera.current) {
+      // _camera.current.moveTo(location);
+      _camera.current.setCamera({
+        centerCoordinate: location,
+        zoomLevel: 16,
+      });
+    }
+  };
 
   const isReversed = !!ride.rideDirection;
 
@@ -79,6 +75,7 @@ const RideDashboard = props => {
     // Watch position
     const watchId = Geolocation.watchPosition(
       position => {
+        console.log(position, new Date());
         setLocation(parseCoords(position.coords));
       },
       err => {
@@ -96,8 +93,8 @@ const RideDashboard = props => {
           android: 'balanced',
           ios: 'hundredMeters',
         },
-        interval: 1000,
-        fastestInterval: 500,
+        interval: 3000,
+        fastestInterval: 2000,
         distanceFilter: 0,
       },
     );
@@ -266,72 +263,6 @@ const RideDashboard = props => {
       .finally(() => setLoading(false));
   };
 
-  const renderHeader = () => {
-    if (distance > GO_BACK_THERESHOLD) {
-      return (
-        <View style={sheet.rowCenter}>
-          <Ionicon name="warning" color={colors.grayDark} size={24} />
-          <Text style={styles.goBack}>Go back to the route!</Text>
-        </View>
-      );
-    }
-    if (distance > NEW_ROUTE_THERESHOLD) {
-      return (
-        <View style={sheet.rowCenter}>
-          <ActivityIndicator color={colors.grayDark} size="small" />
-          <Text style={styles.fetching}>Fetching new route...</Text>
-        </View>
-      );
-    }
-
-    if (!stops.length) {
-      return (
-        <View style={sheet.rowCenter}>
-          <Text style={styles.success}>
-            You have successfully reached your destination!
-          </Text>
-        </View>
-      );
-    }
-
-    return (
-      <View
-        style={{
-          ...sheet.rowCenterSplit,
-          paddingHorizontal: 8,
-          width: '100%',
-        }}>
-        <View style={{...sheet.rowCenter, flex: 1}}>
-          {icons[
-            steps[0].maneuver.modifier ? steps[0].maneuver.modifier : 'default'
-          ]()}
-          <Text style={styles.step}>{steps[0].maneuver.instruction}</Text>
-        </View>
-        <Text style={styles.stepDistance}>{parseDistance(stepDistance)}</Text>
-      </View>
-    );
-  };
-
-  const renderNextStop = () => {
-    // Render waypoint if possible
-    if (waypoints.length) {
-      return <NextStop location={waypoints[0].location} />;
-    }
-
-    // Render location if ride direction is reversed
-    if (isReversed) {
-      return <NextStop location={ride.location} />;
-    }
-
-    // Render group
-    return (
-      <View style={sheet.rowCenter}>
-        <FAIcon name="circle" color={colors.orange} size={12} />
-        <Text style={styles.groupName}>{ride.group.name}</Text>
-      </View>
-    );
-  };
-
   const onArrivedPress = () => {
     if (stops.length > 1) {
       // Remove closest stop from array
@@ -348,30 +279,22 @@ const RideDashboard = props => {
     }
   };
 
-  const renderNextButton = () => {
-    if (stopDistance < NEXT_STOP_THERESHOLD) {
-      return (
-        <View style={styles.buttonWrapper}>
-          <StandardButton
-            title="Arrived"
-            color={colors.green}
-            height={40}
-            width={150}
-            onPress={onArrivedPress}
-          />
-        </View>
-      );
-    }
-  };
-
   return loading ? (
     <FullScreenLoading />
   ) : (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.header}>{renderHeader()}</View>
+      <DashboardHeader
+        distance={distance}
+        stepDistance={stepDistance}
+        steps={steps}
+        stops={stops}
+      />
       <View style={styles.mapWrapper}>
         <TouchableOpacity onPress={fetchRoute} style={styles.refresh}>
           <FAIcon name="refresh" size={32} color={colors.orange} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onMoveToUser} style={styles.moveTo}>
+          <MaterialIcon name="my-location" size={36} color={colors.grayDark} />
         </TouchableOpacity>
         <MapboxGL.MapView
           onPress={e => console.log(e)}
@@ -379,31 +302,32 @@ const RideDashboard = props => {
           styleURL={MAP_LIGHT}
           compassEnabled={false}>
           <MapboxGL.Camera
-            heading={10}
+            ref={c => (_camera.current = c)}
             followUserLocation
+            followUserMode="normal"
+            // followZoomLevel={19}
+            // followUserMode={MapboxGL.UserTrackingModes.Follow}
             // followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
-            followUserMode={MapboxGL.UserTrackingModes.Follow}
             // zoomLevel={18}
             // zoomLevel={19}
-            animationMode="moveTo"
+            // animationMode="moveTo"
             // animationDuration={500}
-            animationDuration={500}
             // centerCoordinate={location}
-            centerCoordinate={location}
-            followZoomLevel={19}
+
+            // centerCoordinate={location}
+            // zoomLevel={16}
           />
           <MapboxGL.UserLocation animated showsUserHeadingIndicator />
           {renderRoute()}
         </MapboxGL.MapView>
       </View>
-      <View style={styles.footer}>
-        <View style={sheet.rowCenterSplit}>
-          <Text style={styles.nextStop}>Next stop</Text>
-          <Text style={styles.distance}>{parseDistance(stopDistance)}</Text>
-        </View>
-        {renderNextStop()}
-        {renderNextButton()}
-      </View>
+      <DashboardFooter
+        onArrivedPress={onArrivedPress}
+        ride={ride}
+        stopDistance={stopDistance}
+        waypoints={waypoints}
+        isReversed={isReversed}
+      />
     </SafeAreaView>
   );
 };
