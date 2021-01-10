@@ -50,6 +50,7 @@ export interface IAnswerRideRequestSuccessAction extends Action<RideRequestsActi
 
 /** Action for answering ride req error */
 export interface IAnswerRideRequestErrorAction extends Action<RideRequestsActionTypes.AnswerRideRequestError> {
+	error: Error;
 }
 //#endregion
 

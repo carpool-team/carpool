@@ -32,7 +32,9 @@ const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =
 				return {
 					requestsParticipant: responseParticipant.result,
 					requestsOwner: responseOwner.result,
-					isError: false,
+					isError: (responseOwner.isError || responseParticipant.isError) ?? false,
+					errorMessageOwner: responseOwner.responseException?.exceptionMessage,
+					errorMessageParticipant: responseParticipant.responseException?.exceptionMessage,
 				};
 			} catch (err) {
 				return {
@@ -90,17 +92,20 @@ const answerRideRequestEpic: Epic<RideRequestsAction | LayoutAction> = (action$)
 				return {
 					response,
 					owned: action.owned,
+					isError: response.isError ?? false,
 				};
 			} catch (err) {
-				return undefined;
+				return {
+					isError: true,
+					error: err,
+				};
 			}
 		}),
 		mergeMap((result) => {
-			if (result.response && !result.response.isError) {
+			if (result.isError === false && result.response) {
 				return [
 					<IGetRideRequestsAction>{
 						type: RideRequestsActionTypes.GetRideRequests,
-						owner: result.owned,
 					},
 					<IAnswerRideRequestSuccessAction>{
 						type: RideRequestsActionTypes.AnswerRideRequestSuccess
@@ -113,7 +118,8 @@ const answerRideRequestEpic: Epic<RideRequestsAction | LayoutAction> = (action$)
 			} else {
 				return [
 					<IAnswerRideRequestErrorAction>{
-						type: RideRequestsActionTypes.AnswerRideRequestError
+						type: RideRequestsActionTypes.AnswerRideRequestError,
+						error: result.error
 					},
 					<ISetLoaderVisibleAction>{
 						type: LayoutActionTypes.SetLoaderVisible,
