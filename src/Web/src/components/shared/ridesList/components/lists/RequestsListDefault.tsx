@@ -3,7 +3,7 @@ import { colorList } from "../../../../../scss/colorList";
 import { withTranslation } from "react-i18next";
 import { IRequestsListProps } from "../../interfaces/IRequestsListProps";
 import { RidesListType } from "../../enums/RidesListType";
-import { IRideRequest } from "../../../../groups/interfaces/IRideRequest";
+import { IRideRequest } from "../../../../groups/interfaces/rideRequest/IRideRequest";
 import DefaultItemRequestParticipant from "../items/DefaultItemRequestParticipant";
 import DefaultItemRequestOwner from "../items/DefaultItemRequestOwner";
 import ActiveItemRequestParticipant from "../items/ActiveItemRequestParticipant";

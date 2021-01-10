@@ -21,6 +21,7 @@ import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRid
 import { ILocation } from "../interfaces/ILocation";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroupBase } from "../interfaces/IGroupBase";
+import { IGroup } from "../interfaces/IGroup";
 
 //#region GROUPS
 export function addGroup(group: IAddGroupData): IAddGroupAction {

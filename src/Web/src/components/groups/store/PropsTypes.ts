@@ -1,6 +1,6 @@
 import { IGroup } from "../interfaces/IGroup";
-import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction, IParticipateInRideAction, IAddRideAction, IAddInvitesAction, ISetSelectedGroupAction } from "./Types";
-import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, addRide, addInvites, setSelectedGroup } from "./Actions";
+import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction, IParticipateInRideAction, IAddRideAction, IAddInvitesAction, ISetSelectedGroupAction, IGetRidesAvailableAction } from "./Types";
+import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, addRide, addInvites, setSelectedGroup, getRidesAvailable } from "./Actions";
 import { IGroupsState } from "./State";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";

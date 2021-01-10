@@ -1,4 +1,4 @@
-import { IRideRequest } from "../components/groups/interfaces/IRideRequest";
+import { IRideRequest } from "../components/groups/interfaces/rideRequest/IRideRequest";
 import * as faker from "faker";
 import moment from "moment";
 

@@ -31,7 +31,10 @@ import {
 	IGetGroupUsersSuccessAction,
 	ISetSelectedGroupAction,
 	IGetSelectedGroupDetailsSuccessAction,
-	IGetSelectedGroupDetailsErrorAction
+	IGetSelectedGroupDetailsErrorAction,
+	IGetRidesAvailableActionError,
+	IGetRidesAvailableActionSuccess,
+	IGetRidesAvailableAction
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -70,7 +73,7 @@ const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 						longitude: action.group.location.longitude,
 					},
 					code: action.group.code,
-					name: action.group.groupName,
+					name: action.group.name,
 				}
 			});
 			const response: AddGroupResponse = await request.send();

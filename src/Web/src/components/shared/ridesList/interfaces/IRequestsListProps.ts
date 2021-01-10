@@ -1,4 +1,4 @@
-import { IRideRequest } from "../../../groups/interfaces/IRideRequest";
+import { IRideRequest } from "../../../groups/interfaces/rideRequest/IRideRequest";
 import { IReactI18nProps } from "../../../system/resources/IReactI18nProps";
 import { RidesListType } from "./../enums/RidesListType";
 
