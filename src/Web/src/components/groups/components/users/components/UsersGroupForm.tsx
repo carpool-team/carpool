@@ -1,3 +1,4 @@
+import { Popover } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -48,6 +49,9 @@ const UsersGroupForm: (props: IUsersGroupProps) => JSX.Element = props => {
 
 	const resources = {
 		back: "prevBtn",
+		yes: "yes",
+		no: "no",
+		leaveConfirm: "groups.editGroupForm.deleteUserConfirm"
 	}
 
 	const cssClasses = {
@@ -63,12 +67,30 @@ const UsersGroupForm: (props: IUsersGroupProps) => JSX.Element = props => {
 		leftLabelsText: "rides--leftPanel__text",
 		leftPanel: "rides--leftPanel",
 		left: "addGroupSecondSide__left",
-		userListButton: "addGroupSecondSide__userListItem--button"
+		userListButton: "addGroupSecondSide__userListItem--button",
+		button: "auth__inputs--button",
+		popoverContainer: "auth__popover",
+		buttonContainer: "auth__inputs--buttonContainer",
 	};
 
-	const removeUser = (user: IGroupUser) => {
-		console.log(user)
-	}
+	const [popover, setPopover] = useState<boolean>(false);
+	const [deleteUser, setDeleteUser] = useState<IGroupUser>(null)
+
+	const handleOpenPopover = (user: IGroupUser) => {
+		setPopover(true);
+		setDeleteUser(user)
+	};
+
+	const handleClosePopover = () => {
+		setPopover(false);
+		setDeleteUser(null)
+	};
+
+	const onDeleteSubmit = () => {
+		//tutaj podpiąć api do usuwania, jeszcze trzeba dodać na liście żeby admin grupy nie mógł się usunąć czyli przy nim nie wyświetlać przycisku X
+		console.log(deleteUser);
+		handleClosePopover();
+	};
 
 	const renderUserList = () => {
 		let colorList: string[] = ["#C39BD3", "#7FB3D5", "#48C9B0", "#F9E79F"];
@@ -89,6 +111,40 @@ const UsersGroupForm: (props: IUsersGroupProps) => JSX.Element = props => {
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<ul className={cssClasses.userList}>
+					<Popover
+						open={popover}
+						onClose={handleClosePopover}
+						anchorOrigin={{
+							vertical: "center",
+							horizontal: "center",
+						}}
+						transformOrigin={{
+							vertical: "center",
+							horizontal: "center",
+						}}
+					>
+						<div className={cssClasses.popoverContainer}>
+							<span>{t(resources.leaveConfirm)} {deleteUser?.firstName} {deleteUser?.lastName}?</span>
+							<div className={cssClasses.buttonContainer}>
+								<Button
+									additionalCssClass={cssClasses.button}
+									onClick={onDeleteSubmit}
+									color={ButtonColor.White}
+									background={ButtonBackground.Red}
+								>
+									{t(resources.yes)}
+								</Button>
+								<Button
+									additionalCssClass={cssClasses.button}
+									onClick={handleClosePopover}
+									color={ButtonColor.White}
+									background={ButtonBackground.Blue}
+								>
+									{t(resources.no)}
+								</Button>
+							</div>
+						</div>
+					</Popover>
 					{(props.group?.users ?? []).map((user, idx) => {
 						++colorIndex;
 						const color = {
@@ -103,7 +159,7 @@ const UsersGroupForm: (props: IUsersGroupProps) => JSX.Element = props => {
 									<ButtonSmall
 										style={cssClasses.userListButton}
 										icon={ButtonSmallIcon.Close}
-										onClick={() => removeUser(user)}
+										onClick={() => handleOpenPopover(user)}
 										color={ButtonSmallColor.Red}
 										background={ButtonSmallBackground.White}
 									/>
