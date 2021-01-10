@@ -1,6 +1,5 @@
-import { random } from "faker";
+import { ITokenPayload } from "../../components/auth/interfaces/ITokenPayload";
 import { ILoginSuccessAction, LoginActionTypes } from "../../components/auth/store/Types";
-import { parseJwt } from "../../helpers/UniversalHelper";
 import store, { getState } from "../../store/Index";
 import { AppState } from "../../store/Reducers";
 import { RequestEndpoint } from "../enum/RequestEndpoint";
@@ -29,6 +28,16 @@ export default abstract class RequestCore {
 		this.requestProperties = init.properties;
 	}
 
+	/** internal request parser for JWT to get rid of circular dependencies */
+	private parseJwt(token: string): ITokenPayload {
+		let base64Url = token.split(".")[1];
+		let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+		let jsonPayload = decodeURIComponent(atob(base64).split("").map(function (c) {
+			return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+		}).join(""));
+		return JSON.parse(jsonPayload) as ITokenPayload;
+	}
+
 	private refreshToken(): Promise<any> {
 		const tokenInfo = getState().auth?.tokenInfo;
 		const headers = [...RequestCore.headers];
@@ -53,7 +62,7 @@ export default abstract class RequestCore {
 								refreshToken: response.result.refreshToken,
 								token: response.result.token,
 								expires: response.result.expires,
-								payload: parseJwt(response.result.token),
+								payload: this.parseJwt(response.result.token),
 							},
 						});
 					}
