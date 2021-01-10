@@ -31,7 +31,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 		this.state = {
 			selectedGroupId: undefined,
 		};
-		this.props.getGroups(false);
+		this.props.getGroups();
 		this.props.getInvites(true);
 		this.props.getRides(false);
 	}

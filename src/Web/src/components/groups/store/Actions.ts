@@ -15,6 +15,7 @@ import {
 	IAddInvitesAction,
 	IGetGroupUsersAction,
 	ISetSelectedGroupAction,
+	ILeaveGroupAction,
 } from "./Types";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
@@ -31,10 +32,9 @@ export function addGroup(group: IAddGroupData): IAddGroupAction {
 	};
 }
 
-export function getGroups(userOnly: boolean, count?: number, page?: number): IGetGroupsAction {
+export function getGroups(count?: number, page?: number): IGetGroupsAction {
 	return {
 		type: GroupsActionTypes.GetGroups,
-		userOnly,
 		count,
 		page
 	};
@@ -48,6 +48,11 @@ export const getGroupUsers: (groupId: string) => IGetGroupUsersAction = groupId 
 export const setSelectedGroup: (group: IGroup) => ISetSelectedGroupAction = group => ({
 	type: GroupsActionTypes.SetSelectedGroup,
 	group,
+});
+
+export const leaveGroup: (groupId: string) => ILeaveGroupAction = groupId => ({
+	type: GroupsActionTypes.LeaveGroup,
+	groupId
 });
 //#endregion
 

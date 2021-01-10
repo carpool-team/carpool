@@ -7,8 +7,21 @@ import ButtonLink from "../../../../../../ui/buttonLink/ButtonLink";
 import LeaveGroupModal from "./LeaveGroupModal";
 import { mainRoutes } from "../../../../../../layout/components/LayoutRouter";
 import GroupsRouter from "../../../../GroupsRouter";
+import { connect } from "react-redux";
+import { leaveGroup } from "../../../../../store/Actions";
+import { ILeaveGroupAction } from "../../../../../store/Types";
 
-interface IActiveItemProps extends IListItemProps, IReactI18nProps {
+interface IDispatchPropsType {
+	leaveGroup: (groupId: string) => ILeaveGroupAction;
+}
+
+export const mapDispatchToProps: IDispatchPropsType = {
+	leaveGroup,
+};
+
+export type DispatchProps = typeof mapDispatchToProps;
+
+interface IActiveItemProps extends IListItemProps, IReactI18nProps, DispatchProps {
 }
 
 const ActiveItem: React.FC<IActiveItemProps> = props => {
@@ -50,8 +63,8 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 		setPopover(false);
 	};
 
-	const onDeleteSubmit = () => {
-		// TODO wysyłać request o opuszczeniu grupy
+	const onLeaveConfirm = () => {
+		props.leaveGroup(props.group.groupId);
 		handleClosePopover();
 	};
 
@@ -81,7 +94,7 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 				</ButtonLink>
 				<LeaveGroupModal
 					open={popover}
-					onLeaveConfirm={onDeleteSubmit}
+					onLeaveConfirm={onLeaveConfirm}
 					handleClose={handleClosePopover}
 				/>
 			</>;
@@ -113,4 +126,6 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 	);
 };
 
-export default withTranslation()(ActiveItem);
+export default connect(null, mapDispatchToProps)(
+	withTranslation()(ActiveItem)
+);

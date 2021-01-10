@@ -39,7 +39,7 @@ interface IDispatchPropsType {
 	addGroup: (group: IAddGroupData) => IAddGroupAction;
 	addRide: (input: IAddRideInput) => IAddRideAction;
 	addInvites: (groupId: string, userIds: string[]) => IAddInvitesAction;
-	getGroups: (userOnly: boolean) => IGetGroupsAction;
+	getGroups: () => IGetGroupsAction;
 	getInvites: (userOnly: boolean) => IGetInvitesAction;
 	answerInvite: (accepted: boolean, inviteId: string) => IAnswerInviteAction;
 	getRides: (userOnly: boolean) => IGetRidesAction;

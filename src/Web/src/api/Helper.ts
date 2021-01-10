@@ -1,4 +1,3 @@
-import { RequestType } from "./enum/RequestType";
 import { RequestEndpoint } from "./enum/RequestEndpoint";
 import { IRequestQueries } from "./interfaces/IRequestQueries";
 
@@ -14,13 +13,15 @@ export const getRequestEndpoint: (
 			case RequestEndpoint.PUT_UPDATE_GROUP:
 				return `/groups/${queries.groupId}/`;
 			case RequestEndpoint.GET_GROUP_BY_ID:
-				return `/groups/${queries?.groupId}`;
+				return `/groups/${queries.groupId}`;
 			case RequestEndpoint.GET_USER_GROUPS:
-				return `/users/${queries?.userId}/groups`;
+				return `/users/${queries.userId}/groups`;
 			case RequestEndpoint.DELETE_GROUP_BY_ID:
-				return `/groups/${queries?.groupId}`;
+				return `/groups/${queries.groupId}`;
 			case RequestEndpoint.GET_GROUP_USERS:
 				return `/groups/${queries.groupId}/users`;
+			case RequestEndpoint.LEAVE_GROUP:
+				return `/groups/${queries.groupId}/users/${queries.userId}`;
 			//#endregion
 			//#region GROUP INVITES
 			case RequestEndpoint.GET_INVITES_BY_USER_ID:
@@ -30,9 +31,9 @@ export const getRequestEndpoint: (
 			case RequestEndpoint.POST_INVITE:
 				return `/groupinvites`;
 			case RequestEndpoint.GET_INVITE_BY_ID:
-				return `/groupinvites/${queries?.inviteId}`;
+				return `/groupinvites/${queries.inviteId}`;
 			case RequestEndpoint.PUT_CHANGE_INVITE:
-				return `/groupinvites/${queries?.inviteId}`;
+				return `/groupinvites/${queries.inviteId}`;
 			case RequestEndpoint.DELETE_INVITE_BY_ID:
 				return `/groupinvites/${queries?.inviteId}`;
 			//#endregion

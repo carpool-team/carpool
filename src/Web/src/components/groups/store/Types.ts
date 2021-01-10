@@ -29,6 +29,9 @@ export enum GroupsActionTypes {
 	GetSelectedGroupDetails = "GROUPS_GET_SELECTED_GROUP_DETAILS",
 	GetSelectedGroupDetailsSuccess = "GROUPS_GET_SELECTED_GROUP_DETAILS_SUCCESS",
 	GetSelectedGroupDetailsError = "GROUPS_GET_SELECTED_GROUP_DETAILS_ERROR",
+	LeaveGroup = "GROUPS_LEAVE_GROUP",
+	LeaveGroupSuccess = "GROUPS_LEAVE_GROUP_SUCCESS",
+	LeaveGroupError = "GROUPS_LEAVE_GROUP_ERROR",
 }
 
 /** Enum of invites actions */
@@ -82,7 +85,6 @@ export interface IAddGroupActionError
 
 /** Action for getting groups */
 export interface IGetGroupsAction extends Action<GroupsActionTypes.GetGroups> {
-	userOnly: boolean;
 	count?: number;
 	page?: number;
 }
@@ -127,6 +129,17 @@ export interface IGetSelectedGroupDetailsSuccessAction extends Action<GroupsActi
 }
 
 export interface IGetSelectedGroupDetailsErrorAction extends Action<GroupsActionTypes.GetSelectedGroupDetailsError> {
+	error: Error;
+}
+
+export interface ILeaveGroupAction extends Action<GroupsActionTypes.LeaveGroup> {
+	groupId: string;
+}
+
+export interface ILeaveGroupSuccessAction extends Action<GroupsActionTypes.LeaveGroupSuccess> {
+}
+
+export interface ILeaveGroupErrorAction extends Action<GroupsActionTypes.LeaveGroupError> {
 	error: Error;
 }
 //#endregion
@@ -245,7 +258,10 @@ export type GroupsAction =
 	| ISetSelectedGroupAction
 	| IGetSelectedGroupDetailsAction
 	| IGetSelectedGroupDetailsSuccessAction
-	| IGetSelectedGroupDetailsErrorAction;
+	| IGetSelectedGroupDetailsErrorAction
+	| ILeaveGroupAction
+	| ILeaveGroupErrorAction
+	| ILeaveGroupSuccessAction;
 
 export type InviteAction =
 	IAnswerInviteAction

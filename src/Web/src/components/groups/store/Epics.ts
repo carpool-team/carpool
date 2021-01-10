@@ -34,7 +34,10 @@ import {
 	IGetSelectedGroupDetailsErrorAction,
 	IGetRidesAvailableActionError,
 	IGetRidesAvailableActionSuccess,
-	IGetRidesAvailableAction
+	IGetRidesAvailableAction,
+	ILeaveGroupAction,
+	ILeaveGroupErrorAction,
+	ILeaveGroupSuccessAction
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -59,6 +62,7 @@ import { GetGroupDetailsRequest } from "../api/getGroupDetails/GetGroupDetailsRe
 import { IGroupsState } from "./State";
 import { AddRideRequestResponse } from "../../rides/api/addRideRequest/AddRideRequestResponse";
 import { AddRideRequestRequest } from "../../rides/api/addRideRequest/AddRideRequestRequest";
+import { LeaveGroupRequest } from "../api/leaveGroup/LeaveGroupRequest";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -89,7 +93,6 @@ const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 				return [
 					<IGetGroupsAction>{
 						type: GroupsActionTypes.GetGroups,
-						userOnly: false,
 					}
 				];
 			}
@@ -106,7 +109,7 @@ const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 const getGroupsEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
 		ofType(GroupsActionTypes.GetGroups),
-		switchMap(async (action: IGetGroupsAction) => {
+		switchMap(async (_: IGetGroupsAction) => {
 			const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
 			const request: GetGroupsRequest = new GetGroupsRequest({
 				userId: uid,
@@ -181,7 +184,6 @@ const answerInviteEpic: Epic<InviteAction | GroupsAction> = (action$) =>
 					},
 					<IGetGroupsAction>{
 						type: GroupsActionTypes.GetGroups,
-						userOnly: true,
 					},
 					<IGetInvitesAction>{
 						type: InvitesActionTypes.GetInvites,
@@ -577,6 +579,51 @@ const setSelectedGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 	mergeMap(res => res),
 );
 
+const leaveGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+	ofType(GroupsActionTypes.LeaveGroup),
+	switchMap(async (action: ILeaveGroupAction) => {
+		try {
+			const req = new LeaveGroupRequest({
+				groupId: action.groupId,
+				userId: getId(),
+			});
+			const res = await req.send();
+			if (res.isError || res.status >= 300) {
+				return [
+					<ILeaveGroupErrorAction>{
+						type: GroupsActionTypes.LeaveGroupError,
+						error: null,
+					},
+				];
+			} else {
+				return [
+					<ILeaveGroupSuccessAction>{
+						type: GroupsActionTypes.LeaveGroupSuccess,
+					}
+				];
+			}
+		} catch (err) {
+			return [
+				<ILeaveGroupErrorAction>{
+					type: GroupsActionTypes.LeaveGroupError,
+					error: err,
+				},
+			];
+		}
+	}),
+	mergeMap(res => res),
+);
+
+const leftGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+	ofType(GroupsActionTypes.LeaveGroupSuccess),
+	switchMap(() => [
+		<IGetGroupsAction>{
+			type: GroupsActionTypes.GetGroups,
+			userOnly: false,
+		},
+	]),
+);
+
 const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
 	ofType(GenericActionTypes.ApiError),
 	mergeMap(async (action: IApiErrorAction) => {
@@ -600,4 +647,6 @@ export const groupEpics = [
 	getRidesAvailableEpic,
 	getGroupUsersEpic,
 	setSelectedGroupEpic,
+	leaveGroupEpic,
+	leftGroupEpic,
 ];
