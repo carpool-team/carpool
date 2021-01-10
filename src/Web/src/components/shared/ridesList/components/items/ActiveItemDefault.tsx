@@ -3,6 +3,8 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
+import Button from "../../../../ui/buttonSmall/ButtonSmall";
+import AddressModal from "../../../addressModal/AddressModal";
 
 const geocodingClient = getGeocodingClient();
 
@@ -26,6 +28,7 @@ const ActiveItemDefault = (props: IListItemProps) => {
 
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
+
 	const onGetName = async (coords: [number, number]) => {
 		try {
 			setLoading(true);

@@ -6,6 +6,7 @@ import Button from "../../../../ui/button/Button";
 import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
+import AddressModal from "../../../addressModal/AddressModal";
 
 const geocodingClient = getGeocodingClient();
 
@@ -27,8 +28,14 @@ const ActiveItemJoin = (props: IListItemProps) => {
 		activeCar: "ridesListActive--car",
 	};
 
+	const resources = {
+		joinBtnLabel: "common.joinRide",
+	};
+
+	const [popover, setPopover] = useState(false);
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
+
 	const onGetName = async (coords: [number, number]) => {
 		try {
 			setLoading(true);
@@ -112,18 +119,29 @@ const ActiveItemJoin = (props: IListItemProps) => {
 					<div className={cssClasses.activeDriver}>
 						Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
 					</div>
-					<div className={cssClasses.activeCar}>
+					{/* <div className={cssClasses.activeCar}>
 						{props.ride.owner.vehicle}
-					</div>
+					</div> */}
 					<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
-					<Button
-						style={backgroundColor}
-						background={ButtonBackground.Blue}
-						color={ButtonColor.White}
-						className={cssClasses.activeJoinButton}
-					>
-						Dołącz
-					</Button>
+					{props.joinRideCallback ?
+						<>
+							<Button
+								style={backgroundColor}
+								onClick={() => setPopover(true)}
+								color={ButtonColor.White}
+								className={cssClasses.activeJoinButton}
+							>
+								{props.t(resources.joinBtnLabel)}
+							</Button>
+							<AddressModal
+								open={popover}
+								onCancel={() => setPopover(false)}
+								onConfirm={(coords) => {
+									setPopover(false);
+									props.joinRideCallback(props.ride, coords);
+								}}
+							/>
+						</> : null}
 				</div>
 			</div>
 		</li>

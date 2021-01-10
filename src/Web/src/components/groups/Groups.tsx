@@ -53,6 +53,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 				);
 			})
 		);
+		this.props.getRidesAvailable(id ?? null);
 	}
 
 	render() {
@@ -67,6 +68,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 			setGroupSelected: (id) => this.setSelectedGroupHandler(id),
 			addRide: this.props.addRide,
 			addInvites: this.props.addInvites,
+			getRidesAvailable: () => this.props.ridesAvailable,
 		};
 
 		return (

@@ -4,10 +4,9 @@ import {
 } from "./Types";
 
 //#region RIDE REQS
-export function getRideRequests(owner: boolean): IGetRideRequestsAction {
+export function getRideRequests(): IGetRideRequestsAction {
 	return {
 		type: RideRequestsActionTypes.GetRideRequests,
-		owner
 	};
 }
 

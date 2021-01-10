@@ -2,38 +2,54 @@ import { Epic, ofType } from "redux-observable";
 import { switchMap, catchError, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
 import {
-	IApiErrorAction, GenericActionTypes, GenericAction, RideRequestsAction, RideRequestsActionTypes, IGetRideRequestsAction, IGetRideRequestsErrorAction, IGetRideRequestsSuccessAction, IAnswerRideRequestAction, IAnswerRideRequestSuccessAction, IAnswerRideRequestErrorAction
+	IApiErrorAction,
+	GenericActionTypes,
+	GenericAction,
+	RideRequestsAction,
+	RideRequestsActionTypes,
+	IGetRideRequestsAction,
+	IGetRideRequestsErrorAction,
+	IGetRideRequestsSuccessAction,
+	IAnswerRideRequestAction,
+	IAnswerRideRequestSuccessAction,
+	IAnswerRideRequestErrorAction
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetRideRequestsRequest } from "../api/getRideRequests/GetRideRequestsRequest";
-import { GetRideRequestsResponse } from "../api/getRideRequests/GetRideRequestsResponse";
 import { ISetLoaderVisibleAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
-import { answerRideRequest } from "./Actions";
 import { UpdateRideRequestResponse } from "../api/updateRideRequest/UpdateRideRequestResponse";
 import { UpdateRideRequestRequest } from "../api/updateRideRequest/UpdateRideRequestRequest";
 
 const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =>
 	action$.pipe(
 		ofType(RideRequestsActionTypes.GetRideRequests),
-		switchMap(async (action: IGetRideRequestsAction) => {
-			const request: GetRideRequestsRequest = new GetRideRequestsRequest(action.owner);
+		switchMap(async (_action: IGetRideRequestsAction) => {
+			const requestOwner = new GetRideRequestsRequest(true);
+			const requestParticipant = new GetRideRequestsRequest(false);
 			try {
-				const response: GetRideRequestsResponse = await request.send();
+				const responseOwner = await requestOwner.send();
+				const responseParticipant = await requestParticipant.send();
 				return {
-					response,
-					owner: action.owner,
+					requestsParticipant: responseParticipant.result,
+					requestsOwner: responseOwner.result,
+					isError: (responseOwner.isError || responseParticipant.isError) ?? false,
+					errorMessageOwner: responseOwner.responseException?.exceptionMessage,
+					errorMessageParticipant: responseParticipant.responseException?.exceptionMessage,
 				};
 			} catch (err) {
-				return undefined;
+				return {
+					isError: true,
+					error: err,
+				};
 			}
 		}),
 		mergeMap((result) => {
-			if (result.response && !result.response.isError) {
+			if (result.isError === false) {
 				return [
 					<IGetRideRequestsSuccessAction>{
 						type: RideRequestsActionTypes.GetRideRequestsSuccess,
-						requests: result.response.result,
-						owner: result.owner,
+						requestsParticipant: result.requestsParticipant,
+						requestsOwner: result.requestsOwner
 					},
 					<ISetLoaderVisibleAction>{
 						type: LayoutActionTypes.SetLoaderVisible,
@@ -44,6 +60,7 @@ const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =
 				return [
 					<IGetRideRequestsErrorAction>{
 						type: RideRequestsActionTypes.GetRideRequestsError,
+						error: result.error,
 					},
 					<ISetLoaderVisibleAction>{
 						type: LayoutActionTypes.SetLoaderVisible,
@@ -52,9 +69,10 @@ const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =
 				];
 			}
 		}),
-		catchError((_err: Error) =>
+		catchError((err: Error) =>
 			of(<IGetRideRequestsErrorAction>{
 				type: RideRequestsActionTypes.GetRideRequestsError,
+				error: err
 			})
 		)
 	);
@@ -74,17 +92,20 @@ const answerRideRequestEpic: Epic<RideRequestsAction | LayoutAction> = (action$)
 				return {
 					response,
 					owned: action.owned,
+					isError: response.isError ?? false,
 				};
 			} catch (err) {
-				return undefined;
+				return {
+					isError: true,
+					error: err,
+				};
 			}
 		}),
 		mergeMap((result) => {
-			if (result.response && !result.response.isError) {
+			if (result.isError === false && result.response) {
 				return [
 					<IGetRideRequestsAction>{
 						type: RideRequestsActionTypes.GetRideRequests,
-						owner: result.owned,
 					},
 					<IAnswerRideRequestSuccessAction>{
 						type: RideRequestsActionTypes.AnswerRideRequestSuccess
@@ -97,7 +118,8 @@ const answerRideRequestEpic: Epic<RideRequestsAction | LayoutAction> = (action$)
 			} else {
 				return [
 					<IAnswerRideRequestErrorAction>{
-						type: RideRequestsActionTypes.AnswerRideRequestError
+						type: RideRequestsActionTypes.AnswerRideRequestError,
+						error: result.error
 					},
 					<ISetLoaderVisibleAction>{
 						type: LayoutActionTypes.SetLoaderVisible,

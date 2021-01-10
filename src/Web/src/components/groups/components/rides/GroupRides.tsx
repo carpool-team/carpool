@@ -73,7 +73,7 @@ const GroupRides = (props: IGroupRidesProps) => {
 				</div>
 				<div className={cssClasses.leftOutline}></div>
 				<div className={cssClasses.leftList}>
-					<RidesList listType={RidesListType.Default} rideSelected={selectedRide} setRide={setRide} rides={props.rides ?? []} />
+					<RidesList listType={RidesListType.Join} joinRideCallback={props.joinRideCallback} rideSelected={selectedRide} setRide={setRide} rides={props.rides ?? []} />
 				</div>
 			</div>
 			<MediaQuery query="(min-width: 900px)">

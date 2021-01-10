@@ -143,7 +143,8 @@
             "friday": "Piątek",
             "saturday": "Sobota",
             "sunday": "Niedziela",
-            "all": "Codziennie"
+            "all": "Codziennie",
+            "joinRide": "Dołącz"
         },
         "prevBtn": "Wstecz",
         "createBtn": "Utwórz",
@@ -169,6 +170,15 @@
             "loginGeneric": "Błąd logowania. Spróbuj ponownie!",
             "registerGeneric": "Nieznany błąd rejestracji.",
             "loginInvalid": "Błędny e-mail lub hasło."
+        },
+        "mapbox": {
+            "fromLabel": "Lokalizacja początkowa",
+            "toLabel": "Lokalizacja końcowa"
+        },
+        "addressModal": {
+            "input": "Podaj swój adres",
+            "confirmBtn": "Zatwierdź",
+            "cancelBtn": "Anuluj"
         }
     }
 }

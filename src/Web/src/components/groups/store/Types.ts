@@ -1,7 +1,9 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
+import { ILocation } from "../interfaces/ILocation";
 import { IRide } from "../interfaces/IRide";
 
 export enum GenericActionTypes {
@@ -34,6 +36,9 @@ export enum RidesActionTypes {
 	GetRides = "RIDES_GET_RIDES",
 	GetRidesSuccess = "RIDES_GET_RIDES_SUCCESS",
 	GetRidesError = "RIDES_GET_RIDES_ERROR",
+	GetRidesAvailable = "RIDES_GET_RIDES_AVAILABLE",
+	GetRidesAvailableSuccess = "RIDES_GET_RIDES_AVAILABLE_SUCCESS",
+	GetRidesAvailableError = "RIDES_GET_RIDES_AVAILABLE_ERROR",
 	ParticipateInRide = "RIDES_PARTICIPATE_IN_RIDE",
 	ParticipateInRideSuccess = "RIDES_PARTICIPATE_IN_RIDE_SUCCESS",
 	ParticipateInRideError = "RIDES_PARTICIPATE_IN_RIDE_ERROR",
@@ -49,7 +54,7 @@ export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 //#region GROUPS
 /** Action for adding group */
 export interface IAddGroupAction extends Action<GroupsActionTypes.AddGroup> {
-	group: IGroup;
+	group: IFormGroupData;
 }
 
 /** Action for adding group success */
@@ -128,6 +133,8 @@ export interface IAddInvitesAction extends Action<InvitesActionTypes.AddInvites>
 //#region RIDES
 /** Action for getting rides */
 export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
+	refreshRidesAvailable?: boolean;
+	groupId?: string;
 }
 
 /** Action for getting rides success */
@@ -143,9 +150,25 @@ export interface IGetRidesActionError extends Action<RidesActionTypes.GetRidesEr
 	error: Error;
 }
 
+/** Action for getting available rides success */
+export interface IGetRidesAvailableAction extends Action<RidesActionTypes.GetRidesAvailable> {
+	groupId: string;
+}
+
+/** Action for getting available rides success */
+export interface IGetRidesAvailableActionSuccess extends Action<RidesActionTypes.GetRidesAvailableSuccess> {
+	rides: IRide[];
+}
+
+/** Action for getting available rides error */
+export interface IGetRidesAvailableActionError extends Action<RidesActionTypes.GetRidesAvailableError> {
+	error: Error;
+}
+
 /** Action for participating in ride */
 export interface IParticipateInRideAction extends Action<RidesActionTypes.ParticipateInRide> {
-	rideId: string;
+	ride: IRide;
+	location: ILocation;
 }
 
 /** Action for participating in ride success */
@@ -188,6 +211,9 @@ export type RideAction =
 	IGetRidesAction
 	| IGetRidesActionSuccess
 	| IGetRidesActionError
+	| IGetRidesAvailableAction
+	| IGetRidesAvailableActionSuccess
+	| IGetRidesAvailableActionError
 	| IParticipateInRideAction
 	| IParticipateInRideActionSuccess
 	| IParticipateInRideActionError
