@@ -15,7 +15,7 @@ export class AnswerInviteRequest extends RequestBase<IAnswerInviteRequestBody> {
 	}) {
 		super({
 			properties: {
-				method: RequestType.PUT,
+				method: RequestType.Put,
 				endpoint: RequestEndpoint.PUT_CHANGE_INVITE,
 				queries: {
 					inviteId: init.groupInviteId,

@@ -13,7 +13,7 @@ export class RegisterRequest extends RequestBase<IRegisterRequestBody> {
 	}) {
 		super({
 			properties: {
-				method: RequestType.POST,
+				method: RequestType.Post,
 				endpoint: RequestEndpoint.REGISTER_USER,
 				queries: null
 			},

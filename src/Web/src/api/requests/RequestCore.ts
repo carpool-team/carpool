@@ -1,6 +1,11 @@
-import { getState } from "../../store/Index";
+import { random } from "faker";
+import { ILoginSuccessAction, LoginActionTypes } from "../../components/auth/store/Types";
+import { parseJwt } from "../../helpers/UniversalHelper";
+import store, { getState } from "../../store/Index";
 import { AppState } from "../../store/Reducers";
-import { getRequestEndpoint, getRequestType, getUrl } from "../Helper";
+import { RequestEndpoint } from "../enum/RequestEndpoint";
+import { RequestType } from "../enum/RequestType";
+import { getRequestEndpoint, getUrl } from "../Helper";
 import { IRequestProperties } from "../interfaces/IRequestProperties";
 import ResponseCore from "../responses/ResponseCore";
 import RequestBody from "./RequestBody";
@@ -24,8 +29,41 @@ export default abstract class RequestCore {
 		this.requestProperties = init.properties;
 	}
 
+	private refreshToken(): Promise<any> {
+		const tokenInfo = getState().auth?.tokenInfo;
+		const headers = [...RequestCore.headers];
+		if (tokenInfo && tokenInfo.expires < new Date()) {
+			const refreshTokenUrl = process.env.AUTH_URL + getRequestEndpoint(RequestEndpoint.REFRESH_TOKEN);
+			return fetch(refreshTokenUrl, {
+				method: RequestType.Post,
+				headers: new Headers(headers),
+				body: JSON.stringify({ value: tokenInfo.refreshToken }),
+			}).then(res => {
+				if (res.ok) {
+					return res.json();
+				} else {
+					return undefined;
+				}
+			})
+				.then(response => {
+					if (response) {
+						store.dispatch(<ILoginSuccessAction>{
+							type: LoginActionTypes.LoginSuccess,
+							tokenInfo: {
+								refreshToken: response.result.refreshToken,
+								token: response.result.token,
+								expires: response.result.expires,
+								payload: parseJwt(response.result.token),
+							},
+						});
+					}
+				});
+		} else {
+			return new Promise(res => res(undefined));
+		}
+	}
+
 	protected fetch<R extends ResponseCore>(): Promise<R> {
-		const method = getRequestType(this.requestProperties.method);
 		const endpoint = getRequestEndpoint(
 			this.requestProperties.endpoint,
 			this.requestProperties.queries
@@ -38,9 +76,9 @@ export default abstract class RequestCore {
 		const apiUrl: string = getUrl(this.requestProperties.endpoint);
 
 		const url: string = `${apiUrl}${endpoint}`;
-		return new Promise((resolve, reject) => resolve(undefined))
+		return this.refreshToken()
 			.then(() => fetch(url, {
-				method,
+				method: this.requestProperties.method,
 				headers: new Headers(headers),
 				body: this.requestBody ? JSON.stringify(this.requestBody) : null,
 			})).then(res => {

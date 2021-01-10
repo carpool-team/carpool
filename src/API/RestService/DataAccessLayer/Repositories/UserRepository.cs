@@ -19,8 +19,8 @@ namespace DataAccessLayer.Repositories
 		public async Task<List<ApplicationUser>> GetGroupUsersByGroupIdAsync(GroupId id)
 			=> await _context.Users
 				.AsNoTracking()
-				//.Include(user => user.UserGroups)
-				//.Where(user => user.UserGroups.Any(group => group.GroupId == id))
+				.Include(user => user.UserGroups)
+				.Where(user => user.UserGroups.Any(group => group.GroupId == id))
 				.ToListAsync()
 				.ConfigureAwait(false);
 

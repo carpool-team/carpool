@@ -14,7 +14,7 @@ export class GetRidesRequest extends RequestCore {
 		if (init.groupId) {
 			super({
 				properties: {
-					method: RequestType.GET,
+					method: RequestType.Get,
 					endpoint: RequestEndpoint.GET_RIDES_BY_GROUP_ID,
 					queries: {
 						groupId: init.groupId
@@ -24,7 +24,7 @@ export class GetRidesRequest extends RequestCore {
 		} else {
 			super({
 				properties: {
-					method: RequestType.GET,
+					method: RequestType.Get,
 					endpoint: RequestEndpoint.GET_RIDES_BY_USER_ID,
 					queries: {
 						userId: init.userId,

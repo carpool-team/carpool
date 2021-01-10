@@ -17,7 +17,7 @@ export class AddRideRequestRequest extends RequestBase<IAddRideRequestRequestBod
 	}) {
 		super({
 			properties: {
-				method: RequestType.POST,
+				method: RequestType.Post,
 				endpoint: RequestEndpoint.POST_ADD_RIDE_REQ,
 				queries: null
 			},
