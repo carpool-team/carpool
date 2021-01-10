@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,21 +7,23 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
+// import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import {GoBack, Header} from '../../../../components/navigation';
 import {parseCoords} from '../../../../utils/coords';
-import {sortStops} from '../../../../utils/sortStops';
+import {sortStops, equalCoordinates} from '../../../../utils/sortStops';
 import {directionsClient} from '../../../../maps/mapbox';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import {MAP_LIGHT} from '@env';
 import {FullScreenLoading} from '../../../../components/common/loaders';
 import {activeRouteStyle, sheet, colors} from '../../../../styles';
 import pointToLineDistance from '@turf/point-to-line-distance';
-import {point, lineString} from '@turf/helpers';
+import {point, lineString, featureCollection} from '@turf/helpers';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import NextStop from '../../../../components/Driver/NextStop';
-import turfDistance from '@turf/distance';
+import lineSlice from '@turf/line-slice';
+import length from '@turf/length';
 import {styles} from './index.styles';
 import {StandardButton} from '../../../../components/common/buttons';
 import {
@@ -46,6 +48,7 @@ const RideDashboard = props => {
   const [distance, setDistance] = useState(null);
   const [steps, setSteps] = useState(null);
   const [stopDistance, setStopDistance] = useState(null);
+  const [stepDistance, setStepDistance] = useState(null);
 
   const isReversed = !!ride.rideDirection;
 
@@ -56,18 +59,46 @@ const RideDashboard = props => {
       header: props => <Header {...props} hideSwitch />,
     });
 
+    Geolocation.getCurrentPosition(
+      pos => setLocation(parseCoords(pos.coords)),
+      err =>
+        Alert.alert('Error', err.message, [
+          {
+            text: 'Ok',
+            style: 'default',
+            onPress: () => navigation.goBack(),
+          },
+        ]),
+      {
+        timeout: 15000,
+        // enableHighAccuracy: true,
+        maximumAge: 10000,
+      },
+    );
+
     // Watch position
     const watchId = Geolocation.watchPosition(
       position => {
         setLocation(parseCoords(position.coords));
       },
       err => {
-        alert('An error ocurred when trying to get location');
+        Alert.alert('Error', err.message, [
+          {
+            text: 'Ok',
+            style: 'default',
+            onPress: () => navigation.goBack(),
+          },
+        ]);
       },
       {
         enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
+        accuracy: {
+          android: 'balanced',
+          ios: 'hundredMeters',
+        },
+        interval: 1000,
+        fastestInterval: 500,
+        distanceFilter: 0,
       },
     );
 
@@ -119,32 +150,64 @@ const RideDashboard = props => {
   }, [location, route]);
 
   useEffect(() => {
-    if (location && steps) {
+    if (location && steps && route) {
       // Distance from next step
       const userLocation = point(location);
-      const to = point(steps[0].maneuver.location);
-      const dist = turfDistance(userLocation, to, {units: 'meters'});
+      const nextStep = point(steps[0].maneuver.location);
+      const line = lineString(route.geometry.coordinates);
+      const destination = point(
+        line.geometry.coordinates[line.geometry.coordinates.length - 1],
+      );
+
+      // Slice from users location to next step
+      const toStepSlice = lineSlice(userLocation, nextStep, line);
+
+      // Distance from users location to next step
+      const toStepDist = length(toStepSlice, {units: 'meters'});
+      setStepDistance(toStepDist);
+
+      const fromStepSlice = lineSlice(nextStep, destination, line);
+      const fromLocationSlice = lineSlice(userLocation, destination, line);
+
+      // Distance from next step location to destination
+      const fromStepDist = length(fromStepSlice, {units: 'meters'});
+
+      // Distance from users location to destination
+      const fromLocationDist = length(fromLocationSlice, {units: 'meters'});
+
+      // Check if step was passed
+      if (fromStepDist > fromLocationDist) {
+        let stps = [...steps];
+        stps.shift();
+        setSteps([...stps]);
+      }
 
       // If close enough, remove closest step
-      if (dist < NEXT_STEP_THERESHOLD && steps.length) {
+      if (toStepDist < NEXT_STEP_THERESHOLD && steps.length) {
         let stps = [...steps];
         stps.shift();
         setSteps([...stps]);
       }
     }
-  }, [location, steps]);
+  }, [location, steps, route]);
 
   useEffect(() => {
-    if (location && stops) {
+    if (location && stops && route) {
       // Distance from next stop
       const userLocation = point(location);
       const to = point(parseCoords(stops[0].coordinates));
-      const dist = turfDistance(userLocation, to, {units: 'meters'});
+      const line = lineString(route.geometry.coordinates);
+
+      // Line slice from users location to next stop
+      const toStopSlice = lineSlice(userLocation, to, line);
+
+      // Distance from users location to next stop
+      const toStopDist = length(toStopSlice, {units: 'meters'});
 
       // Save distance
-      setStopDistance(dist);
+      setStopDistance(toStopDist);
     }
-  }, [location, stops]);
+  }, [location, stops, route]);
 
   useEffect(() => {
     // Fetch new route if user fot too far from current one
@@ -232,19 +295,19 @@ const RideDashboard = props => {
     }
 
     return (
-      <View style={{...sheet.rowCenter, paddingHorizontal: 8}}>
-        <Ionicon
-          name={
-            icons[
-              steps[0].maneuver.modifier
-                ? steps[0].maneuver.modifier
-                : 'default'
-            ]
-          }
-          color={colors.blue}
-          size={32}
-        />
-        <Text style={styles.step}>{steps[0].maneuver.instruction}</Text>
+      <View
+        style={{
+          ...sheet.rowCenterSplit,
+          paddingHorizontal: 8,
+          width: '100%',
+        }}>
+        <View style={{...sheet.rowCenter, flex: 1}}>
+          {icons[
+            steps[0].maneuver.modifier ? steps[0].maneuver.modifier : 'default'
+          ]()}
+          <Text style={styles.step}>{steps[0].maneuver.instruction}</Text>
+        </View>
+        <Text style={styles.stepDistance}>{parseDistance(stepDistance)}</Text>
       </View>
     );
   };
@@ -311,16 +374,23 @@ const RideDashboard = props => {
           <FAIcon name="refresh" size={32} color={colors.orange} />
         </TouchableOpacity>
         <MapboxGL.MapView
+          onPress={e => console.log(e)}
           style={{flex: 1}}
           styleURL={MAP_LIGHT}
           compassEnabled={false}>
           <MapboxGL.Camera
+            heading={10}
             followUserLocation
-            followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
-            zoomLevel={18}
+            // followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
+            followUserMode={MapboxGL.UserTrackingModes.Follow}
+            // zoomLevel={18}
+            // zoomLevel={19}
             animationMode="moveTo"
             // animationDuration={500}
+            animationDuration={500}
             // centerCoordinate={location}
+            centerCoordinate={location}
+            followZoomLevel={19}
           />
           <MapboxGL.UserLocation animated showsUserHeadingIndicator />
           {renderRoute()}

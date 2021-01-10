@@ -17,8 +17,9 @@ export const styles = StyleSheet.create({
   step: {
     ...sheet.textMedium,
     fontSize: 14,
-    marginLeft: 8,
+    marginHorizontal: 8,
     color: colors.grayVeryDark,
+    flex: 1,
   },
   groupName: {
     ...sheet.textSemiBold,
@@ -62,6 +63,11 @@ export const styles = StyleSheet.create({
   distance: {
     ...sheet.textSemiBold,
     color: colors.blue,
+    fontSize: 16,
+  },
+  stepDistance: {
+    ...sheet.textSemiBold,
+    color: colors.green,
     fontSize: 16,
   },
   buttonWrapper: {
