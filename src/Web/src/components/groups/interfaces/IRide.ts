@@ -13,10 +13,5 @@ export interface IRide {
 	price: number;
 	owner: IParticipant;
 	location: ILocation;
-	group: {
-		groupId: string;
-		location: ILocation;
-		name: string;
-		userCount: number;
-	};
+	group: IGroup;
 }

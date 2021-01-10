@@ -10,6 +10,7 @@ const initialState: IGroupsState = {
 	ridesParticipated: [],
 	ridesOwnedPast: [],
 	ridesParticipatedPast: [],
+	ridesAvailable: [],
 };
 
 /**
@@ -50,6 +51,9 @@ const reducer: Reducer<IGroupsState> = (
 				// if (idx > -1) {
 				// 	draft.rides[idx].isUserParticipant = true;
 				// }
+				break;
+			case RidesActionTypes.GetRidesAvailableSuccess:
+				draft.ridesAvailable = action.rides;
 				break;
 			case GroupsActionTypes.GetGroupUsersSuccess:
 				draft.groups.find(g => g.groupId === action.groupId).users = action.users;

@@ -82,7 +82,7 @@ const ActiveItemRequestOwner = (props: IActiveItemRequestOwnerProps) => {
 
 	useEffect(() => {
 		onGetName(parseCoords(props.request.ride.location));
-	}, [])
+	}, []);
 
 	// if (!placeName && !loading && placeName !== undefined) {
 	// 	onGetName(parseCoords(props.request.ride.location));
@@ -131,7 +131,7 @@ const ActiveItemRequestOwner = (props: IActiveItemRequestOwnerProps) => {
 						{t(resources.requestFrom) + props.request.requestingUser.firstName + " " + props.request.requestingUser.lastName}
 					</div>
 					<div className={cssClasses.activeDate}>
-						{convertDate(props.request.ride.rideDate.toString())}
+						{convertDate(props.request.ride.date.toString())}
 					</div>
 					<div className={cssClasses.activeButtons}>
 						<ButtonSmall

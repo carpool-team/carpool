@@ -3,7 +3,7 @@ import { colorList } from "../../../../../scss/colorList";
 import { withTranslation } from "react-i18next";
 import { IRide } from "components/groups/interfaces/IRide";
 import moment from "moment";
-import {IRidesListProps} from "../../interfaces/IRidesListProps";
+import { IRidesListProps } from "../../interfaces/IRidesListProps";
 import ActiveItemOwner from "../items/ActiveItemOwner";
 import ActiveItemParticipant from "../items/ActiveItemParticipant";
 import DefaultItem from "../items/DefaultItem";
@@ -78,7 +78,7 @@ const RidesListSchedule = (props: IRidesListProps) => {
 
 	const renderItem = (color: string, ride: IRide, day: string) => {
 		let item: JSX.Element;
-		switch(props.listType){
+		switch (props.listType) {
 			case RidesListType.Owner: {
 				item = renderOwnerItem(color, ride, day);
 				break;
@@ -89,7 +89,7 @@ const RidesListSchedule = (props: IRidesListProps) => {
 			}
 		}
 		return item;
-	}
+	};
 
 	let colorIndex: number = 0;
 	const rides: IRide[] = props.rides;
@@ -98,8 +98,7 @@ const RidesListSchedule = (props: IRidesListProps) => {
 	for (let m = moment(props.firstDay); m.diff(props.lastDay, "days") <= 0; m.add(1, "days")) {
 		days.push(m.format());
 	}
-	
-	
+
 	return (
 		<ul className={cssClasses.listContainer}>
 			{days.map((day) => {
@@ -121,6 +120,6 @@ const RidesListSchedule = (props: IRidesListProps) => {
 			})}
 		</ul>
 	);
-}
+};
 
-	export default withTranslation()(RidesListSchedule);
+export default withTranslation()(RidesListSchedule);

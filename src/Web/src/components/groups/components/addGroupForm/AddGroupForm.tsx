@@ -6,7 +6,6 @@ import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../../components/system/resources/IReactI18nProps";
 import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import { IFormData } from "./interfaces/IFormData";
-import { IGroup } from "../../interfaces/IGroup";
 import { mainRoutes } from "../../../layout/components/LayoutRouter";
 import { IAddGroupData } from "../../interfaces/IAddGroupData";
 
@@ -32,10 +31,7 @@ const initialFormData: IFormData = {
 	},
 };
 
-class AddGroupFormScreen extends Component<
-	IAddGroupFormScreenProps,
-	IAddGroupFormScreenState
-	> {
+class AddGroupFormScreen extends Component<IAddGroupFormScreenProps, IAddGroupFormScreenState> {
 	constructor(props: IAddGroupFormScreenProps) {
 		super(props);
 		this.state = {

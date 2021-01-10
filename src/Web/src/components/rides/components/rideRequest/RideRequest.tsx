@@ -14,6 +14,7 @@ import { IRideRequest } from "../../../groups/interfaces/IRideRequest";
 import { exampleRidesRequest } from "../../../../examples/exampleRidesRequest";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps, StateProps, DispatchProps } from "../../store/PropsTypes";
+import { IRideRequestRide } from "../../../groups/interfaces/rideRequest/IRideRequestRide";
 
 interface IRideRequestProps extends RouteComponentProps, IReactI18nProps, StateProps, DispatchProps {
 
@@ -47,22 +48,14 @@ const RideRequest = (props: IRideRequestProps) => {
 
 	const { t } = props;
 
-	const [selectedRide, setSelectedRide] = useState<IRide>(null);
 	const [selectedRequest, setSelectedRequest] = useState<IRideRequest>(null);
 	const [userOwner, setUserOwner] = useState<boolean>(false);
 	const [switchCssClass, setSwitchCssClass] = useState({ from: cssClasses.switchActive, to: null });
 
 	useEffect(() => {
-		props.getRideRequests(true); // get owned requests
+		props.getRideRequests();
 		props.setLoaderVisible(true);
-		props.getRideRequests(false); // get participated requests
 	}, []);
-
-	useEffect(() => {
-		if (selectedRequest && selectedRequest.ride !== selectedRide) {
-			setSelectedRide(selectedRequest.ride);
-		}
-	}, [selectedRequest]);
 
 	const setRequest = (request: IRideRequest) => {
 		if (request !== null) {
@@ -131,6 +124,26 @@ const RideRequest = (props: IRideRequestProps) => {
 		return list;
 	};
 
+	const getRideFromRequest: (request: IRideRequest) => IRide = request => {
+		if (request) {
+			return {
+				rideDirection: request.ride.rideDirection,
+				location: request.ride.location,
+				group: {
+					...request.ride.group,
+					userCount: 0,
+					rideCount: 0
+				},
+				rideDate: request.ride.date,
+				rideId: request.ride.id,
+				price: 0,
+				owner: request.rideOwner,
+			};
+		} else {
+			return null;
+		}
+	};
+
 	return (
 		<div className={cssClasses.container}>
 			<div className={cssClasses.leftPanel}>
@@ -154,7 +167,7 @@ const RideRequest = (props: IRideRequestProps) => {
 			</div>
 			<MediaQuery query="(min-width: 900px)">
 				<div className={cssClasses.rightPanel}>
-					<MapBoxRides ride={selectedRide}></MapBoxRides>
+					<MapBoxRides ride={getRideFromRequest(selectedRequest)} />
 				</div>
 			</MediaQuery>
 		</div>

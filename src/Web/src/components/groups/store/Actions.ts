@@ -1,33 +1,24 @@
 import {
 	GroupsActionTypes,
 	IAddGroupAction,
-	IAddGroupActionError,
-	IAddGroupActionSuccess,
-	IGetGroupsActionSuccess,
 	IGetGroupsAction,
-	IGetGroupsActionError,
 	InvitesActionTypes,
 	IGetInvitesAction,
-	IGetInvitessActionSuccess,
-	IGetInvitesActionError,
-	IAnswerInviteActionError,
-	IAnswerInviteActionSuccess,
 	IAnswerInviteAction,
 	IGetRidesAction,
-	IGetRidesActionSuccess,
-	IGetRidesActionError,
+	IGetRidesAvailableAction,
+	IGetRidesAvailableActionSuccess,
+	IGetRidesAvailableActionError,
 	RidesActionTypes,
 	IParticipateInRideAction,
-	IParticipateInRideActionSuccess,
 	IAddRideAction,
 	IAddInvitesAction,
 	IGetGroupUsersAction,
 	ISetSelectedGroupAction,
 } from "./Types";
-import { IGroup } from "../interfaces/IGroup";
-import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { ILocation } from "../interfaces/ILocation";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroupBase } from "../interfaces/IGroupBase";
 
@@ -68,42 +59,10 @@ export function answerInvite(accepted: boolean, inviteId: string): IAnswerInvite
 	};
 }
 
-export function answerInviteSuccess(
-	inviteId: string
-): IAnswerInviteActionSuccess {
-	return {
-		type: InvitesActionTypes.AnswerInviteSuccess,
-		inviteId,
-	};
-}
-
-export function answerInviteError(error: Error): IAnswerInviteActionError {
-	return {
-		type: InvitesActionTypes.AnswerInviteError,
-		error,
-	};
-}
-
 export function getInvites(userOnly: boolean): IGetInvitesAction {
 	return {
 		type: InvitesActionTypes.GetInvites,
 		userOnly,
-	};
-}
-
-export function getInvitesSuccess(
-	invites: IInvite[]
-): IGetInvitessActionSuccess {
-	return {
-		type: InvitesActionTypes.GetInvitesSuccess,
-		invites,
-	};
-}
-
-export function getInvitesError(error: Error): IGetInvitesActionError {
-	return {
-		type: InvitesActionTypes.GetInvitesError,
-		error,
 	};
 }
 
@@ -123,34 +82,32 @@ export function getRides(): IGetRidesAction {
 	};
 }
 
-export function getRidesSuccess(ridesOwned: IRide[], ridesParticipated: IRide[], ridesOwnedPast: IRide[], ridesParticipatedPast: IRide[]): IGetRidesActionSuccess {
+export function getRidesAvailable(groupId: string): IGetRidesAvailableAction {
 	return {
-		type: RidesActionTypes.GetRidesSuccess,
-		ridesOwned,
-		ridesParticipated,
-		ridesOwnedPast,
-		ridesParticipatedPast
+		type: RidesActionTypes.GetRidesAvailable,
+		groupId,
 	};
 }
 
-export function getRidesError(error: Error): IGetRidesActionError {
+export function getRidesAvailableSuccess(rides: IRide[]): IGetRidesAvailableActionSuccess {
 	return {
-		type: RidesActionTypes.GetRidesError,
+		type: RidesActionTypes.GetRidesAvailableSuccess,
+		rides
+	};
+}
+
+export function getRidesAvailableError(error: Error): IGetRidesAvailableActionError {
+	return {
+		type: RidesActionTypes.GetRidesAvailableError,
 		error,
 	};
 }
 
-export function participateInRide(rideId: string): IParticipateInRideAction {
+export function participateInRide(ride: IRide, location: ILocation): IParticipateInRideAction {
 	return {
 		type: RidesActionTypes.ParticipateInRide,
-		rideId,
-	};
-}
-
-export function participateInRideSuccess(rideId: string): IParticipateInRideActionSuccess {
-	return {
-		type: RidesActionTypes.ParticipateInRideSuccess,
-		rideId,
+		ride,
+		location,
 	};
 }
 
