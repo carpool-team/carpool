@@ -75,7 +75,6 @@ const RideDashboard = props => {
     // Watch position
     const watchId = Geolocation.watchPosition(
       position => {
-        console.log(position, new Date());
         setLocation(parseCoords(position.coords));
       },
       err => {
@@ -94,7 +93,7 @@ const RideDashboard = props => {
           ios: 'hundredMeters',
         },
         interval: 3000,
-        fastestInterval: 2000,
+        fastestInterval: 3000,
         distanceFilter: 0,
       },
     );
@@ -305,6 +304,7 @@ const RideDashboard = props => {
             ref={c => (_camera.current = c)}
             followUserLocation
             followUserMode="normal"
+            followZoomLevel={16}
             // followZoomLevel={19}
             // followUserMode={MapboxGL.UserTrackingModes.Follow}
             // followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}

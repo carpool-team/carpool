@@ -6,6 +6,7 @@ import {
   GroupDetails,
   Groups,
   Invitations,
+  GroupRides,
 } from '../../../../screens/BottomTabs';
 
 const {useEffect} = React;
@@ -50,6 +51,13 @@ const GroupsStack = ({navigation}) => {
         component={GroupDetails}
         options={{
           title: 'Group details',
+        }}
+      />
+      <Stack.Screen
+        name="GroupRides"
+        component={GroupRides}
+        options={{
+          title: 'Group Rides',
         }}
       />
     </Stack.Navigator>

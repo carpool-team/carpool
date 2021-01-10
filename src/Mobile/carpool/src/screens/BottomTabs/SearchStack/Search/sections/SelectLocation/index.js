@@ -14,13 +14,11 @@ const config = {
   countries: ['pl'],
 };
 
-const SelectLocation = ({onSubmit, state}) => {
+const SelectLocation = ({onSubmit}) => {
   const [query, setQuery] = useState('');
   const [place, setPlace] = useState(null);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const {swap} = state;
 
   useEffect(() => {
     if (results.length && !query.length) {
@@ -69,9 +67,7 @@ const SelectLocation = ({onSubmit, state}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {swap ? 'Destination' : 'Starting location'}
-      </Text>
+      <Text style={styles.title}>Location</Text>
       {place ? (
         <View style={styles.placeWrapper}>
           <View style={sheet.rowCenter}>

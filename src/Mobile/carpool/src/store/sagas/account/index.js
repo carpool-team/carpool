@@ -302,6 +302,37 @@ export function* watchInvitationsAsync() {
   }
 }
 
+export function* getGroupRidesAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+
+    if (token) {
+      const res = yield instance.get(`/groups/${action.payload}/rides`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      yield call(resolvePromiseAction, action, res.data.result);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.getGroupRides(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 const accountSagas = [
   takeLatest(actions.GetGroups.Trigger, getGroupsAsync),
   takeLatest(actions.GetInvitations.Trigger, getInvitationsAsync),
@@ -312,6 +343,7 @@ const accountSagas = [
   takeLatest(actions.EditUser.PromiseTrigger, editUserAsync),
   takeLatest(actions.DeleteAccount.PromiseTrigger, deleteAccountAsync),
   takeLatest(actions.LeaveGroup.PromiseTrigger, leaveGroupAsync),
+  takeLatest(actions.GetGroupRides.PromiseTrigger, getGroupRidesAsync),
 ];
 
 export default accountSagas;

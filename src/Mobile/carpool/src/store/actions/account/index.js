@@ -56,6 +56,12 @@ export const LeaveGroup = {
   PromiseTrigger: 'LEAVE_GROUP.TRIGGER',
 };
 
+export const GetGroupRides = {
+  Trigger: 'GET_GROUP_RIDES',
+
+  PromiseTrigger: 'GET_GROUP_RIDES.TRIGGER',
+};
+
 export const toggleActiveAccount = () => ({
   type: ToggleActiveAccount.Trigger,
 });
@@ -119,3 +125,6 @@ export const deleteAccount = () => createPromiseAction(DeleteAccount.Trigger)();
 
 export const leaveGroup = payload =>
   createPromiseAction(LeaveGroup.Trigger)(payload);
+
+export const getGroupRides = payload =>
+  createPromiseAction(GetGroupRides.Trigger)(payload);

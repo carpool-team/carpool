@@ -23,8 +23,6 @@ const SelectedRideDetails = ({navigation, route}) => {
     });
   }, []);
 
-  console.log(ride);
-
   const onSelect = () => {
     setLoading(true);
     dispatch(

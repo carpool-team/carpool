@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {parseCoords} from '../../../utils/coords';
 import {GoBack, Header} from '../../../components/navigation';
 import {PointMinimap} from '../../../components/Route';
-import {useReverseGeocoding, useActiveAccount} from '../../../hooks';
+import {useReverseGeocoding} from '../../../hooks';
 import {SafeScroll} from '../../../components/common/wrappers';
 import * as actions from '../../../store/actions';
 import {useDispatch} from 'react-redux';
@@ -19,8 +19,6 @@ const GroupDetails = ({navigation, route}) => {
   const [placeName, setPlaceName] = useState(null);
 
   const [results, loading, error, _getPlaceName] = useReverseGeocoding();
-  const {activeAccount} = useActiveAccount();
-  const isPassenger = activeAccount === 'passenger';
 
   const dispatch = useDispatch();
 
@@ -90,11 +88,7 @@ const GroupDetails = ({navigation, route}) => {
   };
 
   const onRidesPress = () => {
-    if (isPassenger) {
-      // Navigate to screen
-    } else {
-      // Navigate to other screen
-    }
+    navigation.navigate('GroupRides', {group});
   };
 
   return group ? (
@@ -134,9 +128,7 @@ const GroupDetails = ({navigation, route}) => {
             onPress={onRidesPress}>
             <View style={styles.cardContent}>
               <Ionicon name="ios-car" size={32} color={colors.blue} />
-              <Text style={styles.cardLabel}>
-                {isPassenger ? 'Rides' : 'Your rides'}
-              </Text>
+              <Text style={styles.cardLabel}>Rides</Text>
             </View>
           </UpView>
         </View>
