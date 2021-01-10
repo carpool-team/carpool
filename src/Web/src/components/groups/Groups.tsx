@@ -52,6 +52,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 				draft.selectedGroupId = id;
 			})
 		);
+		this.props.setSelectedGroup(id ? this.props.groups.find(g => g.groupId === id) : null);
 	}
 
 	render() {

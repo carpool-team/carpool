@@ -22,14 +22,17 @@ import {
 	IAddRideAction,
 	IAddInvitesAction,
 	IGetGroupUsersAction,
+	ISetSelectedGroupAction,
 } from "./Types";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { IAddGroupData } from "../interfaces/IAddGroupData";
+import { IGroupBase } from "../interfaces/IGroupBase";
 
 //#region GROUPS
-export function addGroup(group: IGroup): IAddGroupAction {
+export function addGroup(group: IAddGroupData): IAddGroupAction {
 	return {
 		type: GroupsActionTypes.AddGroup,
 		group,
@@ -48,6 +51,11 @@ export function getGroups(userOnly: boolean, count?: number, page?: number): IGe
 export const getGroupUsers: (groupId: string) => IGetGroupUsersAction = groupId => ({
 	type: GroupsActionTypes.GetGroupUsers,
 	groupId,
+});
+
+export const setSelectedGroup: (group: IGroup) => ISetSelectedGroupAction = group => ({
+	type: GroupsActionTypes.SetSelectedGroup,
+	group,
 });
 //#endregion
 

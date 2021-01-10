@@ -33,7 +33,7 @@ const GroupsList = (props: IGroupsListProps) => {
 									<ActiveItem
 										group={group}
 										color={color}
-										setGroupSelected={() => props.setGroupSelected(null)}
+										setGroupSelected={undefined}
 									/>
 								);
 							} else {

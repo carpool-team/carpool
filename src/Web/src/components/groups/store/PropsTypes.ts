@@ -1,11 +1,12 @@
 import { IGroup } from "../interfaces/IGroup";
-import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction, IParticipateInRideAction, IAddRideAction, IAddInvitesAction } from "./Types";
-import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, addRide, addInvites } from "./Actions";
+import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction, IParticipateInRideAction, IAddRideAction, IAddInvitesAction, ISetSelectedGroupAction } from "./Types";
+import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, addRide, addInvites, setSelectedGroup } from "./Actions";
 import { IGroupsState } from "./State";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
 import { IAuthState } from "../../auth/store/State";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { IAddGroupData } from "../interfaces/IAddGroupData";
 interface IStatePropsType {
 	groups: IGroupsState;
 	auth: IAuthState;
@@ -32,7 +33,7 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 });
 
 interface IDispatchPropsType {
-	addGroup: (group: IGroup) => IAddGroupAction;
+	addGroup: (group: IAddGroupData) => IAddGroupAction;
 	addRide: (input: IAddRideInput) => IAddRideAction;
 	addInvites: (groupId: string, userIds: string[]) => IAddInvitesAction;
 	getGroups: (userOnly: boolean) => IGetGroupsAction;
@@ -40,6 +41,7 @@ interface IDispatchPropsType {
 	answerInvite: (accepted: boolean, inviteId: string) => IAnswerInviteAction;
 	getRides: (userOnly: boolean) => IGetRidesAction;
 	participateInRide: (rideId: string) => IParticipateInRideAction;
+	setSelectedGroup: (group: IGroup) => ISetSelectedGroupAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
@@ -51,6 +53,7 @@ export const mapDispatchToProps: IDispatchPropsType = {
 	participateInRide,
 	addRide,
 	addInvites,
+	setSelectedGroup,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;

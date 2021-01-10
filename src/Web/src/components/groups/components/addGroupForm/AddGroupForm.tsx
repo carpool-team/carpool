@@ -8,6 +8,7 @@ import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import { IFormData } from "./interfaces/IFormData";
 import { IGroup } from "../../interfaces/IGroup";
 import { mainRoutes } from "../../../layout/components/LayoutRouter";
+import { IAddGroupData } from "../../interfaces/IAddGroupData";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {
 	callbacks: IGroupCallbacks;
@@ -57,7 +58,7 @@ class AddGroupFormScreen extends Component<
 	}
 
 	private createGroup = () => {
-		let group: IGroup = {
+		let group: IAddGroupData = {
 			groupId: "0",
 			name: this.state.formData.group.groupName,
 			code: this.state.formData.group.code,

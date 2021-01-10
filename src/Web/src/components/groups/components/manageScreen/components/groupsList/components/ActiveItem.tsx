@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withTranslation } from "react-i18next";
 import { getState } from "../../../../../../../store/Index";
 import { IReactI18nProps } from "../../../../../../system/resources/IReactI18nProps";
@@ -13,12 +13,19 @@ interface IActiveItemProps extends IListItemProps, IReactI18nProps {
 
 const ActiveItem: React.FC<IActiveItemProps> = props => {
 	const [popover, setPopover] = useState<boolean>(false);
+	const [isOwner, setIsOwner] = useState(false);
 	const { t } = props;
 	const color = {
 		color: props.color,
 	};
 
-	const isOwner: boolean = props.group.owner === getState().auth?.tokenInfo?.payload?.sub;
+	useEffect(() => {
+		console.log("GROUP OWNER ID: ", props.group.owner?.appUserId);
+		console.log("MY ID: ", getState().auth?.tokenInfo?.payload?.sub);
+		const owned: boolean = props.group.owner?.appUserId === getState().auth?.tokenInfo?.payload?.sub;
+		setIsOwner(owned);
+		console.log("OWNED: ", owned);
+	}, [props.group]);
 
 	const cssClasses = {
 		menu: "groupsManagementList__active--menu",

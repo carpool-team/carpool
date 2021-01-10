@@ -1,6 +1,8 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroup } from "../interfaces/IGroup";
+import { IGroupBase } from "../interfaces/IGroupBase";
 import { IGroupUser } from "../interfaces/IGroupUser";
 import { IInvite } from "../interfaces/IInvite";
 import { IParticipant } from "../interfaces/IParticipant";
@@ -21,6 +23,10 @@ export enum GroupsActionTypes {
 	GetGroupUsers = "GROUPS_GET_GROUP_USERS",
 	GetGroupUsersSuccess = "GROUPS_GET_GROUP_USERS_SUCCESS",
 	GetGroupUsersError = "GROUPS_GET_GROUP_USERS_ERROR",
+	SetSelectedGroup = "GROUPS_SET_SELECTED_GROUP",
+	GetSelectedGroupDetails = "GROUPS_GET_SELECTED_GROUP_DETAILS",
+	GetSelectedGroupDetailsSuccess = "GROUPS_GET_SELECTED_GROUP_DETAILS_SUCCESS",
+	GetSelectedGroupDetailsError = "GROUPS_GET_SELECTED_GROUP_DETAILS_ERROR",
 }
 
 /** Enum of invites actions */
@@ -54,7 +60,7 @@ export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 //#region GROUPS
 /** Action for adding group */
 export interface IAddGroupAction extends Action<GroupsActionTypes.AddGroup> {
-	group: IGroup;
+	group: IAddGroupData;
 }
 
 /** Action for adding group success */
@@ -101,6 +107,21 @@ export interface IGetGroupUsersSuccessAction extends Action<GroupsActionTypes.Ge
 
 /** Action for getting group users error */
 export interface IGetGroupUsersErrorAction extends Action<GroupsActionTypes.GetGroupUsersError> {
+	error: Error;
+}
+
+export interface ISetSelectedGroupAction extends Action<GroupsActionTypes.SetSelectedGroup> {
+	group: IGroup;
+}
+
+export interface IGetSelectedGroupDetailsAction extends Action<GroupsActionTypes.GetSelectedGroupDetails> {
+}
+
+export interface IGetSelectedGroupDetailsSuccessAction extends Action<GroupsActionTypes.GetSelectedGroupDetailsSuccess> {
+	group: IGroup;
+}
+
+export interface IGetSelectedGroupDetailsErrorAction extends Action<GroupsActionTypes.GetSelectedGroupDetailsError> {
 	error: Error;
 }
 //#endregion
@@ -197,7 +218,11 @@ export type GroupsAction =
 	| IGetGroupsActionError
 	| IGetGroupUsersAction
 	| IGetGroupUsersSuccessAction
-	| IGetGroupUsersErrorAction;
+	| IGetGroupUsersErrorAction
+	| ISetSelectedGroupAction
+	| IGetSelectedGroupDetailsAction
+	| IGetSelectedGroupDetailsSuccessAction
+	| IGetSelectedGroupDetailsErrorAction;
 
 export type InviteAction =
 	IAnswerInviteAction
