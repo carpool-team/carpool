@@ -25,6 +25,7 @@ const RidesListDefault = (props: IRidesListProps) => {
 			return (
 				<React.Fragment key={ride.rideId}>
 					<ActiveItemJoin
+						joinRideCallback={props.joinRideCallback}
 						ride={ride}
 						color={color}
 						t={t}
@@ -55,6 +56,7 @@ const RidesListDefault = (props: IRidesListProps) => {
 						color={color}
 						t={t}
 						setRide={props.setRide}
+						joinRideCallback={props.joinRideCallback}
 					/>
 				</React.Fragment>
 			);
@@ -73,7 +75,7 @@ const RidesListDefault = (props: IRidesListProps) => {
 	};
 
 	const renderItem = (color: string, ride: IRide) => {
-		let item: JSX.Element;
+		let item: JSX.Element = null;
 		switch (props.listType) {
 			case RidesListType.Join: {
 				item = renderJoinItem(color, ride);
@@ -83,9 +85,11 @@ const RidesListDefault = (props: IRidesListProps) => {
 				item = renderDefaultItem(color, ride);
 				break;
 			}
+			default:
+				break;
 		}
 		return item;
-	}
+	};
 
 	let colorIndex: number = 0;
 	const rides: IRide[] = props.rides;

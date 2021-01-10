@@ -3,9 +3,9 @@ import { withTranslation } from "react-i18next";
 import RidesListDefault from "./components/lists/RidesListDefault";
 import RidesListSchedule from "./components/lists/RidesListSchedule";
 import { RidesListType } from "./enums/RidesListType";
-import "./RidesList.scss"
 import RequestsListDefault from "./components/lists/RequestsListDefault";
 import { IListProps } from "./interfaces/IListProps";
+import "./RidesList.scss";
 
 const RidesList = (props: IListProps) => {
 
@@ -16,10 +16,10 @@ const RidesList = (props: IListProps) => {
 		<RidesListSchedule listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} firstDay={props.firstDay} lastDay={props.lastDay} setRide={props.setRide} />
 	);
 	const renderDefaultList = () => (
-		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} />
+		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} joinRideCallback={props.joinRideCallback} />
 	);
 	const renderJoinList = () => (
-		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} />
+		<RidesListDefault listType={props.listType} rideSelected={props.rideSelected} rides={props.rides} setRide={props.setRide} joinRideCallback={props.joinRideCallback} />
 	);
 	const renderRequestParticipantList = () => (
 		<RequestsListDefault
@@ -33,7 +33,6 @@ const RidesList = (props: IListProps) => {
 			requestSelected={props.requestSelected} requests={props.requests} setRequest={props.setRequest}
 		/>
 	);
-
 
 	const renderList = () => {
 		let list: JSX.Element;
@@ -68,7 +67,7 @@ const RidesList = (props: IListProps) => {
 			}
 		}
 		return list;
-	}
+	};
 
 	return (
 		renderList()

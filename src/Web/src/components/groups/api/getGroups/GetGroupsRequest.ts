@@ -11,7 +11,7 @@ export class GetGroupsRequest extends RequestCore {
 	}) {
 		super({
 			properties: {
-				method: RequestType.GET,
+				method: RequestType.Get,
 				endpoint: RequestEndpoint.GET_USER_GROUPS,
 				queries: {
 					userId: init.userId,

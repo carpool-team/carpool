@@ -31,7 +31,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 		this.state = {
 			selectedGroupId: undefined,
 		};
-		this.props.getGroups(false);
+		this.props.getGroups();
 		this.props.getInvites(true);
 		this.props.getRides(false);
 	}
@@ -52,6 +52,8 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 				draft.selectedGroupId = id;
 			})
 		);
+		this.props.getRidesAvailable(id ?? null);
+		this.props.setSelectedGroup(id ? this.props.groups.find(g => g.groupId === id) : null);
 	}
 
 	render() {
@@ -66,6 +68,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 			setGroupSelected: (id) => this.setSelectedGroupHandler(id),
 			addRide: this.props.addRide,
 			addInvites: this.props.addInvites,
+			getRidesAvailable: () => this.props.ridesAvailable,
 		};
 
 		return (

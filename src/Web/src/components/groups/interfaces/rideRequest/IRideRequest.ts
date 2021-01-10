@@ -1,5 +1,4 @@
-import { IParticipant } from "./IParticipant";
-import { IRide } from "./IRide";
+import { IRideRequestRide } from "./IRideRequestRide";
 
 export interface IRideRequest {
 	isAccepted: boolean;
@@ -9,7 +8,12 @@ export interface IRideRequest {
 		firstName: string;
 		lastName: string;
 	};
-	ride: IRide;
-	rideOwner: IParticipant;
+	ride: IRideRequestRide;
+	rideOwner: {
+		firstName: string;
+		lastName: string;
+		id: string;
+		rating: number;
+	};
 	rideRequestId: string;
 }

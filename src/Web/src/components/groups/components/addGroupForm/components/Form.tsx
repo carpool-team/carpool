@@ -16,7 +16,7 @@ import { ILocation } from "../../../interfaces/ILocation";
 import { each } from "../../../../../helpers/UniversalHelper";
 
 interface IFirstStepCallbacks {
-	handleChange: (newValue: string | { latitude: number, longitude: number }, key: string) => void;
+	handleChange: (newValue: string | ILocation, key: string) => void;
 	createGroup: () => void;
 }
 

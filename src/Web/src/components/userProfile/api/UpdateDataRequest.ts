@@ -16,7 +16,7 @@ export class UpdateDataRequest extends RequestBase<IUpdateDataRequestBody> {
 	}) {
 		super({
 			properties: {
-				method: RequestType.PUT,
+				method: RequestType.Put,
 				endpoint: RequestEndpoint.UPDATE_USER_DATA,
 				queries: {
 					userId: init.appUserId,

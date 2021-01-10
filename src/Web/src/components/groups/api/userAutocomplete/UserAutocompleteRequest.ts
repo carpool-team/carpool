@@ -16,7 +16,7 @@ export class UserAutocompleteRequest extends RequestCore {
 	}) {
 		super({
 			properties: {
-				method: RequestType.GET,
+				method: RequestType.Get,
 				endpoint: RequestEndpoint.AUTOCOMPLETE_USER,
 				queries: {
 					email: init.queries.email,

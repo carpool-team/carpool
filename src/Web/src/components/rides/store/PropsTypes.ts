@@ -1,7 +1,7 @@
 import { IAnswerRideRequestAction, IGetRideRequestsAction } from "./Types";
 import { IRidesState } from "./State";
 import { IAuthState } from "../../auth/store/State";
-import { IRideRequest } from "../../groups/interfaces/IRideRequest";
+import { IRideRequest } from "../../groups/interfaces/rideRequest/IRideRequest";
 import { answerRideRequest, getRideRequests } from "./Actions";
 import { ISetLoaderVisibleAction } from "../../layout/store/Types";
 import { setLoaderVisible } from "../../layout/store/Actions";
@@ -23,7 +23,7 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 });
 
 interface IDispatchPropsType {
-	getRideRequests: (owner: boolean) => IGetRideRequestsAction;
+	getRideRequests: () => IGetRideRequestsAction;
 	answerRideRequest: (id: string, isAccepted: boolean, owned: boolean) => IAnswerRideRequestAction;
 	setLoaderVisible: (visible: boolean) => ISetLoaderVisibleAction;
 }

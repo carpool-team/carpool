@@ -1,4 +1,4 @@
-import { IRideRequest } from "../components/groups/interfaces/IRideRequest";
+import { IRideRequest } from "../components/groups/interfaces/rideRequest/IRideRequest";
 import * as faker from "faker";
 import moment from "moment";
 
@@ -12,32 +12,21 @@ export const exampleRidesRequest: IRideRequest[] = [
 			lastName: "Doe"
 		},
 		ride: {
-			rideId: faker.random.alphaNumeric(32),
-			owner: {
-				id: faker.random.alphaNumeric(32),
-				firstName: "Maciej",
-				lastName: "Sobkowiak",
-				vehicle: "Mazda ostra jazda",
-				rating: 0
-			},
-			stops: null,
+			id: faker.random.alphaNumeric(32),
 			location: {
 				longitude: 52.40656926303501,
 				latitude: 16.86633729745128
 			},
-			rideDate: new Date(),
+			date: new Date(),
 			group: {
 				groupId: faker.random.number(32).toString(),
 				name: faker.random.word(),
-				userCount: faker.random.number({ min: 0, max: 20 }),
 				location: {
 					longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 					latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
 				},
 			},
 			rideDirection: 0,
-			price: 0
-
 		},
 		rideOwner: {
 			firstName: "Julian",
@@ -56,32 +45,21 @@ export const exampleRidesRequest: IRideRequest[] = [
 			lastName: "Doe"
 		},
 		ride: {
-			rideId: faker.random.alphaNumeric(32),
-			owner: {
-				id: faker.random.alphaNumeric(32),
-				firstName: "Maciej",
-				lastName: "Sobkowiak",
-				vehicle: "Mazda ostra jazda",
-				rating: 0
-			},
-			stops: null,
+			id: faker.random.alphaNumeric(32),
 			location: {
 				longitude: 52.40656926303501,
 				latitude: 16.86633729745128
 			},
-			rideDate: new Date(),
+			date: new Date(),
 			group: {
 				groupId: faker.random.number(32).toString(),
 				name: faker.random.word(),
-				userCount: faker.random.number({ min: 0, max: 20 }),
 				location: {
 					longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 					latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
 				},
 			},
 			rideDirection: 0,
-			price: 0
-
 		},
 		rideOwner: {
 			firstName: "Julian",
@@ -91,4 +69,4 @@ export const exampleRidesRequest: IRideRequest[] = [
 		},
 		rideRequestId: faker.random.alphaNumeric(32)
 	}
-] 
+];

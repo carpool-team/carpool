@@ -37,7 +37,7 @@ module.exports = {
 			// we use babel-loader to load our ts and tsx files
 			{
 				test: /\.(t|j)sx?$/,
-				exclude: /node_modules/,
+				exclude: /node_modules|__tests__|__mocks__/,
 				use: [
 					{
 						loader: "ts-loader",
@@ -124,6 +124,7 @@ module.exports = {
 				},
 				configFile: path.resolve(__dirname, "../Web/tsconfig.json"),
 			},
+
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'bundle.css',

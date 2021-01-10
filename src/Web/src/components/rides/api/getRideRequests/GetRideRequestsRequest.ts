@@ -7,7 +7,7 @@ export class GetRideRequestsRequest extends RequestCore {
 	constructor(isOwner: boolean) {
 		super({
 			properties: {
-				method: RequestType.GET,
+				method: RequestType.Get,
 				endpoint: RequestEndpoint.GET_RIDE_REQS,
 				queries: {
 					isOwner,

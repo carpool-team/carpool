@@ -1,4 +1,4 @@
-import { IRideRequest } from "../../groups/interfaces/IRideRequest";
+import { IRideRequest } from "../../groups/interfaces/rideRequest/IRideRequest";
 
 /** Rides state interface */
 export interface IRidesState {

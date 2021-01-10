@@ -1,9 +1,14 @@
 import { ILocation } from "../components/groups/interfaces/ILocation";
 import { getState } from "../store/Index";
 import moment from "moment";
+import { ITokenInfo } from "../components/auth/interfaces/ITokenInfo";
+import App from "../App";
 
 export function isAuthorized(): boolean {
-	const res: boolean = Boolean(getState().auth?.tokenInfo?.token);
+	const res: boolean = (
+		Boolean(getState().auth?.tokenInfo?.token)
+		|| Boolean((JSON.parse(window.localStorage.getItem(process.env[App.storageKeys.tokenInfoStorage])) as ITokenInfo)?.token)
+	);
 	console.log(res);
 	return res;
 }

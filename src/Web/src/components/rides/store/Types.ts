@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { IRideRequest } from "../../groups/interfaces/IRideRequest";
+import { IRideRequest } from "../../groups/interfaces/rideRequest/IRideRequest";
 
 export enum GenericActionTypes {
 	ApiError = "RIDES_STORE_API_ERROR"
@@ -24,18 +24,17 @@ export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 //#region RIDE REQUESTS
 /** Action for getting ride reqs */
 export interface IGetRideRequestsAction extends Action<RideRequestsActionTypes.GetRideRequests> {
-	owner: boolean;
 }
 
 /** Action for getting ride reqs success */
 export interface IGetRideRequestsSuccessAction extends Action<RideRequestsActionTypes.GetRideRequestsSuccess> {
-	requests: IRideRequest[];
-	owner: boolean;
+	requestsOwner: IRideRequest[];
+	requestsParticipant: IRideRequest[];
 }
 
 /** Action for getting ride reqs error */
 export interface IGetRideRequestsErrorAction extends Action<RideRequestsActionTypes.GetRideRequestsError> {
-	requests: IRideRequest[];
+	error: Error;
 }
 
 /** Action for answering ride req */
@@ -51,6 +50,7 @@ export interface IAnswerRideRequestSuccessAction extends Action<RideRequestsActi
 
 /** Action for answering ride req error */
 export interface IAnswerRideRequestErrorAction extends Action<RideRequestsActionTypes.AnswerRideRequestError> {
+	error: Error;
 }
 //#endregion
 

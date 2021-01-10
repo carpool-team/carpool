@@ -9,7 +9,8 @@ const initialState: IGroupsState = {
 	ridesOwned: [],
 	ridesParticipated: [],
 	ridesOwnedPast: [],
-	ridesParticipatedPast: []
+	ridesParticipatedPast: [],
+	ridesAvailable: [],
 };
 
 /**
@@ -51,8 +52,16 @@ const reducer: Reducer<IGroupsState> = (
 				// 	draft.rides[idx].isUserParticipant = true;
 				// }
 				break;
+			case RidesActionTypes.GetRidesAvailableSuccess:
+				draft.ridesAvailable = action.rides;
+				break;
 			case GroupsActionTypes.GetGroupUsersSuccess:
 				draft.groups.find(g => g.groupId === action.groupId).users = action.users;
+				break;
+			case GroupsActionTypes.SetSelectedGroup:
+			case GroupsActionTypes.GetSelectedGroupDetailsSuccess:
+				idx = draft.groups.findIndex(g => g.groupId === action.group.groupId);
+				draft.groups[idx] = action.group;
 				break;
 			default:
 				break;
