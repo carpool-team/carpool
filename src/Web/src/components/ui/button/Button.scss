@@ -20,6 +20,10 @@
 		border-radius: 25px;
 	}
 
+	&__disabled{
+		pointer-events: none;
+		background-color: $backgroundDarker !important;
+	}
 	&__text {
 		&--green {
 			color: $green;
