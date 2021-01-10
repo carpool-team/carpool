@@ -16,6 +16,7 @@ import {
 	IGetGroupUsersAction,
 	ISetSelectedGroupAction,
 	ILeaveGroupAction,
+	IDeleteUserFromGroupAction,
 } from "./Types";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
@@ -36,7 +37,7 @@ export function getGroups(count?: number, page?: number): IGetGroupsAction {
 	return {
 		type: GroupsActionTypes.GetGroups,
 		count,
-		page
+		page,
 	};
 }
 
@@ -53,6 +54,12 @@ export const setSelectedGroup: (group: IGroup) => ISetSelectedGroupAction = grou
 export const leaveGroup: (groupId: string) => ILeaveGroupAction = groupId => ({
 	type: GroupsActionTypes.LeaveGroup,
 	groupId
+});
+
+export const deleteUserFromGroup: (groupId: string, userId: string) => IDeleteUserFromGroupAction = (groupId, userId) => ({
+	type: GroupsActionTypes.DeleteUserFromGroup,
+	groupId,
+	userId
 });
 //#endregion
 

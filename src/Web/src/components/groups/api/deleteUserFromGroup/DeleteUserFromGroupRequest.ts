@@ -1,9 +1,9 @@
 import { RequestEndpoint } from "../../../../api/enum/RequestEndpoint";
 import { RequestType } from "../../../../api/enum/RequestType";
 import RequestCore from "../../../../api/requests/RequestCore";
-import { LeaveGroupResponse } from "./LeaveGroupResponse";
+import { DeleteUserFromGroupResponse } from "./DeleteUserFromGroupResponse";
 
-export class LeaveGroupRequest extends RequestCore {
+export class DeleteUserFromGroupRequest extends RequestCore {
 	constructor(init: {
 		groupId: string,
 		userId: string,
@@ -20,6 +20,6 @@ export class LeaveGroupRequest extends RequestCore {
 		});
 	}
 	async send() {
-		return await super.fetch<LeaveGroupResponse>();
+		return await super.fetch<DeleteUserFromGroupResponse>();
 	}
 }

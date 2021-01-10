@@ -26,12 +26,15 @@ export enum GroupsActionTypes {
 	GetGroupUsersSuccess = "GROUPS_GET_GROUP_USERS_SUCCESS",
 	GetGroupUsersError = "GROUPS_GET_GROUP_USERS_ERROR",
 	SetSelectedGroup = "GROUPS_SET_SELECTED_GROUP",
-	GetSelectedGroupDetails = "GROUPS_GET_SELECTED_GROUP_DETAILS",
+	UpdateGroupDetails = "GROUPS_UPDATE_GROUP_DETAILS",
 	GetSelectedGroupDetailsSuccess = "GROUPS_GET_SELECTED_GROUP_DETAILS_SUCCESS",
 	GetSelectedGroupDetailsError = "GROUPS_GET_SELECTED_GROUP_DETAILS_ERROR",
 	LeaveGroup = "GROUPS_LEAVE_GROUP",
 	LeaveGroupSuccess = "GROUPS_LEAVE_GROUP_SUCCESS",
 	LeaveGroupError = "GROUPS_LEAVE_GROUP_ERROR",
+	DeleteUserFromGroup = "GROUPS_DELETE_USER_FROM_GROUP",
+	DeleteUserFromGroupSuccess = "GROUPS_DELETE_USER_FROM_GROUP_SUCCESS",
+	DeleteUserFromGroupError = "GROUPS_DELETE_USER_FROM_GROUP_ERROR",
 }
 
 /** Enum of invites actions */
@@ -121,7 +124,8 @@ export interface ISetSelectedGroupAction extends Action<GroupsActionTypes.SetSel
 	group: IGroup;
 }
 
-export interface IGetSelectedGroupDetailsAction extends Action<GroupsActionTypes.GetSelectedGroupDetails> {
+export interface IUpdateGroupDetailsAction extends Action<GroupsActionTypes.UpdateGroupDetails> {
+	groupId: string;
 }
 
 export interface IGetSelectedGroupDetailsSuccessAction extends Action<GroupsActionTypes.GetSelectedGroupDetailsSuccess> {
@@ -140,6 +144,18 @@ export interface ILeaveGroupSuccessAction extends Action<GroupsActionTypes.Leave
 }
 
 export interface ILeaveGroupErrorAction extends Action<GroupsActionTypes.LeaveGroupError> {
+	error: Error;
+}
+
+export interface IDeleteUserFromGroupAction extends Action<GroupsActionTypes.DeleteUserFromGroup> {
+	groupId: string;
+	userId: string;
+}
+
+export interface IDeleteUserFromGroupSuccessAction extends Action<GroupsActionTypes.DeleteUserFromGroupSuccess> {
+}
+
+export interface IDeleteUserFromGroupErrorAction extends Action<GroupsActionTypes.DeleteUserFromGroupError> {
 	error: Error;
 }
 //#endregion
@@ -256,12 +272,15 @@ export type GroupsAction =
 	| IGetGroupUsersSuccessAction
 	| IGetGroupUsersErrorAction
 	| ISetSelectedGroupAction
-	| IGetSelectedGroupDetailsAction
+	| IUpdateGroupDetailsAction
 	| IGetSelectedGroupDetailsSuccessAction
 	| IGetSelectedGroupDetailsErrorAction
 	| ILeaveGroupAction
 	| ILeaveGroupErrorAction
-	| ILeaveGroupSuccessAction;
+	| ILeaveGroupSuccessAction
+	| IDeleteUserFromGroupAction
+	| IDeleteUserFromGroupErrorAction
+	| IDeleteUserFromGroupSuccessAction;
 
 export type InviteAction =
 	IAnswerInviteAction
