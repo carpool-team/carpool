@@ -7,7 +7,7 @@ export class GetGroupUsersRequest extends RequestCore {
 	constructor(groupId: string) {
 		super({
 			properties: {
-				method: RequestType.GET,
+				method: RequestType.Get,
 				endpoint: RequestEndpoint.GET_GROUP_USERS,
 				queries: {
 					groupId,
