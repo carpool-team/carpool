@@ -30,7 +30,7 @@ namespace RestApi.Controllers
 
 		[HttpGet]
 		public async Task<ApiResponse> GetRides([FromQuery] GroupId groupId,
-			[FromQuery] DateTime dateTime,
+			[FromQuery] DateTime? dateTime = null,
 			[FromQuery] RideDirection? rideDirection = null)
 		{
 			GetRidesQuery getRides = new(groupId,
