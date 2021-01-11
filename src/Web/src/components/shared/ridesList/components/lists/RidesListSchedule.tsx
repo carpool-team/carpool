@@ -9,15 +9,17 @@ import ActiveItemParticipant from "../items/ActiveItemParticipant";
 import DefaultItem from "../items/DefaultItem";
 import { RidesListType } from "../../enums/RidesListType";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
-import { IDeleteRideAction } from "../../../../rides/store/Types";
-import { deleteRide } from "../../../../rides/store/Actions";
+import { ILeaveRideAction, IDeleteRideAction } from "../../../../rides/store/Types";
+import { leaveRide, deleteRide } from "../../../../rides/store/Actions";
 import { connect } from "react-redux";
 
 interface IDispatchPropsType {
+	leaveRide: (rideId: string) => ILeaveRideAction;
 	deleteRide: (rideId: string) => IDeleteRideAction;
 }
 
 const mapDispatchToProps: IDispatchPropsType = {
+	leaveRide,
 	deleteRide,
 };
 
@@ -76,6 +78,7 @@ const RidesListSchedule = (props: IRidesListScheduleProps) => {
 							color={color}
 							t={t}
 							setRide={props.setRide}
+							leaveRideCallback={props.leaveRide}
 						/>
 					</React.Fragment>
 				);
@@ -105,6 +108,9 @@ const RidesListSchedule = (props: IRidesListScheduleProps) => {
 				item = renderParticipantItem(color, ride, day);
 				break;
 			}
+			default:
+				item = null;
+				break;
 		}
 		return item;
 	};

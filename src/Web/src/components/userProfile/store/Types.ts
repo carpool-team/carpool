@@ -14,6 +14,9 @@ export enum UserProfileActionTypes {
 	ChangePassword = "USER_PROFILE_CHANGE_PASSWORD",
 	ChangePasswordSuccess = "USER_PROFILE_CHANGE_PASSWORD_SUCCESS",
 	ChangePasswordError = "USER_PROFILE_CHANGE_PASSWORD_ERROR",
+	DeleteUser = "USER_PROFILE_DELETE",
+	DeleteUserSuccess = "USER_PROFILE_DELETE_SUCCESS",
+	DeleteUserError = "USER_PROFILE_DELETE_ERROR",
 }
 
 //#region USER PROFILE
@@ -48,6 +51,16 @@ export interface IChangePasswordSuccessAction extends Action<UserProfileActionTy
 export interface IChangePasswordErrorAction extends Action<UserProfileActionTypes.ChangePasswordError> {
 }
 
+export interface IDeleteUserAction extends Action<UserProfileActionTypes.DeleteUser> {
+}
+
+export interface IDeleteUserSuccessAction extends Action<UserProfileActionTypes.DeleteUserSuccess> {
+}
+
+export interface IDeleteUserErrorAction extends Action<UserProfileActionTypes.DeleteUserError> {
+	error: Error;
+}
+
 //#endregion
 
 /** Type of user profile action */
@@ -60,4 +73,7 @@ export type UserProfileAction =
 	| IUpdateDataErrorAction
 	| IChangePasswordAction
 	| IChangePasswordSuccessAction
-	| IChangePasswordErrorAction;
+	| IChangePasswordErrorAction
+	| IDeleteUserAction
+	| IDeleteUserErrorAction
+	| IDeleteUserSuccessAction;

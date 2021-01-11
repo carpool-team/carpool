@@ -33,7 +33,7 @@ const GroupsList = (props: IGroupsListProps) => {
 									<ActiveItem
 										group={group}
 										color={color}
-										setGroupSelected={undefined}
+										setGroupSelected={() => props.setGroupSelected(null)}
 									/>
 								);
 							} else {
@@ -41,9 +41,7 @@ const GroupsList = (props: IGroupsListProps) => {
 									<DefaultItem
 										group={group}
 										color={color}
-										setGroupSelected={() =>
-											props.setGroupSelected(group.groupId)
-										}
+										setGroupSelected={() => props.setGroupSelected(group.groupId)}
 									/>
 								);
 							}

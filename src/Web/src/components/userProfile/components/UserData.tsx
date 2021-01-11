@@ -15,6 +15,8 @@ import { Popover } from "@material-ui/core";
 import { IUserProfileFormData } from "../interfaces/IUserProfileFormData";
 import { connect } from "react-redux";
 import { DispatchProps, mapDispatchToProps, mapStateToProps, StateProps } from "../store/PropsTypes";
+import { useHistory } from "react-router";
+import { mainRoutes } from "../../layout/components/LayoutRouter";
 
 interface IUserDataProps extends IReactI18nProps, StateProps, DispatchProps {
 	setCurrentList: (List: ProfileList) => void;
@@ -33,6 +35,7 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 	});
 	const [validate, setValidate] = useState(false);
 	const [popover, setPopover] = useState<boolean>(false);
+	const history = useHistory();
 
 	useEffect(() => {
 		props.setLoaderVisible(true);
@@ -114,6 +117,8 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 
 	const onDeleteSubmit = () => {
 		handleClosePopover();
+		props.deleteUser();
+		history.push(`/${mainRoutes.default}`);
 	};
 
 	const onClickPassword = () => {
