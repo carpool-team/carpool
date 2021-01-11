@@ -307,7 +307,7 @@ export function* getGroupRidesAsync(action) {
     const token = yield select(state => state.authReducer.tokens.data.token);
 
     if (token) {
-      const res = yield instance.get(`/groups/${action.payload}/rides`, {
+      const res = yield instance.get(`/Rides?groupId=${action.payload}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -316,6 +316,7 @@ export function* getGroupRidesAsync(action) {
       yield call(resolvePromiseAction, action, res.data.result);
     }
   } catch (err) {
+    console.log(err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());

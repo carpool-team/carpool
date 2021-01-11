@@ -26,16 +26,22 @@ const GroupRides = ({route, navigation}) => {
   }
 
   useEffect(() => {
+    const onPress = () => {
+      if (selectedRide) {
+        setSelectedRide(null);
+      } else {
+        navigation.goBack();
+      }
+    };
+
     navigation.setOptions({
       title: group.name,
-      headerLeft: () => (
-        <GoBack onPress={() => navigation.navigate('Groups')} />
-      ),
       header: props => <Header {...props} hideSwitch />,
+      headerLeft: () => <GoBack onPress={onPress} />,
     });
 
     onRefresh();
-  }, []);
+  }, [selectedRide]);
 
   const onRefresh = () => {
     setLoading(true);
