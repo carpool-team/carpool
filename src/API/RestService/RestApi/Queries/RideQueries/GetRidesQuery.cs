@@ -21,7 +21,7 @@ namespace RestApi.Queries.RideQueries
 	public class GetRidesQuery : IRequest<IEnumerable<RideDto>>
 	{
 		public GetRidesQuery(GroupId groupId,
-			DateTime dateTime,
+			DateTime? dateTime,
 			AppUserId tokenUserId,
 			RideDirection? rideDirection)
 		{
@@ -33,7 +33,7 @@ namespace RestApi.Queries.RideQueries
 
 		public GroupId GroupId { get; }
 		public RideDirection? RideDirection { get; }
-		public DateTime DateTime { get; }
+		public DateTime? DateTime { get; }
 		public AppUserId TokenUserId { get; }
 	}
 

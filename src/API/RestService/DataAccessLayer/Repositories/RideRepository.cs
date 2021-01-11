@@ -23,9 +23,9 @@ namespace DataAccessLayer.Repositories
 		{
 			return await _context.Rides.Include(x => x.Owner)
 				.Include(x => x.Group)
-					.ThenInclude(a => a.UserGroups)
+				.ThenInclude(a => a.UserGroups)
 				.Include(x => x.Stops)
-					.ThenInclude(a => a.Participant)
+				.ThenInclude(a => a.Participant)
 				.FirstOrDefaultAsync(ride => ride.Id == id, cancellationToken)
 				.ConfigureAwait(false);
 		}
@@ -56,9 +56,9 @@ namespace DataAccessLayer.Repositories
 				.Include(ride => ride.Stops)
 				.Include(ride => ride.Location)
 				.Include(ride => ride.Group)
-					.ThenInclude(group => group.UserGroups)
+				.ThenInclude(group => group.UserGroups)
 				.Include(ride => ride.Owner)
-					.ThenInclude(owner => owner.Vehicle)
+				.ThenInclude(owner => owner.Vehicle)
 				.Where(ride => ride.Date.Date == dateTime.Date
 				               && ride.Date.TimeOfDay >= dateTime.TimeOfDay
 				               && ride.GroupId == groupId
@@ -69,19 +69,21 @@ namespace DataAccessLayer.Repositories
 		public async Task<IEnumerable<Ride>> GetPartWhereUserNotParticipantAsNoTrackingAsync(GroupId groupId,
 			AppUserId appUserId,
 			RideDirection? rideDirection,
-			DateTime dateTime,
+			DateTime? dateTime,
 			CancellationToken cancellationToken = default)
 			=> await _context.Rides
 				.Include(ride => ride.Stops)
-					.ThenInclude(stop => stop.Participant)
+				.ThenInclude(stop => stop.Participant)
 				.Include(ride => ride.Location)
 				.Include(ride => ride.Group)
-					.ThenInclude(group => group.UserGroups)
+				.ThenInclude(group => group.UserGroups)
 				.Include(ride => ride.Owner)
-					.ThenInclude(owner => owner.Vehicle)
+				.ThenInclude(owner => owner.Vehicle)
 				.Include(ride => ride.RideRequests)
-				.Where(ride => ride.Date.Date == dateTime.Date
-				               && ride.Date.TimeOfDay >= dateTime.TimeOfDay
+				.Where(ride => (dateTime != null ?
+					               ride.Date.Date == dateTime.Value.Date
+					               && ride.Date.TimeOfDay >= dateTime.Value.TimeOfDay :
+					               ride.Date.Date >= DateTime.Now)
 				               && ride.GroupId == groupId
 				               && (rideDirection == null || ride.RideDirection == rideDirection)
 				               && ride.OwnerId != appUserId
@@ -97,13 +99,13 @@ namespace DataAccessLayer.Repositories
 		{
 			return await _context.Rides
 				.Include(x => x.Owner)
-					.ThenInclude(a => a.Ratings)
+				.ThenInclude(a => a.Ratings)
 				.Include(x => x.Owner)
-					.ThenInclude(a => a.Vehicle)
+				.ThenInclude(a => a.Vehicle)
 				.Include(x => x.Group)
-					.ThenInclude(a => a.UserGroups)
+				.ThenInclude(a => a.UserGroups)
 				.Include(x => x.Stops)
-					.ThenInclude(a => a.Participant)
+				.ThenInclude(a => a.Participant)
 				.AsNoTracking()
 				.Where(x => x.Stops.Any(y => y.ParticipantId == appUserId)
 				            && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
@@ -117,13 +119,13 @@ namespace DataAccessLayer.Repositories
 		{
 			return await _context.Rides.AsNoTracking()
 				.Include(x => x.Owner)
-					.ThenInclude(a => a.Ratings)
+				.ThenInclude(a => a.Ratings)
 				.Include(x => x.Owner)
-					.ThenInclude(a => a.Vehicle)
+				.ThenInclude(a => a.Vehicle)
 				.Include(x => x.Group)
-					.ThenInclude(a => a.UserGroups)
+				.ThenInclude(a => a.UserGroups)
 				.Include(x => x.Stops)
-					.ThenInclude(a => a.Participant)
+				.ThenInclude(a => a.Participant)
 				.Where(x => x.OwnerId == appUserId
 				            && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
 				.OrderBy(x => x.Date)
