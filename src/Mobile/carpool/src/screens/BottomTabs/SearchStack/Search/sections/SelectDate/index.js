@@ -9,7 +9,7 @@ import moment from 'moment';
 const SelectDate = ({onSubmit}) => {
   const [date, setDate] = useState(new Date());
 
-  const onSubmitSingular = () => onSubmit(moment(date).toISOString());
+  const onSubmitSingular = () => onSubmit(date);
 
   return (
     <View style={styles.container}>

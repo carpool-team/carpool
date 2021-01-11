@@ -45,6 +45,7 @@ const RideSummary = ({state, rdispatch}) => {
 
   const onSubmit = () => {
     if (regular) {
+      setLoading(true);
       dispatch(
         actions.createRegularRide({
           groupId: group.groupId,
@@ -67,7 +68,7 @@ const RideSummary = ({state, rdispatch}) => {
       dispatch(
         actions.createSingleRide({
           groupId: group.groupId,
-          date: date,
+          date: moment(date).format(),
           rideDirection: swap ? 1 : 0,
           location: location.coordinates,
           seatsLimit: seats,
