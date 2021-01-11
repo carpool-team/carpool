@@ -1,6 +1,6 @@
-import { RequestEndpoint } from "../../../api/enum/RequestEndpoint";
-import { RequestType } from "../../../api/enum/RequestType";
-import RequestCore from "../../../api/requests/RequestCore";
+import { RequestEndpoint } from "../../../../api/enum/RequestEndpoint";
+import { RequestType } from "../../../../api/enum/RequestType";
+import RequestCore from "../../../../api/requests/RequestCore";
 import { GetDataResponse } from "./GetDataResponse";
 
 export class GetDataRequest extends RequestCore {
