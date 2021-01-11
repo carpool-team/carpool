@@ -10,13 +10,12 @@ import GroupsRouter from "../GroupsRouter";
 import Button from "../../../ui/button/Button";
 import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
-import { ButtonIcon } from "../../../ui/button/enums/ButtonIcon";
 import ButtonLink from "../../../ui/buttonLink/ButtonLink";
 import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
 import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle";
 import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
-import GroupsList from "./components/GroupsList";
+import GroupsList from "./components/groupsList/GroupsList";
 import InvitesList from "./components/InvitesList";
 import { IGroup } from "../../interfaces/IGroup";
 import { IInvite } from "../../interfaces/IInvite";
@@ -79,6 +78,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			draft.selectedScreen = list;
 		}));
 	}
+
 	setCurrentInvite = (invite: IInvite) => {
 		if (this.state.selectedInvite !== invite) {
 			this.setState(

@@ -1,6 +1,7 @@
 /** Group user interface */
 export interface IGroupUser {
-	name: string;
-	surname: string;
-	email: string;
+	appUserId: string;
+	firstName: string;
+	lastName: string;
+	vehicle: string;
 }

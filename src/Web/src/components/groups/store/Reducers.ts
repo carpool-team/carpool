@@ -55,6 +55,14 @@ const reducer: Reducer<IGroupsState> = (
 			case RidesActionTypes.GetRidesAvailableSuccess:
 				draft.ridesAvailable = action.rides;
 				break;
+			case GroupsActionTypes.GetGroupUsersSuccess:
+				draft.groups.find(g => g.groupId === action.groupId).users = action.users;
+				break;
+			case GroupsActionTypes.SetSelectedGroup:
+			case GroupsActionTypes.GetSelectedGroupDetailsSuccess:
+				idx = draft.groups.findIndex(g => g.groupId === action.group.groupId);
+				draft.groups[idx] = action.group;
+				break;
 			default:
 				break;
 		}

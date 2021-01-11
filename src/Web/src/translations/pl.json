@@ -60,13 +60,22 @@
                 "listLabel": "Lista użytkowników do których zostaną wysłane zaproszenia."
             },
             "list": {
+                "leaveGroup": "Opuść grupę",
                 "editGroup": "Edytuj grupę",
                 "ridesInGroup": "Przejazdy",
-                "inviteToGroup": "Zaproś do grupy"
+                "inviteToGroup": "Zaproś do grupy",
+                "leaveConfirm": "Czy na pewno opuśćić grupę?"
             },
             "addGroupBtn": "Dodaj grupę",
             "ridesBtn": "Przejazdy",
-            "invitesBtn": "Zaproszenia"
+            "invitesBtn": "Zaproszenia",
+            "editGroupForm": {
+                "deleteBtn": "Usuń grupę",
+                "deleteConfirm": "Czy usunąć grupę?",
+                "basicInfo": "Edytuj grupę",
+                "btnUsers": "Edytuj użytkowników grupy",
+                "deleteUserConfirm": "Czy usunąć użytkownika: "
+            }
         },
         "rides": {
             "cyclicBtn": "Cykliczny",

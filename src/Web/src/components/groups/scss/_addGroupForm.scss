@@ -52,6 +52,14 @@
 }
 
 .addGroupSecondSide {
+	&__left{
+		background-color: $background; 
+		list-style-type: none;
+		margin-top: 7px;
+		height: auto;
+		width: 60%;
+		margin-bottom: 7px;
+	}
     
     &__inputs {
 		display: flex;
@@ -59,8 +67,9 @@
 		padding-top: 120px;
 		margin-top: 7px;
 		margin-bottom: 7px;
+		margin-left: 7px;
 		background-color: $background;
-		width: 35%;
+		width: 40%;
         align-items: center;
 		justify-content: flex-start;
 		& > :nth-child(n){
@@ -77,6 +86,10 @@
 			color: $grayDark;
 			text-align: center;
 		}
+		&--groupName{
+			color: $blue;
+			font-size: 25px;
+		}
     }
     &__buttonsGroup{
         display: flex;
@@ -91,7 +104,7 @@
 		padding-right: 7px;
 		padding-left: 7px;
 		height: auto;
-		width: 65%;
+		width: 100%;
 		margin-bottom: 7px;
 		margin-left: 7px;
 		& >span {
@@ -139,6 +152,10 @@
 			padding-right: 15px;
 			color: $grayDark;
 		}
+		&--button{
+			margin-right: 20px;
+			margin-left: auto;
+		}
 	}
 	&__userListItem::before{
 		content:"\f2be";
@@ -157,8 +174,6 @@
 	&__userListItemName::first-letter{
 		color: inherit
 	}
-	
-
 }
 @media only screen and (max-width: 900px) {
 	.addGroupContainer {
@@ -193,6 +208,14 @@
 				margin-top: auto;
 			}
 		}	
+		&__left{
+			background-color: $background; 
+			list-style-type: none;
+			margin-top: 7px;
+			height: 97vh;
+			width: 100%;
+			margin-bottom: 7px;
+		}
 		&__userList{
 			margin-top: 0px;
 			width: 100%;

@@ -1,13 +1,13 @@
 import { IGroup } from "../interfaces/IGroup";
-import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction, IParticipateInRideAction, IAddRideAction, IAddInvitesAction, IGetRidesAvailableAction } from "./Types";
-import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, addRide, addInvites, getRidesAvailable } from "./Actions";
+import { IAddGroupAction, IGetGroupsAction, IGetInvitesAction, IAnswerInviteAction, IGetRidesAction, IParticipateInRideAction, IAddRideAction, IAddInvitesAction, ISetSelectedGroupAction, IGetRidesAvailableAction } from "./Types";
+import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, addRide, addInvites, setSelectedGroup, getRidesAvailable } from "./Actions";
 import { IGroupsState } from "./State";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
 import { IAuthState } from "../../auth/store/State";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
-import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
 import { ILocation } from "../interfaces/ILocation";
+import { IAddGroupData } from "../interfaces/IAddGroupData";
 interface IStatePropsType {
 	groups: IGroupsState;
 	auth: IAuthState;
@@ -36,15 +36,16 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 });
 
 interface IDispatchPropsType {
-	addGroup: (group: IFormGroupData) => IAddGroupAction;
+	addGroup: (group: IAddGroupData) => IAddGroupAction;
 	addRide: (input: IAddRideInput) => IAddRideAction;
 	addInvites: (groupId: string, userIds: string[]) => IAddInvitesAction;
-	getGroups: (userOnly: boolean) => IGetGroupsAction;
+	getGroups: () => IGetGroupsAction;
 	getInvites: (userOnly: boolean) => IGetInvitesAction;
 	answerInvite: (accepted: boolean, inviteId: string) => IAnswerInviteAction;
 	getRides: (userOnly: boolean) => IGetRidesAction;
 	participateInRide: (ride: IRide, location: ILocation) => IParticipateInRideAction;
 	getRidesAvailable: (groupId: string) => IGetRidesAvailableAction;
+	setSelectedGroup: (group: IGroup) => ISetSelectedGroupAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
@@ -56,6 +57,7 @@ export const mapDispatchToProps: IDispatchPropsType = {
 	participateInRide,
 	addRide,
 	addInvites,
+	setSelectedGroup,
 	getRidesAvailable,
 };
 

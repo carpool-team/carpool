@@ -1,4 +1,4 @@
-import { IRideRequestRide } from "./rideRequest/IRideRequestRide";
+import { IRideRequestRide } from "./IRideRequestRide";
 
 export interface IRideRequest {
 	isAccepted: boolean;

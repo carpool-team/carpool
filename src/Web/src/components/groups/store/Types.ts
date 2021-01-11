@@ -1,8 +1,12 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
+import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroup } from "../interfaces/IGroup";
+import { IGroupBase } from "../interfaces/IGroupBase";
+import { IGroupUser } from "../interfaces/IGroupUser";
 import { IInvite } from "../interfaces/IInvite";
+import { IParticipant } from "../interfaces/IParticipant";
 import { ILocation } from "../interfaces/ILocation";
 import { IRide } from "../interfaces/IRide";
 
@@ -18,6 +22,19 @@ export enum GroupsActionTypes {
 	GetGroups = "GROUPS_GET_GROUPS",
 	GetGroupsSuccess = "GROUPS_GET_GROUPS_SUCCESS",
 	GetGroupsError = "GROUPS_GET_GROUPS_ERROR",
+	GetGroupUsers = "GROUPS_GET_GROUP_USERS",
+	GetGroupUsersSuccess = "GROUPS_GET_GROUP_USERS_SUCCESS",
+	GetGroupUsersError = "GROUPS_GET_GROUP_USERS_ERROR",
+	SetSelectedGroup = "GROUPS_SET_SELECTED_GROUP",
+	UpdateGroupDetails = "GROUPS_UPDATE_GROUP_DETAILS",
+	GetSelectedGroupDetailsSuccess = "GROUPS_GET_SELECTED_GROUP_DETAILS_SUCCESS",
+	GetSelectedGroupDetailsError = "GROUPS_GET_SELECTED_GROUP_DETAILS_ERROR",
+	LeaveGroup = "GROUPS_LEAVE_GROUP",
+	LeaveGroupSuccess = "GROUPS_LEAVE_GROUP_SUCCESS",
+	LeaveGroupError = "GROUPS_LEAVE_GROUP_ERROR",
+	DeleteUserFromGroup = "GROUPS_DELETE_USER_FROM_GROUP",
+	DeleteUserFromGroupSuccess = "GROUPS_DELETE_USER_FROM_GROUP_SUCCESS",
+	DeleteUserFromGroupError = "GROUPS_DELETE_USER_FROM_GROUP_ERROR",
 }
 
 /** Enum of invites actions */
@@ -54,7 +71,7 @@ export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 //#region GROUPS
 /** Action for adding group */
 export interface IAddGroupAction extends Action<GroupsActionTypes.AddGroup> {
-	group: IFormGroupData;
+	group: IAddGroupData;
 }
 
 /** Action for adding group success */
@@ -71,7 +88,6 @@ export interface IAddGroupActionError
 
 /** Action for getting groups */
 export interface IGetGroupsAction extends Action<GroupsActionTypes.GetGroups> {
-	userOnly: boolean;
 	count?: number;
 	page?: number;
 }
@@ -85,6 +101,61 @@ export interface IGetGroupsActionSuccess
 /** Action for getting groups error */
 export interface IGetGroupsActionError
 	extends Action<GroupsActionTypes.GetGroupsError> {
+	error: Error;
+}
+
+/** Action for getting group users */
+export interface IGetGroupUsersAction extends Action<GroupsActionTypes.GetGroupUsers> {
+	groupId: string;
+}
+
+/** Action for getting group users success */
+export interface IGetGroupUsersSuccessAction extends Action<GroupsActionTypes.GetGroupUsersSuccess> {
+	groupId: string;
+	users: IGroupUser[];
+}
+
+/** Action for getting group users error */
+export interface IGetGroupUsersErrorAction extends Action<GroupsActionTypes.GetGroupUsersError> {
+	error: Error;
+}
+
+export interface ISetSelectedGroupAction extends Action<GroupsActionTypes.SetSelectedGroup> {
+	group: IGroup;
+}
+
+export interface IUpdateGroupDetailsAction extends Action<GroupsActionTypes.UpdateGroupDetails> {
+	groupId: string;
+}
+
+export interface IGetSelectedGroupDetailsSuccessAction extends Action<GroupsActionTypes.GetSelectedGroupDetailsSuccess> {
+	group: IGroup;
+}
+
+export interface IGetSelectedGroupDetailsErrorAction extends Action<GroupsActionTypes.GetSelectedGroupDetailsError> {
+	error: Error;
+}
+
+export interface ILeaveGroupAction extends Action<GroupsActionTypes.LeaveGroup> {
+	groupId: string;
+}
+
+export interface ILeaveGroupSuccessAction extends Action<GroupsActionTypes.LeaveGroupSuccess> {
+}
+
+export interface ILeaveGroupErrorAction extends Action<GroupsActionTypes.LeaveGroupError> {
+	error: Error;
+}
+
+export interface IDeleteUserFromGroupAction extends Action<GroupsActionTypes.DeleteUserFromGroup> {
+	groupId: string;
+	userId: string;
+}
+
+export interface IDeleteUserFromGroupSuccessAction extends Action<GroupsActionTypes.DeleteUserFromGroupSuccess> {
+}
+
+export interface IDeleteUserFromGroupErrorAction extends Action<GroupsActionTypes.DeleteUserFromGroupError> {
 	error: Error;
 }
 //#endregion
@@ -196,7 +267,20 @@ export type GroupsAction =
 	| IAddGroupActionError
 	| IGetGroupsAction
 	| IGetGroupsActionSuccess
-	| IGetGroupsActionError;
+	| IGetGroupsActionError
+	| IGetGroupUsersAction
+	| IGetGroupUsersSuccessAction
+	| IGetGroupUsersErrorAction
+	| ISetSelectedGroupAction
+	| IUpdateGroupDetailsAction
+	| IGetSelectedGroupDetailsSuccessAction
+	| IGetSelectedGroupDetailsErrorAction
+	| ILeaveGroupAction
+	| ILeaveGroupErrorAction
+	| ILeaveGroupSuccessAction
+	| IDeleteUserFromGroupAction
+	| IDeleteUserFromGroupErrorAction
+	| IDeleteUserFromGroupSuccessAction;
 
 export type InviteAction =
 	IAnswerInviteAction

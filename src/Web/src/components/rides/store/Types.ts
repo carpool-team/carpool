@@ -1,5 +1,5 @@
 import { Action } from "redux";
-import { IRideRequest } from "../../groups/interfaces/IRideRequest";
+import { IRideRequest } from "../../groups/interfaces/rideRequest/IRideRequest";
 
 export enum GenericActionTypes {
 	ApiError = "RIDES_STORE_API_ERROR"
