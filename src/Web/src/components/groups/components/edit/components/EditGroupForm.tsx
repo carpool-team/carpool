@@ -22,10 +22,24 @@ import { ButtonLinkBackground } from "../../../../ui/buttonLink/enums/ButtonLink
 import { ButtonLinkUnderline } from "../../../../ui/buttonLink/enums/ButtonLinkUnderline";
 import { mainRoutes } from "../../../../layout/components/LayoutRouter";
 import GroupsRouter from "../../GroupsRouter";
+import { deleteGroup } from "../../../store/Actions";
+import { IDeleteGroupAction } from "../../../store/Types";
+import { connect } from "react-redux";
+import { useHistory } from "react-router";
 
 const geocodingClient = getGeocodingClient();
 
-interface IEditGroupProps extends IReactI18nProps {
+interface IDispatchPropsType {
+	deleteGroup: (groupId: string) => IDeleteGroupAction;
+}
+
+const mapDispatchToProps: IDispatchPropsType = {
+	deleteGroup,
+};
+
+export type DispatchProps = typeof mapDispatchToProps;
+
+interface IEditGroupProps extends IReactI18nProps, DispatchProps {
 	group: IGroup;
 }
 
@@ -40,11 +54,11 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
 	const [popover, setPopover] = useState<boolean>(false);
+	const history = useHistory();
 
-	//Podpiąć akcję zapisywania edycji grupy 
+	// Podpiąć akcję zapisywania edycji grupy
 	const submitBtnClick = () => {
 		if (each(inputsValid, i => i)) {
-
 
 			setValidate(false);
 		} else {
@@ -75,8 +89,8 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 	};
 
 	useEffect(() => {
-		onGetName(parseCoords(props.group.location))
-	}, [])
+		onGetName(parseCoords(props.group.location));
+	}, []);
 
 	const handleOpenPopover = () => {
 		setPopover(true);
@@ -86,11 +100,11 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 		setPopover(false);
 	};
 
-	//Podpiąć akcję usuwania grupy
 	const onDeleteSubmit = () => {
+		props.deleteGroup(props.group.groupId);
 		handleClosePopover();
+		history.goBack();
 	};
-
 
 	const cssClasses = {
 		container: "addGroupContainer",
@@ -149,7 +163,7 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 				<Input
 
 					type={InputType.Address}
-					changeHandler={newValue => { setPlaceName(newValue) }}
+					changeHandler={newValue => { setPlaceName(newValue); }}
 					placeholder={t(resources.addressInput)}
 					value={placeName}
 					icon={InputIcon.Location}
@@ -243,4 +257,6 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 	);
 };
 
-export default withTranslation()(EditGroup);
+export default connect(null, mapDispatchToProps)(
+	withTranslation()(EditGroup)
+);

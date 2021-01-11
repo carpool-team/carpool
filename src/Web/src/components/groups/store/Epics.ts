@@ -41,7 +41,10 @@ import {
 	IDeleteUserFromGroupAction,
 	IDeleteUserFromGroupErrorAction,
 	IDeleteUserFromGroupSuccessAction,
-	IUpdateGroupDetailsAction
+	IUpdateGroupDetailsAction,
+	IDeleteGroupAction,
+	IDeleteGroupSuccessAction,
+	IDeleteGroupErrorAction
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -67,6 +70,7 @@ import { IGroupsState } from "./State";
 import { AddRideRequestResponse } from "../../rides/api/addRide/AddRideRequestResponse";
 import { AddRideRequestRequest } from "../../rides/api/addRide/AddRideRequestRequest";
 import { DeleteUserFromGroupRequest } from "../api/deleteUserFromGroup/DeleteUserFromGroupRequest";
+import { DeleteGroupRequest } from "../api/deleteGroup/DeleteGroupRequest";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -704,6 +708,43 @@ const deleteUserFromGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 	mergeMap(res => res),
 );
 
+const deleteGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+	ofType(GroupsActionTypes.DeleteGroup),
+	switchMap(async (action: IDeleteGroupAction) => {
+		try {
+			const req = new DeleteGroupRequest({
+				groupId: action.groupId,
+			});
+			const res = await req.send();
+			if (res.isError || res.status >= 300) {
+				return [
+					<IDeleteGroupErrorAction>{
+						type: GroupsActionTypes.DeleteGroupError,
+						error: null,
+					},
+				];
+			} else {
+				return [
+					<IDeleteGroupSuccessAction>{
+						type: GroupsActionTypes.DeleteGroupSuccess,
+					},
+					<IGetGroupsAction>{
+						type: GroupsActionTypes.GetGroups,
+					}
+				];
+			}
+		} catch (err) {
+			return [
+				<IDeleteGroupErrorAction>{
+					type: GroupsActionTypes.DeleteGroupError,
+					error: err,
+				},
+			];
+		}
+	}),
+	mergeMap(res => res),
+);
+
 const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
 	ofType(GenericActionTypes.ApiError),
 	mergeMap(async (action: IApiErrorAction) => {
@@ -731,4 +772,5 @@ export const groupEpics = [
 	leftGroupEpic,
 	deleteUserFromGroupEpic,
 	updateGroupDetailsEpic,
+	deleteGroupEpic,
 ];

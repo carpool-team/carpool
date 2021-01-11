@@ -60,8 +60,10 @@ const reducer: Reducer<IGroupsState> = (
 				break;
 			case GroupsActionTypes.SetSelectedGroup:
 			case GroupsActionTypes.GetSelectedGroupDetailsSuccess:
-				idx = draft.groups.findIndex(g => g.groupId === action.group.groupId);
-				draft.groups[idx] = action.group;
+				if (action.group) {
+					idx = draft.groups.findIndex(g => g.groupId === action.group.groupId);
+					draft.groups[idx] = action.group;
+				}
 				break;
 			default:
 				break;
