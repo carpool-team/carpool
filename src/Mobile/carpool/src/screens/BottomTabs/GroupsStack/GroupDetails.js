@@ -67,8 +67,7 @@ const GroupDetails = ({navigation, route}) => {
                 navigation.goBack();
               })
               .catch(err => {
-                // Soon to be 403
-                if (err.status === 406) {
+                if (err.status === 403) {
                   Alert.alert(
                     'Warning!',
                     'You cannot leave your own group. To delete one of your groups go to https://carpool.com.pl',

@@ -19,6 +19,21 @@ const Settings = ({navigation}) => {
     dispatch(actions.getUser());
   }, []);
 
+  useEffect(() => {
+    if (user.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch data from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [user]);
+
   const onLogout = () => dispatch(actions.logoutUser());
 
   const onDelete = () =>

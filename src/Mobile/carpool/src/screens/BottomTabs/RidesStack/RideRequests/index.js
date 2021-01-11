@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, Alert} from 'react-native';
 import {useActiveAccount} from '../../../../hooks';
 import {GoBack} from '../../../../components/navigation';
 import {useSelector, useDispatch} from 'react-redux';
@@ -30,6 +30,36 @@ const RideRequests = ({navigation}) => {
     onRefreshPassenger();
     onRefreshDriver();
   }, []);
+
+  useEffect(() => {
+    if (passengersRequests.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch ride requests from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [passengersRequests]);
+
+  useEffect(() => {
+    if (driversRequests.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch ride requests from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [driversRequests]);
 
   const onRefreshPassenger = () =>
     dispatch(actions.getPassengersRideRequests());

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, RefreshControl} from 'react-native';
+import {View, Text, RefreshControl, Alert} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/native';
 import {RideDetailsCard} from '../../Ride';
@@ -35,7 +35,34 @@ const DriversHome = () => {
     if (driversRides.data) {
       setRide(driversRides.data[0]);
     }
+    if (driversRides.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch rides from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
   }, [driversRides]);
+
+  useEffect(() => {
+    if (groups.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch groups from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [groups]);
 
   const onRideRequestsPress = () =>
     navigation.navigate('RidesStack', {

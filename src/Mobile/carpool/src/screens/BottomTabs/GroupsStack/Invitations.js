@@ -15,6 +15,21 @@ const Invitations = ({navigation}) => {
     });
   }, []);
 
+  useEffect(() => {
+    if (invitations.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch invitations from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [invitations]);
+
   const onAccept = item => {
     dispatch(actions.acceptInvitation(item.groupInviteId))
       .then(() => navigation.goBack())

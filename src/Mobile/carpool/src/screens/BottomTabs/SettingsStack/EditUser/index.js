@@ -41,6 +41,18 @@ const EditUser = ({navigation}) => {
         email: user.data.email ?? '',
       });
     }
+    if (user.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch data from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
   }, [user]);
 
   const {
