@@ -252,12 +252,17 @@ const RideDashboard = props => {
         setSteps(res.body.routes[0].legs[0].steps);
       })
       .catch(err => {
-        Alert.alert('Error!', 'An error occured', [
-          {
-            text: 'Cancel',
-            style: 'destructive',
-          },
-        ]);
+        Alert.alert(
+          'Error!',
+          'An error occured when trying to fetch route. Please try again.',
+          [
+            {
+              text: 'Ok',
+              style: 'destructive',
+              onPress: () => navigation.goBack(),
+            },
+          ],
+        );
       })
       .finally(() => setLoading(false));
   };

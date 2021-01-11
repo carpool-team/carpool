@@ -79,6 +79,17 @@ const GroupDetails = ({navigation, route}) => {
                       },
                     ],
                   );
+                } else {
+                  Alert.alert(
+                    'Error',
+                    'An error ocurred when trying to leave group. Please try again.',
+                    [
+                      {
+                        text: 'Ok',
+                        style: 'default',
+                      },
+                    ],
+                  );
                 }
               });
           },

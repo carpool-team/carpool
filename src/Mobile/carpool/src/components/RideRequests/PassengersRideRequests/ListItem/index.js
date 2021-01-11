@@ -26,7 +26,18 @@ const ListItem = ({item}) => {
             .then(() => {
               console.log('success');
             })
-            .catch(err => alert('An error ocurred, please try again.')),
+            .catch(err =>
+              Alert.alert(
+                'Error',
+                'An error ocurred when trying to resign. Please try again.',
+                [
+                  {
+                    text: 'Ok',
+                    style: 'default',
+                  },
+                ],
+              ),
+            ),
       },
     ]);
   };

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import {UpView} from '../../../common';
 import {colors, sheet} from '../../../../styles';
 import GroupWaypoints from '../../../Ride/GroupWaypoints';
@@ -23,11 +23,19 @@ const ListItem = ({item}) => {
     setAcceptLoading(true);
     dispatch(actions.acceptRideRequest(item.rideRequestId))
       .then(() => {
-        console.log('SUCCESS');
         navigation.navigate('RidesStack');
       })
       .catch(err => {
-        console.log('ERROR');
+        Alert.alert(
+          'Error',
+          'An error ocurred when trying to accept ride request. Please try again.',
+          [
+            {
+              text: 'Ok',
+              style: 'default',
+            },
+          ],
+        );
         setAcceptLoading(false);
       });
   };
@@ -36,11 +44,19 @@ const ListItem = ({item}) => {
     setRejectLoading(true);
     dispatch(actions.rejectRideRequest(item.rideRequestId))
       .then(() => {
-        console.log('SUCCESS');
         navigation.navigate('RidesStack');
       })
       .catch(err => {
-        console.log('ERROR');
+        Alert.alert(
+          'Error',
+          'An error ocurred when trying to reject ride request. Please try again.',
+          [
+            {
+              text: 'Ok',
+              style: 'default',
+            },
+          ],
+        );
         setAcceptLoading(false);
       });
   };

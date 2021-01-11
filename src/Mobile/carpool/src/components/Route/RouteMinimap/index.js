@@ -61,12 +61,16 @@ const RouteMinimap = ({stops, showDetails = false}) => {
           setBounds(getBounds(res.body.routes[0]));
         })
         .catch(err => {
-          Alert.alert('Error!', 'An error occured', [
-            {
-              text: 'Cancel',
-              style: 'destructive',
-            },
-          ]);
+          Alert.alert(
+            'Error!',
+            'An error occured when trying to load route. Pleasy try again',
+            [
+              {
+                text: 'Cancel',
+                style: 'destructive',
+              },
+            ],
+          );
         })
         .finally(() => setLoading(false));
     }

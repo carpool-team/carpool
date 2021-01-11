@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {View, Text, TextInput, Alert} from 'react-native';
 import {geocodingClient} from '../../../../../../maps/mapbox';
 import {colors, sheet} from '../../../../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -35,7 +35,16 @@ const SelectLocation = ({onSubmit}) => {
         setResults([...res.body.features]);
       })
       .catch(err => {
-        console.log('ERR', err);
+        Alert.alert(
+          'Error',
+          'An error ocurred when trying to get location. Please try again.',
+          [
+            {
+              text: 'Ok',
+              style: 'default',
+            },
+          ],
+        );
       })
       .finally(() => {
         setLoading(false);
