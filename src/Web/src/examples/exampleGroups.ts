@@ -13,6 +13,14 @@ const exampleGroups: IGroup[] = [
 			longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 			latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
 		},
+		code: faker.random.word(),
+		owner: {
+			appUserId: faker.random.number(32).toString(),
+			firstName: faker.random.word(),
+			lastName: faker.random.word(),
+			vehicle: faker.random.word(),
+		},
+		users: [],
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 	{
@@ -25,6 +33,14 @@ const exampleGroups: IGroup[] = [
 			longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 			latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
 		},
+		code: faker.random.word(),
+		owner: {
+			appUserId: faker.random.number(32).toString(),
+			firstName: faker.random.word(),
+			lastName: faker.random.word(),
+			vehicle: faker.random.word(),
+		},
+		users: [],
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 	{
@@ -37,6 +53,14 @@ const exampleGroups: IGroup[] = [
 			longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 			latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
 		},
+		code: faker.random.word(),
+		owner: {
+			appUserId: faker.random.number(32).toString(),
+			firstName: faker.random.word(),
+			lastName: faker.random.word(),
+			vehicle: faker.random.word(),
+		},
+		users: [],
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 	{
@@ -49,6 +73,14 @@ const exampleGroups: IGroup[] = [
 			longitude: faker.random.number({ min: 51, max: 53, precision: 0.000001 }),
 			latitude: faker.random.number({ min: 15, max: 17, precision: 0.0000001 }),
 		},
+		code: faker.random.word(),
+		owner: {
+			appUserId: faker.random.number(32).toString(),
+			firstName: faker.random.word(),
+			lastName: faker.random.word(),
+			vehicle: faker.random.word(),
+		},
+		users: [],
 		rideCount: faker.random.number({ min: 0, max: 100 }),
 	},
 ];

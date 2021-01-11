@@ -32,7 +32,7 @@ const mapStateToProps = (state: IStatePropsType): IStateToProps => ({
 });
 
 interface IDispatchPropsType {
-	getGroups: (userOnly: boolean) => IGetGroupsAction;
+	getGroups: () => IGetGroupsAction;
 	addRide: (input: IAddRideInput) => IAddRideAction;
 }
 
@@ -50,7 +50,7 @@ interface IAddRideFormScreenProps extends IReactI18nProps, RouteComponentProps, 
 const AddRide = (props: IAddRideFormScreenProps) => {
 
 	useEffect(() => {
-		props.getGroups(true);
+		props.getGroups();
 	}, []);
 
 	const { url } = props.match;

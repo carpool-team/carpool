@@ -256,7 +256,7 @@ const Input = (props: IInputProps) => {
 					className={baseInputClasses.join(" ")}
 					placeholder={props.placeholder}
 					onChange={generalChangeHandler}
-					value={props.value}
+					value={props.value ?? ""}
 					style={props.cssProps}
 					disabled={props.disabled}
 				/>
@@ -273,7 +273,7 @@ const Input = (props: IInputProps) => {
 					className={inputBaseClassName}
 					placeholder={props.placeholder}
 					onChange={generalChangeHandler}
-					value={props.value}
+					value={props.value ?? ""}
 					type={"password"}
 					disabled={props.disabled}
 				/>
@@ -290,7 +290,7 @@ const Input = (props: IInputProps) => {
 					className={inputBaseClassName}
 					placeholder={props.placeholder}
 					onChange={addressChangeHandler}
-					value={props.value}
+					value={props.value ?? ""}
 					onBlur={submitAddressFocusOut}
 					onKeyPress={submitAdressEnter}
 					disabled={props.disabled}
@@ -307,7 +307,7 @@ const Input = (props: IInputProps) => {
 				className={checkboxBoxClassName}
 				placeholder={props.placeholder}
 				onChange={generalChangeHandler}
-				value={props.value}
+				value={props.value ?? ""}
 				type={"checkbox"}
 				id={props.label?.inputId}
 				disabled={props.disabled}

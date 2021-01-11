@@ -13,28 +13,54 @@ import {
 	IParticipateInRideAction,
 	IAddRideAction,
 	IAddInvitesAction,
+	IGetGroupUsersAction,
+	ISetSelectedGroupAction,
+	ILeaveGroupAction,
+	IDeleteUserFromGroupAction,
 } from "./Types";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
-import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
 import { ILocation } from "../interfaces/ILocation";
+import { IAddGroupData } from "../interfaces/IAddGroupData";
+import { IGroupBase } from "../interfaces/IGroupBase";
+import { IGroup } from "../interfaces/IGroup";
 
 //#region GROUPS
-export function addGroup(group: IFormGroupData): IAddGroupAction {
+export function addGroup(group: IAddGroupData): IAddGroupAction {
 	return {
 		type: GroupsActionTypes.AddGroup,
 		group,
 	};
 }
 
-export function getGroups(userOnly: boolean, count?: number, page?: number): IGetGroupsAction {
+export function getGroups(count?: number, page?: number): IGetGroupsAction {
 	return {
 		type: GroupsActionTypes.GetGroups,
-		userOnly,
 		count,
-		page
+		page,
 	};
 }
+
+export const getGroupUsers: (groupId: string) => IGetGroupUsersAction = groupId => ({
+	type: GroupsActionTypes.GetGroupUsers,
+	groupId,
+});
+
+export const setSelectedGroup: (group: IGroup) => ISetSelectedGroupAction = group => ({
+	type: GroupsActionTypes.SetSelectedGroup,
+	group,
+});
+
+export const leaveGroup: (groupId: string) => ILeaveGroupAction = groupId => ({
+	type: GroupsActionTypes.LeaveGroup,
+	groupId
+});
+
+export const deleteUserFromGroup: (groupId: string, userId: string) => IDeleteUserFromGroupAction = (groupId, userId) => ({
+	type: GroupsActionTypes.DeleteUserFromGroup,
+	groupId,
+	userId
+});
 //#endregion
 
 //#region INVITES

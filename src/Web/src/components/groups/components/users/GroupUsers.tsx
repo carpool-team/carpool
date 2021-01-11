@@ -2,18 +2,18 @@ import React from "react";
 import GroupDetailedView, {
 	IGroupDetailedViewProps,
 } from "../detailedView/GroupDetailedView";
-import EditGroupForm from "./components/EditGroupForm";
+import UsersGroupForm from "./components/UsersGroupForm";
 
-interface IGroupEditProps extends IGroupDetailedViewProps { }
+interface IGroupUsersProps extends IGroupDetailedViewProps { }
 
-const GroupEdit = (props: IGroupEditProps) => {
+const GroupUsers = (props: IGroupUsersProps) => {
 	return (
 		<GroupDetailedView group={props.group} rides={props.rides}>
-			<EditGroupForm
+			<UsersGroupForm
 				group={props.group}
 			/>
 		</GroupDetailedView>
 	);
 };
 
-export default GroupEdit;
+export default GroupUsers;

@@ -5,3 +5,11 @@
 	min-height: 93vh;
 	justify-content: space-between;
   }
+
+.detailedView {
+	&--buttonContainer{
+		width: 100%;
+		display: flex;
+		justify-content: space-evenly;
+	}
+}

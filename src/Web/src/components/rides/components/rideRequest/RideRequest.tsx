@@ -10,11 +10,9 @@ import { withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import RidesList from "../../../shared/ridesList/RidesList";
 import { RidesListType } from "../../../shared/ridesList/enums/RidesListType";
-import { IRideRequest } from "../../../groups/interfaces/IRideRequest";
-import { exampleRidesRequest } from "../../../../examples/exampleRidesRequest";
+import { IRideRequest } from "../../../groups/interfaces/rideRequest/IRideRequest";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps, StateProps, DispatchProps } from "../../store/PropsTypes";
-import { IRideRequestRide } from "../../../groups/interfaces/rideRequest/IRideRequestRide";
 
 interface IRideRequestProps extends RouteComponentProps, IReactI18nProps, StateProps, DispatchProps {
 
@@ -132,7 +130,14 @@ const RideRequest = (props: IRideRequestProps) => {
 				group: {
 					...request.ride.group,
 					userCount: 0,
-					rideCount: 0
+					rideCount: 0,
+					code: "",
+					owner: {
+						...request.rideOwner,
+						appUserId: request.rideOwner.id,
+						vehicle: "",
+					},
+					users: [],
 				},
 				rideDate: request.ride.date,
 				rideId: request.ride.id,

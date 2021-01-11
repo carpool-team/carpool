@@ -2,6 +2,7 @@ import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRid
 import { IFormData } from "../components/addGroupForm/interfaces/IFormData";
 import { IFormGroupData } from "../components/addGroupForm/interfaces/IFormGroupData";
 import { IAddGroupAction, IAddInvitesAction, IAddRideAction, IAnswerInviteAction, IParticipateInRideAction } from "../store/Types";
+import { IAddGroupData } from "./IAddGroupData";
 import { IGroup } from "./IGroup";
 import { IInvite } from "./IInvite";
 import { ILocation } from "./ILocation";
@@ -9,7 +10,7 @@ import { IRide } from "./IRide";
 
 /** Callbacks interface for groups */
 export interface IGroupCallbacks {
-	addGroup: (group: IFormGroupData) => IAddGroupAction;
+	addGroup: (group: IAddGroupData) => IAddGroupAction;
 	addRide: (input: IAddRideInput) => IAddRideAction;
 	addInvites: (groupId: string, userIds: string[]) => IAddInvitesAction;
 	getGroups: () => IGroup[];
