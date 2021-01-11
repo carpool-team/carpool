@@ -17,12 +17,12 @@ import {
 	ISetSelectedGroupAction,
 	ILeaveGroupAction,
 	IDeleteUserFromGroupAction,
+	IDeleteGroupAction,
 } from "./Types";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 import { ILocation } from "../interfaces/ILocation";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
-import { IGroupBase } from "../interfaces/IGroupBase";
 import { IGroup } from "../interfaces/IGroup";
 
 //#region GROUPS
@@ -60,6 +60,11 @@ export const deleteUserFromGroup: (groupId: string, userId: string) => IDeleteUs
 	type: GroupsActionTypes.DeleteUserFromGroup,
 	groupId,
 	userId
+});
+
+export const deleteGroup: (groupId: string) => IDeleteGroupAction = groupId => ({
+	type: GroupsActionTypes.DeleteGroup,
+	groupId,
 });
 //#endregion
 

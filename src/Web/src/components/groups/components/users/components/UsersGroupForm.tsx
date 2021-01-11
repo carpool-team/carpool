@@ -11,12 +11,12 @@ interface IDispatchPropsType {
 	deleteUserFromGroup: (groupId: string, userId: string) => IDeleteUserFromGroupAction;
 }
 
-export const mapDispatchToProps: IDispatchPropsType = {
+const mapDispatchToProps: IDispatchPropsType = {
 	getGroupUsers,
 	deleteUserFromGroup,
 };
 
-export type DispatchProps = typeof mapDispatchToProps;
+type DispatchProps = typeof mapDispatchToProps;
 interface IUsersGroupProps extends DispatchProps {
 	group: IGroup;
 }
