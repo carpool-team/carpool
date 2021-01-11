@@ -67,8 +67,8 @@ import { mainRoutes } from "../../layout/components/LayoutRouter";
 import { GetGroupUsersRequest } from "../api/getGroupUsers/GetGroupUsersRequest";
 import { GetGroupDetailsRequest } from "../api/getGroupDetails/GetGroupDetailsRequest";
 import { IGroupsState } from "./State";
-import { AddRideRequestResponse } from "../../rides/api/addRideRequest/AddRideRequestResponse";
-import { AddRideRequestRequest } from "../../rides/api/addRideRequest/AddRideRequestRequest";
+import { AddRideRequestResponse } from "../../rides/api/addRide/AddRideRequestResponse";
+import { AddRideRequestRequest } from "../../rides/api/addRide/AddRideRequestRequest";
 import { DeleteUserFromGroupRequest } from "../api/deleteUserFromGroup/DeleteUserFromGroupRequest";
 import { DeleteGroupRequest } from "../api/deleteGroup/DeleteGroupRequest";
 

@@ -1,6 +1,6 @@
-import { RequestEndpoint } from "../../../api/enum/RequestEndpoint";
-import { RequestType } from "../../../api/enum/RequestType";
-import RequestBase from "../../../api/requests/RequestBase";
+import { RequestEndpoint } from "../../../../api/enum/RequestEndpoint";
+import { RequestType } from "../../../../api/enum/RequestType";
+import RequestBase from "../../../../api/requests/RequestBase";
 import { UpdateDataResponse } from "./UpdateDataResponse";
 
 interface IUpdateDataRequestBody {

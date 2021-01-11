@@ -3,9 +3,9 @@ import { ISetLoaderVisibleAction } from "../../layout/store/Types";
 import { IChangePasswordFormData } from "../interfaces/IChangePasswordFormData";
 import { IUserData } from "../interfaces/IUserData";
 import { IUserProfileFormData } from "../interfaces/IUserProfileFormData";
-import { changePassword, getData, updateData } from "./Actions";
+import { changePassword, deleteUser, getData, updateData } from "./Actions";
 import { IUserProfileState } from "./State";
-import { IChangePasswordAction, IGetDataAction, IUpdateDataAction } from "./Types";
+import { IChangePasswordAction, IDeleteUserAction, IGetDataAction, IUpdateDataAction } from "./Types";
 
 interface IStatePropsType {
 	userProfile: IUserProfileState;
@@ -24,6 +24,7 @@ interface IDispatchPropsType {
 	updateData: (data: IUserProfileFormData) => IUpdateDataAction;
 	setLoaderVisible: (visible: boolean) => ISetLoaderVisibleAction;
 	changePassword: (data: IChangePasswordFormData) => IChangePasswordAction;
+	deleteUser: () => IDeleteUserAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
@@ -31,6 +32,7 @@ export const mapDispatchToProps: IDispatchPropsType = {
 	updateData,
 	changePassword,
 	setLoaderVisible,
+	deleteUser,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;
