@@ -10,7 +10,11 @@ import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 
 const geocodingClient = getGeocodingClient();
 
-const ActiveItemOwner = (props: IListItemProps) => {
+interface IActiveItemOwnerProps extends IListItemProps {
+	deleteRide: (rideId: string) => void;
+}
+
+const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 
 	const cssClasses = {
 		mainRow: "ridesList--mainRow",
@@ -108,7 +112,13 @@ const ActiveItemOwner = (props: IListItemProps) => {
 					<div className={cssClasses.activeDate}>
 						{convertDate(props.ride.rideDate.toString())}
 					</div>
-					<Button style={backgroundColor} background={ButtonBackground.Blue} color={ButtonColor.White} className={cssClasses.activeJoinButton}>
+					<Button
+						style={backgroundColor}
+						background={ButtonBackground.Blue}
+						color={ButtonColor.White}
+						className={cssClasses.activeJoinButton}
+						onClick={() => props.deleteRide(props.ride.rideId)}
+					>
 						{"Usuń"}
 					</Button>
 				</div>

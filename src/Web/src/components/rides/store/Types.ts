@@ -20,6 +20,9 @@ export enum RideActionTypes {
 	LeaveRide = "RIDES_LEAVE_RIDE",
 	LeaveRideSuccess = "RIDES_LEAVE_RIDE_SUCCESS",
 	LeaveRideError = "RIDES_LEAVE_RIDE_ERROR",
+	DeleteRide = "RIDES_DELETE_RIDE",
+	DeleteRideSuccess = "RIDES_DELETE_RIDE_SUCCESS",
+	DeleteRideError = "RIDES_DELETE_RIDE_ERROR",
 }
 
 //#region GENERIC
@@ -72,6 +75,17 @@ export interface ILeaveRideSuccessAction extends Action<RideActionTypes.LeaveRid
 export interface ILeaveRideErrorAction extends Action<RideActionTypes.LeaveRideError> {
 	error: Error;
 }
+export interface IDeleteRideAction extends Action<RideActionTypes.DeleteRide> {
+	rideId: string;
+	recurring?: boolean;
+}
+
+export interface IDeleteRideSuccessAction extends Action<RideActionTypes.DeleteRideSuccess> {
+}
+
+export interface IDeleteRideErrorAction extends Action<RideActionTypes.DeleteRideError> {
+	error: Error;
+}
 //#endregion
 
 export type GenericAction =
@@ -89,4 +103,7 @@ export type RideRequestsAction =
 export type RideAction =
 	ILeaveRideAction
 	| ILeaveRideErrorAction
-	| ILeaveRideSuccessAction;
+	| ILeaveRideSuccessAction
+	| IDeleteRideAction
+	| IDeleteRideErrorAction
+	| IDeleteRideSuccessAction;

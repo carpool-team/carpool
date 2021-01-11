@@ -1,6 +1,10 @@
 import {
 	IAnswerRideRequestAction,
-	IGetRideRequestsAction, ILeaveRideAction, RideActionTypes, RideRequestsActionTypes,
+	IDeleteRideAction,
+	IGetRideRequestsAction,
+	RideActionTypes,
+	RideRequestsActionTypes,
+	ILeaveRideAction
 } from "./Types";
 
 //#region RIDE REQS
@@ -21,6 +25,13 @@ export function answerRideRequest(id: string, isAccepted: boolean, owned: boolea
 
 export const leaveRide: (rideId: string) => ILeaveRideAction = rideId => ({
 	type: RideActionTypes.LeaveRide,
+	rideId,
+});
+//#endregion
+
+//#region RIDES
+export const deleteRide: (rideId: string) => IDeleteRideAction = rideId => ({
+	type: RideActionTypes.DeleteRide,
 	rideId,
 });
 //#endregion

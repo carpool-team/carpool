@@ -17,7 +17,10 @@ import {
 	RideActionTypes,
 	ILeaveRideAction,
 	ILeaveRideErrorAction,
-	ILeaveRideSuccessAction
+	ILeaveRideSuccessAction,
+	IDeleteRideAction,
+	IDeleteRideErrorAction,
+	IDeleteRideSuccessAction
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetRideRequestsRequest } from "../api/getRide/GetRideRequestsRequest";
@@ -27,6 +30,7 @@ import { UpdateRideRequestRequest } from "../api/updateRide/UpdateRideRequestReq
 import { LeaveRideRequest } from "../api/leaveRide/LeaveRideRequest";
 import { getId } from "../../../helpers/UniversalHelper";
 import { IGetRidesAction, RidesActionTypes, RideAction as GroupRideAction } from "../../groups/store/Types";
+import { DeleteRideRequest } from "../api/deleteRide/DeleteRideRequest";
 
 const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =>
 	action$.pipe(
@@ -189,6 +193,52 @@ const leaveRideEpic: Epic<RideAction | GroupRideAction> = (action$) =>
 		)
 	);
 
+const deleteRideEpic: Epic<RideAction | GroupRideAction> = (action$) =>
+	action$.pipe(
+		ofType(RideActionTypes.DeleteRide),
+		switchMap(async (action: IDeleteRideAction) => {
+			const request = new DeleteRideRequest({
+				rideId: action.rideId,
+				recurring: action.recurring ?? false,
+			});
+			try {
+				const response = await request.send();
+				if (response.isError || response.status >= 300) {
+					return [
+						<IDeleteRideErrorAction>{
+							type: RideActionTypes.DeleteRideError,
+							error: null,
+						}
+					];
+				} else {
+					return [
+						<IDeleteRideSuccessAction>{
+							type: RideActionTypes.DeleteRideSuccess,
+						},
+						<IGetRidesAction>{
+							type: RidesActionTypes.GetRides,
+
+						}
+					];
+				}
+			} catch (err) {
+				return [
+					<IDeleteRideErrorAction>{
+						type: RideActionTypes.DeleteRideError,
+						error: err,
+					}
+				];
+			}
+		}),
+		mergeMap(res => res),
+		catchError((err: Error) =>
+			of(<IDeleteRideErrorAction>{
+				type: RideActionTypes.DeleteRideError,
+				error: err,
+			})
+		)
+	);
+
 const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
 	ofType(GenericActionTypes.ApiError),
 	mergeMap(async (action: IApiErrorAction) => {
@@ -204,4 +254,5 @@ export const rideEpics = [
 	answerRideRequestEpic,
 	apiErrorEpic,
 	leaveRideEpic,
+	deleteRideEpic,
 ];
