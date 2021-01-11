@@ -52,10 +52,10 @@ const Settings = ({navigation}) => {
 
   return (
     <SafeScroll minHeight={500}>
-      {user.loading || !user.data ? (
-        <FullScreenLoading />
-      ) : (
-        <View style={styles.container}>
+      <View style={styles.container}>
+        {user.loading || !user.data ? (
+          <FullScreenLoading />
+        ) : (
           <View style={styles.flexCenter}>
             <View style={sheet.rowCenter}>
               <View style={styles.flexCenter}>
@@ -80,16 +80,16 @@ const Settings = ({navigation}) => {
             }`}</Text>
             <Text style={styles.email}>{user.data.email}</Text>
           </View>
-          <View>
-            <StandardButton
-              title="Logout"
-              color={colors.red}
-              onPress={onLogout}
-            />
-            <Text style={styles.version}>Version: 0.6 beta</Text>
-          </View>
+        )}
+        <View>
+          <StandardButton
+            title="Logout"
+            color={colors.red}
+            onPress={onLogout}
+          />
+          <Text style={styles.version}>Version: 0.6 beta</Text>
         </View>
-      )}
+      </View>
     </SafeScroll>
   );
 };
