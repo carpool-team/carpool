@@ -12,6 +12,8 @@ import AutocompleteWrapper from "../../../../ui/autocompleteWrapper/Autocomplete
 import { IInviteUser } from "../interfaces/IInviteUser";
 import { UserAutocompleteRequest } from "../../../api/userAutocomplete/UserAutocompleteRequest";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
+import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
+import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 
 interface IAddInviteFormProps extends IReactI18nProps {
 	addUserToInvite: (user: IInviteUser) => void;
@@ -39,6 +41,7 @@ const resources = {
 	surnameInput: "groups.addGroupForm.surname",
 	basicInfo: "groups.addGroupForm.basicInfo2",
 	confirm: "groups.addGroupForm.confirmBtn",
+	listLabel: "groups.addGroupForm.listLabel"
 };
 
 const cssClasses = {
@@ -58,6 +61,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 	const [email, setEmail] = useState<string>(null);
 	const [submitted, setSubmitted] = useState(false);
 	const [emailsDict, setEmailsDict] = useState<IUserAutocompleteData>({});
+	const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
 
 	const clearInputs = () => {
 		setEmail(null);
@@ -78,6 +82,12 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 			setSubmitted(false);
 		}
 	};
+
+	useEffect(() => {
+		if (props.users.length) {
+			setDisabledBtn(false);
+		}
+	}, [props.users])
 
 	useEffect(() => {
 		if (submitted) {
@@ -151,10 +161,17 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 				autocompleteCallback={autocompleteCallback}
 			/>
 			<div className={cssClasses.buttonsGroup}>
-				<Button onClick={addButtonClick}>
+				<Button
+					color={ButtonColor.White}
+					background={ButtonBackground.Green}
+					onClick={addButtonClick}>
 					{t(resources.addBtn)}
 				</Button>
-				<Button onClick={confirmButtonClick}>
+				<Button
+					disabled={disabledBtn}
+					color={ButtonColor.White}
+					background={ButtonBackground.Blue}
+					onClick={confirmButtonClick}>
 					{t(resources.confirm)}
 				</Button>
 			</div>
@@ -167,6 +184,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 
 		return (
 			<ul className={cssClasses.userList}>
+				<span>{t(resources.listLabel)}</span>
 				{props.users.map((user, idx) => {
 					++colorIndex;
 					const color = {

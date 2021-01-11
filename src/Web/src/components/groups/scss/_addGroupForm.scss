@@ -106,6 +106,19 @@
 		height: auto;
 		width: 100%;
 		margin-bottom: 7px;
+		margin-left: 7px;
+		& >span {
+			font-size: 22px;
+			font-weight: $medium;
+			width: 100%;
+			text-align: center;
+			color: $grayDark;
+			display: block;
+			background-color: $white;
+			margin-top: 7px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
 		& > li {
 			display: flex;
 			height: 50px;

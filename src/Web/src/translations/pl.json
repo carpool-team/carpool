@@ -56,7 +56,8 @@
                 "surname": "Nazwisko",
                 "basicInfo": "Podstawowe informacje",
                 "basicInfo2": "Zaproś użytkowników",
-                "confirmBtn": "Zatwierdź"
+                "confirmBtn": "Wyślij",
+                "listLabel": "Lista użytkowników do których zostaną wysłane zaproszenia."
             },
             "list": {
                 "leaveGroup": "Opuść grupę",
