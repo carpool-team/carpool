@@ -60,6 +60,10 @@ export const getRequestEndpoint: (
 				return "/rides/";
 			case RequestEndpoint.POST_RIDE_RECURRING:
 				return "/rides/recurring";
+			case RequestEndpoint.DELETE_RIDE:
+				return "/rides/" + queries.rideId;
+			case RequestEndpoint.DELETE_RIDE_RECURRING:
+				return "/rides/recurring/" + queries.rideId;
 			//#endregion
 			//#region RIDE REQUESTS
 			case RequestEndpoint.GET_RIDE_REQS:
