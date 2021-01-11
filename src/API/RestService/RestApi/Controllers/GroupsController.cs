@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataTransferObjects.GroupDtos;
+using DataTransferObjects.Group;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

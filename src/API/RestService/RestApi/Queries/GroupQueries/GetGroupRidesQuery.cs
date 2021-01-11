@@ -4,15 +4,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataTransferObjects;
-using DataTransferObjects.GroupDtos;
+using DataTransferObjects.Group;
+using DataTransferObjects.Ride;
+using DataTransferObjects.Stop;
+using DataTransferObjects.User;
 using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using RestApi.DTOs.Ride;
-using RestApi.DTOs.Stop;
-using RestApi.DTOs.User;
 
 namespace RestApi.Queries.GroupQueries
 {

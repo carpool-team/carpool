@@ -1,20 +1,19 @@
-﻿using DataTransferObjects;
+﻿using System;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
-using System;
 
-namespace RestApi.DTOs.Ride
+namespace DataTransferObjects.Ride
 {
     public class RideMinimalDto
     {
-        public RideMinimalDto(RideId rideId, bool isUserParticipant, DateTime date, Location destination) : this(rideId,
+        public RideMinimalDto(RideId rideId, bool isUserParticipant, DateTimeOffset date, Location destination) : this(rideId,
             date, destination)
         {
             IsUserParticipant = isUserParticipant;
             IsUserParticipant = isUserParticipant;
         }
 
-        public RideMinimalDto(RideId rideId, DateTime date, Location destination)
+        public RideMinimalDto(RideId rideId, DateTimeOffset date, Location destination)
         {
             RideId = rideId;
             Date = date;
@@ -23,7 +22,7 @@ namespace RestApi.DTOs.Ride
 
         public RideId RideId { get; set; }
         public bool? IsUserParticipant { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public LocationDto Destination { get; set; }
     }
 }

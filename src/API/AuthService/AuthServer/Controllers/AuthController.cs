@@ -10,6 +10,7 @@ using AuthServer.Services;
 using AuthServer.Utilities;
 using AutoWrapper.Extensions;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.User;
 using IdentifiersShared.Generator;
 using IdentifiersShared.Identifiers;
 using IdGen;
@@ -19,7 +20,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using RestApi.DTOs.User;
 
 namespace AuthServer.Controllers
 {

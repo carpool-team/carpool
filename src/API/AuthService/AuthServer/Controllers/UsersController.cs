@@ -2,12 +2,12 @@
 using AuthServer.Commands;
 using AuthServer.Extensions;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.User;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestApi.DTOs.User;
 
 namespace AuthServer.Controllers
 {

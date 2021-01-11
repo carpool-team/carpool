@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DataTransferObjects.User;
 using Domain.Contracts.Repositories;
 using MediatR;
-using RestApi.DTOs.User;
 
 namespace RestApi.Queries.UserQueries
 {

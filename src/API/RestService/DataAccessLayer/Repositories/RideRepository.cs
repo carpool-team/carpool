@@ -50,7 +50,7 @@ namespace DataAccessLayer.Repositories
 
 		public async Task<IEnumerable<Ride>> GetPartAsNoTrackingAsync(GroupId groupId,
 			RideDirection rideDirection,
-			DateTime dateTime,
+			DateTimeOffset dateTime,
 			CancellationToken cancellationToken)
 			=> await _context.Rides
 				.Include(ride => ride.Stops)
@@ -69,7 +69,7 @@ namespace DataAccessLayer.Repositories
 		public async Task<IEnumerable<Ride>> GetPartWhereUserNotParticipantAsNoTrackingAsync(GroupId groupId,
 			AppUserId appUserId,
 			RideDirection? rideDirection,
-			DateTime? dateTime,
+			DateTimeOffset? dateTime,
 			CancellationToken cancellationToken = default)
 			=> await _context.Rides
 				.Include(ride => ride.Stops)

@@ -1,12 +1,12 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.User;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
-using RestApi.DTOs.User;
 using RestApi.Extensions;
 using RestApi.Queries.UserQueries;
 

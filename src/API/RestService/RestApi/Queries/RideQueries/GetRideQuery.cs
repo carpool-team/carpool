@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataTransferObjects;
-using DataTransferObjects.GroupDtos;
+using DataTransferObjects.Group;
+using DataTransferObjects.Ride;
+using DataTransferObjects.Stop;
+using DataTransferObjects.User;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
-using RestApi.DTOs.Ride;
-using RestApi.DTOs.Stop;
-using RestApi.DTOs.User;
 
 namespace RestApi.Queries.RideQueries
 {

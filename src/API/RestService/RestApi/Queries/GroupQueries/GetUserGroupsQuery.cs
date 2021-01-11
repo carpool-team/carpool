@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DataTransferObjects;
-using DataTransferObjects.GroupDtos;
+using DataTransferObjects.Group;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
 using IdentifiersShared.Identifiers;

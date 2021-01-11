@@ -1,10 +1,10 @@
 ﻿using System;
-using DataTransferObjects.GroupDtos;
+using DataTransferObjects.Group;
+using DataTransferObjects.User;
 using IdentifiersShared.Identifiers;
 using Newtonsoft.Json;
-using RestApi.DTOs.User;
 
-namespace DataTransferObjects.GroupInvitesDtos
+namespace DataTransferObjects.GroupInvites
 {
     public record UpdateGroupInviteDto([property: JsonProperty("isAccepted")] bool IsAccepted);
 
@@ -14,5 +14,5 @@ namespace DataTransferObjects.GroupInvitesDtos
 		[JsonProperty("group")] GroupDto GroupDto,
 		[JsonProperty("invitingUser")] InvitingUserDto InvitingUser,
 		[JsonProperty("invitedUser")] InvitedUserDto InvitedUser,
-		[JsonProperty("dateAdded")]DateTime DateAdded);
+		[JsonProperty("dateAdded")]DateTimeOffset DateAdded);
 }

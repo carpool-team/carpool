@@ -61,7 +61,7 @@ namespace RestApi.Commands.GroupInviteCommands
 				InvitedAppUserId = request.InvitedAppUserId,
 				IsAccepted = false,
 				IsPending = true,
-				DateAdded = DateTime.Now,
+				DateAdded = DateTimeOffset.Now,
 				GroupId = request.GroupId
 			};
 

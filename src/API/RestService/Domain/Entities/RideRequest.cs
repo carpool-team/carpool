@@ -13,7 +13,7 @@ namespace Domain.Entities
 			RideId rideId,
 			AppUserId requestingUserId,
 			AppUserId rideOwnerId,
-			DateTime dateAdded,
+			DateTimeOffset dateAdded,
 			Location location)
 		{
 			Id = rideRequestId;
@@ -45,7 +45,7 @@ namespace Domain.Entities
 		
 		public virtual ApplicationUser RideOwner { get; set; }
 
-		public DateTime DateAdded { get; set; }
+		public DateTimeOffset DateAdded { get; set; }
 		
 		public Location Location { get; set; }
 	}

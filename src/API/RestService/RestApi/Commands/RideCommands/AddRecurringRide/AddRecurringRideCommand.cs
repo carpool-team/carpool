@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.Stop;
 using Domain.Aggregates;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
@@ -18,8 +19,8 @@ using IdGen;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
-using RestApi.DTOs.Stop;
 
 namespace RestApi.Commands.RideCommands.AddRecurringRide
 {
@@ -33,8 +34,8 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 		                               Location location,
 		                               RideDirection rideDirection,
 		                               byte weekDays,
-		                               DateTime startDate,
-		                               DateTime endDate,
+		                               DateTimeOffset startDate,
+		                               DateTimeOffset endDate,
 		                               List<AddStopDto>? stops,
 		                               byte seatsLimit)
 		{
@@ -54,8 +55,8 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 		public AppUserId OwnerId { get; }
 		public GroupId GroupId { get; }
 		public TimeSpan RideTime { get; }
-		public DateTime StartDate { get; }
-		public DateTime EndDate { get; }
+		public DateTimeOffset StartDate { get; }
+		public DateTimeOffset EndDate { get; }
 		public double Price { get; }
 		public Location Location { get; }
 		public RideDirection RideDirection { get; }
@@ -107,8 +108,16 @@ namespace RestApi.Commands.RideCommands.AddRecurringRide
 				{
 					rideIdEnumerator.MoveNext();
 
-					var dateTime = new DateTime(date.Year, date.Month, date.Day, request.RideTime.Hours,
-						request.RideTime.Minutes, 0);
+					DateTimeOffset dateTime = new DateTimeOffset(date.Year, 
+						date.Month, 
+						date.Day,
+						request.RideTime.Hours, 
+						request.RideTime.Minutes, 
+						0,
+						date.Offset);
+					
+					// var dateTime = new DateTimeOffset(date.Year, date.Month, date.Day, request.RideTime.Hours,
+					// 	request.RideTime.Minutes, 0);
 
 					if (request.Location == null)
 						throw new ApiException("Ride location cannot be empty", StatusCodes.Status400BadRequest);

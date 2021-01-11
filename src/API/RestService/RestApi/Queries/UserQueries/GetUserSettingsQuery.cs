@@ -1,6 +1,6 @@
-﻿using IdentifiersShared.Identifiers;
+﻿using DataTransferObjects.User;
+using IdentifiersShared.Identifiers;
 using MediatR;
-using RestApi.DTOs.User;
 
 namespace RestApi.Queries.UserQueries
 {

@@ -17,7 +17,7 @@ namespace Domain.Entities
 		public Ride(RideId rideId, 
 			AppUserId ownerId, 
 			GroupId groupId,
-			DateTime date,
+			DateTimeOffset date,
 			double price,
 			Location location,
 			RideDirection rideDirection,
@@ -43,7 +43,7 @@ namespace Domain.Entities
 		public ApplicationUser Owner { get; set; }
 		public GroupId GroupId { get; set; }
 		public Group Group { get; set; }
-		public DateTime Date { get; set; }
+		public DateTimeOffset Date { get; set; }
 		public double Price { get; set; }
 		public Location Location { get; set; }
 		public RideDirection RideDirection { get; set; }

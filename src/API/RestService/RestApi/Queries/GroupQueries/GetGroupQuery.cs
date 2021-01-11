@@ -2,13 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataTransferObjects.GroupDtos;
+using DataTransferObjects.Group;
+using DataTransferObjects.Ride;
 using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using RestApi.DTOs.Ride;
 
 namespace RestApi.Queries.GroupQueries
 {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace RestApi.DTOs.Rating
+namespace DataTransferObjects.Rating
 {
     public record AddUserRatingDto([property: JsonProperty("value")] byte Value);
 }

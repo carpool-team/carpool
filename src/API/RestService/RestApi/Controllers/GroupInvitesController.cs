@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataTransferObjects.GroupInvitesDtos;
+using DataTransferObjects.GroupInvites;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.GroupInviteCommands;
-using RestApi.DTOs.GroupInvites;
 using RestApi.Extensions;
 using RestApi.Queries.GroupInviteQueries;
 

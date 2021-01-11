@@ -14,7 +14,7 @@ namespace RestApi.Commands.RideCommands
 {
 	public class UpdateRideCommand : IRequest<Ride>
 	{
-		public UpdateRideCommand(RideId rideId, List<long> participantIds, DateTime? date, double? price, AppUserId appUserId)
+		public UpdateRideCommand(RideId rideId, List<long> participantIds, DateTimeOffset? date, double? price, AppUserId appUserId)
 		{
 			RideId = rideId;
 			ParticipantIds = participantIds;
@@ -25,7 +25,7 @@ namespace RestApi.Commands.RideCommands
 
 		public RideId RideId { get; }
 		public List<long> ParticipantIds { get; }
-		public DateTime? Date { get; }
+		public DateTimeOffset? Date { get; }
 		public double? Price { get; }
 		public AppUserId AppUserId { get; }
 	}

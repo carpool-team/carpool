@@ -52,7 +52,7 @@ namespace RestApi.Commands.RideRequestCommands
 				request.RideId,
 				request.RequestingUserId,
 				request.RideOwnerId,
-				DateTime.Now,
+				DateTimeOffset.Now,
 				request.Location);
 
 			await _rideRequestRepository.AddAsync(rideRequest, cancellationToken);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.Stop;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
@@ -17,7 +18,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
-using RestApi.DTOs.Stop;
 
 namespace RestApi.Commands.RideCommands
 {
@@ -26,7 +26,7 @@ namespace RestApi.Commands.RideCommands
 		[JsonConstructor]
 		public AddRideCommand(AppUserId ownerId,
 			GroupId groupId,
-			DateTime date,
+			DateTimeOffset date,
 			double price,
 			Location location,
 			RideDirection rideDirection,
@@ -37,7 +37,7 @@ namespace RestApi.Commands.RideCommands
 
 		public AppUserId OwnerId { get; }
 		public GroupId GroupId { get; }
-		public DateTime Date { get; }
+		public DateTimeOffset Date { get; }
 		public double Price { get; }
 		public Location Location { get; }
 		public RideDirection RideDirection { get; }

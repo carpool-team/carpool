@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DataTransferObjects.User;
 using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Newtonsoft.Json;
-using RestApi.DTOs.User;
 
 namespace RestApi.Queries.UserQueries
 {

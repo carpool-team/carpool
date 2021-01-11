@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.Rating;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.UserCommands;
-using RestApi.DTOs.Rating;
 using RestApi.Extensions;
 using RestApi.Queries.RatingQueries;
 
