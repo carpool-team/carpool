@@ -15,6 +15,13 @@ export enum RideRequestsActionTypes {
 	AnswerRideRequestError = "RIDES_ANSWER_REQUEST_ERROR",
 }
 
+/** Enum of ride requests actions */
+export enum RideActionTypes {
+	LeaveRide = "RIDES_LEAVE_RIDE",
+	LeaveRideSuccess = "RIDES_LEAVE_RIDE_SUCCESS",
+	LeaveRideError = "RIDES_LEAVE_RIDE_ERROR",
+}
+
 //#region GENERIC
 export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 	errorMessage: string;
@@ -54,6 +61,19 @@ export interface IAnswerRideRequestErrorAction extends Action<RideRequestsAction
 }
 //#endregion
 
+//#region RIDES
+export interface ILeaveRideAction extends Action<RideActionTypes.LeaveRide> {
+	rideId: string;
+}
+
+export interface ILeaveRideSuccessAction extends Action<RideActionTypes.LeaveRideSuccess> {
+}
+
+export interface ILeaveRideErrorAction extends Action<RideActionTypes.LeaveRideError> {
+	error: Error;
+}
+//#endregion
+
 export type GenericAction =
 	IApiErrorAction;
 
@@ -65,3 +85,8 @@ export type RideRequestsAction =
 	| IAnswerRideRequestAction
 	| IAnswerRideRequestSuccessAction
 	| IAnswerRideRequestErrorAction;
+
+export type RideAction =
+	ILeaveRideAction
+	| ILeaveRideErrorAction
+	| ILeaveRideSuccessAction;
