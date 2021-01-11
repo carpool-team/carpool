@@ -103,7 +103,7 @@ export type RideRequestsAction =
 export type RideAction =
 	ILeaveRideAction
 	| ILeaveRideErrorAction
-	| ILeaveRideSuccessAction;
+	| ILeaveRideSuccessAction
 	| IDeleteRideAction
 	| IDeleteRideErrorAction
 	| IDeleteRideSuccessAction;
