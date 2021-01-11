@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
+using DataTransferObjects.Ride;
 using Domain.Enums;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -12,7 +13,6 @@ using RestApi.Commands.RideCommands;
 using RestApi.Commands.RideCommands.AddRecurringRide;
 using RestApi.Commands.RideCommands.DeleteRecurringRide;
 using RestApi.Commands.RideCommands.RemoveUserFromRide;
-using RestApi.DTOs.Ride;
 using RestApi.Extensions;
 using RestApi.Queries.GroupQueries;
 using RestApi.Queries.RideQueries;
@@ -30,7 +30,7 @@ namespace RestApi.Controllers
 
 		[HttpGet]
 		public async Task<ApiResponse> GetRides([FromQuery] GroupId groupId,
-			[FromQuery] DateTime? dateTime = null,
+			[FromQuery] DateTimeOffset? dateTime = null,
 			[FromQuery] RideDirection? rideDirection = null)
 		{
 			GetRidesQuery getRides = new(groupId,

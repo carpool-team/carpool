@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace DataTransferObjects.VehicleDtos
+namespace DataTransferObjects.Vehicle
 {
     public record IndexVehicleDto([JsonProperty("Name")]string Name);
 

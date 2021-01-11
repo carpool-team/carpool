@@ -1,9 +1,8 @@
-﻿using DataTransferObjects.GroupDtos;
+﻿using DataTransferObjects.Group;
+using DataTransferObjects.Ride;
 using DataTransferObjects.RideRequest;
 using Domain.Entities;
 using Mapster;
-using RestApi.DTOs.Ride;
-using RestApi.DTOs.Stop;
 
 namespace RestApi.Extensions
 {

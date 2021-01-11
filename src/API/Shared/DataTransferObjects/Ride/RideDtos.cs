@@ -1,18 +1,17 @@
 ﻿#nullable enable
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using DataTransferObjects;
-using DataTransferObjects.GroupDtos;
+using DataTransferObjects.Group;
+using DataTransferObjects.Stop;
+using DataTransferObjects.User;
 using Domain.Enums;
 using IdentifiersShared.Identifiers;
-using RestApi.DTOs.Stop;
-using RestApi.DTOs.User;
+using Newtonsoft.Json;
 
-namespace RestApi.DTOs.Ride
+namespace DataTransferObjects.Ride
 {
     public record UpdateRideDto([property: JsonProperty("participantIds")] List<long> ParticipantIds,
-        [property: JsonProperty("date")] DateTime? Date,
+        [property: JsonProperty("date")] DateTimeOffset? Date,
         [property: JsonProperty("price")] double? Price);
 
 	public record RideDto([property: JsonProperty("owner")] RideOwnerDto RideOwner,
@@ -21,13 +20,13 @@ namespace RestApi.DTOs.Ride
 		[JsonProperty("price")]double Price,
 		[JsonProperty("rideDirection")]RideDirection RideDirection,
 		[JsonProperty("stops")]List<StopDto> Stops,
-		[JsonProperty("rideDate")]DateTime RideDate,
+		[JsonProperty("rideDate")]DateTimeOffset RideDate,
 		[JsonProperty("rideId")]RideId RideId,
 		[JsonProperty("seatsLimit")]byte SeatsLimit,
 		[JsonProperty("recurringRideId")]RecurringRideId? RecurringRideId);
 
 	public record RideRequestRideDto([JsonProperty("rideId")] RideId Id,
-		[JsonProperty("date")] DateTime Date,
+		[JsonProperty("date")] DateTimeOffset Date,
 		[JsonProperty("location")] LocationDto Location,
 		[JsonProperty("group")] MinimalGroupDto Group,
 		[JsonProperty("rideDirection")] RideDirection RideDirection);

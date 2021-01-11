@@ -1,11 +1,11 @@
-﻿using Domain.Entities;
+﻿using System.Collections.Generic;
+using DataTransferObjects.Ride;
+using DataTransferObjects.User;
+using Domain.Entities;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
-using RestApi.DTOs.Ride;
-using RestApi.DTOs.User;
-using System.Collections.Generic;
 
-namespace DataTransferObjects.GroupDtos
+namespace DataTransferObjects.Group
 {
     public class GroupDetailsDto
     {

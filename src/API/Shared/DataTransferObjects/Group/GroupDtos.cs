@@ -1,7 +1,7 @@
 ﻿using IdentifiersShared.Identifiers;
 using Newtonsoft.Json;
 
-namespace DataTransferObjects.GroupDtos
+namespace DataTransferObjects.Group
 {
     public record UpdateGroupDto([property: JsonProperty("location")] LocationDto Location,
         [property: JsonProperty("name")] string Name,

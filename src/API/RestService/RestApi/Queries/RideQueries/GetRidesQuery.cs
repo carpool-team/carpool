@@ -5,23 +5,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataTransferObjects;
-using DataTransferObjects.GroupDtos;
-using DataTransferObjects.VehicleDtos;
+using DataTransferObjects.Group;
+using DataTransferObjects.Ride;
+using DataTransferObjects.Stop;
+using DataTransferObjects.User;
 using Domain.Contracts.Repositories;
 using Domain.Enums;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using RestApi.DTOs.Ride;
-using RestApi.DTOs.Stop;
-using RestApi.DTOs.User;
 
 namespace RestApi.Queries.RideQueries
 {
 	public class GetRidesQuery : IRequest<IEnumerable<RideDto>>
 	{
 		public GetRidesQuery(GroupId groupId,
-			DateTime? dateTime,
+			DateTimeOffset? dateTime,
 			AppUserId tokenUserId,
 			RideDirection? rideDirection)
 		{
@@ -33,7 +32,7 @@ namespace RestApi.Queries.RideQueries
 
 		public GroupId GroupId { get; }
 		public RideDirection? RideDirection { get; }
-		public DateTime? DateTime { get; }
+		public DateTimeOffset? DateTime { get; }
 		public AppUserId TokenUserId { get; }
 	}
 

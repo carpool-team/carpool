@@ -1,7 +1,7 @@
-﻿using IdentifiersShared.Identifiers;
-using System;
+﻿using System;
+using IdentifiersShared.Identifiers;
 
-namespace RestApi.DTOs.GroupInvites
+namespace DataTransferObjects.GroupInvites
 {
     public class IndexGroupInviteDTO
     {
@@ -11,7 +11,7 @@ namespace RestApi.DTOs.GroupInvites
             GroupId groupId,
             string groupName,
             AppUserId invitedAppUserId,
-            DateTime dateAdded)
+            DateTimeOffset dateAdded)
         {
             Id = id;
             IsPending = isPending;
@@ -32,6 +32,6 @@ namespace RestApi.DTOs.GroupInvites
 
         public AppUserId InvitedAppUserId { get; set; }
 
-        public DateTime DateAdded { get; set; }
+        public DateTimeOffset DateAdded { get; set; }
     }
 }

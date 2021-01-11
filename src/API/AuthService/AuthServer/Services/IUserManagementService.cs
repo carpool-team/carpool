@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using DataTransferObjects.User;
 using IdentifiersShared.Identifiers;
-using RestApi.DTOs.User;
 using RestEase;
 
 namespace AuthServer.Services

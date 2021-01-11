@@ -20,6 +20,6 @@ namespace Domain.Entities
 		public AppUserId InvitingAppUserId { get; set; }
 		public virtual ApplicationUser InvitingApplicationUser { get; set; }
 
-		public DateTime DateAdded { get; set; }
+		public DateTimeOffset DateAdded { get; set; }
 	}
 }

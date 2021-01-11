@@ -6,7 +6,6 @@ using AutoWrapper;
 using DataAccessLayer.DatabaseContexts;
 using DataAccessLayer.Repositories;
 using DataAccessLayer.Repositories.Intersections;
-using DataTransferObjects.GroupDtos;
 using DataTransferObjects.RideRequest;
 using Domain.Contracts;
 using Domain.Contracts.Repositories;
@@ -24,7 +23,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using RestApi.DTOs.Ride;
 using RestApi.Extensions;
 using Serilog;
 

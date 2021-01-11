@@ -1,9 +1,9 @@
 ﻿#nullable enable
-using DataTransferObjects.VehicleDtos;
+using DataTransferObjects.Vehicle;
 using IdentifiersShared.Identifiers;
 using Newtonsoft.Json;
 
-namespace RestApi.DTOs.User
+namespace DataTransferObjects.User
 {
     public record UpdateUserDto([property: JsonProperty("firstName")] string FirstName,
         [property: JsonProperty("lastName")] string LastName,

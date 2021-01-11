@@ -1,7 +1,7 @@
-﻿using IdentifiersShared.Identifiers;
+﻿using DataTransferObjects.Ride;
+using DataTransferObjects.User;
+using IdentifiersShared.Identifiers;
 using Newtonsoft.Json;
-using RestApi.DTOs.Ride;
-using RestApi.DTOs.User;
 
 namespace DataTransferObjects.RideRequest
 {
