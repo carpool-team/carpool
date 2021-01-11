@@ -1,15 +1,27 @@
 import { Epic, ofType } from "redux-observable";
 import { mergeMap, switchMap } from "rxjs/operators";
 import { getId } from "../../../helpers/UniversalHelper";
-import { IAuthState } from "../../auth/store/State";
+import { ILogoutAction, LoginAction, LoginActionTypes } from "../../auth/store/Types";
 import { ISetLoaderVisibleAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
-import { GetDataRequest } from "../api/GetDataRequest";
-import { GetDataResponse } from "../api/GetDataResponse";
-import { UpdateDataRequest } from "../api/UpdateDataRequest";
-import { UpdateDataResponse } from "../api/UpdateDataResponse";
+import { DeleteUserRequest } from "../api/deleteUser/DeleteUserRequest";
+import { GetDataRequest } from "../api/getData/GetDataRequest";
+import { GetDataResponse } from "../api/getData/GetDataResponse";
+import { UpdateDataRequest } from "../api/updateData/UpdateDataRequest";
+import { UpdateDataResponse } from "../api/updateData/UpdateDataResponse";
 import { IUserData } from "../interfaces/IUserData";
-import { IUserProfileState } from "./State";
-import { IGetDataAction, IGetDataErrorAction, IGetDataSuccessAction, IUpdateDataAction, IUpdateDataErrorAction, IUpdateDataSuccessAction, UserProfileAction, UserProfileActionTypes } from "./Types";
+import {
+	IDeleteUserAction,
+	IDeleteUserErrorAction,
+	IDeleteUserSuccessAction,
+	IGetDataAction,
+	IGetDataErrorAction,
+	IGetDataSuccessAction,
+	IUpdateDataAction,
+	IUpdateDataErrorAction,
+	IUpdateDataSuccessAction,
+	UserProfileAction,
+	UserProfileActionTypes
+} from "./Types";
 
 const getDataEpic: Epic<UserProfileAction> = (action$, state$) => action$.pipe(
 	ofType(UserProfileActionTypes.GetData),
@@ -27,7 +39,7 @@ const getDataEpic: Epic<UserProfileAction> = (action$, state$) => action$.pipe(
 				type: UserProfileActionTypes.GetDataSuccess,
 				data,
 			};
-		} catch {
+		} catch (err) {
 			return <IGetDataErrorAction>{
 				type: UserProfileActionTypes.GetDataError,
 			};
@@ -65,7 +77,7 @@ const updateDataEpic: Epic<UserProfileAction> = (action$) => action$.pipe(
 					type: UserProfileActionTypes.UpdateDataSuccess,
 				};
 			}
-		} catch {
+		} catch (err) {
 			return <IUpdateDataErrorAction>{
 				type: UserProfileActionTypes.UpdateDataError,
 			};
@@ -86,9 +98,44 @@ const updateDataSuccesEpic: Epic<UserProfileAction | LayoutAction> = (action$) =
 	]),
 );
 
+const deleteUserEpic: Epic<UserProfileAction | LoginAction> = (action$) => action$.pipe(
+	ofType(UserProfileActionTypes.DeleteUser),
+	switchMap(async (_action: IDeleteUserAction) => {
+		const request = new DeleteUserRequest(getId());
+		try {
+			const response = await request.send();
+			if (response.isError || response.status > 299) {
+				return [
+					<IDeleteUserErrorAction>{
+						type: UserProfileActionTypes.DeleteUserError,
+					}
+				];
+			} else {
+				return [
+					<IDeleteUserSuccessAction>{
+						type: UserProfileActionTypes.DeleteUserSuccess,
+					},
+					<ILogoutAction>{
+						type: LoginActionTypes.Logout,
+					},
+				];
+			}
+		} catch (err) {
+			return [
+				<IDeleteUserErrorAction>{
+					type: UserProfileActionTypes.DeleteUserError,
+					error: err,
+				}
+			];
+		}
+	}),
+	mergeMap(res => res)
+);
+
 export const userProfileEpics = [
 	getDataEpic,
 	getDataSuccessEpic,
 	updateDataEpic,
 	updateDataSuccesEpic,
+	deleteUserEpic,
 ];

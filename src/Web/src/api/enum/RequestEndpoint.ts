@@ -30,4 +30,5 @@ export enum RequestEndpoint {
 	AUTOCOMPLETE_USER,
 	GET_USER_BY_APPUSERID,
 	UPDATE_USER_DATA,
+	DELETE_USER,
 }
