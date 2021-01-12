@@ -6,4 +6,5 @@ export interface IValidation {
 	isValidCallback: (isValid: boolean) => void;
 	validationText?: string;
 	customValidation?: (value: string) => boolean;
+	addressAutocompletedInit?: boolean;
 }

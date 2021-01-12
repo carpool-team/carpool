@@ -50,11 +50,12 @@ const FirstStep = (props: IGroupsListProps) => {
 	return (
 		<div className={listwraper}	>
 			<ul className={listCssClass}>
-				{groups.map((group) => {
+				{groups.map((group, idx) => {
 					++colorIndex;
 					const color = colorList[colorIndex % colorList.length];
 					return (
 						<DefaultItem
+							key={idx}
 							group={group}
 							color={color}
 							setGroup={() => props.setGroupSelected(group)}
