@@ -14,7 +14,11 @@ import { ButtonSmallBackground } from "../../../../ui/buttonSmall/enums/ButtonSm
 
 const geocodingClient = getGeocodingClient();
 
-const ActiveItemOwner = (props: IListItemProps) => {
+interface IActiveItemOwnerProps extends IListItemProps {
+	deleteRide: (rideId: string) => void;
+}
+
+const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 
 	const cssClasses = {
 		mainRow: "ridesList--mainRow",

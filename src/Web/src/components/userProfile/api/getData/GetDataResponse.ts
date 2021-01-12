@@ -1,5 +1,5 @@
-import ResponseBase from "../../../api/responses/ResponseBase";
-import { IGroup } from "../../groups/interfaces/IGroup";
+import ResponseBase from "../../../../api/responses/ResponseBase";
+import { IGroup } from "../../../groups/interfaces/IGroup";
 
 interface IGetDataResponse {
 	email: string;

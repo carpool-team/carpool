@@ -12,13 +12,25 @@ import {
 	IGetRideRequestsSuccessAction,
 	IAnswerRideRequestAction,
 	IAnswerRideRequestSuccessAction,
-	IAnswerRideRequestErrorAction
+	IAnswerRideRequestErrorAction,
+	RideAction,
+	RideActionTypes,
+	ILeaveRideAction,
+	ILeaveRideErrorAction,
+	ILeaveRideSuccessAction,
+	IDeleteRideAction,
+	IDeleteRideErrorAction,
+	IDeleteRideSuccessAction
 } from "./Types";
 import { toast } from "react-toastify";
-import { GetRideRequestsRequest } from "../api/getRideRequests/GetRideRequestsRequest";
+import { GetRideRequestsRequest } from "../api/getRide/GetRideRequestsRequest";
 import { ISetLoaderVisibleAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
-import { UpdateRideRequestResponse } from "../api/updateRideRequest/UpdateRideRequestResponse";
-import { UpdateRideRequestRequest } from "../api/updateRideRequest/UpdateRideRequestRequest";
+import { UpdateRideRequestResponse } from "../api/updateRide/UpdateRideRequestResponse";
+import { UpdateRideRequestRequest } from "../api/updateRide/UpdateRideRequestRequest";
+import { LeaveRideRequest } from "../api/leaveRide/LeaveRideRequest";
+import { getId } from "../../../helpers/UniversalHelper";
+import { IGetRidesAction, RidesActionTypes, RideAction as GroupRideAction } from "../../groups/store/Types";
+import { DeleteRideRequest } from "../api/deleteRide/DeleteRideRequest";
 
 const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =>
 	action$.pipe(
@@ -135,6 +147,98 @@ const answerRideRequestEpic: Epic<RideRequestsAction | LayoutAction> = (action$)
 		)
 	);
 
+const leaveRideEpic: Epic<RideAction | GroupRideAction> = (action$) =>
+	action$.pipe(
+		ofType(RideActionTypes.LeaveRide),
+		switchMap(async (action: ILeaveRideAction) => {
+			const request = new LeaveRideRequest({
+				rideId: action.rideId,
+				userId: getId(),
+			});
+			try {
+				const response = await request.send();
+				if (response.isError || response.status >= 300) {
+					return [
+						<ILeaveRideErrorAction>{
+							type: RideActionTypes.LeaveRideError,
+							error: null,
+						}
+					];
+				} else {
+					return [
+						<ILeaveRideSuccessAction>{
+							type: RideActionTypes.LeaveRideSuccess,
+						},
+						<IGetRidesAction>{
+							type: RidesActionTypes.GetRides,
+
+						}
+					];
+				}
+			} catch (err) {
+				return [
+					<ILeaveRideErrorAction>{
+						type: RideActionTypes.LeaveRideError,
+						error: err,
+					}
+				];
+			}
+		}),
+		mergeMap(res => res),
+		catchError((err: Error) =>
+			of(<ILeaveRideErrorAction>{
+				type: RideActionTypes.LeaveRideError,
+				error: err,
+			})
+		)
+	);
+
+const deleteRideEpic: Epic<RideAction | GroupRideAction> = (action$) =>
+	action$.pipe(
+		ofType(RideActionTypes.DeleteRide),
+		switchMap(async (action: IDeleteRideAction) => {
+			const request = new DeleteRideRequest({
+				rideId: action.rideId,
+				recurring: action.recurring ?? false,
+			});
+			try {
+				const response = await request.send();
+				if (response.isError || response.status >= 300) {
+					return [
+						<IDeleteRideErrorAction>{
+							type: RideActionTypes.DeleteRideError,
+							error: null,
+						}
+					];
+				} else {
+					return [
+						<IDeleteRideSuccessAction>{
+							type: RideActionTypes.DeleteRideSuccess,
+						},
+						<IGetRidesAction>{
+							type: RidesActionTypes.GetRides,
+
+						}
+					];
+				}
+			} catch (err) {
+				return [
+					<IDeleteRideErrorAction>{
+						type: RideActionTypes.DeleteRideError,
+						error: err,
+					}
+				];
+			}
+		}),
+		mergeMap(res => res),
+		catchError((err: Error) =>
+			of(<IDeleteRideErrorAction>{
+				type: RideActionTypes.DeleteRideError,
+				error: err,
+			})
+		)
+	);
+
 const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
 	ofType(GenericActionTypes.ApiError),
 	mergeMap(async (action: IApiErrorAction) => {
@@ -149,4 +253,6 @@ export const rideEpics = [
 	getRideRequestsEpic,
 	answerRideRequestEpic,
 	apiErrorEpic,
+	leaveRideEpic,
+	deleteRideEpic,
 ];

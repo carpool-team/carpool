@@ -41,7 +41,13 @@ import {
 	IDeleteUserFromGroupAction,
 	IDeleteUserFromGroupErrorAction,
 	IDeleteUserFromGroupSuccessAction,
-	IUpdateGroupDetailsAction
+	IUpdateGroupDetailsAction,
+	IDeleteGroupAction,
+	IDeleteGroupSuccessAction,
+	IDeleteGroupErrorAction,
+	IEditGroupAction,
+	IEditGroupErrorAction,
+	IEditGroupSuccessAction
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -64,9 +70,12 @@ import { mainRoutes } from "../../layout/components/LayoutRouter";
 import { GetGroupUsersRequest } from "../api/getGroupUsers/GetGroupUsersRequest";
 import { GetGroupDetailsRequest } from "../api/getGroupDetails/GetGroupDetailsRequest";
 import { IGroupsState } from "./State";
-import { AddRideRequestResponse } from "../../rides/api/addRideRequest/AddRideRequestResponse";
-import { AddRideRequestRequest } from "../../rides/api/addRideRequest/AddRideRequestRequest";
+import { AddRideRequestResponse } from "../../rides/api/addRide/AddRideRequestResponse";
+import { AddRideRequestRequest } from "../../rides/api/addRide/AddRideRequestRequest";
 import { DeleteUserFromGroupRequest } from "../api/deleteUserFromGroup/DeleteUserFromGroupRequest";
+import { DeleteGroupRequest } from "../api/deleteGroup/DeleteGroupRequest";
+import { UpdateGroupRequest } from "../api/updateGroup/UpdateGroupRequest";
+import i18n from "../../../i18n";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -704,6 +713,84 @@ const deleteUserFromGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 	mergeMap(res => res),
 );
 
+const deleteGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+	ofType(GroupsActionTypes.DeleteGroup),
+	switchMap(async (action: IDeleteGroupAction) => {
+		try {
+			const req = new DeleteGroupRequest({
+				groupId: action.groupId,
+			});
+			const res = await req.send();
+			if (res.isError || res.status >= 300) {
+				return [
+					<IDeleteGroupErrorAction>{
+						type: GroupsActionTypes.DeleteGroupError,
+						error: null,
+					},
+				];
+			} else {
+				return [
+					<IDeleteGroupSuccessAction>{
+						type: GroupsActionTypes.DeleteGroupSuccess,
+					},
+					<IGetGroupsAction>{
+						type: GroupsActionTypes.GetGroups,
+					}
+				];
+			}
+		} catch (err) {
+			return [
+				<IDeleteGroupErrorAction>{
+					type: GroupsActionTypes.DeleteGroupError,
+					error: err,
+				},
+			];
+		}
+	}),
+	mergeMap(res => res),
+);
+
+const editGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+	ofType(GroupsActionTypes.EditGroup),
+	switchMap(async (action: IEditGroupAction) => {
+		try {
+			const req = new UpdateGroupRequest({
+				groupId: action.groupId,
+				body: {
+					name: action.data.name,
+					location: action.data.location,
+				}
+			});
+			const res = await req.send();
+			if (res.isError || res.status >= 300) {
+				toast.error(i18n.t("group.edit.error"));
+				return [
+					<IEditGroupErrorAction>{
+						type: GroupsActionTypes.EditGroupError,
+						error: null,
+					},
+				];
+			} else {
+				toast.success(i18n.t("group.edit.success"));
+				return [
+					<IEditGroupSuccessAction>{
+						type: GroupsActionTypes.EditGroupSuccess,
+					},
+				];
+			}
+		} catch (err) {
+			toast.error(i18n.t("group.edit.error"));
+			return [
+				<IEditGroupErrorAction>{
+					type: GroupsActionTypes.EditGroupError,
+					error: err,
+				},
+			];
+		}
+	}),
+	mergeMap(res => res),
+);
+
 const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
 	ofType(GenericActionTypes.ApiError),
 	mergeMap(async (action: IApiErrorAction) => {
@@ -731,4 +818,6 @@ export const groupEpics = [
 	leftGroupEpic,
 	deleteUserFromGroupEpic,
 	updateGroupDetailsEpic,
+	deleteGroupEpic,
+	editGroupEpic,
 ];

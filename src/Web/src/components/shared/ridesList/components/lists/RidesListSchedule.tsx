@@ -8,8 +8,27 @@ import ActiveItemOwner from "../items/ActiveItemOwner";
 import ActiveItemParticipant from "../items/ActiveItemParticipant";
 import DefaultItem from "../items/DefaultItem";
 import { RidesListType } from "../../enums/RidesListType";
+import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
+import { ILeaveRideAction, IDeleteRideAction } from "../../../../rides/store/Types";
+import { leaveRide, deleteRide } from "../../../../rides/store/Actions";
+import { connect } from "react-redux";
 
-const RidesListSchedule = (props: IRidesListProps) => {
+interface IDispatchPropsType {
+	leaveRide: (rideId: string) => ILeaveRideAction;
+	deleteRide: (rideId: string) => IDeleteRideAction;
+}
+
+const mapDispatchToProps: IDispatchPropsType = {
+	leaveRide,
+	deleteRide,
+};
+
+export type DispatchProps = typeof mapDispatchToProps;
+
+interface IRidesListScheduleProps extends IRidesListProps, DispatchProps, IReactI18nProps {
+}
+
+const RidesListSchedule = (props: IRidesListScheduleProps) => {
 
 	const cssClasses = {
 		list: "ridesListContainer",
@@ -30,6 +49,7 @@ const RidesListSchedule = (props: IRidesListProps) => {
 							color={color}
 							t={t}
 							setRide={props.setRide}
+							deleteRide={props.deleteRide}
 						/>
 					</React.Fragment>
 				);
@@ -58,6 +78,7 @@ const RidesListSchedule = (props: IRidesListProps) => {
 							color={color}
 							t={t}
 							setRide={props.setRide}
+							leaveRideCallback={props.leaveRide}
 						/>
 					</React.Fragment>
 				);
@@ -87,6 +108,9 @@ const RidesListSchedule = (props: IRidesListProps) => {
 				item = renderParticipantItem(color, ride, day);
 				break;
 			}
+			default:
+				item = null;
+				break;
 		}
 		return item;
 	};
@@ -122,4 +146,6 @@ const RidesListSchedule = (props: IRidesListProps) => {
 	);
 };
 
-export default withTranslation()(RidesListSchedule);
+export default connect(null, mapDispatchToProps)(
+	withTranslation()(RidesListSchedule)
+);
