@@ -31,6 +31,11 @@ const reducer: Reducer<ILayoutState> = (
 			case LayoutActionTypes.SetLoaderVisible:
 				draft.loaderVisible = action.visible;
 				break;
+			case LayoutActionTypes.ClearStore:
+				Object.keys(draft).forEach(key => {
+					draft[key] = initialState[key];
+				});
+				break;
 			default:
 				break;
 		}

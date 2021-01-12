@@ -5,14 +5,32 @@ import { switchMap, mergeMap, catchError } from "rxjs/operators";
 import App from "../../../App";
 import { parseJwt } from "../../../helpers/UniversalHelper";
 import i18n from "../../../i18n";
+import { GenericActionTypes as GroupGenericActionTypes, IGroupsClearStoreAction } from "../../groups/store/Types";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
-import { IRedirectAction, ISetLoaderVisibleAction, LayoutActionTypes } from "../../layout/store/Types";
+import { ILayoutClearStoreAction, IRedirectAction, ISetLoaderVisibleAction, LayoutActionTypes } from "../../layout/store/Types";
+import { IRidesClearStoreAction, GenericActionTypes as RidesGenericActionTypes } from "../../rides/store/Types";
+import { IUserClearStoreAction, UserProfileActionTypes } from "../../userProfile/store/Types";
 import { LoginRequest } from "../api/login/LoginRequest";
 import { LoginResponse } from "../api/login/LoginResponse";
 import { RegisterRequest } from "../api/register/RegisterRequest";
 import { RegisterResponse } from "../api/register/RegisterResponse";
 import { ITokenInfo } from "../interfaces/ITokenInfo";
-import { IAuthInitAction, ILoginAction, ILoginErrorAction, ILoginSuccessAction, ILogoutAction, INoTokenAction, IRegisterAction, IRegisterErrorAction, IRegisterSuccessAction, LoginAction, LoginActionTypes, RegisterAction, RegisterActionTypes } from "./Types";
+import {
+	IAuthClearStoreAction,
+	IAuthInitAction,
+	ILoginAction,
+	ILoginErrorAction,
+	ILoginSuccessAction,
+	ILogoutAction,
+	INoTokenAction,
+	IRegisterAction,
+	IRegisterErrorAction,
+	IRegisterSuccessAction,
+	LoginAction,
+	LoginActionTypes,
+	RegisterAction,
+	RegisterActionTypes
+} from "./Types";
 
 const loginGenericErrorCode: string = "loginGeneric";
 const registerGenericErrorCode: string = "registerGeneric";
@@ -153,11 +171,27 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 		})
 	);
 
-const logoutEpic: Epic<LoginAction> = (action$) => action$.pipe(
+const logoutEpic: Epic<LoginAction, any> = (action$) => action$.pipe(
 	ofType(LoginActionTypes.Logout),
 	switchMap((_action: ILogoutAction) => {
 		window.localStorage.removeItem(process.env[App.storageKeys.tokenInfoStorage]);
-		return [];
+		return [
+			<IAuthClearStoreAction>{
+				type: LoginActionTypes.ClearStore,
+			},
+			<IUserClearStoreAction>{
+				type: UserProfileActionTypes.ClearStore,
+			},
+			<IRidesClearStoreAction>{
+				type: RidesGenericActionTypes.ClearStore
+			},
+			<IGroupsClearStoreAction>{
+				type: GroupGenericActionTypes.ClearStore,
+			},
+			<ILayoutClearStoreAction>{
+				type: LayoutActionTypes.ClearStore,
+			}
+		];
 	}),
 );
 

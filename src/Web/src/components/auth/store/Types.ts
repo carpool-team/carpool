@@ -11,6 +11,7 @@ export enum LoginActionTypes {
 	Logout = "AUTH_LOGOUT",
 	Init = "AUTH_INIT",
 	NoToken = "AUTH_NO_TOKEN",
+	ClearStore = "AUTH_CLEAR_STORE",
 }
 
 /** Enum of register actions */
@@ -21,6 +22,9 @@ export enum RegisterActionTypes {
 }
 
 //#region LOGIN
+
+export interface IAuthClearStoreAction extends Action<LoginActionTypes.ClearStore> {
+}
 
 /** Invokes initialization of Auth store */
 export interface IAuthInitAction extends Action<LoginActionTypes.Init> {
@@ -73,7 +77,8 @@ export type LoginAction =
 	ILoginErrorAction |
 	ILogoutAction |
 	IAuthInitAction |
-	INoTokenAction;
+	INoTokenAction |
+	IAuthClearStoreAction;
 
 /** Type of register action */
 export type RegisterAction =

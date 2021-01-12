@@ -2,7 +2,8 @@ import { Action } from "redux";
 import { IRideRequest } from "../../groups/interfaces/rideRequest/IRideRequest";
 
 export enum GenericActionTypes {
-	ApiError = "RIDES_STORE_API_ERROR"
+	ApiError = "RIDES_STORE_API_ERROR",
+	ClearStore = "RIDES_CLEAR_STORE",
 }
 
 /** Enum of ride requests actions */
@@ -31,6 +32,10 @@ export enum RideActionTypes {
 //#region GENERIC
 export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 	errorMessage: string;
+}
+
+export interface IRidesClearStoreAction extends Action<GenericActionTypes.ClearStore> {
+
 }
 //#endregion
 
@@ -105,7 +110,8 @@ export interface IDeletePassengerErrorAction extends Action<RideActionTypes.Dele
 //#endregion
 
 export type GenericAction =
-	IApiErrorAction;
+	IApiErrorAction
+	| IRidesClearStoreAction;
 
 /** Type of ride req action */
 export type RideRequestsAction =

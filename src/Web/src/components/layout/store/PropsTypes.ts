@@ -1,4 +1,5 @@
 import { init } from "../../auth/store/Actions";
+import { IAuthState } from "../../auth/store/State";
 import { IAuthInitAction } from "../../auth/store/Types";
 import { redirect, redirected, setLoaderVisible } from "./Actions";
 import { ILayoutState } from "./State";
@@ -6,16 +7,19 @@ import { IRedirectAction, IRedirectedAction, ISetLoaderVisibleAction } from "./T
 
 interface IStatePropsType {
 	layout: ILayoutState;
+	auth: IAuthState;
 }
 
 interface IStateFromProps {
 	redirectTo: string;
 	loaderVisible: boolean;
+	authInitializing: boolean;
 }
 
 export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (state) => ({
 	redirectTo: state.layout.redirectTo,
 	loaderVisible: state.layout.loaderVisible,
+	authInitializing: state.auth.initializing,
 });
 
 interface IDispatchPropsType {
