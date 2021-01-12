@@ -16,7 +16,7 @@
                 "passwordsMismatch": "Hasła się nie zgadzają",
                 "passwordTooWeak": "Hasło jest za słabe",
                 "rules":{
-                    "length": "dłuższe niż 8 znaków",
+                    "length": "dłuższe niż 7 znaków",
                     "uppercase": "wielka litera",
                     "lowercase": "mała litera",
                     "numbers": "cyfra",
