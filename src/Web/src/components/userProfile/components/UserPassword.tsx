@@ -10,7 +10,7 @@ import Button from "../../ui/button/Button";
 import { ButtonColor } from "../../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
 import { ProfileList } from "../enums/ProfileList";
-import usePassword from "../../ui/hooks/PasswordInput";
+import usePasswordWithConfirm from "../../ui/hooks/usePasswordWithConfirm/UsePasswordWithConfirm";
 import { IChangePasswordFormData } from "../interfaces/IChangePasswordFormData";
 
 interface IUserPasswordProps extends IReactI18nProps {
@@ -36,7 +36,7 @@ const UserPassword: React.FC<IUserPasswordProps> = (props) => {
 	};
 
 	const [currentPassword, setCurrentPassword] = useState<string>();
-	const [password, isPasswordValid, renderPasswordInputs] = usePassword();
+	const [password, isPasswordValid, renderPasswordInputs] = usePasswordWithConfirm();
 	const [validate, setValidate] = useState(false);
 	const [inputsValid, setInputsValid] = useImmer({
 		currentPassword: false,
