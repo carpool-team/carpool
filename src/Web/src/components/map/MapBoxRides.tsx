@@ -65,32 +65,33 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 		try {
 			if (!ride) {
 				this.setState(produce((draft: IMapState) => { draft.route = null; }));
-			}
-			let waypointsSorted = [
-				{
-					coordinates: parseCoords(ride.location),
-				},
-				{
-					coordinates: parseCoords(ride.group?.location)
-				},
-			]
-			if (ride?.stops) {
-				const sortedStops = sortStops(this.props.ride.location, this.props.ride.group.location, this.props.ride?.stops)
-				waypointsSorted = (sortedStops.sortedStops.map(item => ({ coordinates: parseCoords(item) })));
-			}
+			} else {
+				let waypointsSorted = [
+					{
+						coordinates: parseCoords(ride?.location),
+					},
+					{
+						coordinates: parseCoords(ride?.group?.location)
+					},
+				];
+				if (ride?.stops) {
+					const sortedStops = sortStops(this.props.ride.location, this.props.ride.group.location, this.props.ride?.stops);
+					waypointsSorted = (sortedStops.sortedStops.map(item => ({ coordinates: parseCoords(item) })));
+				}
 
-			const response = await directionsClient
-				.getDirections({
-					profile: "driving",
-					waypoints: waypointsSorted,
-					overview: "full",
-					geometries: "geojson",
-				})
-				.send();
-			if (response.body.code === "Ok") {
-				this.setState(produce((draft: any) => {
-					draft.route = response.body.routes[0].geometry.coordinates;
-				}));
+				const response = await directionsClient
+					.getDirections({
+						profile: "driving",
+						waypoints: waypointsSorted,
+						overview: "full",
+						geometries: "geojson",
+					})
+					.send();
+				if (response.body.code === "Ok") {
+					this.setState(produce((draft: any) => {
+						draft.route = response.body.routes[0].geometry.coordinates;
+					}));
+				}
 			}
 		} catch (err) {
 			console.log(err);
@@ -107,9 +108,9 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 			if (this.props.ride) {
 				this.setState(
 					produce((draft: IMapState) => {
-						draft.stops = []
+						draft.stops = [];
 					})
-				)
+				);
 				this.getBounds(this.props.ride);
 				onGetName(parseCoords(this.props.ride.location)).then(res => {
 					this.setState(
@@ -144,11 +145,11 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 										name: res,
 										location: stop.location,
 										participant: stop.participant
-									}
-									draft.stops.push(s)
-								}))
-						})
-					})
+									};
+									draft.stops.push(s);
+								}));
+						});
+					});
 				}
 			}
 			this.onFindRoute(this.props.ride);
@@ -176,7 +177,6 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 		const onStyleLoad = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
 	}
-
 
 	public render() {
 		const { fitBounds, ride, route, fromName, toName, stops } = this.state;
@@ -260,19 +260,17 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 							<>
 								{ stops.map((stop, idx) => {
 									return (
-										<>
-											<Popup coordinates={parseCoords(stop.location)}>
-												<div style={nameStyle}>
-													{stop.participant.firstName} {stop.participant.lastName}
+										<Popup key={idx} coordinates={parseCoords(stop.location)}>
+											<div style={nameStyle}>
+												{stop.participant.firstName} {stop.participant.lastName}
+											</div>
+											{stop.name &&
+												<div style={addressStyle}>
+													{stop.name}
 												</div>
-												{stop.name &&
-													<div style={addressStyle}>
-														{stop.name}
-													</div>
-												}
-											</Popup>
-										</>
-									)
+											}
+										</Popup>
+									);
 								})}
 							</>
 						}
