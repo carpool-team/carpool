@@ -96,7 +96,7 @@ const Input = (props: IInputProps) => {
 	};
 
 	useEffect(() => {
-		console.log("INIT ISAUTO", isAutoCompleted)
+		console.log("INIT ISAUTO", isAutoCompleted);
 		validate();
 	}, []);
 

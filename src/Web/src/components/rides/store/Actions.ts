@@ -4,7 +4,8 @@ import {
 	IGetRideRequestsAction,
 	RideActionTypes,
 	RideRequestsActionTypes,
-	ILeaveRideAction
+	ILeaveRideAction,
+	IDeletePassengerAction
 } from "./Types";
 
 //#region RIDE REQS
@@ -22,16 +23,22 @@ export function answerRideRequest(id: string, isAccepted: boolean, owned: boolea
 		owned,
 	};
 }
+//#endregion
 
+//#region RIDES
 export const leaveRide: (rideId: string) => ILeaveRideAction = rideId => ({
 	type: RideActionTypes.LeaveRide,
 	rideId,
 });
-//#endregion
 
-//#region RIDES
 export const deleteRide: (rideId: string) => IDeleteRideAction = rideId => ({
 	type: RideActionTypes.DeleteRide,
 	rideId,
+});
+
+export const deletePassenger: (rideId: string, userId: string) => IDeletePassengerAction = (rideId, userId) => ({
+	type: RideActionTypes.DeletePassenger,
+	rideId,
+	userId,
 });
 //#endregion

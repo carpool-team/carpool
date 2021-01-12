@@ -9,18 +9,20 @@ import ActiveItemParticipant from "../items/ActiveItemParticipant";
 import DefaultItem from "../items/DefaultItem";
 import { RidesListType } from "../../enums/RidesListType";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
-import { ILeaveRideAction, IDeleteRideAction } from "../../../../rides/store/Types";
-import { leaveRide, deleteRide } from "../../../../rides/store/Actions";
+import { ILeaveRideAction, IDeleteRideAction, IDeletePassengerAction } from "../../../../rides/store/Types";
+import { leaveRide, deleteRide, deletePassenger } from "../../../../rides/store/Actions";
 import { connect } from "react-redux";
 
 interface IDispatchPropsType {
 	leaveRide: (rideId: string) => ILeaveRideAction;
 	deleteRide: (rideId: string) => IDeleteRideAction;
+	deletePassenger: (rideId: string, userId: string) => IDeletePassengerAction;
 }
 
 const mapDispatchToProps: IDispatchPropsType = {
 	leaveRide,
 	deleteRide,
+	deletePassenger,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;
@@ -50,6 +52,7 @@ const RidesListSchedule = (props: IRidesListScheduleProps) => {
 							t={t}
 							setRide={props.setRide}
 							deleteRide={props.deleteRide}
+							deletePassenger={props.deletePassenger}
 						/>
 					</React.Fragment>
 				);
