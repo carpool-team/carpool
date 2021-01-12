@@ -166,7 +166,13 @@ const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 						{props.t(resources.participantsLabel)}
 					</div>
 					{renderParticipants()}
-					<Button style={backgroundColor} background={ButtonBackground.Blue} color={ButtonColor.White} className={cssClasses.activeJoinButton}>
+					<Button
+						style={backgroundColor}
+						background={ButtonBackground.Blue}
+						color={ButtonColor.White}
+						className={cssClasses.activeJoinButton}
+						onClick={() => props.deleteRide(props.ride.rideId)}
+					>
 						{"Usuń"}
 					</Button>
 				</div>
