@@ -15,26 +15,29 @@ import { ILocation } from "../../../interfaces/ILocation";
 import { each, parseCoords } from "../../../../../helpers/UniversalHelper";
 import { IGroup } from "../../../interfaces/IGroup";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
-import { Popover } from "@material-ui/core";
+import { formatMs, Popover } from "@material-ui/core";
 import { ButtonLinkColor } from "../../../../ui/buttonLink/enums/ButtonLinkColor";
 import ButtonLink from "../../../../ui/buttonLink/ButtonLink";
 import { ButtonLinkBackground } from "../../../../ui/buttonLink/enums/ButtonLinkBackground";
 import { ButtonLinkUnderline } from "../../../../ui/buttonLink/enums/ButtonLinkUnderline";
 import { mainRoutes } from "../../../../layout/components/LayoutRouter";
 import GroupsRouter from "../../GroupsRouter";
-import { deleteGroup } from "../../../store/Actions";
-import { IDeleteGroupAction } from "../../../store/Types";
+import { deleteGroup, editGroup } from "../../../store/Actions";
+import { IDeleteGroupAction, IEditGroupAction } from "../../../store/Types";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
+import { IEditGroupFormData } from "../interfaces/IEditGroupFormData";
 
 const geocodingClient = getGeocodingClient();
 
 interface IDispatchPropsType {
 	deleteGroup: (groupId: string) => IDeleteGroupAction;
+	editGroup: (data: IEditGroupFormData, groupId: string) => IEditGroupAction;
 }
 
 const mapDispatchToProps: IDispatchPropsType = {
 	deleteGroup,
+	editGroup,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;
@@ -45,25 +48,44 @@ interface IEditGroupProps extends IReactI18nProps, DispatchProps {
 
 const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 	const [inputsValid, setInputsValid] = useImmer({
-		name: false,
-		code: false,
-		location: false,
+		name: true,
+		location: true,
+	});
+	const [formData, setFormData] = useImmer<IEditGroupFormData>({
+		name: props.group.name,
+		location: props.group.location,
 	});
 	const [validate, setValidate] = useState(false);
-	const [addressCoordinates, setAddressCoordinates] = useState<ILocation>(props.group.location);
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
 	const [popover, setPopover] = useState<boolean>(false);
 	const history = useHistory();
 
-	// Podpiąć akcję zapisywania edycji grupy
-	const submitBtnClick = () => {
-		if (each(inputsValid, i => i)) {
+	const compareDataToGroup = () => (
+		props.group.location !== formData.location
+		|| props.group.name !== formData.name
+	);
 
+	const validateForm = () => {
+		let isFormValid: boolean = true;
+		const edited = compareDataToGroup();
+		if (each(inputsValid, i => i) && edited) {
+			isFormValid = true;
 			setValidate(false);
-		} else {
+		} else if (edited) {
+			isFormValid = false;
 			setValidate(true);
 		}
+		return isFormValid && edited;
+	};
+
+	const submitBtnClick = () => {
+		console.log(inputsValid);
+		if (validateForm()) {
+			console.log("submitting grouup edit");
+			props.editGroup(formData, props.group.groupId);
+		}
+
 	};
 
 	const onGetName = async (coords: [number, number]) => {
@@ -116,13 +138,6 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 		buttonsContainer: "detailedView--buttonContainer"
 	};
 
-	const dataKeys = {
-		groupName: "group.groupName",
-		code: "group.code",
-		address: "group.address",
-		location: "group.location",
-	};
-
 	const resources = {
 		nextBtn: "nextBtn",
 		groupNameInput: "groups.addGroupForm.groupName",
@@ -146,9 +161,11 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 				<span>{t(resources.basicInfo)}</span>
 				<Input
 					type={InputType.Text}
-					changeHandler={newValue => { }}
+					changeHandler={newValue => setFormData(draft => {
+						draft.name = newValue;
+					})}
 					placeholder={t(resources.groupNameInput)}
-					value={props.group.name}
+					value={formData.name}
 					icon={InputIcon.Globe}
 					validation={{
 						type: ValidationType.Required,
@@ -161,7 +178,6 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 					}}
 				/>
 				<Input
-
 					type={InputType.Address}
 					changeHandler={newValue => { setPlaceName(newValue); }}
 					placeholder={t(resources.addressInput)}
@@ -169,17 +185,22 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 					icon={InputIcon.Location}
 					addressCords={coords => {
 						if (coords) {
-							setAddressCoordinates({
-								latitude: coords[1],
-								longitude: coords[0],
+							setFormData(draft => {
+								draft.location = {
+									latitude: coords[1],
+									longitude: coords[0],
+								};
 							});
 						} else {
-							setAddressCoordinates(null);
+							setFormData(draft => {
+								draft.location = null;
+							});
 						}
 					}}
 					validation={{
 						type: ValidationType.Address,
 						isValidCallback: isValid => {
+							console.log("EDIT GROUP LOCATION VALID: ", isValid);
 							setInputsValid(draft => {
 								draft.location = isValid;
 							});
@@ -250,7 +271,7 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 			</div>
 			<MediaQuery query="(min-width: 900px)">
 				<div className={cssClasses.map}>
-					<MapBoxPicker location={addressCoordinates} label={placeName} />
+					<MapBoxPicker location={formData.location} label={placeName} />
 				</div>
 			</MediaQuery>
 		</div>

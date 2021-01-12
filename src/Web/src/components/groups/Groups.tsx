@@ -79,7 +79,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 					history={this.props.history}
 					location={this.props.location}
 					callbacks={callbacks}
-					selectedGroup={this.props.groups.find(g => g.groupId === this.state.selectedGroupId)}
+					selectedGroup={this.props.groups?.find(g => g.groupId === this.state.selectedGroupId) ?? null}
 					authId={this.props.authId}
 				/>
 			</section>

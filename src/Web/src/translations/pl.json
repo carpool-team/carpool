@@ -77,6 +77,12 @@
                 "deleteUserConfirm": "Czy usunąć użytkownika: "
             }
         },
+        "group": {
+            "edit": {
+                "success": "Pomyślnie zapisano zmiany.",
+                "error": "Błąd edycji grupy. Spróbuj ponownie."
+            }
+        },
         "rides": {
             "cyclicBtn": "Cykliczny",
             "disposableBtn": "Jednorazowy",

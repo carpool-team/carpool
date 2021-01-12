@@ -18,12 +18,14 @@ import {
 	ILeaveGroupAction,
 	IDeleteUserFromGroupAction,
 	IDeleteGroupAction,
+	IEditGroupAction,
 } from "./Types";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 import { ILocation } from "../interfaces/ILocation";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroup } from "../interfaces/IGroup";
+import { IEditGroupFormData } from "../components/edit/interfaces/IEditGroupFormData";
 
 //#region GROUPS
 export function addGroup(group: IAddGroupData): IAddGroupAction {
@@ -64,6 +66,12 @@ export const deleteUserFromGroup: (groupId: string, userId: string) => IDeleteUs
 
 export const deleteGroup: (groupId: string) => IDeleteGroupAction = groupId => ({
 	type: GroupsActionTypes.DeleteGroup,
+	groupId,
+});
+
+export const editGroup: (data: IEditGroupFormData, groupId: string) => IEditGroupAction = (data, groupId) => ({
+	type: GroupsActionTypes.EditGroup,
+	data,
 	groupId,
 });
 //#endregion
