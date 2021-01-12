@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     color: colors.grayVeryDark,
     fontSize: 16,
+    flexWrap: 'wrap',
   },
   right: {
     flex: 1,
