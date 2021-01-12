@@ -81,7 +81,7 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 
 			const response = await directionsClient
 				.getDirections({
-					profile: "driving-traffic",
+					profile: "driving",
 					waypoints: waypointsSorted,
 					overview: "full",
 					geometries: "geojson",
