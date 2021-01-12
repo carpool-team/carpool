@@ -25,7 +25,10 @@ namespace DataTransferObjects.Group
             Code = code;
             UserCount = userCount;
             RideCount = rideCount;
-            Owner = new IndexUserDto(owner.Id, owner.FirstName, owner.LastName, owner.Vehicle);
+            Owner = new IndexUserDto(owner.Id,
+                owner.FirstName, 
+                owner.LastName, 
+                owner.Vehicle);
         }
 
         public GroupId GroupId { get; }
