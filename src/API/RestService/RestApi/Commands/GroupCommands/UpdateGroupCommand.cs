@@ -65,8 +65,8 @@ namespace RestApi.Commands.GroupCommands
 					StatusCodes.Status403Forbidden);
 
 			group.Location = request.Location ?? group.Location;
-			group.Name = string.IsNullOrEmpty(request.Name) ? request.Name : group.Name;
-			group.Code = string.IsNullOrEmpty(request.Code) ? request.Code : group.Code;
+			group.Name = !string.IsNullOrEmpty(request.Name) ? request.Name : group.Name;
+			group.Code = !string.IsNullOrEmpty(request.Code) ? request.Code : group.Code;
 			group.OwnerId = request.OwnerId ?? group.OwnerId;
 
 			try
