@@ -40,14 +40,16 @@ namespace RestApi.Commands.GroupCommands
 		{
 			var group = await _groupRepository.GetByIdAsync(request.GroupId, cancellationToken);
 
+			if (group == default)
+				throw new ApiException(StatusCodes.Status404NotFound);
+			
 			if (group.OwnerId != request.RequestingUserId 
-			    && request.AppUserId != request.RequestingUserId
-			    || group.OwnerId == request.AppUserId)
+			    && request.AppUserId != request.RequestingUserId)
 				throw new ApiException(StatusCodes.Status403Forbidden);
 
 			if (group.OwnerId == request.AppUserId)
 				throw new ApiException("Owner cannot remove himself from the group",
-					StatusCodes.Status406NotAcceptable);
+					StatusCodes.Status403Forbidden);
 
 			var hasOperationSucceeded = await group.RemoveUserFromGroup(request.AppUserId, cancellationToken);
 
