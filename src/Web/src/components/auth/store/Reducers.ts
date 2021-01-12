@@ -10,6 +10,7 @@ import {
 
 const initialState: IAuthState = {
 	tokenInfo: null,
+	initializing: true,
 };
 
 /**
@@ -24,12 +25,15 @@ const reducer: Reducer<IAuthState> = (
 	return produce<IAuthState>(state, (draft) => {
 		switch (action.type) {
 			case LoginActionTypes.LoginSuccess:
+				draft.initializing = false;
 				draft.tokenInfo = action.tokenInfo;
 				break;
 			case RegisterActionTypes.RegisterSuccess:
 				break;
-			case LoginActionTypes.Logout:
-				console.log("LOGGING OUT...");
+			case LoginActionTypes.NoToken:
+				draft.initializing = false;
+				break;
+			case LoginActionTypes.ClearStore:
 				draft.tokenInfo = null;
 				break;
 			default:

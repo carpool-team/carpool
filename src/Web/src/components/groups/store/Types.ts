@@ -9,7 +9,8 @@ import { ILocation } from "../interfaces/ILocation";
 import { IRide } from "../interfaces/IRide";
 
 export enum GenericActionTypes {
-	ApiError = "GROUPS_STORE_API_ERROR"
+	ApiError = "GROUPS_STORE_API_ERROR",
+	ClearStore = "GROUPS_STORE_CLEAR",
 }
 
 /** Enum of groups actions */
@@ -69,6 +70,9 @@ export enum RidesActionTypes {
 //#region GENERIC
 export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 	errorMessage: string;
+}
+
+export interface IGroupsClearStoreAction extends Action<GenericActionTypes.ClearStore> {
 }
 //#endregion
 
@@ -285,7 +289,8 @@ export interface IAddRideAction extends Action<RidesActionTypes.AddRide> {
 //#endregion
 
 export type GenericAction =
-	IApiErrorAction;
+	IApiErrorAction
+	| IGroupsClearStoreAction;
 
 /** Type of group action */
 export type GroupsAction =
