@@ -39,13 +39,12 @@ const regexes = {
 };
 
 const cssClasses = {
-	input: "authInputs__input",
-	bar: "authInputs__bar",
-	validation: "authInputs__validation",
-	ruleList: "authInputs__ruleList",
-	ruleListItem: "authInputs__ruleListItem",
-	ruleListItemNotSatisfied: "authInputs__ruleListItem--notSatisfied",
-	ruleListItemSatisified: "authInputs__ruleListItem--satisfied",
+	input: "auth__inputs--input",
+	validation: "auth__inputs--validation",
+	ruleList: "passwords__ruleList",
+	ruleListItem: "passwords__ruleListItem",
+	ruleListItemNotSatisfied: "passwords__ruleListItem--notSatisfied",
+	ruleListItemSatisified: "passwords__ruleListItem--satisfied",
 };
 
 const usePasswordWithConfirm = () => {
@@ -102,6 +101,7 @@ const usePasswordWithConfirm = () => {
 	const render = () => (
 		<>
 			<Input
+				style={cssClasses.input}
 				type={InputType.Password}
 				changeHandler={(newValue: string) => { setPassword(newValue); }}
 				placeholder={i18n.t(resources.password)}
