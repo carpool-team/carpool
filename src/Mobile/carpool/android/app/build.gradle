@@ -132,8 +132,8 @@ android {
         applicationId "com.carpool.wmi"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 16
+        versionName "1.5.3"
         multiDexEnabled true
     }
     splits {
