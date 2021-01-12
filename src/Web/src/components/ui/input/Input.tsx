@@ -159,6 +159,7 @@ const Input = (props: IInputProps) => {
 					autocomplete: true,
 					limit: 3,
 					mode: "mapbox.places",
+					countries: ["pl"]
 				})
 				.send();
 			const result: Array<any> = response.body.features;
