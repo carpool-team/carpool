@@ -50,6 +50,18 @@ export const DeleteAccount = {
   PromiseTrigger: 'DELETE_ACCOUNT.TRIGGER',
 };
 
+export const LeaveGroup = {
+  Trigger: 'LEAVE_GROUP',
+
+  PromiseTrigger: 'LEAVE_GROUP.TRIGGER',
+};
+
+export const GetGroupRides = {
+  Trigger: 'GET_GROUP_RIDES',
+
+  PromiseTrigger: 'GET_GROUP_RIDES.TRIGGER',
+};
+
 export const toggleActiveAccount = () => ({
   type: ToggleActiveAccount.Trigger,
 });
@@ -69,7 +81,7 @@ export const getGroupsError = payload => ({
 });
 
 export const getGroupsLoading = () => ({
-  type: GetGroups.Error,
+  type: GetGroups.Loading,
 });
 
 export const getInvitations = () => ({
@@ -110,3 +122,9 @@ export const editUser = payload =>
   createPromiseAction(EditUser.Trigger)(payload);
 
 export const deleteAccount = () => createPromiseAction(DeleteAccount.Trigger)();
+
+export const leaveGroup = payload =>
+  createPromiseAction(LeaveGroup.Trigger)(payload);
+
+export const getGroupRides = payload =>
+  createPromiseAction(GetGroupRides.Trigger)(payload);

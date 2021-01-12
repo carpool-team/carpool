@@ -15,5 +15,6 @@ export const styles = StyleSheet.create({
   emailInputWrapper: {
     width: '100%',
     marginBottom: 60,
+    opacity: 0.5,
   },
 });

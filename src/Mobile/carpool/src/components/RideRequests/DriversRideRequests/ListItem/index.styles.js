@@ -4,7 +4,7 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   upview: {
     width: '100%',
-    height: 230,
+    height: 210,
     marginBottom: 30,
   },
   contentContainer: {
@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
   time: {
     ...sheet.textMedium,
     color: colors.grayDark,
-    fontSize: 22,
+    fontSize: 20,
   },
   date: {
     ...sheet.textSemiBold,
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   name: {
     ...sheet.textSemiBold,
     color: colors.blue,
-    fontSize: 16,
+    fontSize: 14,
   },
   bottomRow: {
     flexDirection: 'row',

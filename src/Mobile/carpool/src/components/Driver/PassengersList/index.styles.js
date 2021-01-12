@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   title: {
     ...sheet.textSemiBold,
     color: colors.grayVeryDark,
-    fontSize: 18,
+    fontSize: 16,
   },
   empty: {
     marginTop: 25,

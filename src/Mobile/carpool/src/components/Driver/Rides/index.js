@@ -5,13 +5,14 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import WeekPicker from '../WeekPicker';
 import {getDates} from '../../../utils/date';
 import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
 import {useNavigation} from '@react-navigation/native';
-import {colors, sheet} from '../../../styles';
+import {colors} from '../../../styles';
 import WeekRidesList from '../WeekRidesList';
 import {styles} from './index.styles';
 import {useActiveAccount} from '../../../hooks';
@@ -41,6 +42,36 @@ const Rides = () => {
   useEffect(() => {
     onRefreshRides();
   }, [offset]);
+
+  useEffect(() => {
+    if (driversRides.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch rides from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [driversRides]);
+
+  useEffect(() => {
+    if (passengersRides.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch rides from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [passengersRides]);
 
   const onRefreshRides = () => {
     const {firstDay, lastDay, range, week} = getDates(offset);

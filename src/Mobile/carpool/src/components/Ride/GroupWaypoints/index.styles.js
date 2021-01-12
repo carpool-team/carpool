@@ -7,25 +7,25 @@ export const styles = StyleSheet.create({
     ...sheet.rowCenter,
   },
   wrapper: {
-    height: 60,
+    height: 50,
     flex: 1,
     ...sheet.rowCenter,
   },
   columnLeft: {
     flexDirection: 'column',
-    height: 55,
+    height: 46,
     justifyContent: 'space-between',
     alignItems: 'center',
     marginRight: 8,
   },
   columnRight: {
     flexDirection: 'column',
-    height: 60,
+    height: 50,
     justifyContent: 'space-between',
   },
   placeName: {
     ...sheet.textSemiBold,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.grayDark,
   },
   line: {

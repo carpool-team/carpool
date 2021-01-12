@@ -4,18 +4,18 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   card: {
     width: '100%',
-    height: 160,
+    height: 140,
     marginBottom: 36,
   },
   container: {
     flex: 1,
-    padding: 20,
+    padding: 16,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   name: {
     ...sheet.textSemiBold,
-    fontSize: 20,
+    fontSize: 18,
     color: colors.grayVeryDark,
   },
   author: {
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   },
   members: {
     ...sheet.textSemiBold,
-    fontSize: 20,
+    fontSize: 18,
     marginLeft: 8,
     color: colors.blue,
   },
@@ -42,6 +42,6 @@ export const styles = StyleSheet.create({
     ...sheet.rowCenter,
   },
   circleButton: {
-    marginRight: 16,
+    marginRight: 32,
   },
 });

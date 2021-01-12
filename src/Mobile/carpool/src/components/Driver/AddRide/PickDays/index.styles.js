@@ -4,11 +4,13 @@ import {sheet} from '../../../../styles';
 export const styles = StyleSheet.create({
   container: {
     ...sheet.rowCenterSplit,
+    flexWrap: 'wrap',
     width: '100%',
   },
   circle: {
-    width: 40,
-    height: 40,
+    width: 38,
+    height: 38,
+    margin: 5,
   },
   circleLabel: {
     ...sheet.textMedium,

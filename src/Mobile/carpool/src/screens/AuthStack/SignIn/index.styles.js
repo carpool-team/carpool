@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     ...sheet.textSemiBold,
-    fontSize: 36,
+    fontSize: 32,
     color: colors.blue,
     alignSelf: 'center',
     marginVertical: 24,
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
   },
   forgot: {
     ...sheet.textSemiBold,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.yellow,
     padding: 8,
   },
@@ -40,13 +40,13 @@ export const styles = StyleSheet.create({
   },
   dontHave: {
     ...sheet.textRegular,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.grayDark,
     marginTop: 24,
   },
   signUp: {
     ...sheet.textSemiBold,
-    fontSize: 16,
+    fontSize: 14,
     color: colors.blue,
     padding: 8,
   },

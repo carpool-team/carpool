@@ -35,6 +35,18 @@ export const FindRides = {
   PromiseTrigger: 'FIND_RIDES.TRIGGER',
 };
 
+export const ResignFromRide = {
+  Trigger: 'RESIGN_FROM_RIDE',
+
+  PromiseTrigger: 'RESIGN_FROM_RIDE.TRIGGER',
+};
+
+export const DeleteRideRequest = {
+  Trigger: 'DELETE_RIDE_REQUEST',
+
+  PromiseTrigger: 'DELETE_RIDE_REQUEST.TRIGGER',
+};
+
 export const getUsersRides = () => ({
   type: GetUsersRides.Trigger,
 });
@@ -96,3 +108,9 @@ export const createRideRequest = payload =>
 
 export const findRides = payload =>
   createPromiseAction(FindRides.Trigger)(payload);
+
+export const resignFromRide = payload =>
+  createPromiseAction(ResignFromRide.Trigger)(payload);
+
+export const deleteRideRequest = payload =>
+  createPromiseAction(DeleteRideRequest.Trigger)(payload);

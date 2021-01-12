@@ -12,34 +12,6 @@ export const styles = StyleSheet.create({
     left: 0,
     bottom: 90,
   },
-  routeDetailsWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    paddingVertical: 8,
-    borderTopWidth: 1,
-    borderTopColor: colors.gray,
-  },
-  time: {
-    ...sheet.textSemiBold,
-    fontSize: 32,
-    color: colors.green,
-  },
-  timeUnit: {
-    ...sheet.textSemiBold,
-    fontSize: 32,
-    color: colors.green,
-  },
-  distance: {
-    ...sheet.textSemiBold,
-    fontSize: 32,
-    color: colors.orange,
-  },
-  distanceUnit: {
-    ...sheet.textSemiBold,
-    fontSize: 32,
-    color: colors.orange,
-  },
   marker: {
     marginBottom: 32,
   },
@@ -47,5 +19,23 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  detailsWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray,
+  },
+  distance: {
+    ...sheet.textSemiBold,
+    color: colors.blue,
+    fontSize: 14,
+  },
+  time: {
+    ...sheet.textSemiBold,
+    color: colors.green,
+    fontSize: 14,
   },
 });

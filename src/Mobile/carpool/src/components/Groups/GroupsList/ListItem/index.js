@@ -20,13 +20,13 @@ const ListItem = ({item, onItemPress}) => (
       </View>
       <View style={styles.bottomRow}>
         <View style={sheet.rowCenter}>
-          <Icon name="group" size={40} color={colors.grayDark} />
+          <Icon name="group" size={32} color={colors.grayDark} />
           <Text style={styles.members}>
             {item.userCount ? item.userCount : 0}
           </Text>
         </View>
         <View style={sheet.rowCenter}>
-          <Ionicon name="ios-car" size={40} color={colors.grayDark} />
+          <Ionicon name="ios-car" size={32} color={colors.grayDark} />
           <Text style={styles.rides}>
             {item.rideCount ? item.rideCount : 0}
           </Text>

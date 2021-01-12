@@ -19,6 +19,21 @@ const Settings = ({navigation}) => {
     dispatch(actions.getUser());
   }, []);
 
+  useEffect(() => {
+    if (user.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch data from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [user]);
+
   const onLogout = () => dispatch(actions.logoutUser());
 
   const onDelete = () =>
@@ -33,19 +48,29 @@ const Settings = ({navigation}) => {
         {
           style: 'destructive',
           text: 'Delete',
-          onPress: () => dispatch(actions.deleteAccount()),
+          onPress: () => onDeleteAction(),
         },
       ],
     );
+
+  const onDeleteAction = () => {
+    dispatch(actions.deleteAccount())
+      .then(() => {
+        dispatch(actions.logoutUser());
+      })
+      .catch(err => {
+        dispatch(actions.logoutUser());
+      });
+  };
 
   const onEdit = () => navigation.navigate('EditUser');
 
   return (
     <SafeScroll minHeight={500}>
-      {user.loading || !user.data ? (
-        <FullScreenLoading />
-      ) : (
-        <View style={styles.container}>
+      <View style={styles.container}>
+        {user.loading || !user.data ? (
+          <FullScreenLoading />
+        ) : (
           <View style={styles.flexCenter}>
             <View style={sheet.rowCenter}>
               <View style={styles.flexCenter}>
@@ -57,7 +82,7 @@ const Settings = ({navigation}) => {
                 style={styles.circle}
                 borderRadius={9999}
                 contentContainerStyle={styles.contentContainer}>
-                <Icon name="person" color={colors.grayDark} size={65} />
+                <Icon name="person" color={colors.grayDark} size={55} />
               </UpView>
               <View style={styles.flexCenter}>
                 <TouchableOpacity onPress={onEdit}>
@@ -70,16 +95,16 @@ const Settings = ({navigation}) => {
             }`}</Text>
             <Text style={styles.email}>{user.data.email}</Text>
           </View>
-          <View>
-            <StandardButton
-              title="Logout"
-              color={colors.red}
-              onPress={onLogout}
-            />
-            <Text style={styles.version}>Version: 0.6 beta</Text>
-          </View>
+        )}
+        <View>
+          <StandardButton
+            title="Logout"
+            color={colors.red}
+            onPress={onLogout}
+          />
+          <Text style={styles.version}>Version: 0.6 beta</Text>
         </View>
-      )}
+      </View>
     </SafeScroll>
   );
 };

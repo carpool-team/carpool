@@ -21,13 +21,13 @@ export const styles = StyleSheet.create({
   title: {
     ...sheet.textMedium,
     color: colors.grayVeryDark,
-    fontSize: 20,
+    fontSize: 18,
     paddingVertical: 8,
   },
   seeAll: {
     ...sheet.textMedium,
     color: colors.blue,
-    fontSize: 16,
+    fontSize: 14,
   },
   loadingWrapper: {
     flex: 1,

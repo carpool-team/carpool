@@ -4,13 +4,11 @@ import {colors, sheet} from '../../../../styles';
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingBottom: 30,
+    paddingBottom: 20,
   },
   weekdayWrapper: {
     width: '100%',
-    borderTopColor: colors.gray,
     borderBottomColor: colors.gray,
-    borderTopWidth: 0.75,
     borderBottomWidth: 0.75,
   },
   weekday: {

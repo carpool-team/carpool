@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, TextInput} from 'react-native';
+import {View, Text, TextInput, Alert} from 'react-native';
 import {colors, sheet} from '../../../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {StandardButton} from '../../../../../components/common/buttons';
@@ -38,7 +38,16 @@ const SelectLocation = ({state, dispatch}) => {
         setResults([...res.body.features]);
       })
       .catch(err => {
-        console.log('ERR', err);
+        Alert.alert(
+          'Error',
+          'An error ocurred when trying to find location. Please try again.',
+          [
+            {
+              text: 'Ok',
+              style: 'default',
+            },
+          ],
+        );
       })
       .finally(() => {
         setLoading(false);

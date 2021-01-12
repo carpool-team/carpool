@@ -23,7 +23,8 @@ export const styles = StyleSheet.create({
   title: {
     ...sheet.textSemiBold,
     color: colors.grayVeryDark,
-    fontSize: 18,
+    fontSize: 16,
+    flexWrap: 'wrap',
   },
   right: {
     flex: 1,

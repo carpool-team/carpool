@@ -14,6 +14,12 @@ export const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     marginLeft: 8,
     color: colors.grayDark,
-    fontSize: 18,
+    fontSize: 16,
+  },
+  flexed: {
+    width: '100%',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

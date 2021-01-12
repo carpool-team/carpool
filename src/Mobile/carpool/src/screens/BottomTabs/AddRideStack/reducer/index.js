@@ -9,6 +9,7 @@ export const initialState = {
   seats: null,
   success: false,
   error: null,
+  weeks: null,
 };
 
 export const AddRideActions = {
@@ -20,6 +21,7 @@ export const AddRideActions = {
   SET_REGULAR: 'SET_REGULAR',
   SET_TIME: 'SET_TIME',
   SET_SEATS: 'SET_SEATS',
+  SET_WEEKS: 'SET_WEEKS',
   CLEAN_STATE: 'CLEAN_STATE',
   SET_SUCCESS: 'SET_SUCCESS',
   SET_ERROR: 'SET_ERROR',
@@ -76,6 +78,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         error: action.payload,
+      };
+    case AddRideActions.SET_WEEKS:
+      return {
+        ...state,
+        weeks: action.payload,
       };
     case AddRideActions.CLEAN_STATE:
       return initialState;

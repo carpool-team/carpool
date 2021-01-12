@@ -66,14 +66,25 @@ export function* refreshTokenAsync() {
 
     if (currentRefreshToken) {
       // Fetch refresh token
-      // Save new tokens in store
+      const res = yield authInstance.post('/Auth/refresh-token', {
+        value: currentRefreshToken,
+      });
+
+      const {token, refreshToken} = res.data.result;
+
+      const decoded = jwt_decode(token);
+
+      // Save new tokens in storage
+      yield call(storeData, STORAGE_KEYS.token, token);
+      yield call(storeData, STORAGE_KEYS.refreshToken, refreshToken);
+      yield call(storeData, STORAGE_KEYS.userId, decoded.sub.toString());
+
       // Call getTokenSuccess
-      yield put(actions.logoutUser());
+      yield put(actions.getTokenSuccess({token, refreshToken}));
     } else {
       yield put(actions.logoutUser());
     }
   } catch (err) {
-    console.log('ERROR', err);
     yield put(actions.logoutUser());
   }
 }

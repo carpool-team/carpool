@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   select: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 18,
+    fontSize: 16,
     marginLeft: 16,
   },
 });

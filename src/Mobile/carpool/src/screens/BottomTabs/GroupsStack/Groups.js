@@ -5,6 +5,7 @@ import {
   View,
   Text,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import sheet from '../../../styles/sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -30,6 +31,36 @@ const Groups = ({navigation}) => {
   useEffect(() => {
     onRefresh();
   }, []);
+
+  useEffect(() => {
+    if (groups.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch groups from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [groups]);
+
+  useEffect(() => {
+    if (invitations.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch invitations from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [invitations]);
 
   const getInvitations = number => {
     if (number === 0) {

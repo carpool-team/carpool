@@ -21,7 +21,6 @@ const SearchResults = ({navigation, route}) => {
       headerLeft: () => <GoBack onPress={navigation.goBack} />,
     });
   }, []);
-
   const onRefresh = () =>
     dispatch(
       actions.findRides({
@@ -33,7 +32,7 @@ const SearchResults = ({navigation, route}) => {
       .then(res => {
         setResults(res);
       })
-      .catch(err =>
+      .catch(err => {
         Alert.alert(
           'Error',
           'An error ocurred when trying to fetch rides from the server. Please try again.',
@@ -44,8 +43,8 @@ const SearchResults = ({navigation, route}) => {
               style: 'default',
             },
           ],
-        ),
-      )
+        );
+      })
       .finally(() => setLoading(false));
 
   const onItemPress = ride =>

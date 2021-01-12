@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 30,
   },
   title: {
-    fontSize: 30,
+    fontSize: 26,
     color: colors.orange,
     ...sheet.textSemiBold,
   },
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     marginLeft: 12,
     color: colors.grayDark,
-    fontSize: 18,
+    fontSize: 16,
   },
   mapWrapper: {
     width: '100%',
@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     borderColor: colors.grayDark,
     paddingVertical: 8,
     ...sheet.textMedium,
-    fontSize: 18,
+    fontSize: 16,
     color: colors.grayVeryDark,
   },
   listWrapper: {

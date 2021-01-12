@@ -41,17 +41,19 @@ const SetSeats = ({dispatch}) => {
       <Text style={styles.seats}>SEATS</Text>
       <View style={[sheet.rowCenterSplit, styles.carWrapper]}>
         <View style={[sheet.rowCenter, styles.car]}>
-          <Ionicon name="ios-car" size={100} color={colors.grayVeryDark} />
+          <Ionicon name="ios-car" size={75} color={colors.grayVeryDark} />
         </View>
         <View style={[sheet.rowCenterSplit, styles.buttonsWrapper]}>
           <CircleButton
+            size={50}
             onPress={onDecrement}
-            icon={<FAIcon name="minus" size={24} color={colors.grayVeryDark} />}
+            icon={<FAIcon name="minus" size={20} color={colors.grayDark} />}
           />
           <Text style={styles.numOfSeats}>{seats}</Text>
           <CircleButton
+            size={50}
             onPress={onIncrement}
-            icon={<FAIcon name="plus" size={24} color={colors.grayVeryDark} />}
+            icon={<FAIcon name="plus" size={20} color={colors.grayDark} />}
           />
         </View>
       </View>

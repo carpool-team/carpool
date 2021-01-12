@@ -5,8 +5,8 @@ import {colors, sheet} from '../../../../styles';
 
 const StandardButton = ({
   title,
-  width = 270,
-  height = 54,
+  width = 240,
+  height = 50,
   color = colors.blue,
   style,
   onPress,

@@ -41,6 +41,18 @@ const EditUser = ({navigation}) => {
         email: user.data.email ?? '',
       });
     }
+    if (user.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch data from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
   }, [user]);
 
   const {
@@ -133,6 +145,7 @@ const EditUser = ({navigation}) => {
             value={values.email}
             onChangeText={handleChange('email')}
             error={touched.email && errors.email ? errors.email : null}
+            editable={false}
           />
           <StandardButton
             title="Submit"

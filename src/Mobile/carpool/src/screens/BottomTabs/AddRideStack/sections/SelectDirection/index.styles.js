@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     paddingTop: 40,
   },
   title: {
-    fontSize: 30,
+    fontSize: 26,
     color: colors.orange,
     ...sheet.textSemiBold,
     marginBottom: 50,
@@ -17,11 +17,11 @@ export const styles = StyleSheet.create({
   info: {
     ...sheet.textMedium,
     color: colors.grayVeryDark,
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 20,
   },
   upview: {
-    height: 80,
+    height: 60,
     width: '46%',
   },
   contentContainer: {
@@ -31,18 +31,19 @@ export const styles = StyleSheet.create({
   direction: {
     ...sheet.textSemiBold,
     color: colors.blue,
-    fontSize: 24,
+    fontSize: 22,
   },
   name: {
     ...sheet.textMedium,
     color: colors.grayDark,
-    fontSize: 32,
-    marginTop: 20,
+    fontSize: 28,
+    marginTop: 30,
+    marginBottom: 5,
   },
   placeName: {
     ...sheet.textSemiBold,
     color: colors.grayVeryDark,
-    fontSize: 16,
+    fontSize: 14,
     marginTop: 8,
     marginLeft: 10,
   },

@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   contentContainer: {
-    paddingTop: 54,
+    paddingTop: 32,
     paddingHorizontal: 16,
   },
 });

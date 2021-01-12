@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   },
   address: {
     ...sheet.textMedium,
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 5,
     color: colors.grayVeryDark,
     flexWrap: 'wrap',

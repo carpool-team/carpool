@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import * as actions from '../../../store/actions';
 import {useNavigation} from '@react-navigation/native';
 import {useActiveAccount} from '../../../hooks';
+import {Alert} from 'react-native';
 
 const PastRides = () => {
   const navigation = useNavigation();
@@ -21,6 +22,36 @@ const PastRides = () => {
   useEffect(() => {
     onRefreshPastRides();
   }, []);
+
+  useEffect(() => {
+    if (driversPastRides.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch your rides from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [driversPastRides]);
+
+  useEffect(() => {
+    if (passengersPastRides.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch your rides from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [passengersPastRides]);
 
   const dispatch = useDispatch();
 
@@ -45,6 +76,7 @@ const PastRides = () => {
       }
       onRefresh={onRefreshPastRides}
       onItemPress={onItemPress}
+      reverse
     />
   );
 };

@@ -23,15 +23,15 @@ const ListItem = ({item, onAccept, onDecline}) => {
           <Text style={styles.members}>{item.groupDto.userCount}</Text>
           <View style={styles.bottomRow}>
             <CircleButton
-              size={56}
-              icon={<MaterialIcon name="close" size={32} color={colors.red} />}
+              size={42}
+              icon={<MaterialIcon name="close" size={24} color={colors.red} />}
               style={styles.circleButton}
               onPress={() => onDecline(item)}
             />
             <CircleButton
-              size={56}
+              size={42}
               icon={
-                <MaterialIcon name="check" size={32} color={colors.green} />
+                <MaterialIcon name="check" size={24} color={colors.green} />
               }
               onPress={() => onAccept(item)}
             />

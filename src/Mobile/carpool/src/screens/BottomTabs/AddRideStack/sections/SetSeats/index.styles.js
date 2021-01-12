@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   seats: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 24,
+    fontSize: 22,
   },
   carWrapper: {
     width: '100%',
@@ -27,6 +27,6 @@ export const styles = StyleSheet.create({
   numOfSeats: {
     ...sheet.textSemiBold,
     color: colors.blue,
-    fontSize: 32,
+    fontSize: 28,
   },
 });

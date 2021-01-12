@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     ...sheet.textMedium,
     color: colors.grayDark,
     textTransform: 'uppercase',
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 75,
     lineHeight: 25,
   },

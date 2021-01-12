@@ -36,7 +36,11 @@ export const reducer = (state, action) => {
         password: action.payload,
       };
     case SignUpActions.RESET:
-      return initialState;
+      return {
+        ...state,
+        password: '',
+        email: '',
+      };
     default:
       return state;
   }

@@ -10,7 +10,8 @@ const SettingsStack = () => (
     screenOptions={{
       header: props => <Header {...props} hideSwitch />,
       title: 'Settings',
-    }}>
+    }}
+    headerMode="screen">
     <Stack.Screen name="Settings" component={Settings} />
     <Stack.Screen
       name="EditUser"

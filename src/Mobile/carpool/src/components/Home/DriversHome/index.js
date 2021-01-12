@@ -1,14 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ActivityIndicator, TouchableOpacity} from 'react-native';
+import {View, Text, RefreshControl, Alert} from 'react-native';
 import {sheet, colors} from '../../../styles';
 import {useNavigation} from '@react-navigation/native';
 import {RideDetailsCard} from '../../Ride';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {ListEmptyComponent} from '../../common/lists';
 import {ThreeGroupsList} from '../../Groups';
 import {styles} from './index.styles';
 import {SafeScroll} from '../../common/wrappers';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import NewInvitations from '../NewInvitations';
+import PendingRideRequest from '../PendingRideRequests';
+import * as actions from '../../../store/actions';
 
 const DriversHome = () => {
   const navigation = useNavigation();
@@ -21,34 +23,80 @@ const DriversHome = () => {
       ? store.driverReducer.rideRequests.data.length
       : 0,
   );
+  const invitationCount = useSelector(store =>
+    store.accountReducer.invitations.data
+      ? store.accountReducer.invitations.data.length
+      : 0,
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (driversRides.data) {
       setRide(driversRides.data[0]);
     }
+    if (driversRides.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch rides from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
   }, [driversRides]);
+
+  useEffect(() => {
+    if (groups.error) {
+      Alert.alert(
+        'Error',
+        'An error ocurred when trying to fetch groups from the server. Please try again.',
+        [
+          {
+            text: 'Ok',
+            style: 'default',
+          },
+        ],
+      );
+    }
+  }, [groups]);
 
   const onRideRequestsPress = () =>
     navigation.navigate('RidesStack', {
       screen: 'RideRequests',
     });
 
+  const onInvitationsPress = () =>
+    navigation.navigate('GroupsStack', {
+      screen: 'Invitations',
+    });
+
   const onAllRidesPress = () => navigation.navigate('RidesStack');
 
   const onAllGroupsPress = () => navigation.navigate('GroupsStack');
 
+  const onRefresh = () => {
+    dispatch(actions.getGroups());
+    dispatch(actions.getDriversRides());
+    dispatch(actions.getDriversRideRequests());
+    dispatch(actions.getInvitations());
+  };
+
   return (
-    <SafeScroll minHeight={600}>
-      {!!requestsCount && (
-        <TouchableOpacity
-          onPress={onRideRequestsPress}
-          style={styles.topButton}>
-          <Text style={styles.count}>{`${requestsCount} pending ride request${
-            requestsCount > 1 ? 's' : ''
-          }`}</Text>
-          <MaterialIcon name="add-location" color={colors.green} size={32} />
-        </TouchableOpacity>
-      )}
+    <SafeScroll
+      minHeight={700}
+      refreshControl={
+        <RefreshControl
+          onRefresh={onRefresh}
+          colors={[colors.blue]}
+          refreshing={groups.loading || driversRides.loading}
+          tintColor={colors.blue}
+        />
+      }>
+      <PendingRideRequest count={requestsCount} onPress={onRideRequestsPress} />
       <View style={styles.container}>
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Upcoming ride</Text>
@@ -57,11 +105,7 @@ const DriversHome = () => {
           </Text>
         </View>
         <View style={styles.flexed}>
-          {driversRides.loading ? (
-            <View style={styles.loadingWrapper}>
-              <ActivityIndicator color={colors.blue} size="large" />
-            </View>
-          ) : ride ? (
+          {driversRides.loading ? null : ride ? (
             <RideDetailsCard
               ride={ride}
               onItemPress={ride =>
@@ -75,6 +119,7 @@ const DriversHome = () => {
             <ListEmptyComponent title="You don't have any upcoming rides" />
           )}
         </View>
+        <NewInvitations count={invitationCount} onPress={onInvitationsPress} />
         <View style={sheet.rowCenterSplit}>
           <Text style={styles.title}>Your groups</Text>
           <Text onPress={onAllGroupsPress} style={styles.seeAll}>
@@ -82,23 +127,16 @@ const DriversHome = () => {
           </Text>
         </View>
         <View style={styles.flexed}>
-          {groups.loading ? (
-            <View style={styles.loadingWrapper}>
-              <ActivityIndicator color={colors.blue} size="large" />
-            </View>
-          ) : groups.data ? (
-            <ThreeGroupsList
-              groups={groups.data}
-              onItemPress={group =>
-                navigation.navigate('GroupsStack', {
-                  screen: 'GroupDetails',
-                  params: {group},
-                })
-              }
-            />
-          ) : (
-            <ListEmptyComponent title="You are not a member of any group yet" />
-          )}
+          <ThreeGroupsList
+            groups={groups.data}
+            loading={groups.loading}
+            onItemPress={group =>
+              navigation.navigate('GroupsStack', {
+                screen: 'GroupDetails',
+                params: {group},
+              })
+            }
+          />
         </View>
       </View>
     </SafeScroll>

@@ -4,7 +4,7 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   upview: {
     width: '100%',
-    height: 100,
+    height: 95,
     marginTop: 16,
   },
   contentContainer: {
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   name: {
     ...sheet.textMedium,
     color: colors.grayVeryDark,
-    fontSize: 18,
+    fontSize: 16,
     marginLeft: 8,
   },
   placeName: {

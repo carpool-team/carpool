@@ -28,27 +28,27 @@ export const styles = StyleSheet.create({
   time: {
     ...sheet.textSemiBold,
     color: colors.green,
-    fontSize: 22,
+    fontSize: 20,
   },
   date: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 16,
+    fontSize: 14,
     marginTop: 5,
   },
   seats: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 22,
+    fontSize: 20,
     marginLeft: 12,
   },
   buttonsWrapper: {
     width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingBottom: '15%',
+    paddingBottom: '10%',
     paddingHorizontal: 16,
-    paddingTop: 20,
+    paddingTop: 25,
   },
   buttonsContainer: {
     ...sheet.rowCenterSplit,
@@ -59,5 +59,10 @@ export const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  until: {
+    ...sheet.textMedium,
+    color: colors.grayDark,
+    fontSize: 14,
   },
 });

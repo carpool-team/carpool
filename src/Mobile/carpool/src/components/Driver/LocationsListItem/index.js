@@ -11,7 +11,7 @@ const LocationsListItem = ({item, onPress = () => null}) => (
     <Icon
       name="map-marker"
       color={colors.green}
-      size={32}
+      size={28}
       style={styles.marker}
     />
     <Text style={styles.address}>{item.place_name}</Text>

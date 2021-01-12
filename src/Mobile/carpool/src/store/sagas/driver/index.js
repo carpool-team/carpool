@@ -32,7 +32,6 @@ export function* getDriversRidesAsync() {
       });
 
       yield put(actions.getDriversRidesSuccess(res.data.result));
-      // yield put(actions.getDriversRidesSuccess(exampleRides));
     }
   } catch (err) {
     if (err.response) {
@@ -65,7 +64,6 @@ export function* getDriversPastRidesAsync() {
       );
 
       yield put(actions.getDriversPastRidesSuccess(res.data.result));
-      // yield put(actions.getDriversPastRidesSuccess(examplePastRides));
     }
   } catch (err) {
     if (err.response) {
@@ -83,7 +81,6 @@ export function* getDriversPastRidesAsync() {
 export function* deleteRideAsync(action) {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield instance.delete(`/Rides/${action.payload}`, {
@@ -114,18 +111,52 @@ export function* deleteRideAsync(action) {
   }
 }
 
+export function* deleteRegularRideAsync(action) {
+  try {
+    const token = yield select(state => state.authReducer.tokens.data.token);
+
+    if (token) {
+      yield instance.delete(`/Rides/recurring/${action.payload}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      yield put(actions.getDriversRides());
+
+      yield call(resolvePromiseAction, action);
+    }
+  } catch (err) {
+    if (err.response) {
+      if (err.response.status === 401) {
+        yield put(actions.refreshToken());
+        yield take(actions.GetToken.Success);
+        try {
+          yield putResolve(actions.deleteRegularRide(action.payload));
+          yield call(resolvePromiseAction, action);
+        } catch (err) {
+          yield call(rejectPromiseAction, action, err.response);
+        }
+        return;
+      }
+    }
+    yield call(rejectPromiseAction, action, err.response);
+  }
+}
+
 export function* deleteParticipantAsync(action) {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       const {rideId, userId} = action.payload;
-      // yield instance.delete(`/Rides/${rideId}/users/${userId}`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
+
+      yield instance.delete(`/Rides/${rideId}/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       yield put(actions.getDriversRides());
 
       yield call(resolvePromiseAction, action);
@@ -196,6 +227,15 @@ export function* createRegularRideAsync(action) {
     const token = yield select(state => state.authReducer.tokens.data.token);
     const userId = jwt_decode(token).sub.toString();
 
+    const startDate = moment().format();
+
+    const endDate = moment()
+      .set('hours', 0)
+      .set('minutes', 0)
+      .set('seconds', 0)
+      .add(action.payload.weeks, 'weeks')
+      .format();
+
     if (token) {
       const res = yield instance.post(
         '/Rides/recurring',
@@ -203,17 +243,8 @@ export function* createRegularRideAsync(action) {
           ...action.payload,
           ownerId: userId,
           price: 0,
-          startDate: moment()
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0)
-            .toISOString(),
-          endDate: moment()
-            .set('hours', 0)
-            .set('minutes', 0)
-            .set('seconds', 0)
-            .add(1, 'months')
-            .toISOString(),
+          startDate,
+          endDate,
         },
         {
           headers: {
@@ -248,7 +279,6 @@ export function* createRegularRideAsync(action) {
 export function* getDriversRideRequestsAsync() {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
       yield put(actions.getDriversRideRequestsLoading());
@@ -290,10 +320,9 @@ export function* watchDriversRideRequestsAsync() {
 export function* acceptRideRequestAsync(action) {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      const res = yield instance.put(
+      yield instance.put(
         '/RideRequests',
         {
           isAccepted: true,
@@ -305,14 +334,13 @@ export function* acceptRideRequestAsync(action) {
           },
         },
       );
-      console.log('acceptRideRequestAsync res', res);
 
       yield put(actions.getDriversRideRequests());
+      yield put(actions.getDriversRides());
 
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('acceptRideRequestAsync err', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
@@ -334,10 +362,9 @@ export function* acceptRideRequestAsync(action) {
 export function* rejectRideRequestAsync(action) {
   try {
     const token = yield select(state => state.authReducer.tokens.data.token);
-    const userId = jwt_decode(token).sub.toString();
 
     if (token) {
-      const res = yield instance.put(
+      yield instance.put(
         '/RideRequests',
         {
           isAccepted: false,
@@ -349,14 +376,13 @@ export function* rejectRideRequestAsync(action) {
           },
         },
       );
-      console.log('rejectRideRequestAsync res', res);
 
       yield put(actions.getDriversRideRequests());
+      yield put(actions.getDriversRides());
 
       yield call(resolvePromiseAction, action);
     }
   } catch (err) {
-    console.log('rejectRideRequestAsync err', err);
     if (err.response) {
       if (err.response.status === 401) {
         yield put(actions.refreshToken());
@@ -375,7 +401,7 @@ export function* rejectRideRequestAsync(action) {
   }
 }
 
-const accountSagas = [
+const driverSagas = [
   takeLatest(actions.GetDriversRides.Trigger, getDriversRidesAsync),
   takeLatest(actions.GetDriversPastRides.Trigger, getDriversPastRidesAsync),
   takeLatest(actions.DeleteRide.PromiseTrigger, deleteRideAsync),
@@ -392,6 +418,7 @@ const accountSagas = [
   ),
   takeLatest(actions.AcceptRideRequest.PromiseTrigger, acceptRideRequestAsync),
   takeLatest(actions.RejectRideRequest.PromiseTrigger, rejectRideRequestAsync),
+  takeLatest(actions.DeleteRegularRide.PromiseTrigger, deleteRegularRideAsync),
 ];
 
-export default accountSagas;
+export default driverSagas;

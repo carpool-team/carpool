@@ -14,7 +14,17 @@ import {styles} from './index.styles';
 
 const RideSummary = ({state, rdispatch}) => {
   const [loading, setLoading] = useState(false);
-  const {group, location, swap, regular, days, time, seats, date} = state;
+  const {
+    group,
+    location,
+    swap,
+    regular,
+    days,
+    time,
+    seats,
+    date,
+    weeks,
+  } = state;
 
   const dispatch = useDispatch();
 
@@ -35,6 +45,7 @@ const RideSummary = ({state, rdispatch}) => {
 
   const onSubmit = () => {
     if (regular) {
+      setLoading(true);
       dispatch(
         actions.createRegularRide({
           groupId: group.groupId,
@@ -43,6 +54,7 @@ const RideSummary = ({state, rdispatch}) => {
           weekDays: days,
           rideTime: moment(time).format('HH:mm'),
           seatsLimit: seats,
+          weeks,
         }),
       )
         .then(() => {
@@ -56,7 +68,7 @@ const RideSummary = ({state, rdispatch}) => {
       dispatch(
         actions.createSingleRide({
           groupId: group.groupId,
-          date: date,
+          date: moment(date).format(),
           rideDirection: swap ? 1 : 0,
           location: location.coordinates,
           seatsLimit: seats,
@@ -99,6 +111,9 @@ const RideSummary = ({state, rdispatch}) => {
                 <Text style={styles.seats}>{seats}</Text>
               </View>
             </View>
+            <Text style={styles.until}>{`Until ${moment(time)
+              .add(weeks, 'weeks')
+              .format('Do MMMM YYYY')}`}</Text>
           </View>
         ) : (
           <View style={[styles.bottomWrapper, styles.detailsWrapper]}>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet, ActivityIndicator, Alert} from 'react-native';
 import sheet from '../../../styles/sheet';
 import colors from '../../../styles/colors';
 import UpView from '../../../components/common/UpView';
@@ -11,12 +11,16 @@ import {GoBack, Header} from '../../../components/navigation';
 import {PointMinimap} from '../../../components/Route';
 import {useReverseGeocoding} from '../../../hooks';
 import {SafeScroll} from '../../../components/common/wrappers';
+import * as actions from '../../../store/actions';
+import {useDispatch} from 'react-redux';
 
 const GroupDetails = ({navigation, route}) => {
   const [group, setGroup] = useState(null);
   const [placeName, setPlaceName] = useState(null);
 
   const [results, loading, error, _getPlaceName] = useReverseGeocoding();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (route.params) {
@@ -27,7 +31,7 @@ const GroupDetails = ({navigation, route}) => {
       headerLeft: () => (
         <GoBack onPress={() => navigation.navigate('Groups')} />
       ),
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
     });
   }, []);
 
@@ -38,12 +42,68 @@ const GroupDetails = ({navigation, route}) => {
     }
   }, [results]);
 
+  useEffect(() => {
+    group &&
+      navigation.setOptions({
+        title: group.name,
+      });
+  }, [group]);
+
+  const onLeaveGroup = () => {
+    Alert.alert(
+      'Warning!',
+      `Are you sure you want to leave ${group.name}? This cannot be undone`,
+      [
+        {
+          text: 'Cancel',
+          style: 'default',
+        },
+        {
+          text: 'Leave group',
+          style: 'destructive',
+          onPress: () => {
+            dispatch(actions.leaveGroup(group.groupId))
+              .then(() => {
+                navigation.goBack();
+              })
+              .catch(err => {
+                if (err.status === 403) {
+                  Alert.alert(
+                    'Warning!',
+                    'You cannot leave your own group. To delete one of your groups go to https://carpool.com.pl',
+                    [
+                      {
+                        text: 'Ok',
+                        style: 'default',
+                      },
+                    ],
+                  );
+                } else {
+                  Alert.alert(
+                    'Error',
+                    'An error ocurred when trying to leave group. Please try again.',
+                    [
+                      {
+                        text: 'Ok',
+                        style: 'default',
+                      },
+                    ],
+                  );
+                }
+              });
+          },
+        },
+      ],
+    );
+  };
+
+  const onRidesPress = () => {
+    navigation.navigate('GroupRides', {group});
+  };
+
   return group ? (
     <SafeScroll minHeight={500}>
       <View style={styles.upperContainer}>
-        <Text style={styles.name} numberOfLines={1}>
-          {group.name}
-        </Text>
         <View style={styles.statsRow}>
           <View style={sheet.columnCenter}>
             <Text style={styles.totalRides}>
@@ -59,16 +119,26 @@ const GroupDetails = ({navigation, route}) => {
           </View>
         </View>
         <View style={styles.cardGrid}>
-          <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
+          <UpView
+            borderRadius={8}
+            style={styles.leaveUpView}
+            onPress={onLeaveGroup}>
             <View style={styles.cardContent}>
-              <MaterialIcon name="settings" size={40} color={colors.blue} />
-              <Text style={styles.cardLabel}>Settings</Text>
+              <MaterialIcon
+                name="exit-to-app"
+                color={colors.orange}
+                size={32}
+              />
+              <Text style={styles.cardLabel}>Leave</Text>
             </View>
           </UpView>
-          <UpView borderRadius={8} style={styles.upview} onPress={() => null}>
+          <UpView
+            borderRadius={8}
+            style={styles.ridesUpView}
+            onPress={onRidesPress}>
             <View style={styles.cardContent}>
-              <Ionicon name="ios-car" size={40} color={colors.blue} />
-              <Text style={styles.cardLabel}>Your rides</Text>
+              <Ionicon name="ios-car" size={32} color={colors.blue} />
+              <Text style={styles.cardLabel}>Rides</Text>
             </View>
           </UpView>
         </View>
@@ -98,13 +168,15 @@ const GroupDetails = ({navigation, route}) => {
 const styles = StyleSheet.create({
   upperContainer: {
     flex: 1,
-    paddingTop: 18,
+  },
+  topRow: {
+    ...sheet.rowCenterSplit,
+    paddingHorizontal: 16,
   },
   name: {
     ...sheet.textBold,
     color: colors.grayDark,
-    fontSize: 25,
-    paddingHorizontal: 16,
+    fontSize: 22,
   },
   statsRow: {
     flexDirection: 'row',
@@ -116,22 +188,22 @@ const styles = StyleSheet.create({
   totalRides: {
     ...sheet.textBold,
     color: colors.green,
-    fontSize: 30,
+    fontSize: 26,
   },
   rides: {
     ...sheet.textMedium,
     color: colors.green,
-    fontSize: 16,
+    fontSize: 14,
   },
   totalMembers: {
     ...sheet.textBold,
     color: colors.blue,
-    fontSize: 30,
+    fontSize: 26,
   },
   members: {
     ...sheet.textMedium,
     color: colors.blue,
-    fontSize: 16,
+    fontSize: 14,
   },
   cardGrid: {
     paddingTop: 16,
@@ -141,33 +213,37 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     flex: 1,
-    padding: 16,
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   cardLabel: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 20,
+    fontSize: 16,
   },
-  upview: {
-    width: '48%',
-    height: 100,
+  leaveUpView: {
+    width: '35%',
+    height: 80,
+  },
+  ridesUpView: {
+    width: '60%',
+    height: 80,
   },
   flexed: {
     flex: 1,
   },
   addressWrapper: {
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    paddingVertical: 24,
     ...sheet.rowCenter,
   },
   icon: {
     marginRight: 12,
   },
   placeName: {
-    ...sheet.textMedium,
+    ...sheet.textSemiBold,
     color: colors.grayDark,
-    fontSize: 16,
+    fontSize: 14,
     flex: 1,
   },
 });

@@ -12,7 +12,9 @@ import {FullScreenLoading} from '../../../components/common/loaders';
 import {SafeScroll} from '../../../components/common/wrappers';
 
 const ValidationSchema = Yup.object().shape({
-  email: Yup.string().required('Email is required'),
+  email: Yup.string()
+    .email('Not a valid email')
+    .required('Email is required'),
   password: Yup.string().required('Password is required'),
 });
 
@@ -78,12 +80,12 @@ const SignIn = ({navigation}) => {
           error={touched.password && errors.password ? errors.password : null}
           onSubmitEditing={handleSubmit}
         />
-        <View style={styles.forgotWrapper}>
+        {/* <View style={styles.forgotWrapper}>
           <TouchableOpacity
             onPress={() => navigation.navigate('ForgotPassword')}>
             <Text style={styles.forgot}>Forgot your password?</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <StandardButton
           color={colors.blue}
           onPress={handleSubmit}

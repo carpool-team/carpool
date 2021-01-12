@@ -26,10 +26,16 @@ export const styles = StyleSheet.create({
   },
   regularRide: {
     ...sheet.textSemiBold,
-    fontSize: 18,
+    fontSize: 16,
     color: colors.grayVeryDark,
   },
   picker: {
-    marginTop: 40,
+    marginTop: 20,
+  },
+  sectionTitle: {
+    marginBottom: 24,
+    ...sheet.textMedium,
+    color: colors.grayDark,
+    fontSize: 14,
   },
 });

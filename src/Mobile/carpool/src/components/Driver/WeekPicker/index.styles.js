@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   icon: {
     paddingHorizontal: 15,
@@ -16,12 +16,12 @@ export const styles = StyleSheet.create({
   dateRange: {
     ...sheet.textSemiBold,
     color: colors.grayVeryDark,
-    fontSize: 18,
+    fontSize: 16,
   },
   past: {
     ...sheet.textMedium,
     color: colors.blue,
-    fontSize: 16,
+    fontSize: 14,
     paddingHorizontal: 15,
   },
   flexLeft: {
@@ -35,6 +35,6 @@ export const styles = StyleSheet.create({
   pastRides: {
     ...sheet.textSemiBold,
     color: colors.orange,
-    fontSize: 18,
+    fontSize: 16,
   },
 });
