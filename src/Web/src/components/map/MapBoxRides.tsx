@@ -9,10 +9,13 @@ import { parseCoords } from "../../helpers/UniversalHelper";
 import { getDefaultBounds, getDirectionsClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
 import { IReactI18nProps } from "../system/resources/IReactI18nProps";
 import { withTranslation } from "react-i18next";
+import { IRideStop } from "../groups/interfaces/IRideStop";
+import { ILocation } from "../groups/interfaces/ILocation";
+import { sortStops } from "../../helpers/StopsHelper";
 
 const Mapbox = ReactMapboxGl({
-	minZoom: 2,
-	maxZoom: 15,
+	minZoom: 1,
+	maxZoom: 20,
 	accessToken: mapboxKey,
 });
 
@@ -24,6 +27,7 @@ export interface IMapState {
 	route: any;
 	fromName: string;
 	toName: string;
+	stops: IRideStop[];
 }
 
 const flyToOptions = {
@@ -35,6 +39,7 @@ const defaults = {
 	fitBounds: getDefaultBounds(),
 	fromName: null,
 	toName: null,
+	stops: []
 };
 
 export interface IMapProps extends IReactI18nProps {
@@ -61,17 +66,23 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 			if (!ride) {
 				this.setState(produce((draft: IMapState) => { draft.route = null; }));
 			}
+			let waypointsSorted = [
+				{
+					coordinates: parseCoords(ride.location),
+				},
+				{
+					coordinates: parseCoords(ride.group?.location)
+				},
+			]
+			if (ride?.stops) {
+				const sortedStops = sortStops(this.props.ride.location, this.props.ride.group.location, this.props.ride?.stops)
+				waypointsSorted = (sortedStops.sortedStops.map(item => ({ coordinates: parseCoords(item) })));
+			}
+
 			const response = await directionsClient
 				.getDirections({
 					profile: "driving-traffic",
-					waypoints: [
-						{
-							coordinates: parseCoords(ride.location),
-						},
-						{
-							coordinates: parseCoords(ride.group?.location)
-						},
-					],
+					waypoints: waypointsSorted,
 					overview: "full",
 					geometries: "geojson",
 				})
@@ -94,6 +105,11 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 	componentDidUpdate() {
 		if (this.state.ride !== this.props.ride) {
 			if (this.props.ride) {
+				this.setState(
+					produce((draft: IMapState) => {
+						draft.stops = []
+					})
+				)
 				this.getBounds(this.props.ride);
 				onGetName(parseCoords(this.props.ride.location)).then(res => {
 					this.setState(
@@ -117,6 +133,23 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 						})
 					);
 				});
+			}
+			if (this.state.stops !== this.props.ride?.stops) {
+				if (this.props.ride?.stops) {
+					this.props.ride.stops.map((stop, idx) => {
+						onGetName(parseCoords(stop.location)).then(res => {
+							this.setState(
+								produce((draft: IMapState) => {
+									const s: IRideStop = {
+										name: res,
+										location: stop.location,
+										participant: stop.participant
+									}
+									draft.stops.push(s)
+								}))
+						})
+					})
+				}
 			}
 			this.onFindRoute(this.props.ride);
 			this.setState(produce((draft: IMapState) => {
@@ -144,8 +177,9 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 		return onStyleLoad && onStyleLoad(map);
 	}
 
+
 	public render() {
-		const { fitBounds, ride, route, fromName, toName } = this.state;
+		const { fitBounds, ride, route, fromName, toName, stops } = this.state;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
@@ -222,6 +256,26 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 							</div>
 							<div style={addressStyle}>{ride.rideDirection === RideDirection.To ? toName : fromName}</div>
 						</Popup>
+						{stops &&
+							<>
+								{ stops.map((stop, idx) => {
+									return (
+										<>
+											<Popup coordinates={parseCoords(stop.location)}>
+												<div style={nameStyle}>
+													{stop.participant.firstName} {stop.participant.lastName}
+												</div>
+												{stop.name &&
+													<div style={addressStyle}>
+														{stop.name}
+													</div>
+												}
+											</Popup>
+										</>
+									)
+								})}
+							</>
+						}
 					</>
 				}
 			</Mapbox>);

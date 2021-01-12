@@ -95,7 +95,9 @@
             "futureBtn": "Przyszłe",
             "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd.",
             "myRides": "Moje przejazdy",
-            "requestsBtn": "Prośby o przejazd"
+            "requestsBtn": "Prośby o przejazd",
+            "noParticipants": "Brak pasażerów",
+            "participantsLabel": "Pasażerowie:"
         },
         "requests": {
             "accepted": "Zaakceptowane",
