@@ -52,15 +52,12 @@ namespace RestApi.Controllers
 		[HttpPut("{groupId}")]
 		public async Task<ApiResponse> PutGroup([FromRoute] GroupId groupId, [FromBody] UpdateGroupDto model)
 		{
-			if (User.GetUserId() != model.OwnerId)
-				throw new ApiException("User does not have permissions to edit a group if he's not an owner", 
-					StatusCodes.Status403Forbidden);
-			
 			UpdateGroupCommand request = new(groupId,
 				model.Location,
 				model.Name,
 				model.Code,
-				model.OwnerId);
+				model.OwnerId,
+				User.GetUserId());
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 			return new ApiResponse($"Group with id: {response} has been updated", response);
 		}
