@@ -1,5 +1,6 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { IEditGroupFormData } from "../components/edit/interfaces/IEditGroupFormData";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroup } from "../interfaces/IGroup";
 import { IGroupUser } from "../interfaces/IGroupUser";
@@ -35,6 +36,9 @@ export enum GroupsActionTypes {
 	DeleteGroup = "GROUPS_DELETE_GROUP",
 	DeleteGroupSuccess = "GROUPS_DELETE_GROUP_SUCCESS",
 	DeleteGroupError = "GROUPS_DELETE_GROUP_ERROR",
+	EditGroup = "GROUPS_EDIT_GROUP",
+	EditGroupSuccess = "GROUPS_EDIT_GROUP_SUCCESS",
+	EditGroupError = "GROUPS_EDIT_GROUP_ERROR",
 }
 
 /** Enum of invites actions */
@@ -169,6 +173,18 @@ export interface IDeleteGroupSuccessAction extends Action<GroupsActionTypes.Dele
 export interface IDeleteGroupErrorAction extends Action<GroupsActionTypes.DeleteGroupError> {
 	error: Error;
 }
+
+export interface IEditGroupAction extends Action<GroupsActionTypes.EditGroup> {
+	data: IEditGroupFormData;
+	groupId: string;
+}
+
+export interface IEditGroupSuccessAction extends Action<GroupsActionTypes.EditGroupSuccess> {
+}
+
+export interface IEditGroupErrorAction extends Action<GroupsActionTypes.EditGroupError> {
+	error: Error;
+}
 //#endregion
 
 //#region INVITES
@@ -294,7 +310,10 @@ export type GroupsAction =
 	| IDeleteUserFromGroupSuccessAction
 	| IDeleteGroupAction
 	| IDeleteGroupErrorAction
-	| IDeleteGroupSuccessAction;
+	| IDeleteGroupSuccessAction
+	| IEditGroupAction
+	| IEditGroupSuccessAction
+	| IEditGroupErrorAction;
 
 export type InviteAction =
 	IAnswerInviteAction

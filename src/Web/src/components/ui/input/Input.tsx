@@ -191,6 +191,7 @@ const Input = (props: IInputProps) => {
 		props.changeHandler(placeName);
 		setAutocompleteList(null);
 		setIsAutoCompleted(true);
+		validate();
 	};
 
 	const submitAddressFocusOut = () => {
@@ -199,6 +200,7 @@ const Input = (props: IInputProps) => {
 			props.changeHandler(autocompleteList[0].place_name);
 			setAutocompleteList(null);
 			setIsAutoCompleted(true);
+			validate();
 		}
 	};
 
@@ -209,6 +211,7 @@ const Input = (props: IInputProps) => {
 				props.changeHandler(autocompleteList[0].place_name);
 				setAutocompleteList(null);
 				setIsAutoCompleted(true);
+				validate();
 			}
 		}
 	};
