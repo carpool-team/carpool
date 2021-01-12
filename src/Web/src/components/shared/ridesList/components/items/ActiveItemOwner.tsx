@@ -12,6 +12,7 @@ const geocodingClient = getGeocodingClient();
 
 const ActiveItemOwner = (props: IListItemProps) => {
 
+	console.log(props.ride)
 	const cssClasses = {
 		mainRow: "ridesList--mainRow",
 		address: "ridesList--mainRow__address",
@@ -86,6 +87,22 @@ const ActiveItemOwner = (props: IListItemProps) => {
 		}
 	}
 
+
+	const renderParticipants = () => {
+		if (props.ride.stops.length) {
+			return (
+				props.ride.stops.map((stop, idx) => {
+					return (
+						<div>
+							{stop.participant.firstName} + {stop.participant.lastName}
+						</div>
+					)
+				}))
+		} else {
+			return null
+		}
+	}
+
 	return (
 		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
 			<div className={cssClasses.activeButtonContainer} >
@@ -108,6 +125,7 @@ const ActiveItemOwner = (props: IListItemProps) => {
 					<div className={cssClasses.activeDate}>
 						{convertDate(props.ride.rideDate.toString())}
 					</div>
+					{renderParticipants()}
 					<Button style={backgroundColor} background={ButtonBackground.Blue} color={ButtonColor.White} className={cssClasses.activeJoinButton}>
 						{"Usuń"}
 					</Button>

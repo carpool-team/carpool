@@ -3,5 +3,5 @@ export interface IParticipant {
 	firstName: string;
 	lastName: string;
 	vehicle?: string;
-	rating: number;
+	rating?: number;
 }
