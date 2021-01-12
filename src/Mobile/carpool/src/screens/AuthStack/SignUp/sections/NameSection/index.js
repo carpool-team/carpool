@@ -8,8 +8,8 @@ import {StandardButton} from '../../../../../components/common/buttons';
 import {styles} from '../index.styles';
 
 const ValidationSchema = Yup.object().shape({
-  first_name: Yup.string().required('First name is required'),
-  last_name: Yup.string().required('Last name is required'),
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
   email: Yup.string()
     .email('Not a valid email')
     .required('Email is required'),
@@ -29,20 +29,18 @@ const NameSection = ({onSubmitName, initialValues, apiError}) => {
         returnKeyType="next"
         wrapperStyle={styles.inputWrapper}
         placeholder="First name"
-        value={values.first_name}
-        onChangeText={handleChange('first_name')}
+        value={values.firstName}
+        onChangeText={handleChange('firstName')}
         autoFocus
-        error={
-          touched.first_name && errors.first_name ? errors.first_name : null
-        }
+        error={touched.firstName && errors.firstName ? errors.firstName : null}
       />
       <StandardInput
         returnKeyType="next"
         wrapperStyle={styles.inputWrapper}
         placeholder="Last name"
-        value={values.last_name}
-        onChangeText={handleChange('last_name')}
-        error={touched.last_name && errors.last_name ? errors.last_name : null}
+        value={values.lastName}
+        onChangeText={handleChange('lastName')}
+        error={touched.lastName && errors.lastName ? errors.lastName : null}
       />
       <StandardInput
         returnKeyType="done"

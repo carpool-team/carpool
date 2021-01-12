@@ -12,7 +12,9 @@ import {FullScreenLoading} from '../../../components/common/loaders';
 import {SafeScroll} from '../../../components/common/wrappers';
 
 const ValidationSchema = Yup.object().shape({
-  email: Yup.string().required('Email is required'),
+  email: Yup.string()
+    .email('Not a valid email')
+    .required('Email is required'),
   password: Yup.string().required('Password is required'),
 });
 

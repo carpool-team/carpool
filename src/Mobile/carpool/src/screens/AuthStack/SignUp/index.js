@@ -19,10 +19,20 @@ const SignUp = ({navigation}) => {
   const rdispatch = useDispatch();
 
   useEffect(() => {
+    const {firstName, lastName, email} = store;
+    const onPress = () => {
+      if (!firstName || !lastName || !email) {
+        navigation.goBack();
+      } else {
+        dispatch({type: SignUpActions.SET_EMAIL, payload: ''});
+        dispatch({type: SignUpActions.SET_PASSWORD, payload: ''});
+      }
+    };
+
     navigation.setOptions({
-      headerLeft: () => <GoBack onPress={navigation.goBack} />,
+      headerLeft: () => <GoBack onPress={onPress} />,
     });
-  }, []);
+  }, [store]);
 
   useEffect(() => {
     if (store.firstName && store.lastName && store.password && store.email) {
@@ -32,7 +42,13 @@ const SignUp = ({navigation}) => {
           setSuccess(true);
         })
         .catch(err => {
-          setApiError('An error ocurred, try again');
+          if (err.response) {
+            if (err.response.data) {
+              setApiError(err.response.data.responseException[0].description);
+            } else {
+              setApiError('An error ocurred, try again');
+            }
+          }
           dispatch({type: SignUpActions.RESET});
         })
         .finally(() => {
@@ -41,9 +57,9 @@ const SignUp = ({navigation}) => {
     }
   }, [store]);
 
-  const onSubmitName = ({first_name, last_name, email}) => {
-    dispatch({type: SignUpActions.SET_FIRST_NAME, payload: first_name});
-    dispatch({type: SignUpActions.SET_LAST_NAME, payload: last_name});
+  const onSubmitName = ({firstName, lastName, email}) => {
+    dispatch({type: SignUpActions.SET_FIRST_NAME, payload: firstName});
+    dispatch({type: SignUpActions.SET_LAST_NAME, payload: lastName});
     dispatch({type: SignUpActions.SET_EMAIL, payload: email});
   };
 
