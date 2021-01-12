@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
@@ -48,11 +49,14 @@ namespace RestApi.Commands.GroupInviteCommands
 		public async Task<GroupInviteId> Handle(AddGroupInviteCommand request,
 			CancellationToken cancellationToken)
 		{
-			var group = _groupRepository.GetByIdAsNoTracking(request.GroupId);
+			var group = await _groupRepository.GetByIdAsNoTrackingAsync(request.GroupId, cancellationToken);
 			
 			if(group.OwnerId != request.InviterId)
 				throw new ApiException("Only owner can invite users to a group.", StatusCodes.Status403Forbidden);
-			
+
+			if (group.UserGroups.Any(x => x.AppUserId == request.InvitedAppUserId))
+				throw new ApiException("User is already in a group", StatusCodes.Status409Conflict);
+
 			IdGenerator idGenerator = new IdGenerator(IdGeneratorType.GroupInvite);
 			var groupInvite = new GroupInvite
 			{
@@ -61,7 +65,7 @@ namespace RestApi.Commands.GroupInviteCommands
 				InvitedAppUserId = request.InvitedAppUserId,
 				IsAccepted = false,
 				IsPending = true,
-				DateAdded = DateTime.Now,
+				DateAdded = DateTimeOffset.Now,
 				GroupId = request.GroupId
 			};
 

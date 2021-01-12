@@ -26,7 +26,7 @@ const LayoutRouter = (props: RouteComponentProps) => {
 	return (
 		<Suspense fallback={<LoaderSpinner />}>
 			<Switch>
-				<Route exact path={path} component={HomeScreen} />
+				<Route exact path={path + mainRoutes.default} component={HomeScreen} />
 				<PrivateRoute path={path + mainRoutes.groups} component={Groups} />
 				<Route exact path={path + mainRoutes.register} component={RegisterPanel} />
 				<Route exact path={path + mainRoutes.login} component={LoginPanel} />

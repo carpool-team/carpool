@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
-using DataTransferObjects.GroupDtos;
+using DataTransferObjects.Group;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -52,15 +52,12 @@ namespace RestApi.Controllers
 		[HttpPut("{groupId}")]
 		public async Task<ApiResponse> PutGroup([FromRoute] GroupId groupId, [FromBody] UpdateGroupDto model)
 		{
-			if (User.GetUserId() != model.OwnerId)
-				throw new ApiException("User does not have permissions to edit a group if he's not an owner", 
-					StatusCodes.Status403Forbidden);
-			
 			UpdateGroupCommand request = new(groupId,
 				model.Location,
 				model.Name,
 				model.Code,
-				model.OwnerId);
+				model.OwnerId,
+				User.GetUserId());
 			var response = await _mediator.Send(request).ConfigureAwait(false);
 			return new ApiResponse($"Group with id: {response} has been updated", response);
 		}
@@ -80,11 +77,24 @@ namespace RestApi.Controllers
 		}
 
         // DELETE: api/Groups/5
-		[HttpDelete("{id}")]
-		public async Task<ApiResponse> DeleteGroup(GroupId groupId)
+		[HttpDelete("{groupId}")]
+		public async Task<ApiResponse> DeleteGroup([FromRoute]GroupId groupId)
 		{
 			var response = await _mediator.Send(new DeleteGroupCommand(groupId, User.GetUserId())).ConfigureAwait(false);
 			return new ApiResponse($"Group with id: {groupId} has been deleted", StatusCodes.Status200OK);
+		}
+
+		[HttpDelete("{groupId}/users/{appUserId}")]
+		public async Task<ApiResponse> DeleteUserFromGroup([FromRoute] GroupId groupId,
+		                                                   [FromRoute] AppUserId appUserId)
+		{
+			RemoveUserFromGroupCommand request = new(User.GetUserId(),
+				appUserId,
+				groupId);
+
+			await _mediator.Send(request);
+
+			return new ApiResponse(StatusCodes.Status204NoContent);
 		}
     }
 }

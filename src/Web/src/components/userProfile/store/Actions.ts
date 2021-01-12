@@ -1,6 +1,6 @@
 import { IChangePasswordFormData } from "../interfaces/IChangePasswordFormData";
 import { IUserProfileFormData } from "../interfaces/IUserProfileFormData";
-import { IChangePasswordAction, IGetDataAction, IUpdateDataAction, UserProfileActionTypes } from "./Types";
+import { IChangePasswordAction, IDeleteUserAction, IGetDataAction, IUpdateDataAction, UserProfileActionTypes } from "./Types";
 
 //#region UISER PROFILE
 
@@ -23,5 +23,9 @@ export function changePassword(data: IChangePasswordFormData): IChangePasswordAc
 		data,
 	};
 }
+
+export const deleteUser: () => IDeleteUserAction = () => ({
+	type: UserProfileActionTypes.DeleteUser,
+});
 
 //#endregion

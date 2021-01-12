@@ -1,5 +1,6 @@
 ﻿using System;
 using Domain.Abstract;
+using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities
@@ -12,7 +13,8 @@ namespace Domain.Entities
 			RideId rideId,
 			AppUserId requestingUserId,
 			AppUserId rideOwnerId,
-			DateTime dateAdded)
+			DateTimeOffset dateAdded,
+			Location location)
 		{
 			Id = rideRequestId;
 			IsAccepted = isAccepted;
@@ -21,22 +23,12 @@ namespace Domain.Entities
 			RequestingUserId = requestingUserId;
 			RideOwnerId = rideOwnerId;
 			DateAdded = dateAdded;
+			Location = location;
 		}
 
-		public RideRequest(bool isAccepted, bool isPending, RideId rideId, Ride ride, AppUserId requestingUserId, ApplicationUser requestingUser, AppUserId rideOwnerId, ApplicationUser rideOwner, DateTime dateAdded)
-		{
-			IsAccepted = isAccepted;
-			IsPending = isPending;
-			RideId = rideId;
-			Ride = ride;
-			RequestingUserId = requestingUserId;
-			RequestingUser = requestingUser;
-			RideOwnerId = rideOwnerId;
-			RideOwner = rideOwner;
-			DateAdded = dateAdded;
-		}
+		private RideRequest()
+		{ }
 		
-		public RideRequest(){}
 		public bool IsAccepted { get; set; }
 
 		public bool IsPending { get; set; }
@@ -46,11 +38,15 @@ namespace Domain.Entities
 		public Ride Ride { get; set; }
 
 		public AppUserId RequestingUserId { get; set; }
+		
 		public virtual ApplicationUser RequestingUser { get; set; }
 
 		public AppUserId RideOwnerId { get; set; }
+		
 		public virtual ApplicationUser RideOwner { get; set; }
 
-		public DateTime DateAdded { get; set; }
+		public DateTimeOffset DateAdded { get; set; }
+		
+		public Location Location { get; set; }
 	}
 }

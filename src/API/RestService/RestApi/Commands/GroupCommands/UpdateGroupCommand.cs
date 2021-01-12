@@ -15,13 +15,19 @@ namespace RestApi.Commands.GroupCommands
 {
 	public class UpdateGroupCommand : IRequest<GroupId>
 	{
-		public UpdateGroupCommand(GroupId groupId, LocationDto? location, string name, string code, AppUserId? ownerId)
+		public UpdateGroupCommand(GroupId groupId,
+			LocationDto? location, 
+			string name, 
+			string code, 
+			AppUserId? ownerId, 
+			AppUserId requestingUserId)
 		{
 			GroupId = groupId;
-			Location = location != null ? new Location(location.longitude, location.latitude) : null;
+			Location = location != null ? new Location(location.Longitude, location.Latitude) : null;
 			Name = name;
 			Code = code;
 			OwnerId = ownerId;
+			RequestingUserId = requestingUserId;
 		}
 
 		public GroupId GroupId { get; }
@@ -33,6 +39,8 @@ namespace RestApi.Commands.GroupCommands
 		public string Code { get; }
 
 		public AppUserId? OwnerId { get; }
+
+		public AppUserId RequestingUserId { get; set; }
 	}
 	
 	public class UpdateGroupCommandHandler : IRequestHandler<UpdateGroupCommand, GroupId>
@@ -51,10 +59,14 @@ namespace RestApi.Commands.GroupCommands
 			_ = group
 				?? throw new ApiProblemDetailsException($"Group with id: {request.GroupId} does not exist.",
 					StatusCodes.Status400BadRequest);
+			
+			if (group.OwnerId != request.RequestingUserId)
+				throw new ApiException("User does not have permissions to edit a group if he's not an owner", 
+					StatusCodes.Status403Forbidden);
 
 			group.Location = request.Location ?? group.Location;
-			group.Name = request.Name ?? group.Name;
-			group.Code = request.Code ?? group.Code;
+			group.Name = !string.IsNullOrEmpty(request.Name) ? request.Name : group.Name;
+			group.Code = !string.IsNullOrEmpty(request.Code) ? request.Code : group.Code;
 			group.OwnerId = request.OwnerId ?? group.OwnerId;
 
 			try

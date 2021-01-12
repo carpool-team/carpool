@@ -15,12 +15,12 @@
                 "confirmPassword": "Potwierdź hasło",
                 "passwordsMismatch": "Hasła się nie zgadzają",
                 "passwordTooWeak": "Hasło jest za słabe",
-                "scoreWords": {
-                    "short": "Za krótkie",
-                    "weak": "Bardzo słabe",
-                    "okay": "Słabe",
-                    "good": "Dobre",
-                    "strong": "Silne"
+                "rules":{
+                    "length": "dłuższe niż 8 znaków",
+                    "uppercase": "wielka litera",
+                    "lowercase": "mała litera",
+                    "numbers": "cyfra",
+                    "special": "znak specjalny"
                 }
             },
             "userProfile": {
@@ -56,16 +56,32 @@
                 "surname": "Nazwisko",
                 "basicInfo": "Podstawowe informacje",
                 "basicInfo2": "Zaproś użytkowników",
-                "confirmBtn": "Zatwierdź"
+                "confirmBtn": "Wyślij",
+                "listLabel": "Lista użytkowników do których zostaną wysłane zaproszenia."
             },
             "list": {
+                "leaveGroup": "Opuść grupę",
                 "editGroup": "Edytuj grupę",
                 "ridesInGroup": "Przejazdy",
-                "inviteToGroup": "Zaproś do grupy"
+                "inviteToGroup": "Zaproś do grupy",
+                "leaveConfirm": "Czy na pewno opuśćić grupę?"
             },
             "addGroupBtn": "Dodaj grupę",
             "ridesBtn": "Przejazdy",
-            "invitesBtn": "Zaproszenia"
+            "invitesBtn": "Zaproszenia",
+            "editGroupForm": {
+                "deleteBtn": "Usuń grupę",
+                "deleteConfirm": "Czy usunąć grupę?",
+                "basicInfo": "Edytuj grupę",
+                "btnUsers": "Edytuj użytkowników grupy",
+                "deleteUserConfirm": "Czy usunąć użytkownika: "
+            }
+        },
+        "group": {
+            "edit": {
+                "success": "Pomyślnie zapisano zmiany.",
+                "error": "Błąd edycji grupy. Spróbuj ponownie."
+            }
         },
         "rides": {
             "cyclicBtn": "Cykliczny",
@@ -79,10 +95,23 @@
             "time": "Wybierz godzinę przejazdu.",
             "invalidDate": "Niewłaściwa data przejazdu",
             "invalidTime": "Niewłaściwa godzina przejazdu",
+            "addRide": "Dodaj przejazd",
             "addBtn": "Utwórz",
             "pastBtn": "Przeszłe",
             "futureBtn": "Przyszłe",
-            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd."
+            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd.",
+            "myRides": "Moje przejazdy",
+            "requestsBtn": "Prośby o przejazd",
+            "noParticipants": "Brak pasażerów",
+            "participantsLabel": "Pasażerowie:"
+        },
+        "requests": {
+            "accepted": "Zaakceptowane",
+            "pending": "Oczekujące",
+            "declined": "Odrzucone",
+            "status": "Status: ",
+            "requestFrom": "Prośba od: ",
+            "myRequests": "Moje prośby o przejazd."
         },
         "footer": {
             "services": "Usługi",
@@ -132,7 +161,8 @@
             "friday": "Piątek",
             "saturday": "Sobota",
             "sunday": "Niedziela",
-            "all": "Codziennie"
+            "all": "Codziennie",
+            "joinRide": "Dołącz"
         },
         "prevBtn": "Wstecz",
         "createBtn": "Utwórz",
@@ -158,6 +188,15 @@
             "loginGeneric": "Błąd logowania. Spróbuj ponownie!",
             "registerGeneric": "Nieznany błąd rejestracji.",
             "loginInvalid": "Błędny e-mail lub hasło."
+        },
+        "mapbox": {
+            "fromLabel": "Lokalizacja początkowa",
+            "toLabel": "Lokalizacja końcowa"
+        },
+        "addressModal": {
+            "input": "Podaj swój adres",
+            "confirmBtn": "Zatwierdź",
+            "cancelBtn": "Anuluj"
         }
     }
 }

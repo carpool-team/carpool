@@ -7,10 +7,18 @@ import { convertDate } from "../../../../../helpers/UniversalHelper";
 
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
+import ButtonSmall from "../../../../ui/buttonSmall/ButtonSmall";
+import { ButtonSmallColor } from "../../../../ui/buttonSmall/enums/ButtonSmallColor";
+import { ButtonSmallIcon } from "../../../../ui/buttonSmall/enums/ButtonSmallIcon";
+import { ButtonSmallBackground } from "../../../../ui/buttonSmall/enums/ButtonSmallBackground";
 
 const geocodingClient = getGeocodingClient();
 
-const ActiveItemOwner = (props: IListItemProps) => {
+interface IActiveItemOwnerProps extends IListItemProps {
+	deleteRide: (rideId: string) => void;
+}
+
+const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 
 	const cssClasses = {
 		mainRow: "ridesList--mainRow",
@@ -26,6 +34,11 @@ const ActiveItemOwner = (props: IListItemProps) => {
 		activeDate: "ridesListActive--date",
 		activeSeats: "ridesListActive--seats",
 		activeCar: "ridesListActive--car",
+		participantLabel: "ridesListActive--participantLabel",
+		participantContainer: "ridesListActive--participantContainer",
+		participantName: "ridesListActive--participantContainer--name",
+		participantButton: "ridesListActive--participantContainer--button",
+		noParticipants: "ridesListActive--participantContainer--noParticipants"
 	};
 
 	const [loading, setLoading] = useState(null);
@@ -37,6 +50,8 @@ const ActiveItemOwner = (props: IListItemProps) => {
 				.reverseGeocode({
 					query: coords,
 					mode: "mapbox.places",
+					countries: ["PL"],
+					language: ["PL"],
 				})
 				.send();
 			const result = response.body.features[0];
@@ -51,6 +66,10 @@ const ActiveItemOwner = (props: IListItemProps) => {
 			setLoading(false);
 		}
 	};
+	const resources = {
+		noParticipants: "rides.noParticipants",
+		participantsLabel: "rides.participantsLabel"
+	}
 
 	const color = {
 		color: props.color
@@ -86,6 +105,35 @@ const ActiveItemOwner = (props: IListItemProps) => {
 		}
 	}
 
+
+	const renderParticipants = () => {
+		if (props.ride.stops.length) {
+			return (
+				props.ride.stops.map((stop, idx) => {
+					return (
+						<div id={stop.participant.id} className={cssClasses.participantContainer}>
+							<div className={cssClasses.participantName}>
+								{stop.participant.firstName}  {stop.participant.lastName}
+							</div>
+							<ButtonSmall
+								style={cssClasses.participantButton}
+								icon={ButtonSmallIcon.Close}
+								onClick={() => { }}
+								color={ButtonSmallColor.Red}
+								background={ButtonSmallBackground.Gray}
+							/>
+						</div>
+					)
+				}))
+		} else {
+			return (
+				<div className={cssClasses.noParticipants}>
+					{props.t(resources.noParticipants)}
+				</div>
+			)
+		}
+	}
+
 	return (
 		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
 			<div className={cssClasses.activeButtonContainer} >
@@ -108,6 +156,10 @@ const ActiveItemOwner = (props: IListItemProps) => {
 					<div className={cssClasses.activeDate}>
 						{convertDate(props.ride.rideDate.toString())}
 					</div>
+					<div className={cssClasses.participantLabel}>
+						{props.t(resources.participantsLabel)}
+					</div>
+					{renderParticipants()}
 					<Button style={backgroundColor} background={ButtonBackground.Blue} color={ButtonColor.White} className={cssClasses.activeJoinButton}>
 						{"Usuń"}
 					</Button>

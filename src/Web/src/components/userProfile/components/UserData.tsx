@@ -11,13 +11,12 @@ import Button from "../../ui/button/Button";
 import { ButtonColor } from "../../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
 import { ProfileList } from "../enums/ProfileList";
-import ButtonLink from "../../ui/buttonLink/ButtonLink";
-import { ButtonLinkColor } from "../../ui/buttonLink/enums/ButtonLinkColor";
-import { ButtonLinkBackground } from "../../ui/buttonLink/enums/ButtonLinkBackground";
 import { Popover } from "@material-ui/core";
 import { IUserProfileFormData } from "../interfaces/IUserProfileFormData";
 import { connect } from "react-redux";
 import { DispatchProps, mapDispatchToProps, mapStateToProps, StateProps } from "../store/PropsTypes";
+import { useHistory } from "react-router";
+import { mainRoutes } from "../../layout/components/LayoutRouter";
 
 interface IUserDataProps extends IReactI18nProps, StateProps, DispatchProps {
 	setCurrentList: (List: ProfileList) => void;
@@ -36,6 +35,7 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 	});
 	const [validate, setValidate] = useState(false);
 	const [popover, setPopover] = useState<boolean>(false);
+	const history = useHistory();
 
 	useEffect(() => {
 		props.setLoaderVisible(true);
@@ -117,6 +117,8 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 
 	const onDeleteSubmit = () => {
 		handleClosePopover();
+		props.deleteUser();
+		history.push(`/${mainRoutes.default}`);
 	};
 
 	const onClickPassword = () => {

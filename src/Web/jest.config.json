@@ -1,0 +1,10 @@
+{
+    "testRegex": "((\\.|/*.)(test))\\.(tsx|ts)?$",
+    "moduleNameMapper": {
+        "^.+\\.(css|less|scss)$": "babel-jest"
+    },
+    "setupFiles": [
+        "<rootDir>/__mocks__/setEnvVars.ts"
+    ],
+    "collectCoverage": true
+}

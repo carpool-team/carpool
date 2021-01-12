@@ -11,9 +11,13 @@ namespace DataAccessLayer.Builders
 		{
 			_ = builder ?? throw new NullReferenceException(nameof(builder));
 
-			builder.HasKey(x => x.Id);
+			builder.HasKey(x => new {x.ParticipantId, x.RideId});
 
 			builder.OwnsOne(x => x.Location);
+
+			builder.HasOne(x => x.Participant)
+			       .WithMany()
+			       .HasForeignKey(x => x.ParticipantId);
 		}
 	}
 }

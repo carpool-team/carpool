@@ -15,6 +15,9 @@ interface IButtonLinkProps {
 	className?: string;
 	style?: React.CSSProperties;
 	additionalCssClass?: string;
+	type?: "submit" | "reset" | "button";
+	buttonRef?: React.LegacyRef<HTMLButtonElement>;
+	disabled?: boolean;
 }
 
 const Button: FunctionComponent<IButtonLinkProps> = (props) => {
@@ -28,6 +31,7 @@ const Button: FunctionComponent<IButtonLinkProps> = (props) => {
 	};
 
 	const baseCssClass: string = "button";
+	const dissabledCssClass: string = "button__disabled"
 	const cssClasses: string[] = [
 		baseCssClass,
 		props.className,
@@ -38,9 +42,19 @@ const Button: FunctionComponent<IButtonLinkProps> = (props) => {
 	if (props.additionalCssClass) {
 		cssClasses.push(props.additionalCssClass);
 	}
+	if (props.disabled) {
+		cssClasses.push(dissabledCssClass)
+	}
 
 	return (
-		<button id={props.id} style={props.style} className={cssClasses.join(" ")} onClick={btnClick}>
+		<button
+			id={props.id}
+			style={props.style}
+			className={cssClasses.join(" ")}
+			onClick={btnClick}
+			type={props.type}
+			ref={props.buttonRef}
+		>
 			{props.children}
 		</button>
 	);

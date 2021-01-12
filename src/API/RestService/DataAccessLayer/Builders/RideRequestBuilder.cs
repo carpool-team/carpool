@@ -30,8 +30,11 @@ namespace DataAccessLayer.Builders
 				.IsRequired();
 
 			builder.HasOne(x => x.Ride)
-				.WithMany()
-				.HasForeignKey(x => x.RideId);
+				.WithMany(r => r.RideRequests)
+				.HasForeignKey(x => x.RideId)
+				.IsRequired();
+
+			builder.OwnsOne(x => x.Location);
 		}
 	}
 }

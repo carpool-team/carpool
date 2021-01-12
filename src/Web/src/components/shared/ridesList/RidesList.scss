@@ -195,6 +195,13 @@
 			padding-right: 7px;
 			content:"\f073";
 		}
+		&__status{
+			font-size: 15px;
+			font-weight: $medium;
+			color: $grayDark;
+			text-decoration: none;
+			margin-left: 10px;
+		}
 	}
 }
 
@@ -280,5 +287,52 @@
 	&--joinButton{
 		margin-left: auto;
 		margin-right: auto;
+	}
+	&--buttonsContainer{
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+	}
+	&--status{
+		font-size: 17px;
+		font-weight: $semi-bold;
+		color: $grayDark;
+		text-decoration: none;
+		margin-left: 50px;
+		padding-bottom: 10px;
+	}
+	&--participantLabel{
+		font-size: 17px;
+		font-weight: $semi-bold;
+		color: $grayDark;
+		text-decoration: none;
+		margin-left: 20px;
+		padding-bottom: 2px;
+	}
+	&--participantContainer{
+		background-color: $background;
+		margin-left: 7px;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		height: 40px;
+		margin-bottom: 7px;
+		&--name{
+			margin-left: 10px;
+			font-size: 17px;
+			font-weight: $medium;
+			color: $grayDark;
+		}
+		&--button{
+
+		}
+		&--noParticipants{
+			margin-left: 60px;
+			font-size: 15px;
+			font-weight: $medium;
+			color: $grayDark;
+			margin-bottom: 10px;
+		}
 	}
 }

@@ -1,6 +1,6 @@
 import { ButtonSmallColor } from "./enums/ButtonSmallColor";
-import {ButtonSmallBackground} from "./enums/ButtonSmallBackground";
-import {ButtonSmallIcon} from "./enums/ButtonSmallIcon";
+import { ButtonSmallBackground } from "./enums/ButtonSmallBackground";
+import { ButtonSmallIcon } from "./enums/ButtonSmallIcon";
 
 export const getColorClass: (type?: ButtonSmallColor) => string = (color) => {
 	switch (color) {
@@ -13,7 +13,9 @@ export const getColorClass: (type?: ButtonSmallColor) => string = (color) => {
 		case ButtonSmallColor.White:
 			return "buttonSmall__text--white";
 		case ButtonSmallColor.Black:
-				return "buttonSmall__text--black";
+			return "buttonSmall__text--black";
+		case ButtonSmallColor.Red:
+			return "buttonSmall__text--red";
 		default:
 			return "buttonSmall__text--gray";
 	}
@@ -41,6 +43,8 @@ export const getIconClass: (type?: ButtonSmallIcon) => string = (icon) => {
 			return "buttonSmall__icon--user";
 		case ButtonSmallIcon.Close:
 			return "buttonSmall__icon--close";
+		case ButtonSmallIcon.Accept:
+			return "buttonSmall__icon--accept";
 		case ButtonSmallIcon.Right:
 			return "buttonSmall__icon--right";
 		case ButtonSmallIcon.Left:

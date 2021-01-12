@@ -16,7 +16,7 @@ namespace Domain.Contracts.Repositories
 
 		Task<List<RideRequest>> GetPartAsync(CancellationToken cancellationToken);
 
-		Task<IEnumerable<RideRequest>> GetUserPendingRideRequestAsNoTrackingAsync(AppUserId appUserId,
+		Task<IEnumerable<RideRequest>> GetParticipantPendingRideRequestAsNoTrackingAsync(AppUserId appUserId,
 			CancellationToken cancellationToken = default);
 		
 		Task<IEnumerable<RideRequest>> GetOwnerPendingRideRequestAsNoTrackingAsync(AppUserId appUserId,
@@ -24,6 +24,6 @@ namespace Domain.Contracts.Repositories
 
 		Task AddAsync(RideRequest groupInvite, CancellationToken cancellationToken);
 
-		void Delete(RideRequest groupInvite);
+		void Delete(RideRequest rideRequest);
 	}
 }

@@ -2,6 +2,7 @@ import { ITokenInfo } from "../interfaces/ITokenInfo";
 import { ILoginFormData } from "../login/LoginPanel";
 import { IRegisterFormData } from "../register/RegisterPanel";
 import {
+	IAuthInitAction,
 	ILoginAction,
 	ILoginErrorAction,
 	ILoginSuccessAction,
@@ -14,6 +15,12 @@ import {
 } from "./Types";
 
 //#region Login
+export function init(): IAuthInitAction {
+	return {
+		type: LoginActionTypes.Init,
+	};
+}
+
 export function login(data: ILoginFormData): ILoginAction {
 	return {
 		type: LoginActionTypes.Login,

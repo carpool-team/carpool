@@ -25,6 +25,7 @@ namespace DataAccessLayer.Repositories
 				.Include(x => x.Ride)
 				.Include(x => x.RequestingUser)
 				.Include(x => x.RideOwner)
+				.AsSplitQuery()
 				.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
 		public async Task<RideRequest> GetByIdAsNoTrackingAsync(RideRequestId id, CancellationToken cancellationToken)
@@ -38,14 +39,14 @@ namespace DataAccessLayer.Repositories
 		public async Task<List<RideRequest>> GetPartAsync(CancellationToken cancellationToken)
 			=> throw new NotImplementedException();
 
-		public async Task<IEnumerable<RideRequest>> GetUserPendingRideRequestAsNoTrackingAsync(AppUserId appUserId,
+		public async Task<IEnumerable<RideRequest>> GetParticipantPendingRideRequestAsNoTrackingAsync(AppUserId appUserId,
 			CancellationToken cancellationToken = default)
 			=> await _dbContext.Set<RideRequest>()
 				.Include(x => x.Ride)
 					.ThenInclude(a => a.Group)
 				.Include(x => x.RequestingUser)
 				.Include(x => x.RideOwner)
-				.Where(x => x.IsPending && (x.RequestingUserId == appUserId))
+				.Where(x => x.RequestingUserId == appUserId && x.Ride.Date >= DateTime.Now)
 				.ToListAsync(cancellationToken);
 
 		public async Task<IEnumerable<RideRequest>> GetOwnerPendingRideRequestAsNoTrackingAsync(AppUserId appUserId,
@@ -55,16 +56,15 @@ namespace DataAccessLayer.Repositories
 					.ThenInclude(a => a.Group)
 				.Include(x => x.RequestingUser)
 				.Include(x => x.RideOwner)
-				.Where(x => x.IsPending && (x.RideOwnerId == appUserId))
+				.Where(x => x.IsPending && x.RideOwnerId == appUserId && x.Ride.Date >= DateTime.Now)
 				.ToListAsync(cancellationToken);
 
 		public async Task AddAsync(RideRequest groupInvite, CancellationToken cancellationToken)
 			=> await _dbContext.Set<RideRequest>()
 				.AddAsync(groupInvite, cancellationToken);
 
-		public void Delete(RideRequest groupInvite)
-		{
-			throw new NotImplementedException();
-		}
+		public void Delete(RideRequest rideRequest)
+			=> _dbContext.Set<RideRequest>()
+			             .Remove(rideRequest);
 	}
 }

@@ -6,10 +6,15 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
+import { IRide } from "../../../../groups/interfaces/IRide";
 
 const geocodingClient = getGeocodingClient();
 
-const ActiveItemParticipant = (props: IListItemProps) => {
+interface IActiveItemParticipantProps extends IListItemProps {
+	leaveRideCallback: (rideId: string) => void;
+}
+
+const ActiveItemParticipant = (props: IActiveItemParticipantProps) => {
 
 	const cssClasses = {
 		mainRow: "ridesList--mainRow",
@@ -36,6 +41,8 @@ const ActiveItemParticipant = (props: IListItemProps) => {
 				.reverseGeocode({
 					query: coords,
 					mode: "mapbox.places",
+					countries: ["PL"],
+					language: ["PL"],
 				})
 				.send();
 			const result = response.body.features[0];
@@ -116,7 +123,13 @@ const ActiveItemParticipant = (props: IListItemProps) => {
 					<div className={cssClasses.activeSeats}>
 						Wolne miejsca: {"2"}
 					</div>
-					<Button style={backgroundColor} background={ButtonBackground.Blue} color={ButtonColor.White} className={cssClasses.activeJoinButton}>
+					<Button
+						style={backgroundColor}
+						background={ButtonBackground.Blue}
+						color={ButtonColor.White}
+						className={cssClasses.activeJoinButton}
+						onClick={() => props.leaveRideCallback(props.ride.rideId)}
+					>
 						Zrezygnuj
 					</Button>
 				</div>

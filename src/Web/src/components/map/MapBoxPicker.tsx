@@ -5,7 +5,8 @@ import { Marker } from "react-mapbox-gl";
 import produce from "immer";
 import { parseCoords } from "../../helpers/UniversalHelper";
 import { ILocation } from "../groups/interfaces/ILocation";
-import { mapboxKey, mapboxStyle } from "./MapBoxHelper";
+import { getDefaultBounds, mapboxKey, mapboxStyle } from "./MapBoxHelper";
+import { FitBoundsOptions } from "mapbox-gl";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 8,
@@ -16,10 +17,11 @@ const Mapbox = ReactMapboxGl({
 export interface IMapState {
 	center?: ILocation;
 	zoom?: [number];
+	fitBounds?: [[number, number], [number, number]];
 }
 
 const flyToOptions = {
-	speed: 1
+	speed: 3
 };
 
 export interface IMapProps {
@@ -28,22 +30,37 @@ export interface IMapProps {
 	label?: string;
 }
 
+const defaults = {
+	zoom: undefined as [number],
+	center: undefined as ILocation,
+	fitBounds: getDefaultBounds(),
+};
+
 export default class MapBoxPicker extends React.Component<IMapProps, IMapState> {
 
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
 			zoom: [11],
-			center: {
-				latitude: 52.408141,
-				longitude: 16.926712,
-			}
+			center: this.props.location,
+			...defaults,
 		};
 	}
 
 	private onStyleLoad = (map: any) => {
 		const onStyleLoad = this.props.onStyleLoad;
 		return onStyleLoad && onStyleLoad(map);
+	}
+	componentDidMount() {
+		console.log(this.props.location)
+		if (this.props.location) {
+			if (this.props.location !== this.state.center) {
+				this.setState(produce((draft: IMapState) => {
+					draft.zoom = [14];
+					draft.center = this.props.location;
+				}));
+			}
+		}
 	}
 	componentDidUpdate() {
 		if (this.props.location) {
@@ -57,8 +74,8 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 	}
 
 	public render() {
-		const { center, zoom } = this.state;
-		const location = this.props.location;
+		const { center, zoom, fitBounds } = this.state;
+		const location = this.state.center;
 		const label = this.props.label;
 
 		const containerStyle: CSSProperties = {
@@ -77,10 +94,16 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 			border: "2px",
 		};
 
+		const boundsOptions: FitBoundsOptions = {
+			padding: 100,
+		};
+
 		return (
 			<Mapbox
 				style={mapboxStyle}
 				onStyleLoad={this.onStyleLoad}
+				fitBounds={fitBounds}
+				fitBoundsOptions={boundsOptions}
 				center={parseCoords(center)}
 				zoom={zoom}
 				containerStyle={containerStyle}

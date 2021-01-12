@@ -1,7 +1,7 @@
-﻿using DataTransferObjects.VehicleDtos;
+﻿using DataTransferObjects.Vehicle;
 using IdentifiersShared.Identifiers;
 
-namespace RestApi.DTOs.User
+namespace DataTransferObjects.User
 {
     public class IndexUserDto
     {

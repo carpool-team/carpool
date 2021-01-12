@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
+using DataTransferObjects.Ride;
 using Domain.Enums;
 using IdentifiersShared.Identifiers;
 using MediatR;
@@ -10,9 +11,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Commands.RideCommands;
 using RestApi.Commands.RideCommands.AddRecurringRide;
+using RestApi.Commands.RideCommands.DeleteRecurringRide;
 using RestApi.Commands.RideCommands.RemoveUserFromRide;
-using RestApi.DTOs.Ride;
 using RestApi.Extensions;
+using RestApi.Queries.GroupQueries;
 using RestApi.Queries.RideQueries;
 
 namespace RestApi.Controllers
@@ -28,13 +30,13 @@ namespace RestApi.Controllers
 
 		[HttpGet]
 		public async Task<ApiResponse> GetRides([FromQuery] GroupId groupId,
-			[FromQuery] RideDirection rideDirection,
-			[FromQuery] DateTime dateTime)
+			[FromQuery] DateTimeOffset? dateTime = null,
+			[FromQuery] RideDirection? rideDirection = null)
 		{
 			GetRidesQuery getRides = new(groupId,
-				rideDirection,
 				dateTime,
-				User.GetUserId());
+				User.GetUserId(),
+				rideDirection);
 			var rides = await _mediator.Send(getRides);
 
 			return new ApiResponse(rides);
@@ -76,6 +78,15 @@ namespace RestApi.Controllers
             var userRides = await _mediator.Send(getUserRides);
 
             return new ApiResponse(userRides);
+        }
+
+        [HttpGet("~/api/groups/{groupId}/rides")]
+        public async Task<ApiResponse> GetGroupRides([FromRoute] GroupId groupId)
+        {
+	        GetGroupRidesQuery request = new(groupId, User.GetUserId());
+	        var rides = await _mediator.Send(request);
+
+	        return new ApiResponse(rides);
         }
 
         // PUT: api/Rides/5
@@ -120,24 +131,24 @@ namespace RestApi.Controllers
 			return new ApiResponse(rideIds, StatusCodes.Status201Created);
 		}
 
-        // [HttpPost("{rideId}/users")]
-        // public async Task<ApiResponse> AddParticipant([FromRoute] RideId rideId,
-        //     [FromBody] AddRideParticipantCommand addRideParticipant)
-        // {
-        //     addRideParticipant.RideId = rideId;
-        //     await _mediator.Send(addRideParticipant).ConfigureAwait(false);
-        //
-        //     return new ApiResponse("Added user to the ride", StatusCodes.Status201Created);
-        // }
-
 		// DELETE: api/Rides/5
 		[HttpDelete("{rideId}")]
-		public async Task<ApiResponse> DeleteRide(RideId rideId)
+		public async Task<ApiResponse> DeleteRide([FromRoute]RideId rideId)
 		{
             DeleteRideCommand deleteRide = new(rideId, User.GetUserId());
 			var ride = await _mediator.Send(deleteRide).ConfigureAwait(false);
 
-			return new ApiResponse(ride);
+			return new ApiResponse($"Deleted ride with id: {ride.Id}.");
+		}
+
+		[HttpDelete("recurring/{recurringRideId}")]
+		public async Task<ApiResponse> DeleteRecurringRide([FromRoute] RecurringRideId recurringRideId)
+		{
+			DeleteRecurringRideCommand deleteRecurringRide = new(recurringRideId);
+
+			var response = await _mediator.Send(deleteRecurringRide);
+
+			return new ApiResponse("Rides has been deleted.");
 		}
 
 

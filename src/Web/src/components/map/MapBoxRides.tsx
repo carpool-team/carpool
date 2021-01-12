@@ -6,11 +6,16 @@ import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
 import { IRide } from "components/groups/interfaces/IRide";
 import { RideDirection } from "../groups/api/addRide/AddRideRequest";
 import { parseCoords } from "../../helpers/UniversalHelper";
-import { getDirectionsClient, mapboxKey, mapboxStyle } from "./MapBoxHelper";
+import { getDefaultBounds, getDirectionsClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
+import { IReactI18nProps } from "../system/resources/IReactI18nProps";
+import { withTranslation } from "react-i18next";
+import { IRideStop } from "../groups/interfaces/IRideStop";
+import { ILocation } from "../groups/interfaces/ILocation";
+import { sortStops } from "../../helpers/StopsHelper";
 
 const Mapbox = ReactMapboxGl({
-	minZoom: 2,
-	maxZoom: 15,
+	minZoom: 1,
+	maxZoom: 20,
 	accessToken: mapboxKey,
 });
 
@@ -20,6 +25,9 @@ export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
 	ride: IRide;
 	route: any;
+	fromName: string;
+	toName: string;
+	stops: IRideStop[];
 }
 
 const flyToOptions = {
@@ -27,40 +35,54 @@ const flyToOptions = {
 };
 
 const defaults = {
-	route: null
+	route: null,
+	fitBounds: getDefaultBounds(),
+	fromName: null,
+	toName: null,
+	stops: []
 };
 
-export interface IMapProps {
+export interface IMapProps extends IReactI18nProps {
 	onStyleLoad?: (map: any) => any;
 	ride: IRide;
 }
 
-export default class MapBoxGroups extends React.Component<IMapProps, IMapState> {
-
+class MapBoxRides extends React.Component<IMapProps, IMapState> {
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
-			fitBounds: undefined,
 			ride: this.props.ride,
 			...defaults,
 		};
 	}
+
+	private resources = {
+		toLabel: "mapbox.toLabel",
+		fromLabel: "mapbox.fromLabel"
+	};
+
 	private onFindRoute = async (ride: IRide) => {
 		try {
 			if (!ride) {
 				this.setState(produce((draft: IMapState) => { draft.route = null; }));
 			}
+			let waypointsSorted = [
+				{
+					coordinates: parseCoords(ride.location),
+				},
+				{
+					coordinates: parseCoords(ride.group?.location)
+				},
+			]
+			if (ride?.stops) {
+				const sortedStops = sortStops(this.props.ride.location, this.props.ride.group.location, this.props.ride?.stops)
+				waypointsSorted = (sortedStops.sortedStops.map(item => ({ coordinates: parseCoords(item) })));
+			}
+
 			const response = await directionsClient
 				.getDirections({
-					profile: "driving-traffic",
-					waypoints: [
-						{
-							coordinates: parseCoords(ride.location),
-						},
-						{
-							coordinates: parseCoords(ride.group?.location)
-						},
-					],
+					profile: "driving",
+					waypoints: waypointsSorted,
 					overview: "full",
 					geometries: "geojson",
 				})
@@ -83,7 +105,51 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 	componentDidUpdate() {
 		if (this.state.ride !== this.props.ride) {
 			if (this.props.ride) {
+				this.setState(
+					produce((draft: IMapState) => {
+						draft.stops = []
+					})
+				)
 				this.getBounds(this.props.ride);
+				onGetName(parseCoords(this.props.ride.location)).then(res => {
+					this.setState(
+						produce((draft: IMapState) => {
+							if (this.props.ride.rideDirection === RideDirection.To) {
+								draft.toName = res;
+							} else {
+								draft.fromName = res;
+							}
+						})
+					);
+				});
+				onGetName(parseCoords(this.props.ride.group.location)).then(res => {
+					this.setState(
+						produce((draft: IMapState) => {
+							if (this.props.ride.rideDirection === RideDirection.To) {
+								draft.fromName = res;
+							} else {
+								draft.toName = res;
+							}
+						})
+					);
+				});
+			}
+			if (this.state.stops !== this.props.ride?.stops) {
+				if (this.props.ride?.stops) {
+					this.props.ride.stops.map((stop, idx) => {
+						onGetName(parseCoords(stop.location)).then(res => {
+							this.setState(
+								produce((draft: IMapState) => {
+									const s: IRideStop = {
+										name: res,
+										location: stop.location,
+										participant: stop.participant
+									}
+									draft.stops.push(s)
+								}))
+						})
+					})
+				}
 			}
 			this.onFindRoute(this.props.ride);
 			this.setState(produce((draft: IMapState) => {
@@ -94,7 +160,7 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 
 	private getBounds = (ride: IRide) => {
 		const allCoords = [[ride.location?.longitude, ride.group?.location.longitude], [ride.group?.location.latitude, ride.location?.latitude]];
-		let bbox: [[number, number], [number, number]] = [[16.89, 52.41], [16.89, 52.41]];
+		let bbox: [[number, number], [number, number]] = getDefaultBounds();
 		if (allCoords[0][0] && allCoords[1][1] && allCoords[0][1] && allCoords[1][0]) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
 			bbox[0][1] = Math.min.apply(null, allCoords[1]);
@@ -111,8 +177,9 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		return onStyleLoad && onStyleLoad(map);
 	}
 
+
 	public render() {
-		const { fitBounds, ride, route } = this.state;
+		const { fitBounds, ride, route, fromName, toName, stops } = this.state;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
@@ -121,20 +188,18 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 		const boundsOptions: FitBoundsOptions = {
 			padding: 100
 		};
-
-		const popupStyle: CSSProperties = {
+		const addressStyle: CSSProperties = {
 			background: "white",
 			color: "gray",
 			fontWeight: 400,
 			border: "2px",
 		};
-		const fromMarkerStyle: CSSProperties = {
-			fontSize: "40px",
-			color: "#10ac84"
-		};
-		const toMarkerStyle: CSSProperties = {
-			fontSize: "40px",
-			color: "#ee5253"
+		const nameStyle: CSSProperties = {
+			background: "white",
+			color: "gray",
+			fontWeight: 600,
+			border: "2px",
+			fontSize: "17px"
 		};
 		const lineLayout = {
 			"line-cap": "round",
@@ -157,6 +222,10 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 			]
 		};
 
+		const { t } = this.props;
+		const toLabel: string = t(this.resources.toLabel);
+		const fromLabel: string = t(this.resources.fromLabel);
+
 		return (
 			<Mapbox
 				style={mapboxStyle}
@@ -176,17 +245,41 @@ export default class MapBoxGroups extends React.Component<IMapProps, IMapState> 
 				{ride !== null &&
 					<>
 						<Popup coordinates={parseCoords(ride.group?.location)}>
-							<div style={popupStyle}>
-								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "początkowa" : "końcowa"}`}
+							<div style={nameStyle}>
+								{ride.rideDirection === RideDirection.To ? fromLabel : toLabel}
 							</div>
+							<div style={addressStyle}>{ride.rideDirection === RideDirection.To ? fromName : toName}</div>
 						</Popup>
 						<Popup coordinates={parseCoords(ride.location)}>
-							<div style={popupStyle}>
-								{`Lokalizacja ${ride.rideDirection === RideDirection.To ? "końcowa" : "początkowa"}`}
+							<div style={nameStyle}>
+								{ride.rideDirection === RideDirection.To ? toLabel : fromLabel}
 							</div>
+							<div style={addressStyle}>{ride.rideDirection === RideDirection.To ? toName : fromName}</div>
 						</Popup>
+						{stops &&
+							<>
+								{ stops.map((stop, idx) => {
+									return (
+										<>
+											<Popup coordinates={parseCoords(stop.location)}>
+												<div style={nameStyle}>
+													{stop.participant.firstName} {stop.participant.lastName}
+												</div>
+												{stop.name &&
+													<div style={addressStyle}>
+														{stop.name}
+													</div>
+												}
+											</Popup>
+										</>
+									)
+								})}
+							</>
+						}
 					</>
 				}
 			</Mapbox>);
 	}
 }
+
+export default withTranslation()(MapBoxRides);

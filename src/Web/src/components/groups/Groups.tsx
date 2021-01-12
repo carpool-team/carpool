@@ -14,13 +14,13 @@ import {
 import produce from "immer";
 
 import "./Groups.scss";
-import { IAddRideInput } from "../rides/addRide/interfaces/IAddRideInput";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
 interface IGroupsState {
-	selectedGroup: IGroup;
+	selectedGroupId: string;
 }
+
 class Groups extends Component<IGroupsProps, IGroupsState> {
 	private cssClasses = {
 		container: "groupsContainer",
@@ -29,9 +29,9 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 	constructor(props: IGroupsProps) {
 		super(props);
 		this.state = {
-			selectedGroup: undefined,
+			selectedGroupId: undefined,
 		};
-		this.props.getGroups(false);
+		this.props.getGroups();
 		this.props.getInvites(true);
 		this.props.getRides(false);
 	}
@@ -49,11 +49,11 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 	setSelectedGroupHandler = (id: string) => {
 		this.setState(
 			produce((draft: IGroupsState) => {
-				draft.selectedGroup = this.getGroupsHandler().find(
-					(g) => g.groupId === id
-				);
+				draft.selectedGroupId = id;
 			})
 		);
+		this.props.getRidesAvailable(id ?? null);
+		this.props.setSelectedGroup(id ? this.props.groups.find(g => g.groupId === id) : null);
 	}
 
 	render() {
@@ -68,6 +68,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 			setGroupSelected: (id) => this.setSelectedGroupHandler(id),
 			addRide: this.props.addRide,
 			addInvites: this.props.addInvites,
+			getRidesAvailable: () => this.props.ridesAvailable,
 		};
 
 		return (
@@ -78,7 +79,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 					history={this.props.history}
 					location={this.props.location}
 					callbacks={callbacks}
-					selectedGroup={this.state.selectedGroup}
+					selectedGroup={this.props.groups?.find(g => g.groupId === this.state.selectedGroupId) ?? null}
 					authId={this.props.authId}
 				/>
 			</section>

@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataTransferObjects.RideRequest;
+using Domain.ValueObjects;
+using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,8 +33,8 @@ namespace RestApi.Controllers
 
 				return new ApiResponse(ownerRideRequests);
 			}		
-			GetRideRequestsQuery getRideRequests = new(User.GetUserId());
-			var rideRequests = await _mediator.Send(getRideRequests);
+			GetParticipantRideRequestsQuery getParticipantRideRequests = new(User.GetUserId());
+			var rideRequests = await _mediator.Send(getParticipantRideRequests);
 
 			return new ApiResponse(rideRequests);
 		}
@@ -42,7 +44,8 @@ namespace RestApi.Controllers
 		{
 			AddRideRequestCommand request = new(addRideRequestDto.RideId,
 				User.GetUserId(),
-				addRideRequestDto.RideOwnerId);
+				addRideRequestDto.RideOwnerId,
+				new Location(addRideRequestDto.Location.Longitude, addRideRequestDto.Location.Latitude));
 			var rideRequestId = await _mediator.Send(request);
 
 			return new ApiResponse(rideRequestId, StatusCodes.Status201Created);
@@ -55,6 +58,16 @@ namespace RestApi.Controllers
 				updateRideRequestDto.IsAccepted,
 				User.GetUserId());
 			
+			await _mediator.Send(request);
+
+			return new ApiResponse(StatusCodes.Status204NoContent);
+		}
+
+		[HttpDelete("{rideRequestId}")]
+		public async Task<ApiResponse> ResignRideRequest([FromRoute] RideRequestId rideRequestId)
+		{
+			ResignRideRequestCommand request = new(User.GetUserId(), rideRequestId);
+
 			await _mediator.Send(request);
 
 			return new ApiResponse(StatusCodes.Status204NoContent);

@@ -17,7 +17,17 @@ namespace DataAccessLayer.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.1");
+
+            modelBuilder.Entity("Domain.Aggregates.RecurringRides", b =>
+                {
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RecurringRides");
+                });
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
                 {
@@ -69,8 +79,8 @@ namespace DataAccessLayer.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("DateAdded")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
@@ -121,14 +131,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<long>("AppUserId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("RideId1")
-                        .HasColumnType("bigint");
-
                     b.HasKey("RideId", "AppUserId");
 
                     b.HasIndex("AppUserId");
-
-                    b.HasIndex("RideId1");
 
                     b.ToTable("UserParticipatedRides");
                 });
@@ -138,8 +143,8 @@ namespace DataAccessLayer.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
@@ -149,6 +154,9 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
+
+                    b.Property<long?>("RecurringRideId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("RideDirection")
                         .HasColumnType("int");
@@ -162,6 +170,8 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("OwnerId");
 
+                    b.HasIndex("RecurringRideId");
+
                     b.ToTable("Rides");
                 });
 
@@ -170,8 +180,8 @@ namespace DataAccessLayer.Migrations
                     b.Property<long>("Id")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("DateAdded")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<bool>("IsAccepted")
                         .HasColumnType("bit");
@@ -201,16 +211,13 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Stop", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long>("ParticipantId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("RideId")
                         .HasColumnType("bigint");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
+                    b.HasKey("ParticipantId", "RideId");
 
                     b.HasIndex("RideId");
 
@@ -357,10 +364,6 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Ride", null)
-                        .WithMany("Participants")
-                        .HasForeignKey("RideId1");
-
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Ride");
@@ -379,6 +382,11 @@ namespace DataAccessLayer.Migrations
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("Domain.Aggregates.RecurringRides", null)
+                        .WithMany("Rides")
+                        .HasForeignKey("RecurringRideId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.OwnsOne("Domain.ValueObjects.Location", "Location", b1 =>
                         {
@@ -416,7 +424,7 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Ride", "Ride")
-                        .WithMany()
+                        .WithMany("RideRequests")
                         .HasForeignKey("RideId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -425,6 +433,28 @@ namespace DataAccessLayer.Migrations
                         .WithMany()
                         .HasForeignKey("RideOwnerId")
                         .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.OwnsOne("Domain.ValueObjects.Location", "Location", b1 =>
+                        {
+                            b1.Property<long>("RideRequestId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("float");
+
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("float");
+
+                            b1.HasKey("RideRequestId");
+
+                            b1.ToTable("RideRequests");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RideRequestId");
+                        });
+
+                    b.Navigation("Location")
                         .IsRequired();
 
                     b.Navigation("RequestingUser");
@@ -436,6 +466,12 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Stop", b =>
                 {
+                    b.HasOne("Domain.Entities.ApplicationUser", "Participant")
+                        .WithMany()
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Ride", null)
                         .WithMany("Stops")
                         .HasForeignKey("RideId")
@@ -444,7 +480,10 @@ namespace DataAccessLayer.Migrations
 
                     b.OwnsOne("Domain.ValueObjects.Location", "Location", b1 =>
                         {
-                            b1.Property<long>("StopId")
+                            b1.Property<long>("StopParticipantId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long>("StopRideId")
                                 .HasColumnType("bigint");
 
                             b1.Property<double>("Latitude")
@@ -453,16 +492,18 @@ namespace DataAccessLayer.Migrations
                             b1.Property<double>("Longitude")
                                 .HasColumnType("float");
 
-                            b1.HasKey("StopId");
+                            b1.HasKey("StopParticipantId", "StopRideId");
 
                             b1.ToTable("Stops");
 
                             b1.WithOwner()
-                                .HasForeignKey("StopId");
+                                .HasForeignKey("StopParticipantId", "StopRideId");
                         });
 
                     b.Navigation("Location")
                         .IsRequired();
+
+                    b.Navigation("Participant");
                 });
 
             modelBuilder.Entity("Domain.Entities.Vehicle", b =>
@@ -472,6 +513,11 @@ namespace DataAccessLayer.Migrations
                         .HasForeignKey("Domain.Entities.Vehicle", "AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Aggregates.RecurringRides", b =>
+                {
+                    b.Navigation("Rides");
                 });
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
@@ -490,7 +536,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Ride", b =>
                 {
-                    b.Navigation("Participants");
+                    b.Navigation("RideRequests");
 
                     b.Navigation("Stops");
                 });

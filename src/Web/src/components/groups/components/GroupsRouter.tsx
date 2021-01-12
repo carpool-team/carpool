@@ -10,6 +10,7 @@ import GroupRides from "./rides/GroupRides";
 import { IGroup } from "../interfaces/IGroup";
 import { IRide } from "../interfaces/IRide";
 import FallbackRoute from "../../system/FallbackRoute";
+import GroupUsers from "./users/GroupUsers";
 
 interface IGroupsRouterProps extends RouteComponentProps {
 	callbacks: IGroupCallbacks;
@@ -24,6 +25,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 		edit: "edit/",
 		invite: "invite/",
 		addRide: "add/",
+		users: "users/"
 	};
 
 	render = () => {
@@ -39,6 +41,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 				.filter((r) => r.group.groupId === selGroupId);
 			rides = [...ridesOwned, ...ridesParticipated];
 		}
+		const ridesAvailable: IRide[] = this.props.callbacks.getRidesAvailable();
 		return (
 			<Suspense fallback={<LoaderSpinner />}>
 				<Switch>
@@ -56,6 +59,9 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 					</Route>
 					{this.props.selectedGroup ? (
 						<>
+							<Route path={path + GroupsRouter.routes.users}>
+								<GroupUsers group={this.props.selectedGroup} rides={rides} />
+							</Route>
 							<Route path={path + GroupsRouter.routes.edit}>
 								<GroupEdit group={this.props.selectedGroup} rides={rides} />
 							</Route>
@@ -68,7 +74,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 								/>
 							</Route>
 							<Route exact path={path + GroupsRouter.routes.rides}>
-								<GroupRides group={this.props.selectedGroup} rides={rides} />
+								<GroupRides group={this.props.selectedGroup} rides={ridesAvailable} joinRideCallback={this.props.callbacks.participateInRide} />
 							</Route>
 						</>
 					) : null}

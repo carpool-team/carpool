@@ -10,7 +10,7 @@ export class GetInvitesRequest extends RequestCore {
 	}) {
 		super({
 			properties: {
-				method: RequestType.GET,
+				method: RequestType.Get,
 				endpoint: init.userOnly ? RequestEndpoint.GET_INVITES_BY_USER_ID : RequestEndpoint.GET_ALL_INVITES,
 				queries: {
 					userId: init.userOnly ? init.userId : undefined

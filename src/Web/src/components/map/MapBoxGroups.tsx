@@ -5,21 +5,20 @@ import { IGroup } from "../groups/interfaces/IGroup";
 import { colorList } from "../../scss/colorList";
 import produce from "immer";
 import { FitBoundsOptions } from "react-mapbox-gl/lib/map";
-import { parseCoords } from "../../helpers/UniversalHelper";
-import { mapboxKey, mapboxStyle } from "./MapBoxHelper";
+import { compareArrays, parseCoords } from "../../helpers/UniversalHelper";
+import { getDefaultBounds, getGeocodingClient, mapboxKey, mapboxStyle, onGetName } from "./MapBoxHelper";
 
 const Mapbox = ReactMapboxGl({
-	// TODO jak bedą grupy z lokacją to zmienić na prawidłowy -> około 8
-	minZoom: 2,
+	minZoom: 1,
 	maxZoom: 15,
 	accessToken: mapboxKey,
 });
-
 export interface IMapState {
 	fitBounds?: [[number, number], [number, number]];
 	center?: [number, number];
 	zoom?: [number];
 	groups: IGroup[];
+	groupAddress: string;
 }
 
 const flyToOptions = {
@@ -29,6 +28,8 @@ const flyToOptions = {
 const defaults = {
 	zoom: undefined as [number],
 	center: undefined as [number, number],
+	groupAddress: undefined as string,
+	fitBounds: getDefaultBounds(),
 };
 
 export interface IMapProps {
@@ -47,7 +48,6 @@ export default class MapBoxGroups extends React.Component<
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
-			fitBounds: undefined,
 			groups: this.props.getGroupsCallback(),
 			...defaults,
 		};
@@ -56,7 +56,7 @@ export default class MapBoxGroups extends React.Component<
 
 	componentDidMount() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
-		if (groups && this.state.groups?.length !== groups.length) {
+		if (groups && compareArrays(this.state.groups, groups) === false) {
 			this.getBounds(groups);
 			this.setState(
 				produce((draft: IMapState) => {
@@ -68,7 +68,7 @@ export default class MapBoxGroups extends React.Component<
 
 	componentDidUpdate() {
 		const groups: IGroup[] = this.props.getGroupsCallback();
-		if (groups && this.state.groups?.length !== groups.length) {
+		if (groups && compareArrays(this.state.groups, groups) === false) {
 			this.getBounds(groups);
 			this.setState(
 				produce((draft: IMapState) => {
@@ -86,10 +86,16 @@ export default class MapBoxGroups extends React.Component<
 						draft.zoom = [14];
 					})
 				);
+				onGetName(parseCoords(this.props.group.location)).then(res => {
+					this.setState(
+						produce((draft: IMapState) => {
+							draft.groupAddress = res;
+						})
+					);
+				});
 			} else if (this.state.groups?.length) {
-				this.getBounds(groups)
+				this.getBounds(groups);
 			}
-
 		}
 	}
 
@@ -98,10 +104,7 @@ export default class MapBoxGroups extends React.Component<
 			groups.map((g) => g.location.longitude),
 			groups.map((g) => g.location.latitude),
 		];
-		let bbox: [[number, number], [number, number]] = [
-			[0, 0],
-			[0, 0],
-		];
+		let bbox: [[number, number], [number, number]] = getDefaultBounds();
 
 		if (allCoords[0].length !== 0 && allCoords[1].length !== 0) {
 			bbox[0][0] = Math.min.apply(null, allCoords[0]);
@@ -139,7 +142,7 @@ export default class MapBoxGroups extends React.Component<
 	}
 
 	public render() {
-		const { fitBounds, center, zoom, groups } = this.state;
+		const { fitBounds, center, zoom, groups, groupAddress } = this.state;
 		const { group } = this.props;
 
 		const containerStyle: CSSProperties = {
@@ -150,11 +153,18 @@ export default class MapBoxGroups extends React.Component<
 			padding: 100,
 		};
 
-		const popupStyle: CSSProperties = {
+		const addressStyle: CSSProperties = {
 			background: "white",
 			color: "gray",
 			fontWeight: 400,
 			border: "2px",
+		};
+		const nameStyle: CSSProperties = {
+			background: "white",
+			color: "gray",
+			fontWeight: 600,
+			border: "2px",
+			fontSize: "17px"
 		};
 
 		let colorIndex = 0;
@@ -198,8 +208,8 @@ export default class MapBoxGroups extends React.Component<
 							key={group.groupId}
 							coordinates={parseCoords(group.location)}
 						>
-							<div style={popupStyle}>{group.name}</div>
-							<div style={popupStyle}>{"Adres:TODO"}</div>
+							<div style={nameStyle}>{group.name}</div>
+							<div style={addressStyle}>{groupAddress}</div>
 						</Popup>
 					)}
 				</>

@@ -10,7 +10,7 @@ import { ButtonColor } from "../../ui/button/enums/ButtonColor";
 import { InputIcon } from "../../ui/input/enums/InputIcon";
 import { InputType } from "../../ui/input/enums/InputType";
 import Input from "../../ui/input/Input";
-import usePassword from "../../ui/hooks/PasswordInput";
+import usePasswordWithConfirm from "../../ui/hooks/usePasswordWithConfirm/UsePasswordWithConfirm";
 import { ValidationType } from "../../ui/input/enums/ValidationType";
 import { each } from "../../../helpers/UniversalHelper";
 import {
@@ -33,18 +33,17 @@ export interface IRegisterFormData {
 interface IRegisterPanelProps extends IReactI18nProps, RouteComponentProps, StateProps, DispatchProps { }
 
 const RegisterPanel = (props: IRegisterPanelProps) => {
+	const { t } = props;
 	const [email, setEmail] = useState("");
 	const [name, setName] = useState("");
 	const [surname, setSurname] = useState("");
-	const [password, isPasswordValid, renderPasswordInputs] = usePassword();
+	const [password, isPasswordValid, renderPasswordInputs] = usePasswordWithConfirm();
 	const [inputsValid, setInputsValid] = useImmer({
 		name: false,
 		surname: false,
 		email: false,
 	});
 	const [validate, setValidate] = useState(false);
-
-	const { t } = props;
 
 	const cssClasses = {
 		container: "auth__container",

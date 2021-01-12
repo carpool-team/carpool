@@ -19,8 +19,6 @@ const Button: FunctionComponent<IButtonProps> = (props) => {
 	const btnClick = (event: React.MouseEvent) => {
 		if (props.onClick) {
 			props.onClick();
-		} else {
-			event.preventDefault();
 		}
 	};
 

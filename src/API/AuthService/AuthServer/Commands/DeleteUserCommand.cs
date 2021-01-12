@@ -6,10 +6,10 @@ using Auth.DataAccessLayer.DatabaseContexts;
 using AuthDomain.Entities;
 using AuthServer.Services;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.User;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using RestApi.DTOs.User;
 
 namespace AuthServer.Commands
 {

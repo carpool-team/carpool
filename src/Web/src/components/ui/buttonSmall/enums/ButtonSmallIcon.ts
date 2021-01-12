@@ -3,5 +3,6 @@ export enum ButtonSmallIcon {
 	User,
 	Close,
 	Left,
-	Right
+	Right,
+	Accept
 }

@@ -10,15 +10,15 @@ import GroupsRouter from "../GroupsRouter";
 import Button from "../../../ui/button/Button";
 import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
 import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
-import { ButtonIcon } from "../../../ui/button/enums/ButtonIcon";
 import ButtonLink from "../../../ui/buttonLink/ButtonLink";
 import { ButtonLinkColor } from "../../../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../../../ui/buttonLink/enums/ButtonLinkBackground";
 import { ButtonLinkStyle } from "../../../ui/buttonLink/enums/ButtonLinkStyle";
 import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
-import GroupsList from "./components/GroupsList";
+import GroupsList from "./components/groupsList/GroupsList";
 import InvitesList from "./components/InvitesList";
 import { IGroup } from "../../interfaces/IGroup";
+import { IInvite } from "../../interfaces/IInvite";
 
 enum Lists {
 	Invites = "INVITES",
@@ -33,6 +33,7 @@ interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
 interface IManageScreenState {
 	selectedScreen: Lists;
 	selectedGroup: IGroup;
+	selectedInvite: IInvite;
 }
 
 class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
@@ -61,6 +62,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		super(props);
 		this.state = {
 			selectedGroup: null,
+			selectedInvite: null,
 			selectedScreen: Lists.Groups
 		};
 	}
@@ -77,11 +79,27 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 		}));
 	}
 
+	setCurrentInvite = (invite: IInvite) => {
+		if (this.state.selectedInvite !== invite) {
+			this.setState(
+				produce((draft: IManageScreenState) => {
+					draft.selectedInvite = invite;
+				})
+			);
+		} else {
+			this.setState(
+				produce((draft: IManageScreenState) => {
+					draft.selectedInvite = null;
+				})
+			);
+		}
+	}
+
 	renderInvitesList = () => (
 		<InvitesList
 			answerInviteCallback={this.props.callbacks.answerInvite}
 			getInvitesCallback={this.props.callbacks.getInvites}
-			getGroupsCallback={this.props.callbacks.getGroups}
+			setInviteSelected={this.setCurrentInvite}
 		/>
 	)
 
@@ -102,7 +120,11 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 	)
 
 	renderInvitesMap = () => (
-		<MapBoxInvites getInvitesCallback={this.props.callbacks.getInvites} />
+		<MapBoxInvites
+			getInvitesCallback={this.props.callbacks.getInvites}
+			setSelectedInviteCallback={this.setCurrentInvite}
+			invite={this.state.selectedInvite}
+		/>
 	)
 
 	renderLeftPanel = () => {

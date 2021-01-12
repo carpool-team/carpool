@@ -1,4 +1,8 @@
-﻿namespace Domain.Abstract
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Abstract
 {
-	public class AggregateRoot<T> where T : class { }
+	public class AggregateRoot
+	{
+	}
 }

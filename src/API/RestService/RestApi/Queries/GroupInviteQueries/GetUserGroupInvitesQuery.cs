@@ -5,15 +5,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
 using DataTransferObjects;
-using DataTransferObjects.GroupDtos;
-using DataTransferObjects.GroupInvitesDtos;
+using DataTransferObjects.Group;
+using DataTransferObjects.GroupInvites;
+using DataTransferObjects.User;
 using Domain.Contracts.Repositories;
 using Domain.Entities;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using RestApi.DTOs.User;
 
 namespace RestApi.Queries.GroupInviteQueries
 {
@@ -47,6 +47,7 @@ namespace RestApi.Queries.GroupInviteQueries
 						new GroupDto(x.Group.UserGroups.Count,
 							x.Group.Id,
 							new LocationDto(x.Group.Location.Longitude, x.Group.Location.Latitude),
+							x.Group.OwnerId,
 							x.Group.Name),
 						new InvitingUserDto(x.InvitingApplicationUser.Id,
 							x.InvitingApplicationUser.FirstName,

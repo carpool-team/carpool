@@ -1,7 +1,6 @@
-﻿using DataTransferObjects;
-using RestApi.DTOs.User;
+﻿using DataTransferObjects.User;
 
-namespace RestApi.DTOs.Stop
+namespace DataTransferObjects.Stop
 {
     public class IndexStopDTO
     {

@@ -7,11 +7,11 @@ using AuthDomain.Entities;
 using AuthServer.Services;
 using AuthServer.Utilities;
 using AutoWrapper.Wrappers;
+using DataTransferObjects.User;
 using IdentifiersShared.Identifiers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RestApi.DTOs.User;
 
 namespace AuthServer.Commands
 {

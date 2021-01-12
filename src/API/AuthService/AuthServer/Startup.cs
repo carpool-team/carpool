@@ -10,6 +10,7 @@ using AuthServer.Services;
 using AuthServer.Utilities;
 using AuthShared.Options;
 using AutoWrapper;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -100,8 +101,9 @@ namespace AuthServer
 				}));
 			services.AddTransient<ITokenGenerator, TokenGenerator>();
 			
-			services.AddControllers();
-			
+			services.AddControllers()
+			        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+
 			services.AddMediatR(Assembly.GetExecutingAssembly());
 
 			services.AddSwaggerGen(c =>
@@ -121,6 +123,8 @@ namespace AuthServer
 
 			app.UseHttpsRedirection();
 
+			app.UseApiResponseAndExceptionWrapper();
+
 			app.UseRouting();
 			
 			app.UseCors(x =>
@@ -130,8 +134,6 @@ namespace AuthServer
 					.SetIsOriginAllowed(origin => true); // allow any origin
 			});
 			
-			app.UseApiResponseAndExceptionWrapper();
-
 			app.UseStaticFiles();
 
 			app.UseAuthentication();

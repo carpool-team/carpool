@@ -159,6 +159,8 @@ const Input = (props: IInputProps) => {
 					autocomplete: true,
 					limit: 3,
 					mode: "mapbox.places",
+					countries: ["PL"],
+					language: ["PL"],
 				})
 				.send();
 			const result: Array<any> = response.body.features;
@@ -191,6 +193,7 @@ const Input = (props: IInputProps) => {
 		props.changeHandler(placeName);
 		setAutocompleteList(null);
 		setIsAutoCompleted(true);
+		validate();
 	};
 
 	const submitAddressFocusOut = () => {
@@ -199,6 +202,7 @@ const Input = (props: IInputProps) => {
 			props.changeHandler(autocompleteList[0].place_name);
 			setAutocompleteList(null);
 			setIsAutoCompleted(true);
+			validate();
 		}
 	};
 
@@ -209,6 +213,7 @@ const Input = (props: IInputProps) => {
 				props.changeHandler(autocompleteList[0].place_name);
 				setAutocompleteList(null);
 				setIsAutoCompleted(true);
+				validate();
 			}
 		}
 	};
@@ -256,7 +261,7 @@ const Input = (props: IInputProps) => {
 					className={baseInputClasses.join(" ")}
 					placeholder={props.placeholder}
 					onChange={generalChangeHandler}
-					value={props.value}
+					value={props.value ?? ""}
 					style={props.cssProps}
 					disabled={props.disabled}
 				/>
@@ -273,7 +278,7 @@ const Input = (props: IInputProps) => {
 					className={inputBaseClassName}
 					placeholder={props.placeholder}
 					onChange={generalChangeHandler}
-					value={props.value}
+					value={props.value ?? ""}
 					type={"password"}
 					disabled={props.disabled}
 				/>
@@ -290,7 +295,7 @@ const Input = (props: IInputProps) => {
 					className={inputBaseClassName}
 					placeholder={props.placeholder}
 					onChange={addressChangeHandler}
-					value={props.value}
+					value={props.value ?? ""}
 					onBlur={submitAddressFocusOut}
 					onKeyPress={submitAdressEnter}
 					disabled={props.disabled}
@@ -307,7 +312,7 @@ const Input = (props: IInputProps) => {
 				className={checkboxBoxClassName}
 				placeholder={props.placeholder}
 				onChange={generalChangeHandler}
-				value={props.value}
+				value={props.value ?? ""}
 				type={"checkbox"}
 				id={props.label?.inputId}
 				disabled={props.disabled}
