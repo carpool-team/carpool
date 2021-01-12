@@ -41,6 +41,8 @@ const ActiveItemParticipant = (props: IActiveItemParticipantProps) => {
 				.reverseGeocode({
 					query: coords,
 					mode: "mapbox.places",
+					countries: ["PL"],
+					language: ["PL"],
 				})
 				.send();
 			const result = response.body.features[0];

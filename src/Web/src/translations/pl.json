@@ -15,12 +15,12 @@
                 "confirmPassword": "Potwierdź hasło",
                 "passwordsMismatch": "Hasła się nie zgadzają",
                 "passwordTooWeak": "Hasło jest za słabe",
-                "scoreWords": {
-                    "short": "Za krótkie",
-                    "weak": "Bardzo słabe",
-                    "okay": "Słabe",
-                    "good": "Dobre",
-                    "strong": "Silne"
+                "rules":{
+                    "length": "dłuższe niż 8 znaków",
+                    "uppercase": "wielka litera",
+                    "lowercase": "mała litera",
+                    "numbers": "cyfra",
+                    "special": "znak specjalny"
                 }
             },
             "userProfile": {
