@@ -37,6 +37,8 @@ const DefaultItemRequestOwner = (props: IRequestsItemProps) => {
 				.reverseGeocode({
 					query: coords,
 					mode: "mapbox.places",
+					countries: ["PL"],
+					language: ["PL"],
 				})
 				.send();
 			const result = response.body.features[0];

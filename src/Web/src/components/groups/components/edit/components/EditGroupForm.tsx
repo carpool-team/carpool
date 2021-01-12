@@ -95,6 +95,8 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 				.reverseGeocode({
 					query: coords,
 					mode: "mapbox.places",
+					countries: ["PL"],
+					language: ["PL"],
 				})
 				.send();
 			const result = response.body.features[0];

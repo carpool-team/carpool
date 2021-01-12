@@ -124,6 +124,7 @@ const LoginPanel = (props: ILoginPanelProps) => {
 						}}
 					/>
 					<Input
+						style={cssClasses.input}
 						type={InputType.Password}
 						changeHandler={newValue => { setPassword(newValue); }}
 						placeholder={t(resources.password)}

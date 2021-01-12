@@ -17,6 +17,8 @@ export const onGetName = async (coords: [number, number]): Promise<string> => {
 			.reverseGeocode({
 				query: coords,
 				mode: "mapbox.places",
+				countries: ["PL"],
+				language: ["PL"],
 			})
 			.send();
 		const result = response.body.features[0];
