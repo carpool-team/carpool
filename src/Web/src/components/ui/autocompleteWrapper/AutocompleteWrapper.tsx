@@ -67,8 +67,8 @@ const AutocompleteTextInput: React.FunctionComponent<IAutocompleteTextInputProps
 			getOptionLabel={(option) => option}
 			options={options}
 			loading={loading}
-			onChange={(_event, newValue) => {
-				if (props.onSelect) {
+			onChange={(_event, newValue, reason) => {
+				if (props.onSelect && reason === "select-option") {
 					props.onSelect();
 				}
 				props.onChange(newValue);

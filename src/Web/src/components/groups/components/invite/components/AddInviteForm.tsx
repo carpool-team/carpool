@@ -21,6 +21,7 @@ interface IAddInviteFormProps extends IReactI18nProps {
 	users: IInviteUser[];
 	onConfirm: () => void;
 	currentAppUserId: string;
+	groupUserIds: string[];
 }
 
 interface IUserAutocompleteData {
@@ -87,7 +88,7 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 		if (props.users.length) {
 			setDisabledBtn(false);
 		}
-	}, [props.users])
+	}, [props.users]);
 
 	useEffect(() => {
 		if (submitted) {
@@ -119,8 +120,9 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 			});
 			const response = await request.send();
 			if (!response.isError) {
+				console.log(Object.keys(emailsDict));
 				response.result.forEach(u => {
-					if (u.appUserId !== props.currentAppUserId) {
+					if (u.appUserId !== props.currentAppUserId && !props.groupUserIds.includes(u.appUserId) && !props.users.map(u => u.email).includes(u.email)) {
 						result.push(u.email);
 						updatedDict[u.email] = { ...u };
 					}
