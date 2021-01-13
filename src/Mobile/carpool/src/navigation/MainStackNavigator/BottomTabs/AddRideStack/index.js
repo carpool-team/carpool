@@ -10,7 +10,7 @@ const AddRideStack = () => (
     initialRouteName="AddRide"
     screenOptions={{
       title: 'New ride',
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
       gestureEnabled: false,
     }}>
     <Stack.Screen name="AddRide" component={AddRide} />

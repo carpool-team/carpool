@@ -18,7 +18,9 @@ const Header = props => {
       <View style={styles.center}>
         <Text style={styles.title}>{title}</Text>
       </View>
-      <View style={styles.right}>{!props.hideSwitch && <AccountSwitch />}</View>
+      <View style={styles.right}>
+        <AccountSwitch />
+      </View>
     </View>
   );
 };

@@ -36,7 +36,7 @@ const GroupRides = ({route, navigation}) => {
 
     navigation.setOptions({
       title: group.name,
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
       headerLeft: () => <GoBack onPress={onPress} />,
     });
 

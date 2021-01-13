@@ -52,7 +52,7 @@ const RideDashboard = props => {
     // Custom header config
     navigation.setOptions({
       headerLeft: () => <GoBack onPress={navigation.goBack} />,
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
     });
 
     Geolocation.getCurrentPosition(

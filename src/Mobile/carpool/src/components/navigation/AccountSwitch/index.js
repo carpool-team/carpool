@@ -5,6 +5,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import {CircleButton} from '../../common/buttons';
 import {styles} from './index.styles';
 import {useActiveAccount} from '../../../hooks';
+import {useNavigation} from '@react-navigation/native';
 
 const activeSize = 28;
 const inactiveSize = 20;
@@ -16,6 +17,7 @@ const inactiveCircle = 32;
 // const inactiveCircle = 48;
 
 const AccountSwitch = ({style}) => {
+  const navigation = useNavigation();
   const {activeAccount, toggleActiveAccount} = useActiveAccount();
 
   const onDriverPress = () => {
@@ -23,6 +25,7 @@ const AccountSwitch = ({style}) => {
       return;
     } else {
       toggleActiveAccount();
+      navigation.navigate('Home');
     }
   };
 
@@ -31,6 +34,7 @@ const AccountSwitch = ({style}) => {
       return;
     } else {
       toggleActiveAccount();
+      navigation.navigate('Home');
     }
   };
 

@@ -32,7 +32,7 @@ const DriversRideDetails = ({navigation, route}) => {
       headerLeft: () => (
         <GoBack onPress={() => navigation.navigate('RidesList')} />
       ),
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
       title: ride.recurringRideId ? 'Regular ride' : 'Single ride',
     });
   }, []);

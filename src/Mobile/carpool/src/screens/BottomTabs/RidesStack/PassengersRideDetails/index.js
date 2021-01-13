@@ -32,7 +32,7 @@ const PassengersRideDetails = ({navigation, route}) => {
       headerLeft: () => (
         <GoBack onPress={() => navigation.navigate('RidesList')} />
       ),
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
     });
   }, []);
 

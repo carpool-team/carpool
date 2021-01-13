@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 const SettingsStack = () => (
   <Stack.Navigator
     screenOptions={{
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
       title: 'Settings',
     }}
     headerMode="screen">
