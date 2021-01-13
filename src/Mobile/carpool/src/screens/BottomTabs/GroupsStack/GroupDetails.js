@@ -145,7 +145,7 @@ const GroupDetails = ({navigation, route}) => {
         <View style={styles.addressWrapper}>
           <Icon
             name="map-marker"
-            color={colors.blue}
+            color={colors.green}
             size={32}
             style={styles.icon}
           />
