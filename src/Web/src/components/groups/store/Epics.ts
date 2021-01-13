@@ -558,47 +558,14 @@ const getGroupUsersEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 	mergeMap(res => res)
 );
 
-const setSelectedGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
-	ofType(GroupsActionTypes.SetSelectedGroup),
-	filter(action => action.type === GroupsActionTypes.SetSelectedGroup && Boolean(action.group)),
-	switchMap(async (action: ISetSelectedGroupAction) => {
-		try {
-			const req = new GetGroupDetailsRequest(action.group.groupId);
-			const res = await req.send();
-			if (res.isError || res.status >= 300) {
-				return [
-					<IGetSelectedGroupDetailsErrorAction>{
-						type: GroupsActionTypes.GetSelectedGroupDetailsError,
-						error: null,
-					},
-				];
-			} else {
-				return [
-					<IGetSelectedGroupDetailsSuccessAction>{
-						type: GroupsActionTypes.GetSelectedGroupDetailsSuccess,
-						group: res.result,
-					}
-				];
-			}
-		} catch (err) {
-			return [
-				<IGetSelectedGroupDetailsErrorAction>{
-					type: GroupsActionTypes.GetSelectedGroupDetailsError,
-					error: err,
-				},
-			];
-		}
-	}),
-	mergeMap(res => res),
-);
-
 const updateGroupDetailsEpic: Epic<GroupsAction> = (action$) => action$.pipe(
-	ofType(GroupsActionTypes.UpdateGroupDetails),
-	switchMap(async (action: IUpdateGroupDetailsAction) => {
+	ofType(GroupsActionTypes.UpdateGroupDetails, GroupsActionTypes.SetSelectedGroup),
+	switchMap(async (action: IUpdateGroupDetailsAction | ISetSelectedGroupAction) => {
 		try {
-			const req = new GetGroupDetailsRequest(action.groupId);
+			const groupId = action.type === GroupsActionTypes.UpdateGroupDetails ? action.groupId : action.group.groupId;
+			const req = new GetGroupDetailsRequest(groupId);
 			const res = await req.send();
-			const reqUsers = new GetGroupUsersRequest(action.groupId);
+			const reqUsers = new GetGroupUsersRequest(groupId);
 			const resUsers = await reqUsers.send();
 			if (res.isError || res.status >= 300 || resUsers.isError || resUsers.status >= 300) {
 				return [
@@ -813,7 +780,6 @@ export const groupEpics = [
 	apiErrorEpic,
 	getRidesAvailableEpic,
 	getGroupUsersEpic,
-	setSelectedGroupEpic,
 	leaveGroupEpic,
 	leftGroupEpic,
 	deleteUserFromGroupEpic,

@@ -145,56 +145,63 @@ class NavBar extends React.Component<INavBarProps, INavBarState> {
 		}
 	}
 
-	render() {
-		const { t } = this.props;
-		const accountContainer: JSX.Element = this.renderAccountContainer();
-		return (
-			<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
-				<div className={this.cssClasses.navBarTabContainer}>
-					<Link to={App.rootRoute}>
-						<div className={this.cssClasses.logoContainer}></div>
-					</Link>
-					<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
-						<NavButton
-							color={ButtonColor.Gray}
-							background={ButtonBackground.None}
-							onClick={this.handleHamburgerClick.bind(this)}
-							to={`/${mainRoutes.rides}`}
-						>
-							{t(this.resources.rides)}
-						</NavButton>
-						<NavButton
-							color={ButtonColor.Gray}
-							background={ButtonBackground.None}
-							onClick={this.handleHamburgerClick.bind(this)}
-							to={`/${mainRoutes.groups}`}
-						>
-							{t(this.resources.groups)}
-						</NavButton>
-						<NavButton
-							color={ButtonColor.Gray}
-							background={ButtonBackground.None}
-							onClick={this.handleHamburgerClick.bind(this)}
-							to={`/${mainRoutes.rides + rideRoutes.requests}`}
-						>
-							{t(this.resources.requests)}
-						</NavButton>
-					</div>
+	renderHamburgerButtons = () => {
+		if (!this.props.tokenInfo?.token) { // unathorized
+			return null;
+		} else {
+			const { t } = this.props;
+			return (
+				<div className={[this.cssClasses.hamburgerMenuButtons, this.cssClasses.hamburgerToggle].join(" ")} id={this.ids.hamburgerMenuButtons}>
+					<NavButton
+						color={ButtonColor.Gray}
+						background={ButtonBackground.None}
+						onClick={this.handleHamburgerClick.bind(this)}
+						to={`/${mainRoutes.rides}`}
+					>
+						{t(this.resources.rides)}
+					</NavButton>
+					<NavButton
+						color={ButtonColor.Gray}
+						background={ButtonBackground.None}
+						onClick={this.handleHamburgerClick.bind(this)}
+						to={`/${mainRoutes.groups}`}
+					>
+						{t(this.resources.groups)}
+					</NavButton>
+					<NavButton
+						color={ButtonColor.Gray}
+						background={ButtonBackground.None}
+						onClick={this.handleHamburgerClick.bind(this)}
+						to={`/${mainRoutes.rides + rideRoutes.requests}`}
+					>
+						{t(this.resources.requests)}
+					</NavButton>
 				</div>
-
-				{accountContainer}
-
-				<div
-					id={this.ids.hamburgeIcon}
-					className={this.cssClasses.hamburgerIcon}
-					onClick={this.handleHamburgerClick.bind(this)}
-				>
-					<div className={this.cssClasses.bar1}></div>
-					<div className={this.cssClasses.bar2}></div>
-				</div>
-			</div>
-		);
+			);
+		}
 	}
+
+	render = () => (
+		<div id={this.ids.container} className={this.cssClasses.navBarContainer}>
+			<div className={this.cssClasses.navBarTabContainer}>
+				<Link to={App.rootRoute}>
+					<div className={this.cssClasses.logoContainer}></div>
+				</Link>
+				{this.renderHamburgerButtons()}
+			</div>
+
+			{this.renderAccountContainer()}
+
+			<div
+				id={this.ids.hamburgeIcon}
+				className={this.cssClasses.hamburgerIcon}
+				onClick={this.handleHamburgerClick.bind(this)}
+			>
+				<div className={this.cssClasses.bar1}></div>
+				<div className={this.cssClasses.bar2}></div>
+			</div>
+		</div>
+	)
 }
 /* istanbul ignore next */
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(NavBar));
