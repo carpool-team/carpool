@@ -102,7 +102,9 @@ const SelectLocation = ({onSubmit, swap}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {swap
+        {swap === undefined
+          ? 'Select location'
+          : swap
           ? 'Select location that you would like to be dropped off at'
           : 'Select location that you would like to be picked up from'}
       </Text>

@@ -6,6 +6,7 @@ import PastRides from './PastRides';
 import LocationsListItem from './LocationsListItem';
 import DashboardHeader from './DashboardHeader';
 import DashboardFooter from './DashboardFooter';
+import RideMatching from './RideMatching';
 
 export * from './AddRide';
 export {
@@ -17,4 +18,5 @@ export {
   LocationsListItem,
   DashboardHeader,
   DashboardFooter,
+  RideMatching,
 };
