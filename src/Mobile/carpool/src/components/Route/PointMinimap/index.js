@@ -44,7 +44,6 @@ const PointMinimap = ({coordinates}) => {
         ]),
       {
         timeout: 15000,
-        // enableHighAccuracy: true,
         maximumAge: 10000,
       },
     );
@@ -71,7 +70,7 @@ const PointMinimap = ({coordinates}) => {
         styleURL={MAP_LIGHT}
         compassEnabled={false}>
         <MapboxGL.Camera
-          // zoomLevel={20}
+          maxZoomLevel={18}
           animationMode="flyTo"
           animationDuration={1000}
           bounds={bounds}

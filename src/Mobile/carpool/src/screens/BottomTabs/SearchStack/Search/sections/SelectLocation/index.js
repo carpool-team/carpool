@@ -8,6 +8,8 @@ import {StandardButton} from '../../../../../../components/common/buttons';
 import {StartLocationsFlatList} from '../../../../../../components/Driver';
 import {parseCoords} from '../../../../../../utils/coords';
 import {styles} from './index.styles';
+import Geolocation from 'react-native-geolocation-service';
+import {FullScreenLoading} from '../../../../../../components/common/loaders';
 
 const config = {
   autocomplete: false,
@@ -19,6 +21,29 @@ const SelectLocation = ({onSubmit}) => {
   const [place, setPlace] = useState(null);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [locationLoading, setLocationLoading] = useState(true);
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      pos => {
+        setLocation(parseCoords(pos.coords));
+        setLocationLoading(false);
+      },
+      err =>
+        Alert.alert('Error', err.message, [
+          {
+            text: 'Ok',
+            style: 'default',
+            onPress: () => navigation.goBack(),
+          },
+        ]),
+      {
+        timeout: 15000,
+        maximumAge: 10000,
+      },
+    );
+  }, []);
 
   useEffect(() => {
     if (results.length && !query.length) {
@@ -29,7 +54,7 @@ const SelectLocation = ({onSubmit}) => {
   const onSearch = () => {
     setLoading(true);
     geocodingClient
-      .forwardGeocode({query, ...config})
+      .forwardGeocode({query, ...config, proximity: location})
       .send()
       .then(res => {
         setResults([...res.body.features]);
@@ -101,6 +126,8 @@ const SelectLocation = ({onSubmit}) => {
             />
           </View>
         </View>
+      ) : locationLoading ? (
+        <FullScreenLoading />
       ) : (
         <>
           <TextInput
@@ -116,6 +143,7 @@ const SelectLocation = ({onSubmit}) => {
               data={results}
               loading={loading}
               onItemPress={onItemPress}
+              userLocation={location}
             />
             <View style={styles.buttonWrapper}>
               {results.length ? (
