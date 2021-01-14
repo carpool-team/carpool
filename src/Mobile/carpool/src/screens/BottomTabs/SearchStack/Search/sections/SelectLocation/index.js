@@ -16,8 +16,7 @@ const config = {
   countries: ['pl'],
 };
 
-const SelectLocation = ({onSubmit, state}) => {
-  const {swap} = state;
+const SelectLocation = ({onSubmit, swap}) => {
   const [query, setQuery] = useState('');
   const [place, setPlace] = useState(null);
   const [results, setResults] = useState([]);
@@ -145,7 +144,7 @@ const SelectLocation = ({onSubmit, state}) => {
           />
           <View style={styles.listWrapper}>
             <StartLocationsFlatList
-              data={results}
+              data={results.slice(0, 3)}
               loading={loading}
               onItemPress={onItemPress}
               userLocation={location}

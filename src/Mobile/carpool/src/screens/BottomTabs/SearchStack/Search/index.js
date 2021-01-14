@@ -70,7 +70,7 @@ const Search = ({navigation}) => {
       return <SelectDirection onSubmit={onSubmitDirection} state={state} />;
     }
     if (!state.location) {
-      return <SelectLocation onSubmit={onSubmitLocation} state={state} />;
+      return <SelectLocation onSubmit={onSubmitLocation} swap={state.swap} />;
     }
     return <SelectDate onSubmit={onSubmitDate} />;
   };

@@ -147,7 +147,7 @@ const SelectLocation = ({state, dispatch}) => {
           />
           <View style={styles.listWrapper}>
             <StartLocationsFlatList
-              data={results.slice(0, 5)}
+              data={results.slice(0, 3)}
               loading={loading}
               onItemPress={onItemPress}
               userLocation={location}

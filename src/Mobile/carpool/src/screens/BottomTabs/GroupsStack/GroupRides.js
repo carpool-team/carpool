@@ -86,7 +86,10 @@ const GroupRides = ({route, navigation}) => {
           onRefresh={onRefresh}
         />
       ) : (
-        <SelectLocation onSubmit={setLocation} />
+        <SelectLocation
+          onSubmit={setLocation}
+          swap={!!selectedRide.rideDirection}
+        />
       )}
     </SafeAreaView>
   );
