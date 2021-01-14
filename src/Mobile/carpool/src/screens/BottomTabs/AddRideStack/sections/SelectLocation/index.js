@@ -107,7 +107,7 @@ const SelectLocation = ({state, dispatch}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        {swap ? 'Destination' : 'Starting location'}
+        {swap ? 'Select destination' : 'Select starting location'}
       </Text>
       {place ? (
         <View style={styles.placeWrapper}>

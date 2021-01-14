@@ -16,7 +16,8 @@ const config = {
   countries: ['pl'],
 };
 
-const SelectLocation = ({onSubmit}) => {
+const SelectLocation = ({onSubmit, state}) => {
+  const {swap} = state;
   const [query, setQuery] = useState('');
   const [place, setPlace] = useState(null);
   const [results, setResults] = useState([]);
@@ -101,7 +102,11 @@ const SelectLocation = ({onSubmit}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Location</Text>
+      <Text style={styles.title}>
+        {swap
+          ? 'Select location that you would like to be dropped off at'
+          : 'Select location that you would like to be picked up from'}
+      </Text>
       {place ? (
         <View style={styles.placeWrapper}>
           <View style={sheet.rowCenter}>

@@ -9,9 +9,10 @@ export const styles = StyleSheet.create({
     paddingVertical: 30,
   },
   title: {
-    fontSize: 26,
-    color: colors.orange,
+    fontSize: 16,
+    color: colors.grayVeryDark,
     ...sheet.textSemiBold,
+    paddingBottom: 8,
   },
   placeWrapper: {
     flex: 1,
