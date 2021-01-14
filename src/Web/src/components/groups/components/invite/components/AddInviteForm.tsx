@@ -70,14 +70,17 @@ const AddInviteForm: (props: IAddInviteFormProps) => JSX.Element = props => {
 
 	const onAdd = () => {
 		if (each(inputsValid, i => i)) {
-			props.addUserToInvite({
-				email,
-				...emailsDict[email],
-			});
-			setInputsValid(draft => {
-				draft.email = false;
-			});
-			clearInputs();
+			const dictData = emailsDict[email];
+			if (email && dictData) {
+				props.addUserToInvite({
+					email,
+					...dictData,
+				});
+				setInputsValid(draft => {
+					draft.email = false;
+				});
+				clearInputs();
+			}
 			setSubmitted(false);
 		} else {
 			setSubmitted(false);
