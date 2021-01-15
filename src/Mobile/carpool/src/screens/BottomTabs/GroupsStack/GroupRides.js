@@ -5,64 +5,7 @@ import * as actions from '../../../store/actions';
 import {useDispatch} from 'react-redux';
 import {RidesList} from '../../../components/Driver';
 import SelectLocation from '../SearchStack/Search/sections/SelectLocation';
-import {sortStops} from '../../../utils/sortStops';
-import {parseCoords} from '../../../utils/coords';
-import {lineString} from '@turf/helpers';
-import length from '@turf/length';
-import moment from 'moment';
-
-const compare = (a, b) => {
-  const isSame = moment(a.rideDate).isSame(b.rideDate, 'day');
-  if (isSame) {
-    if (a.extension < b.extension) {
-      return -1;
-    }
-    if (a.extension > b.extension) {
-      return 1;
-    }
-    return 0;
-  }
-  return 0;
-};
-
-const sortRides = (data, location, compareFunction) => {
-  let extended = [];
-  data.forEach(item => {
-    const {sortedStops} = sortStops(
-      item.location,
-      item.group.location,
-      item.stops,
-    );
-    const line = lineString(sortedStops.map(item => parseCoords(item)));
-    const lineLength = length(line, {units: 'meters'});
-
-    const stopsWith = [...item.stops, {location: location.coordinates}];
-    const {sortedStops: sortedWith} = sortStops(
-      item.location,
-      item.group.location,
-      stopsWith,
-    );
-
-    const lineWith = lineString(sortedWith.map(item => parseCoords(item)));
-    const lineWithLength = length(lineWith, {units: 'meters'});
-
-    const extension = Math.trunc(
-      ((lineWithLength - lineLength) / lineLength) * 100,
-    );
-
-    extended = [
-      ...extended,
-      {
-        ...item,
-        extension,
-      },
-    ];
-  });
-
-  const sorted = [...extended].sort(compareFunction);
-
-  return sorted;
-};
+import {sortRides, byDateAndExtension} from '../../../utils/rides';
 
 const GroupRides = ({route, navigation}) => {
   const {group} = route.params;
@@ -98,14 +41,14 @@ const GroupRides = ({route, navigation}) => {
       header: props => <Header {...props} />,
       headerLeft: () => <GoBack onPress={onPress} />,
     });
-
-    onRefresh();
   }, [location]);
 
   useEffect(() => {
+    if (location && !data) {
+      onRefresh();
+    }
     if (data && location) {
-      // sortRides([...data], location, compare);
-      setSortedData(sortRides([...data], location, compare));
+      setSortedData(sortRides([...data], location, byDateAndExtension));
     }
   }, [data, location]);
 
@@ -117,6 +60,7 @@ const GroupRides = ({route, navigation}) => {
 
   const onRefresh = () => {
     setLoading(true);
+    console.log('GETTING CALLED');
     dispatch(actions.getGroupRides(group.groupId))
       .then(res => setData(res))
       .catch(err =>
@@ -132,7 +76,6 @@ const GroupRides = ({route, navigation}) => {
           ],
         ),
       );
-    // .finally(() => setLoading(false));
   };
 
   const onItemPress = item =>
@@ -154,7 +97,6 @@ const GroupRides = ({route, navigation}) => {
         <SelectLocation onSubmit={setLocation} />
       ) : (
         <RidesList
-          // data={data}
           data={sortedData}
           loading={loading}
           onItemPress={onItemPress}
