@@ -60,7 +60,6 @@ const GroupRides = ({route, navigation}) => {
 
   const onRefresh = () => {
     setLoading(true);
-    console.log('GETTING CALLED');
     dispatch(actions.getGroupRides(group.groupId))
       .then(res => setData(res))
       .catch(err =>

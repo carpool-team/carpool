@@ -5,10 +5,12 @@ import * as actions from '../../../../store/actions';
 import {useDispatch} from 'react-redux';
 import RidesList from '../../../../components/Driver/RidesList';
 import {styles} from './index.styles';
+import {sortRides, byExtension} from '../../../../utils/rides';
 
 const SearchResults = ({navigation, route}) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
+  const [sortedResults, setSortedResults] = useState(null);
 
   const {data} = route.params;
 
@@ -21,7 +23,21 @@ const SearchResults = ({navigation, route}) => {
       headerLeft: () => <GoBack onPress={navigation.goBack} />,
     });
   }, []);
-  const onRefresh = () =>
+
+  useEffect(() => {
+    if (results) {
+      setSortedResults(sortRides([...results], data.location, byExtension));
+    }
+  }, [results]);
+
+  useEffect(() => {
+    if (sortedResults) {
+      setLoading(false);
+    }
+  }, [sortedResults]);
+
+  const onRefresh = () => {
+    setLoading(true);
     dispatch(
       actions.findRides({
         groupId: data.group.groupId,
@@ -44,8 +60,8 @@ const SearchResults = ({navigation, route}) => {
             },
           ],
         );
-      })
-      .finally(() => setLoading(false));
+      });
+  };
 
   const onItemPress = ride =>
     navigation.navigate('SelectedRideDetails', {
@@ -58,7 +74,7 @@ const SearchResults = ({navigation, route}) => {
       <View style={styles.container}>
         <Text style={styles.select}>Select a ride</Text>
         <RidesList
-          data={results}
+          data={sortedResults}
           loading={loading}
           onRefresh={onRefresh}
           onItemPress={onItemPress}

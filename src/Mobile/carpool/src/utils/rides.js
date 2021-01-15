@@ -7,7 +7,7 @@ import moment from 'moment';
 /**
  *
  * @param {Ride} ride - ride object
- * @param {number[]} location - selected location
+ * @param {Location} location - selected location
  */
 export const getExtension = (ride, location) => {
   try {
@@ -50,7 +50,7 @@ export const getExtension = (ride, location) => {
 /**
  *
  * @param {Ride[]} data - list of rides
- * @param {number[]} location - selected lcoation
+ * @param {Location} location - selected lcoation
  * @param {function} compareFunction - compare function, i.e. byExtension
  */
 export const sortRides = (data, location, compareFunction) => {

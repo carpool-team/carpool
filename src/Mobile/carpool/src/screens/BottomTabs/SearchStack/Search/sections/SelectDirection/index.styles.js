@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   upview: {
-    height: 80,
+    height: 60,
     width: '46%',
   },
   contentContainer: {
