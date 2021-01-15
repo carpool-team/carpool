@@ -30,14 +30,14 @@ enableScreens();
 const App = () => {
   useEffect(() => {
     MapboxGL.setTelemetryEnabled(false);
-    BackHandler.addEventListener('hardwareBackPress', () => true);
+    // BackHandler.addEventListener('hardwareBackPress', () => true);
 
     store.dispatch(actions.watchInvitations());
     store.dispatch(actions.watchDriversRideRequests());
     store.dispatch(actions.watchPassengersRideRequests());
 
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', () => true);
+    // return () =>
+    //   BackHandler.removeEventListener('hardwareBackPress', () => true);
   }, []);
 
   return (

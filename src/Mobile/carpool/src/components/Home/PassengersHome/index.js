@@ -25,12 +25,12 @@ const PassengersHome = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => true);
+  // useEffect(() => {
+  //   BackHandler.addEventListener('hardwareBackPress', () => true);
 
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', () => true);
-  }, []);
+  //   return () =>
+  //     BackHandler.removeEventListener('hardwareBackPress', () => true);
+  // }, []);
 
   useEffect(() => {
     if (userRides.data) {
