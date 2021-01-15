@@ -4,7 +4,6 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   upview: {
     width: '100%',
-    height: 160,
     marginBottom: 30,
   },
   contentContainer: {
@@ -26,7 +25,7 @@ export const styles = StyleSheet.create({
     ...sheet.textSemiBold,
     color: colors.red,
     fontSize: 14,
-    paddingVertical: 8,
+    paddingVertical: 4,
     paddingLeft: 8,
   },
 });

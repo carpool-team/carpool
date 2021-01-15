@@ -45,7 +45,7 @@ const ListItem = ({item}) => {
   return (
     <UpView
       borderRadius={16}
-      style={styles.upview}
+      style={{...styles.upview, height: item.isPending ? 180 : 150}}
       contentContainerStyle={styles.contentContainer}>
       <View style={sheet.rowCenterSplit}>
         <View>

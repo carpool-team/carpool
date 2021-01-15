@@ -10,6 +10,7 @@ import {parseCoords} from '../../../utils/coords';
 import bbox from '@turf/bbox';
 import {multiPoint} from '@turf/helpers';
 import {FullScreenLoading} from '../../common/loaders';
+import {useNavigation} from '@react-navigation/native';
 
 const getBounds = (point1, point2) => {
   const points = multiPoint([point1, point2]);
@@ -30,6 +31,7 @@ const PointMinimap = ({coordinates}) => {
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [bounds, setBounds] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
