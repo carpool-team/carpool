@@ -4,7 +4,6 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   upview: {
     width: '100%',
-    height: 210,
     marginBottom: 30,
   },
   contentContainer: {
@@ -31,9 +30,29 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    width: '100%',
+    flex: 1,
   },
   circleButton: {
     marginRight: 32,
+  },
+  moreButtonWrapper: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  close: {
+    ...sheet.textMedium,
+    color: colors.orange,
+    fontSize: 14,
+    padding: 8,
+  },
+  percentage: {
+    ...sheet.textSemiBold,
+    fontSize: 16,
+  },
+  approx: {
+    ...sheet.textMedium,
+    fontSize: 14,
+    color: colors.grayVeryDark,
   },
 });

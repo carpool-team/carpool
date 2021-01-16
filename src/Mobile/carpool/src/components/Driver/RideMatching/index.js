@@ -11,7 +11,7 @@ const RideMatching = ({matching}) => {
     return <Text style={styles.great}>Great matching</Text>;
   }
 
-  if (matching <= 65) {
+  if (matching < 65) {
     return <Text style={styles.good}>Good matching</Text>;
   }
 
