@@ -49,6 +49,7 @@ const SignUp = ({navigation}) => {
               setApiError('An error ocurred, try again');
             }
           }
+          setApiError('An error ocurred, try again');
           dispatch({type: SignUpActions.RESET});
         })
         .finally(() => {

@@ -10,10 +10,7 @@ import {styles} from '../index.styles';
 const ValidationSchema = Yup.object().shape({
   password: Yup.string()
     .min(8, 'Password is too short (at least 8 characters)')
-    .matches(
-      /[0-9!?@#$%^&\\*"'+,./:;<>=_`|~\-\(\){}[\]]+/,
-      'The password must contain at least one number or special character',
-    )
+    .matches(/[0-9]+/, 'The password must contain at least one number')
     .matches(
       /[A-Z]+/,
       'The password must contain at least one uppercase letter',
