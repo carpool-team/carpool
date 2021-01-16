@@ -15,7 +15,7 @@
                 "confirmPassword": "Potwierdź hasło",
                 "passwordsMismatch": "Hasła się nie zgadzają",
                 "passwordTooWeak": "Hasło jest za słabe",
-                "rules":{
+                "rules": {
                     "length": "dłuższe niż 7 znaków",
                     "uppercase": "wielka litera",
                     "lowercase": "mała litera",
@@ -64,7 +64,8 @@
                 "editGroup": "Edytuj grupę",
                 "ridesInGroup": "Przejazdy",
                 "inviteToGroup": "Zaproś do grupy",
-                "leaveConfirm": "Czy na pewno opuśćić grupę?"
+                "leaveConfirm": "Czy na pewno opuśćić grupę?",
+                "report": "Raport"
             },
             "addGroupBtn": "Dodaj grupę",
             "ridesBtn": "Przejazdy",
@@ -75,6 +76,18 @@
                 "basicInfo": "Edytuj grupę",
                 "btnUsers": "Edytuj użytkowników grupy",
                 "deleteUserConfirm": "Czy usunąć użytkownika: "
+            },
+            "report": {
+                "label": "Podsumowanie działalności grupy: ",
+                "fromDate": "Od: ",
+                "toDate": "Do: ",
+                "driversLabel": "Ranking przejazdów jako kierowca.",
+                "passengersLabel": "Ranking przejazdów jako pasażer.",
+                "sumText": "Średnia emisja CO2 wynosi 120g na kilometr przejechany samochodem.",
+                "sumText2": " W wybranym okresie czasu, w grupie zostało wykonanych łącznie ",
+                "sumText3": " przejazdów, i zostało przewiezionych ",
+                "sumText4": " pasażerów. Dzięki wspólnym przejazdą, twoja grupa ocaliła ",
+                "sumText5": " drzew!"
             }
         },
         "group": {
