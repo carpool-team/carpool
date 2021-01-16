@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 const AuthStack = () => (
   <Stack.Navigator
     screenOptions={{
-      header: props => <Header {...props} />,
+      header: props => <Header {...props} hideSwitch />,
     }}>
     <Stack.Screen
       name="SignIn"
