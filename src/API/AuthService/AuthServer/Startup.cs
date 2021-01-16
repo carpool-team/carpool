@@ -51,7 +51,10 @@ namespace AuthServer
 				options.UseSqlServer(_configuration.GetConnectionString("IdentityDbConnectionString"));
 			});
 
-			services.AddIdentity<AuthUser, IdentityRole>()
+			services.AddIdentity<AuthUser, IdentityRole>(options =>
+				{
+					options.Password.RequireNonAlphanumeric = false;
+				})
 				.AddEntityFrameworkStores<ApplicationDbContext>()
 				.AddDefaultTokenProviders();
 
