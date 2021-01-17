@@ -28,10 +28,6 @@ namespace DataAccessLayer.Builders
 				.HasForeignKey(x => x.InvitingAppUserId)
 				.OnDelete(DeleteBehavior.NoAction)
 				.IsRequired();
-
-            builder.HasOne(x => x.Group)
-                   .WithMany()
-                   .HasForeignKey(x => x.GroupId);
-        }
+		}
 	}
 }

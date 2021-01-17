@@ -22,7 +22,7 @@ namespace DataAccessLayer.Builders
 			       .WithOne()
 			       .HasForeignKey(x => x.RideId)
 			       .OnDelete(DeleteBehavior.Cascade);
-			
+
 			builder.HasOne(x => x.Group)
 				.WithMany(x => x.Rides)
 				.HasForeignKey(x => x.GroupId)

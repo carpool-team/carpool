@@ -24,10 +24,11 @@ namespace DataAccessLayer.Repositories
 		public async Task<Group> GetByIdAsync(GroupId id, CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
-			                     //.Include(group => group.Rides)
+			                     .Include(group => group.Rides)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
 			                     .Include(group => group.UserGroups)
+			                     .Include(group => group.GroupInvites)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
 		}
@@ -101,7 +102,8 @@ namespace DataAccessLayer.Repositories
 			=> await _context.Set<Group>().AddAsync(@group, cancellationToken);
 
 		public void Delete(Group group)
-			=> _context.Set<Group>().Remove(group);
+			=> group.IsSoftDeleted = true;
+			// => _context.Set<Group>().Remove(group);
 
 		public async Task<ICollection<Ride>> GetGroupRides(GroupId groupId,
 		                                                   CancellationToken cancellationToken = default)

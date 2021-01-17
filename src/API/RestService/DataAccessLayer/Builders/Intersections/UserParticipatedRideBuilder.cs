@@ -17,11 +17,6 @@ namespace DataAccessLayer.Builders.Intersections
 				.WithMany()
 				.HasForeignKey(x => x.AppUserId)
 				.OnDelete(DeleteBehavior.NoAction);
-
-			builder.HasOne(x => x.Ride)
-				.WithMany()
-				.HasForeignKey(x => x.RideId)
-				.OnDelete(DeleteBehavior.NoAction);
 		}
 	}
 }

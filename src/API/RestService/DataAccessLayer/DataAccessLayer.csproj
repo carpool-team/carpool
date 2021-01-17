@@ -87,6 +87,7 @@
 
   <ItemGroup>
     <Folder Include="Builders\Aggregates" />
+    <Folder Include="Repositories\Intersections" />
   </ItemGroup>
 
 </Project>
