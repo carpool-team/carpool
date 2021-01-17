@@ -57,6 +57,10 @@ const DriversRideDetails = ({navigation, route}) => {
         'This is a regular ride, do you want to delete all rides or just this parcitular one?',
         [
           {
+            text: 'Cancel',
+            style: 'default',
+          },
+          {
             text: 'Delete one',
             style: 'destructive',
             onPress: () => {
@@ -73,10 +77,6 @@ const DriversRideDetails = ({navigation, route}) => {
                 .then(() => navigation.goBack())
                 .catch(err => alert('Error ocurred'));
             },
-          },
-          {
-            text: 'Cancel',
-            style: 'default',
           },
         ],
       );

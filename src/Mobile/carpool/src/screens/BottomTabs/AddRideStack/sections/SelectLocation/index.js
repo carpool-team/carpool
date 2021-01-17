@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Alert} from 'react-native';
-import {colors, sheet} from '../../../../../styles';
+import {colors} from '../../../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {StandardButton} from '../../../../../components/common/buttons';
 import {PointMinimap} from '../../../../../components/Route';
@@ -106,19 +106,21 @@ const SelectLocation = ({state, dispatch}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {swap ? 'Select destination' : 'Select starting location'}
-      </Text>
+      {!place && (
+        <Text style={styles.title}>
+          {swap ? 'Select destination' : 'Select starting location'}
+        </Text>
+      )}
       {place ? (
         <View style={styles.placeWrapper}>
-          <View style={sheet.rowCenter}>
+          <View style={styles.placeNameWrapper}>
             <Icon name="map-marker" color={colors.green} size={30} />
             <Text style={styles.placeName}>{place.place_name}</Text>
           </View>
           <View style={styles.mapWrapper}>
             <PointMinimap coordinates={parseCoords(place.coordinates)} />
           </View>
-          <View style={sheet.rowCenterSplit}>
+          <View style={styles.buttonsWrapper}>
             <StandardButton
               width="45%"
               color={colors.red}
@@ -136,7 +138,7 @@ const SelectLocation = ({state, dispatch}) => {
       ) : locationLoading ? (
         <FullScreenLoading />
       ) : (
-        <>
+        <View style={styles.mainWrapper}>
           <TextInput
             returnKeyType="done"
             autoFocus
@@ -168,7 +170,7 @@ const SelectLocation = ({state, dispatch}) => {
               )}
             </View>
           </View>
-        </>
+        </View>
       )}
     </View>
   );

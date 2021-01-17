@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Alert} from 'react-native';
 import {geocodingClient} from '../../../../../../maps/mapbox';
-import {colors, sheet} from '../../../../../../styles';
+import {colors} from '../../../../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {PointMinimap} from '../../../../../../components/Route';
 import {StandardButton} from '../../../../../../components/common/buttons';
@@ -101,23 +101,25 @@ const SelectLocation = ({onSubmit, swap}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {swap === undefined
-          ? 'Select location'
-          : swap
-          ? 'Select location that you would like to be dropped off at'
-          : 'Select location that you would like to be picked up from'}
-      </Text>
+      {!place && (
+        <Text style={styles.title}>
+          {swap === undefined
+            ? 'Select location'
+            : swap
+            ? 'Select location that you would like to be dropped off at'
+            : 'Select location that you would like to be picked up from'}
+        </Text>
+      )}
       {place ? (
         <View style={styles.placeWrapper}>
-          <View style={sheet.rowCenter}>
+          <View style={styles.placeNameWrapper}>
             <Icon name="map-marker" color={colors.green} size={30} />
             <Text style={styles.placeName}>{place.place_name}</Text>
           </View>
           <View style={styles.mapWrapper}>
             <PointMinimap coordinates={parseCoords(place.coordinates)} />
           </View>
-          <View style={sheet.rowCenterSplit}>
+          <View style={styles.buttonsWrapper}>
             <StandardButton
               width="45%"
               color={colors.red}
@@ -135,7 +137,7 @@ const SelectLocation = ({onSubmit, swap}) => {
       ) : locationLoading ? (
         <FullScreenLoading />
       ) : (
-        <>
+        <View style={styles.mainWrapper}>
           <TextInput
             returnKeyType="done"
             autoFocus
@@ -167,7 +169,7 @@ const SelectLocation = ({onSubmit, swap}) => {
               )}
             </View>
           </View>
-        </>
+        </View>
       )}
     </View>
   );
