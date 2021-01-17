@@ -40,16 +40,20 @@ const authInitEpic: Epic<LoginAction> = (action$) => action$.pipe(
 	ofType(LoginActionTypes.Init),
 	switchMap((_action: IAuthInitAction) => {
 		const tokenInfoString: string = window.localStorage.getItem(process.env[App.storageKeys.tokenInfoStorage]);
+
 		if (tokenInfoString) {
-			return [<ILoginSuccessAction>{
-				type: LoginActionTypes.LoginSuccess,
-				tokenInfo: JSON.parse(tokenInfoString),
-			}];
-		} else {
-			return [<INoTokenAction>{
-				type: LoginActionTypes.NoToken,
-			}];
+			const tokenInfo: ITokenInfo = JSON.parse(tokenInfoString);
+			if (tokenInfo?.token && tokenInfo?.refreshToken?.expires > new Date()) {
+				return [<ILoginSuccessAction>{
+					type: LoginActionTypes.LoginSuccess,
+					tokenInfo,
+				}];
+			}
 		}
+
+		return [<INoTokenAction>{
+			type: LoginActionTypes.NoToken,
+		}];
 	}),
 );
 
@@ -175,6 +179,7 @@ const logoutEpic: Epic<LoginAction, any> = (action$) => action$.pipe(
 	ofType(LoginActionTypes.Logout),
 	switchMap((_action: ILogoutAction) => {
 		window.localStorage.removeItem(process.env[App.storageKeys.tokenInfoStorage]);
+		toast.info(i18n.t("auth.logoutSuccess"));
 		return [
 			<IAuthClearStoreAction>{
 				type: LoginActionTypes.ClearStore,

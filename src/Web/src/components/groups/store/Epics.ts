@@ -47,7 +47,8 @@ import {
 	IDeleteGroupErrorAction,
 	IEditGroupAction,
 	IEditGroupErrorAction,
-	IEditGroupSuccessAction
+	IEditGroupSuccessAction,
+	IGetGroupsActionError
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -95,7 +96,7 @@ const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 			});
 			const response: AddGroupResponse = await request.send();
 			if (response.status > 200 || response.isError) {
-				toast.error("Error while adding group: " + response.title ?? response.responseException?.exceptionMessage);
+				toast.error(i18n.t("group.add.error") + response.title ?? response.responseException?.exceptionMessage);
 				return [
 					<IAddGroupActionError>{
 						type: GroupsActionTypes.AddGroupError,
@@ -103,6 +104,7 @@ const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 					}
 				];
 			} else {
+				toast.success(i18n.t("group.add.success"));
 				return [
 					<IGetGroupsAction>{
 						type: GroupsActionTypes.GetGroups,
@@ -127,16 +129,33 @@ const getGroupsEpic: Epic<GroupsAction> = (action$, state$) =>
 			const request: GetGroupsRequest = new GetGroupsRequest({
 				userId: uid,
 			});
-			const response: GetGroupsResponse = await request.send();
-			return response.result;
+			try {
+				const response: GetGroupsResponse = await request.send();
+				return {
+					result: response.result
+				};
+			} catch (err) {
+				toast.error(i18n.t("groups.get.error"));
+				return {
+					err
+				};
+			}
 		}),
 		mergeMap((response) => {
-			return [
-				<IGetGroupsActionSuccess>{
-					type: GroupsActionTypes.GetGroupsSuccess,
-					groups: response,
-				},
-			];
+			if (response.err) {
+				return [
+					<IGetGroupsActionError>{
+						type: GroupsActionTypes.GetGroupsError,
+					}
+				]
+			} else {
+				return [
+					<IGetGroupsActionSuccess>{
+						type: GroupsActionTypes.GetGroupsSuccess,
+						groups: response.result,
+					},
+				];
+			}
 		}),
 		catchError((err: Error) =>
 			of(<any>{
@@ -568,6 +587,7 @@ const updateGroupDetailsEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 			const reqUsers = new GetGroupUsersRequest(groupId);
 			const resUsers = await reqUsers.send();
 			if (res.isError || res.status >= 300 || resUsers.isError || resUsers.status >= 300) {
+				toast.error(i18n.t("group.detailsGet.error"));
 				return [
 					<IGetSelectedGroupDetailsErrorAction>{
 						type: GroupsActionTypes.GetSelectedGroupDetailsError,
@@ -586,6 +606,7 @@ const updateGroupDetailsEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 				];
 			}
 		} catch (err) {
+			toast.error(i18n.t("group.detailsGet.error"));
 			return [
 				<IGetSelectedGroupDetailsErrorAction>{
 					type: GroupsActionTypes.GetSelectedGroupDetailsError,

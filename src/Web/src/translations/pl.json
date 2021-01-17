@@ -36,7 +36,8 @@
             "registerSuccess": "Rejestracja pomyślna!",
             "loginSuccess": "Logowanie pomyślne!",
             "login": "Zaloguj się",
-            "rememberLogin": "Pamiętaj logowanie"
+            "rememberLogin": "Pamiętaj logowanie",
+            "logoutSuccess": "Wylogowano!"
         },
         "autocomplete": {
             "wrapper": {
@@ -44,6 +45,9 @@
             }
         },
         "groups": {
+            "get": {
+                "error": "Błąd pobierania grup, odśwież stronę"
+            },
             "addGroupForm": {
                 "code": "Kod grupy",
                 "groupName": "Nazwa grupy",
@@ -78,9 +82,16 @@
             }
         },
         "group": {
+            "add": {
+                "error": "Błąd dodawania grupy: ",
+                "success": "Pomyślnie dodano grupę!"
+            },
             "edit": {
                 "success": "Pomyślnie zapisano zmiany.",
                 "error": "Błąd edycji grupy. Spróbuj ponownie."
+            },
+            "detailsGet": {
+                "error": "Błąd pobierania grupy, odśwież stronę."
             }
         },
         "rides": {
