@@ -2,7 +2,7 @@
 
 namespace Domain.Abstract
 {
-	public class AggregateRoot
+	public abstract class AggregateRoot
 	{
 	}
 }
