@@ -1,5 +1,5 @@
 import React, {useReducer, useEffect} from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, BackHandler} from 'react-native';
 import {initialState, SearchActions, reducer} from '../reducer';
 import {GoBack} from '../../../../components/navigation';
 import {
@@ -15,22 +15,29 @@ const Search = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const isFocused = useIsFocused();
 
-  useEffect(() => {
+  const onPress = () => {
+    if (state.location) {
+      dispatch({type: SearchActions.SET_LOCATION, payload: null});
+      return;
+    }
+    if (state.swap !== null) {
+      dispatch({type: SearchActions.SET_SWAP, payload: null});
+      return;
+    }
     if (state.group) {
-      const onPress = () => {
-        if (state.location) {
-          dispatch({type: SearchActions.SET_LOCATION, payload: null});
-          return;
-        }
-        if (state.swap !== null) {
-          dispatch({type: SearchActions.SET_SWAP, payload: null});
-          return;
-        }
-        if (state.group) {
-          dispatch({type: SearchActions.SET_GROUP, payload: null});
-          return;
-        }
-      };
+      dispatch({type: SearchActions.SET_GROUP, payload: null});
+      return;
+    }
+  };
+
+  useEffect(() => {
+    let backHandler = null;
+    if (state.group) {
+      backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        onPress();
+
+        return true;
+      });
 
       navigation.setOptions({
         headerLeft: () => <GoBack onPress={onPress} />,
@@ -44,6 +51,8 @@ const Search = ({navigation}) => {
     if (state.group && state.location && state.date && state.swap !== null) {
       navigation.navigate('SearchResults', {data: state});
     }
+
+    return () => backHandler && backHandler.remove();
   }, [state]);
 
   useEffect(() => {
