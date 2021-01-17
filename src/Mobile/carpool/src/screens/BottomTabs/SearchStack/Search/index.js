@@ -68,8 +68,10 @@ const Search = ({navigation}) => {
   const onSubmitLocation = location =>
     dispatch({type: SearchActions.SET_LOCATION, payload: location});
 
-  const onSubmitDate = date =>
+  const onSubmitDate = (date, period) => {
     dispatch({type: SearchActions.SET_DATE, payload: date});
+    dispatch({type: SearchActions.SET_PERIOD, payload: period});
+  };
 
   const renderSection = () => {
     if (!state.group) {

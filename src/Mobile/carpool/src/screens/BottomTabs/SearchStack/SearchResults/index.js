@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux';
 import RidesList from '../../../../components/Driver/RidesList';
 import {styles} from './index.styles';
 import {sortRides, byExtension} from '../../../../utils/rides';
+import moment from 'moment';
 
 const SearchResults = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
@@ -26,7 +27,22 @@ const SearchResults = ({navigation, route}) => {
 
   useEffect(() => {
     if (results) {
-      setSortedResults(sortRides([...results], data.location, byExtension));
+      const srtd = sortRides([...results], data.location, byExtension);
+
+      if (data.period) {
+        const withPeriod = moment(data.date).add(
+          parseInt(data.period),
+          'hours',
+        );
+
+        const filtered = srtd.filter(item =>
+          moment(item.rideDate).isSameOrBefore(withPeriod),
+        );
+
+        setSortedResults(filtered);
+      } else {
+        setSortedResults(srtd);
+      }
     }
   }, [results]);
 
