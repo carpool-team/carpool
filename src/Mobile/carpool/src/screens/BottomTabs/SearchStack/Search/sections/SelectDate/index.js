@@ -39,6 +39,7 @@ const SelectDate = ({onSubmit}) => {
         <View
           style={{
             width: '100%',
+            marginTop: 30,
             opacity: diff > 1 ? 1 : 0.5,
           }}>
           <View style={styles.timeSlotWrapper}>
