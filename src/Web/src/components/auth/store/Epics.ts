@@ -43,7 +43,8 @@ const authInitEpic: Epic<LoginAction> = (action$) => action$.pipe(
 
 		if (tokenInfoString) {
 			const tokenInfo: ITokenInfo = JSON.parse(tokenInfoString);
-			if (tokenInfo?.token && tokenInfo?.refreshToken?.expires > new Date()) {
+			console.log(tokenInfo);
+			if (tokenInfo?.token && tokenInfo?.refreshToken) {
 				return [<ILoginSuccessAction>{
 					type: LoginActionTypes.LoginSuccess,
 					tokenInfo,
@@ -74,7 +75,7 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 		}),
 		mergeMap((response) => {
 			if (response && !response.isError) {
-				toast.success(i18n.t("auth.registerSuccess"));
+				toast.success(i18n.t("auth.registerEpic.success"));
 				return [
 					<IRegisterSuccessAction>{
 						type: RegisterActionTypes.RegisterSuccess,
@@ -89,8 +90,7 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 					}
 				];
 			} else {
-				const msg: string = i18n.t("error." + registerGenericErrorCode);
-				toast.error(msg);
+				toast.error(i18n.t("auth.registerEpic.error"));
 				return [
 					<IRegisterErrorAction>{
 						type: RegisterActionTypes.RegisterError,
@@ -104,6 +104,7 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 			}
 		}),
 		catchError((err: Error) => {
+			toast.error(i18n.t("auth.registerEpic.errorCritical"));
 			return of(<any>{
 				type: RegisterActionTypes.RegisterError,
 				error: err,
@@ -128,7 +129,7 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 		}),
 		mergeMap((response) => {
 			if (response && !response.isError) {
-				toast.success(i18n.t("auth.loginSuccess"));
+				toast.success(i18n.t("auth.loginEpic.success"));
 				const tokenInfo: ITokenInfo = {
 					refreshToken: response.result.refreshToken,
 					token: response.result.token,
@@ -154,8 +155,7 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 					}
 				];
 			} else {
-				const msg: string = i18n.t("error." + loginInvalidErrorCode);
-				toast.error(msg);
+				toast.error(i18n.t("auth.loginEpic.error"));
 				return [
 					<ILoginErrorAction>{
 						type: LoginActionTypes.LoginError,
@@ -168,6 +168,7 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 			}
 		}),
 		catchError((err: Error) => {
+			toast.error(i18n.t("auth.loginEpic.errorCritical"));
 			return of(<any>{
 				type: LoginActionTypes.LoginError,
 				error: err,
