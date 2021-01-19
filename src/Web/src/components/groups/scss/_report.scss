@@ -1,10 +1,10 @@
-.report{
+.report {
 	background-color: $white;
 	width: 100%;
 	display: flex;
 	height: 93vh;
 	flex-direction: row;
-	&__left{
+	&__left {
 		padding-top: 15px;
 		margin-top: 7px;
 		margin-bottom: 7px;
@@ -26,19 +26,19 @@
 				font-weight: $semi-bold;
 			}
 		}
-		&--groupSum{
+		&--groupSum {
 			background-color: $white;
 			text-align: justify;
 			padding: 20px;
 			font-size: 20px;
 			font-weight: $medium;
 			color: $grayDark;
-			&>span{
+			& > span {
 				font-weight: $bold;
 				color: $green;
 			}
 		}
-		&--tree{
+		&--tree {
 			background-image: $tree;
 			background-repeat: no-repeat;
 			width: 100%;
@@ -47,7 +47,7 @@
 			background-position: center;
 		}
 	}
-	&__right{
+	&__right {
 		background-color: $white;
 		width: 65%;
 		margin-left: 7px;
@@ -56,7 +56,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-evenly;
-		& > span {
+		&Item {
 			font-size: 21px;
 			font-weight: $semi-bold;
 			color: $blue;
@@ -65,17 +65,17 @@
 			border-bottom: 2px solid $grayDark;
 			padding-bottom: 5px;
 		}
-		&--ranking{
+		&--ranking {
 			display: flex;
 			flex-direction: column;
 			gap: 15px;
-			&--item{
+			&--item {
 				display: flex;
 				flex-direction: row;
 				margin-right: 30px;
-				& > span{
+				& > span {
 					min-width: 200px;
-					white-space:nowrap;
+					white-space: nowrap;
 					display: flex;
 					flex-wrap: nowrap;
 					color: $grayDark;
@@ -83,32 +83,38 @@
 					padding: 7px 0px 7px 0px;
 					font-weight: $semi-bold;
 				}
-
 			}
-			&--postion{
+			&--postion {
 				padding: 7px 10px 7px 10px;
 				color: $grayDark;
 				font-size: 19px;
 				font-weight: $semi-bold;
 			}
-			&--bar{
+			&--bar {
 				padding: 7px 0px 7px 0px;
 			}
-			&--ridesNumber{
+			&--ridesNumber {
 				color: $grayDark;
 				font-size: 19px;
 				font-weight: $semi-bold;
 				padding: 7px 20px 7px 10px;
 				border-radius: 0px 70px 70px 0px;
-			}			
+			}
 		}
+	}
+	&__noDataLabel {
+		font-size: 16px;
+		font-weight: $semi-bold;
+		color: $gray;
+		padding-left: 20px;
+		padding-bottom: 5px;
 	}
 }
 @media only screen and (max-width: 900px) {
-	.report{
+	.report {
 		flex-direction: column;
 		height: auto;
-		&__left{
+		&__left {
 			width: 100%;
 			margin-left: 0;
 			margin-top: 5px;
@@ -118,7 +124,7 @@
 				margin-top: 10px;
 			}
 		}
-		&__right{
+		&__right {
 			margin-left: 0;
 			width: 100%;
 			margin-top: 5px;
@@ -126,5 +132,3 @@
 		}
 	}
 }
-
-

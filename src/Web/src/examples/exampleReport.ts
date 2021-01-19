@@ -2,7 +2,6 @@ import * as faker from "faker";
 import { fake } from "faker";
 import { IReport } from "../components/groups/interfaces/IReport";
 
-
 const exampleReport: IReport = {
 	drivers: [
 		{
@@ -128,7 +127,17 @@ const exampleReport: IReport = {
 			rideCount: faker.random.number(50)
 		}
 	],
-	ridesInGroup: faker.random.number(1000),
-	passengersInGroup: faker.random.number(1000)
+	ridesCount: faker.random.number(1000),
+	passengersCount: faker.random.number(1000),
+	group: {
+		groupId: faker.random.alphaNumeric(32),
+		location: {
+			longitude: 52.40656926303501,
+			latitude: 16.86633729745128,
+		},
+		userCount: faker.random.number(25),
+		ownerId: faker.random.alphaNumeric(32),
+		name: faker.random.word(),
+	}
 };
 export default exampleReport;

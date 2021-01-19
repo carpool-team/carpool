@@ -19,6 +19,8 @@ import {
 	IDeleteUserFromGroupAction,
 	IDeleteGroupAction,
 	IEditGroupAction,
+	IGetReportAction,
+	IClearReportAction,
 } from "./Types";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
@@ -73,6 +75,15 @@ export const editGroup: (data: IEditGroupFormData, groupId: string) => IEditGrou
 	type: GroupsActionTypes.EditGroup,
 	data,
 	groupId,
+});
+
+export const getReport: (id: string) => IGetReportAction = id => ({
+	type: GroupsActionTypes.GetReport,
+	groupId: id,
+});
+
+export const clearReport: () => IClearReportAction = () => ({
+	type: GroupsActionTypes.ClearReport,
 });
 //#endregion
 

@@ -94,6 +94,13 @@
             "edit": {
                 "success": "Pomyślnie zapisano zmiany.",
                 "error": "Błąd edycji grupy. Spróbuj ponownie."
+            },
+            "report": {
+                "get": {
+                    "error": "Błąd pobierania raportu, odśwież stronę!",
+                    "errorCritical": "Błąd pobierania raportu, odśwież stronę!"
+                },
+                "noRankingDataLabel": "Brak danych"
             }
         },
         "rides": {

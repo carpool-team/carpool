@@ -47,7 +47,10 @@ import {
 	IDeleteGroupErrorAction,
 	IEditGroupAction,
 	IEditGroupErrorAction,
-	IEditGroupSuccessAction
+	IEditGroupSuccessAction,
+	IGetReportAction,
+	IGetReportActionError,
+	IGetReportActionSuccess
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -76,6 +79,7 @@ import { DeleteUserFromGroupRequest } from "../api/deleteUserFromGroup/DeleteUse
 import { DeleteGroupRequest } from "../api/deleteGroup/DeleteGroupRequest";
 import { UpdateGroupRequest } from "../api/updateGroup/UpdateGroupRequest";
 import i18n from "../../../i18n";
+import { GetReportRequest } from "../api/getReport/GetReportRequest";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -768,6 +772,48 @@ const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
 	})
 );
 
+const getGroupReportEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+	ofType(GroupsActionTypes.GetReport),
+	switchMap(async (action: IGetReportAction) => {
+		try {
+			const req = new GetReportRequest(action.groupId);
+			const res = await req.send();
+			if (res.isError || res.status >= 300) {
+				toast.error(i18n.t("group.report.get.error"));
+				return [
+					<IGetReportActionError>{
+						type: GroupsActionTypes.GetReportError,
+						error: null,
+					},
+				];
+			} else {
+				return [
+					<IGetReportActionSuccess>{
+						type: GroupsActionTypes.GetReportSuccess,
+						report: res.result,
+					}
+				];
+			}
+		} catch (err) {
+			toast.error(i18n.t("group.report.get.error"));
+			return [
+				<IGetReportActionError>{
+					type: GroupsActionTypes.GetReportError,
+					error: err,
+				},
+			];
+		}
+	}),
+	mergeMap(res => res),
+	catchError(err => {
+		toast.error(i18n.t("group.report.get.errorCritical"));
+		return of(<IGetReportActionError>{
+			type: GroupsActionTypes.GetReportError,
+			error: err,
+		});
+	})
+);
+
 export const groupEpics = [
 	addGroupEpic,
 	getGroupsEpic,
@@ -786,4 +832,5 @@ export const groupEpics = [
 	updateGroupDetailsEpic,
 	deleteGroupEpic,
 	editGroupEpic,
+	getGroupReportEpic,
 ];
