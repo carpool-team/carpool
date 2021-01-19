@@ -97,20 +97,30 @@ const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 					name: action.group.name,
 				}
 			});
-			const response: AddGroupResponse = await request.send();
-			if (response.status > 200 || response.isError) {
-				toast.error(i18n.t("group.add.error") + response.title ?? response.responseException?.exceptionMessage);
+			try {
+				const response: AddGroupResponse = await request.send();
+				if (response.status > 299 || response.isError) {
+					toast.error(i18n.t("group.add.error") + response.title ?? response.responseException?.exceptionMessage);
+					return [
+						<IAddGroupActionError>{
+							type: GroupsActionTypes.AddGroupError,
+							error: new Error(response.title ?? response.responseException?.exceptionMessage)
+						}
+					];
+				} else {
+					toast.success(i18n.t("group.add.success"));
+					return [
+						<IGetGroupsAction>{
+							type: GroupsActionTypes.GetGroups,
+						}
+					];
+				}
+			} catch (err) {
+				toast.error(i18n.t("group.add.errorGeneric"));
 				return [
 					<IAddGroupActionError>{
 						type: GroupsActionTypes.AddGroupError,
-						error: new Error(response.title ?? response.responseException?.exceptionMessage)
-					}
-				];
-			} else {
-				toast.success(i18n.t("group.add.success"));
-				return [
-					<IGetGroupsAction>{
-						type: GroupsActionTypes.GetGroups,
+						error: err
 					}
 				];
 			}
@@ -136,17 +146,17 @@ const getGroupsEpic: Epic<GroupsAction> = (action$, state$) =>
 			try {
 				const response: GetGroupsResponse = await request.send();
 				return {
-					result: response.result
+					result: response
 				};
 			} catch (err) {
-				toast.error(i18n.t("groups.get.error"));
 				return {
 					err
 				};
 			}
 		}),
 		mergeMap((response) => {
-			if (response.err) {
+			if (response.err || response.result?.isError) {
+				toast.error(i18n.t("groups.get.error"));
 				return [
 					<IGetGroupsActionError>{
 						type: GroupsActionTypes.GetGroupsError,
@@ -156,7 +166,7 @@ const getGroupsEpic: Epic<GroupsAction> = (action$, state$) =>
 				return [
 					<IGetGroupsActionSuccess>{
 						type: GroupsActionTypes.GetGroupsSuccess,
-						groups: response.result,
+						groups: response.result.result,
 					},
 				];
 			}
@@ -428,15 +438,19 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 					location: action.location,
 				}
 			});
-			const response: AddRideRequestResponse = await request.send();
-			return {
-				id: action.ride.rideId,
-				groupId: action.ride.group.groupId,
-				isError: response.isError ?? false,
-			};
+			try {
+				const response: AddRideRequestResponse = await request.send();
+				return {
+					id: action.ride.rideId,
+					groupId: action.ride.group.groupId,
+					isError: response.isError ?? false,
+				};
+			} catch (err) {
+				return undefined;
+			}
 		}),
 		mergeMap(response => {
-			if (!response.isError) {
+			if (response && !response.isError) {
 				toast.success(i18n.t("ride.participate.success"));
 				return [
 					<IGetRidesAction>{
@@ -538,17 +552,25 @@ const addRideEpic: Epic<RideAction | GenericAction> = (action$, state$) => actio
 			});
 		}
 
-		const response: AddRideResponse = await request.send();
-		if (response.isError) {
+		try {
+			const response: AddRideResponse = await request.send();
+			if (response.isError) {
+				toast.error(i18n.t("ride.add.error"));
+				return <IApiErrorAction>{
+					type: GenericActionTypes.ApiError,
+					errorMessage: "Error while adding ride. Try again."
+				};
+			} else {
+				toast.success(i18n.t("ride.add.success"));
+				return <IGetRidesAction>{
+					type: RidesActionTypes.GetRides,
+				};
+			}
+		} catch (err) {
 			toast.error(i18n.t("ride.add.error"));
 			return <IApiErrorAction>{
 				type: GenericActionTypes.ApiError,
 				errorMessage: "Error while adding ride. Try again."
-			};
-		} else {
-			toast.success(i18n.t("ride.add.success"));
-			return <IGetRidesAction>{
-				type: RidesActionTypes.GetRides,
 			};
 		}
 	}),

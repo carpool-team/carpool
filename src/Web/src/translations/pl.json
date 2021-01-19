@@ -85,6 +85,7 @@
         "group": {
             "add": {
                 "error": "Błąd dodawania grupy: ",
+                "errorGeneric": "Błąd dodawania grupy, spróbuj ponownie!",
                 "errorCritical": "Błąd dodawania grupy. Odśwież stronę!",
                 "success": "Pomyślnie dodano grupę!"
             },
@@ -174,6 +175,21 @@
                 "error": "Błąd dodawania przejazdu. Spróbuj ponownie!",
                 "errorCritical": "Błąd dodawania przejazdu. Odśwież stronę!",
                 "success": "Pomyślnie dodano przejazd!"
+            },
+            "leave":{
+                "error": "Błąd opuszczania przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd opuszczania przejazdu. Odśwież stronę!",
+                "success": "Opuszczono przejazd!"
+            },
+            "delete":{
+                "error": "Błąd usuwania przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania przejazdu. Odśwież stronę!",
+                "success": "Usunięto przejazd!"
+            },
+            "deletePassenger":{
+                "error": "Błąd usuwania pasażera. Spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania pasażera. Odśwież stronę!",
+                "success": "Usunięto pasażera!"
             }
         },
         "requests": {
@@ -183,6 +199,16 @@
             "status": "Status: ",
             "requestFrom": "Prośba od: ",
             "myRequests": "Moje prośby o przejazd."
+        },
+        "rideRequests": {
+            "get": {
+                "error": "Błąd pobierania żądań przejazdów, odśwież stronę!",
+                "errorCritical": "Błąd pobierania żądań przejazdów, odśwież stronę!"
+            },
+            "answer": {
+                "error": "Błąd odpowiadania na żądanie, spróbuj ponownie!",
+                "errorCritical": "Błąd odpowiadania na żądanie, odśwież stronę!"
+            }
         },
         "footer": {
             "services": "Usługi",
