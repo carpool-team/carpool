@@ -29,6 +29,10 @@ import { parseCoords } from "../../../../helpers/UniversalHelper";
 import { IGroup } from "../../../groups/interfaces/IGroup";
 import { RideDirection } from "../../../groups/api/addRide/AddRideRequest";
 import { IRideDays } from "./interfaces/IRideDays";
+import ButtonSmall from "../../../ui/buttonSmall/ButtonSmall";
+import { ButtonSmallIcon } from "../../../ui/buttonSmall/enums/ButtonSmallIcon";
+import { ButtonSmallBackground } from "../../../ui/buttonSmall/enums/ButtonSmallBackground";
+import { ButtonSmallColor } from "../../../ui/buttonSmall/enums/ButtonSmallColor";
 
 export interface IAddRideProps extends IReactI18nProps, RouteComponentProps {
 	group: IGroup;
@@ -69,6 +73,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		saturday: "common.saturday",
 		sunday: "common.sunday",
 		all: "common.all",
+		rangeWeeks: "rides.rangeWeeks"
 	};
 
 	const cssClasses = {
@@ -88,6 +93,8 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		button: "ridesAddRideForm__button",
 		daysContainer: "ridesAddRideForm__daysContainer",
 		daysColumn: "ridesAddRideForm__daysContainer--column",
+		fromRangeContainer: "ridesAddRideForm__rangeContainer",
+		numberOfWeeks: "ridesAddRideForm__rangeContainer--numberOfWeeks"
 	};
 
 	const ids = {
@@ -120,6 +127,8 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		saturday: false,
 		sunday: false,
 	});
+	//TODO to jest ta zmienna którą trzeba wysyłać jako range, to jest liczba tygodni przez które ma się odbywać cykliczny 
+	const [numberOfWeeks, setNumberOfWeeks] = useState<number>(1);
 
 	const userRide: IAddRideInput = {
 		recurring: selectedScreen === PanelType.Cyclic,
@@ -133,6 +142,17 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		seatsLimit: +seats,
 		date: selectedDate,
 	};
+
+	const incrementRange = () => {
+		if (numberOfWeeks < 12) {
+			setNumberOfWeeks(numberOfWeeks + 1)
+		}
+	}
+	const decrementRange = () => {
+		if (numberOfWeeks > 1) {
+			setNumberOfWeeks(numberOfWeeks - 1)
+		}
+	}
 
 	useEffect(() => {
 		props.setRide(userRide);
@@ -522,6 +542,25 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 						{" "}
 						{t(resources.to)}
 					</span>
+				</div>
+				<div className={cssClasses.checkboxLabel}>{t(resources.rangeWeeks)}</div>
+				<div className={cssClasses.fromRangeContainer}>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Minus}
+						onClick={() => decrementRange()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+					<div className={cssClasses.numberOfWeeks}>
+						{numberOfWeeks}
+					</div>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Plus}
+						onClick={() => incrementRange()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+
 				</div>
 				{startgroup ? (
 					<Input

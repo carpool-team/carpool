@@ -15,7 +15,7 @@
                 "confirmPassword": "Potwierdź hasło",
                 "passwordsMismatch": "Hasła się nie zgadzają",
                 "passwordTooWeak": "Hasło jest za słabe",
-                "rules":{
+                "rules": {
                     "length": "dłuższe niż 7 znaków",
                     "uppercase": "wielka litera",
                     "lowercase": "mała litera",
@@ -103,7 +103,8 @@
             "myRides": "Moje przejazdy",
             "requestsBtn": "Prośby o przejazd",
             "noParticipants": "Brak pasażerów",
-            "participantsLabel": "Pasażerowie:"
+            "participantsLabel": "Pasażerowie:",
+            "rangeWeeks": "Ilość tygodni przez które przejazd będzie się odbywał:"
         },
         "requests": {
             "accepted": "Zaakceptowane",

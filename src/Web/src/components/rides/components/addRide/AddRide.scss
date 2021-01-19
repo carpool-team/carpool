@@ -138,6 +138,25 @@
 	width: 100%;
 	height: 93vh;
 	justify-content: space-between;
+
+	&__rangeContainer{
+		display: flex;
+		flex-direction: row;
+		background-color: $white;
+		min-height: 50px;
+		width: 100%;
+		justify-content: flex-start;
+		padding-left: 50px;
+		align-items: center;
+		margin-bottom: 20px;
+		&--numberOfWeeks{
+			font-size: 22px;
+			font-weight: $bold;
+			padding-left: 10px;
+			padding-right: 15px;
+			color: $blue;
+		}
+	}
 		&__checkboxContainer{
 			width: 100%;
 			display: flex;
