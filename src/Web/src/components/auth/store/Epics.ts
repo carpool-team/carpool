@@ -177,9 +177,11 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 
 const logoutEpic: Epic<LoginAction, any> = (action$) => action$.pipe(
 	ofType(LoginActionTypes.Logout),
-	switchMap((_action: ILogoutAction) => {
+	switchMap((action: ILogoutAction) => {
 		window.localStorage.removeItem(process.env[App.storageKeys.tokenInfoStorage]);
-		toast.info(i18n.t("auth.logoutSuccess"));
+		if (!action.hideMessage) {
+			toast.info(i18n.t("auth.logoutSuccess"));
+		}
 		return [
 			<IAuthClearStoreAction>{
 				type: LoginActionTypes.ClearStore,

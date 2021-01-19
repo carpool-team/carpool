@@ -261,6 +261,22 @@
             "all": "Codziennie",
             "joinRide": "Dołącz"
         },
+        "userProfile": {
+            "updateData": {
+                "error": "Błąd aktualizowania danych. Spróbuj ponownie!",
+                "errorCritical": "Błąd aktualizowania danych. Odśwież stronę!",
+                "success": "Zaktualizowano dane!"
+            },
+            "getData": {
+                "error": "Błąd pobierania danych. Spróbuj ponownie!",
+                "errorCritical": "Błąd pobierania danych. Odśwież stronę!"
+            },
+            "deleteUser": {
+                "error": "Błąd usuwania użytkownika. Spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania użytkownika. Odśwież stronę!",
+                "success": "Usunięto użytkownika!"
+            }
+        },
         "prevBtn": "Wstecz",
         "createBtn": "Utwórz",
         "addBtn": "Dodaj",
