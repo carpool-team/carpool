@@ -32,7 +32,7 @@ const DashboardHeader = ({distance, stops, steps, stepDistance}) => {
     );
   }
 
-  if (!stops.length) {
+  if (!stops.length || !steps.length) {
     return (
       <View style={styles.header}>
         <View style={sheet.rowCenter}>
