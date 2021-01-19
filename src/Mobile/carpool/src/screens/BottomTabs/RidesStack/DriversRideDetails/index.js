@@ -50,6 +50,8 @@ const DriversRideDetails = ({navigation, route}) => {
     }
   }, [ride]);
 
+  const diff = moment(ride.rideDate).diff(moment(), 'minutes');
+
   const onDeletePress = () => {
     if (ride.recurringRideId) {
       Alert.alert(
@@ -180,7 +182,7 @@ const DriversRideDetails = ({navigation, route}) => {
           </View>
         </View>
       </ScrollView>
-      {!past && (
+      {!past && diff < 15 && (
         <View style={styles.startButton}>
           <StandardButton
             title="Start"
