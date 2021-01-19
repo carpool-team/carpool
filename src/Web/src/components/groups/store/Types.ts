@@ -65,6 +65,8 @@ export enum RidesActionTypes {
 	ParticipateInRideSuccess = "RIDES_PARTICIPATE_IN_RIDE_SUCCESS",
 	ParticipateInRideError = "RIDES_PARTICIPATE_IN_RIDE_ERROR",
 	AddRide = "RIDES_ADD",
+	AddRideError = "RIDES_ADD_ERROR",
+	AddRideSuccess = "RIDES_ADD_SUCCESS",
 }
 
 //#region GENERIC
@@ -286,6 +288,13 @@ export interface IParticipateInRideActionError extends Action<RidesActionTypes.P
 export interface IAddRideAction extends Action<RidesActionTypes.AddRide> {
 	input: IAddRideInput;
 }
+
+export interface IAddRideErrorAction extends Action<RidesActionTypes.AddRideError> {
+	error: Error;
+}
+
+export interface IAddRideSuccessAction extends Action<RidesActionTypes.AddRideSuccess> {
+}
 //#endregion
 
 export type GenericAction =
@@ -339,4 +348,6 @@ export type RideAction =
 	| IParticipateInRideAction
 	| IParticipateInRideActionSuccess
 	| IParticipateInRideActionError
-	| IAddRideAction;
+	| IAddRideAction
+	| IAddRideErrorAction
+	| IAddRideSuccessAction;

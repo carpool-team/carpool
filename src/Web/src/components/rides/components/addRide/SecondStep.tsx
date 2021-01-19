@@ -115,7 +115,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 	const [location, setLocation] = useState(parseCoords(props.group.location));
 	const [direction, setDirection] = useState(RideDirection.To);
 	const [userAddressName, setUserAddresName] = useState<string>("");
-	const [seats, setSeats] = useState<string>("");
+	const [seats, setSeats] = useState(1);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [days, setDays] = useImmer<IRideDays>({
 		all: false,
@@ -127,7 +127,6 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		saturday: false,
 		sunday: false,
 	});
-	//TODO to jest ta zmienna którą trzeba wysyłać jako range, to jest liczba tygodni przez które ma się odbywać cykliczny 
 	const [numberOfWeeks, setNumberOfWeeks] = useState<number>(1);
 
 	const userRide: IAddRideInput = {
@@ -141,18 +140,29 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		},
 		seatsLimit: +seats,
 		date: selectedDate,
+		numberOfWeeks,
 	};
 
-	const incrementRange = () => {
+	const incrementWeeks = () => {
 		if (numberOfWeeks < 12) {
-			setNumberOfWeeks(numberOfWeeks + 1)
+			setNumberOfWeeks(numberOfWeeks + 1);
 		}
-	}
-	const decrementRange = () => {
+	};
+	const decrementWeeks = () => {
 		if (numberOfWeeks > 1) {
-			setNumberOfWeeks(numberOfWeeks - 1)
+			setNumberOfWeeks(numberOfWeeks - 1);
 		}
-	}
+	};
+	const incrementSeats = () => {
+		if (seats < 99) {
+			setSeats(seats + 1);
+		}
+	};
+	const decrementSeats = () => {
+		if (seats > 1) {
+			setSeats(seats - 1);
+		}
+	};
 
 	useEffect(() => {
 		props.setRide(userRide);
@@ -171,8 +181,9 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 					latitude: location[1],
 					longitude: location[0],
 				},
-				seatsLimit: +seats,
+				seatsLimit: seats,
 				date: selectedDate,
+				numberOfWeeks,
 			};
 			props.setRide(input);
 			props.addRide();
@@ -378,23 +389,24 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 							}}
 						/>
 					)}
-				<Input
-					style={cssClasses.input}
-					type={InputType.Text}
-					changeHandler={(newValue) => setSeats(newValue)}
-					placeholder={t(resources.seats)}
-					value={seats}
-					icon={InputIcon.Seats}
-					validation={{
-						validate: submitted,
-						type: ValidationType.Numeric,
-						isValidCallback: (isValid) => {
-							setInputsValid((draft) => {
-								draft.seatsNumber = isValid;
-							});
-						},
-					}}
-				/>
+				<div className={cssClasses.checkboxLabel}>{t(resources.seats)}</div>
+				<div className={cssClasses.fromRangeContainer}>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Minus}
+						onClick={() => decrementSeats()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+					<div className={cssClasses.numberOfWeeks}>
+						{seats}
+					</div>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Plus}
+						onClick={() => incrementSeats()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+				</div>
 				<Button
 					className={cssClasses.button}
 					onClick={() => trySendForm()}
@@ -547,7 +559,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 				<div className={cssClasses.fromRangeContainer}>
 					<ButtonSmall
 						icon={ButtonSmallIcon.Minus}
-						onClick={() => decrementRange()}
+						onClick={() => decrementWeeks()}
 						color={ButtonSmallColor.Gray}
 						background={ButtonSmallBackground.White}
 					/>
@@ -556,7 +568,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 					</div>
 					<ButtonSmall
 						icon={ButtonSmallIcon.Plus}
-						onClick={() => incrementRange()}
+						onClick={() => incrementWeeks()}
 						color={ButtonSmallColor.Gray}
 						background={ButtonSmallBackground.White}
 					/>
@@ -601,23 +613,24 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 							}}
 						/>
 					)}
-				<Input
-					style={cssClasses.input}
-					type={InputType.Text}
-					changeHandler={(newValue) => setSeats(newValue)}
-					placeholder={t(resources.seats)}
-					value={seats}
-					icon={InputIcon.Seats}
-					validation={{
-						validate: submitted,
-						type: ValidationType.Numeric,
-						isValidCallback: (isValid) => {
-							setInputsValid((draft) => {
-								draft.seatsNumber = isValid;
-							});
-						},
-					}}
-				/>
+				<div className={cssClasses.checkboxLabel}>{t(resources.seats)}</div>
+				<div className={cssClasses.fromRangeContainer}>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Minus}
+						onClick={() => decrementSeats()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+					<div className={cssClasses.numberOfWeeks}>
+						{seats}
+					</div>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Plus}
+						onClick={() => incrementSeats()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+				</div>
 				<Button
 					className={cssClasses.button}
 					onClick={() => trySendForm()}
