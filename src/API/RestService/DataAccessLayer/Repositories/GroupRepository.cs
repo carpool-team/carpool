@@ -28,6 +28,7 @@ namespace DataAccessLayer.Repositories
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
 			                     .Include(group => group.UserGroups)
+									.ThenInclude(ug => ug.ApplicationUser)
 			                     .Include(group => group.GroupInvites)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
@@ -39,9 +40,12 @@ namespace DataAccessLayer.Repositories
 			return await _context.Groups
 			                     .AsNoTracking()
 			                     .Include(group => group.Rides)
-			                     .Include(group => group.UserGroups)
+									.ThenInclude(ride => ride.Stops)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
+			                     .Include(group => group.UserGroups)
+									.ThenInclude(ug => ug.ApplicationUser)
+			                     .Include(group => group.GroupInvites)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
 		}
@@ -92,10 +96,10 @@ namespace DataAccessLayer.Repositories
 		                                              AppUserId appUserId,
 		                                              CancellationToken cancellationToken = default)
 			=> await _context.Set<Group>()
-			                 .Include(x => x.UserGroups)
-			                 .Where(x => x.Id == groupId)
-			                 .Select(x => x.UserGroups)
-			                 .AnyAsync(x => x.Any(y => y.AppUserId == appUserId), cancellationToken);
+				.Include(x => x.UserGroups)
+				.Where(x => x.Id == groupId)
+				.SelectMany(x => x.UserGroups)
+				.AnyAsync(x => x.AppUserId == appUserId, cancellationToken);
 
 
 		public async Task AddAsync(Group group, CancellationToken cancellationToken)

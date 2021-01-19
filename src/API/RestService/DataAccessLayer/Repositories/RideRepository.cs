@@ -83,7 +83,7 @@ namespace DataAccessLayer.Repositories
 				.Where(ride => (dateTime != null ?
 					               ride.Date.Date == dateTime.Value.Date
 					               && ride.Date.TimeOfDay >= dateTime.Value.TimeOfDay :
-					               ride.Date.Date >= DateTime.Now)
+					               ride.Date >= DateTimeOffset.Now)
 				               && ride.GroupId == groupId
 				               && (rideDirection == null || ride.RideDirection == rideDirection)
 				               && ride.OwnerId != appUserId
@@ -108,7 +108,7 @@ namespace DataAccessLayer.Repositories
 				.ThenInclude(a => a.Participant)
 				.AsNoTracking()
 				.Where(x => x.Stops.Any(y => y.ParticipantId == appUserId)
-				            && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
+				            && (past ? x.Date <= DateTimeOffset.Now : x.Date >= DateTimeOffset.Now))
 				.OrderBy(x => x.Date)
 				.ToListAsync(cancellationToken);
 		}
@@ -127,7 +127,7 @@ namespace DataAccessLayer.Repositories
 				.Include(x => x.Stops)
 				.ThenInclude(a => a.Participant)
 				.Where(x => x.OwnerId == appUserId
-				            && (past ? x.Date <= DateTime.Now : x.Date >= DateTime.Now))
+				            && (past ? x.Date <= DateTimeOffset.Now : x.Date >= DateTimeOffset.Now))
 				.OrderBy(x => x.Date)
 				.ToListAsync(cancellationToken);
 		}

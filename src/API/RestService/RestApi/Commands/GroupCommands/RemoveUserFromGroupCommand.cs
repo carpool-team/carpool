@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoWrapper.Wrappers;
@@ -57,6 +58,8 @@ namespace RestApi.Commands.GroupCommands
 				throw new ApiException("User with given id does not belong to the group",
 					StatusCodes.Status404NotFound);
 
+			group.Rides.RemoveAll(x => x.Date >= DateTimeOffset.Now && x.OwnerId == request.AppUserId);
+			
 			try
 			{
 				await _unitOfWork.SaveAsync(cancellationToken);
