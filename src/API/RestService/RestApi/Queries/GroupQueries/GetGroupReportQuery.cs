@@ -44,7 +44,7 @@ namespace RestApi.Queries.GroupQueries
 
 		public async Task<GroupReportDto> Handle(GetGroupReportQuery request, CancellationToken cancellationToken)
 		{
-			if (request.EndDateTime >= DateTimeOffset.Now.AddDays(-1))
+			if (request.EndDateTime > DateTimeOffset.Now.AddDays(-1))
 				throw new ApiException(StatusCodes.Status406NotAcceptable);
 			
 			var doesUserExistsInGroup = await _groupRepository.DoesUserExistsInGroup(request.GroupId,
@@ -98,7 +98,7 @@ namespace RestApi.Queries.GroupQueries
 			GroupReportDto groupReportDto = new(topDrivers,
 				topPassengers,
 				group.Adapt<GroupDto>(),
-				group.Rides.Count,
+				rides.Count,
 				passengerCount);
 
 			return groupReportDto;
