@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Auth.DataAccessLayer.DatabaseContexts;
 using AuthDomain.Entities;
+using AuthServer.Extensions;
 using AuthServer.Models;
 using AuthServer.Services;
 using AuthServer.Utilities;
@@ -125,6 +126,28 @@ namespace AuthServer.Controllers
 			}
 		}
 
+		[HttpPut("change-password")]
+		[Authorize]
+		public async Task<ApiResponse> ChangePassword([FromBody] ChangePasswordModel model)
+		{
+			var user = await _userManager.FindByEmailAsync(model.Email);
+
+			if (user == null)
+				throw new ApiException("User does not exist.", StatusCodes.Status404NotFound);
+
+			if (user.AppUserId != User.GetUserId())
+				throw new ApiException(StatusCodes.Status403Forbidden);
+			
+			var identityResult = await _userManager.ChangePasswordAsync(user, 
+				model.CurrentPassword,
+				model.NewPassword);
+
+			if (!identityResult.Succeeded)
+				throw new ApiException("Failed to change the password.");
+
+			return new ApiResponse(StatusCodes.Status204NoContent);
+		}
+		
 		[HttpPost("refresh-token")]
 		public async Task<ApiResponse> RefreshToken([FromBody] RefreshTokenModel refreshToken)
 		{
