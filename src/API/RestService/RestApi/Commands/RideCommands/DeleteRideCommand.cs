@@ -46,7 +46,7 @@ namespace RestApi.Commands.RideCommands
 			if (ride.OwnerId != request.AppUserId)
 				throw new ApiException("User cannot delete other user ride.", StatusCodes.Status403Forbidden);
 
-			if (ride.Date >= DateTimeOffset.Now)
+			if (ride.Date <= DateTimeOffset.Now)
 				throw new ApiException("Cannot remove past ride.", StatusCodes.Status403Forbidden);
 			
 			_rideRepository.Delete(ride);

@@ -28,6 +28,7 @@ namespace DataAccessLayer.Repositories
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
 			                     .Include(group => group.UserGroups)
+									.ThenInclude(ug => ug.ApplicationUser)
 			                     .Include(group => group.GroupInvites)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
@@ -39,9 +40,11 @@ namespace DataAccessLayer.Repositories
 			return await _context.Groups
 			                     .AsNoTracking()
 			                     .Include(group => group.Rides)
+									.ThenInclude(ride => ride.Stops)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
 			                     .Include(group => group.UserGroups)
+									.ThenInclude(ug => ug.ApplicationUser)
 			                     .Include(group => group.GroupInvites)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
