@@ -90,7 +90,12 @@ const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
 	};
 
 	const calculateTrees = () => {
-		return Math.ceil(props.report.passengersCount / 6);
+		console.log(props.report.passengerCount)
+		if (props.report.passengerCount === 0) {
+			return 0
+		} else {
+			return Math.ceil(props.report.passengerCount / 6);
+		}
 	};
 
 	const renderReport = () => (
@@ -107,7 +112,7 @@ const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
 						variant="inline"
 						format="dd/MM/yyyy"
 						margin="dense"
-						id="date-picker-inlie"
+						id="date-picker-inlie1"
 						label={t(resources.fromDate)}
 						value={selectedFromDate}
 						onChange={(date: Date) => {
@@ -123,7 +128,7 @@ const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
 						variant="inline"
 						format="dd/MM/yyyy"
 						margin="dense"
-						id="date-picker-inlie"
+						id="date-picker-inlie2"
 						label={t(resources.toDate)}
 						value={selectedToDate}
 						onChange={(date: Date) => {
@@ -139,7 +144,7 @@ const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
 					{t(resources.groupSum2)}
 					<span>{props.report.ridesCount}</span>
 					{t(resources.groupSum3)}
-					<span>{props.report.passengersCount}</span>
+					<span>{props.report.passengerCount}</span>
 					{t(resources.groupSum4)}
 					<span>{calculateTrees()}</span>
 					{t(resources.groupSum5)}

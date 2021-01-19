@@ -7,5 +7,5 @@ export interface IReport {
 	passengers: IReportUser[];
 	group: IReportGroup;
 	ridesCount: number;
-	passengersCount: number;
+	passengerCount: number;
 }

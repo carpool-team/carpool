@@ -128,7 +128,7 @@ const exampleReport: IReport = {
 		}
 	],
 	ridesCount: faker.random.number(1000),
-	passengersCount: faker.random.number(1000),
+	passengerCount: faker.random.number(1000),
 	group: {
 		groupId: faker.random.alphaNumeric(32),
 		location: {
