@@ -12,7 +12,6 @@ import {activeRouteStyle, colors} from '../../../../styles';
 import pointToLineDistance from '@turf/point-to-line-distance';
 import {point, lineString} from '@turf/helpers';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import lineSlice from '@turf/line-slice';
 import length from '@turf/length';
 import {styles} from './index.styles';
@@ -34,19 +33,9 @@ const RideDashboard = props => {
   const [stopDistance, setStopDistance] = useState(null);
   const [stepDistance, setStepDistance] = useState(null);
 
-  const _camera = useRef();
-
-  const onMoveToUser = () => {
-    if (_camera.current) {
-      // _camera.current.moveTo(location);
-      _camera.current.setCamera({
-        centerCoordinate: location,
-        zoomLevel: 16,
-      });
-    }
-  };
-
   const isReversed = !!ride.rideDirection;
+
+  const _camera = useRef(null);
 
   useEffect(() => {
     // Custom header config
@@ -269,21 +258,33 @@ const RideDashboard = props => {
 
   const onArrivedPress = () => {
     if (stops.length > 1) {
+      setLoading(true);
       // Remove closest stop from array
       let stps = [...stops];
       stps.shift();
+
       setStops([...stps]);
 
       // Remove closest waypoint if possible
-      const wpts = [...waypoints];
-      wpts.shift();
-      setWaypoints([...wpts]);
+      if (waypoints.length) {
+        const wpts = [...waypoints];
+        wpts.shift();
+        setWaypoints([...wpts]);
+      }
+
+      setLoading(false);
     } else {
       navigation.navigate('Home');
     }
   };
 
-  return loading ? (
+  useEffect(() => {
+    if (_camera.current) {
+      _camera.current.moveTo(location, 500);
+    }
+  }, [location, _camera]);
+
+  return loading || !route ? (
     <FullScreenLoading />
   ) : (
     <SafeAreaView style={styles.safeArea}>
@@ -297,30 +298,18 @@ const RideDashboard = props => {
         <TouchableOpacity onPress={fetchRoute} style={styles.refresh}>
           <FAIcon name="refresh" size={32} color={colors.orange} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={onMoveToUser} style={styles.moveTo}>
-          <MaterialIcon name="my-location" size={36} color={colors.grayDark} />
-        </TouchableOpacity>
         <MapboxGL.MapView
-          onPress={e => console.log(e)}
           style={{flex: 1}}
           styleURL={MAP_LIGHT}
           compassEnabled={false}>
           <MapboxGL.Camera
-            ref={c => (_camera.current = c)}
-            followUserLocation
-            followUserMode="normal"
-            followZoomLevel={16}
-            // followZoomLevel={19}
-            // followUserMode={MapboxGL.UserTrackingModes.Follow}
-            // followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
-            // zoomLevel={18}
-            // zoomLevel={19}
-            // animationMode="moveTo"
-            // animationDuration={500}
-            // centerCoordinate={location}
-
-            // centerCoordinate={location}
-            // zoomLevel={16}
+            defaultSettings={{
+              centerCoordinate: location,
+              zoomLevel: 14,
+            }}
+            zoomLevel={14}
+            maxZoomLevel={14}
+            ref={el => (_camera.current = el)}
           />
           <MapboxGL.UserLocation animated showsUserHeadingIndicator />
           {renderRoute()}
