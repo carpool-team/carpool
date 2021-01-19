@@ -24,10 +24,11 @@ namespace DataAccessLayer.Repositories
 		public async Task<Group> GetByIdAsync(GroupId id, CancellationToken cancellationToken = default)
 		{
 			return await _context.Groups
-			                     //.Include(group => group.Rides)
+			                     .Include(group => group.Rides)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
 			                     .Include(group => group.UserGroups)
+			                     .Include(group => group.GroupInvites)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
 		}
@@ -38,9 +39,10 @@ namespace DataAccessLayer.Repositories
 			return await _context.Groups
 			                     .AsNoTracking()
 			                     .Include(group => group.Rides)
-			                     .Include(group => group.UserGroups)
 			                     .Include(group => group.Location)
 			                     .Include(group => group.Owner)
+			                     .Include(group => group.UserGroups)
+			                     .Include(group => group.GroupInvites)
 			                     .FirstOrDefaultAsync(group => group.Id == id, cancellationToken)
 			                     .ConfigureAwait(false);
 		}
@@ -91,17 +93,18 @@ namespace DataAccessLayer.Repositories
 		                                              AppUserId appUserId,
 		                                              CancellationToken cancellationToken = default)
 			=> await _context.Set<Group>()
-			                 .Include(x => x.UserGroups)
-			                 .Where(x => x.Id == groupId)
-			                 .Select(x => x.UserGroups)
-			                 .AnyAsync(x => x.Any(y => y.AppUserId == appUserId), cancellationToken);
+				.Include(x => x.UserGroups)
+				.Where(x => x.Id == groupId)
+				.SelectMany(x => x.UserGroups)
+				.AnyAsync(x => x.AppUserId == appUserId, cancellationToken);
 
 
 		public async Task AddAsync(Group group, CancellationToken cancellationToken)
 			=> await _context.Set<Group>().AddAsync(@group, cancellationToken);
 
 		public void Delete(Group group)
-			=> _context.Set<Group>().Remove(group);
+			=> group.IsSoftDeleted = true;
+			// => _context.Set<Group>().Remove(group);
 
 		public async Task<ICollection<Ride>> GetGroupRides(GroupId groupId,
 		                                                   CancellationToken cancellationToken = default)

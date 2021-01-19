@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using DataAccessLayer.Extensions;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Entities.Intersections;
 using IdentifiersShared.Converters;
@@ -18,6 +19,14 @@ namespace DataAccessLayer.DatabaseContexts
 			_ = modelBuilder ?? throw new NullReferenceException(nameof(modelBuilder));
 
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+			foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+			{
+				if (typeof(ISoftDeletable).IsAssignableFrom(entityType.ClrType))
+				{
+					entityType.AddSoftDeleteQueryFilter();
+				}
+			}
 
 			modelBuilder.UseValueConverter(new UserIdValueConverter());
 			modelBuilder.UseValueConverter(new GroupIdValueConverter());

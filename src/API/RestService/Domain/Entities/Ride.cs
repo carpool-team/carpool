@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Domain.Abstract;
+using Domain.Contracts;
 using Domain.Entities.Intersections;
 using Domain.Enums;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
-using Microsoft.AspNetCore.Http;
 
 namespace Domain.Entities
 {

@@ -15,6 +15,7 @@ namespace DataAccessLayer.Builders
 
 			builder.Property(x => x.Code);
 			builder.Property(x => x.Name).IsRequired();
+			builder.Property(x => x.IsSoftDeleted).IsRequired().HasDefaultValue(false);
 
 			//builder.HasMany(x => x.Rides)
 			//       .WithOne()
@@ -24,13 +25,12 @@ namespace DataAccessLayer.Builders
 			builder.HasMany(x => x.UserGroups)
 				.WithOne(x => x.Group)
 				.HasForeignKey(ug => ug.GroupId)
-				.OnDelete(DeleteBehavior.Cascade);
+				.OnDelete(DeleteBehavior.NoAction);
 
-			// builder.OwnsOne(x => x.Location, o =>
-			// {
-			//  o.Property(x => x.Latitude).IsRequired();
-			//  o.Property(x => x.Longitude).IsRequired();
-			// });
+			builder.HasMany(x => x.GroupInvites)
+				.WithOne(x => x.Group)
+				.HasForeignKey(x => x.GroupId)
+				.OnDelete(DeleteBehavior.NoAction);
 
 			builder.OwnsOne(x => x.Location);
 

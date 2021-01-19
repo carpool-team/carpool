@@ -6,9 +6,11 @@ using DataTransferObjects;
 using DataTransferObjects.Group;
 using DataTransferObjects.Ride;
 using DataTransferObjects.RideRequest;
+using DataTransferObjects.Stop;
 using DataTransferObjects.User;
 using Domain.Contracts.Repositories;
 using IdentifiersShared.Identifiers;
+using Mapster;
 using MediatR;
 
 namespace RestApi.Queries.RideRequestQueries
@@ -39,18 +41,20 @@ namespace RestApi.Queries.RideRequestQueries
 					=> new RideRequestDto(x.Id,
 						new RideRequestRideDto(x.RideId,
 							x.Ride.Date,
-							new LocationDto(x.Ride.Location.Longitude, x.Ride.Location.Latitude),
+							x.Ride.Location.Adapt<LocationDto>(),
 							new MinimalGroupDto(x.Ride.GroupId,
-								new LocationDto(x.Ride.Group.Location.Longitude, x.Ride.Group.Location.Latitude),
+								x.Ride.Group.Location.Adapt<LocationDto>(),
 								x.Ride.Group.Name),
-							x.Ride.RideDirection),
+							x.Ride.RideDirection,
+							x.Ride.Stops.Select(a => a.Adapt<StopDto>()).ToList()),
 						new RideOwnerDto(x.Ride.Owner.Rating,
 							x.RideOwner.FirstName,
 							x.RideOwner.LastName,
 							x.RideOwner.Id),
 						new RideRequestingUserDto(x.RequestingUser.Id,
 							x.RequestingUser.FirstName,
-							x.RequestingUser.LastName),
+							x.RequestingUser.LastName,
+							x.Location.Adapt<LocationDto>()),
 						x.IsAccepted,
 						x.IsPending))
 				.ToList();
