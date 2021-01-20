@@ -53,6 +53,7 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 		ridesInGroup: "groups.list.ridesInGroup",
 		inviteToGroup: "groups.list.inviteToGroup",
 		leaveGroup: "groups.list.leaveGroup",
+		report: "groups.list.report"
 	};
 
 	const handleOpenPopover = () => {
@@ -118,6 +119,9 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 			<div className={cssClasses.menu}>
 				<ButtonLink to={`/${mainRoutes.groups}${GroupsRouter.routes.rides}`}>
 					{t(resources.ridesInGroup)}
+				</ButtonLink>
+				<ButtonLink to={`/${mainRoutes.groups}${GroupsRouter.routes.report}`}>
+					{t(resources.report)}
 				</ButtonLink>
 				{renderManagePart()}
 				{renderLeaveGroupPart()}

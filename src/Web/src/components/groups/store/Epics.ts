@@ -51,7 +51,10 @@ import {
 	IGetGroupsActionError,
 	IGetInvitesActionError,
 	IAnswerInviteActionError,
-	IGetRidesActionError
+	IGetRidesActionError,
+	IGetReportAction,
+	IGetReportActionError,
+	IGetReportActionSuccess
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -69,7 +72,7 @@ import { IAuthState } from "../../auth/store/State";
 import { AddRideRequest } from "../api/addRide/AddRideRequest";
 import { AddRideResponse } from "../api/addRide/AddRideResponse";
 import { AddInviteRequest } from "../api/addInvite/AddInviteRequest";
-import { IRedirectAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
+import { IRedirectAction, ISetLoaderVisibleAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
 import { GetGroupUsersRequest } from "../api/getGroupUsers/GetGroupUsersRequest";
 import { GetGroupDetailsRequest } from "../api/getGroupDetails/GetGroupDetailsRequest";
@@ -80,6 +83,8 @@ import { DeleteUserFromGroupRequest } from "../api/deleteUserFromGroup/DeleteUse
 import { DeleteGroupRequest } from "../api/deleteGroup/DeleteGroupRequest";
 import { UpdateGroupRequest } from "../api/updateGroup/UpdateGroupRequest";
 import i18n from "../../../i18n";
+import { GetReportRequest } from "../api/getReport/GetReportRequest";
+import moment from "moment";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -926,6 +931,68 @@ const editGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 	})
 );
 
+const getGroupReportEpic: Epic<GroupsAction | LayoutAction> = (action$) => action$.pipe(
+	ofType(GroupsActionTypes.GetReport),
+	switchMap(async (action: IGetReportAction) => {
+		try {
+			const startDate = moment(action.startDate).toISOString();
+
+			const endDate = moment(action.endDate).toISOString();
+
+			const req = new GetReportRequest({
+				groupId: action.groupId,
+				startDate,
+				endDate,
+			});
+			const res = await req.send();
+			if (res.isError || res.status >= 300) {
+				toast.error(i18n.t("group.report.get.error"));
+				return [
+					<IGetReportActionError>{
+						type: GroupsActionTypes.GetReportError,
+						error: null,
+					},
+					<ISetLoaderVisibleAction>{
+						type: LayoutActionTypes.SetLoaderVisible,
+						visible: false,
+					}
+				];
+			} else {
+				return [
+					<IGetReportActionSuccess>{
+						type: GroupsActionTypes.GetReportSuccess,
+						report: res.result,
+					},
+					<ISetLoaderVisibleAction>{
+						type: LayoutActionTypes.SetLoaderVisible,
+						visible: false,
+					}
+				];
+			}
+		} catch (err) {
+			toast.error(i18n.t("group.report.get.error"));
+			return [
+				<IGetReportActionError>{
+					type: GroupsActionTypes.GetReportError,
+					error: err,
+				},
+				<ISetLoaderVisibleAction>{
+					type: LayoutActionTypes.SetLoaderVisible,
+					visible: false,
+				}
+			];
+		}
+	}),
+	mergeMap(res => res),
+	catchError(err => {
+		toast.error(i18n.t("group.report.get.errorCritical"));
+		return of(<IGetReportActionError>{
+			type: GroupsActionTypes.GetReportError,
+			error: err,
+		});
+	})
+);
+
 export const groupEpics = [
 	addGroupEpic,
 	getGroupsEpic,
@@ -943,4 +1010,5 @@ export const groupEpics = [
 	updateGroupDetailsEpic,
 	deleteGroupEpic,
 	editGroupEpic,
+	getGroupReportEpic,
 ];
