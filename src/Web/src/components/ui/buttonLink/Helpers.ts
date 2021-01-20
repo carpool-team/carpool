@@ -14,6 +14,8 @@ export const getColorClass: (type?: ButtonLinkColor) => string = (color) => {
 			return "buttonLink__text--gray";
 		case ButtonLinkColor.White:
 			return "buttonLink__text--white";
+		case ButtonLinkColor.Red:
+			return "buttonLink__text--red";
 		default:
 			return "buttonLink__text--gray";
 	}

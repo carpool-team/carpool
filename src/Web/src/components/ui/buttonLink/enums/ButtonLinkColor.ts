@@ -3,5 +3,6 @@ export enum ButtonLinkColor {
 	Green,
 	Blue,
 	Gray,
-	White
+	White,
+	Red
 }
