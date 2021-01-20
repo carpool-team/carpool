@@ -124,7 +124,7 @@ const ActiveItemJoin = (props: IListItemProps) => {
 					{/* <div className={cssClasses.activeCar}>
 						{props.ride.owner.vehicle}
 					</div> */}
-					<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
+					<div className={cssClasses.activeSeats}>Wolne miejsca: {props.ride.seatsLimit}</div>
 					{props.joinRideCallback ?
 						<>
 							<Button

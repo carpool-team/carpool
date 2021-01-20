@@ -49,6 +49,10 @@ export const getIconClass: (type?: ButtonSmallIcon) => string = (icon) => {
 			return "buttonSmall__icon--right";
 		case ButtonSmallIcon.Left:
 			return "buttonSmall__icon--left";
+		case ButtonSmallIcon.Minus:
+			return "buttonSmall__icon--minus";
+		case ButtonSmallIcon.Plus:
+			return "buttonSmall__icon--plus";
 		default:
 			return "buttonSmall__icon--none";
 	}

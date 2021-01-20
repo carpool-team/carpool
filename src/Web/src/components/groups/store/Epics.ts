@@ -54,7 +54,9 @@ import {
 	IGetRidesActionError,
 	IGetReportAction,
 	IGetReportActionError,
-	IGetReportActionSuccess
+	IGetReportActionSuccess,
+	IAddRideErrorAction,
+	IAddRideSuccessAction
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -67,7 +69,7 @@ import { GetInvitesResponse } from "../api/getInvites/GetInvitesResponse";
 import { AddGroupResponse } from "../api/addGroup/AddGroupResponse";
 import { GetRidesResponse } from "../api/getRides/GetRidesResponse";
 import { GetRidesRequest } from "../api/getRides/GetRidesRequest";
-import { getId } from "../../../helpers/UniversalHelper";
+import { dateToIsoString, getId } from "../../../helpers/UniversalHelper";
 import { IAuthState } from "../../auth/store/State";
 import { AddRideRequest } from "../api/addRide/AddRideRequest";
 import { AddRideResponse } from "../api/addRide/AddRideResponse";
@@ -85,6 +87,38 @@ import { UpdateGroupRequest } from "../api/updateGroup/UpdateGroupRequest";
 import i18n from "../../../i18n";
 import { GetReportRequest } from "../api/getReport/GetReportRequest";
 import moment from "moment";
+import { IRideDays } from "../../rides/components/addRide/interfaces/IRideDays";
+
+const getMappedDays = (weekDays: IRideDays) => {
+	let weekDaysBinary: number = 0;
+	if (weekDays.all) {
+		weekDaysBinary = 1111111;
+	} else {
+		if (weekDays.monday) {
+			weekDaysBinary += 1;
+		}
+		if (weekDays.tuesday) {
+			weekDaysBinary += 10;
+		}
+		if (weekDays.wednesday) {
+			weekDaysBinary += 100;
+		}
+		if (weekDays.thursday) {
+			weekDaysBinary += 1000;
+		}
+		if (weekDays.friday) {
+			weekDaysBinary += 10000;
+		}
+		if (weekDays.saturday) {
+			weekDaysBinary += 100000;
+		}
+		if (weekDays.sunday) {
+			weekDaysBinary += 1000000;
+		}
+	}
+	const mappedDays: number = parseInt(weekDaysBinary.toString(), 2);
+	return mappedDays;
+};
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -492,41 +526,15 @@ const addRideEpic: Epic<RideAction | GenericAction> = (action$, state$) => actio
 	ofType(RidesActionTypes.AddRide),
 	switchMap(async (action: IAddRideAction) => {
 		const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
-		let weekdays: number = 0;
-		if (action.input.weekDays.all) {
-			weekdays = 1111111;
-		} else {
-			if (action.input.weekDays.monday) {
-				weekdays += 1;
-			}
-			if (action.input.weekDays.tuesday) {
-				weekdays += 10;
-			}
-			if (action.input.weekDays.wednesday) {
-				weekdays += 100;
-			}
-			if (action.input.weekDays.thursday) {
-				weekdays += 1000;
-			}
-			if (action.input.weekDays.friday) {
-				weekdays += 10000;
-			}
-			if (action.input.weekDays.saturday) {
-				weekdays += 100000;
-			}
-			if (action.input.weekDays.sunday) {
-				weekdays += 1000000;
-			}
-		}
-		const mappedDays: number = parseInt(weekdays.toString(), 2);
 		let request: AddRideRequest;
 
-		// TODO zastanowić się czy planujemy dać użytkownikowi wybór tego
-		const currentDate = new Date();
-		const nextMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-		// END
-
 		if (action.input.recurring) {
+			const endDate = new Date(action.input.date);
+			endDate.setDate(endDate.getDate() + action.input.numberOfWeeks * 7);
+
+			const mappedDays = getMappedDays(action.input.weekDays);
+			const rideTime = (action.input.date.getHours()) + ":" + action.input.date.getMinutes();
+
 			request = new AddRideRequest({
 				body: {
 					rideDirection: action.input.rideDirection,
@@ -536,9 +544,9 @@ const addRideEpic: Epic<RideAction | GenericAction> = (action$, state$) => actio
 					location: action.input.location,
 					price: 0,
 					seatsLimit: action.input.seatsLimit,
-					rideTime: (action.input.date.getHours() + ":" + action.input.date.getMinutes()),
-					startDate: currentDate.toISOString(),
-					endDate: nextMonthDate.toISOString()
+					rideTime,
+					startDate: dateToIsoString(action.input.date),
+					endDate: dateToIsoString(endDate)
 				},
 				recurring: action.input.recurring
 			});
@@ -546,7 +554,7 @@ const addRideEpic: Epic<RideAction | GenericAction> = (action$, state$) => actio
 			request = new AddRideRequest({
 				body: {
 					rideDirection: action.input.rideDirection,
-					date: action.input.date.toISOString(),
+					date: dateToIsoString(action.input.date),
 					ownerId: uid,
 					groupId: action.input.groupId,
 					location: action.input.location,
@@ -561,25 +569,34 @@ const addRideEpic: Epic<RideAction | GenericAction> = (action$, state$) => actio
 			const response: AddRideResponse = await request.send();
 			if (response.isError) {
 				toast.error(i18n.t("ride.add.error"));
-				return <IApiErrorAction>{
-					type: GenericActionTypes.ApiError,
-					errorMessage: "Error while adding ride. Try again."
-				};
+				return [
+					<IAddRideErrorAction>{
+						type: RidesActionTypes.AddRideError,
+						error: null
+					}
+				];
 			} else {
 				toast.success(i18n.t("ride.add.success"));
-				return <IGetRidesAction>{
-					type: RidesActionTypes.GetRides,
-				};
+				return [
+					<IGetRidesAction>{
+						type: RidesActionTypes.GetRides,
+					},
+					<IAddRideSuccessAction>{
+						type: RidesActionTypes.AddRideSuccess,
+					}
+				];
 			}
 		} catch (err) {
 			toast.error(i18n.t("ride.add.error"));
-			return <IApiErrorAction>{
-				type: GenericActionTypes.ApiError,
-				errorMessage: "Error while adding ride. Try again."
-			};
+			return [
+				<IAddRideErrorAction>{
+					type: RidesActionTypes.AddRideError,
+					error: err
+				}
+			];
 		}
 	}),
-	mergeMap(res => [res]),
+	mergeMap(res => res),
 	catchError((err: Error) => {
 		toast.error(i18n.t("ride.add.errorCritical"));
 		return of(<any>{

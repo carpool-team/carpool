@@ -169,6 +169,7 @@
             "requestsBtn": "Prośby o przejazd",
             "noParticipants": "Brak pasażerów",
             "participantsLabel": "Pasażerowie:",
+            "rangeWeeks": "Ilość tygodni przez które przejazd będzie się odbywał:",
             "get": {
                 "error": "Bład pobierania przejazdów. Odśwież stronę!",
                 "errorCritical": "Błąd pobierania przejazdów. Odśwież stronę!"

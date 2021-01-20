@@ -10,6 +10,7 @@ import GroupsRouter from "../../../../GroupsRouter";
 import { connect } from "react-redux";
 import { leaveGroup } from "../../../../../store/Actions";
 import { ILeaveGroupAction } from "../../../../../store/Types";
+import { ButtonLinkColor } from "../../../../../../ui/buttonLink/enums/ButtonLinkColor";
 
 interface IDispatchPropsType {
 	leaveGroup: (groupId: string) => ILeaveGroupAction;
@@ -90,7 +91,9 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 		// Owner CAN'T leave group
 		if (!isOwner) {
 			return <>
-				<ButtonLink onClick={handleOpenPopover}>
+				<ButtonLink onClick={handleOpenPopover}
+					color={ButtonLinkColor.Red}
+				>
 					{t(resources.leaveGroup)}
 				</ButtonLink>
 				<LeaveGroupModal

@@ -3,7 +3,7 @@ import { Redirect, Route, RouteProps } from "react-router";
 import { isAuthorized } from "../../helpers/UniversalHelper";
 import { mainRoutes } from "../layout/components/LayoutRouter";
 
-class PrivateRoute<T extends RouteProps> extends React.Component<T>{
+class PrivateRoute<T extends RouteProps> extends React.Component<T> {
 	render(): JSX.Element {
 		if (isAuthorized() === false) {
 			return (
@@ -16,7 +16,7 @@ class PrivateRoute<T extends RouteProps> extends React.Component<T>{
 				<Route
 					{...this.props}
 				/>
-			)
+			);
 		}
 	}
 }
