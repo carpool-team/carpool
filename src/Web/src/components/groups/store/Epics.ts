@@ -673,8 +673,15 @@ const getGroupUsersEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 	})
 );
 
-const updateGroupDetailsEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+const updateGroupDetailsEpic: Epic<GroupsAction> = (action$, state$) => action$.pipe(
 	ofType(GroupsActionTypes.UpdateGroupDetails, GroupsActionTypes.SetSelectedGroup),
+	filter((action: IUpdateGroupDetailsAction | ISetSelectedGroupAction) => {
+		if (action.type === GroupsActionTypes.UpdateGroupDetails) {
+			return (state$.value.groups as IGroupsState).groups.find(g => g.groupId === action.groupId).owner.appUserId === getId();
+		} else {
+			return action.group.owner.appUserId === getId();
+		}
+	}),
 	switchMap(async (action: IUpdateGroupDetailsAction | ISetSelectedGroupAction) => {
 		try {
 			const groupId = action.type === GroupsActionTypes.UpdateGroupDetails ? action.groupId : action.group.groupId;
