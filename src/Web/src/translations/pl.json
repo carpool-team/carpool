@@ -33,10 +33,19 @@
             },
             "submit": "Wyślij",
             "register": "Zarejestruj się",
-            "registerSuccess": "Rejestracja pomyślna!",
-            "loginSuccess": "Logowanie pomyślne!",
+            "registerEpic": {
+                "success": "Rejestracja pomyślna!",
+                "error": "Błąd rejestracji, spróbuj ponownie!",
+                "errorCritical": "Błąd rejestracji odśwież stronę!"
+            },
+            "loginEpic": {
+                "success": "Logowanie pomyślne!",
+                "error": "Błąd logowania, spróbuj ponownie!",
+                "errorCritical": "Błąd logowania odśwież stronę!"
+            },
             "login": "Zaloguj się",
-            "rememberLogin": "Pamiętaj logowanie"
+            "rememberLogin": "Pamiętaj logowanie",
+            "logoutSuccess": "Wylogowano!"
         },
         "autocomplete": {
             "wrapper": {
@@ -44,6 +53,10 @@
             }
         },
         "groups": {
+            "get": {
+                "error": "Błąd pobierania grup. Odśwież stronę!",
+                "errorCritical": "Błąd pobierania grup. Odśwież stronę!"
+            },
             "addGroupForm": {
                 "code": "Kod grupy",
                 "groupName": "Nazwa grupy",
@@ -78,9 +91,41 @@
             }
         },
         "group": {
+            "add": {
+                "error": "Błąd dodawania grupy: ",
+                "errorGeneric": "Błąd dodawania grupy, spróbuj ponownie!",
+                "errorCritical": "Błąd dodawania grupy. Odśwież stronę!",
+                "success": "Pomyślnie dodano grupę!"
+            },
             "edit": {
                 "success": "Pomyślnie zapisano zmiany.",
-                "error": "Błąd edycji grupy. Spróbuj ponownie."
+                "error": "Błąd edycji grupy. Spróbuj ponownie!",
+                "errorCritical": "Błąd edycji grupy. Odśwież stronę!"
+            },
+            "detailsGet": {
+                "error": "Błąd pobierania grupy, odśwież stronę.",
+                "errorCritical": "Błąd pobierania grupy, odśwież stronę."
+            },
+            "leave": {
+                "success": "Opuszczono grupę!",
+                "error": "Błąd opuszczania grupy, spróbuj ponownie!",
+                "errorCritical": "Błąd  opuszczania grupy, odśwież stronę!"
+            },
+            "deleteUser": {
+                "error": "Błąd usuwania użytkownika, spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania użytkownika, odśwież stronę!",
+                "success": "Usunięto użytkownika!"
+            },
+            "delete": {
+                "error": "Błąd usuwania grupy, spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania grupy, odśwież stronę!",
+                "success": "Usunięto grupę!"
+            }
+        },
+        "groupUsers": {
+            "get": {
+                "error": "Błąd pobierania użytkowników grup, odśwież stronę!",
+                "errorCritical": "Błąd pobierania użytkowników grup, odśwież stronę!"
             }
         },
         "rides": {
@@ -103,7 +148,57 @@
             "myRides": "Moje przejazdy",
             "requestsBtn": "Prośby o przejazd",
             "noParticipants": "Brak pasażerów",
-            "participantsLabel": "Pasażerowie:"
+            "participantsLabel": "Pasażerowie:",
+            "get": {
+                "error": "Bład pobierania przejazdów. Odśwież stronę!",
+                "errorCritical": "Błąd pobierania przejazdów. Odśwież stronę!"
+            },
+            "getAvailable": {
+                "error": "Bład pobierania dostępnych przejazdów. Odśwież stronę!",
+                "errorCritical": "Błąd pobierania dostępnych przejazdów. Odśwież stronę!"
+            }
+        },
+        "invites": {
+            "get": {
+                "error": "Błąd pobierania zaproszeń. Odśwież stronę!",
+                "errorCritical": "Błąd pobierania zaproszeń. Odśwież stronę!"
+            },
+            "answer": {
+                "error": "Bład odpowiadania na zaproszenie. Spróbuj ponownie!",
+                "errorCritical": "Bład odpowiadania na zaproszenie. Odśwież stronę!"
+            },
+            "add": {
+                "errorCritical": "Błąd dodawania zaproszenia. Odśwież stronę!",
+                "error": "Błąd dodawania zaproszenia. Spróbuj ponownie!",
+                "success": "Pomyślnie dodano zaproszenie!"
+            }
+        },
+        "ride": {
+            "participate": {
+                "success": "Dołączono do przejazdu!",
+                "error": "Błąd dołączania do przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd dołączania do przejazdu. Odśwież stronę!"
+            },
+            "add": {
+                "error": "Błąd dodawania przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd dodawania przejazdu. Odśwież stronę!",
+                "success": "Pomyślnie dodano przejazd!"
+            },
+            "leave":{
+                "error": "Błąd opuszczania przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd opuszczania przejazdu. Odśwież stronę!",
+                "success": "Opuszczono przejazd!"
+            },
+            "delete":{
+                "error": "Błąd usuwania przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania przejazdu. Odśwież stronę!",
+                "success": "Usunięto przejazd!"
+            },
+            "deletePassenger":{
+                "error": "Błąd usuwania pasażera. Spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania pasażera. Odśwież stronę!",
+                "success": "Usunięto pasażera!"
+            }
         },
         "requests": {
             "accepted": "Zaakceptowane",
@@ -112,6 +207,16 @@
             "status": "Status: ",
             "requestFrom": "Prośba od: ",
             "myRequests": "Moje prośby o przejazd."
+        },
+        "rideRequests": {
+            "get": {
+                "error": "Błąd pobierania żądań przejazdów, odśwież stronę!",
+                "errorCritical": "Błąd pobierania żądań przejazdów, odśwież stronę!"
+            },
+            "answer": {
+                "error": "Błąd odpowiadania na żądanie, spróbuj ponownie!",
+                "errorCritical": "Błąd odpowiadania na żądanie, odśwież stronę!"
+            }
         },
         "footer": {
             "services": "Usługi",
@@ -163,6 +268,22 @@
             "sunday": "Niedziela",
             "all": "Codziennie",
             "joinRide": "Dołącz"
+        },
+        "userProfile": {
+            "updateData": {
+                "error": "Błąd aktualizowania danych. Spróbuj ponownie!",
+                "errorCritical": "Błąd aktualizowania danych. Odśwież stronę!",
+                "success": "Zaktualizowano dane!"
+            },
+            "getData": {
+                "error": "Błąd pobierania danych. Spróbuj ponownie!",
+                "errorCritical": "Błąd pobierania danych. Odśwież stronę!"
+            },
+            "deleteUser": {
+                "error": "Błąd usuwania użytkownika. Spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania użytkownika. Odśwież stronę!",
+                "success": "Usunięto użytkownika!"
+            }
         },
         "prevBtn": "Wstecz",
         "createBtn": "Utwórz",

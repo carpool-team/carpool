@@ -50,6 +50,7 @@ export interface ILoginErrorAction extends Action<LoginActionTypes.LoginError> {
 
 /** Action for logout */
 export interface ILogoutAction extends Action<LoginActionTypes.Logout> {
+	hideMessage?: boolean;
 }
 //#endregion
 
