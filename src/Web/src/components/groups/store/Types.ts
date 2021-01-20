@@ -6,6 +6,7 @@ import { IGroup } from "../interfaces/IGroup";
 import { IGroupUser } from "../interfaces/IGroupUser";
 import { IInvite } from "../interfaces/IInvite";
 import { ILocation } from "../interfaces/ILocation";
+import { IReport } from "../interfaces/IReport";
 import { IRide } from "../interfaces/IRide";
 
 export enum GenericActionTypes {
@@ -40,6 +41,10 @@ export enum GroupsActionTypes {
 	EditGroup = "GROUPS_EDIT_GROUP",
 	EditGroupSuccess = "GROUPS_EDIT_GROUP_SUCCESS",
 	EditGroupError = "GROUPS_EDIT_GROUP_ERROR",
+	GetReport = "GROUPS_GET_REPORT",
+	GetReportSuccess = "GROUPS_GET_REPORT_SUCCESS",
+	GetReportError = "GROUPS_GET_REPORT_ERROR",
+	ClearReport = "GROUPS_CLEAR_REPORT",
 }
 
 /** Enum of invites actions */
@@ -112,6 +117,28 @@ export interface IGetGroupsActionSuccess
 export interface IGetGroupsActionError
 	extends Action<GroupsActionTypes.GetGroupsError> {
 	error: Error;
+}
+
+/** Action for getting group report */
+export interface IGetReportAction extends Action<GroupsActionTypes.GetReport> {
+	groupId: string;
+	startDate: Date;
+	endDate: Date;
+}
+
+/** Action for getting group report success */
+export interface IGetReportActionSuccess
+	extends Action<GroupsActionTypes.GetReportSuccess> {
+	report: IReport;
+}
+
+/** Action for getting group report error */
+export interface IGetReportActionError
+	extends Action<GroupsActionTypes.GetReportError> {
+	error: Error;
+}
+
+export interface IClearReportAction extends Action<GroupsActionTypes.ClearReport> {
 }
 
 /** Action for getting group users */
@@ -327,7 +354,11 @@ export type GroupsAction =
 	| IDeleteGroupSuccessAction
 	| IEditGroupAction
 	| IEditGroupSuccessAction
-	| IEditGroupErrorAction;
+	| IEditGroupErrorAction
+	| IGetReportAction
+	| IGetReportActionSuccess
+	| IGetReportActionError
+	| IClearReportAction;
 
 export type InviteAction =
 	IAnswerInviteAction

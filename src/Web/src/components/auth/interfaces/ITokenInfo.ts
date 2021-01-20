@@ -1,9 +1,8 @@
-import { IRefreshToken } from "./IRefreshToken";
 import { ITokenPayload } from "./ITokenPayload";
 
 export interface ITokenInfo {
 	token: string;
 	expires: Date;
-	refreshToken: IRefreshToken;
+	refreshToken: string;
 	payload: ITokenPayload;
 }

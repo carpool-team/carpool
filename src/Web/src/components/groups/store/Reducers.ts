@@ -11,6 +11,7 @@ const initialState: IGroupsState = {
 	ridesOwnedPast: [],
 	ridesParticipatedPast: [],
 	ridesAvailable: [],
+	report: null,
 };
 
 /**
@@ -69,6 +70,12 @@ const reducer: Reducer<IGroupsState> = (
 				Object.keys(draft).forEach(key => {
 					draft[key] = initialState[key];
 				});
+				break;
+			case GroupsActionTypes.GetReportSuccess:
+				draft.report = action.report;
+				break;
+			case GroupsActionTypes.ClearReport:
+				draft.report = initialState.report;
 				break;
 			default:
 				break;

@@ -69,7 +69,7 @@ export function each<T>(iterable: { [key: string]: T }, predicate: (item: T) => 
 }
 
 /** Parses JWT */
-export function parseJwt(token): any {
+export function parseJwt(token: string): any {
 	let base64Url = token.split(".")[1];
 	let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
 	let jsonPayload = decodeURIComponent(atob(base64).split("").map(function (c) {
