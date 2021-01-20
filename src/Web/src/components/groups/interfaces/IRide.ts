@@ -15,4 +15,5 @@ export interface IRide {
 	owner: IParticipant;
 	location: ILocation;
 	group: IGroup;
+	seatsLimit?: number;
 }
