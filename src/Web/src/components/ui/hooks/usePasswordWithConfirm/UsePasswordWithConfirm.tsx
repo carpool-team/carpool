@@ -34,7 +34,6 @@ const regexes = {
 	numbers: /^.*[0-9]+.*$/,
 	uppercase: /^.*[A-Z]+.*$/,
 	lowercase: /^.*?[a-z]+.*$/,
-	special: /^.*?[#?!@$%^&*-]+.*$/,
 	length: /^.{8,}$/,
 };
 
@@ -56,7 +55,6 @@ const usePasswordWithConfirm = () => {
 		uppercase: false,
 		lowercase: false,
 		numbers: false,
-		special: false,
 	});
 
 	useEffect(() => {
