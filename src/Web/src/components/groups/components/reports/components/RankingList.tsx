@@ -86,4 +86,4 @@ const RankingList: (props: IRankingListProps) => JSX.Element = props => {
 		return <span className={cssClasses.noDataLabel}>{t(resources.noData)}</span>;
 	}
 };
-export default withTranslation()(RankingList);;
+export default withTranslation()(RankingList);
