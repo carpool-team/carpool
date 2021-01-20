@@ -77,9 +77,11 @@ export const editGroup: (data: IEditGroupFormData, groupId: string) => IEditGrou
 	groupId,
 });
 
-export const getReport: (id: string) => IGetReportAction = id => ({
+export const getReport: (id: string, startDate: Date, endDate: Date) => IGetReportAction = (id, startDate, endDate) => ({
 	type: GroupsActionTypes.GetReport,
 	groupId: id,
+	startDate,
+	endDate,
 });
 
 export const clearReport: () => IClearReportAction = () => ({

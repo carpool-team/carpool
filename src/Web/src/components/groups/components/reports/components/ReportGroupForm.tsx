@@ -12,18 +12,20 @@ import { clearReport, getReport } from "../../../store/Actions";
 import { connect } from "react-redux";
 import { IReport } from "../../../interfaces/IReport";
 import { IGroupsState } from "../../../store/State";
-import { render } from "react-dom";
-import LoaderSplash from "../../../../ui/loaderSplash/LoaderSplash";
 import LoaderSpinner from "../../../../ui/loaderSpinner/LoaderSpinner";
+import { ISetLoaderVisibleAction } from "../../../../layout/store/Types";
+import { setLoaderVisible } from "../../../../layout/store/Actions";
 
 interface IDispatchPropsType {
-	getReport: (id: string) => IGetReportAction;
+	getReport: (id: string, startDate: Date, endDate: Date) => IGetReportAction;
 	clearReport: () => IClearReportAction;
+	setLoaderVisible: (visible: boolean) => ISetLoaderVisibleAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
 	getReport,
 	clearReport,
+	setLoaderVisible,
 };
 
 interface IStatePropsType {
@@ -46,8 +48,17 @@ interface IReportGroupForm extends IReactI18nProps, DispatchProps, StateProps {
 }
 
 const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
+
+	const [selectedFromDate, setSelectedFromDate] = useState(new Date(moment().subtract("months", 1).toISOString()));
+	const [selectedToDate, setSelectedToDate] = useState(new Date());
+
+	const updateReport = () => {
+		props.setLoaderVisible(true);
+		props.getReport(props.group.groupId, selectedFromDate, selectedToDate);
+	};
+
 	useEffect(() => {
-		props.getReport(props.group.groupId);
+		updateReport();
 		return () => {
 			props.clearReport();
 		};
@@ -78,21 +89,19 @@ const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
 		groupSum5: "groups.report.sumText5"
 	};
 
-	const [selectedFromDate, setSelectedFromDate] = useState(new Date(moment().subtract("months", 1).toISOString()));
-	const [selectedToDate, setSelectedToDate] = useState(new Date());
-
 	const handleToDateChange = (date: Date) => {
 		setSelectedToDate(date);
 	};
 
 	const handleFromDateChange = (date: Date) => {
 		setSelectedFromDate(date);
+		updateReport();
 	};
 
 	const calculateTrees = () => {
-		console.log(props.report.passengerCount)
+		console.log(props.report.passengerCount);
 		if (props.report.passengerCount === 0) {
-			return 0
+			return 0;
 		} else {
 			return Math.ceil(props.report.passengerCount / 6);
 		}
@@ -164,7 +173,7 @@ const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
 	);
 
 	if (props.report === null) {
-		return <LoaderSpinner></LoaderSpinner>;
+		return null;
 	} else {
 		return renderReport();
 	}

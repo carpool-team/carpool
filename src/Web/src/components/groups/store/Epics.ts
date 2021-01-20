@@ -68,7 +68,7 @@ import { IAuthState } from "../../auth/store/State";
 import { AddRideRequest } from "../api/addRide/AddRideRequest";
 import { AddRideResponse } from "../api/addRide/AddRideResponse";
 import { AddInviteRequest } from "../api/addInvite/AddInviteRequest";
-import { IRedirectAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
+import { IRedirectAction, ISetLoaderVisibleAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
 import { GetGroupUsersRequest } from "../api/getGroupUsers/GetGroupUsersRequest";
 import { GetGroupDetailsRequest } from "../api/getGroupDetails/GetGroupDetailsRequest";
@@ -80,6 +80,7 @@ import { DeleteGroupRequest } from "../api/deleteGroup/DeleteGroupRequest";
 import { UpdateGroupRequest } from "../api/updateGroup/UpdateGroupRequest";
 import i18n from "../../../i18n";
 import { GetReportRequest } from "../api/getReport/GetReportRequest";
+import moment from "moment";
 
 const addGroupEpic: Epic<GroupsAction> = (action$, state$) =>
 	action$.pipe(
@@ -772,11 +773,27 @@ const apiErrorEpic: Epic<GenericAction> = (action$, _state$) => action$.pipe(
 	})
 );
 
-const getGroupReportEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+const getGroupReportEpic: Epic<GroupsAction | LayoutAction> = (action$) => action$.pipe(
 	ofType(GroupsActionTypes.GetReport),
 	switchMap(async (action: IGetReportAction) => {
 		try {
-			const req = new GetReportRequest(action.groupId);
+			const startDate = moment(action.startDate)
+				.set("hours", 0)
+				.set("minutes", 0)
+				.set("seconds", 0)
+				.toISOString();
+
+			const endDate = moment(action.endDate)
+				.set("hours", 0)
+				.set("minutes", 0)
+				.set("seconds", 0)
+				.toISOString();
+
+			const req = new GetReportRequest({
+				groupId: action.groupId,
+				startDate,
+				endDate,
+			});
 			const res = await req.send();
 			if (res.isError || res.status >= 300) {
 				toast.error(i18n.t("group.report.get.error"));
@@ -785,12 +802,20 @@ const getGroupReportEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 						type: GroupsActionTypes.GetReportError,
 						error: null,
 					},
+					<ISetLoaderVisibleAction>{
+						type: LayoutActionTypes.SetLoaderVisible,
+						visible: false,
+					}
 				];
 			} else {
 				return [
 					<IGetReportActionSuccess>{
 						type: GroupsActionTypes.GetReportSuccess,
 						report: res.result,
+					},
+					<ISetLoaderVisibleAction>{
+						type: LayoutActionTypes.SetLoaderVisible,
+						visible: false,
 					}
 				];
 			}
@@ -801,6 +826,10 @@ const getGroupReportEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 					type: GroupsActionTypes.GetReportError,
 					error: err,
 				},
+				<ISetLoaderVisibleAction>{
+					type: LayoutActionTypes.SetLoaderVisible,
+					visible: false,
+				}
 			];
 		}
 	}),

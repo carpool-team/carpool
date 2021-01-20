@@ -120,6 +120,8 @@ export interface IGetGroupsActionError
 /** Action for getting group report */
 export interface IGetReportAction extends Action<GroupsActionTypes.GetReport> {
 	groupId: string;
+	startDate: Date;
+	endDate: Date;
 }
 
 /** Action for getting group report success */
