@@ -63,7 +63,7 @@ const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
 	};
 
 	useEffect(() => {
-		updateReport(selectedToDate, selectedFromDate);
+		updateReport(selectedFromDate, selectedToDate);
 		return () => {
 			props.clearReport();
 		};
