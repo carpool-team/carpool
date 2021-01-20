@@ -65,7 +65,7 @@ const RankingList: (props: IRankingListProps) => JSX.Element = props => {
 				{...rankingData.map((driver, idx) => {
 					if (idx < 7) {
 						return (
-							<div className={cssClasses.rankingItem}>
+							<div className={cssClasses.rankingItem} key={idx}>
 								<div style={calculateColor(idx)} className={cssClasses.position}>{idx + 1}. </div>
 								<span style={calculateColor(idx)}>{driver.firstName} {driver.lastName}</span>
 								<div style={calculateWidth(driver.rideCount, idx)} className={cssClasses.bar}>
