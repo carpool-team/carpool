@@ -40,16 +40,21 @@ const authInitEpic: Epic<LoginAction> = (action$) => action$.pipe(
 	ofType(LoginActionTypes.Init),
 	switchMap((_action: IAuthInitAction) => {
 		const tokenInfoString: string = window.localStorage.getItem(process.env[App.storageKeys.tokenInfoStorage]);
+
 		if (tokenInfoString) {
-			return [<ILoginSuccessAction>{
-				type: LoginActionTypes.LoginSuccess,
-				tokenInfo: JSON.parse(tokenInfoString),
-			}];
-		} else {
-			return [<INoTokenAction>{
-				type: LoginActionTypes.NoToken,
-			}];
+			const tokenInfo: ITokenInfo = JSON.parse(tokenInfoString);
+			console.log(tokenInfo);
+			if (tokenInfo?.token && tokenInfo?.refreshToken) {
+				return [<ILoginSuccessAction>{
+					type: LoginActionTypes.LoginSuccess,
+					tokenInfo,
+				}];
+			}
 		}
+
+		return [<INoTokenAction>{
+			type: LoginActionTypes.NoToken,
+		}];
 	}),
 );
 
@@ -70,7 +75,7 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 		}),
 		mergeMap((response) => {
 			if (response && !response.isError) {
-				toast.success(i18n.t("auth.registerSuccess"));
+				toast.success(i18n.t("auth.registerEpic.success"));
 				return [
 					<IRegisterSuccessAction>{
 						type: RegisterActionTypes.RegisterSuccess,
@@ -85,8 +90,7 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 					}
 				];
 			} else {
-				const msg: string = i18n.t("error." + registerGenericErrorCode);
-				toast.error(msg);
+				toast.error(i18n.t("auth.registerEpic.error"));
 				return [
 					<IRegisterErrorAction>{
 						type: RegisterActionTypes.RegisterError,
@@ -100,6 +104,7 @@ const registerEpic: Epic<RegisterAction> = (action$) =>
 			}
 		}),
 		catchError((err: Error) => {
+			toast.error(i18n.t("auth.registerEpic.errorCritical"));
 			return of(<any>{
 				type: RegisterActionTypes.RegisterError,
 				error: err,
@@ -124,7 +129,7 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 		}),
 		mergeMap((response) => {
 			if (response && !response.isError) {
-				toast.success(i18n.t("auth.loginSuccess"));
+				toast.success(i18n.t("auth.loginEpic.success"));
 				const tokenInfo: ITokenInfo = {
 					refreshToken: response.result.refreshToken,
 					token: response.result.token,
@@ -150,8 +155,7 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 					}
 				];
 			} else {
-				const msg: string = i18n.t("error." + loginInvalidErrorCode);
-				toast.error(msg);
+				toast.error(i18n.t("auth.loginEpic.error"));
 				return [
 					<ILoginErrorAction>{
 						type: LoginActionTypes.LoginError,
@@ -164,6 +168,7 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 			}
 		}),
 		catchError((err: Error) => {
+			toast.error(i18n.t("auth.loginEpic.errorCritical"));
 			return of(<any>{
 				type: LoginActionTypes.LoginError,
 				error: err,
@@ -173,8 +178,11 @@ const loginEpic: Epic<LoginAction> = (action$) =>
 
 const logoutEpic: Epic<LoginAction, any> = (action$) => action$.pipe(
 	ofType(LoginActionTypes.Logout),
-	switchMap((_action: ILogoutAction) => {
+	switchMap((action: ILogoutAction) => {
 		window.localStorage.removeItem(process.env[App.storageKeys.tokenInfoStorage]);
+		if (!action.hideMessage) {
+			toast.info(i18n.t("auth.logoutSuccess"));
+		}
 		return [
 			<IAuthClearStoreAction>{
 				type: LoginActionTypes.ClearStore,
