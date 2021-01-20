@@ -47,10 +47,7 @@ const UserPassword: React.FC<IUserPasswordProps> = (props) => {
 
 	const validateForm = () => {
 		let isFormValid: boolean = true;
-		if (!isPasswordValid) {
-			isFormValid = false;
-		}
-		if (each(inputsValid, i => i)) {
+		if (each(inputsValid, i => i) && isPasswordValid) {
 			isFormValid = true;
 			setValidate(false);
 		} else {
