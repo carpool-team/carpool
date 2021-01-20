@@ -1,7 +1,6 @@
 import { IReportUser } from "../../../interfaces/IReportUser";
 import React from "react";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
-import { colorList } from "../../../../../scss/colorList";
 import { withTranslation } from "react-i18next";
 import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
 
@@ -24,7 +23,7 @@ const RankingList: (props: IRankingListProps) => JSX.Element = props => {
 	};
 
 	if (props.users && props.users.length > 0) {
-		const rankingData = props.users ?? [];
+		const rankingData = [...(props.users ?? [])];
 		rankingData.sort((a, b) => (a.rideCount < b.rideCount) ? 1 : -1);
 		const maxRides = rankingData[0].rideCount ?? 0;
 

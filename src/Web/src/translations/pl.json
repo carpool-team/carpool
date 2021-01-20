@@ -97,7 +97,7 @@
             },
             "report": {
                 "get": {
-                    "error": "Błąd pobierania raportu, odśwież stronę!",
+                    "error": "Błąd pobierania raportu, zmień datę!",
                     "errorCritical": "Błąd pobierania raportu, odśwież stronę!"
                 },
                 "noRankingDataLabel": "Brak danych"

@@ -50,15 +50,20 @@ interface IReportGroupForm extends IReactI18nProps, DispatchProps, StateProps {
 const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
 
 	const [selectedFromDate, setSelectedFromDate] = useState(new Date(moment().subtract("months", 1).toISOString()));
-	const [selectedToDate, setSelectedToDate] = useState(new Date());
+	const [selectedToDate, setSelectedToDate] = useState(new Date(
+		moment()
+			.subtract("days", 1)
+			.subtract("minutes", 1)
+			.toISOString()
+	));
 
-	const updateReport = () => {
+	const updateReport = (from: Date, to: Date) => {
 		props.setLoaderVisible(true);
-		props.getReport(props.group.groupId, selectedFromDate, selectedToDate);
+		props.getReport(props.group.groupId, from, to);
 	};
 
 	useEffect(() => {
-		updateReport();
+		updateReport(selectedToDate, selectedFromDate);
 		return () => {
 			props.clearReport();
 		};
@@ -91,11 +96,12 @@ const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {
 
 	const handleToDateChange = (date: Date) => {
 		setSelectedToDate(date);
+		updateReport(selectedFromDate, date);
 	};
 
 	const handleFromDateChange = (date: Date) => {
 		setSelectedFromDate(date);
-		updateReport();
+		updateReport(date, selectedToDate);
 	};
 
 	const calculateTrees = () => {

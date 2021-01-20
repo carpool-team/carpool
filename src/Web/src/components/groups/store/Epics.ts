@@ -777,17 +777,9 @@ const getGroupReportEpic: Epic<GroupsAction | LayoutAction> = (action$) => actio
 	ofType(GroupsActionTypes.GetReport),
 	switchMap(async (action: IGetReportAction) => {
 		try {
-			const startDate = moment(action.startDate)
-				.set("hours", 0)
-				.set("minutes", 0)
-				.set("seconds", 0)
-				.toISOString();
+			const startDate = moment(action.startDate).toISOString();
 
-			const endDate = moment(action.endDate)
-				.set("hours", 0)
-				.set("minutes", 0)
-				.set("seconds", 0)
-				.toISOString();
+			const endDate = moment(action.endDate).toISOString();
 
 			const req = new GetReportRequest({
 				groupId: action.groupId,
