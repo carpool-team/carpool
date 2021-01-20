@@ -1,3 +1,4 @@
 export interface IChangePasswordFormData {
-	password: string;
+	newPassword: string;
+	currentPassword: string;
 }

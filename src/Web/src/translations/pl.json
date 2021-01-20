@@ -304,6 +304,11 @@
                 "error": "Błąd usuwania użytkownika. Spróbuj ponownie!",
                 "errorCritical": "Błąd usuwania użytkownika. Odśwież stronę!",
                 "success": "Usunięto użytkownika!"
+            },
+            "changePassword": {
+                "error": "Błąd zmiany hasła. Spróbuj ponownie!",
+                "errorCritical": "Błąd zmiany hasła. Odśwież stronę!",
+                "success": "Zmieniono hasło!"
             }
         },
         "prevBtn": "Wstecz",

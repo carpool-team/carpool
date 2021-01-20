@@ -54,6 +54,8 @@ export const getRequestEndpoint: (
 				return "/users/" + queries.userId;
 			case RequestEndpoint.DELETE_USER:
 				return "/users/" + queries.userId;
+			case RequestEndpoint.CHANGE_USER_PASSWORD:
+				return "/auth/change-password";
 			//#endregion
 			//#region RIDES
 			case RequestEndpoint.GET_RIDES_BY_USER_ID:
@@ -105,6 +107,8 @@ export const getUrl: (endpoint: RequestEndpoint) => string = (ep) => {
 		case RequestEndpoint.REGISTER_USER:
 		case RequestEndpoint.UPDATE_USER_DATA:
 		case RequestEndpoint.DELETE_USER:
+		case RequestEndpoint.CHANGE_USER_PASSWORD:
+		case RequestEndpoint.REFRESH_TOKEN:
 			return process.env.AUTH_URL;
 		default:
 			return process.env.REST_URL;

@@ -2,17 +2,23 @@ import { toast } from "react-toastify";
 import { Epic, ofType } from "redux-observable";
 import { of } from "rxjs";
 import { catchError, mergeMap, switchMap } from "rxjs/operators";
+import App from "../../../App";
 import { getId } from "../../../helpers/UniversalHelper";
 import i18n from "../../../i18n";
 import { ILogoutAction, LoginAction, LoginActionTypes } from "../../auth/store/Types";
 import { ISetLoaderVisibleAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
+import { ChangePasswordRequest } from "../api/changePassword/ChangePasswordRequest";
 import { DeleteUserRequest } from "../api/deleteUser/DeleteUserRequest";
 import { GetDataRequest } from "../api/getData/GetDataRequest";
 import { GetDataResponse } from "../api/getData/GetDataResponse";
 import { UpdateDataRequest } from "../api/updateData/UpdateDataRequest";
 import { UpdateDataResponse } from "../api/updateData/UpdateDataResponse";
 import { IUserData } from "../interfaces/IUserData";
+import { IUserProfileState } from "./State";
 import {
+	IChangePasswordAction,
+	IChangePasswordErrorAction,
+	IChangePasswordSuccessAction,
 	IDeleteUserAction,
 	IDeleteUserErrorAction,
 	IDeleteUserSuccessAction,
@@ -169,10 +175,70 @@ const deleteUserEpic: Epic<UserProfileAction | LoginAction> = (action$) => actio
 	})
 );
 
+const changePasswordEpic: Epic<UserProfileAction | LayoutAction> = (action$, state$) => action$.pipe(
+	ofType(UserProfileActionTypes.ChangePassword),
+	switchMap(async (action: IChangePasswordAction) => {
+		const request = new ChangePasswordRequest({
+			body: {
+				currentPassword: action.data.currentPassword,
+				newPassword: action.data.newPassword,
+				email: (state$.value.userProfile as IUserProfileState).userData.email,
+			}
+		});
+		try {
+			const response: UpdateDataResponse = await request.send();
+			if (response.isError) {
+				toast.error(i18n.t("userProfile.changePassword.error"));
+				return [
+					<IChangePasswordErrorAction>{
+						type: UserProfileActionTypes.ChangePasswordError,
+					},
+					<ISetLoaderVisibleAction>{
+						type: LayoutActionTypes.SetLoaderVisible,
+						visible: false,
+					}
+				];
+			} else {
+				toast.success(i18n.t("userProfile.changePassword.success"));
+				// remove token, so user has to relog on refresh
+				window.localStorage.removeItem(process.env[App.storageKeys.tokenInfoStorage]);
+				return [
+					<IChangePasswordSuccessAction>{
+						type: UserProfileActionTypes.ChangePasswordSuccess,
+					},
+					<ISetLoaderVisibleAction>{
+						type: LayoutActionTypes.SetLoaderVisible,
+						visible: false,
+					}
+				];
+			}
+		} catch (err) {
+			toast.error(i18n.t("userProfile.changePassword.error"));
+			return [
+				<IChangePasswordErrorAction>{
+					type: UserProfileActionTypes.ChangePasswordError,
+				},
+				<ISetLoaderVisibleAction>{
+					type: LayoutActionTypes.SetLoaderVisible,
+					visible: false,
+				}
+			];
+		}
+	}),
+	mergeMap(res => res),
+	catchError((err: Error) => {
+		toast.error(i18n.t("userProfile.changePassword.errorCritical"));
+		return of(<IChangePasswordErrorAction>{
+			type: UserProfileActionTypes.ChangePasswordError,
+		});
+	})
+);
+
 export const userProfileEpics = [
 	getDataEpic,
 	getDataSuccessEpic,
 	updateDataEpic,
 	updateDataSuccesEpic,
 	deleteUserEpic,
+	changePasswordEpic,
 ];
