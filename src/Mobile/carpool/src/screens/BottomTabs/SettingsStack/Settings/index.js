@@ -102,7 +102,7 @@ const Settings = ({navigation}) => {
             color={colors.red}
             onPress={onLogout}
           />
-          <Text style={styles.version}>Version: 0.6 beta</Text>
+          <Text style={styles.version}>Version: 1.0</Text>
         </View>
       </View>
     </SafeScroll>
