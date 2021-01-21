@@ -2,14 +2,13 @@
 @import "~scss_path/fonts";
 
 .button {
-
 	font-size: 18px;
 	font-weight: $medium;
 	color: $grayDark;
 	text-decoration: none;
-	padding:10px;
+	padding: 10px;
 	border: none;
-	outline:none;
+	outline: none;
 	width: 140px;
 	z-index: inherit;
 	cursor: pointer;
@@ -20,7 +19,7 @@
 		border-radius: 25px;
 	}
 
-	&__disabled{
+	&__disabled {
 		pointer-events: none;
 		background-color: $backgroundDarker !important;
 	}
@@ -37,12 +36,12 @@
 		&--white {
 			color: $white;
 		}
-		&--black{
+		&--black {
 			color: $black;
 		}
 	}
-	&__background{
-		&--transparent{
+	&__background {
+		&--transparent {
 			background-color: transparent;
 		}
 		&--gray {
@@ -68,11 +67,14 @@
 		}
 	}
 	&__icon {
-		&--user:before{
-			font-family: FontAwesome;
-			font-size: 15px;
-			content:"\f007";
-			padding-right: 10px;
+		font-family: FontAwesome;
+		font-size: 15px;
+		padding-right: 10px;
+		&--user:before {
+			content: "\f007";
+		}
+		&--close:before {
+			content: "\f00d";
 		}
 	}
 }

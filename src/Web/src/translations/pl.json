@@ -244,7 +244,8 @@
             "environment": "Środowisko",
             "about": "O nas",
             "idea": "Idea",
-            "credits": "Grafiki"
+            "credits": "Grafiki",
+            "help": "Zgłoś błąd"
         },
         "navBar": {
             "register": "Zarejestruj się",

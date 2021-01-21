@@ -31,7 +31,8 @@ class Footer extends React.Component<IFooterProps> {
 		groups: "homeScreen.groups",
 		reports: "homeScreen.reports",
 		rides: "homeScreen.rides",
-		credits: "footer.credits"
+		credits: "footer.credits",
+		help: "footer.help",
 	};
 	private ids = {
 		container: "footerContainer",
@@ -39,7 +40,7 @@ class Footer extends React.Component<IFooterProps> {
 
 	renderAuthorizedContainer = () => {
 		if (isAuthorized() === false) {
-
+			return null;
 		} else {
 			const { t } = this.props;
 			return (
@@ -47,6 +48,13 @@ class Footer extends React.Component<IFooterProps> {
 					<div className={this.cssClasses.footerTitle}>
 						{t(this.resources.services)}
 					</div>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						to={`/${mainRoutes.help}`}
+					>
+						{t(this.resources.help)}
+					</ButtonLink>
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
@@ -103,6 +111,13 @@ class Footer extends React.Component<IFooterProps> {
 						background={ButtonLinkBackground.Gray}
 					>
 						{t(this.resources.environment)}
+					</ButtonLink>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						to={`/${mainRoutes.help}`}
+					>
+						{t(this.resources.help)}
 					</ButtonLink>
 				</div>
 				{this.renderAuthorizedContainer()}
