@@ -100,6 +100,7 @@ const GroupRides = ({route, navigation}) => {
           loading={loading}
           onItemPress={onItemPress}
           onRefresh={onRefresh}
+          showHeader={!!sortedData ? !!sortedData.length : false}
         />
       )}
     </SafeAreaView>

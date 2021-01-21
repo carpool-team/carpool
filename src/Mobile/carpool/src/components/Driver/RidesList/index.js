@@ -1,11 +1,18 @@
 import React from 'react';
-import {FlatList, RefreshControl} from 'react-native';
-import {colors} from '../../../styles';
+import {FlatList, RefreshControl, View, Text} from 'react-native';
+import {colors, sheet} from '../../../styles';
 import {ListEmptyComponent} from '../../common/lists';
 import ListItem from './ListItem';
 import {styles} from './index.styles';
 
-const RidesList = ({data, loading, onRefresh, onItemPress, reverse}) => (
+const RidesList = ({
+  data,
+  loading,
+  onRefresh,
+  onItemPress,
+  reverse,
+  showHeader,
+}) => (
   <FlatList
     data={reverse && data ? data.reverse() : data}
     style={styles.flatlist}
@@ -19,6 +26,16 @@ const RidesList = ({data, loading, onRefresh, onItemPress, reverse}) => (
         refreshing={loading}
         onRefresh={onRefresh}
       />
+    }
+    ListHeaderComponent={
+      showHeader && (
+        <View style={styles.listHeader}>
+          <Text style={styles.listHeaderText}>
+            These bars indicate how much the original route will extend if you
+            join
+          </Text>
+        </View>
+      )
     }
     ListEmptyComponent={
       !loading && (
