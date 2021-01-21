@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {parseCoords} from '../../../utils/coords';
 import {GoBack, Header} from '../../../components/navigation';
 import {PointMinimap} from '../../../components/Route';
-import {useReverseGeocoding} from '../../../hooks';
+import {useReverseGeocoding, useActiveAccount} from '../../../hooks';
 import {SafeScroll} from '../../../components/common/wrappers';
 import * as actions from '../../../store/actions';
 import {useDispatch} from 'react-redux';
@@ -19,6 +19,8 @@ const GroupDetails = ({navigation, route}) => {
   const [placeName, setPlaceName] = useState(null);
 
   const [results, loading, error, _getPlaceName] = useReverseGeocoding();
+  const {activeAccount} = useActiveAccount();
+  const isPassenger = activeAccount === 'passenger';
 
   const dispatch = useDispatch();
 
@@ -132,15 +134,17 @@ const GroupDetails = ({navigation, route}) => {
               <Text style={styles.cardLabel}>Leave</Text>
             </View>
           </UpView>
-          <UpView
-            borderRadius={8}
-            style={styles.ridesUpView}
-            onPress={onRidesPress}>
-            <View style={styles.cardContent}>
-              <Ionicon name="ios-car" size={32} color={colors.blue} />
-              <Text style={styles.cardLabel}>Rides</Text>
-            </View>
-          </UpView>
+          {isPassenger && (
+            <UpView
+              borderRadius={8}
+              style={styles.ridesUpView}
+              onPress={onRidesPress}>
+              <View style={styles.cardContent}>
+                <Ionicon name="ios-car" size={32} color={colors.blue} />
+                <Text style={styles.cardLabel}>Rides</Text>
+              </View>
+            </UpView>
+          )}
         </View>
         <View style={styles.addressWrapper}>
           <Icon
