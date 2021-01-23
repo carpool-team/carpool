@@ -14,6 +14,7 @@ import { ILocation } from "../groups/interfaces/ILocation";
 import { sortStops } from "../../helpers/StopsHelper";
 import { IRideRequest } from "../groups/interfaces/rideRequest/IRideRequest";
 import { IRideRequestUser } from "../groups/interfaces/rideRequest/IRideRequestUser";
+import bbox from "@turf/bbox";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 1,
@@ -81,8 +82,23 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 						coordinates: parseCoords(ride?.group?.location)
 					},
 				];
+				let requestStop: IRideStop = null;
+				let stopsCp = []
 				if (ride?.stops) {
-					const sortedStops = sortStops(this.props.ride.location, this.props.ride.group.location, this.props.ride?.stops);
+					stopsCp.concat(...this.props.ride?.stops)
+				}
+				if (this.props.requestingUser) {
+					requestStop = {
+						location: this.props.requestingUser.location,
+						participant: {
+							firstName: this.props.requestingUser.firstName,
+							lastName: this.props.requestingUser.lastName,
+							participantId: this.props.requestingUser.appUserId
+						}
+					}
+					stopsCp.push(requestStop)
+				} if (stopsCp) {
+					const sortedStops = sortStops(this.props.ride.location, this.props.ride.group.location, stopsCp);
 					waypointsSorted = (sortedStops.sortedStops.map(item => ({ coordinates: parseCoords(item) })));
 				}
 
@@ -95,8 +111,10 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 					})
 					.send();
 				if (response.body.code === "Ok") {
+					const boundingBox = this.getBounds(response.body.routes[0].geometry)
 					this.setState(produce((draft: any) => {
 						draft.route = response.body.routes[0].geometry.coordinates;
+						draft.fitBounds = boundingBox;
 					}));
 				}
 			}
@@ -106,9 +124,7 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 		}
 	}
 	componentDidMount() {
-		if (this.props.ride) {
-			this.getBounds(this.props.ride);
-		}
+		this.getDefaultBounds();
 	}
 	componentDidUpdate() {
 		if (this.state.requestingUser !== this.props.requestingUser) {
@@ -134,7 +150,6 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 						draft.stops = [];
 					})
 				);
-				this.getBounds(this.props.ride);
 				onGetName(parseCoords(this.props.ride.location)).then(res => {
 					this.setState(
 						produce((draft: IMapState) => {
@@ -182,15 +197,13 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 		}
 	}
 
-	private getBounds = (ride: IRide) => {
-		const allCoords = [[ride.location?.longitude, ride.group?.location.longitude], [ride.group?.location.latitude, ride.location?.latitude]];
+	private getBounds = route => {
+		const boundingBox = bbox(route);
+		return boundingBox;
+	};
+
+	private getDefaultBounds = () => {
 		let bbox: [[number, number], [number, number]] = getDefaultBounds();
-		if (allCoords[0][0] && allCoords[1][1] && allCoords[0][1] && allCoords[1][0]) {
-			bbox[0][0] = Math.min.apply(null, allCoords[0]);
-			bbox[0][1] = Math.min.apply(null, allCoords[1]);
-			bbox[1][0] = Math.max.apply(null, allCoords[0]);
-			bbox[1][1] = Math.max.apply(null, allCoords[1]);
-		}
 		this.setState(produce((draft: any) => {
 			draft.fitBounds = bbox;
 		}));
@@ -227,6 +240,13 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 			fontWeight: 600,
 			border: "2px",
 			fontSize: "17px"
+		};
+		const requestStyle: CSSProperties = {
+			background: "white",
+			color: "#4a90e8",
+			fontWeight: 700,
+			border: "2px",
+			fontSize: "18px"
 		};
 		const lineLayout = {
 			"line-cap": "round",
@@ -303,7 +323,7 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 						}{requestingUser &&
 							<>
 								<Popup coordinates={parseCoords(requestingUser.location)}>
-									<div style={nameStyle}>
+									<div style={requestStyle}>
 										{requestingUser.firstName} {requestingUser.lastName}
 									</div>
 									<div style={addressStyle}>{requestingLocationName}</div>
