@@ -6,7 +6,7 @@ import { IRide } from "../../interfaces/IRide";
 export interface IGroupDetailedViewProps {
 	group: IGroup;
 	rides: IRide[];
-	joinRideCallback?: (ride: IRide, location: ILocation) => void;
+	joinRideCallback?: (ride: IRide, location: ILocation, date?: Date) => void;
 }
 
 const GroupDetailedView: React.FunctionComponent<IGroupDetailedViewProps> = props => {

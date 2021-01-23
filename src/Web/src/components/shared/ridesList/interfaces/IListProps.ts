@@ -15,5 +15,6 @@ export interface IListProps extends IReactI18nProps {
 	firstDay?: string;
 	lastDay?: string;
 	answerRequestCallback?: (requestId: string, accepted: boolean) => void;
-	joinRideCallback?: (ride: IRide, location: ILocation) => void;
+	joinRideCallback?: (ride: IRide, location: ILocation, date?: Date) => void;
+	selectedGroupId?: string;
 }

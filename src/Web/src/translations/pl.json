@@ -289,7 +289,12 @@
             "saturday": "Sobota",
             "sunday": "Niedziela",
             "all": "Codziennie",
-            "joinRide": "Dołącz"
+            "joinRide": "Dołącz",
+            "label": {
+                "ok": "Ok",
+                "cancel": "Anuluj",
+                "clear": "Wyczyść"
+            }
         },
         "userProfile": {
             "updateData": {

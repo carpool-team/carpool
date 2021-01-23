@@ -20,6 +20,7 @@ import { IAuthState } from "../../auth/store/State";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 import { ILocation } from "../interfaces/ILocation";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
+import { RideDirection } from "../api/addRide/AddRideRequest";
 interface IStatePropsType {
 	groups: IGroupsState;
 	auth: IAuthState;
@@ -55,8 +56,8 @@ interface IDispatchPropsType {
 	getInvites: (userOnly: boolean) => IGetInvitesAction;
 	answerInvite: (accepted: boolean, inviteId: string) => IAnswerInviteAction;
 	getRides: (userOnly: boolean) => IGetRidesAction;
-	participateInRide: (ride: IRide, location: ILocation) => IParticipateInRideAction;
-	getRidesAvailable: (groupId: string) => IGetRidesAvailableAction;
+	participateInRide: (ride: IRide, location: ILocation, date?: Date) => IParticipateInRideAction;
+	getRidesAvailable: (groupId: string, date?: Date, direction?: RideDirection) => IGetRidesAvailableAction;
 	setSelectedGroup: (group: IGroup) => ISetSelectedGroupAction;
 	getGroupUsers: (groupId: string) => IGetGroupUsersAction;
 }

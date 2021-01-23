@@ -10,5 +10,5 @@ export interface IRidesListProps extends IReactI18nProps {
 	firstDay?: string;
 	lastDay?: string;
 	listType: RidesListType;
-	joinRideCallback?: (ride: IRide, location: ILocation) => void;
+	joinRideCallback?: (ride: IRide, location: ILocation, date?: Date) => void;
 }

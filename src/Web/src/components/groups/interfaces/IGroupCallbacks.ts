@@ -19,6 +19,6 @@ export interface IGroupCallbacks {
 	redirect: (route: string) => void;
 	getRides: (owned: boolean) => IRide[];
 	getRidesAvailable: () => IRide[];
-	participateInRide: (ride: IRide, location: ILocation) => IParticipateInRideAction;
+	participateInRide: (ride: IRide, location: ILocation, date?: Date) => IParticipateInRideAction;
 	setGroupSelected: (id: string) => void;
 }

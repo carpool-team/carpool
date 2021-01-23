@@ -88,6 +88,7 @@ import i18n from "../../../i18n";
 import { GetReportRequest } from "../api/getReport/GetReportRequest";
 import moment from "moment";
 import { IRideDays } from "../../rides/components/addRide/interfaces/IRideDays";
+import { date } from "faker";
 
 const getMappedDays = (weekDays: IRideDays) => {
 	let weekDaysBinary: number = 0;
@@ -359,6 +360,7 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 					ownedPast: responsePastOwned.result,
 					participatedPast: responsePastParticipated.result,
 					refreshAvailable,
+					date: action.date,
 				};
 			} catch (err) {
 				return {
@@ -388,6 +390,7 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 						<IGetRidesAvailableAction>{
 							type: RidesActionTypes.GetRidesAvailable,
 							groupId: response.refreshAvailable.groupId,
+							date: response.date,
 						}
 					);
 				}
@@ -411,6 +414,7 @@ const getRidesAvailableEpic: Epic<GroupsAction | RideAction> = (action$, state$)
 			const request: GetRidesRequest = new GetRidesRequest({
 				userId: uid,
 				groupId: action.groupId,
+				dateTime: action.date ? moment(action.date).toISOString() : null,
 			});
 			try {
 				const response: GetRidesResponse = await request.send();
@@ -483,6 +487,7 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 					id: action.ride.rideId,
 					groupId: action.ride.group.groupId,
 					isError: response.isError ?? false,
+					date: action.date,
 				};
 			} catch (err) {
 				return undefined;
@@ -497,6 +502,7 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 						userOnly: true,
 						refreshRidesAvailable: true,
 						groupId: response.groupId,
+						date: response.date,
 					},
 					<IParticipateInRideActionSuccess>{
 						type: RidesActionTypes.ParticipateInRideSuccess,

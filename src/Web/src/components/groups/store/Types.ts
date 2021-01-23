@@ -1,5 +1,6 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { RideDirection } from "../api/addRide/AddRideRequest";
 import { IEditGroupFormData } from "../components/edit/interfaces/IEditGroupFormData";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroup } from "../interfaces/IGroup";
@@ -266,6 +267,7 @@ export interface IAddInvitesAction extends Action<InvitesActionTypes.AddInvites>
 export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
 	refreshRidesAvailable?: boolean;
 	groupId?: string;
+	date?: Date;
 }
 
 /** Action for getting rides success */
@@ -284,6 +286,8 @@ export interface IGetRidesActionError extends Action<RidesActionTypes.GetRidesEr
 /** Action for getting available rides success */
 export interface IGetRidesAvailableAction extends Action<RidesActionTypes.GetRidesAvailable> {
 	groupId: string;
+	date?: Date;
+	direction?: RideDirection;
 }
 
 /** Action for getting available rides success */
@@ -300,6 +304,7 @@ export interface IGetRidesAvailableActionError extends Action<RidesActionTypes.G
 export interface IParticipateInRideAction extends Action<RidesActionTypes.ParticipateInRide> {
 	ride: IRide;
 	location: ILocation;
+	date?: Date;
 }
 
 /** Action for participating in ride success */

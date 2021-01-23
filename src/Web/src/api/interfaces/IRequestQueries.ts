@@ -12,4 +12,5 @@ export interface IRequestQueries {
 	email?: string;
 	startDate?: string;
 	endDate?: string;
+	dateTime?: string;
 }

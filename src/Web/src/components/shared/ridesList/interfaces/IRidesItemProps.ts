@@ -7,5 +7,6 @@ export default interface IRidesItemProps {
 	color: string;
 	t: TFunction;
 	setRide: (ride: IRide) => void;
-	joinRideCallback?: (ride: IRide, location: ILocation) => void;
+	joinRideCallback?: (ride: IRide, location: ILocation, date?: Date) => void;
+	date?: Date;
 }
