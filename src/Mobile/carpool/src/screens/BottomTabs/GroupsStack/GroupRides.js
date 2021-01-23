@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux';
 import {RidesList} from '../../../components/Driver';
 import SelectLocation from '../SearchStack/Search/sections/SelectLocation';
 import {sortRides, byDateAndExtension} from '../../../utils/rides';
+import moment from 'moment';
 
 const GroupRides = ({route, navigation}) => {
   const {group} = route.params;
@@ -48,7 +49,27 @@ const GroupRides = ({route, navigation}) => {
       onRefresh();
     }
     if (data && location) {
-      setSortedData(sortRides([...data], location, byDateAndExtension));
+      const sorted = sortRides([...data], location, byDateAndExtension);
+
+      let withDates = [];
+      try {
+        sorted.forEach((item, index) => {
+          if (index === 0) {
+            withDates = [...withDates, {...item, showDate: true}];
+          } else {
+            const isSame = moment(item.rideDate).isSame(
+              moment(sorted[index - 1].rideDate),
+              'day',
+            );
+
+            withDates = [...withDates, {...item, showDate: !isSame}];
+          }
+        });
+      } catch {
+        withDates = [...sorted];
+      }
+
+      setSortedData([...withDates]);
     }
   }, [data, location]);
 

@@ -38,4 +38,14 @@ export const styles = StyleSheet.create({
     color: colors.orange,
     fontSize: 22,
   },
+  dayWrapper: {
+    width: '100%',
+    marginBottom: 16,
+  },
+  day: {
+    textTransform: 'uppercase',
+    ...sheet.textSemiBold,
+    fontSize: 16,
+    paddingVertical: 4,
+  },
 });
