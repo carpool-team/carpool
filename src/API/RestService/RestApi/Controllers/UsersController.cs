@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Application.Commands.UserCommands;
+using Application.Queries.UserQueries;
 using AutoWrapper.Wrappers;
 using DataTransferObjects.User;
 using IdentifiersShared.Identifiers;
@@ -6,9 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestApi.Commands.UserCommands;
 using RestApi.Extensions;
-using RestApi.Queries.UserQueries;
 
 namespace RestApi.Controllers
 {

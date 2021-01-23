@@ -1,6 +1,8 @@
 using System;
 using System.Reflection;
 using System.Text;
+using Application;
+using Application.Extensions;
 using AuthShared.Options;
 using AutoWrapper;
 using DataAccessLayer.DatabaseContexts;
@@ -98,7 +100,7 @@ namespace RestApi
 			services.AddScoped<IRecurringRidesRepository, RecurringRidesRepository>();
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-			services.AddMediatR(Assembly.GetExecutingAssembly());
+			services.AddApplication(_configuration);
 
 			services.AddSwaggerGen(c =>
 			{
@@ -116,9 +118,7 @@ namespace RestApi
 						}
 					});
 			});
-
-			MapsterExtensions.RegisterCustomMappings();
-
+			
 			Log.Information("Services configured.");
 		}
 

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Application.Commands.GroupCommands;
+using Application.Commands.GroupCommands.AddGroup;
+using Application.Queries.GroupQueries;
 using AutoWrapper.Wrappers;
 using DataTransferObjects.Group;
 using IdentifiersShared.Identifiers;
@@ -7,10 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestApi.Commands.GroupCommands;
-using RestApi.Commands.GroupCommands.AddGroup;
 using RestApi.Extensions;
-using RestApi.Queries.GroupQueries;
 
 namespace RestApi.Controllers
 {
