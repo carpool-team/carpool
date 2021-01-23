@@ -21,6 +21,35 @@
     <EmbeddedResource Remove="logs\**" />
     <None Remove="logs\**" />
     <Content Remove="logs\**" />
+    <Compile Remove="Commands\GroupCommands\AddGroup\AddGroupCommandValidator.cs" />
+    <Compile Remove="Commands\GroupCommands\ChangeGroupLocationCommand.cs" />
+    <Compile Remove="Commands\GroupCommands\DeleteGroupCommand.cs" />
+    <Compile Remove="Commands\GroupCommands\RemoveUserFromGroupCommand.cs" />
+    <Compile Remove="Commands\GroupCommands\UpdateGroupCommand.cs" />
+    <Compile Remove="Commands\GroupInviteCommands\AddGroupInviteCommand.cs" />
+    <Compile Remove="Commands\GroupInviteCommands\DeleteGroupInviteCommand.cs" />
+    <Compile Remove="Commands\RideCommands\AddRideCommand.cs" />
+    <Compile Remove="Commands\RideCommands\DeleteRideCommand.cs" />
+    <Compile Remove="Commands\RideCommands\UpdateRideCommand.cs" />
+    <Compile Remove="Commands\RideRequestCommands\AddRideRequestCommand.cs" />
+    <Compile Remove="Commands\RideRequestCommands\ResignRideRequestCommand.cs" />
+    <Compile Remove="Commands\UserCommands\AddUserCommand.cs" />
+    <Compile Remove="Commands\UserCommands\AddUserRatingCommand.cs" />
+    <Compile Remove="Commands\UserCommands\DeleteUserCommand.cs" />
+    <Compile Remove="Extensions\MapsterExtensions.cs" />
+    <Compile Remove="Queries\GroupInviteQueries\GetGroupInviteQuery.cs" />
+    <Compile Remove="Queries\GroupQueries\GetGroupQuery.cs" />
+    <Compile Remove="Queries\GroupQueries\GetGroupReportQuery.cs" />
+    <Compile Remove="Queries\GroupQueries\GetGroupRidesQuery.cs" />
+    <Compile Remove="Queries\RideQueries\GetRideQuery.cs" />
+    <Compile Remove="Queries\RideQueries\GetRidesQuery.cs" />
+    <Compile Remove="Queries\RideQueries\GetUserOwnedRidesQuery.cs" />
+    <Compile Remove="Queries\RideQueries\GetUserParticipatedRidesQuery.cs" />
+    <Compile Remove="Queries\RideRequestQueries\GetOwnerRideRequestsQuery.cs" />
+    <Compile Remove="Queries\UserQueries\GetGroupUsersQuery.cs" />
+    <Compile Remove="Queries\UserQueries\GetUserByIdQuery.cs" />
+    <Compile Remove="Queries\UserQueries\GetUserSettingsQuery.cs" />
+    <Compile Remove="Queries\UserQueries\GetUsersQuery.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +85,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\AuthShared\AuthShared.csproj" />
     <ProjectReference Include="..\..\Shared\DataTransferObjects\DataTransferObjects.csproj" />
+    <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
   </ItemGroup>
 
