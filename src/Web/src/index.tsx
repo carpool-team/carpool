@@ -7,17 +7,19 @@ import store from "./store/Index";
 
 new Promise((resolve, _reject) => {
 	resolve(undefined);
-}).then(() => {
-	import("./App").then(App => {
-		const Root: () => JSX.Element = () => (
-			<Provider store={store}>
-				<I18nextProvider i18n={i18n}>
-					<App.default />
-				</I18nextProvider>
-			</Provider>
-		);
-		ReactDOM.render(<Root />, document.getElementById("root"));
+})
+	.then(() => {
+		import("./App").then((App) => {
+			const Root: () => JSX.Element = () => (
+				<Provider store={store}>
+					<I18nextProvider i18n={i18n}>
+						<App.default />
+					</I18nextProvider>
+				</Provider>
+			);
+			ReactDOM.render(<Root />, document.getElementById("root"));
+		});
+	})
+	.catch((err) => {
+		throw new Error("Błąd aplikacji: " + err);
 	});
-}).catch(err => {
-	throw new Error("Błąd aplikacji: " + err);
-});
