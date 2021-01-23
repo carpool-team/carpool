@@ -1,10 +1,35 @@
 {
-  "compilerOptions": {
-    "outDir": "./dist/",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "module": "commonjs",
-    "target": "es6",
-    "jsx": "react"
-  }
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "baseUrl": "./src",
+        "jsx": "react",
+        "noImplicitAny": false,
+        "module": "esnext",
+        "typeRoots": ["node_modules/@types", "src/types"],
+        "paths": {
+            "assets_path": ["./assets"],
+            "scss_path": ["./scss"]
+        },
+        "noEmitOnError": true,
+        "allowJs": false,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": true,
+        "resolveJsonModule": true,
+        "sourceMap": true,
+        "forceConsistentCasingInFileNames": false,
+        "target": "ES6",
+        "lib": ["ES6", "DOM"],
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    },
+    "exclude": ["./__tests__/**/*", "./__mocks__/**/*"],
+    "include": ["./**/*"],
+    "plugins": [
+        {
+            "name": "typescript-tslint-plugin"
+        }
+    ]
 }

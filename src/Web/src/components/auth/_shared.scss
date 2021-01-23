@@ -1,0 +1,140 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+@import "~scss_path/images";
+
+.auth__container {
+	display: flex;
+	width: 100%;
+	margin-top: 0px;
+	margin-bottom: 50px;
+	height: 93vh;
+	flex-direction: row;
+	background: $white;
+}
+.auth__image--register{
+	background-position: bottom;
+	background-repeat: repeat-x;
+	background-size: auto 70% !important;
+	width: 100%;
+	height: 93vh;
+	background-image: $register_flat_people;
+}
+.auth__image--login{
+	background-position: bottom;
+	background-repeat: repeat-x;
+	background-size: auto 70% !important;
+	width: 100%;
+	height:93vh;
+	background-image: $login_flat_people;
+}
+.auth__popover{
+	width: 25vw;
+	background-color: $backgroundOnHover;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	& > span {
+		margin-top: 20px;
+		font-size: 22px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-align: center;
+	}
+}
+.auth__inputs{
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	background: $background;
+	margin-top: 50px;
+	width: 400px;
+	margin-left: 14%;
+	border-left: 15px solid $background;
+	border-right: 15px solid $background;
+	&--label{
+		margin-top: 30px;
+		font-size: 22px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-align: center;
+		margin-bottom: 30px;
+		border-bottom: 3px solid $white;
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	&--validation{
+		padding-left: 10px;
+		padding-top: 5px;
+		color: $red;
+		font-size: 15px;
+		font-weight: $regular;
+	}
+	&--input{
+		margin-top: 15px;
+	}
+	&--buttonContainer{
+		display: flex;
+		justify-content: space-evenly;
+		// gap: 5px;
+	}
+	&--buttonOffset {
+		padding-left: 15px;
+	}
+	&--button{
+		margin-top: 30px;
+		align-self: center;
+		margin-bottom: 30px;
+	}
+	&--bar{
+		margin-left: 10px;
+		margin-right: 10px;
+		margin-top: 10px;
+	}
+
+}
+
+@media only screen and (max-width: 900px) {
+	.auth__container {
+		height: 89vh;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	.auth__image--login{
+		background-image: none;
+		height: 89vh;
+	}
+	.auth__image--register{
+		background-image: none;
+		height: 89vh;
+	}
+	.auth__popover{
+		width: 90vw;
+		height: 40vh;
+	}
+	.auth__inputs{
+		width: 100%;
+		height: 89vh;
+		margin-left: 0;
+		margin-top: 0;
+		border-left: 0 solid $background;
+		border-right: 0 solid $background;
+		border-radius: 0;
+		&--label{
+			font-size: 0;
+			border-bottom: 0;
+			margin-top: 50px;
+			margin-bottom: 0;
+		}
+		&--input{
+			margin-top: 7%;
+		}
+		&--button{
+			margin-bottom: 30%;
+		}
+		&--validation{
+			padding-top: 10px;
+			padding-left: 22px;
+			font-size: 17px;
+		}
+	}
+}

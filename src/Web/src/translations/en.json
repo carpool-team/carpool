@@ -1,0 +1,12 @@
+{
+    "defaultNamespace": {
+        "title": "Welcome to react using react-i18next",
+        "groups": {
+            "addGroupBtn": "Add group"
+        },
+        "homeScreen": {
+            "quote": "Share a ride",
+            "join": "Join group"
+        }
+    }
+}

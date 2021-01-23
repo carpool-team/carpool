@@ -1,0 +1,78 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.button {
+
+	font-size: 18px;
+	font-weight: $medium;
+	color: $grayDark;
+	text-decoration: none;
+	padding:10px;
+	border: none;
+	outline:none;
+	width: 140px;
+	z-index: inherit;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 25px;
+	&:hover {
+		background-color: $backgroundOnHover;
+		border-radius: 25px;
+	}
+
+	&__disabled{
+		pointer-events: none;
+		background-color: $backgroundDarker !important;
+	}
+	&__text {
+		&--green {
+			color: $green;
+		}
+		&--blue {
+			color: $blue;
+		}
+		&--gray {
+			color: $grayDark;
+		}
+		&--white {
+			color: $white;
+		}
+		&--black{
+			color: $black;
+		}
+	}
+	&__background{
+		&--transparent{
+			background-color: transparent;
+		}
+		&--gray {
+			background-color: $background;
+		}
+		&--blue {
+			background-color: $blue;
+			&:hover {
+				background-color: $blueOnHover;
+			}
+		}
+		&--green {
+			background-color: $green;
+		}
+		&--white {
+			background-color: $white;
+		}
+		&--grayDark {
+			background-color: $backgroundDarker;
+		}
+		&--red {
+			background-color: $red;
+		}
+	}
+	&__icon {
+		&--user:before{
+			font-family: FontAwesome;
+			font-size: 15px;
+			content:"\f007";
+			padding-right: 10px;
+		}
+	}
+}

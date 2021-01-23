@@ -10,13 +10,20 @@ logs
 **/*.back.*
 
 node_modules
-dist
 bower_components
+dist
 
+*.publishsettings
 *.sublime*
 
 psd
 thumb
 sketch
-
+#editor config
+.editorconfig
 # End of https://www.gitignore.io/api/react
+
+.env
+__snapshots__
+
+coverage/

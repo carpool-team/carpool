@@ -1,0 +1,62 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.buttonLink {
+  font-weight: $medium;
+  font-size: 16px;
+  text-decoration: none;
+  color: $grayDark;
+  padding: 10px 0 0 0;
+  z-index: inherit;
+  cursor: pointer;
+	&__text {
+		&--green {
+			color: $green !important;
+		}
+		&--blue {
+			color: $blue !important; 
+		}
+		&--gray {
+			color: $grayDark !important;
+		}
+		&--red {
+			color: $red !important;
+		}
+		&--white {
+			color: $white !important;
+		}
+	}
+	&__background{
+		&--transparent{
+			background-color: transparent;
+		}
+		&--gray {
+			background-color: $background;
+		}
+		&--blue {
+			background-color: $blue;
+		}
+		&--green {
+			background-color: $green;
+		}
+		&--white {
+			background-color: $white;
+		}
+		&--grayDark {
+			background-color: $backgroundDarker;
+		}
+	}
+	&__icon {
+		&--user:before{
+			font-family: FontAwesome;
+			font-size: 15px;
+			content:"\f007";
+			padding-right: 10px;
+		}
+	}
+	&__underline {
+		&--solid {
+			border-bottom: 1px solid $gray;
+		}
+	}
+}

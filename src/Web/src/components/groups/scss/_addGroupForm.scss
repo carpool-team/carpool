@@ -1,0 +1,228 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+
+.addGroupContainer {
+	display: flex;
+	background-color: $white;
+	width: 100%;
+	height: 93vh;
+	justify-content: space-between;
+}
+.addGroupContainerSecond {
+	display: flex;
+	background-color: $white;
+	width: 100%;
+	min-height: 93vh;
+	height: auto;
+	justify-content: space-between;
+}
+.addGroupFirstSide{
+    &__inputs {
+        display: flex;
+        flex-direction: column;
+		padding-top: 120px;
+		margin-top: 7px;
+		margin-bottom: 7px;
+		background-color: $background;
+		width: 35%;
+        align-items: center;
+		justify-content: flex-start;
+		& > :nth-child(n){
+			margin-bottom: 20px;
+		}
+		& > :last-child {
+			margin-top: 30px;
+		}
+		& > span {
+			padding-bottom: 20px;
+			font-size: 22px;
+			font-weight: $medium;
+			color: $grayDark;
+			text-align: center;;
+		}
+
+    }
+    &__map {
+		background-color:$background;
+		width: 65%;
+		margin-left: 7px;
+		margin-top: 7px;
+		margin-bottom: 7px;
+    }
+}
+
+.addGroupSecondSide {
+	&__left{
+		background-color: $background; 
+		list-style-type: none;
+		margin-top: 7px;
+		height: auto;
+		width: 60%;
+		margin-bottom: 7px;
+	}
+    
+    &__inputs {
+		display: flex;
+        flex-direction: column;
+		padding-top: 120px;
+		margin-top: 7px;
+		margin-bottom: 7px;
+		margin-left: 7px;
+		background-color: $background;
+		width: 40%;
+        align-items: center;
+		justify-content: flex-start;
+		& > :nth-child(n){
+			margin-bottom: 20px;
+		}
+		& > :last-child {
+			margin-top: 30px;
+		}
+		& > span {
+			padding-top: 20px;
+			padding-bottom: 20px;
+			font-size: 22px;
+			font-weight: $medium;
+			color: $grayDark;
+			text-align: center;
+		}
+		&--groupName{
+			color: $blue;
+			font-size: 25px;
+		}
+    }
+    &__buttonsGroup{
+        display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		justify-content: center;
+    }
+    &__userList{
+		background-color: $background; 
+		list-style-type: none;
+		margin-top: 7px;
+		padding-right: 7px;
+		padding-left: 7px;
+		height: auto;
+		width: 100%;
+		margin-bottom: 7px;
+		margin-left: 7px;
+		& >span {
+			font-size: 22px;
+			font-weight: $medium;
+			width: 100%;
+			text-align: center;
+			color: $grayDark;
+			display: block;
+			background-color: $white;
+			margin-top: 7px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+		& > li {
+			display: flex;
+			height: 50px;
+			flex-direction: row;
+			margin-top: 5px;
+		  }
+		  & > li:first-child {
+			margin-top: 7px;
+		  }
+		  & > li:nth-child(even){
+			  background: $white;
+			  color: $grayDark;
+		  }
+		  & > li:nth-child(odd){
+			  background: $white;
+			  color: $grayDark;
+		  }
+
+    }
+    &__userListItem{
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+        font-weight: $medium;
+        color: $grayDark;  
+        font-size: 18px;    
+		align-items:center;
+		width: 100%;
+		& > span {
+			margin-left: auto;
+			padding-right: 15px;
+			color: $grayDark;
+		}
+		&--button{
+			margin-right: 20px;
+			margin-left: auto;
+		}
+	}
+	&__userListItem::before{
+		content:"\f2be";
+		font-family: FontAwesome;
+		font-size: 22px;
+		background-color: $white;
+		align-content: center;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+	&__userListItemName{
+		color: $grayDark
+	}
+	&__userListItemName::first-letter{
+		color: inherit
+	}
+}
+@media only screen and (max-width: 900px) {
+	.addGroupContainer {
+		height: 94vh;
+	}	
+	.addGroupContainerSecond {
+		display: flex;
+		background-color: $white;
+		width: 100%;
+		min-height: 0;
+		flex-direction: column;
+		gap: 0;
+	}
+	.addGroupFirstSide{
+		&__inputs {
+			padding-top: 65px;
+			width: 100%;
+			margin-top: 5px;
+			& > :last-child{
+				margin-top: auto;
+				margin-bottom: 15vh;
+			}
+		}	
+	}
+	.addGroupSecondSide{
+		&__inputs {
+			padding-top: 20px;
+			width: 100%;
+			margin-top: 5px;
+			margin-bottom: 0;
+			& > :last-child{
+				margin-top: auto;
+			}
+		}	
+		&__left{
+			background-color: $background; 
+			list-style-type: none;
+			margin-top: 7px;
+			height: 97vh;
+			width: 100%;
+			margin-bottom: 7px;
+		}
+		&__userList{
+			margin-top: 0px;
+			width: 100%;
+			min-height: 40vh;
+			padding-left: 0;
+			margin-left: 0;
+			padding-right: 0;
+		}
+	}
+}

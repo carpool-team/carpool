@@ -1,2 +1,15 @@
-@import "normalize";
-@import "variables";
+@import "vendors/normalize";
+
+@import "fonts";
+
+html,
+body {
+  font-family: "Montserrat";
+  font-weight: $light;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

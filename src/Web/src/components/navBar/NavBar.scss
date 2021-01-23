@@ -1,0 +1,143 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+@import "~scss_path/images";
+
+.navBarContainer {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	background-color: $background;
+	width: 100%;
+	min-height: 60px;
+	height: 7vh;
+	z-index: 10;
+}
+
+.navBarTabContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+	.logoContainer {
+		display: flex;
+		background-position: center;
+		background-repeat: no-repeat;
+		background-image: $logo_small;
+		background-size: 200px auto !important;
+		margin-right: 10px;
+		width: 200px;
+		height: 50px;
+	}
+	.navBarTabButton {
+		font-size: 18px;
+		font-weight: $semi-bold;
+		color: $grayDark;
+		text-decoration: none;
+		padding:10px;
+	}
+	.navBarTabButton:hover {
+		background-color: $backgroundOnHover;
+		border-radius: 25px;
+	}
+	
+.navBarAccountContainer{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+}
+
+.hamburgerIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: $background;
+  display: none;
+  cursor: pointer;
+  margin: 10px;
+}
+.bar1,
+.bar2 {
+  width: 20px;
+  height: 4px;
+  background-color: $grayDark;
+  transition: 0.4s;
+  border-radius: 2px;
+  margin: 10px;
+}
+.change .bar1 {
+	-webkit-transform: rotate(-45deg) translate(10px, 632px);
+	transform: rotate(-45deg) translate(-5px, 5px);
+  }
+.change .bar2 {
+  -webkit-transform: rotate(45deg) translate(-8px, -8px);
+  transform: rotate(45deg) translate(-5px, -5px);
+}
+
+@media only screen and (max-width: 900px) {
+	.navBarContainer {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		background-color: $background;
+	}
+	.logoContainer {
+		display: flex;
+		background-size: 120px auto !important;
+		width: 120px;
+		margin-left: 10px;
+	}
+	.navBarAccountContainer{
+		display: flex;
+		flex-direction: row;
+		justify-content: right;
+		align-items: center;
+		gap: 0px;
+		margin-right: 60px;
+	}
+
+	.hamburgerIcon {
+		display: block;
+		position: absolute;
+		right: 0;
+	}
+	.hamburgerToogle {
+		-webkit-transform:  translate(0px, -1200px);
+		transform:  translate(0px, -1200px);
+	}
+	
+	.hamburgerMenuButtons{
+		transition: 0.3s;
+		position: absolute;
+		display: grid;
+		grid-template-rows: 70px 70px 70px auto;
+		justify-content: left;
+		background-color: $backgroundOnHover;
+		padding-left: 10px;
+		padding-top: 20px;
+		left: 0;
+		right: 0;
+		top: 60px;
+		bottom: 0;
+		z-index: 7;
+	}
+
+	.navBarTabButton {
+		font-size: 25px;
+	}
+}
+//for iphone 5, SE nad mini
+@media only screen and (max-width: 330px) {
+	.logoContainer {
+		display: flex;
+		background-size: 95px auto !important;
+		width: 95px;
+		margin-left: 10px;
+	}
+
+}

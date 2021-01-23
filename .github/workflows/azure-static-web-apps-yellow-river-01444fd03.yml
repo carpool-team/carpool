@@ -1,0 +1,84 @@
+name: Carpool Web CI/CD Azure
+
+on:
+  schedule:
+    - cron: '0 0-23 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - development
+    paths:
+      - 'src/Web/**'
+      - '.github/workflows/**'
+
+jobs:
+  build_and_deploy_job:
+    
+    if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    
+    runs-on: ubuntu-latest
+    
+    env:
+      wd: ./src/Web
+    
+    strategy:
+      matrix:
+        node-version: [12.x]
+    
+    name: Build and Deploy Job
+    
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Create .env
+        working-directory: ${{ env.wd }}
+        shell: bash
+        env:
+          MAPBOX_STYLE: ${{ secrets.MAPBOX_STYLE }}
+          MAPBOX_KEY: ${{ secrets.MAPBOX_KEY }}
+          REST_URL: ${{ secrets.REST_URL }}
+          AUTH_URL: ${{ secrets.AUTH_URL }}
+          EMAIL: ${{ secrets.HELP_MAIL }}
+          EMAIL_USER_ID: ${{ secrets.HELP_USERID }}
+          EMAIL_SERVICE_ID: ${{ secrets.HELP_SERVICEID }}
+          TOKEN_STORAGE_KEY: ${{ secrets.TOKEN_STORAGE_KEY }}
+        run: |
+          echo MAPLIGHT=$MAPBOX_STYLE > .env
+          echo MAPBOX_KEY=$MAPBOX_KEY >> .env
+          echo REST_URL=$REST_URL >> .env
+          echo AUTH_URL=$AUTH_URL >> .env
+          echo EMAIL=$EMAIL >> .env
+          echo EMAIL_USER_ID=$EMAIL_USER_ID >> .env
+          echo EMAIL_SERVICE_ID=$EMAIL_SERVICE_ID >> .env
+          echo TOKEN_STORAGE_KEY=$TOKEN_STORAGE_KEY >> .env
+      - name: Install dependencies, Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v0.0.1-preview
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_YELLOW_RIVER_01444FD03 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          routes_location: "/src/Web"
+          app_build_command: "npm run build"
+          ###### Repository/Build Configurations - These values can be configured to match you app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "/src/Web" # App source code path
+          output_location: "dist"
+          ###### End of Repository/Build Configurations ######
+
+  # close_pull_request_job:
+  #   if: github.event_name == 'pull_request' && github.event.action == 'closed'
+  #   runs-on: ubuntu-latest
+  #   name: Close Pull Request Job
+  #   steps:
+  #     - name: Close Pull Request
+  #       id: closepullrequest
+  #       uses: Azure/static-web-apps-deploy@v0.0.1-preview
+  #       with:
+  #         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_YELLOW_RIVER_01444FD03 }}
+  #         action: "close"

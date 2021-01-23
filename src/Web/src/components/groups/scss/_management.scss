@@ -1,0 +1,250 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+@import "~scss_path/images";
+
+.groupsManagement {
+  display: flex;
+  background-color: $white;
+  width: 100%;
+  height: 93vh;
+  justify-content: space-between;
+}
+.groupsManagementMapBox {
+	background-color:$background;
+	width: 65%;
+	margin-left: 7px;
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+.groupsManagementListContainer{
+	padding-top: 15px;
+	margin-top: 7px;
+	margin-bottom: 7px;
+	background-color: $background;
+	width: 35%;
+	display: flex;
+	flex-direction: column;
+	& > hr {
+		color: $grayDark;
+		border-width:2px;
+		margin-left: 5%;
+		margin-right: 5%;
+	}
+}
+.groupsManagementButtonsContainer{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	flex-direction: row;
+	padding-left: 5%;
+	padding-bottom: 2%;
+	gap:3%;
+	&--outline{
+		background-color: $white;
+		height: 7px;
+	}
+}
+.groupsManagementButtonActive{
+	background-color: $blue;
+	color: $white;
+	font-weight: $semi-bold;
+	&:hover{
+		background-color: $blueOnHover;
+	}
+}
+.groupsManagementList {
+	&__wraper{
+		height: 100%;
+		overflow: hidden;
+	}
+	height: inherit;
+	flex: 0 0 auto;	
+	list-style-type: none;
+	padding-left: 0;
+	display: flex;
+	margin-bottom: 0;
+	margin-top: 0;
+	flex-direction: column;
+	width: auto;
+	overflow:hidden; 
+	overflow-y:scroll;
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none;  /* IE 10+ */
+	&::-webkit-scrollbar {
+		width: 0px;
+		background: transparent; /* Chrome/Safari/Webkit */
+	}
+    & > li {
+      display: flex;
+	  height: 50px;
+	  flex-direction: row;
+	  margin-bottom: 7px;
+    }
+    & > li:first-child {
+      margin-top: 10px;
+	}
+	& > li:nth-child(even){
+		background: $white;
+		color: $grayDark;
+	}
+	& > li:nth-child(odd){
+		background: $white;
+		color: $grayDark;
+	}
+	&--label{
+		font-size: 19px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-decoration: none;
+		padding-left: 25px;
+		color: inherit;
+		height: 100%;
+		display: flex;
+		align-items: center;
+	}
+	&--button{
+		border: none;
+		width: 100%;
+		background-color: inherit;
+		padding-left: 0;
+		padding-right: 0;
+		display: flex;
+		flex-direction: row;
+		justify-content: left;
+	}
+	&--button:focus{
+		outline: none;
+	}
+	&--button:hover{
+		background-color: $backgroundOnHover;
+	}
+	&--pin:before{
+		display: flex;
+		align-items: center;
+		float: right;
+		font-family: FontAwesome;
+		font-size: 33px;
+		content:"\f041";
+		padding-left: 20px;
+		padding-top: 7px;
+	}
+	.groupsManagementList__active {
+		  display: flex;
+		  height: 180px;
+		  flex-direction: column;
+		  margin-bottom: 7px;
+		  background: $blue;
+		  color: $grayDark;
+		&--label{
+			font-size: 19px;
+			font-weight: $medium;
+			color: $grayDark;
+			text-decoration: none;
+			padding-left: 25px;
+			color: inherit;
+			height: 100%;
+			display: flex;
+			align-items: center;
+		}
+		&--button{
+			height: 50px;
+			border: none;
+			width: 100%;
+			background-color: inherit;
+			padding-left: 0;
+			padding-right: 0;
+			display: flex;
+			flex-direction: row;
+			justify-content: left;
+			border-bottom: 3px solid;
+		}
+		&--button:focus{
+			outline: none;
+		}
+		&--button:hover{
+			background-color: $backgroundOnHover;
+		}
+		&--pin:before{
+			display: flex;
+			align-items: center;
+			float: right;
+			font-family: FontAwesome;
+			font-size: 33px;
+			content:"\f041";
+			padding-left: 20px;
+			padding-top: 7px;
+		}
+		&--menu {
+			display: flex;
+			padding-left: 70px;
+			flex-direction: column;
+		}
+	}
+}
+.listSmallButton {
+	&--accept{
+		height: 40px;
+		width: 40px;
+		margin-right: 5px;
+		border: 0;
+		margin-left: auto;
+		background-color: $white;
+		border-radius: 25px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	&--accept::before{
+		font-family: FontAwesome;
+		font-size: 22px;
+		content:"\f00c";
+		color: $grayDark;
+	}
+	&--accept:focus{
+		outline: none;
+	}
+	&--accept:hover{
+		background-color: $backgroundOnHover;
+	}
+	&--decline{
+		height: 40px;
+		width: 40px;
+		border: 0;
+		margin-right: 10px;
+		background-color: $white;
+		border-radius: 25px;
+		margin-top: 5px;
+		margin-bottom: 5px;
+	}
+	&--decline::before{
+		font-family: FontAwesome;
+		font-size: 22px;
+		content:"\f014";
+		color: $grayDark;
+	}
+	&--decline:focus{
+		outline: none;
+	}
+	&--decline:hover{
+		background-color: $backgroundOnHover;
+	}
+}
+
+  @media only screen and (max-width: 900px) {
+	.groupsManagement {
+		display: flex;
+		background-color: $white;
+	}	
+	.groupsManagementListContainer{
+		padding-top: 10px;
+		width: 100%;
+		margin-top: 5px;
+	}
+	.groupsManagementButtonsContainer{
+		justify-content: center;
+		padding-left: 0;
+		gap:3%;
+		&--outline{
+			height: 5px;
+		}
+	}
+  }

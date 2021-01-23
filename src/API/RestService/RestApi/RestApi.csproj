@@ -1,0 +1,93 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>38b418c2-250c-4900-becf-fe53178fbc25</UserSecretsId>
+    <MinVerTagPrefix>api-</MinVerTagPrefix>
+    <Nullable>enable</Nullable>
+    <LangVersion>9</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="DTOs\Company\**" />
+    <Compile Remove="Queries\Company\**" />
+    <Content Remove="DTOs\Company\**" />
+    <Content Remove="Queries\Company\**" />
+    <EmbeddedResource Remove="DTOs\Company\**" />
+    <EmbeddedResource Remove="Queries\Company\**" />
+    <None Remove="DTOs\Company\**" />
+    <None Remove="Queries\Company\**" />
+    <Compile Remove="logs\**" />
+    <EmbeddedResource Remove="logs\**" />
+    <None Remove="logs\**" />
+    <Content Remove="logs\**" />
+    <Compile Remove="Commands\GroupCommands\AddGroup\AddGroupCommandValidator.cs" />
+    <Compile Remove="Commands\GroupCommands\ChangeGroupLocationCommand.cs" />
+    <Compile Remove="Commands\GroupCommands\DeleteGroupCommand.cs" />
+    <Compile Remove="Commands\GroupCommands\RemoveUserFromGroupCommand.cs" />
+    <Compile Remove="Commands\GroupCommands\UpdateGroupCommand.cs" />
+    <Compile Remove="Commands\GroupInviteCommands\AddGroupInviteCommand.cs" />
+    <Compile Remove="Commands\GroupInviteCommands\DeleteGroupInviteCommand.cs" />
+    <Compile Remove="Commands\RideCommands\AddRideCommand.cs" />
+    <Compile Remove="Commands\RideCommands\DeleteRideCommand.cs" />
+    <Compile Remove="Commands\RideCommands\UpdateRideCommand.cs" />
+    <Compile Remove="Commands\RideRequestCommands\AddRideRequestCommand.cs" />
+    <Compile Remove="Commands\RideRequestCommands\ResignRideRequestCommand.cs" />
+    <Compile Remove="Commands\UserCommands\AddUserCommand.cs" />
+    <Compile Remove="Commands\UserCommands\AddUserRatingCommand.cs" />
+    <Compile Remove="Commands\UserCommands\DeleteUserCommand.cs" />
+    <Compile Remove="Extensions\MapsterExtensions.cs" />
+    <Compile Remove="Queries\GroupInviteQueries\GetGroupInviteQuery.cs" />
+    <Compile Remove="Queries\GroupQueries\GetGroupQuery.cs" />
+    <Compile Remove="Queries\GroupQueries\GetGroupReportQuery.cs" />
+    <Compile Remove="Queries\GroupQueries\GetGroupRidesQuery.cs" />
+    <Compile Remove="Queries\RideQueries\GetRideQuery.cs" />
+    <Compile Remove="Queries\RideQueries\GetRidesQuery.cs" />
+    <Compile Remove="Queries\RideQueries\GetUserOwnedRidesQuery.cs" />
+    <Compile Remove="Queries\RideQueries\GetUserParticipatedRidesQuery.cs" />
+    <Compile Remove="Queries\RideRequestQueries\GetOwnerRideRequestsQuery.cs" />
+    <Compile Remove="Queries\UserQueries\GetGroupUsersQuery.cs" />
+    <Compile Remove="Queries\UserQueries\GetUserByIdQuery.cs" />
+    <Compile Remove="Queries\UserQueries\GetUserSettingsQuery.cs" />
+    <Compile Remove="Queries\UserQueries\GetUsersQuery.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoWrapper.Core" Version="4.3.1" />
+    <PackageReference Include="AutoWrapper.Core.NetStandard" Version="4.2.2" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.3.0" />
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="5.1.1" />
+    <PackageReference Include="Mapster" Version="7.0.1" />
+    <PackageReference Include="Mapster.Core" Version="1.0.0" />
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.1" />
+    <PackageReference Include="MinVer" Version="2.4.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+    <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\AuthShared\AuthShared.csproj" />
+    <ProjectReference Include="..\..\Shared\DataTransferObjects\DataTransferObjects.csproj" />
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
+  </ItemGroup>
+
+
+</Project>

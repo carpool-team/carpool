@@ -1,0 +1,113 @@
+@import "~scss_path/colors";
+@import "~scss_path/fonts";
+@import "~scss_path/images";
+
+.rides{
+	&--container{
+		width: 100%;
+		display: flex;
+		height: 93vh;
+	}
+	&--leftPanel{
+		padding-top: 15px;
+		margin-top: 7px;
+		margin-bottom: 7px;
+		background-color: $background;
+		width: 35%;
+		display: flex;
+		flex-direction: column;
+		&__list{
+			 height: 100%;
+			 overflow: hidden;
+		}
+		&__text{
+			font-weight: $medium;
+			font-size: 22px;
+			color: $grayDark;
+			padding-top: 12px;
+			padding-bottom: 7px;
+			text-align: center;
+		}
+		&__text:before{
+			font-family: FontAwesome;
+			font-size: 21px;
+			content:"\f0ac";
+			padding-right: 10px;
+		}
+		&__switch{
+			width: 100%;
+			display: flex;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			flex-wrap: wrap;
+			margin-bottom: 10px;
+			background-color: $white;
+			align-items: center;
+			justify-content: space-evenly;
+			& > span {
+				margin-left: 10px;
+				margin-right: 20px;
+				font-size: 16px;
+				font-weight: $medium;
+				color: $grayDark;
+			}
+		}
+		&__switchActive{
+			font-weight: $semi-bold !important;
+			font-size: 17px !important;
+		}		
+		&__outline{
+			background-color: $white;
+			height: 7px;
+		}
+		&__label{
+			display: flex;
+			justify-content: space-evenly;
+			flex-wrap: wrap;
+			flex-direction: row;
+			padding-bottom: 15px;
+			align-items: center;
+			background-color: $background;
+			gap:3%;
+			&--outline{
+				background-color: $white;
+				height: 7px;
+			}
+			& > span {
+				font-weight: $medium;
+				color:  $grayDark;
+				font-size: 18px;
+			}
+		}
+	}
+	&--rightPanel{
+		background-color: $background;
+		width: 65%;
+		margin-left: 7px;
+		margin-top: 7px;
+		margin-bottom: 7px;
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+
+
+@media only screen and (max-width: 900px) {
+	.rides{
+		&--leftPanel{
+			width: 100%;
+			margin-top: 5px;
+			padding-top: 7px;
+			&__label{
+				padding-left: 10px;
+				padding-right: 10px;
+				justify-content: space-evenly;
+			}
+			&__outline{
+				height: 5px;
+			}
+		}
+	}
+}
+
