@@ -1,10 +1,11 @@
 ﻿using System;
 using Domain.Abstract;
+using Domain.Contracts;
 using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities
 {
-	public class GroupInvite : BaseEntity<GroupInviteId>
+	public class GroupInvite : BaseEntity<GroupInviteId>, ISoftDeletable
 	{
 		public bool IsAccepted { get; set; }
 
@@ -21,5 +22,7 @@ namespace Domain.Entities
 		public virtual ApplicationUser InvitingApplicationUser { get; set; }
 
 		public DateTimeOffset DateAdded { get; set; }
+		
+		public bool IsSoftDeleted { get; set; }
 	}
 }

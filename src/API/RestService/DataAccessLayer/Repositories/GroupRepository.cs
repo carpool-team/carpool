@@ -106,8 +106,13 @@ namespace DataAccessLayer.Repositories
 			=> await _context.Set<Group>().AddAsync(@group, cancellationToken);
 
 		public void Delete(Group group)
-			=> group.IsSoftDeleted = true;
-			// => _context.Set<Group>().Remove(group);
+		{
+			@group.RemoveAllUsers();
+			@group.RemoveAllInvites();
+			@group.RemoveAllRides();
+			@group.IsSoftDeleted = true;
+		}
+		// => _context.Set<Group>().Remove(group);
 
 		public async Task<ICollection<Ride>> GetGroupRides(GroupId groupId,
 		                                                   CancellationToken cancellationToken = default)

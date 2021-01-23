@@ -68,7 +68,9 @@ namespace DataAccessLayer.Repositories
 				.AddAsync(groupInvite, cancellationToken);
 
 		public void Delete(RideRequest rideRequest)
-			=> _dbContext.Set<RideRequest>()
-			             .Remove(rideRequest);
+			=> rideRequest.IsSoftDeleted = true;
+
+		// => _dbContext.Set<RideRequest>()
+		//              .Remove(rideRequest);
 	}
 }

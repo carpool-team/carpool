@@ -10,7 +10,7 @@ using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities
 {
-	public class Ride : BaseEntity<RideId>
+	public class Ride : BaseEntity<RideId>, ISoftDeletable
 	{
 		private Ride(){}
 		
@@ -61,5 +61,7 @@ namespace Domain.Entities
 			
 			Stops.Remove(stop);
 		}
+
+		public bool IsSoftDeleted { get; set; }
 	}
 }

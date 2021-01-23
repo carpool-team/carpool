@@ -1,8 +1,9 @@
-﻿using IdentifiersShared.Identifiers;
+﻿using Domain.Contracts;
+using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities.Intersections
 {
-	public class UserGroup
+	public class UserGroup : ISoftDeletable
 	{
 		public UserGroup(AppUserId appUserId, GroupId groupId)
 		{
@@ -14,5 +15,7 @@ namespace Domain.Entities.Intersections
 		public ApplicationUser ApplicationUser { get; set; }
 		public GroupId GroupId { get; set; }
 		public Group Group { get; set; }
+		
+		public bool IsSoftDeleted { get; set; }
 	}
 }
