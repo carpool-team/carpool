@@ -74,7 +74,7 @@ namespace DataAccessLayer.Repositories
 			                             .ToListAsync(cancellationToken)
 			                             .ConfigureAwait(false);
 
-			var groups = await _context.Groups.Where(x => groupIds.Contains(x.Id))
+			var groups = await _context.Groups.Where(x => groupIds.Contains(x.Id) && x.IsSoftDeleted)
 			                           .Include(x => x.UserGroups)
 			                           .Include(x => x.Rides)
 			                           .Include(x => x.Owner)
