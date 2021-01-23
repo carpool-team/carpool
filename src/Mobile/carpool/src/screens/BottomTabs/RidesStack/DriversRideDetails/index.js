@@ -160,6 +160,7 @@ const DriversRideDetails = ({navigation, route}) => {
             <RouteMinimap
               stops={ride.rideDirection ? stops.reverse() : stops}
               showDetails={!past}
+              notFoundCallback={() => null}
             />
           )}
         </View>

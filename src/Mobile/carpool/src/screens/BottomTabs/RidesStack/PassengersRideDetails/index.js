@@ -89,6 +89,7 @@ const PassengersRideDetails = ({navigation, route}) => {
             <RouteMinimap
               stops={ride.rideDirection ? stops.reverse() : stops}
               hideDetails={past}
+              notFoundCallback={() => null}
             />
           )}
         </View>
