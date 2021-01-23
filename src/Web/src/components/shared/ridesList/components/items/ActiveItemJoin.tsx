@@ -94,60 +94,65 @@ const ActiveItemJoin = (props: IListItemProps) => {
 		}
 	}
 
-	return (
-		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
-			<div className={cssClasses.activeButtonContainer}>
-				<div className={cssClasses.mainRow} style={borderColor}>
-					<div className={cssClasses.icon} style={color}>
-						{" "}
-					</div>
-					<div className={cssClasses.address}>
-						<div className={cssClasses.fromLabel}>
-							{!loading &&
-								fromName
-							}
+	const filterKey = props.filterKey?.toLowerCase();
+	if (!filterKey || (filterKey && (toName.toLowerCase().includes(filterKey) || fromName.toLowerCase().includes(filterKey)))) {
+		return (
+			<li className={cssClasses.activeContainer} key={props.ride.rideId}>
+				<div className={cssClasses.activeButtonContainer}>
+					<div className={cssClasses.mainRow} style={borderColor}>
+						<div className={cssClasses.icon} style={color}>
+							{" "}
 						</div>
-						<div className={cssClasses.toLabel}>
-							{!loading &&
-								toName
-							}
+						<div className={cssClasses.address}>
+							<div className={cssClasses.fromLabel}>
+								{!loading &&
+									fromName
+								}
+							</div>
+							<div className={cssClasses.toLabel}>
+								{!loading &&
+									toName
+								}
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className={cssClasses.activeBottomRow}>
-					<div className={cssClasses.activeDate}>
-						{convertDate(props.ride.rideDate.toString())}
-					</div>
-					<div className={cssClasses.activeDriver}>
-						Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
-					</div>
-					{/* <div className={cssClasses.activeCar}>
+					<div className={cssClasses.activeBottomRow}>
+						<div className={cssClasses.activeDate}>
+							{convertDate(props.ride.rideDate.toString())}
+						</div>
+						<div className={cssClasses.activeDriver}>
+							Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
+						</div>
+						{/* <div className={cssClasses.activeCar}>
 						{props.ride.owner.vehicle}
 					</div> */}
-					<div className={cssClasses.activeSeats}>Wolne miejsca: {props.ride.seatsLimit}</div>
-					{props.joinRideCallback ?
-						<>
-							<Button
-								style={backgroundColor}
-								onClick={() => setPopover(true)}
-								color={ButtonColor.White}
-								className={cssClasses.activeJoinButton}
-							>
-								{props.t(resources.joinBtnLabel)}
-							</Button>
-							<AddressModal
-								open={popover}
-								onCancel={() => setPopover(false)}
-								onConfirm={(coords) => {
-									setPopover(false);
-									props.joinRideCallback(props.ride, coords);
-								}}
-							/>
-						</> : null}
+						<div className={cssClasses.activeSeats}>Wolne miejsca: {props.ride.seatsLimit}</div>
+						{props.joinRideCallback ?
+							<>
+								<Button
+									style={backgroundColor}
+									onClick={() => setPopover(true)}
+									color={ButtonColor.White}
+									className={cssClasses.activeJoinButton}
+								>
+									{props.t(resources.joinBtnLabel)}
+								</Button>
+								<AddressModal
+									open={popover}
+									onCancel={() => setPopover(false)}
+									onConfirm={(coords) => {
+										setPopover(false);
+										props.joinRideCallback(props.ride, coords);
+									}}
+								/>
+							</> : null}
+					</div>
 				</div>
-			</div>
-		</li>
-	);
+			</li>
+		);
+	} else {
+		return null;
+	}
 };
 
 export default (ActiveItemJoin);

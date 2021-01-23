@@ -9,4 +9,5 @@ export default interface IRidesItemProps {
 	setRide: (ride: IRide) => void;
 	joinRideCallback?: (ride: IRide, location: ILocation, date?: Date) => void;
 	date?: Date;
+	filterKey?: string;
 }

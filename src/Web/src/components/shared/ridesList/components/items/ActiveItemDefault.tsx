@@ -87,41 +87,46 @@ const ActiveItemDefault = (props: IListItemProps) => {
 		}
 	}
 
-	return (
-		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
-			<div className={cssClasses.activeButtonContainer}>
-				<div className={cssClasses.mainRow} style={borderColor}>
-					<div className={cssClasses.icon} style={color}>
-						{" "}
+	const filterKey = props.filterKey?.toLowerCase();
+	if (!filterKey || (filterKey && (toName.toLowerCase().includes(filterKey) || fromName.toLowerCase().includes(filterKey)))) {
+		return (
+			<li className={cssClasses.activeContainer} key={props.ride.rideId}>
+				<div className={cssClasses.activeButtonContainer}>
+					<div className={cssClasses.mainRow} style={borderColor}>
+						<div className={cssClasses.icon} style={color}>
+							{" "}
+						</div>
+						<div className={cssClasses.address}>
+							<div className={cssClasses.fromLabel}>
+								{!loading &&
+									fromName
+								}
+							</div>
+							<div className={cssClasses.toLabel}>
+								{!loading &&
+									toName
+								}
+							</div>
+						</div>
 					</div>
-					<div className={cssClasses.address}>
-						<div className={cssClasses.fromLabel}>
-							{!loading &&
-								fromName
-							}
+					<div className={cssClasses.activeBottomRow}>
+						<div className={cssClasses.activeDate}>
+							{convertDate(props.ride.rideDate.toString())}
 						</div>
-						<div className={cssClasses.toLabel}>
-							{!loading &&
-								toName
-							}
+						<div className={cssClasses.activeDriver}>
+							Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
 						</div>
+						<div className={cssClasses.activeCar}>
+							{props.ride.owner.vehicle}
+						</div>
+						<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
 					</div>
 				</div>
-				<div className={cssClasses.activeBottomRow}>
-					<div className={cssClasses.activeDate}>
-						{convertDate(props.ride.rideDate.toString())}
-					</div>
-					<div className={cssClasses.activeDriver}>
-						Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
-					</div>
-					<div className={cssClasses.activeCar}>
-						{props.ride.owner.vehicle}
-					</div>
-					<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
-				</div>
-			</div>
-		</li>
-	);
+			</li>
+		);
+	} else {
+		return null;
+	}
 };
 
 export default (ActiveItemDefault);

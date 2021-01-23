@@ -77,37 +77,42 @@ const DefaultItem = (props: IListItemProps) => {
 		}
 	}
 
-	return (
-		<li key={props.ride.rideId}>
-			<button
-				className={cssClasses.button}
-				onClick={() => props.setRide(props.ride)}
-			>
-				<div className={cssClasses.mainRow} style={borderColor}>
-					<div className={cssClasses.icon} style={color}>
-						{" "}
-					</div>
-					<div className={cssClasses.address}>
-						<div className={cssClasses.fromLabel}>
-							{!loading &&
-								fromName
-							}
+	const filterKey = props.filterKey?.toLowerCase();
+	if (!filterKey || (filterKey && (toName.toLowerCase().includes(filterKey) || fromName.toLowerCase().includes(filterKey)))) {
+		return (
+			<li key={props.ride.rideId}>
+				<button
+					className={cssClasses.button}
+					onClick={() => props.setRide(props.ride)}
+				>
+					<div className={cssClasses.mainRow} style={borderColor}>
+						<div className={cssClasses.icon} style={color}>
+							{" "}
 						</div>
-						<div className={cssClasses.toLabel}>
-							{!loading &&
-								toName
-							}
+						<div className={cssClasses.address}>
+							<div className={cssClasses.fromLabel}>
+								{!loading &&
+									fromName
+								}
+							</div>
+							<div className={cssClasses.toLabel}>
+								{!loading &&
+									toName
+								}
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className={cssClasses.bottomRow}>
-					<div className={cssClasses.driver}>
-						{convertDate(props.ride.rideDate.toString())}
+					<div className={cssClasses.bottomRow}>
+						<div className={cssClasses.driver}>
+							{convertDate(props.ride.rideDate.toString())}
+						</div>
 					</div>
-				</div>
-			</button>
-		</li>
-	);
+				</button>
+			</li>
+		);
+	} else {
+		return null;
+	}
 };
 
 export default (DefaultItem);

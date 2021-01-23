@@ -70,6 +70,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 						color={color}
 						t={t}
 						setRide={props.setRide}
+						filterKey={searchKey}
 					/>
 				</React.Fragment>
 			);
@@ -81,6 +82,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 						color={color}
 						t={t}
 						setRide={props.setRide}
+						filterKey={searchKey}
 					/>
 				</React.Fragment>
 			);
@@ -97,6 +99,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 						t={t}
 						setRide={props.setRide}
 						joinRideCallback={props.joinRideCallback}
+						filterKey={searchKey}
 					/>
 				</React.Fragment>
 			);
@@ -108,6 +111,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 						color={color}
 						t={t}
 						setRide={props.setRide}
+						filterKey={searchKey}
 					/>
 				</React.Fragment>
 			);
@@ -135,9 +139,6 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 		if (props.rides) {
 			let colorIndex: number = 0;
 			let rides: IRide[] = [...props.rides];
-			if (searchKey) {
-				rides = rides.filter(ride => ride.group.name.includes(searchKey));
-			}
 			return rides.map((ride) => {
 				++colorIndex;
 				const color = colorList[colorIndex % colorList.length];
