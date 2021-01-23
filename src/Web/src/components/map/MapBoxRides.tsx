@@ -12,6 +12,7 @@ import { withTranslation } from "react-i18next";
 import { IRideStop } from "../groups/interfaces/IRideStop";
 import { ILocation } from "../groups/interfaces/ILocation";
 import { sortStops } from "../../helpers/StopsHelper";
+import bbox from "@turf/bbox";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 1,
@@ -88,8 +89,10 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 					})
 					.send();
 				if (response.body.code === "Ok") {
+					const boundingBox = this.getBounds(response.body.routes[0].geometry)
 					this.setState(produce((draft: any) => {
 						draft.route = response.body.routes[0].geometry.coordinates;
+						draft.fitBounds = boundingBox;
 					}));
 				}
 			}
@@ -99,9 +102,7 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 		}
 	}
 	componentDidMount() {
-		if (this.props.ride) {
-			this.getBounds(this.props.ride);
-		}
+		this.getDefaultBounds();
 	}
 	componentDidUpdate() {
 		if (this.state.ride !== this.props.ride) {
@@ -111,7 +112,6 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 						draft.stops = [];
 					})
 				);
-				this.getBounds(this.props.ride);
 				onGetName(parseCoords(this.props.ride.location)).then(res => {
 					this.setState(
 						produce((draft: IMapState) => {
@@ -159,15 +159,13 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 		}
 	}
 
-	private getBounds = (ride: IRide) => {
-		const allCoords = [[ride.location?.longitude, ride.group?.location.longitude], [ride.group?.location.latitude, ride.location?.latitude]];
+	private getBounds = route => {
+		const boundingBox = bbox(route);
+		return boundingBox;
+	};
+
+	private getDefaultBounds = () => {
 		let bbox: [[number, number], [number, number]] = getDefaultBounds();
-		if (allCoords[0][0] && allCoords[1][1] && allCoords[0][1] && allCoords[1][0]) {
-			bbox[0][0] = Math.min.apply(null, allCoords[0]);
-			bbox[0][1] = Math.min.apply(null, allCoords[1]);
-			bbox[1][0] = Math.max.apply(null, allCoords[0]);
-			bbox[1][1] = Math.max.apply(null, allCoords[1]);
-		}
 		this.setState(produce((draft: any) => {
 			draft.fitBounds = bbox;
 		}));
