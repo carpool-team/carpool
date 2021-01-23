@@ -49,12 +49,11 @@ const PickTime = ({dispatch}) => {
       <DatePicker
         date={date}
         onDateChange={setDate}
-        locale="pl"
         minimumDate={new Date()}
         minuteInterval={10}
         androidVariant="nativeAndroid"
         locale="en"
-        is24hourSource="locale"
+        is24hourSource="device"
       />
       <StandardButton
         style={{marginTop: 30}}
@@ -71,12 +70,12 @@ const PickTime = ({dispatch}) => {
       <DatePicker
         date={time}
         onDateChange={setTime}
-        locale="pl"
         minuteInterval={10}
         mode="time"
         androidVariant="nativeAndroid"
         locale="en"
         style={styles.picker}
+        is24hourSource="device"
       />
       <View style={{width: '100%', marginTop: 30, marginBottom: 10}}>
         <Text style={styles.sectionTitle}>Days of the week</Text>

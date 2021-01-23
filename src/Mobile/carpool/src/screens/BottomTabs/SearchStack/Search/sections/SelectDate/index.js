@@ -29,12 +29,11 @@ const SelectDate = ({onSubmit}) => {
         <DatePicker
           date={date}
           onDateChange={setDate}
-          locale="pl"
           minimumDate={new Date()}
           minuteInterval={10}
           androidVariant="nativeAndroid"
           locale="en"
-          is24hourSource="locale"
+          is24hourSource="device"
         />
         <View
           style={{
