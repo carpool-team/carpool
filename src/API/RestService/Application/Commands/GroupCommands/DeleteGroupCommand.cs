@@ -44,8 +44,8 @@ namespace Application.Commands.GroupCommands
 				throw new ApiException("User does not have access to delete group with owner other than himself.",
 					StatusCodes.Status403Forbidden);
 			
-			group.Rides.RemoveAll(x => x.Date >= DateTimeOffset.Now);
-			group.GroupInvites.RemoveAll(x => x.IsPending);
+			// group.Rides.RemoveAll(x => x.Date >= DateTimeOffset.Now);
+			// group.GroupInvites.RemoveAll(x => x.IsPending);
 
 			_groupRepository.Delete(group);
 
