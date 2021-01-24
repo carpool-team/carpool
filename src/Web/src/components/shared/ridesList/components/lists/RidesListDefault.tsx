@@ -15,7 +15,7 @@ import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import SearchRideModal from "../searchRideModal/SearchRideModal";
 import { IRideFilters } from "../../../../groups/interfaces/IRideFilters";
 import { IRideExtended } from "../../../../groups/interfaces/IRideExtended";
-import { sortRides } from "../../../../../helpers/RidesHelper";
+import { byDateAndExtension, sortRides } from "../../../../../helpers/RidesHelper";
 import { useImmer } from "use-immer";
 
 interface IDispatchPropsType {
@@ -57,7 +57,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 		if (props.rides) {
 			if (state.filters?.location) {
 				setState(draft => {
-					draft.rides = sortRides(props.rides, state.filters.location, (a, b) => a.extension - b.extension);
+					draft.rides = sortRides(props.rides, state.filters.location, byDateAndExtension);
 				});
 			} else {
 				setState(draft => {
