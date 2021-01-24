@@ -2,12 +2,12 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import UpView from '../../../common/UpView';
 import Status from './Status';
-import {GroupWaypoints} from '../../../Ride';
 import {sheet} from '../../../../styles';
 import moment from 'moment';
 import {styles} from './index.styles';
 import * as actions from '../../../../store/actions';
 import {useDispatch} from 'react-redux';
+import GroupWaypointsStop from '../../../Ride/GroupWaypointsStop';
 
 const ListItem = ({item}) => {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const ListItem = ({item}) => {
   return (
     <UpView
       borderRadius={16}
-      style={styles.upview}
+      style={{...styles.upview, height: item.isPending ? 220 : 190}}
       contentContainerStyle={styles.contentContainer}>
       <View style={sheet.rowCenterSplit}>
         <View>
@@ -58,10 +58,11 @@ const ListItem = ({item}) => {
         </View>
         <Status item={item} />
       </View>
-      <GroupWaypoints
+      <GroupWaypointsStop
         group={item.ride.group}
         location={{coordinates: item.ride.location}}
         swap={item.ride.rideDirection}
+        stop={item.requestingUser}
       />
       {item.isPending && (
         <View style={sheet.center}>

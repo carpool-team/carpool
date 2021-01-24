@@ -51,17 +51,6 @@ export const icons = {
   ['sharp left']: () => <Ionicon name="md-return-up-back-sharp" {...props} />,
   ['default']: () => <Ionicon name="ios-car" {...props} />,
 };
-// export const icons = {
-//   ['uturn']: 'md-arrow-down-outline',
-//   ['sharp right']: 'md-return-up-forward-sharp',
-//   ['right']: 'md-return-up-forward',
-//   ['slight right']: 'md-return-up-forward',
-//   ['straight']: 'arrow-up',
-//   ['slight left']: 'md-return-up-back',
-//   ['left']: 'md-return-up-back',
-//   ['sharp left']: 'md-return-up-back-sharp',
-//   ['default']: 'ios-car',
-// };
 
 export const parseDistance = distance => {
   if (distance > 1000) {

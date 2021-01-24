@@ -4,7 +4,6 @@ import {sheet, colors} from '../../../../styles';
 export const styles = StyleSheet.create({
   upview: {
     width: '100%',
-    height: 150,
     marginBottom: 36,
   },
   container: {
@@ -38,5 +37,15 @@ export const styles = StyleSheet.create({
     ...sheet.textMedium,
     color: colors.orange,
     fontSize: 22,
+  },
+  dayWrapper: {
+    width: '100%',
+    marginBottom: 16,
+  },
+  day: {
+    textTransform: 'uppercase',
+    ...sheet.textSemiBold,
+    fontSize: 16,
+    paddingVertical: 4,
   },
 });

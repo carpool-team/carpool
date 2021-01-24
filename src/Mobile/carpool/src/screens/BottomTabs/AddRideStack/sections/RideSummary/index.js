@@ -96,6 +96,7 @@ const RideSummary = ({state, rdispatch}) => {
                 ? [{coordinates: group.location}, location]
                 : [location, {coordinates: group.location}]
             }
+            notFoundCallback={onCancel}
           />
         </View>
         <View style={styles.waypoints}>

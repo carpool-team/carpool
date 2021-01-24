@@ -1,5 +1,5 @@
 import React, {useReducer, useEffect} from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, BackHandler} from 'react-native';
 import {initialState, SearchActions, reducer} from '../reducer';
 import {GoBack} from '../../../../components/navigation';
 import {
@@ -15,22 +15,29 @@ const Search = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const isFocused = useIsFocused();
 
-  useEffect(() => {
+  const onPress = () => {
+    if (state.location) {
+      dispatch({type: SearchActions.SET_LOCATION, payload: null});
+      return;
+    }
+    if (state.swap !== null) {
+      dispatch({type: SearchActions.SET_SWAP, payload: null});
+      return;
+    }
     if (state.group) {
-      const onPress = () => {
-        if (state.location) {
-          dispatch({type: SearchActions.SET_LOCATION, payload: null});
-          return;
-        }
-        if (state.swap !== null) {
-          dispatch({type: SearchActions.SET_SWAP, payload: null});
-          return;
-        }
-        if (state.group) {
-          dispatch({type: SearchActions.SET_GROUP, payload: null});
-          return;
-        }
-      };
+      dispatch({type: SearchActions.SET_GROUP, payload: null});
+      return;
+    }
+  };
+
+  useEffect(() => {
+    let backHandler = null;
+    if (state.group) {
+      backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        onPress();
+
+        return true;
+      });
 
       navigation.setOptions({
         headerLeft: () => <GoBack onPress={onPress} />,
@@ -44,6 +51,8 @@ const Search = ({navigation}) => {
     if (state.group && state.location && state.date && state.swap !== null) {
       navigation.navigate('SearchResults', {data: state});
     }
+
+    return () => backHandler && backHandler.remove();
   }, [state]);
 
   useEffect(() => {
@@ -59,8 +68,10 @@ const Search = ({navigation}) => {
   const onSubmitLocation = location =>
     dispatch({type: SearchActions.SET_LOCATION, payload: location});
 
-  const onSubmitDate = date =>
+  const onSubmitDate = (date, period) => {
     dispatch({type: SearchActions.SET_DATE, payload: date});
+    dispatch({type: SearchActions.SET_PERIOD, payload: period});
+  };
 
   const renderSection = () => {
     if (!state.group) {
@@ -70,7 +81,7 @@ const Search = ({navigation}) => {
       return <SelectDirection onSubmit={onSubmitDirection} state={state} />;
     }
     if (!state.location) {
-      return <SelectLocation onSubmit={onSubmitLocation} state={state} />;
+      return <SelectLocation onSubmit={onSubmitLocation} swap={state.swap} />;
     }
     return <SelectDate onSubmit={onSubmitDate} />;
   };

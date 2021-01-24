@@ -5,11 +5,14 @@ import * as actions from '../../../store/actions';
 import {useDispatch} from 'react-redux';
 import {RidesList} from '../../../components/Driver';
 import SelectLocation from '../SearchStack/Search/sections/SelectLocation';
+import {sortRides, byDateAndExtension} from '../../../utils/rides';
+import moment from 'moment';
 
 const GroupRides = ({route, navigation}) => {
   const {group} = route.params;
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
+  const [sortedData, setSortedData] = useState(null);
   const [selectedRide, setSelectedRide] = useState(null);
   const [location, setLocation] = useState(null);
 
@@ -27,8 +30,8 @@ const GroupRides = ({route, navigation}) => {
 
   useEffect(() => {
     const onPress = () => {
-      if (selectedRide) {
-        setSelectedRide(null);
+      if (location) {
+        setLocation(null);
       } else {
         navigation.goBack();
       }
@@ -36,12 +39,45 @@ const GroupRides = ({route, navigation}) => {
 
     navigation.setOptions({
       title: group.name,
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
       headerLeft: () => <GoBack onPress={onPress} />,
     });
+  }, [location]);
 
-    onRefresh();
-  }, [selectedRide]);
+  useEffect(() => {
+    if (location && !data) {
+      onRefresh();
+    }
+    if (data && location) {
+      const sorted = sortRides([...data], location, byDateAndExtension);
+
+      let withDates = [];
+      try {
+        sorted.forEach((item, index) => {
+          if (index === 0) {
+            withDates = [...withDates, {...item, showDate: true}];
+          } else {
+            const isSame = moment(item.rideDate).isSame(
+              moment(sorted[index - 1].rideDate),
+              'day',
+            );
+
+            withDates = [...withDates, {...item, showDate: !isSame}];
+          }
+        });
+      } catch {
+        withDates = [...sorted];
+      }
+
+      setSortedData([...withDates]);
+    }
+  }, [data, location]);
+
+  useEffect(() => {
+    if (sortedData) {
+      setLoading(false);
+    }
+  }, [sortedData]);
 
   const onRefresh = () => {
     setLoading(true);
@@ -59,8 +95,7 @@ const GroupRides = ({route, navigation}) => {
             },
           ],
         ),
-      )
-      .finally(() => setLoading(false));
+      );
   };
 
   const onItemPress = item =>
@@ -78,15 +113,16 @@ const GroupRides = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, width: '100%'}}>
-      {!selectedRide ? (
+      {!location ? (
+        <SelectLocation onSubmit={setLocation} />
+      ) : (
         <RidesList
-          data={data}
+          data={sortedData}
           loading={loading}
           onItemPress={onItemPress}
           onRefresh={onRefresh}
+          showHeader={!!sortedData ? !!sortedData.length : false}
         />
-      ) : (
-        <SelectLocation onSubmit={setLocation} />
       )}
     </SafeAreaView>
   );

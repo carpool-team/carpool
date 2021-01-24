@@ -12,7 +12,6 @@ import {activeRouteStyle, colors} from '../../../../styles';
 import pointToLineDistance from '@turf/point-to-line-distance';
 import {point, lineString} from '@turf/helpers';
 import FAIcon from 'react-native-vector-icons/FontAwesome';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import lineSlice from '@turf/line-slice';
 import length from '@turf/length';
 import {styles} from './index.styles';
@@ -31,28 +30,18 @@ const RideDashboard = props => {
   const [route, setRoute] = useState(null);
   const [distance, setDistance] = useState(null);
   const [steps, setSteps] = useState(null);
-  const [stopDistance, setStopDistance] = useState(null);
   const [stepDistance, setStepDistance] = useState(null);
-
-  const _camera = useRef();
-
-  const onMoveToUser = () => {
-    if (_camera.current) {
-      // _camera.current.moveTo(location);
-      _camera.current.setCamera({
-        centerCoordinate: location,
-        zoomLevel: 16,
-      });
-    }
-  };
+  const [destintionDist, setDestintionDist] = useState(null);
 
   const isReversed = !!ride.rideDirection;
+
+  const _camera = useRef(null);
 
   useEffect(() => {
     // Custom header config
     navigation.setOptions({
       headerLeft: () => <GoBack onPress={navigation.goBack} />,
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
     });
 
     Geolocation.getCurrentPosition(
@@ -104,7 +93,7 @@ const RideDashboard = props => {
   }, []);
 
   useEffect(() => {
-    if (ride) {
+    if (ride && !stops) {
       // Sort stops
       const {sortedStops, sortedWaypoints} = sortStops(
         ride.location,
@@ -140,8 +129,14 @@ const RideDashboard = props => {
       const userLocation = point(location);
       const line = lineString(route.geometry.coordinates);
       const dist = pointToLineDistance(userLocation, line, {units: 'meters'});
+      const destination = point(
+        line.geometry.coordinates[line.geometry.coordinates.length - 1],
+      );
+      const toDestSlice = lineSlice(userLocation, destination, line);
+      const toDestLength = length(toDestSlice, {units: 'meters'});
 
-      setDistance(dist.toFixed(0));
+      setDistance(Math.trunc(dist));
+      setDestintionDist(Math.trunc(toDestLength));
     }
   }, [location, route]);
 
@@ -177,33 +172,37 @@ const RideDashboard = props => {
         stps.shift();
         setSteps([...stps]);
       }
-
-      // If close enough, remove closest step
-      if (toStepDist < NEXT_STEP_THERESHOLD && steps.length) {
-        let stps = [...steps];
-        stps.shift();
-        setSteps([...stps]);
-      }
     }
   }, [location, steps, route]);
 
+  // Remove waypoint if it was passed
   useEffect(() => {
-    if (location && stops && route) {
-      // Distance from next stop
+    if (location && waypoints.length && route) {
+      // Distance from next step
       const userLocation = point(location);
-      const to = point(parseCoords(stops[0].coordinates));
+      const nextWaypoint = point(parseCoords(waypoints[0].location));
       const line = lineString(route.geometry.coordinates);
+      const destination = point(
+        line.geometry.coordinates[line.geometry.coordinates.length - 1],
+      );
 
-      // Line slice from users location to next stop
-      const toStopSlice = lineSlice(userLocation, to, line);
+      const fromWaypointSlice = lineSlice(nextWaypoint, destination, line);
+      const fromLocationSlice = lineSlice(userLocation, destination, line);
 
-      // Distance from users location to next stop
-      const toStopDist = length(toStopSlice, {units: 'meters'});
+      // Distance from next step location to destination
+      const fromWaypointDist = length(fromWaypointSlice, {units: 'meters'});
 
-      // Save distance
-      setStopDistance(toStopDist);
+      // Distance from users location to destination
+      const fromLocationDist = length(fromLocationSlice, {units: 'meters'});
+
+      // Check if waypoint was passed
+      if (fromWaypointDist > fromLocationDist) {
+        const wpts = [...waypoints];
+        wpts.shift();
+        setWaypoints([...wpts]);
+      }
     }
-  }, [location, stops, route]);
+  }, [location, waypoints, route]);
 
   useEffect(() => {
     // Fetch new route if user fot too far from current one
@@ -215,28 +214,25 @@ const RideDashboard = props => {
   }, [distance]);
 
   useEffect(() => {
-    // Fetch new route when a stop gets removed
-    if (stops && location) {
-      fetchRoute();
+    // Adjust camera to location
+    if (_camera.current) {
+      _camera.current.moveTo(location, 500);
     }
-  }, [stops]);
-
-  const renderRoute = () => {
-    return route ? (
-      <MapboxGL.ShapeSource id="routeShape" shape={route.geometry}>
-        <MapboxGL.LineLayer id="routeLayer" style={activeRouteStyle} />
-      </MapboxGL.ShapeSource>
-    ) : null;
-  };
+  }, [location, _camera]);
 
   const fetchRoute = () => {
-    // Check if any points are left
     const points = [
       {
         coordinates: location,
       },
+      ...waypoints.map(item => ({
+        coordinates: parseCoords(item.location),
+        waypointName: `${item.participant.firstName} ${
+          item.participant.lastName
+        }`,
+      })),
       {
-        coordinates: parseCoords(stops[0].coordinates),
+        coordinates: parseCoords(stops[stops.length - 1].coordinates),
       },
     ];
 
@@ -249,7 +245,7 @@ const RideDashboard = props => {
       .send()
       .then(res => {
         setRoute(res.body.routes[0]);
-        setSteps(res.body.routes[0].legs[0].steps);
+        setSteps(res.body.routes[0].legs.map(item => item.steps).flat(1));
       })
       .catch(err => {
         Alert.alert(
@@ -267,23 +263,15 @@ const RideDashboard = props => {
       .finally(() => setLoading(false));
   };
 
-  const onArrivedPress = () => {
-    if (stops.length > 1) {
-      // Remove closest stop from array
-      let stps = [...stops];
-      stps.shift();
-      setStops([...stps]);
-
-      // Remove closest waypoint if possible
-      const wpts = [...waypoints];
-      wpts.shift();
-      setWaypoints([...wpts]);
-    } else {
-      navigation.navigate('Home');
-    }
+  const renderRoute = () => {
+    return route ? (
+      <MapboxGL.ShapeSource id="routeShape" shape={route.geometry}>
+        <MapboxGL.LineLayer id="routeLayer" style={activeRouteStyle} />
+      </MapboxGL.ShapeSource>
+    ) : null;
   };
 
-  return loading ? (
+  return loading || !route ? (
     <FullScreenLoading />
   ) : (
     <SafeAreaView style={styles.safeArea}>
@@ -297,41 +285,26 @@ const RideDashboard = props => {
         <TouchableOpacity onPress={fetchRoute} style={styles.refresh}>
           <FAIcon name="refresh" size={32} color={colors.orange} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={onMoveToUser} style={styles.moveTo}>
-          <MaterialIcon name="my-location" size={36} color={colors.grayDark} />
-        </TouchableOpacity>
         <MapboxGL.MapView
-          onPress={e => console.log(e)}
           style={{flex: 1}}
           styleURL={MAP_LIGHT}
           compassEnabled={false}>
           <MapboxGL.Camera
-            ref={c => (_camera.current = c)}
-            followUserLocation
-            followUserMode="normal"
-            followZoomLevel={16}
-            // followZoomLevel={19}
-            // followUserMode={MapboxGL.UserTrackingModes.Follow}
-            // followUserMode={MapboxGL.UserTrackingModes.FollowWithCourse}
-            // zoomLevel={18}
-            // zoomLevel={19}
-            // animationMode="moveTo"
-            // animationDuration={500}
-            // centerCoordinate={location}
-
-            // centerCoordinate={location}
-            // zoomLevel={16}
+            defaultSettings={{
+              centerCoordinate: location,
+              zoomLevel: 14,
+            }}
+            zoomLevel={14}
+            maxZoomLevel={14}
+            ref={el => (_camera.current = el)}
           />
           <MapboxGL.UserLocation animated showsUserHeadingIndicator />
           {renderRoute()}
         </MapboxGL.MapView>
       </View>
       <DashboardFooter
-        onArrivedPress={onArrivedPress}
-        ride={ride}
-        stopDistance={stopDistance}
-        waypoints={waypoints}
-        isReversed={isReversed}
+        destination={stops[stops.length - 1]}
+        distance={destintionDist}
       />
     </SafeAreaView>
   );

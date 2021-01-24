@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, Alert} from 'react-native';
 import {useActiveAccount} from '../../../../hooks';
 import {GoBack} from '../../../../components/navigation';
@@ -9,8 +9,11 @@ import {
 } from '../../../../components/RideRequests';
 import {styles} from './index.styles';
 import * as actions from '../../../../store/actions';
+import {byStatus, byDateOnCondition} from './utils';
 
 const RideRequests = ({navigation}) => {
+  const [passengersSorted, setPassengersSorted] = useState([]);
+
   const {activeAccount} = useActiveAccount();
   const isPassenger = activeAccount === 'passenger';
 
@@ -32,6 +35,11 @@ const RideRequests = ({navigation}) => {
   }, []);
 
   useEffect(() => {
+    if (passengersRequests.data) {
+      setPassengersSorted(
+        [...passengersRequests.data].sort(byStatus).sort(byDateOnCondition),
+      );
+    }
     if (passengersRequests.error) {
       Alert.alert(
         'Error',
@@ -70,7 +78,7 @@ const RideRequests = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       {isPassenger ? (
         <PassengersRideRequests
-          data={passengersRequests.data}
+          data={passengersSorted}
           loading={passengersRequests.loading}
           onRefresh={onRefreshPassenger}
         />

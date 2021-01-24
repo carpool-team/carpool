@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, Alert} from 'react-native';
-import {colors, sheet} from '../../../../../styles';
+import {colors} from '../../../../../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {StandardButton} from '../../../../../components/common/buttons';
 import {PointMinimap} from '../../../../../components/Route';
@@ -9,6 +9,8 @@ import {parseCoords} from '../../../../../utils/coords';
 import {StartLocationsFlatList} from '../../../../../components/Driver';
 import {AddRideActions} from '../../reducer';
 import {styles} from './index.styles';
+import Geolocation from 'react-native-geolocation-service';
+import {FullScreenLoading} from '../../../../../components/common/loaders';
 
 const config = {
   autocomplete: false,
@@ -20,8 +22,31 @@ const SelectLocation = ({state, dispatch}) => {
   const [place, setPlace] = useState(null);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [locationLoading, setLocationLoading] = useState(true);
+  const [location, setLocation] = useState(null);
 
   const {swap} = state;
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      pos => {
+        setLocation(parseCoords(pos.coords));
+        setLocationLoading(false);
+      },
+      err =>
+        Alert.alert('Error', err.message, [
+          {
+            text: 'Ok',
+            style: 'default',
+            onPress: () => navigation.goBack(),
+          },
+        ]),
+      {
+        timeout: 15000,
+        maximumAge: 10000,
+      },
+    );
+  }, []);
 
   useEffect(() => {
     if (results.length && !query.length) {
@@ -32,7 +57,7 @@ const SelectLocation = ({state, dispatch}) => {
   const onSearch = () => {
     setLoading(true);
     geocodingClient
-      .forwardGeocode({query, ...config})
+      .forwardGeocode({query, ...config, proximity: location})
       .send()
       .then(res => {
         setResults([...res.body.features]);
@@ -81,19 +106,21 @@ const SelectLocation = ({state, dispatch}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        {swap ? 'Destination' : 'Starting location'}
-      </Text>
+      {!place && (
+        <Text style={styles.title}>
+          {swap ? 'Select destination' : 'Select starting location'}
+        </Text>
+      )}
       {place ? (
         <View style={styles.placeWrapper}>
-          <View style={sheet.rowCenter}>
+          <View style={styles.placeNameWrapper}>
             <Icon name="map-marker" color={colors.green} size={30} />
             <Text style={styles.placeName}>{place.place_name}</Text>
           </View>
           <View style={styles.mapWrapper}>
             <PointMinimap coordinates={parseCoords(place.coordinates)} />
           </View>
-          <View style={sheet.rowCenterSplit}>
+          <View style={styles.buttonsWrapper}>
             <StandardButton
               width="45%"
               color={colors.red}
@@ -108,8 +135,10 @@ const SelectLocation = ({state, dispatch}) => {
             />
           </View>
         </View>
+      ) : locationLoading ? (
+        <FullScreenLoading />
       ) : (
-        <>
+        <View style={styles.mainWrapper}>
           <TextInput
             returnKeyType="done"
             autoFocus
@@ -120,9 +149,10 @@ const SelectLocation = ({state, dispatch}) => {
           />
           <View style={styles.listWrapper}>
             <StartLocationsFlatList
-              data={results.slice(0, 5)}
+              data={results.slice(0, 3)}
               loading={loading}
               onItemPress={onItemPress}
+              userLocation={location}
             />
             <View style={styles.buttonWrapper}>
               {results.length ? (
@@ -140,7 +170,7 @@ const SelectLocation = ({state, dispatch}) => {
               )}
             </View>
           </View>
-        </>
+        </View>
       )}
     </View>
   );

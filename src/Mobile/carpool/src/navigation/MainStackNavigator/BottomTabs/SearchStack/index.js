@@ -27,7 +27,7 @@ const SearchStack = ({navigation}) => {
     <Stack.Navigator
       screenOptions={{
         title: 'Find a ride',
-        header: props => <Header {...props} hideSwitch />,
+        header: props => <Header {...props} />,
         gestureEnabled: false,
       }}
       headerMode="screen">

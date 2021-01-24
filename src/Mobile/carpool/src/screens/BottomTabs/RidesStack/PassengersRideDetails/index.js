@@ -32,7 +32,7 @@ const PassengersRideDetails = ({navigation, route}) => {
       headerLeft: () => (
         <GoBack onPress={() => navigation.navigate('RidesList')} />
       ),
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
     });
   }, []);
 
@@ -89,6 +89,7 @@ const PassengersRideDetails = ({navigation, route}) => {
             <RouteMinimap
               stops={ride.rideDirection ? stops.reverse() : stops}
               hideDetails={past}
+              notFoundCallback={() => null}
             />
           )}
         </View>

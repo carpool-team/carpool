@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* carpoolTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* carpoolTests.m */; };
 		088D804DD7124697B05CB2A5 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21FA93C0C2044F76B9C21C12 /* Montserrat-Regular.ttf */; };
+		0B871F7E25B9F212002B4DD3 /* rngeolocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B871F7D25B9F212002B4DD3 /* rngeolocation.swift */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -54,6 +55,8 @@
 		0380ED3A14FD4D6DAFF460D5 /* Montserrat-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Black.ttf"; path = "../assets/fonts/Montserrat-Black.ttf"; sourceTree = "<group>"; };
 		063458549EAD44915EC009C4 /* Pods-carpool-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-carpool-tvOS.release.xcconfig"; path = "Target Support Files/Pods-carpool-tvOS/Pods-carpool-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		07F8DC669CFD4049AEC2F8C8 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		0B871F7C25B9F212002B4DD3 /* carpool-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "carpool-Bridging-Header.h"; sourceTree = "<group>"; };
+		0B871F7D25B9F212002B4DD3 /* rngeolocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rngeolocation.swift; sourceTree = "<group>"; };
 		0C3996701D153C53162DEAB0 /* Pods-carpool-carpoolTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-carpool-carpoolTests.release.xcconfig"; path = "Target Support Files/Pods-carpool-carpoolTests/Pods-carpool-carpoolTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* carpool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = carpool.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = carpool/AppDelegate.h; sourceTree = "<group>"; };
@@ -234,6 +237,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				0B871F7D25B9F212002B4DD3 /* rngeolocation.swift */,
 				13B07FAE1A68108700A75B9A /* carpool */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* carpoolTests */,
@@ -241,6 +245,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				5696C178DF10D60E0471BD66 /* Pods */,
 				2161D4B41C094ED989CA21E2 /* Resources */,
+				0B871F7C25B9F212002B4DD3 /* carpool-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -356,8 +361,8 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = N2CBUE2B5N;
-						LastSwiftMigration = 1120;
+						DevelopmentTeam = 8CB5A6T36M;
+						LastSwiftMigration = 1220;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -784,6 +789,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				0B871F7E25B9F212002B4DD3 /* rngeolocation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,6 +842,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A187160DC3D76CFF3AD1C155 /* Pods-carpool-carpoolTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -859,6 +866,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0C3996701D153C53162DEAB0 /* Pods-carpool-carpoolTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = carpoolTests/Info.plist;
@@ -882,7 +890,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N2CBUE2B5N;
+				DEVELOPMENT_TEAM = 8CB5A6T36M;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -898,6 +906,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.carpool2604;
 				PRODUCT_NAME = carpool;
+				SWIFT_OBJC_BRIDGING_HEADER = "carpool-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -911,7 +920,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = N2CBUE2B5N;
+				DEVELOPMENT_TEAM = 8CB5A6T36M;
 				INFOPLIST_FILE = carpool/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -922,6 +931,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.carpool2604;
 				PRODUCT_NAME = carpool;
+				SWIFT_OBJC_BRIDGING_HEADER = "carpool-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

@@ -5,10 +5,13 @@ import * as actions from '../../../../store/actions';
 import {useDispatch} from 'react-redux';
 import RidesList from '../../../../components/Driver/RidesList';
 import {styles} from './index.styles';
+import {sortRides, byExtension} from '../../../../utils/rides';
+import moment from 'moment';
 
 const SearchResults = ({navigation, route}) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
+  const [sortedResults, setSortedResults] = useState(null);
 
   const {data} = route.params;
 
@@ -21,7 +24,36 @@ const SearchResults = ({navigation, route}) => {
       headerLeft: () => <GoBack onPress={navigation.goBack} />,
     });
   }, []);
-  const onRefresh = () =>
+
+  useEffect(() => {
+    if (results) {
+      const srtd = sortRides([...results], data.location, byExtension);
+
+      if (data.period) {
+        const withPeriod = moment(data.date).add(
+          parseInt(data.period),
+          'hours',
+        );
+
+        const filtered = srtd.filter(item =>
+          moment(item.rideDate).isSameOrBefore(withPeriod),
+        );
+
+        setSortedResults(filtered);
+      } else {
+        setSortedResults(srtd);
+      }
+    }
+  }, [results]);
+
+  useEffect(() => {
+    if (sortedResults) {
+      setLoading(false);
+    }
+  }, [sortedResults]);
+
+  const onRefresh = () => {
+    setLoading(true);
     dispatch(
       actions.findRides({
         groupId: data.group.groupId,
@@ -44,8 +76,8 @@ const SearchResults = ({navigation, route}) => {
             },
           ],
         );
-      })
-      .finally(() => setLoading(false));
+      });
+  };
 
   const onItemPress = ride =>
     navigation.navigate('SelectedRideDetails', {
@@ -58,7 +90,7 @@ const SearchResults = ({navigation, route}) => {
       <View style={styles.container}>
         <Text style={styles.select}>Select a ride</Text>
         <RidesList
-          data={results}
+          data={sortedResults}
           loading={loading}
           onRefresh={onRefresh}
           onItemPress={onItemPress}

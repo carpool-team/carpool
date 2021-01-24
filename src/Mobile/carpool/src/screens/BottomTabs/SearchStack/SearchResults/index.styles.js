@@ -8,12 +8,11 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 20,
   },
   select: {
     ...sheet.textSemiBold,
     color: colors.grayDark,
     fontSize: 16,
-    marginLeft: 16,
+    padding: 16,
   },
 });

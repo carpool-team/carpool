@@ -73,6 +73,7 @@ const SelectedRideDetails = ({navigation, route}) => {
         </View>
         <View style={styles.mapWrapper}>
           <RouteMinimap
+            notFoundCallback={() => null}
             stops={
               ride.rideDirection
                 ? [

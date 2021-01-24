@@ -32,7 +32,7 @@ const DriversRideDetails = ({navigation, route}) => {
       headerLeft: () => (
         <GoBack onPress={() => navigation.navigate('RidesList')} />
       ),
-      header: props => <Header {...props} hideSwitch />,
+      header: props => <Header {...props} />,
       title: ride.recurringRideId ? 'Regular ride' : 'Single ride',
     });
   }, []);
@@ -50,12 +50,18 @@ const DriversRideDetails = ({navigation, route}) => {
     }
   }, [ride]);
 
+  const diff = moment(ride.rideDate).diff(moment(), 'minutes');
+
   const onDeletePress = () => {
     if (ride.recurringRideId) {
       Alert.alert(
         'Warning!',
         'This is a regular ride, do you want to delete all rides or just this parcitular one?',
         [
+          {
+            text: 'Cancel',
+            style: 'default',
+          },
           {
             text: 'Delete one',
             style: 'destructive',
@@ -73,10 +79,6 @@ const DriversRideDetails = ({navigation, route}) => {
                 .then(() => navigation.goBack())
                 .catch(err => alert('Error ocurred'));
             },
-          },
-          {
-            text: 'Cancel',
-            style: 'default',
           },
         ],
       );
@@ -158,6 +160,7 @@ const DriversRideDetails = ({navigation, route}) => {
             <RouteMinimap
               stops={ride.rideDirection ? stops.reverse() : stops}
               showDetails={!past}
+              notFoundCallback={() => null}
             />
           )}
         </View>
@@ -180,7 +183,7 @@ const DriversRideDetails = ({navigation, route}) => {
           </View>
         </View>
       </ScrollView>
-      {!past && (
+      {!past && diff < 15 && (
         <View style={styles.startButton}>
           <StandardButton
             title="Start"

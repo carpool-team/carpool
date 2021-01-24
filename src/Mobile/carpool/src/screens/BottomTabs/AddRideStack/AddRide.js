@@ -1,5 +1,5 @@
 import React, {useReducer, useEffect} from 'react';
-import {SafeAreaView, StyleSheet} from 'react-native';
+import {SafeAreaView, BackHandler} from 'react-native';
 import {reducer, initialState, AddRideActions} from './reducer';
 import {
   SelectGroup,
@@ -19,30 +19,60 @@ const AddRide = ({navigation}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const isFocused = useIsFocused();
 
-  useEffect(() => {
+  const onPress = () => {
+    if (state.seats !== null) {
+      dispatch({type: AddRideActions.SET_SEATS, payload: null});
+      return;
+    }
+    if (state.regular !== null) {
+      dispatch({type: AddRideActions.SET_REGULAR, payload: null});
+      return;
+    }
+    if (state.location) {
+      dispatch({type: AddRideActions.SET_LOCATION, payload: null});
+      return;
+    }
+    if (state.swap !== null) {
+      dispatch({type: AddRideActions.SET_SWAP, payload: null});
+      return;
+    }
     if (state.group) {
-      const onPress = () => {
-        if (state.seats !== null) {
-          dispatch({type: AddRideActions.SET_SEATS, payload: null});
-          return;
-        }
-        if (state.regular !== null) {
-          dispatch({type: AddRideActions.SET_REGULAR, payload: null});
-          return;
-        }
-        if (state.location) {
-          dispatch({type: AddRideActions.SET_LOCATION, payload: null});
-          return;
-        }
-        if (state.swap !== null) {
-          dispatch({type: AddRideActions.SET_SWAP, payload: null});
-          return;
-        }
-        if (state.group) {
-          dispatch({type: AddRideActions.SET_GROUP, payload: null});
-          return;
-        }
-      };
+      dispatch({type: AddRideActions.SET_GROUP, payload: null});
+      return;
+    }
+  };
+
+  useEffect(() => {
+    let backHandler = null;
+    if (state.group) {
+      // const onPress = () => {
+      //   if (state.seats !== null) {
+      //     dispatch({type: AddRideActions.SET_SEATS, payload: null});
+      //     return;
+      //   }
+      //   if (state.regular !== null) {
+      //     dispatch({type: AddRideActions.SET_REGULAR, payload: null});
+      //     return;
+      //   }
+      //   if (state.location) {
+      //     dispatch({type: AddRideActions.SET_LOCATION, payload: null});
+      //     return;
+      //   }
+      //   if (state.swap !== null) {
+      //     dispatch({type: AddRideActions.SET_SWAP, payload: null});
+      //     return;
+      //   }
+      //   if (state.group) {
+      //     dispatch({type: AddRideActions.SET_GROUP, payload: null});
+      //     return;
+      //   }
+      // };
+
+      backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+        onPress();
+
+        return true;
+      });
 
       navigation.setOptions({
         headerLeft: () => <GoBack onPress={onPress} />,
@@ -52,6 +82,8 @@ const AddRide = ({navigation}) => {
         headerLeft: undefined,
       });
     }
+
+    return () => backHandler && backHandler.remove();
   }, [state]);
 
   useEffect(() => {

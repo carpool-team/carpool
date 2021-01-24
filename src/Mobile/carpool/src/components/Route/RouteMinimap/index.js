@@ -34,7 +34,7 @@ const parseCoords = coords => {
   return [coords.longitude, coords.latitude];
 };
 
-const RouteMinimap = ({stops, showDetails = false}) => {
+const RouteMinimap = ({stops, notFoundCallback, showDetails = false}) => {
   const [route, setRoute] = useState(null);
 
   const [results, setResults] = useState([]);
@@ -56,9 +56,23 @@ const RouteMinimap = ({stops, showDetails = false}) => {
         })
         .send()
         .then(res => {
-          setResults(res);
-          setRoute(res.body.routes[0]);
-          setBounds(getBounds(res.body.routes[0]));
+          if (!res.body.routes.length) {
+            Alert.alert(
+              'Not found',
+              'Unfortunately a route between selected locations could not be found. This may be caused by selecting locations that are not reachable by car. Please try again with different locations.',
+              [
+                {
+                  text: 'Ok',
+                  style: 'default',
+                  onPress: () => notFoundCallback(),
+                },
+              ],
+            );
+          } else {
+            setResults(res);
+            setRoute(res.body.routes[0]);
+            setBounds(getBounds(res.body.routes[0]));
+          }
         })
         .catch(err => {
           Alert.alert(
