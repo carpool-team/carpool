@@ -114,10 +114,9 @@ const ActiveItemDefault = (props: IListItemProps) => {
 					<div className={cssClasses.activeDriver}>
 						Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
 					</div>
-					<div className={cssClasses.activeCar}>
-						{props.ride.owner.vehicle}
+					<div className={cssClasses.activeSeats}>
+						Zajęte miejsca: {props.ride?.stops.length ?? 0}/{props.ride.seatsLimit}
 					</div>
-					<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
 				</div>
 			</div>
 		</li>
