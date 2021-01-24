@@ -196,7 +196,7 @@
         },
         "ride": {
             "participate": {
-                "success": "Dołączono do przejazdu!",
+                "success": "Wysłano prośbę o dołączenie do przejazdu!",
                 "error": "Błąd dołączania do przejazdu. Spróbuj ponownie!",
                 "errorCritical": "Błąd dołączania do przejazdu. Odśwież stronę!"
             },
