@@ -74,6 +74,8 @@ const ListItem = ({item}) => {
 
   const disabled = acceptLoading || rejectLoading;
 
+  const hasExtension = extension !== undefined;
+
   return (
     <UpView
       borderRadius={16}
@@ -89,7 +91,7 @@ const ListItem = ({item}) => {
               ...styles.percentage,
               color: getColor(extension),
             }}>
-            {!!extension && `${extension}%`}
+            {hasExtension && `${extension}%`}
           </Text>
         )}
       </View>
@@ -109,7 +111,7 @@ const ListItem = ({item}) => {
             swap={item.ride.rideDirection}
             stop={item.requestingUser}
           />
-          {!!extension && (
+          {hasExtension && (
             <Text style={styles.approx}>
               Approximately{'  '}
               <Text
