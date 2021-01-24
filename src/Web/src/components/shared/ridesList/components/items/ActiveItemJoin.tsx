@@ -34,6 +34,7 @@ const ActiveItemJoin = (props: IListItemProps) => {
 		placeNameGetErrorLabel: "common.label.placeNameGetError",
 		driver: "rides.driverLabel",
 		seats: "rides.seatsLabel",
+		noSeatsInfo: "rides.noSeatsInfoLabel",
 	};
 
 	const [popover, setPopover] = useState(false);
@@ -133,7 +134,7 @@ const ActiveItemJoin = (props: IListItemProps) => {
 						{props.ride.owner.vehicle}
 						</div> */}
 						<div className={cssClasses.activeSeats}>
-							{`${props.t(resources.seats)}${props.ride.seatsLimit}`}
+							{props.ride.seatsLimit ? `${props.t(resources.seats)}${props.ride.stops?.length ?? 0}/${props.ride.seatsLimit}` : props.t(resources.noSeatsInfo)}
 						</div>
 						{hasExtension &&
 							<>
