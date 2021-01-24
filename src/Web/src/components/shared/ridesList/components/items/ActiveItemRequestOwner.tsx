@@ -34,11 +34,12 @@ const ActiveItemRequestOwner = (props: IActiveItemRequestOwnerProps) => {
 		activeCar: "ridesListActive--car",
 		activeStatus: "ridesListActive--status",
 		activeButtons: "ridesListActive--buttonsContainer",
-		activePickUp: "ridesListActive--pickUp"
+		activePickUp: "ridesListActive--pickUp",
 	};
 
 	const resources = {
-		requestFrom: "requests.requestFrom"
+		requestFrom: "requests.requestFrom",
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
 	};
 
 	const [loading, setLoading] = useState(null);
@@ -60,7 +61,7 @@ const ActiveItemRequestOwner = (props: IActiveItemRequestOwnerProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				return (result.place_name);
 			} else {
-				return (" Błąd pobrania nazwy lokalizacji ");
+				return (props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);

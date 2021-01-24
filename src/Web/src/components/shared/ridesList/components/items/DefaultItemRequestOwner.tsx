@@ -23,9 +23,11 @@ const DefaultItemRequestOwner = (props: IRequestsItemProps) => {
 		fromLabel: "ridesList--mainRow__from",
 		driver: "ridesList--bottomRow__status",
 	};
+
 	const resources = {
-		requestFrom: "requests.requestFrom"
-	}
+		requestFrom: "requests.requestFrom",
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+	};
 
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
@@ -45,7 +47,7 @@ const DefaultItemRequestOwner = (props: IRequestsItemProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
