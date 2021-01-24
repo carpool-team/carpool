@@ -85,8 +85,9 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 				let requestStop: IRideStop = null;
 				let stopsCp = []
 				if (ride?.stops) {
-					stopsCp.concat(...this.props.ride?.stops)
+					stopsCp = [...stopsCp, ...ride.stops]
 				}
+
 				if (this.props.requestingUser) {
 					requestStop = {
 						location: this.props.requestingUser.location,

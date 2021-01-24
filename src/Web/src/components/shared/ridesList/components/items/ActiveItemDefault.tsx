@@ -130,7 +130,7 @@ const ActiveItemDefault = (props: IListItemProps) => {
 							{props.ride.owner.vehicle}
 						</div>
 						<div className={cssClasses.activeSeats}>
-							{props.ride.seatsLimit ? `${props.t(resources.seats)}${props.ride.seatsLimit}` : props.t(resources.noSeatsInfo)}
+							{props.ride.seatsLimit ? `${props.t(resources.seats)}${props.ride.stops?.length ?? 0}/${props.ride.seatsLimit}` : props.t(resources.noSeatsInfo)}
 						</div>
 						{hasExtension &&
 							<div
