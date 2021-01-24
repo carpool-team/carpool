@@ -12,6 +12,8 @@ import { withTranslation } from "react-i18next";
 import { IRideStop } from "../groups/interfaces/IRideStop";
 import { ILocation } from "../groups/interfaces/ILocation";
 import { sortStops } from "../../helpers/StopsHelper";
+import { IRideRequest } from "../groups/interfaces/rideRequest/IRideRequest";
+import { IRideRequestUser } from "../groups/interfaces/rideRequest/IRideRequestUser";
 
 const Mapbox = ReactMapboxGl({
 	minZoom: 1,
@@ -28,6 +30,8 @@ export interface IMapState {
 	fromName: string;
 	toName: string;
 	stops: IRideStop[];
+	requestingUser: IRideRequestUser;
+	requestingLocationName: string;
 }
 
 const flyToOptions = {
@@ -39,12 +43,14 @@ const defaults = {
 	fitBounds: getDefaultBounds(),
 	fromName: null,
 	toName: null,
-	stops: []
+	stops: [],
+	requestingLocationName: "",
 };
 
 export interface IMapProps extends IReactI18nProps {
 	onStyleLoad?: (map: any) => any;
 	ride: IRide;
+	requestingUser?: IRideRequestUser;
 }
 
 class MapBoxRides extends React.Component<IMapProps, IMapState> {
@@ -52,6 +58,7 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 		super(props);
 		this.state = {
 			ride: this.props.ride,
+			requestingUser: this.props.requestingUser ?? undefined,
 			...defaults,
 		};
 	}
@@ -104,6 +111,22 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 		}
 	}
 	componentDidUpdate() {
+		if (this.state.requestingUser !== this.props.requestingUser) {
+			if (this.props.requestingUser) {
+				this.setState(
+					produce((draft: IMapState) => {
+						draft.requestingUser = this.props.requestingUser;
+					})
+				)
+				onGetName(parseCoords(this.props.requestingUser.location)).then(res => {
+					this.setState(
+						produce((draft: IMapState) => {
+							draft.requestingLocationName = res;
+						})
+					);
+				});
+			}
+		}
 		if (this.state.ride !== this.props.ride) {
 			if (this.props.ride) {
 				this.setState(
@@ -179,7 +202,7 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 	}
 
 	public render() {
-		const { fitBounds, ride, route, fromName, toName, stops } = this.state;
+		const { fitBounds, ride, route, fromName, toName, stops, requestingUser, requestingLocationName } = this.state;
 
 		const containerStyle: CSSProperties = {
 			height: "100%",
@@ -193,6 +216,10 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 			color: "gray",
 			fontWeight: 400,
 			border: "2px",
+			maxWidth: "300px",
+			textOverflow: "ellipsis",
+			overflow: "hidden",
+			whiteSpace: "nowrap"
 		};
 		const nameStyle: CSSProperties = {
 			background: "white",
@@ -272,6 +299,15 @@ class MapBoxRides extends React.Component<IMapProps, IMapState> {
 										</Popup>
 									);
 								})}
+							</>
+						}{requestingUser &&
+							<>
+								<Popup coordinates={parseCoords(requestingUser.location)}>
+									<div style={nameStyle}>
+										{requestingUser.firstName} {requestingUser.lastName}
+									</div>
+									<div style={addressStyle}>{requestingLocationName}</div>
+								</Popup>
 							</>
 						}
 					</>
