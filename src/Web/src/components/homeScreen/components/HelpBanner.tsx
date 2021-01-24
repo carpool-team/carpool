@@ -26,21 +26,26 @@ const HelpBanner = (props: IHelpBannerProps) => {
 
 	const cssClasses = {
 		homeScreenHelpContainer: "homeScreenHelpContainer",
+		homeScreenHelpSubContainer: "homeScreenHelpContainer--subContainer",
 		homeScreenHelpText: "homeScreenHelpContainer--text",
-		homeScreenHelpButton: "homeScreenHelpContainer--button"
+		homeScreenHelpButton: "homeScreenHelpContainer--button",
+		homeScreenHelpCloseButton: "homeScreenHelpContainer--closeButton",
 	};
 
 	if (window.localStorage.getItem(bannerClosedKey) === null) {
 		return (
 			<div className={cssClasses.homeScreenHelpContainer}>
-				<div className={cssClasses.homeScreenHelpText}>{t(resources.help)}</div>
-				<Button
-					icon={ButtonIcon.Close}
-					onClick={() => {
-						window.localStorage.setItem(bannerClosedKey, String(true));
-						forceUpdate();
-					}}
-				/>
+				<div className={cssClasses.homeScreenHelpSubContainer}>
+					<div className={cssClasses.homeScreenHelpText}>{t(resources.help)}</div>
+					<Button
+						icon={ButtonIcon.Close}
+						onClick={() => {
+							window.localStorage.setItem(bannerClosedKey, String(true));
+							forceUpdate();
+						}}
+						additionalCssClass={cssClasses.homeScreenHelpCloseButton}
+					/>
+				</div>
 				<ButtonLink
 					additionalCssClass={cssClasses.homeScreenHelpButton}
 					style={ButtonLinkStyle.Button}
