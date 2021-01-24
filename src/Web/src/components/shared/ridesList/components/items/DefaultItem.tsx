@@ -3,7 +3,6 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
-import RideExtension from "./RideExtension";
 
 const geocodingClient = getGeocodingClient();
 
@@ -18,6 +17,10 @@ const DefaultItem = (props: IListItemProps) => {
 		toLabel: "ridesList--mainRow__to",
 		fromLabel: "ridesList--mainRow__from",
 		driver: "ridesList--bottomRow__driver",
+	};
+
+	const resources = {
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
 	};
 
 	const [loading, setLoading] = useState<boolean>(null);
@@ -38,7 +41,7 @@ const DefaultItem = (props: IListItemProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);

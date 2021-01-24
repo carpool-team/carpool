@@ -100,6 +100,7 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 					open={popover}
 					onLeaveConfirm={onLeaveConfirm}
 					handleClose={handleClosePopover}
+					containerRef={document.querySelector("main")}
 				/>
 			</>;
 		} else {

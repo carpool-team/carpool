@@ -6,8 +6,6 @@ import Button from "../../../../ui/button/Button";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 import AddressModal from "../../../addressModal/AddressModal";
-import RideExtension from "./RideExtension";
-
 const geocodingClient = getGeocodingClient();
 
 const ActiveItemJoin = (props: IListItemProps) => {
@@ -30,6 +28,9 @@ const ActiveItemJoin = (props: IListItemProps) => {
 
 	const resources = {
 		joinBtnLabel: "common.joinRide",
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+		driver: "rides.driverLabel",
+		seats: "rides.seatsLabel",
 	};
 
 	const [popover, setPopover] = useState(false);
@@ -51,7 +52,7 @@ const ActiveItemJoin = (props: IListItemProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
@@ -121,13 +122,15 @@ const ActiveItemJoin = (props: IListItemProps) => {
 							{convertDate(props.ride.rideDate.toString())}
 						</div>
 						<div className={cssClasses.activeDriver}>
-							Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
+							{`${props.t(resources.driver)}${props.ride.owner.firstName} ${props.ride.owner.lastName}`}
 						</div>
 						{/* <div className={cssClasses.activeCar}>
 						{props.ride.owner.vehicle}
 						</div> */}
 						{props.rideExtension && "Wydłużenie przejazdu: " + props.rideExtension}
-						<div className={cssClasses.activeSeats}>Wolne miejsca: {props.ride.seatsLimit}</div>
+						<div className={cssClasses.activeSeats}>
+							{`${props.t(resources.seats)}${props.ride.seatsLimit}`}
+						</div>
 						{props.joinRideCallback ?
 							<>
 								<Button
@@ -145,6 +148,7 @@ const ActiveItemJoin = (props: IListItemProps) => {
 										setPopover(false);
 										props.joinRideCallback(props.ride, coords);
 									}}
+									containerRef={document.querySelector("main")}
 								/>
 							</> : null}
 					</div>

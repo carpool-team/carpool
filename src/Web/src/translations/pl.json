@@ -68,7 +68,8 @@
                 "cancel": "Anuluj",
                 "clear": "Wyczyść",
                 "ok": "Ok",
-                "search": "Szukaj"
+                "search": "Szukaj",
+                "getPlaceNameError": "Błąd pobierania nazwy lokalizacji"
             },
             "monday": "Poniedziałek",
             "passenger": "Pasażer",
@@ -310,6 +311,7 @@
             "cyclicBtn": "Cykliczny",
             "date": "Wybierz datę przejazdu.",
             "disposableBtn": "Jednorazowy",
+            "driverLabel": "Kierowca: ",
             "from": "początkowy",
             "fromOrTo": "Lokalizacja grupy jako punkt: ",
             "futureBtn": "Przyszłe",
@@ -331,6 +333,7 @@
             "rangeWeeks": "Ilość tygodni przez które przejazd będzie się odbywał:",
             "requestsBtn": "Prośby o przejazd",
             "seats": "Ilość miejsc w samochodzie",
+            "seatsLabel": "Wolne miejsca: ",
             "time": "Wybierz godzinę przejazdu.",
             "to": "końcowy"
         },

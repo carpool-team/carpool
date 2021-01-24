@@ -3,9 +3,6 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
-import Button from "../../../../ui/buttonSmall/ButtonSmall";
-import AddressModal from "../../../addressModal/AddressModal";
-import RideExtension from "../RideExtension";
 
 const geocodingClient = getGeocodingClient();
 
@@ -27,6 +24,11 @@ const ActiveItemDefault = (props: IListItemProps) => {
 		activeCar: "ridesListActive--car",
 	};
 
+	const resources = {
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+		driver: "rides.driverLabel",
+	};
+
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
 
@@ -45,7 +47,7 @@ const ActiveItemDefault = (props: IListItemProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
@@ -115,7 +117,7 @@ const ActiveItemDefault = (props: IListItemProps) => {
 							{convertDate(props.ride.rideDate.toString())}
 						</div>
 						<div className={cssClasses.activeDriver}>
-							Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
+							{`${props.t(resources.driver)}${props.ride.owner.firstName} ${props.ride.owner.lastName}`}
 						</div>
 						<div className={cssClasses.activeCar}>
 							{props.ride.owner.vehicle}

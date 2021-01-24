@@ -27,9 +27,10 @@ interface ISearchRideModalProps extends IReactI18nProps {
 	open: boolean;
 	onConfirm: (coords: IRideFilters) => void;
 	onCancel: () => void;
+	containerRef: Element;
 }
 
-const SearchRideModal = (props: ISearchRideModalProps) => {
+const SearchRideModal: React.FC<ISearchRideModalProps> = props => {
 	const [inputsValid, setInputsValid] = useImmer({
 		location: false,
 	});
@@ -84,6 +85,7 @@ const SearchRideModal = (props: ISearchRideModalProps) => {
 				vertical: "center",
 				horizontal: "center",
 			}}
+			anchorEl={props.containerRef}
 			transformOrigin={{
 				vertical: "center",
 				horizontal: "center",
@@ -150,7 +152,8 @@ const SearchRideModal = (props: ISearchRideModalProps) => {
 								draft.location = isValid;
 							});
 						},
-						validate
+						validate,
+						addressAutocompletedInit: inputsValid.location,
 					}}
 				/>
 				<div className={cssClasses.buttonContainer}>

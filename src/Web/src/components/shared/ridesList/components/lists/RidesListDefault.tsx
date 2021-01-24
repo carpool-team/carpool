@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { colorList } from "../../../../../scss/colorList";
 import { withTranslation } from "react-i18next";
-import { IRide } from "components/groups/interfaces/IRide";
 import { IRidesListProps } from "../../interfaces/IRidesListProps";
 import ActiveItemJoin from "../items/ActiveItemJoin";
 import ActiveItemDefault from "../items/ActiveItemDefault";
@@ -16,7 +15,7 @@ import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import SearchRideModal from "../searchRideModal/SearchRideModal";
 import { IRideFilters } from "../../../../groups/interfaces/IRideFilters";
 import { IRideExtended } from "../../../../groups/interfaces/IRideExtended";
-import { getExtension, sortRides } from "../../../../../helpers/RidesHelper";
+import { sortRides } from "../../../../../helpers/RidesHelper";
 import { useImmer } from "use-immer";
 
 interface IDispatchPropsType {
@@ -55,28 +54,28 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 	}, [state.filters]);
 
 	useEffect(() => {
-		if (state.filters?.location) {
-			setState(draft => {
-				draft.rides = sortRides(props.rides, state.filters.location, (a, b) => a.extension - b.extension);
-			});
-		} else {
-			setState(draft => {
-				draft.rides = props.rides.map(r => ({ ...r, extension: -1 }));
-			});
+		if (props.rides) {
+			if (state.filters?.location) {
+				setState(draft => {
+					draft.rides = sortRides(props.rides, state.filters.location, (a, b) => a.extension - b.extension);
+				});
+			} else {
+				setState(draft => {
+					draft.rides = props.rides.map(r => ({ ...r, extension: -1 }));
+				});
+			}
 		}
 	}, [props.rides]);
 
 	useEffect(() => {
-		setState(draft => {
-			draft.rideSelected = {
-				...props.rideSelected,
-				extension: draft.rides.find(r => r.rideId === props.rideSelected.rideId)?.extension ?? -1,
-			};
-		});
-	}, [props.rideSelected]);
-
-	useEffect(() => {
-
+		if (props.rideSelected) {
+			setState(draft => {
+				draft.rideSelected = {
+					...props.rideSelected,
+					extension: draft.rides.find(r => r.rideId === props.rideSelected.rideId)?.extension ?? -1,
+				};
+			});
+		}
 	}, [props.rideSelected]);
 
 	const cssClasses = {
@@ -216,6 +215,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 							draft.modalOpen = false;
 						})}
 						onCancel={() => setState(draft => { draft.modalOpen = false; })}
+						containerRef={document.querySelector("main")}
 					/>
 				</>
 			);
