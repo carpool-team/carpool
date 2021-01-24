@@ -11,6 +11,8 @@ export const getDirectionsClient = () => mapboxDirections({ accessToken: mapboxK
 
 export const getDefaultBounds = (): [[number, number], [number, number]] => [[16.907883, 52.473654], [16.960580, 52.457061]];
 
+export const getDefaultCenter = (): [number, number] => [16.907883, 52.473654]
+
 export const onGetName = async (coords: [number, number]): Promise<string> => {
 	try {
 		const response = await getGeocodingClient()
