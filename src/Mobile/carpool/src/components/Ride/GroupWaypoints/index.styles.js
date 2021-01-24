@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     height: 50,
     justifyContent: 'space-between',
+    flex: 1,
   },
   placeName: {
     ...sheet.textSemiBold,
