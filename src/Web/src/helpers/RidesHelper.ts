@@ -9,8 +9,10 @@ import { IRideStop } from "../components/groups/interfaces/IRideStop";
 import { IRideExtended } from "../components/groups/interfaces/IRideExtended";
 import i18n from "../i18n";
 
+import colors from "scss_path/_colors.scss";
+
 /**
- *
+ * Gets route percentage extension for given location
  * @param {Ride} ride - ride object
  * @param {Location} location - selected location
  */
@@ -53,7 +55,7 @@ export const getExtension = (ride: IRide, location: ILocation) => {
 };
 
 /**
- *
+ * Sorts rides using given comparison fn
  * @param data - list of rides
  * @param location - selected lcoation
  * @param compareFunction - compare function, i.e. byExtension
@@ -124,4 +126,23 @@ export const getRideMatchLabel = (matching: number) => {
 		return i18n.t("ride.matching.bad");
 	}
 	return i18n.t("ride.matching.terrible");
+};
+
+export const getColor = (extension: number) => {
+	if (extension < 15) {
+		return "#1dd1a1";//#10ac84
+	}
+	if (extension < 30) {
+		return "#00d2d3";
+	}
+	if (extension < 50) {
+		return "#6b98d1";
+	}
+	if (extension < 75) {
+		return "#ff9f43";
+	}
+	if (extension < 100) {
+		return "#ff6b6b";
+	}
+	return "#ee5253";
 };

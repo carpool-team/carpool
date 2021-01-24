@@ -3,7 +3,7 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
-import { getRideMatchLabel } from "../../../../../helpers/RidesHelper";
+import { getColor, getRideMatchLabel } from "../../../../../helpers/RidesHelper";
 
 const geocodingClient = getGeocodingClient();
 
@@ -19,6 +19,7 @@ const DefaultItem = (props: IListItemProps) => {
 		fromLabel: "ridesList--mainRow__from",
 		driver: "ridesList--bottomRow__driver",
 		rideExt: "ridesList--bottomRow__rideExtension",
+		bar: "ridesList__matchBar",
 	};
 
 	const resources = {
@@ -27,8 +28,10 @@ const DefaultItem = (props: IListItemProps) => {
 
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
-	const onGetName = async (coords: [number, number]) => {
 
+	const hasExtension = (props.rideExtension ?? -1) > -1;
+
+	const onGetName = async (coords: [number, number]) => {
 		try {
 			setLoading(true);
 			const response = await geocodingClient
@@ -112,12 +115,21 @@ const DefaultItem = (props: IListItemProps) => {
 						<div className={cssClasses.driver}>
 							{convertDate(props.ride.rideDate.toString())}
 						</div>
-						{props.rideExtension &&
-							<div className={cssClasses.rideExt}>
+						{hasExtension &&
+							<div
+								className={cssClasses.rideExt}
+								style={{
+									color: getColor(props.rideExtension)
+								}}
+							>
 								{getRideMatchLabel(props.rideExtension)}
 							</div>
 						}
 					</div>
+					{hasExtension && <div className={cssClasses.bar} style={{
+						width: props.rideExtension > 100 ? "100%" : 100 - props.rideExtension + "%",
+						background: getColor(props.rideExtension),
+					}} />}
 				</button>
 			</li>
 		);

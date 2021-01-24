@@ -92,6 +92,15 @@
 		margin: 0 10px 0 10px;
 		min-width: 160px;
 	}
+	&__matchBar {
+		height: 16px;
+		border-top-right-radius: 8px;
+		border-bottom-right-radius: 8px;
+		margin-bottom: 8px;
+		&--active {
+			margin-bottom: 16px;
+		}
+	}
 	&::-webkit-scrollbar {
 		width: 0px;
 		background: transparent; /* Chrome/Safari/Webkit */

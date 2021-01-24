@@ -6,7 +6,7 @@ import Button from "../../../../ui/button/Button";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 import AddressModal from "../../../addressModal/AddressModal";
-import { getRideMatchLabel } from "../../../../../helpers/RidesHelper";
+import { getColor, getRideMatchLabel } from "../../../../../helpers/RidesHelper";
 const geocodingClient = getGeocodingClient();
 
 const ActiveItemJoin = (props: IListItemProps) => {
@@ -26,6 +26,7 @@ const ActiveItemJoin = (props: IListItemProps) => {
 		activeSeats: "ridesListActive--seats",
 		activeCar: "ridesListActive--car",
 		activeRideExt: "ridesListActive--rideExtension",
+		bar: "ridesList__matchBar ridesList__matchBar--active",
 	};
 
 	const resources = {
@@ -97,6 +98,8 @@ const ActiveItemJoin = (props: IListItemProps) => {
 		}
 	}
 
+	const hasExtension = (props.rideExtension ?? -1) > -1;
+
 	const filterKey = props.filterKey?.toLowerCase();
 	if (!filterKey || (filterKey && (toName.toLowerCase().includes(filterKey) || fromName.toLowerCase().includes(filterKey)))) {
 		return (
@@ -129,14 +132,25 @@ const ActiveItemJoin = (props: IListItemProps) => {
 						{/* <div className={cssClasses.activeCar}>
 						{props.ride.owner.vehicle}
 						</div> */}
-						{props.rideExtension &&
-							<div className={cssClasses.activeRideExt}>
-								{getRideMatchLabel(props.rideExtension)}
-							</div>
-						}
 						<div className={cssClasses.activeSeats}>
 							{`${props.t(resources.seats)}${props.ride.seatsLimit}`}
 						</div>
+						{hasExtension &&
+							<>
+								<div
+									className={cssClasses.activeRideExt}
+									style={{
+										color: getColor(props.rideExtension)
+									}}
+								>
+									{getRideMatchLabel(props.rideExtension)}
+								</div>
+								<div className={cssClasses.bar} style={{
+									width: props.rideExtension > 100 ? "100%" : 100 - props.rideExtension + "%",
+									background: getColor(props.rideExtension),
+								}} />
+							</>
+						}
 						{props.joinRideCallback ?
 							<>
 								<Button
