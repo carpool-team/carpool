@@ -1,13 +1,11 @@
+import { ILocation } from "../ILocation";
 import { IRideRequestRide } from "./IRideRequestRide";
+import { IRideRequestUser } from "./IRideRequestUser";
 
 export interface IRideRequest {
 	isAccepted: boolean;
 	isPending: boolean;
-	requestingUser: {
-		appUserId: string;
-		firstName: string;
-		lastName: string;
-	};
+	requestingUser: IRideRequestUser;
 	ride: IRideRequestRide;
 	rideOwner: {
 		firstName: string;

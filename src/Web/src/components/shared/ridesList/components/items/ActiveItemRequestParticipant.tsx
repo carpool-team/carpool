@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
@@ -24,7 +24,8 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 		activeDate: "ridesListActive--date",
 		activeSeats: "ridesListActive--seats",
 		activeCar: "ridesListActive--car",
-		activeStatus: "ridesListActive--status"
+		activeStatus: "ridesListActive--status",
+		activePickUp: "ridesListActive--pickUp"
 	};
 
 	const resources = {
@@ -36,6 +37,7 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 
 	const [loading, setLoading] = useState(null);
 	const [placeName, setPlaceName] = useState(null);
+	const [pickUpName, setPickUpName] = useState(null);
 	const [status, setStatus] = useState<string>(null)
 
 	const onGetName = async (coords: [number, number]) => {
@@ -51,9 +53,9 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 				.send();
 			const result = response.body.features[0];
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
-				setPlaceName(result.place_name);
+				return (result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				return (" Błąd pobrania nazwy lokalizacji ");
 			}
 		} catch (err) {
 			console.log(err);
@@ -83,10 +85,11 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 	const backgroundColor = {
 		backgroundColor: props.color
 	};
+	useEffect(() => {
+		onGetName(parseCoords(props.request.ride.location)).then(value => setPlaceName(value));
+		onGetName(parseCoords(props.request.requestingUser.location)).then(value => setPickUpName(value));
+	}, [props.request])
 
-	if (!placeName && !loading && placeName !== undefined) {
-		onGetName(parseCoords(props.request.ride.location));
-	}
 	let fromName: string;
 	let toName: string;
 
@@ -131,6 +134,9 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 				<div className={cssClasses.activeBottomRow}>
 					<div className={cssClasses.activeStatus}>
 						{t(resources.status) + status}
+					</div>
+					<div className={cssClasses.activePickUp}>
+						Punkt odbioru: {pickUpName}
 					</div>
 					<div className={cssClasses.activeDate}>
 						{convertDate(props.request.ride.date.toString())}
