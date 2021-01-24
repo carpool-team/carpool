@@ -16,6 +16,7 @@ namespace DataAccessLayer.Builders
 			builder.Property(x => x.IsAccepted).IsRequired();
 			builder.Property(x => x.IsPending).IsRequired();
 			builder.Property(x => x.DateAdded).IsRequired();
+			builder.Property(x => x.IsSoftDeleted).IsRequired().HasDefaultValue(false);
 
 			builder.HasOne(x => x.InvitedApplicationUser)
 				.WithMany()
@@ -28,10 +29,6 @@ namespace DataAccessLayer.Builders
 				.HasForeignKey(x => x.InvitingAppUserId)
 				.OnDelete(DeleteBehavior.NoAction)
 				.IsRequired();
-
-            builder.HasOne(x => x.Group)
-                   .WithMany()
-                   .HasForeignKey(x => x.GroupId);
-        }
+		}
 	}
 }

@@ -1,5 +1,6 @@
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
+import { IReport } from "../interfaces/IReport";
 import { IRide } from "../interfaces/IRide";
 
 /** Groups state interface */
@@ -18,4 +19,6 @@ export interface IGroupsState {
 	ridesParticipatedPast: IRide[];
 	/** List of past rides available for user */
 	ridesAvailable: IRide[];
+	/** Report */
+	report: IReport;
 }

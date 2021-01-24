@@ -3,6 +3,7 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
+import { getColor, getRideMatchLabel } from "../../../../../helpers/RidesHelper";
 
 const geocodingClient = getGeocodingClient();
 
@@ -17,12 +18,20 @@ const DefaultItem = (props: IListItemProps) => {
 		toLabel: "ridesList--mainRow__to",
 		fromLabel: "ridesList--mainRow__from",
 		driver: "ridesList--bottomRow__driver",
+		rideExt: "ridesList--bottomRow__rideExtension",
+		bar: "ridesList__matchBar",
+	};
+
+	const resources = {
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
 	};
 
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
-	const onGetName = async (coords: [number, number]) => {
 
+	const hasExtension = (props.rideExtension ?? -1) > -1;
+
+	const onGetName = async (coords: [number, number]) => {
 		try {
 			setLoading(true);
 			const response = await geocodingClient
@@ -37,7 +46,7 @@ const DefaultItem = (props: IListItemProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
@@ -77,37 +86,56 @@ const DefaultItem = (props: IListItemProps) => {
 		}
 	}
 
-	return (
-		<li key={props.ride.rideId}>
-			<button
-				className={cssClasses.button}
-				onClick={() => props.setRide(props.ride)}
-			>
-				<div className={cssClasses.mainRow} style={borderColor}>
-					<div className={cssClasses.icon} style={color}>
-						{" "}
-					</div>
-					<div className={cssClasses.address}>
-						<div className={cssClasses.fromLabel}>
-							{!loading &&
-								fromName
-							}
+	const filterKey = props.filterKey?.toLowerCase();
+	if (!filterKey || (filterKey && (toName.toLowerCase().includes(filterKey) || fromName.toLowerCase().includes(filterKey)))) {
+		return (
+			<li key={props.ride.rideId}>
+				<button
+					className={cssClasses.button}
+					onClick={() => props.setRide(props.ride)}
+				>
+					<div className={cssClasses.mainRow} style={borderColor}>
+						<div className={cssClasses.icon} style={color}>
+							{" "}
 						</div>
-						<div className={cssClasses.toLabel}>
-							{!loading &&
-								toName
-							}
+						<div className={cssClasses.address}>
+							<div className={cssClasses.fromLabel}>
+								{!loading &&
+									fromName
+								}
+							</div>
+							<div className={cssClasses.toLabel}>
+								{!loading &&
+									toName
+								}
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className={cssClasses.bottomRow}>
-					<div className={cssClasses.driver}>
-						{convertDate(props.ride.rideDate.toString())}
+					<div className={cssClasses.bottomRow}>
+						<div className={cssClasses.driver}>
+							{convertDate(props.ride.rideDate.toString())}
+						</div>
+						{hasExtension &&
+							<div
+								className={cssClasses.rideExt}
+								style={{
+									color: getColor(props.rideExtension)
+								}}
+							>
+								{getRideMatchLabel(props.rideExtension)}
+							</div>
+						}
 					</div>
-				</div>
-			</button>
-		</li>
-	);
+					{hasExtension && <div className={cssClasses.bar} style={{
+						width: props.rideExtension > 100 ? "100%" : props.rideExtension + "%",
+						background: getColor(props.rideExtension),
+					}} />}
+				</button>
+			</li>
+		);
+	} else {
+		return null;
+	}
 };
 
 export default (DefaultItem);

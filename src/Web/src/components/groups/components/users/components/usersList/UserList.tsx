@@ -82,6 +82,7 @@ const UserList: React.FC<IUserListProps> = props => {
 						vertical: "center",
 						horizontal: "center",
 					}}
+					anchorEl={document.querySelector("main")}
 					transformOrigin={{
 						vertical: "center",
 						horizontal: "center",

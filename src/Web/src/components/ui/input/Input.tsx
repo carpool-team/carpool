@@ -78,7 +78,7 @@ const validateInput = (data: IInputValidationData) => {
 const Input = (props: IInputProps) => {
 	const [isValid, setIsValid] = useState(true);
 	const [autocompleteList, setAutocompleteList] = useState<IAddress[]>(null);
-	const [isAutoCompleted, setIsAutoCompleted] = useState(false);
+	const [isAutoCompleted, setIsAutoCompleted] = useState(props.validation?.addressAutocompletedInit ?? false);
 
 	const validate = () => {
 		if (props.validation) {

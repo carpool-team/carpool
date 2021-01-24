@@ -22,6 +22,8 @@ export const getRequestEndpoint: (
 				return `/groups/${queries.groupId}/users`;
 			case RequestEndpoint.LEAVE_GROUP:
 				return `/groups/${queries.groupId}/users/${queries.userId}`;
+			case RequestEndpoint.GET_GROUP_REPORT:
+				return `/groups/${queries.groupId}/report`;
 			//#endregion
 			//#region GROUP INVITES
 			case RequestEndpoint.GET_INVITES_BY_USER_ID:
@@ -52,12 +54,14 @@ export const getRequestEndpoint: (
 				return "/users/" + queries.userId;
 			case RequestEndpoint.DELETE_USER:
 				return "/users/" + queries.userId;
+			case RequestEndpoint.CHANGE_USER_PASSWORD:
+				return "/auth/change-password";
 			//#endregion
 			//#region RIDES
 			case RequestEndpoint.GET_RIDES_BY_USER_ID:
 				return `/users/${queries.userId}/rides`;
 			case RequestEndpoint.GET_RIDES_BY_GROUP_ID:
-				return `/groups/${queries.groupId}/rides`;
+				return `/rides`;
 			case RequestEndpoint.POST_RIDE:
 				return "/rides/";
 			case RequestEndpoint.POST_RIDE_RECURRING:
@@ -68,6 +72,8 @@ export const getRequestEndpoint: (
 				return "/rides/" + queries.rideId;
 			case RequestEndpoint.DELETE_RIDE_RECURRING:
 				return "/rides/recurring/" + queries.rideId;
+			case RequestEndpoint.DELETE_RIDE_PASSENGER:
+				return `/rides/${queries.rideId}/users/${queries.userId}`;
 			//#endregion
 			//#region RIDE REQUESTS
 			case RequestEndpoint.GET_RIDE_REQS:
@@ -101,6 +107,8 @@ export const getUrl: (endpoint: RequestEndpoint) => string = (ep) => {
 		case RequestEndpoint.REGISTER_USER:
 		case RequestEndpoint.UPDATE_USER_DATA:
 		case RequestEndpoint.DELETE_USER:
+		case RequestEndpoint.CHANGE_USER_PASSWORD:
+		case RequestEndpoint.REFRESH_TOKEN:
 			return process.env.AUTH_URL;
 		default:
 			return process.env.REST_URL;

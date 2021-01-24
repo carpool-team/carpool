@@ -17,6 +17,9 @@ import { connect } from "react-redux";
 import { DispatchProps, mapDispatchToProps, mapStateToProps, StateProps } from "../store/PropsTypes";
 import { useHistory } from "react-router";
 import { mainRoutes } from "../../layout/components/LayoutRouter";
+import ButtonLink from "../../ui/buttonLink/ButtonLink";
+import { ButtonLinkBackground } from "../../ui/buttonLink/enums/ButtonLinkBackground";
+import { ButtonLinkColor } from "../../ui/buttonLink/enums/ButtonLinkColor";
 
 interface IUserDataProps extends IReactI18nProps, StateProps, DispatchProps {
 	setCurrentList: (List: ProfileList) => void;
@@ -182,15 +185,14 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 				}}
 				disabled={true}
 			/>
-			{// temporarily disable password changing
-			/* <ButtonLink
+			<ButtonLink
 				onClick={onClickPassword}
 				color={ButtonLinkColor.Gray}
 				background={ButtonLinkBackground.Gray}
 				additionalCssClass={cssClasses.buttonOffset}
 			>
 				{t(resources.password)}
-			</ButtonLink> */}
+			</ButtonLink>
 			<div className={cssClasses.buttonContainer}>
 				<Button
 					additionalCssClass={cssClasses.button}
@@ -216,6 +218,7 @@ const UserData: React.FC<IUserDataProps> = (props) => {
 					vertical: "center",
 					horizontal: "center",
 				}}
+				anchorEl={document.querySelector("main")}
 				transformOrigin={{
 					vertical: "center",
 					horizontal: "center",

@@ -47,8 +47,6 @@ namespace DataAccessLayer.Repositories
 			=> await _context.Set<GroupInvite>().AddAsync(groupInvite, cancellationToken);
 
 		public void Delete(GroupInvite groupInvite)
-		{
-			throw new NotImplementedException();
-		}
+			=> groupInvite.IsSoftDeleted = true;
 	}
 }

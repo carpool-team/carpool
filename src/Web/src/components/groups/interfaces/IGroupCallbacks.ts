@@ -7,6 +7,7 @@ import { IGroup } from "./IGroup";
 import { IInvite } from "./IInvite";
 import { ILocation } from "./ILocation";
 import { IRide } from "./IRide";
+import { IRideFilters } from "./IRideFilters";
 
 /** Callbacks interface for groups */
 export interface IGroupCallbacks {
@@ -19,6 +20,6 @@ export interface IGroupCallbacks {
 	redirect: (route: string) => void;
 	getRides: (owned: boolean) => IRide[];
 	getRidesAvailable: () => IRide[];
-	participateInRide: (ride: IRide, location: ILocation) => IParticipateInRideAction;
+	participateInRide: (ride: IRide, location: ILocation, filters?: IRideFilters) => IParticipateInRideAction;
 	setGroupSelected: (id: string) => void;
 }

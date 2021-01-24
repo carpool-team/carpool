@@ -4,13 +4,14 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Domain.Abstract;
+using Domain.Contracts;
 using Domain.Entities.Intersections;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities
 {
-	public class Group : BaseEntity<GroupId>
+	public class Group : BaseEntity<GroupId>, ISoftDeletable
 	{
 		public static Group CreateGroupWithOwner(GroupId groupId,
 		                                  string name, 
@@ -35,14 +36,18 @@ namespace Domain.Entities
 	
 		public Location Location { get; set; }
 
-		public IReadOnlyList<Ride> Rides { get; set; }
+		public List<Ride> Rides { get; set; }
 
 		public string Name { get; set; }
 
 		public string Code { get; set; }
+		
 		public ApplicationUser Owner { get; set; }
 		
 		public AppUserId OwnerId { get; set; }
+		
+		public List<GroupInvite> GroupInvites { get; set; }
+		
 
 		public async Task<bool> RemoveUserFromGroup(AppUserId appUserId, CancellationToken cancellationToken = default)
 		{
@@ -55,5 +60,22 @@ namespace Domain.Entities
 
 			return true;
 		}
+
+		public void RemoveAllRides()
+		{
+			Rides.ForEach(x => x.IsSoftDeleted = true);
+		}		
+		
+		public void RemoveAllUsers()
+		{
+			UserGroups.ForEach(x => x.IsSoftDeleted = true);
+		}		
+		
+		public void RemoveAllInvites()
+		{
+			GroupInvites.ForEach(x => x.IsSoftDeleted = true);
+		}
+
+		public bool IsSoftDeleted { get; set; }
 	}
 }

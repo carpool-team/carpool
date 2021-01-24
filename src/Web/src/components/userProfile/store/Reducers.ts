@@ -25,6 +25,11 @@ const reducer: Reducer<IUserProfileState> = (
 			case UserProfileActionTypes.GetDataSuccess:
 				draft.userData = action.data;
 				break;
+			case UserProfileActionTypes.ClearStore:
+				Object.keys(draft).forEach(key => {
+					draft[key] = initialState[key];
+				});
+				break;
 			default:
 				break;
 		}

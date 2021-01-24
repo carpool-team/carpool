@@ -235,18 +235,20 @@ const Rides = (props: IRidesProps) => {
 	return (
 		<div className={cssClasses.container}>
 			<div className={cssClasses.leftPanel}>
-				<div className={cssClasses.leftLabels}>
+				<div className={cssClasses.leftLabels} style={{
+					height: userOwner ? "auto" : "50px"
+				}}>
 					<span>
 						{t(resources.label)}
 					</span>
-					<ButtonLink
+					{userOwner ? <ButtonLink
 						style={ButtonLinkStyle.Button}
 						color={ButtonLinkColor.White}
 						background={ButtonLinkBackground.Blue}
 						to={`${url}${rideRoutes.addRide}`}
 					>
 						{t(resources.add)}
-					</ButtonLink>
+					</ButtonLink> : null}
 				</div>
 				<div className={cssClasses.switch}>
 					<span className={switchCssClass.from} id={ids.from}> {t(resources.participant)}</span>

@@ -60,6 +60,11 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -97,6 +102,11 @@ namespace DataAccessLayer.Migrations
                     b.Property<bool>("IsPending")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
@@ -115,6 +125,11 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<long>("AppUserId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("GroupId", "AppUserId");
 
@@ -148,6 +163,11 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
@@ -188,6 +208,11 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<bool>("IsPending")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<long>("RequestingUserId")
                         .HasColumnType("bigint");
@@ -307,9 +332,9 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("Domain.Entities.GroupInvite", b =>
                 {
                     b.HasOne("Domain.Entities.Group", "Group")
-                        .WithMany()
+                        .WithMany("GroupInvites")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.ApplicationUser", "InvitedApplicationUser")
@@ -358,15 +383,7 @@ namespace DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Ride", "Ride")
-                        .WithMany()
-                        .HasForeignKey("RideId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.Navigation("ApplicationUser");
-
-                    b.Navigation("Ride");
                 });
 
             modelBuilder.Entity("Domain.Entities.Ride", b =>
@@ -529,6 +546,8 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain.Entities.Group", b =>
                 {
+                    b.Navigation("GroupInvites");
+
                     b.Navigation("Rides");
 
                     b.Navigation("UserGroups");

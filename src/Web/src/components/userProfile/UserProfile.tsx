@@ -21,19 +21,17 @@ const UserProfile: React.FC<IUserProfileProps> = (props) => {
 	const renderDataList = () => (
 		<UserData setCurrentList={setCurrentList} />
 	);
+
 	const renderPasswordList = () => (
 		<UserPassword setCurrentList={setCurrentList} />
 	);
 
 	const renderList = () => {
-		const { t } = props;
-
 		let list: JSX.Element;
 		switch (currentList) {
-			// TEMPORARILY disable password changing panel
-			// case ProfileList.Password:
-			// 	list = renderPasswordList();
-			// 	break;
+			case ProfileList.Password:
+				list = renderPasswordList();
+				break;
 			case ProfileList.Data:
 			default:
 				list = renderDataList();

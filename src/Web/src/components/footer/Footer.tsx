@@ -6,6 +6,7 @@ import ButtonLink from "../ui/buttonLink/ButtonLink";
 import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
 import "./Footer.scss";
+import { isAuthorized } from "../../helpers/UniversalHelper";
 
 interface IFooterProps extends IReactI18nProps { }
 
@@ -30,11 +31,55 @@ class Footer extends React.Component<IFooterProps> {
 		groups: "homeScreen.groups",
 		reports: "homeScreen.reports",
 		rides: "homeScreen.rides",
-		credits: "footer.credits"
+		credits: "footer.credits",
+		help: "footer.help",
 	};
 	private ids = {
 		container: "footerContainer",
 	};
+
+	renderAuthorizedContainer = () => {
+		if (isAuthorized() === false) {
+			return null;
+		} else {
+			const { t } = this.props;
+			return (
+				<div className={this.cssClasses.footerSubContainer}>
+					<div className={this.cssClasses.footerTitle}>
+						{t(this.resources.services)}
+					</div>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						to={`/${mainRoutes.help}`}
+					>
+						{t(this.resources.help)}
+					</ButtonLink>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						to={`/${mainRoutes.groups}`}
+					>
+						{t(this.resources.groups)}
+					</ButtonLink>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+					>
+						{t(this.resources.rides)}
+					</ButtonLink>
+					<ButtonLink
+						color={ButtonLinkColor.Gray}
+						background={ButtonLinkBackground.Gray}
+						onClick={() => { }}
+					>
+						{t(this.resources.reports)}
+					</ButtonLink>
+				</div>
+
+			);
+		}
+	}
 
 	render() {
 		const { t } = this.props;
@@ -67,33 +112,15 @@ class Footer extends React.Component<IFooterProps> {
 					>
 						{t(this.resources.environment)}
 					</ButtonLink>
-
-				</div>
-				<div className={this.cssClasses.footerSubContainer}>
-					<div className={this.cssClasses.footerTitle}>
-						{t(this.resources.services)}
-					</div>
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
-						to={`/${mainRoutes.groups}`}
+						to={`/${mainRoutes.help}`}
 					>
-						{t(this.resources.groups)}
-					</ButtonLink>
-					<ButtonLink
-						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
-					>
-						{t(this.resources.rides)}
-					</ButtonLink>
-					<ButtonLink
-						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
-						onClick={() => { }}
-					>
-						{t(this.resources.reports)}
+						{t(this.resources.help)}
 					</ButtonLink>
 				</div>
+				{this.renderAuthorizedContainer()}
 				<div className={this.cssClasses.footerSubContainer}>
 					<div className={this.cssClasses.footerTitle}>
 						{t(this.resources.credits)}

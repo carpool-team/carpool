@@ -32,6 +32,10 @@ const ActiveItemParticipant = (props: IActiveItemParticipantProps) => {
 		activeCar: "ridesListActive--car",
 	};
 
+	const resources = {
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+	};
+
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
 	const onGetName = async (coords: [number, number]) => {
@@ -49,7 +53,7 @@ const ActiveItemParticipant = (props: IActiveItemParticipantProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
@@ -117,11 +121,11 @@ const ActiveItemParticipant = (props: IActiveItemParticipantProps) => {
 					<div className={cssClasses.activeDriver}>
 						Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
 					</div>
-					<div className={cssClasses.activeCar}>
+					{/* <div className={cssClasses.activeCar}>
 						{props.ride.owner.vehicle}
-					</div>
+					</div> */}
 					<div className={cssClasses.activeSeats}>
-						Wolne miejsca: {"2"}
+						Zajęte miejsca: {props.ride?.stops.length ?? 0}/{props.ride.seatsLimit}
 					</div>
 					<Button
 						style={backgroundColor}

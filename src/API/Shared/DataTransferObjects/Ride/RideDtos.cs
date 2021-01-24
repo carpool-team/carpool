@@ -29,5 +29,6 @@ namespace DataTransferObjects.Ride
 		[JsonProperty("date")] DateTimeOffset Date,
 		[JsonProperty("location")] LocationDto Location,
 		[JsonProperty("group")] MinimalGroupDto Group,
-		[JsonProperty("rideDirection")] RideDirection RideDirection);
+		[JsonProperty("rideDirection")] RideDirection RideDirection,
+		[JsonProperty("stops")]List<StopDto> Stops);
 }

@@ -12,6 +12,7 @@ namespace DataAccessLayer.Builders.Intersections
 			_ = builder ?? throw new NullReferenceException(nameof(builder));
 
 			builder.HasKey(x => new {x.GroupId, UserId = x.AppUserId});
+			builder.Property(x => x.IsSoftDeleted).IsRequired().HasDefaultValue(false);
 
 			builder.HasOne(x => x.ApplicationUser)
 				.WithMany(x => x.UserGroups)

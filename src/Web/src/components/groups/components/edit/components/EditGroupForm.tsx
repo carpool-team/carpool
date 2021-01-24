@@ -56,7 +56,7 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 		location: props.group.location,
 	});
 	const [validate, setValidate] = useState(false);
-	const [loading, setLoading] = useState<boolean>(null);
+	const [loading, setLoading] = useState<boolean>(false);
 	const [placeName, setPlaceName] = useState<string>(null);
 	const [popover, setPopover] = useState<boolean>(false);
 	const history = useHistory();
@@ -157,120 +157,132 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 
 	const { t } = props;
 
+	const renderInputs = () => {
+		if (loading) {
+			return null;
+		} else {
+			return (
+				<div className={cssClasses.inputs}>
+					<span>{t(resources.basicInfo)}</span>
+					<Input
+						type={InputType.Text}
+						changeHandler={newValue => setFormData(draft => {
+							draft.name = newValue;
+						})}
+						placeholder={t(resources.groupNameInput)}
+						value={formData.name}
+						icon={InputIcon.Globe}
+						validation={{
+							type: ValidationType.Required,
+							isValidCallback: isValid => {
+								setInputsValid(draft => {
+									draft.name = isValid;
+								});
+							},
+							validate
+						}}
+					/>
+					<Input
+						type={InputType.Address}
+						changeHandler={newValue => { setPlaceName(newValue); }}
+						placeholder={t(resources.addressInput)}
+						value={placeName}
+						icon={InputIcon.Location}
+						addressCords={coords => {
+							if (coords) {
+								setFormData(draft => {
+									draft.location = {
+										latitude: coords[1],
+										longitude: coords[0],
+									};
+								});
+							} else {
+								setFormData(draft => {
+									draft.location = null;
+								});
+							}
+						}}
+						validation={{
+							type: ValidationType.Address,
+							isValidCallback: isValid => {
+								console.log("EDIT GROUP LOCATION VALID: ", isValid);
+								setInputsValid(draft => {
+									draft.location = isValid;
+								});
+							},
+							validate,
+							addressAutocompletedInit: true,
+						}}
+					/>
+					<div className={cssClasses.buttonsContainer} >
+						<Button
+							onClick={submitBtnClick}
+							color={ButtonColor.White}
+							background={ButtonBackground.Blue}
+						>
+							{t(resources.submitBtn)}
+						</Button>
+						<Button
+							onClick={handleOpenPopover}
+							color={ButtonColor.White}
+							background={ButtonBackground.Red}
+						>
+							{t(resources.deleteBtn)}
+						</Button>
+					</div>
+					<div >
+						<ButtonLink
+							color={ButtonLinkColor.Gray}
+							background={ButtonLinkBackground.Gray}
+							undeline={ButtonLinkUnderline.Solid}
+							to={`/${mainRoutes.groups}${GroupsRouter.routes.users}`}
+						>
+							{t(resources.btnUsers)}
+						</ButtonLink>
+					</div>
+					<Popover
+						open={popover}
+						onClose={handleClosePopover}
+						anchorOrigin={{
+							vertical: "center",
+							horizontal: "center",
+						}}
+						anchorEl={document.querySelector("main")}
+						transformOrigin={{
+							vertical: "center",
+							horizontal: "center",
+						}}
+					>
+						<div className={cssClasses.popoverContainer}>
+							<span>{t(resources.deleteConfirm)}</span>
+							<div className={cssClasses.popupButtonsContainer}>
+								<Button
+									additionalCssClass={cssClasses.button}
+									onClick={onDeleteSubmit}
+									color={ButtonColor.White}
+									background={ButtonBackground.Red}
+								>
+									{t(resources.yes)}
+								</Button>
+								<Button
+									additionalCssClass={cssClasses.button}
+									onClick={handleClosePopover}
+									color={ButtonColor.White}
+									background={ButtonBackground.Blue}
+								>
+									{t(resources.no)}
+								</Button>
+							</div>
+						</div>
+					</Popover>
+				</div>
+			);
+		}
+	};
+
 	return (
 		<div className={cssClasses.container}>
-			<div className={cssClasses.inputs}>
-				<span>{t(resources.basicInfo)}</span>
-				<Input
-					type={InputType.Text}
-					changeHandler={newValue => setFormData(draft => {
-						draft.name = newValue;
-					})}
-					placeholder={t(resources.groupNameInput)}
-					value={formData.name}
-					icon={InputIcon.Globe}
-					validation={{
-						type: ValidationType.Required,
-						isValidCallback: isValid => {
-							setInputsValid(draft => {
-								draft.name = isValid;
-							});
-						},
-						validate
-					}}
-				/>
-				<Input
-					type={InputType.Address}
-					changeHandler={newValue => { setPlaceName(newValue); }}
-					placeholder={t(resources.addressInput)}
-					value={placeName}
-					icon={InputIcon.Location}
-					addressCords={coords => {
-						if (coords) {
-							setFormData(draft => {
-								draft.location = {
-									latitude: coords[1],
-									longitude: coords[0],
-								};
-							});
-						} else {
-							setFormData(draft => {
-								draft.location = null;
-							});
-						}
-					}}
-					validation={{
-						type: ValidationType.Address,
-						isValidCallback: isValid => {
-							console.log("EDIT GROUP LOCATION VALID: ", isValid);
-							setInputsValid(draft => {
-								draft.location = isValid;
-							});
-						},
-						validate
-					}}
-				/>
-				<div className={cssClasses.buttonsContainer} >
-					<Button
-						onClick={submitBtnClick}
-						color={ButtonColor.White}
-						background={ButtonBackground.Blue}
-					>
-						{t(resources.submitBtn)}
-					</Button>
-					<Button
-						onClick={handleOpenPopover}
-						color={ButtonColor.White}
-						background={ButtonBackground.Red}
-					>
-						{t(resources.deleteBtn)}
-					</Button>
-				</div>
-				<div >
-					<ButtonLink
-						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
-						undeline={ButtonLinkUnderline.Solid}
-						to={`/${mainRoutes.groups}${GroupsRouter.routes.users}`}
-					>
-						{t(resources.btnUsers)}
-					</ButtonLink>
-				</div>
-				<Popover
-					open={popover}
-					onClose={handleClosePopover}
-					anchorOrigin={{
-						vertical: "center",
-						horizontal: "center",
-					}}
-					transformOrigin={{
-						vertical: "center",
-						horizontal: "center",
-					}}
-				>
-					<div className={cssClasses.popoverContainer}>
-						<span>{t(resources.deleteConfirm)}</span>
-						<div className={cssClasses.popupButtonsContainer}>
-							<Button
-								additionalCssClass={cssClasses.button}
-								onClick={onDeleteSubmit}
-								color={ButtonColor.White}
-								background={ButtonBackground.Red}
-							>
-								{t(resources.yes)}
-							</Button>
-							<Button
-								additionalCssClass={cssClasses.button}
-								onClick={handleClosePopover}
-								color={ButtonColor.White}
-								background={ButtonBackground.Blue}
-							>
-								{t(resources.no)}
-							</Button>
-						</div>
-					</div>
-				</Popover>
-			</div>
+			{renderInputs()}
 			<MediaQuery query="(min-width: 900px)">
 				<div className={cssClasses.map}>
 					<MapBoxPicker location={formData.location} label={placeName} />

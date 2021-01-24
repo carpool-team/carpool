@@ -1,7 +1,7 @@
 import { IGroupsState } from "./State";
 import { Reducer } from "redux";
 import { produce } from "immer";
-import { GroupsAction, GroupsActionTypes, InviteAction, InvitesActionTypes, RideAction, RidesActionTypes } from "./Types";
+import { GenericAction, GenericActionTypes, GroupsAction, GroupsActionTypes, InviteAction, InvitesActionTypes, RideAction, RidesActionTypes } from "./Types";
 
 const initialState: IGroupsState = {
 	groups: [],
@@ -11,6 +11,7 @@ const initialState: IGroupsState = {
 	ridesOwnedPast: [],
 	ridesParticipatedPast: [],
 	ridesAvailable: [],
+	report: null,
 };
 
 /**
@@ -20,7 +21,7 @@ const initialState: IGroupsState = {
  */
 const reducer: Reducer<IGroupsState> = (
 	state = initialState,
-	action: GroupsAction | InviteAction | RideAction
+	action: GroupsAction | InviteAction | RideAction | GenericAction
 ) => {
 	return produce<IGroupsState>(state, (draft) => {
 		let idx: number;
@@ -64,6 +65,17 @@ const reducer: Reducer<IGroupsState> = (
 					idx = draft.groups.findIndex(g => g.groupId === action.group.groupId);
 					draft.groups[idx] = action.group;
 				}
+				break;
+			case GenericActionTypes.ClearStore:
+				Object.keys(draft).forEach(key => {
+					draft[key] = initialState[key];
+				});
+				break;
+			case GroupsActionTypes.GetReportSuccess:
+				draft.report = action.report;
+				break;
+			case GroupsActionTypes.ClearReport:
+				draft.report = initialState.report;
 				break;
 			default:
 				break;

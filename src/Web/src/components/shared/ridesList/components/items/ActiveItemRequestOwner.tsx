@@ -33,15 +33,18 @@ const ActiveItemRequestOwner = (props: IActiveItemRequestOwnerProps) => {
 		activeSeats: "ridesListActive--seats",
 		activeCar: "ridesListActive--car",
 		activeStatus: "ridesListActive--status",
-		activeButtons: "ridesListActive--buttonsContainer"
+		activeButtons: "ridesListActive--buttonsContainer",
+		activePickUp: "ridesListActive--pickUp",
 	};
 
 	const resources = {
-		requestFrom: "requests.requestFrom"
+		requestFrom: "requests.requestFrom",
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
 	};
 
 	const [loading, setLoading] = useState(null);
 	const [placeName, setPlaceName] = useState(null);
+	const [pickUpName, setPickUpName] = useState(null);
 
 	const onGetName = async (coords: [number, number]) => {
 		try {
@@ -56,9 +59,9 @@ const ActiveItemRequestOwner = (props: IActiveItemRequestOwnerProps) => {
 				.send();
 			const result = response.body.features[0];
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
-				setPlaceName(result.place_name);
+				return (result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				return (props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
@@ -83,12 +86,10 @@ const ActiveItemRequestOwner = (props: IActiveItemRequestOwnerProps) => {
 	};
 
 	useEffect(() => {
-		onGetName(parseCoords(props.request.ride.location));
+		onGetName(parseCoords(props.request.ride.location)).then(value => setPlaceName(value));
+		onGetName(parseCoords(props.request.requestingUser.location)).then(value => setPickUpName(value));
 	}, []);
 
-	// if (!placeName && !loading && placeName !== undefined) {
-	// 	onGetName(parseCoords(props.request.ride.location));
-	// }
 	let fromName: string;
 	let toName: string;
 
@@ -131,6 +132,9 @@ const ActiveItemRequestOwner = (props: IActiveItemRequestOwnerProps) => {
 				<div className={cssClasses.activeBottomRow}>
 					<div className={cssClasses.activeStatus}>
 						{t(resources.requestFrom) + props.request.requestingUser.firstName + " " + props.request.requestingUser.lastName}
+					</div>
+					<div className={cssClasses.activePickUp}>
+						Punkt odbioru: {pickUpName}
 					</div>
 					<div className={cssClasses.activeDate}>
 						{convertDate(props.request.ride.date.toString())}

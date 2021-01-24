@@ -1,15 +1,19 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { RideDirection } from "../api/addRide/AddRideRequest";
 import { IEditGroupFormData } from "../components/edit/interfaces/IEditGroupFormData";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroup } from "../interfaces/IGroup";
 import { IGroupUser } from "../interfaces/IGroupUser";
 import { IInvite } from "../interfaces/IInvite";
 import { ILocation } from "../interfaces/ILocation";
+import { IReport } from "../interfaces/IReport";
 import { IRide } from "../interfaces/IRide";
+import { IRideFilters } from "../interfaces/IRideFilters";
 
 export enum GenericActionTypes {
-	ApiError = "GROUPS_STORE_API_ERROR"
+	ApiError = "GROUPS_STORE_API_ERROR",
+	ClearStore = "GROUPS_STORE_CLEAR",
 }
 
 /** Enum of groups actions */
@@ -39,6 +43,10 @@ export enum GroupsActionTypes {
 	EditGroup = "GROUPS_EDIT_GROUP",
 	EditGroupSuccess = "GROUPS_EDIT_GROUP_SUCCESS",
 	EditGroupError = "GROUPS_EDIT_GROUP_ERROR",
+	GetReport = "GROUPS_GET_REPORT",
+	GetReportSuccess = "GROUPS_GET_REPORT_SUCCESS",
+	GetReportError = "GROUPS_GET_REPORT_ERROR",
+	ClearReport = "GROUPS_CLEAR_REPORT",
 }
 
 /** Enum of invites actions */
@@ -64,11 +72,16 @@ export enum RidesActionTypes {
 	ParticipateInRideSuccess = "RIDES_PARTICIPATE_IN_RIDE_SUCCESS",
 	ParticipateInRideError = "RIDES_PARTICIPATE_IN_RIDE_ERROR",
 	AddRide = "RIDES_ADD",
+	AddRideError = "RIDES_ADD_ERROR",
+	AddRideSuccess = "RIDES_ADD_SUCCESS",
 }
 
 //#region GENERIC
 export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 	errorMessage: string;
+}
+
+export interface IGroupsClearStoreAction extends Action<GenericActionTypes.ClearStore> {
 }
 //#endregion
 
@@ -106,6 +119,28 @@ export interface IGetGroupsActionSuccess
 export interface IGetGroupsActionError
 	extends Action<GroupsActionTypes.GetGroupsError> {
 	error: Error;
+}
+
+/** Action for getting group report */
+export interface IGetReportAction extends Action<GroupsActionTypes.GetReport> {
+	groupId: string;
+	startDate: Date;
+	endDate: Date;
+}
+
+/** Action for getting group report success */
+export interface IGetReportActionSuccess
+	extends Action<GroupsActionTypes.GetReportSuccess> {
+	report: IReport;
+}
+
+/** Action for getting group report error */
+export interface IGetReportActionError
+	extends Action<GroupsActionTypes.GetReportError> {
+	error: Error;
+}
+
+export interface IClearReportAction extends Action<GroupsActionTypes.ClearReport> {
 }
 
 /** Action for getting group users */
@@ -233,6 +268,7 @@ export interface IAddInvitesAction extends Action<InvitesActionTypes.AddInvites>
 export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
 	refreshRidesAvailable?: boolean;
 	groupId?: string;
+	filters?: IRideFilters;
 }
 
 /** Action for getting rides success */
@@ -251,6 +287,7 @@ export interface IGetRidesActionError extends Action<RidesActionTypes.GetRidesEr
 /** Action for getting available rides success */
 export interface IGetRidesAvailableAction extends Action<RidesActionTypes.GetRidesAvailable> {
 	groupId: string;
+	filters?: IRideFilters;
 }
 
 /** Action for getting available rides success */
@@ -267,6 +304,7 @@ export interface IGetRidesAvailableActionError extends Action<RidesActionTypes.G
 export interface IParticipateInRideAction extends Action<RidesActionTypes.ParticipateInRide> {
 	ride: IRide;
 	location: ILocation;
+	filters?: IRideFilters;
 }
 
 /** Action for participating in ride success */
@@ -282,10 +320,18 @@ export interface IParticipateInRideActionError extends Action<RidesActionTypes.P
 export interface IAddRideAction extends Action<RidesActionTypes.AddRide> {
 	input: IAddRideInput;
 }
+
+export interface IAddRideErrorAction extends Action<RidesActionTypes.AddRideError> {
+	error: Error;
+}
+
+export interface IAddRideSuccessAction extends Action<RidesActionTypes.AddRideSuccess> {
+}
 //#endregion
 
 export type GenericAction =
-	IApiErrorAction;
+	IApiErrorAction
+	| IGroupsClearStoreAction;
 
 /** Type of group action */
 export type GroupsAction =
@@ -313,7 +359,11 @@ export type GroupsAction =
 	| IDeleteGroupSuccessAction
 	| IEditGroupAction
 	| IEditGroupSuccessAction
-	| IEditGroupErrorAction;
+	| IEditGroupErrorAction
+	| IGetReportAction
+	| IGetReportActionSuccess
+	| IGetReportActionError
+	| IClearReportAction;
 
 export type InviteAction =
 	IAnswerInviteAction
@@ -334,4 +384,6 @@ export type RideAction =
 	| IParticipateInRideAction
 	| IParticipateInRideActionSuccess
 	| IParticipateInRideActionError
-	| IAddRideAction;
+	| IAddRideAction
+	| IAddRideErrorAction
+	| IAddRideSuccessAction;

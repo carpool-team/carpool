@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Application.Commands.UserCommands;
+using Application.Queries.RatingQueries;
 using AutoWrapper.Wrappers;
 using DataTransferObjects.Rating;
 using Domain.ValueObjects;
@@ -7,9 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestApi.Commands.UserCommands;
 using RestApi.Extensions;
-using RestApi.Queries.RatingQueries;
 
 namespace RestApi.Controllers
 {

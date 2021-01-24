@@ -32,6 +32,24 @@ export function isValidDate(d: any): boolean {
 	}
 }
 
+/** Returns date's iso string with timezone offset */
+export function dateToIsoString(date: Date): string {
+	let tzo = -date.getTimezoneOffset(),
+		dif = tzo >= 0 ? "+" : "-",
+		pad = function (num) {
+			let norm = Math.floor(Math.abs(num));
+			return (norm < 10 ? "0" : "") + norm;
+		};
+	return date.getFullYear() +
+		"-" + pad(date.getMonth() + 1) +
+		"-" + pad(date.getDate()) +
+		"T" + pad(date.getHours()) +
+		":" + pad(date.getMinutes()) +
+		":" + pad(date.getSeconds()) +
+		dif + pad(tzo / 60) +
+		":" + pad(tzo % 60);
+}
+
 export function foreach<T>(iterable: { [key: string]: T }, callback: (item: T) => void) {
 	Object.keys(iterable).forEach(key => {
 		callback(iterable[key]);
@@ -51,7 +69,7 @@ export function each<T>(iterable: { [key: string]: T }, predicate: (item: T) => 
 }
 
 /** Parses JWT */
-export function parseJwt(token): any {
+export function parseJwt(token: string): any {
 	let base64Url = token.split(".")[1];
 	let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
 	let jsonPayload = decodeURIComponent(atob(base64).split("").map(function (c) {

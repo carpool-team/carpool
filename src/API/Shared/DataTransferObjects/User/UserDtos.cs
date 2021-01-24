@@ -39,5 +39,6 @@ namespace DataTransferObjects.User
 
     public record RideRequestingUserDto([JsonProperty("id")] AppUserId AppUserId,
         [JsonProperty("firstName")] string FirstName,
-        [JsonProperty("lastName")] string LastName);
+        [JsonProperty("lastName")] string LastName,
+        [JsonProperty("location")] LocationDto Location);
 }

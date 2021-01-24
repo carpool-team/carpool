@@ -2,7 +2,8 @@ import { Action } from "redux";
 import { IRideRequest } from "../../groups/interfaces/rideRequest/IRideRequest";
 
 export enum GenericActionTypes {
-	ApiError = "RIDES_STORE_API_ERROR"
+	ApiError = "RIDES_STORE_API_ERROR",
+	ClearStore = "RIDES_CLEAR_STORE",
 }
 
 /** Enum of ride requests actions */
@@ -23,11 +24,18 @@ export enum RideActionTypes {
 	DeleteRide = "RIDES_DELETE_RIDE",
 	DeleteRideSuccess = "RIDES_DELETE_RIDE_SUCCESS",
 	DeleteRideError = "RIDES_DELETE_RIDE_ERROR",
+	DeletePassenger = "RIDES_DELETE_PASSENGER",
+	DeletePassengerSuccess = "RIDES_DELETE_PASSENGER_SUCCESS",
+	DeletePassengerError = "RIDES_DELETE_PASSENGER_ERROR",
 }
 
 //#region GENERIC
 export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 	errorMessage: string;
+}
+
+export interface IRidesClearStoreAction extends Action<GenericActionTypes.ClearStore> {
+
 }
 //#endregion
 
@@ -75,6 +83,7 @@ export interface ILeaveRideSuccessAction extends Action<RideActionTypes.LeaveRid
 export interface ILeaveRideErrorAction extends Action<RideActionTypes.LeaveRideError> {
 	error: Error;
 }
+
 export interface IDeleteRideAction extends Action<RideActionTypes.DeleteRide> {
 	rideId: string;
 	recurring?: boolean;
@@ -86,10 +95,23 @@ export interface IDeleteRideSuccessAction extends Action<RideActionTypes.DeleteR
 export interface IDeleteRideErrorAction extends Action<RideActionTypes.DeleteRideError> {
 	error: Error;
 }
+
+export interface IDeletePassengerAction extends Action<RideActionTypes.DeletePassenger> {
+	rideId: string;
+	userId: string;
+}
+
+export interface IDeletePassengerSuccessAction extends Action<RideActionTypes.DeletePassengerSuccess> {
+}
+
+export interface IDeletePassengerErrorAction extends Action<RideActionTypes.DeletePassengerError> {
+	error: Error;
+}
 //#endregion
 
 export type GenericAction =
-	IApiErrorAction;
+	IApiErrorAction
+	| IRidesClearStoreAction;
 
 /** Type of ride req action */
 export type RideRequestsAction =
@@ -106,4 +128,7 @@ export type RideAction =
 	| ILeaveRideSuccessAction
 	| IDeleteRideAction
 	| IDeleteRideErrorAction
-	| IDeleteRideSuccessAction;
+	| IDeleteRideSuccessAction
+	| IDeletePassengerAction
+	| IDeletePassengerErrorAction
+	| IDeletePassengerSuccessAction;

@@ -17,10 +17,13 @@ export enum UserProfileActionTypes {
 	DeleteUser = "USER_PROFILE_DELETE",
 	DeleteUserSuccess = "USER_PROFILE_DELETE_SUCCESS",
 	DeleteUserError = "USER_PROFILE_DELETE_ERROR",
+	ClearStore = "USER_PROFILE_CLEAR_STORE",
 }
 
 //#region USER PROFILE
+export interface IUserClearStoreAction extends Action<UserProfileActionTypes.ClearStore> {
 
+}
 export interface IGetDataAction extends Action<UserProfileActionTypes.GetData> {
 }
 
@@ -76,4 +79,5 @@ export type UserProfileAction =
 	| IChangePasswordErrorAction
 	| IDeleteUserAction
 	| IDeleteUserErrorAction
-	| IDeleteUserSuccessAction;
+	| IDeleteUserSuccessAction
+	| IUserClearStoreAction;

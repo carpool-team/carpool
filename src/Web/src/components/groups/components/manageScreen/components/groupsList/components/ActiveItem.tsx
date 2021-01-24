@@ -10,6 +10,7 @@ import GroupsRouter from "../../../../GroupsRouter";
 import { connect } from "react-redux";
 import { leaveGroup } from "../../../../../store/Actions";
 import { ILeaveGroupAction } from "../../../../../store/Types";
+import { ButtonLinkColor } from "../../../../../../ui/buttonLink/enums/ButtonLinkColor";
 
 interface IDispatchPropsType {
 	leaveGroup: (groupId: string) => ILeaveGroupAction;
@@ -53,6 +54,7 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 		ridesInGroup: "groups.list.ridesInGroup",
 		inviteToGroup: "groups.list.inviteToGroup",
 		leaveGroup: "groups.list.leaveGroup",
+		report: "groups.list.report"
 	};
 
 	const handleOpenPopover = () => {
@@ -89,13 +91,16 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 		// Owner CAN'T leave group
 		if (!isOwner) {
 			return <>
-				<ButtonLink onClick={handleOpenPopover}>
+				<ButtonLink onClick={handleOpenPopover}
+					color={ButtonLinkColor.Red}
+				>
 					{t(resources.leaveGroup)}
 				</ButtonLink>
 				<LeaveGroupModal
 					open={popover}
 					onLeaveConfirm={onLeaveConfirm}
 					handleClose={handleClosePopover}
+					containerRef={document.querySelector("main")}
 				/>
 			</>;
 		} else {
@@ -118,6 +123,9 @@ const ActiveItem: React.FC<IActiveItemProps> = props => {
 			<div className={cssClasses.menu}>
 				<ButtonLink to={`/${mainRoutes.groups}${GroupsRouter.routes.rides}`}>
 					{t(resources.ridesInGroup)}
+				</ButtonLink>
+				<ButtonLink to={`/${mainRoutes.groups}${GroupsRouter.routes.report}`}>
+					{t(resources.report)}
 				</ButtonLink>
 				{renderManagePart()}
 				{renderLeaveGroupPart()}

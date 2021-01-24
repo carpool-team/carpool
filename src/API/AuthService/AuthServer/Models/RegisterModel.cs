@@ -32,7 +32,7 @@ namespace AuthServer.Models
 			RuleFor(x => x.FirstName).NotEmpty().WithMessage("First name cannot be empty.");
 			RuleFor(x => x.LastName).NotEmpty().WithMessage("Last name cannot be empty.");
 			RuleFor(x => x.Password).MinimumLength(8).WithMessage("Password is too short.")
-			                        .Matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$").WithMessage("Password does not satisfy rules ");
+			                        .Matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$").WithMessage("Password does not satisfy rules ");
 		}
 	}
 }

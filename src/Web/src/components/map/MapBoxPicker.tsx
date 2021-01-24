@@ -53,14 +53,14 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 	}
 	componentDidMount() {
 		console.log(this.props.location)
-		if (this.props.location) {
-			if (this.props.location !== this.state.center) {
-				this.setState(produce((draft: IMapState) => {
-					draft.zoom = [14];
-					draft.center = this.props.location;
-				}));
-			}
-		}
+		// if (this.props.location) {
+		// 	if (this.props.location !== this.state.center) {
+		// 		this.setState(produce((draft: IMapState) => {
+		// 			draft.zoom = [14];
+		// 			draft.center = this.props.location;
+		// 		}));
+		// 	}
+		// }
 	}
 	componentDidUpdate() {
 		if (this.props.location) {

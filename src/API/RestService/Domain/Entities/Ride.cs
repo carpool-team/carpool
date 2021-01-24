@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using Domain.Abstract;
+using Domain.Contracts;
 using Domain.Entities.Intersections;
 using Domain.Enums;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
-using Microsoft.AspNetCore.Http;
 
 namespace Domain.Entities
 {
-	public class Ride : BaseEntity<RideId>
+	public class Ride : BaseEntity<RideId>, ISoftDeletable
 	{
 		private Ride(){}
 		
@@ -61,5 +61,7 @@ namespace Domain.Entities
 			
 			Stops.Remove(stop);
 		}
+
+		public bool IsSoftDeleted { get; set; }
 	}
 }

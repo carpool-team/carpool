@@ -10,4 +10,7 @@ export interface IRequestQueries {
 	past?: boolean;
 	isOwner?: boolean;
 	email?: string;
+	startDate?: string;
+	endDate?: string;
+	dateTime?: string;
 }

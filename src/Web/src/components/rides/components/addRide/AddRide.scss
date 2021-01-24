@@ -136,14 +136,33 @@
 	display: flex;
 	background-color: $white;
 	width: 100%;
-	height: 93vh;
+	min-height: 93vh;
 	justify-content: space-between;
+
+	&__rangeContainer{
+		display: flex;
+		flex-direction: row;
+		background-color: $white;
+		min-height: 50px;
+		width: 100%;
+		justify-content: flex-start;
+		padding-left: 50px;
+		align-items: center;
+		margin-bottom: 15px;
+		&--numberOfWeeks{
+			font-size: 22px;
+			font-weight: $bold;
+			padding-left: 10px;
+			padding-right: 15px;
+			color: $blue;
+		}
+	}
 		&__checkboxContainer{
 			width: 100%;
 			display: flex;
 			padding: 5px;
 			flex-wrap: wrap;
-			margin-bottom: 30px;
+			margin-bottom: 15px;
 			background-color: $white;
 			align-items: center;
 			padding-left: 20px;
@@ -173,19 +192,20 @@
 			width: 100%;
 			background-color: $white;
 			margin-top: 0px !important;
-			margin-bottom: 30px !important;
+			margin-bottom: 15px !important;
 		}
 		&__inputs {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 			align-items: center;
+			min-height: 620px;
 		}
 		&__input{
-			margin-bottom: 15px;
+			margin-bottom: 0px;
 		}
 		&__button {
-			margin-top: 5%;
+			margin-top: 5px;
 			margin-bottom: auto;
 		}
 		&__daysContainer{
@@ -196,7 +216,7 @@
 			justify-content: center;
 			align-items: center;
 			flex-wrap: wrap;
-			margin-bottom: 20px;
+			margin-bottom: 10px;
 			&--column{
 				width: 48%;
 				display: flex;
@@ -218,7 +238,7 @@
 	margin-right: 0 !important;
 }
 .MuiFormLabel-root {
-	padding-top: 10px !important;
+	padding-top: 7px !important;
 	color: $grayDark !important;
 	padding-left: 17px !important;
 	font-size: 18px !important;
@@ -289,7 +309,7 @@
 	&--outline{
 		background-color: $white;
 		height: 7px;
-		margin-bottom: 30px;
+		margin-bottom: 10px;
 	}
 	&--label{
 		color: $grayDark;

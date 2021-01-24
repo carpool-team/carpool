@@ -12,8 +12,11 @@ import { ButtonBackground } from "../../ui/button/enums/ButtonBackground";
 import { ProfileList } from "../enums/ProfileList";
 import usePasswordWithConfirm from "../../ui/hooks/usePasswordWithConfirm/UsePasswordWithConfirm";
 import { IChangePasswordFormData } from "../interfaces/IChangePasswordFormData";
+import { InputIcon } from "../../ui/input/enums/InputIcon";
+import { connect } from "react-redux";
+import { DispatchProps, mapDispatchToProps, mapStateToProps, StateProps } from "../store/PropsTypes";
 
-interface IUserPasswordProps extends IReactI18nProps {
+interface IUserPasswordProps extends IReactI18nProps, StateProps, DispatchProps {
 	setCurrentList: (List: ProfileList) => void;
 }
 
@@ -44,10 +47,7 @@ const UserPassword: React.FC<IUserPasswordProps> = (props) => {
 
 	const validateForm = () => {
 		let isFormValid: boolean = true;
-		if (!isPasswordValid) {
-			isFormValid = false;
-		}
-		if (each(inputsValid, i => i)) {
+		if (each(inputsValid, i => i) && isPasswordValid) {
 			isFormValid = true;
 			setValidate(false);
 		} else {
@@ -60,12 +60,12 @@ const UserPassword: React.FC<IUserPasswordProps> = (props) => {
 	const onClickSubmit = () => {
 		if (validateForm()) {
 			const data: IChangePasswordFormData = {
-				password
+				newPassword: password,
+				currentPassword,
 			};
+			props.setLoaderVisible(true);
+			props.changePassword(data);
 		}
-		// TODO wysyłać request jak użytkownik wyśle dane.
-		// props.register(data);
-		// props.setLoaderVisible(true);
 	};
 
 	const onClickBack = () => {
@@ -77,7 +77,7 @@ const UserPassword: React.FC<IUserPasswordProps> = (props) => {
 			<span className={cssClasses.label}>{t(resources.label)}</span>
 			<Input
 				style={cssClasses.input}
-				type={InputType.Text}
+				type={InputType.Password}
 				changeHandler={newValue => { setCurrentPassword(newValue); }}
 				placeholder={t(resources.currentPassword)}
 				value={currentPassword}
@@ -90,6 +90,7 @@ const UserPassword: React.FC<IUserPasswordProps> = (props) => {
 					},
 					validate,
 				}}
+				icon={InputIcon.Password}
 			/>
 			{renderPasswordInputs()}
 			<div className={cssClasses.buttonContainer}>
@@ -114,4 +115,6 @@ const UserPassword: React.FC<IUserPasswordProps> = (props) => {
 	);
 };
 
-export default withTranslation()(UserPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(
+	withTranslation()(UserPassword)
+);

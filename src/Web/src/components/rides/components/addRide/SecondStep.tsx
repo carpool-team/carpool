@@ -29,6 +29,10 @@ import { parseCoords } from "../../../../helpers/UniversalHelper";
 import { IGroup } from "../../../groups/interfaces/IGroup";
 import { RideDirection } from "../../../groups/api/addRide/AddRideRequest";
 import { IRideDays } from "./interfaces/IRideDays";
+import ButtonSmall from "../../../ui/buttonSmall/ButtonSmall";
+import { ButtonSmallIcon } from "../../../ui/buttonSmall/enums/ButtonSmallIcon";
+import { ButtonSmallBackground } from "../../../ui/buttonSmall/enums/ButtonSmallBackground";
+import { ButtonSmallColor } from "../../../ui/buttonSmall/enums/ButtonSmallColor";
 
 export interface IAddRideProps extends IReactI18nProps, RouteComponentProps {
 	group: IGroup;
@@ -69,6 +73,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		saturday: "common.saturday",
 		sunday: "common.sunday",
 		all: "common.all",
+		rangeWeeks: "rides.rangeWeeks"
 	};
 
 	const cssClasses = {
@@ -88,6 +93,8 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		button: "ridesAddRideForm__button",
 		daysContainer: "ridesAddRideForm__daysContainer",
 		daysColumn: "ridesAddRideForm__daysContainer--column",
+		fromRangeContainer: "ridesAddRideForm__rangeContainer",
+		numberOfWeeks: "ridesAddRideForm__rangeContainer--numberOfWeeks"
 	};
 
 	const ids = {
@@ -108,7 +115,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 	const [location, setLocation] = useState(parseCoords(props.group.location));
 	const [direction, setDirection] = useState(RideDirection.To);
 	const [userAddressName, setUserAddresName] = useState<string>("");
-	const [seats, setSeats] = useState<string>("");
+	const [seats, setSeats] = useState(1);
 	const [selectedDate, setSelectedDate] = useState(new Date());
 	const [days, setDays] = useImmer<IRideDays>({
 		all: false,
@@ -120,6 +127,7 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		saturday: false,
 		sunday: false,
 	});
+	const [numberOfWeeks, setNumberOfWeeks] = useState<number>(1);
 
 	const userRide: IAddRideInput = {
 		recurring: selectedScreen === PanelType.Cyclic,
@@ -132,6 +140,28 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 		},
 		seatsLimit: +seats,
 		date: selectedDate,
+		numberOfWeeks,
+	};
+
+	const incrementWeeks = () => {
+		if (numberOfWeeks < 12) {
+			setNumberOfWeeks(numberOfWeeks + 1);
+		}
+	};
+	const decrementWeeks = () => {
+		if (numberOfWeeks > 1) {
+			setNumberOfWeeks(numberOfWeeks - 1);
+		}
+	};
+	const incrementSeats = () => {
+		if (seats < 99) {
+			setSeats(seats + 1);
+		}
+	};
+	const decrementSeats = () => {
+		if (seats > 1) {
+			setSeats(seats - 1);
+		}
 	};
 
 	useEffect(() => {
@@ -151,8 +181,9 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 					latitude: location[1],
 					longitude: location[0],
 				},
-				seatsLimit: +seats,
+				seatsLimit: seats,
 				date: selectedDate,
+				numberOfWeeks,
 			};
 			props.setRide(input);
 			props.addRide();
@@ -358,23 +389,24 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 							}}
 						/>
 					)}
-				<Input
-					style={cssClasses.input}
-					type={InputType.Text}
-					changeHandler={(newValue) => setSeats(newValue)}
-					placeholder={t(resources.seats)}
-					value={seats}
-					icon={InputIcon.Seats}
-					validation={{
-						validate: submitted,
-						type: ValidationType.Numeric,
-						isValidCallback: (isValid) => {
-							setInputsValid((draft) => {
-								draft.seatsNumber = isValid;
-							});
-						},
-					}}
-				/>
+				<div className={cssClasses.checkboxLabel}>{t(resources.seats)}</div>
+				<div className={cssClasses.fromRangeContainer}>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Minus}
+						onClick={() => decrementSeats()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+					<div className={cssClasses.numberOfWeeks}>
+						{seats}
+					</div>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Plus}
+						onClick={() => incrementSeats()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+				</div>
 				<Button
 					className={cssClasses.button}
 					onClick={() => trySendForm()}
@@ -523,6 +555,25 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 						{t(resources.to)}
 					</span>
 				</div>
+				<div className={cssClasses.checkboxLabel}>{t(resources.rangeWeeks)}</div>
+				<div className={cssClasses.fromRangeContainer}>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Minus}
+						onClick={() => decrementWeeks()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+					<div className={cssClasses.numberOfWeeks}>
+						{numberOfWeeks}
+					</div>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Plus}
+						onClick={() => incrementWeeks()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+
+				</div>
 				{startgroup ? (
 					<Input
 						style={cssClasses.input}
@@ -562,23 +613,24 @@ const AddRideFormScreen: (props: IAddRideProps) => JSX.Element = (props) => {
 							}}
 						/>
 					)}
-				<Input
-					style={cssClasses.input}
-					type={InputType.Text}
-					changeHandler={(newValue) => setSeats(newValue)}
-					placeholder={t(resources.seats)}
-					value={seats}
-					icon={InputIcon.Seats}
-					validation={{
-						validate: submitted,
-						type: ValidationType.Numeric,
-						isValidCallback: (isValid) => {
-							setInputsValid((draft) => {
-								draft.seatsNumber = isValid;
-							});
-						},
-					}}
-				/>
+				<div className={cssClasses.checkboxLabel}>{t(resources.seats)}</div>
+				<div className={cssClasses.fromRangeContainer}>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Minus}
+						onClick={() => decrementSeats()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+					<div className={cssClasses.numberOfWeeks}>
+						{seats}
+					</div>
+					<ButtonSmall
+						icon={ButtonSmallIcon.Plus}
+						onClick={() => incrementSeats()}
+						color={ButtonSmallColor.Gray}
+						background={ButtonSmallBackground.White}
+					/>
+				</div>
 				<Button
 					className={cssClasses.button}
 					onClick={() => trySendForm()}

@@ -10,6 +10,7 @@ interface ILeaveGroupModalProps extends IReactI18nProps {
 	open: boolean;
 	handleClose: () => void;
 	onLeaveConfirm: () => void;
+	containerRef: Element;
 }
 
 const LeaveGroupModal: React.FC<ILeaveGroupModalProps> = props => {
@@ -34,6 +35,7 @@ const LeaveGroupModal: React.FC<ILeaveGroupModalProps> = props => {
 			vertical: "center",
 			horizontal: "center",
 		}}
+		anchorEl={props.containerRef}
 		transformOrigin={{
 			vertical: "center",
 			horizontal: "center",

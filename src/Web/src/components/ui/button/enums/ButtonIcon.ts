@@ -1,4 +1,5 @@
 /** Button types interface */
 export enum ButtonIcon {
-	User
+	User,
+	Close,
 }

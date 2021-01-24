@@ -16,6 +16,7 @@ const geocodingClient = getGeocodingClient();
 
 interface IActiveItemOwnerProps extends IListItemProps {
 	deleteRide: (rideId: string) => void;
+	deletePassenger: (rideId: string, userId: string) => void;
 }
 
 const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
@@ -41,6 +42,12 @@ const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 		noParticipants: "ridesListActive--participantContainer--noParticipants"
 	};
 
+	const resources = {
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+		noParticipants: "rides.noParticipants",
+		participantsLabel: "rides.participantsLabel",
+	};
+
 	const [loading, setLoading] = useState(null);
 	const [placeName, setPlaceName] = useState(null);
 	const onGetName = async (coords: [number, number]) => {
@@ -58,7 +65,7 @@ const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
@@ -66,10 +73,6 @@ const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 			setLoading(false);
 		}
 	};
-	const resources = {
-		noParticipants: "rides.noParticipants",
-		participantsLabel: "rides.participantsLabel"
-	}
 
 	const color = {
 		color: props.color
@@ -105,34 +108,39 @@ const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 		}
 	}
 
+	const removePassenger: (passengerId: string) => void = passengerId => {
+		console.log(`Deleting passenger with id ${passengerId} from ride with id ${props.ride.rideId}`);
+		props.deletePassenger(props.ride.rideId, passengerId);
+	};
 
 	const renderParticipants = () => {
 		if (props.ride.stops.length) {
 			return (
 				props.ride.stops.map((stop, idx) => {
+					console.log(stop);
 					return (
-						<div id={stop.participant.id} className={cssClasses.participantContainer}>
+						<div key={idx} className={cssClasses.participantContainer}>
 							<div className={cssClasses.participantName}>
 								{stop.participant.firstName}  {stop.participant.lastName}
 							</div>
 							<ButtonSmall
 								style={cssClasses.participantButton}
 								icon={ButtonSmallIcon.Close}
-								onClick={() => { }}
+								onClick={() => removePassenger(stop.participant.participantId)}
 								color={ButtonSmallColor.Red}
 								background={ButtonSmallBackground.Gray}
 							/>
 						</div>
-					)
-				}))
+					);
+				}));
 		} else {
 			return (
 				<div className={cssClasses.noParticipants}>
 					{props.t(resources.noParticipants)}
 				</div>
-			)
+			);
 		}
-	}
+	};
 
 	return (
 		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
@@ -160,7 +168,13 @@ const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 						{props.t(resources.participantsLabel)}
 					</div>
 					{renderParticipants()}
-					<Button style={backgroundColor} background={ButtonBackground.Blue} color={ButtonColor.White} className={cssClasses.activeJoinButton}>
+					<Button
+						style={backgroundColor}
+						background={ButtonBackground.Blue}
+						color={ButtonColor.White}
+						className={cssClasses.activeJoinButton}
+						onClick={() => props.deleteRide(props.ride.rideId)}
+					>
 						{"Usuń"}
 					</Button>
 				</div>

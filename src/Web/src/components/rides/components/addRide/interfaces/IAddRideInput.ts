@@ -10,4 +10,5 @@ export interface IAddRideInput {
 	date: Date;
 	location: ILocation;
 	seatsLimit: number;
+	numberOfWeeks: number;
 }

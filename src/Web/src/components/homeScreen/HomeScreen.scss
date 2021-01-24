@@ -2,25 +2,25 @@
 @import "~scss_path/fonts";
 @import "~scss_path/images";
 
-.homeScreenContainer{
+.homeScreenContainer {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	z-index: 5;
 }
-.homeScreenOverlap{
+.homeScreenOverlap {
 	width: 100%;
 	background-color: $white;
 	height: 30px;
 }
-.homeScreenMap{
+.homeScreenMap {
 	background-image: $map;
 	background-size: auto auto;
 	height: 500px;
-    left: 0;
-    right: 0;
+	left: 0;
+	right: 0;
 }
-.homeScreenQuote{
+.homeScreenQuote {
 	float: right;
 	padding-right: 5%;
 	padding-top: 3%;
@@ -30,7 +30,7 @@
 	color: $blue;
 	white-space: pre-line;
 }
-.homeScreenGroups{
+.homeScreenGroups {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
@@ -40,22 +40,22 @@
 	height: auto;
 	padding-top: 100px;
 	padding-bottom: 100px;
-    left: 0;
-    right: 0;
+	left: 0;
+	right: 0;
 }
-.homeScreenGroupsRectangle{
+.homeScreenGroupsRectangle {
 	width: 300px;
 	height: 410px;
 	background-color: $white;
 	position: relative;
 }
-.homeScreenGroupsBtn{
+.homeScreenGroupsBtn {
 	position: absolute;
 	bottom: 0;
 	padding-bottom: 15px;
 	padding-left: 15px;
 }
-.homeScreenGroupsHelp{
+.homeScreenGroupsHelp {
 	position: absolute;
 	font-size: 16px;
 	font-weight: $regular;
@@ -66,31 +66,31 @@
 	line-height: 20px;
 	//text-align: justify;
 }
-.homeScreenGroupsTitle{
+.homeScreenGroupsTitle {
 	padding-left: 15px;
 	padding-top: 15px;
 	font-size: 22px;
 	font-weight: $semi-bold;
 	color: $grayDark;
 }
-.homeScreenGroupsImg{
+.homeScreenGroupsImg {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 280px auto !important;
 	margin-right: 10px;
 	width: 100%;
 	height: 200px;
-	&--group{
+	&--group {
 		background-image: $groups_flat_people;
 	}
-	&--reports{
+	&--reports {
 		background-image: $reports_flat_people;
 	}
-	&--rides{
+	&--rides {
 		background-image: $rides_flat_people;
 	}
 }
-.homeScreenHelpContainer{
+.homeScreenHelpContainer {
 	// height: 100px;
 	margin-top: 20px;
 	display: flex;
@@ -98,40 +98,50 @@
 	padding-right: 20px;
 	padding-top: 15px;
 	padding-bottom: 15px;
-    left: 0;
+	left: 0;
 	right: 0;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	background-color: rgba($blue, 0.45);
+	&--subContainer {
+		display: flex;
+	}
 	&--text {
 		color: $grayDark;
-		font-size: 17px;
+		font-size: 16px;
 		font-weight: $medium;
-		padding-bottom: 15px;
+		padding-bottom: 16px;
+		margin-top: 16px;
 	}
 	&--button {
 		width: 300px !important;
-		font-size: 17px !important;
+		font-size: 16px !important;
+	}
+	&--closeButton {
+		width: max-content;
+		margin-left: 32px;
+		width: 32px;
+		height: 32px;
+		box-sizing: content-box;
 	}
 }
 
-
 @media only screen and (max-width: 900px) {
-	.homeScreenQuote{
+	.homeScreenQuote {
 		padding-top: 7%;
 		padding-right: 7%;
 		font-size: 50px;
 	}
-	.homeScreenOverlap{
+	.homeScreenOverlap {
 		height: 15px;
 	}
-	.homeScreenMap{
+	.homeScreenMap {
 		height: 280px;
 	}
-	.homeScreenGroups{
+	.homeScreenGroups {
 		gap: 50px;
 		padding-top: 50px;
 		padding-bottom: 50px;
 	}
-  }
+}

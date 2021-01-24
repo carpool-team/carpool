@@ -19,6 +19,7 @@ interface IAddressModalProps extends IReactI18nProps {
 	open: boolean;
 	onConfirm: (coords: ILocation) => void;
 	onCancel: () => void;
+	containerRef: Element;
 }
 
 const AddressModal = (props: IAddressModalProps) => {
@@ -60,6 +61,7 @@ const AddressModal = (props: IAddressModalProps) => {
 				vertical: "center",
 				horizontal: "center",
 			}}
+			anchorEl={props.containerRef}
 			transformOrigin={{
 				vertical: "center",
 				horizontal: "center",

@@ -17,12 +17,13 @@ namespace DataAccessLayer.Builders
 			builder.Property(x => x.Price).IsRequired();
 			builder.Property(x => x.RideDirection).IsRequired();
 			builder.Property(x => x.SeatsLimit).IsRequired();
+			builder.Property(x => x.IsSoftDeleted).IsRequired().HasDefaultValue(false);
 
 			builder.HasMany(x => x.Stops)
 			       .WithOne()
 			       .HasForeignKey(x => x.RideId)
 			       .OnDelete(DeleteBehavior.Cascade);
-			
+
 			builder.HasOne(x => x.Group)
 				.WithMany(x => x.Rides)
 				.HasForeignKey(x => x.GroupId)

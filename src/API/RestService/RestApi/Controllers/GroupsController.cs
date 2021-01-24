@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Application.Commands.GroupCommands;
+using Application.Commands.GroupCommands.AddGroup;
+using Application.Queries.GroupQueries;
 using AutoWrapper.Wrappers;
 using DataTransferObjects.Group;
 using IdentifiersShared.Identifiers;
@@ -6,10 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestApi.Commands.GroupCommands;
-using RestApi.Commands.GroupCommands.AddGroup;
 using RestApi.Extensions;
-using RestApi.Queries.GroupQueries;
 
 namespace RestApi.Controllers
 {
@@ -46,6 +47,21 @@ namespace RestApi.Controllers
             return new ApiResponse(response);
         }
 
+        [HttpGet("{groupId}/report")]
+        public async Task<ApiResponse> GetGroupReport([FromRoute] GroupId groupId,
+	        [FromQuery] DateTimeOffset startDate,
+	        [FromQuery] DateTimeOffset endDate)
+        {
+	        GetGroupReportQuery request = new(groupId,
+		        User.GetUserId(),
+		        startDate,
+		        endDate);
+
+	        var response = await _mediator.Send(request);
+	        
+	        return new ApiResponse(response);
+        }
+        
 		// PUT: api/Groups/5
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

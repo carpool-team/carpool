@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
@@ -24,19 +24,22 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 		activeDate: "ridesListActive--date",
 		activeSeats: "ridesListActive--seats",
 		activeCar: "ridesListActive--car",
-		activeStatus: "ridesListActive--status"
+		activeStatus: "ridesListActive--status",
+		activePickUp: "ridesListActive--pickUp",
 	};
 
 	const resources = {
 		accepted: "requests.accepted",
 		pending: "requests.pending",
 		declined: "requests.declined",
-		status: "requests.status"
-	}
+		status: "requests.status",
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+	};
 
 	const [loading, setLoading] = useState(null);
 	const [placeName, setPlaceName] = useState(null);
-	const [status, setStatus] = useState<string>(null)
+	const [pickUpName, setPickUpName] = useState(null);
+	const [status, setStatus] = useState<string>(null);
 
 	const onGetName = async (coords: [number, number]) => {
 		try {
@@ -51,9 +54,9 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 				.send();
 			const result = response.body.features[0];
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
-				setPlaceName(result.place_name);
+				return (result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				return (props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
@@ -64,15 +67,15 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 
 	const getStatus = () => {
 		if (props.request.isAccepted) {
-			setStatus(t(resources.accepted))
+			setStatus(t(resources.accepted));
 		} else {
 			if (props.request.isPending) {
-				setStatus(t(resources.pending))
+				setStatus(t(resources.pending));
 			} else {
-				setStatus(t(resources.declined))
+				setStatus(t(resources.declined));
 			}
 		}
-	}
+	};
 
 	const color = {
 		color: props.color
@@ -83,10 +86,11 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 	const backgroundColor = {
 		backgroundColor: props.color
 	};
+	useEffect(() => {
+		onGetName(parseCoords(props.request.ride.location)).then(value => setPlaceName(value));
+		onGetName(parseCoords(props.request.requestingUser.location)).then(value => setPickUpName(value));
+	}, [props.request]);
 
-	if (!placeName && !loading && placeName !== undefined) {
-		onGetName(parseCoords(props.request.ride.location));
-	}
 	let fromName: string;
 	let toName: string;
 
@@ -108,7 +112,7 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 		}
 	}
 	if (!status) {
-		getStatus()
+		getStatus();
 	}
 	return (
 		<li className={cssClasses.activeContainer} key={props.request.rideRequestId}>
@@ -131,6 +135,9 @@ const ActiveItemRequestParticipant = (props: IRequestsItemProps) => {
 				<div className={cssClasses.activeBottomRow}>
 					<div className={cssClasses.activeStatus}>
 						{t(resources.status) + status}
+					</div>
+					<div className={cssClasses.activePickUp}>
+						Punkt odbioru: {pickUpName}
 					</div>
 					<div className={cssClasses.activeDate}>
 						{convertDate(props.request.ride.date.toString())}

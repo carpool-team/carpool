@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Application.Commands.GroupInviteCommands;
+using Application.Queries.GroupInviteQueries;
 using AutoWrapper.Wrappers;
 using DataTransferObjects.GroupInvites;
 using IdentifiersShared.Identifiers;
@@ -6,9 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestApi.Commands.GroupInviteCommands;
 using RestApi.Extensions;
-using RestApi.Queries.GroupInviteQueries;
 
 namespace RestApi.Controllers
 {

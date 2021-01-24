@@ -44,6 +44,8 @@ namespace DataAccessLayer.Repositories
 			=> await _dbContext.Set<RideRequest>()
 				.Include(x => x.Ride)
 					.ThenInclude(a => a.Group)
+				.Include(x => x.Ride)
+					.ThenInclude(a => a.Stops)
 				.Include(x => x.RequestingUser)
 				.Include(x => x.RideOwner)
 				.Where(x => x.RequestingUserId == appUserId && x.Ride.Date >= DateTime.Now)
@@ -54,6 +56,8 @@ namespace DataAccessLayer.Repositories
 			=> await _dbContext.Set<RideRequest>()
 				.Include(x => x.Ride)
 					.ThenInclude(a => a.Group)
+				.Include(x => x.Ride)
+					.ThenInclude(a => a.Stops)
 				.Include(x => x.RequestingUser)
 				.Include(x => x.RideOwner)
 				.Where(x => x.IsPending && x.RideOwnerId == appUserId && x.Ride.Date >= DateTime.Now)
@@ -64,7 +68,9 @@ namespace DataAccessLayer.Repositories
 				.AddAsync(groupInvite, cancellationToken);
 
 		public void Delete(RideRequest rideRequest)
-			=> _dbContext.Set<RideRequest>()
-			             .Remove(rideRequest);
+			=> rideRequest.IsSoftDeleted = true;
+
+		// => _dbContext.Set<RideRequest>()
+		//              .Remove(rideRequest);
 	}
 }

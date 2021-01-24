@@ -3,11 +3,10 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import Button from "../../../../ui/button/Button";
-import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 import AddressModal from "../../../addressModal/AddressModal";
-
+import { getColor, getRideMatchLabel } from "../../../../../helpers/RidesHelper";
 const geocodingClient = getGeocodingClient();
 
 const ActiveItemJoin = (props: IListItemProps) => {
@@ -26,10 +25,16 @@ const ActiveItemJoin = (props: IListItemProps) => {
 		activeDate: "ridesListActive--date",
 		activeSeats: "ridesListActive--seats",
 		activeCar: "ridesListActive--car",
+		activeRideExt: "ridesListActive--rideExtension",
+		bar: "ridesList__matchBar ridesList__matchBar--active",
 	};
 
 	const resources = {
 		joinBtnLabel: "common.joinRide",
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+		driver: "rides.driverLabel",
+		seats: "rides.seatsLabel",
+		noSeatsInfo: "rides.noSeatsInfoLabel",
 	};
 
 	const [popover, setPopover] = useState(false);
@@ -51,7 +56,7 @@ const ActiveItemJoin = (props: IListItemProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
@@ -94,60 +99,86 @@ const ActiveItemJoin = (props: IListItemProps) => {
 		}
 	}
 
-	return (
-		<li className={cssClasses.activeContainer} key={props.ride.rideId}>
-			<div className={cssClasses.activeButtonContainer}>
-				<div className={cssClasses.mainRow} style={borderColor}>
-					<div className={cssClasses.icon} style={color}>
-						{" "}
-					</div>
-					<div className={cssClasses.address}>
-						<div className={cssClasses.fromLabel}>
-							{!loading &&
-								fromName
-							}
+	const hasExtension = (props.rideExtension ?? -1) > -1;
+
+	const filterKey = props.filterKey?.toLowerCase();
+	if (!filterKey || (filterKey && (toName.toLowerCase().includes(filterKey) || fromName.toLowerCase().includes(filterKey)))) {
+		return (
+			<li className={cssClasses.activeContainer} key={props.ride.rideId}>
+				<div className={cssClasses.activeButtonContainer}>
+					<div className={cssClasses.mainRow} style={borderColor}>
+						<div className={cssClasses.icon} style={color}>
+							{" "}
 						</div>
-						<div className={cssClasses.toLabel}>
-							{!loading &&
-								toName
-							}
+						<div className={cssClasses.address}>
+							<div className={cssClasses.fromLabel}>
+								{!loading &&
+									fromName
+								}
+							</div>
+							<div className={cssClasses.toLabel}>
+								{!loading &&
+									toName
+								}
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className={cssClasses.activeBottomRow}>
-					<div className={cssClasses.activeDate}>
-						{convertDate(props.ride.rideDate.toString())}
-					</div>
-					<div className={cssClasses.activeDriver}>
-						Kierowca: {props.ride.owner.firstName} {props.ride.owner.lastName}
-					</div>
-					{/* <div className={cssClasses.activeCar}>
+					<div className={cssClasses.activeBottomRow}>
+						<div className={cssClasses.activeDate}>
+							{convertDate(props.ride.rideDate.toString())}
+						</div>
+						<div className={cssClasses.activeDriver}>
+							{`${props.t(resources.driver)}${props.ride.owner.firstName} ${props.ride.owner.lastName}`}
+						</div>
+						{/* <div className={cssClasses.activeCar}>
 						{props.ride.owner.vehicle}
-					</div> */}
-					<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
-					{props.joinRideCallback ?
-						<>
-							<Button
-								style={backgroundColor}
-								onClick={() => setPopover(true)}
-								color={ButtonColor.White}
-								className={cssClasses.activeJoinButton}
-							>
-								{props.t(resources.joinBtnLabel)}
-							</Button>
-							<AddressModal
-								open={popover}
-								onCancel={() => setPopover(false)}
-								onConfirm={(coords) => {
-									setPopover(false);
-									props.joinRideCallback(props.ride, coords);
-								}}
-							/>
-						</> : null}
+						</div> */}
+						<div className={cssClasses.activeSeats}>
+							{props.ride.seatsLimit ? `${props.t(resources.seats)}${props.ride.stops?.length ?? 0}/${props.ride.seatsLimit}` : props.t(resources.noSeatsInfo)}
+						</div>
+						{hasExtension &&
+							<>
+								<div
+									className={cssClasses.activeRideExt}
+									style={{
+										color: getColor(props.rideExtension)
+									}}
+								>
+									{getRideMatchLabel(props.rideExtension)}
+								</div>
+								<div className={cssClasses.bar} style={{
+									width: props.rideExtension > 100 ? "100%" : props.rideExtension + "%",
+									background: getColor(props.rideExtension),
+								}} />
+							</>
+						}
+						{props.joinRideCallback ?
+							<>
+								<Button
+									style={backgroundColor}
+									onClick={() => setPopover(true)}
+									color={ButtonColor.White}
+									className={cssClasses.activeJoinButton}
+								>
+									{props.t(resources.joinBtnLabel)}
+								</Button>
+								<AddressModal
+									open={popover}
+									onCancel={() => setPopover(false)}
+									onConfirm={(coords) => {
+										setPopover(false);
+										props.joinRideCallback(props.ride, coords);
+									}}
+									containerRef={document.querySelector("main")}
+								/>
+							</> : null}
+					</div>
 				</div>
-			</div>
-		</li>
-	);
+			</li>
+		);
+	} else {
+		return null;
+	}
 };
 
 export default (ActiveItemJoin);

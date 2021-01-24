@@ -1,11 +1,12 @@
 ﻿using System;
 using Domain.Abstract;
+using Domain.Contracts;
 using Domain.ValueObjects;
 using IdentifiersShared.Identifiers;
 
 namespace Domain.Entities
 {
-	public class RideRequest : BaseEntity<RideRequestId>
+	public class RideRequest : BaseEntity<RideRequestId>, ISoftDeletable
 	{
 		public RideRequest(RideRequestId rideRequestId,
 			bool isAccepted,
@@ -48,5 +49,8 @@ namespace Domain.Entities
 		public DateTimeOffset DateAdded { get; set; }
 		
 		public Location Location { get; set; }
+		
+		
+		public bool IsSoftDeleted { get; set; }
 	}
 }

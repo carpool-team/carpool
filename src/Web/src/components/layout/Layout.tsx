@@ -46,7 +46,7 @@ const Layout: (props: ILayoutProps) => JSX.Element = props => {
 					active={props.loaderVisible}
 					height={mainHeight}
 				>
-					<LayoutRouter />
+					{props.authInitializing ? null : <LayoutRouter />}
 				</LoaderSplash>
 			</main>
 			<Footer />
