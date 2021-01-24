@@ -15,8 +15,9 @@ import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import SearchRideModal from "../searchRideModal/SearchRideModal";
 import { IRideFilters } from "../../../../groups/interfaces/IRideFilters";
 import { IRideExtended } from "../../../../groups/interfaces/IRideExtended";
-import { byDateAndExtension, sortRides } from "../../../../../helpers/RidesHelper";
+import { byDateAndExtension, byExtension, sortRides } from "../../../../../helpers/RidesHelper";
 import { useImmer } from "use-immer";
+import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 
 interface IDispatchPropsType {
 	getRidesAvailable: (groupId: string, filters?: IRideFilters) => IGetRidesAvailableAction;
@@ -57,7 +58,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 		if (props.rides) {
 			if (state.filters?.location) {
 				setState(draft => {
-					draft.rides = sortRides(props.rides, state.filters.location, byDateAndExtension);
+					draft.rides = sortRides(props.rides, state.filters.location, state.filters.date ? byDateAndExtension : byExtension);
 				});
 			} else {
 				setState(draft => {
@@ -197,6 +198,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 							background={ButtonBackground.Blue}
 							onClick={() => setState(draft => { draft.modalOpen = true; })}
 							additionalCssClass={cssClasses.filterButton}
+							color={ButtonColor.White}
 						>
 							{t(resources.buttonFilter)}
 						</Button>
