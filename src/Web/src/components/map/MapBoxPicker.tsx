@@ -5,7 +5,7 @@ import { Marker } from "react-mapbox-gl";
 import produce from "immer";
 import { parseCoords } from "../../helpers/UniversalHelper";
 import { ILocation } from "../groups/interfaces/ILocation";
-import { getDefaultBounds, mapboxKey, mapboxStyle } from "./MapBoxHelper";
+import { getDefaultBounds, getDefaultCenter, mapboxKey, mapboxStyle } from "./MapBoxHelper";
 import { FitBoundsOptions } from "mapbox-gl";
 
 const Mapbox = ReactMapboxGl({
@@ -15,9 +15,9 @@ const Mapbox = ReactMapboxGl({
 });
 
 export interface IMapState {
-	center?: ILocation;
+	center?: [number, number];
 	zoom?: [number];
-	fitBounds?: [[number, number], [number, number]];
+	showPopup: boolean
 }
 
 const flyToOptions = {
@@ -31,9 +31,9 @@ export interface IMapProps {
 }
 
 const defaults = {
-	zoom: undefined as [number],
-	center: undefined as ILocation,
-	fitBounds: getDefaultBounds(),
+	zoom: [12] as [number],
+	center: getDefaultCenter(),
+	showPopup: false
 };
 
 export default class MapBoxPicker extends React.Component<IMapProps, IMapState> {
@@ -41,8 +41,6 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 	constructor(props: IMapProps) {
 		super(props);
 		this.state = {
-			zoom: [11],
-			center: this.props.location,
 			...defaults,
 		};
 	}
@@ -52,29 +50,22 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 		return onStyleLoad && onStyleLoad(map);
 	}
 	componentDidMount() {
-		console.log(this.props.location)
-		// if (this.props.location) {
-		// 	if (this.props.location !== this.state.center) {
-		// 		this.setState(produce((draft: IMapState) => {
-		// 			draft.zoom = [14];
-		// 			draft.center = this.props.location;
-		// 		}));
-		// 	}
-		// }
+
 	}
 	componentDidUpdate() {
 		if (this.props.location) {
-			if (this.props.location !== this.state.center) {
+			if (parseCoords(this.props.location)[0] !== this.state.center[0] || parseCoords(this.props.location)[1] !== this.state.center[1]) {
 				this.setState(produce((draft: IMapState) => {
 					draft.zoom = [14];
-					draft.center = this.props.location;
+					draft.showPopup = true;
+					draft.center = parseCoords(this.props.location);
 				}));
 			}
 		}
 	}
 
 	public render() {
-		const { center, zoom, fitBounds } = this.state;
+		const { center, zoom, showPopup } = this.state;
 		const location = this.state.center;
 		const label = this.props.label;
 
@@ -93,36 +84,33 @@ export default class MapBoxPicker extends React.Component<IMapProps, IMapState> 
 			fontWeight: 400,
 			border: "2px",
 		};
-
-		const boundsOptions: FitBoundsOptions = {
-			padding: 100,
-		};
-
 		return (
 			<Mapbox
 				style={mapboxStyle}
 				onStyleLoad={this.onStyleLoad}
-				fitBounds={fitBounds}
-				fitBoundsOptions={boundsOptions}
-				center={parseCoords(center)}
+				center={center}
 				zoom={zoom}
 				containerStyle={containerStyle}
 				flyToOptions={flyToOptions}
 			>
-				{location && label &&
-					<Popup coordinates={parseCoords(location)}>
-						<div style={popupStyle}>
-							{label}
-						</div>
-					</Popup>
-				}
-				{location && !label &&
-					<Marker
-						coordinates={parseCoords(location)}
-						anchor="bottom"
-					>
-						<i className={"fa fa-map-marker"} style={markerStyle}></i>
-					</Marker>
+				{showPopup &&
+					<>
+						{location && label &&
+							<Popup coordinates={location}>
+								<div style={popupStyle}>
+									{label}
+								</div>
+							</Popup>
+						}
+						{location && !label &&
+							<Marker
+								coordinates={location}
+								anchor="bottom"
+							>
+								<i className={"fa fa-map-marker"} style={markerStyle}></i>
+							</Marker>
+						}
+					</>
 				}
 			</Mapbox>
 		);
