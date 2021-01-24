@@ -1,32 +1,29 @@
 name: Carpool Web CI/CD Azure
 
 on:
-  schedule:
-    - cron: '0 0-23 * * *'
   workflow_dispatch:
   push:
     branches:
       - development
     paths:
-      - 'src/Web/**'
-      - '.github/workflows/**'
+      - "src/Web/**"
+      - ".github/workflows/**"
 
 jobs:
   build_and_deploy_job:
-    
     if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    
+
     runs-on: ubuntu-latest
-    
+
     env:
       wd: ./src/Web
-    
+
     strategy:
       matrix:
         node-version: [12.x]
-    
+
     name: Build and Deploy Job
-    
+
     steps:
       - uses: actions/checkout@v2
         with:
