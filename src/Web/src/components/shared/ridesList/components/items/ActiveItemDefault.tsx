@@ -5,6 +5,7 @@ import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 import Button from "../../../../ui/buttonSmall/ButtonSmall";
 import AddressModal from "../../../addressModal/AddressModal";
+import RideExtension from "../RideExtension";
 
 const geocodingClient = getGeocodingClient();
 
@@ -121,6 +122,7 @@ const ActiveItemDefault = (props: IListItemProps) => {
 						</div>
 						<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
 					</div>
+					{props.rideExtension && "Wydłużenie przejazdu: " + props.rideExtension}
 				</div>
 			</li>
 		);

@@ -3,6 +3,7 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
+import RideExtension from "./RideExtension";
 
 const geocodingClient = getGeocodingClient();
 
@@ -107,6 +108,7 @@ const DefaultItem = (props: IListItemProps) => {
 							{convertDate(props.ride.rideDate.toString())}
 						</div>
 					</div>
+					{props.rideExtension && "Wydłużenie przejazdu: " + props.rideExtension}
 				</button>
 			</li>
 		);

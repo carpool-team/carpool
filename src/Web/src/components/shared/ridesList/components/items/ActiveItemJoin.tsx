@@ -3,10 +3,10 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import Button from "../../../../ui/button/Button";
-import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 import AddressModal from "../../../addressModal/AddressModal";
+import RideExtension from "./RideExtension";
 
 const geocodingClient = getGeocodingClient();
 
@@ -125,7 +125,8 @@ const ActiveItemJoin = (props: IListItemProps) => {
 						</div>
 						{/* <div className={cssClasses.activeCar}>
 						{props.ride.owner.vehicle}
-					</div> */}
+						</div> */}
+						{props.rideExtension && "Wydłużenie przejazdu: " + props.rideExtension}
 						<div className={cssClasses.activeSeats}>Wolne miejsca: {props.ride.seatsLimit}</div>
 						{props.joinRideCallback ?
 							<>

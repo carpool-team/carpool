@@ -11,11 +11,13 @@ import SearchBar from "../../../../ui/searchBar/SearchBar";
 import { IGetRidesAvailableAction } from "../../../../groups/store/Types";
 import { getRidesAvailable } from "../../../../groups/store/Actions";
 import { connect } from "react-redux";
-import { RideDirection } from "../../../../groups/api/addRide/AddRideRequest";
 import Button from "../../../../ui/button/Button";
 import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
 import SearchRideModal from "../searchRideModal/SearchRideModal";
 import { IRideFilters } from "../../../../groups/interfaces/IRideFilters";
+import { IRideExtended } from "../../../../groups/interfaces/IRideExtended";
+import { getExtension, sortRides } from "../../../../../helpers/RidesHelper";
+import { useImmer } from "use-immer";
 
 interface IDispatchPropsType {
 	getRidesAvailable: (groupId: string, filters?: IRideFilters) => IGetRidesAvailableAction;
@@ -31,13 +33,51 @@ interface IRidesListDefaultProps extends IRidesListProps, DispatchProps {
 	selectedGroupId: string;
 }
 
+interface IRidesListDefaultState {
+	modalOpen: boolean;
+	filters: IRideFilters;
+	rides: IRideExtended[];
+	rideSelected: IRideExtended;
+	useExtensions: boolean;
+}
+
 const RidesListDefault = (props: IRidesListDefaultProps) => {
-	const [modalOpen, setModalOpen] = useState(false);
-	const [filters, setFilters] = useState<IRideFilters>(null);
+	const [state, setState] = useImmer<IRidesListDefaultState>({
+		modalOpen: false,
+		filters: null,
+		rides: null,
+		rideSelected: null,
+		useExtensions: false,
+	});
 
 	useEffect(() => {
-		props.getRidesAvailable(props.selectedGroupId, filters);
-	}, [filters]);
+		props.getRidesAvailable(props.selectedGroupId, state.filters);
+	}, [state.filters]);
+
+	useEffect(() => {
+		if (state.filters?.location) {
+			setState(draft => {
+				draft.rides = sortRides(props.rides, state.filters.location, (a, b) => a.extension - b.extension);
+			});
+		} else {
+			setState(draft => {
+				draft.rides = props.rides.map(r => ({ ...r, extension: -1 }));
+			});
+		}
+	}, [props.rides]);
+
+	useEffect(() => {
+		setState(draft => {
+			draft.rideSelected = {
+				...props.rideSelected,
+				extension: draft.rides.find(r => r.rideId === props.rideSelected.rideId)?.extension ?? -1,
+			};
+		});
+	}, [props.rideSelected]);
+
+	useEffect(() => {
+
+	}, [props.rideSelected]);
 
 	const cssClasses = {
 		list: "ridesList",
@@ -57,17 +97,18 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 	const { t } = props;
 	const [searchKey, setSearchKey] = useState(null);
 
-	const renderJoinItem = (color: string, ride: IRide) => {
-		if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
+	const renderJoinItem = (color: string, ride: IRideExtended) => {
+		if (state.rideSelected?.rideId === ride.rideId) {
 			return (
 				<React.Fragment key={ride.rideId}>
 					<ActiveItemJoin
-						joinRideCallback={(ride, location) => props.joinRideCallback(ride, location, filters)}
+						joinRideCallback={(ride, location) => props.joinRideCallback(ride, location, state.filters)}
 						ride={ride}
 						color={color}
 						t={t}
 						setRide={props.setRide}
 						filterKey={searchKey}
+						rideExtension={ride.extension > -1 ? ride.extension : null}
 					/>
 				</React.Fragment>
 			);
@@ -80,14 +121,15 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 						t={t}
 						setRide={props.setRide}
 						filterKey={searchKey}
+						rideExtension={ride.extension > -1 ? ride.extension : null}
 					/>
 				</React.Fragment>
 			);
 		}
 	};
 
-	const renderDefaultItem = (color: string, ride: IRide) => {
-		if (props.rideSelected && props.rideSelected.rideId === ride.rideId) {
+	const renderDefaultItem = (color: string, ride: IRideExtended) => {
+		if (state.rideSelected?.rideId === ride.rideId) {
 			return (
 				<React.Fragment key={ride.rideId}>
 					<ActiveItemDefault
@@ -97,6 +139,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 						setRide={props.setRide}
 						joinRideCallback={props.joinRideCallback}
 						filterKey={searchKey}
+						rideExtension={ride.extension > -1 ? ride.extension : null}
 					/>
 				</React.Fragment>
 			);
@@ -109,13 +152,14 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 						t={t}
 						setRide={props.setRide}
 						filterKey={searchKey}
+						rideExtension={ride.extension > -1 ? ride.extension : null}
 					/>
 				</React.Fragment>
 			);
 		}
 	};
 
-	const renderItem = (color: string, ride: IRide) => {
+	const renderItem = (color: string, ride: IRideExtended) => {
 		let item: JSX.Element = null;
 		switch (props.listType) {
 			case RidesListType.Join: {
@@ -133,13 +177,12 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 	};
 
 	const renderItems = () => {
-		if (props.rides) {
+		if (state.rides) {
 			let colorIndex: number = 0;
-			let rides: IRide[] = [...props.rides];
-			return rides.map((ride) => {
+			return state.rides.map((r) => {
 				++colorIndex;
 				const color = colorList[colorIndex % colorList.length];
-				return renderItem(color, ride);
+				return renderItem(color, r);
 			});
 		} else {
 			return null;
@@ -153,28 +196,26 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 					<div className={cssClasses.filterButtons}>
 						<Button
 							background={ButtonBackground.Blue}
-							onClick={() => setModalOpen(true)}
+							onClick={() => setState(draft => { draft.modalOpen = true; })}
 							additionalCssClass={cssClasses.filterButton}
 						>
 							{t(resources.buttonFilter)}
 						</Button>
 						<Button
 							background={ButtonBackground.Gray}
-							onClick={() => setFilters(null)}
+							onClick={() => setState(draft => { draft.filters = null; })}
 							additionalCssClass={cssClasses.filterButton}
 						>
 							{t(resources.buttonClearFilters)}
 						</Button>
 					</div>
 					<SearchRideModal
-						open={modalOpen}
-						onConfirm={newFilters => {
-							setModalOpen(false);
-							setFilters(newFilters);
-						}}
-						onCancel={() => {
-							setModalOpen(false);
-						}}
+						open={state.modalOpen}
+						onConfirm={newFilters => setState(draft => {
+							draft.filters = newFilters;
+							draft.modalOpen = false;
+						})}
+						onCancel={() => setState(draft => { draft.modalOpen = false; })}
 					/>
 				</>
 			);

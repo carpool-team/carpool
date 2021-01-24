@@ -5,6 +5,7 @@ import { IRideFilters } from "../../../groups/interfaces/IRideFilters";
 
 export default interface IRidesItemProps {
 	ride: IRide;
+	rideExtension?: number;
 	color: string;
 	t: TFunction;
 	setRide: (ride: IRide) => void;

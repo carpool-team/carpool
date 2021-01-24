@@ -59,7 +59,7 @@ export const getExtension = (ride: IRide, location: ILocation) => {
  */
 export const sortRides = (data: IRide[], location: ILocation, compareFunction: (a: IRideExtended, b: IRideExtended) => number) => {
 	try {
-		let extended: IRideExtended[] = [];
+		const extended: IRideExtended[] = [];
 		// Get extension for every ride from the list
 		data.forEach(item => {
 			const extension = getExtension(item, location);
@@ -71,11 +71,14 @@ export const sortRides = (data: IRide[], location: ILocation, compareFunction: (
 		});
 
 		// Sort rides using provided compare function
-		const sorted = [...extended].sort(compareFunction);
+		const sorted = extended.sort(compareFunction);
 
 		return sorted;
 	} catch (err) {
-		return [...data];
+		return data.map(d => ({
+			...d,
+			extension: -1,
+		}));
 	}
 };
 
