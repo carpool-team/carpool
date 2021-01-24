@@ -77,6 +77,7 @@
         "@material-ui/lab": "^4.0.0-alpha.57",
         "@material-ui/pickers": "^3.2.10",
         "@turf/bbox": "^6.0.1",
+        "@turf/length": "^6.3.0",
         "@turf/nearest": "^4.7.3",
         "date-fns": "^2.16.1",
         "emailjs": "^3.4.0",
