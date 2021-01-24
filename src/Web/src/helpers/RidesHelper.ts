@@ -130,7 +130,7 @@ export const getRideMatchLabel = (matching: number) => {
 
 export const getColor = (extension: number) => {
 	if (extension < 15) {
-		return "#1dd1a1";//#10ac84
+		return "#1dd1a1";
 	}
 	if (extension < 30) {
 		return "#00d2d3";

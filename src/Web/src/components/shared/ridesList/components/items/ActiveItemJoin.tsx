@@ -146,7 +146,7 @@ const ActiveItemJoin = (props: IListItemProps) => {
 									{getRideMatchLabel(props.rideExtension)}
 								</div>
 								<div className={cssClasses.bar} style={{
-									width: props.rideExtension > 100 ? "100%" : 100 - props.rideExtension + "%",
+									width: props.rideExtension > 100 ? "100%" : props.rideExtension + "%",
 									background: getColor(props.rideExtension),
 								}} />
 							</>
