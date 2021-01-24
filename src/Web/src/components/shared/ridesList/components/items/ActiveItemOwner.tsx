@@ -42,6 +42,12 @@ const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 		noParticipants: "ridesListActive--participantContainer--noParticipants"
 	};
 
+	const resources = {
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+		noParticipants: "rides.noParticipants",
+		participantsLabel: "rides.participantsLabel",
+	};
+
 	const [loading, setLoading] = useState(null);
 	const [placeName, setPlaceName] = useState(null);
 	const onGetName = async (coords: [number, number]) => {
@@ -59,17 +65,13 @@ const ActiveItemOwner = (props: IActiveItemOwnerProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
 		} finally {
 			setLoading(false);
 		}
-	};
-	const resources = {
-		noParticipants: "rides.noParticipants",
-		participantsLabel: "rides.participantsLabel"
 	};
 
 	const color = {

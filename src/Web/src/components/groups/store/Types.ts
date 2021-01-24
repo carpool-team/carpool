@@ -1,5 +1,6 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { RideDirection } from "../api/addRide/AddRideRequest";
 import { IEditGroupFormData } from "../components/edit/interfaces/IEditGroupFormData";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroup } from "../interfaces/IGroup";
@@ -8,6 +9,7 @@ import { IInvite } from "../interfaces/IInvite";
 import { ILocation } from "../interfaces/ILocation";
 import { IReport } from "../interfaces/IReport";
 import { IRide } from "../interfaces/IRide";
+import { IRideFilters } from "../interfaces/IRideFilters";
 
 export enum GenericActionTypes {
 	ApiError = "GROUPS_STORE_API_ERROR",
@@ -266,6 +268,7 @@ export interface IAddInvitesAction extends Action<InvitesActionTypes.AddInvites>
 export interface IGetRidesAction extends Action<RidesActionTypes.GetRides> {
 	refreshRidesAvailable?: boolean;
 	groupId?: string;
+	filters?: IRideFilters;
 }
 
 /** Action for getting rides success */
@@ -284,6 +287,7 @@ export interface IGetRidesActionError extends Action<RidesActionTypes.GetRidesEr
 /** Action for getting available rides success */
 export interface IGetRidesAvailableAction extends Action<RidesActionTypes.GetRidesAvailable> {
 	groupId: string;
+	filters?: IRideFilters;
 }
 
 /** Action for getting available rides success */
@@ -300,6 +304,7 @@ export interface IGetRidesAvailableActionError extends Action<RidesActionTypes.G
 export interface IParticipateInRideAction extends Action<RidesActionTypes.ParticipateInRide> {
 	ride: IRide;
 	location: ILocation;
+	filters?: IRideFilters;
 }
 
 /** Action for participating in ride success */

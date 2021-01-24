@@ -2,9 +2,13 @@ import React from "react";
 import { Redirect, Route } from "react-router";
 import App from "../../App";
 
-const FallbackRoute = () => (
+interface IFallbackRouteProps {
+	to?: string;
+}
+
+const FallbackRoute = (props: IFallbackRouteProps) => (
 	<Route>
-		<Redirect to={App.rootRoute} />
+		<Redirect to={props.to ?? App.rootRoute} />
 	</Route>
 );
 

@@ -1,10 +1,10 @@
 @import "~scss_path/colors";
 @import "~scss_path/fonts";
 
-.day{
+.day {
 	width: 100%;
 	margin-top: 7px;
-	&__label{
+	&__label {
 		padding-top: 3px;
 		padding-left: 10px;
 		padding-bottom: 3px;
@@ -15,17 +15,18 @@
 		text-align: center;
 	}
 }
-.ridesListContainer{
+
+.ridesListContainer {
 	list-style-type: none;
 	padding-left: 0;
-    display: flex;
+	display: flex;
 	flex-direction: column;
 	width: auto;
 	background-color: $background;
-	&__days{
+	&__days {
 		height: inherit;
 		list-style-type: none;
-		flex: 0 0 auto;	
+		flex: 0 0 auto;
 		padding-left: 0;
 		display: flex;
 		flex-direction: column;
@@ -33,10 +34,10 @@
 		margin-bottom: 0;
 		width: auto;
 		background-color: $background;
-		overflow:hidden; 
-		overflow-y:scroll;
+		overflow: hidden;
+		overflow-y: scroll;
 		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none;  /* IE 10+ */
+		-ms-overflow-style: none; /* IE 10+ */
 		&::-webkit-scrollbar {
 			width: 0px;
 			background: transparent; /* Chrome/Safari/Webkit */
@@ -46,45 +47,77 @@
 		display: flex;
 		flex-direction: row;
 		margin-bottom: 7px;
-	  }
-	  & > li:first-child {
+	}
+	& > li:first-child {
 		margin-top: 10px;
-	  }
-	  & > li:nth-child(n){
-		  background: $white;
-		  color: $grayDark;
-	  }
+	}
+	& > li:nth-child(n) {
+		background: $white;
+		color: $grayDark;
+	}
 }
 
 .ridesList {
 	list-style-type: none;
 	padding-left: 0;
-    display: flex;
+	display: flex;
 	flex-direction: column;
 	width: auto;
 	background-color: $background;
-	overflow:hidden; 
+	overflow: hidden;
 	height: inherit;
-	overflow-y:scroll;
+	overflow-y: scroll;
 	scrollbar-width: none; /* Firefox */
-	-ms-overflow-style: none;  /* IE 10+ */
+	-ms-overflow-style: none; /* IE 10+ */
+	&__datePicker {
+		width: 100%;
+		background-color: $white;
+		margin-top: 0px !important;
+		margin-bottom: 15px !important;
+	}
+	&__inputs {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+	&__filterButtons {
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		margin-bottom: 15px;
+	}
+	&__filterButton {
+		width: max-content;
+		margin: 0 10px 0 10px;
+		min-width: 160px;
+	}
+	&__matchBar {
+		height: 16px;
+		border-top-right-radius: 8px;
+		border-bottom-right-radius: 8px;
+		margin-bottom: 8px;
+		&--active {
+			margin-bottom: 16px;
+		}
+	}
 	&::-webkit-scrollbar {
 		width: 0px;
 		background: transparent; /* Chrome/Safari/Webkit */
 	}
-    & > li {
-      display: flex;
-	  flex-direction: row;
-	  margin-bottom: 7px;
-    }
-    & > li:first-child {
-      margin-top: 10px;
+	& > li {
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 7px;
 	}
-	& > li:nth-child(n){
+	& > li:first-child {
+		margin-top: 10px;
+	}
+	& > li:nth-child(n) {
 		background: $white;
 		color: $grayDark;
 	}
-	&--button{
+	&--button {
 		border: none;
 		width: 100%;
 		background-color: inherit;
@@ -94,20 +127,20 @@
 		flex-direction: column;
 		justify-content: left;
 	}
-	&--button:focus{
+	&--button:focus {
 		outline: none;
 	}
-	&--button:hover{
+	&--button:hover {
 		background-color: $backgroundOnHover;
 	}
-	&--mainRow{
+	&--mainRow {
 		width: 100%;
 		display: flex;
 		flex-direction: row;
 		border-bottom: 3px solid;
 		padding-bottom: 9px;
-		
-		&__address{
+
+		&__address {
 			font-size: 16px;
 			font-weight: $medium;
 			color: $grayDark;
@@ -119,61 +152,60 @@
 			align-items: center;
 			width: 80%;
 		}
-		&__icon{
+		&__icon {
 			padding-top: 10px;
 			padding-left: 10px;
 		}
-		&__icon::after{
+		&__icon::after {
 			align-items: center;
 			font-family: FontAwesome;
 			font-size: 30px;
-			content:"\f124";
+			content: "\f124";
 		}
-		&__seats{
+		&__seats {
 			margin-left: auto;
 			padding-right: 10px;
 			padding-top: 10px;
 			font-weight: $medium;
 			font-size: 15px;
 		}
-		&__seats::before{
+		&__seats::before {
 			font-family: FontAwesome;
 			font-size: 15px;
 			padding-right: 5px;
-			content:"\f007";
+			content: "\f007";
 		}
-		&__to{
+		&__to {
 			padding-right: 10px;
 			padding-top: 10px;
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
 		}
-		&__to::before{
+		&__to::before {
 			align-items: center;
 			font-weight: 200;
 			font-family: FontAwesome;
 			font-size: 15px;
 			padding-right: 7px;
-			content:"\f061";
+			content: "\f061";
 		}
-		&__from{
+		&__from {
 			padding-top: 10px;
 			padding-right: 10px;
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
-			;
 		}
-		&__from:before{
+		&__from:before {
 			align-items: center;
 			font-family: FontAwesome;
 			font-size: 17px;
 			padding-right: 9px;
-			content:"\f041";
+			content: "\f041";
 		}
 	}
-	&--bottomRow{
+	&--bottomRow {
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-start;
@@ -181,21 +213,35 @@
 		padding-top: 10px;
 		margin-left: 40px;
 		padding-bottom: 10px;
-		&__driver{
+		&__driver {
 			font-size: 15px;
 			font-weight: $medium;
 			color: $grayDark;
 			text-decoration: none;
 			margin-left: 10px;
 		}
-		&__driver::before{
+		&__driver::before {
 			align-items: center;
 			font-family: FontAwesome;
 			font-size: 15px;
 			padding-right: 7px;
-			content:"\f073";
+			content: "\f073";
 		}
-		&__status{
+		&__rideExtension {
+			font-size: 15px;
+			font-weight: $medium;
+			color: $grayDark;
+			text-decoration: none;
+			margin-left: 10px;
+		}
+		&__rideExtension::before {
+			align-items: center;
+			font-family: FontAwesome;
+			font-size: 15px;
+			padding-right: 7px;
+			content: "\f140";
+		}
+		&__status {
 			font-size: 15px;
 			font-weight: $medium;
 			color: $grayDark;
@@ -205,8 +251,8 @@
 	}
 }
 
-.ridesListActive{
-	&--button{
+.ridesListActive {
+	&--button {
 		border: none;
 		width: 100%;
 		background-color: inherit;
@@ -217,14 +263,14 @@
 		justify-content: left;
 		padding-bottom: 7px;
 	}
-	&--bottomRow{
+	&--bottomRow {
 		display: flex;
 		flex-direction: column;
 		gap: 5px;
 		padding-top: 20px;
 		padding-bottom: 5px;
 	}
-	&--date{
+	&--date {
 		font-size: 15px;
 		font-weight: $medium;
 		color: $grayDark;
@@ -232,14 +278,14 @@
 		margin-left: 50px;
 		padding-bottom: 5px;
 	}
-	&--date::before{
+	&--date::before {
 		align-items: center;
 		font-family: FontAwesome;
 		font-size: 15px;
 		padding-right: 7px;
-		content:"\f073";
+		content: "\f073";
 	}
-	&--driver{
+	&--driver {
 		font-size: 15px;
 		font-weight: $medium;
 		color: $grayDark;
@@ -247,14 +293,14 @@
 		margin-left: 50px;
 		padding-bottom: 10px;
 	}
-	&--driver::before{
+	&--driver::before {
 		align-items: center;
 		font-family: FontAwesome;
 		font-size: 15px;
 		padding-right: 7px;
-		content:"\f10c";
+		content: "\f10c";
 	}
-	&--car{
+	&--car {
 		font-size: 15px;
 		font-weight: $medium;
 		color: $grayDark;
@@ -262,14 +308,14 @@
 		margin-left: 50px;
 		padding-bottom: 10px;
 	}
-	&--car::before{
+	&--car::before {
 		align-items: center;
 		font-family: FontAwesome;
 		font-size: 15px;
 		padding-right: 7px;
-		content:"\f1b9";
+		content: "\f1b9";
 	}
-	&--seats{
+	&--seats {
 		font-size: 15px;
 		font-weight: $medium;
 		color: $grayDark;
@@ -277,23 +323,38 @@
 		margin-left: 50px;
 		padding-bottom: 10px;
 	}
-	&--seats::before{
+	&--seats::before {
 		align-items: center;
 		font-family: FontAwesome;
 		font-size: 15px;
 		padding-right: 7px;
-		content:"\f0c0";;
+		content: "\f0c0";
 	}
-	&--joinButton{
+	&--rideExtension {
+		font-size: 15px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-decoration: none;
+		margin-left: 50px;
+		padding-bottom: 10px;
+	}
+	&--rideExtension::before {
+		align-items: center;
+		font-family: FontAwesome;
+		font-size: 15px;
+		padding-right: 7px;
+		content: "\f140";
+	}
+	&--joinButton {
 		margin-left: auto;
 		margin-right: auto;
 	}
-	&--buttonsContainer{
+	&--buttonsContainer {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 	}
-	&--status{
+	&--status {
 		font-size: 17px;
 		font-weight: $semi-bold;
 		color: $grayDark;
@@ -313,7 +374,7 @@
 		overflow: hidden;
 		margin-right: 40px;
 	}
-	&--participantLabel{
+	&--participantLabel {
 		font-size: 17px;
 		font-weight: $semi-bold;
 		color: $grayDark;
@@ -321,7 +382,7 @@
 		margin-left: 20px;
 		padding-bottom: 2px;
 	}
-	&--participantContainer{
+	&--participantContainer {
 		background-color: $background;
 		margin-left: 7px;
 		border-radius: 10px;
@@ -330,16 +391,13 @@
 		justify-content: space-between;
 		height: 40px;
 		margin-bottom: 7px;
-		&--name{
+		&--name {
 			margin-left: 10px;
 			font-size: 17px;
 			font-weight: $medium;
 			color: $grayDark;
 		}
-		&--button{
-
-		}
-		&--noParticipants{
+		&--noParticipants {
 			margin-left: 60px;
 			font-size: 15px;
 			font-weight: $medium;

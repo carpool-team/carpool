@@ -3,7 +3,6 @@ import { useState } from "react";
 import { InputType } from "../../input/enums/InputType";
 import { InputIcon } from "../../input/enums/InputIcon";
 import Input from "../../input/Input";
-import PasswordStrengthBar from "react-password-strength-bar";
 import i18n from "../../../../i18n";
 import { useImmer } from "use-immer";
 

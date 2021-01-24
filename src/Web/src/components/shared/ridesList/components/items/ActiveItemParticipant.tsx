@@ -32,6 +32,10 @@ const ActiveItemParticipant = (props: IActiveItemParticipantProps) => {
 		activeCar: "ridesListActive--car",
 	};
 
+	const resources = {
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+	};
+
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
 	const onGetName = async (coords: [number, number]) => {
@@ -49,7 +53,7 @@ const ActiveItemParticipant = (props: IActiveItemParticipantProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);

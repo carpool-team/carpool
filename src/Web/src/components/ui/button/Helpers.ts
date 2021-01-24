@@ -42,8 +42,10 @@ export const getBackgroundClass: (type?: ButtonBackground) => string = (backgrou
 export const getIconClass: (type?: ButtonIcon) => string = (icon) => {
 	switch (icon) {
 		case ButtonIcon.User:
-			return "button__icon--user";
+			return "button__icon button__icon--user";
+		case ButtonIcon.Close:
+			return "button__icon button__icon--close";
 		default:
-			return "button__icon--none";
+			return "";
 	}
 };

@@ -24,24 +24,25 @@ const DefaultItemRequestParticipant = (props: IRequestsItemProps) => {
 		accepted: "requests.accepted",
 		pending: "requests.pending",
 		declined: "requests.declined",
-		status: "requests.status"
-	}
+		status: "requests.status",
+		placeNameGetErrorLabel: "common.label.placeNameGetError",
+	};
 
 	const [loading, setLoading] = useState<boolean>(null);
 	const [placeName, setPlaceName] = useState<string>(null);
-	const [status, setStatus] = useState<string>(null)
+	const [status, setStatus] = useState<string>(null);
 
 	const getStatus = () => {
 		if (props.request.isAccepted) {
-			setStatus(t(resources.accepted))
+			setStatus(t(resources.accepted));
 		} else {
 			if (props.request.isPending) {
-				setStatus(t(resources.pending))
+				setStatus(t(resources.pending));
 			} else {
-				setStatus(t(resources.declined))
+				setStatus(t(resources.declined));
 			}
 		}
-	}
+	};
 
 	const onGetName = async (coords: [number, number]) => {
 		try {
@@ -58,7 +59,7 @@ const DefaultItemRequestParticipant = (props: IRequestsItemProps) => {
 			if (result !== undefined && result.hasOwnProperty("place_name")) {
 				setPlaceName(result.place_name);
 			} else {
-				setPlaceName(" Błąd pobrania nazwy lokalizacji ");
+				setPlaceName(props.t(resources.placeNameGetErrorLabel));
 			}
 		} catch (err) {
 			console.log(err);
@@ -75,7 +76,7 @@ const DefaultItemRequestParticipant = (props: IRequestsItemProps) => {
 	};
 
 	if (!status) {
-		getStatus()
+		getStatus();
 	}
 
 	if (!placeName && !loading && placeName !== undefined) {

@@ -79,11 +79,15 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 								/>
 							</Route>
 							<Route exact path={path + GroupsRouter.routes.rides}>
-								<GroupRides group={this.props.selectedGroup} rides={ridesAvailable} joinRideCallback={this.props.callbacks.participateInRide} />
+								<GroupRides
+									group={this.props.selectedGroup}
+									rides={ridesAvailable}
+									joinRideCallback={this.props.callbacks.participateInRide}
+								/>
 							</Route>
 						</>
 					) : null}
-					<FallbackRoute />
+					<FallbackRoute to={path} />
 				</Switch>
 			</Suspense>
 		);

@@ -6,6 +6,7 @@ import { InputIcon } from "../input/enums/InputIcon";
 interface ISearchBarProps {
 	keyword: string;
 	setKeyword: (keyword: string) => void;
+	placeholder: string;
 }
 
 const SearchBar = (props: ISearchBarProps) => {
@@ -19,7 +20,7 @@ const SearchBar = (props: ISearchBarProps) => {
 		<Input
 			cssProps={BarStyling}
 			value={props.keyword}
-			placeholder={"Search rides"}
+			placeholder={props.placeholder}
 			type={InputType.Text}
 			changeHandler={(nv) => {
 				props.setKeyword(nv);

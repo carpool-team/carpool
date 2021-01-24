@@ -20,6 +20,8 @@ import { IAuthState } from "../../auth/store/State";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
 import { ILocation } from "../interfaces/ILocation";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
+import { RideDirection } from "../api/addRide/AddRideRequest";
+import { IRideFilters } from "../interfaces/IRideFilters";
 interface IStatePropsType {
 	groups: IGroupsState;
 	auth: IAuthState;
@@ -54,9 +56,9 @@ interface IDispatchPropsType {
 	getGroups: () => IGetGroupsAction;
 	getInvites: (userOnly: boolean) => IGetInvitesAction;
 	answerInvite: (accepted: boolean, inviteId: string) => IAnswerInviteAction;
-	getRides: (userOnly: boolean) => IGetRidesAction;
-	participateInRide: (ride: IRide, location: ILocation) => IParticipateInRideAction;
-	getRidesAvailable: (groupId: string) => IGetRidesAvailableAction;
+	getRides: (refreshRidesAvailable?: boolean, groupId?: string, filters?: IRideFilters) => IGetRidesAction;
+	participateInRide: (ride: IRide, location: ILocation, filters?: IRideFilters) => IParticipateInRideAction;
+	getRidesAvailable: (groupId: string, filters?: IRideFilters) => IGetRidesAvailableAction;
 	setSelectedGroup: (group: IGroup) => ISetSelectedGroupAction;
 	getGroupUsers: (groupId: string) => IGetGroupUsersAction;
 }

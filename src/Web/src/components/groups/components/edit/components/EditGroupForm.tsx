@@ -247,6 +247,7 @@ const EditGroup: (props: IEditGroupProps) => JSX.Element = props => {
 							vertical: "center",
 							horizontal: "center",
 						}}
+						anchorEl={document.querySelector("main")}
 						transformOrigin={{
 							vertical: "center",
 							horizontal: "center",

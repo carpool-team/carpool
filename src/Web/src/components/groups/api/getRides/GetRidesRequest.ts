@@ -10,6 +10,7 @@ export class GetRidesRequest extends RequestCore {
 		participated?: boolean;
 		past?: boolean;
 		groupId?: string;
+		dateTime?: string;
 	}) {
 		if (init.groupId) {
 			super({
@@ -17,7 +18,8 @@ export class GetRidesRequest extends RequestCore {
 					method: RequestType.Get,
 					endpoint: RequestEndpoint.GET_RIDES_BY_GROUP_ID,
 					queries: {
-						groupId: init.groupId
+						groupId: init.groupId,
+						dateTime: init.dateTime,
 					},
 				}
 			});

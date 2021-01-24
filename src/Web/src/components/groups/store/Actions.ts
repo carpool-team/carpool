@@ -28,6 +28,8 @@ import { ILocation } from "../interfaces/ILocation";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { IGroup } from "../interfaces/IGroup";
 import { IEditGroupFormData } from "../components/edit/interfaces/IEditGroupFormData";
+import { RideDirection } from "../api/addRide/AddRideRequest";
+import { IRideFilters } from "../interfaces/IRideFilters";
 
 //#region GROUPS
 export function addGroup(group: IAddGroupData): IAddGroupAction {
@@ -115,16 +117,20 @@ export function addInvites(groupId: string, userIds: string[]): IAddInvitesActio
 //#endregion
 
 //#region RIDES
-export function getRides(): IGetRidesAction {
+export function getRides(refreshRidesAvailable?: boolean, groupId?: string, filters?: IRideFilters): IGetRidesAction {
 	return {
 		type: RidesActionTypes.GetRides,
+		refreshRidesAvailable,
+		groupId,
+		filters,
 	};
 }
 
-export function getRidesAvailable(groupId: string): IGetRidesAvailableAction {
+export function getRidesAvailable(groupId: string, filters?: IRideFilters): IGetRidesAvailableAction {
 	return {
 		type: RidesActionTypes.GetRidesAvailable,
 		groupId,
+		filters,
 	};
 }
 
@@ -142,11 +148,12 @@ export function getRidesAvailableError(error: Error): IGetRidesAvailableActionEr
 	};
 }
 
-export function participateInRide(ride: IRide, location: ILocation): IParticipateInRideAction {
+export function participateInRide(ride: IRide, location: ILocation, filters?: IRideFilters): IParticipateInRideAction {
 	return {
 		type: RidesActionTypes.ParticipateInRide,
 		ride,
 		location,
+		filters,
 	};
 }
 

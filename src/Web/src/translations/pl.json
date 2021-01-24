@@ -1,138 +1,130 @@
 {
     "defaultNamespace": {
+        "addBtn": "Dodaj",
+        "addressModal": {
+            "cancelBtn": "Anuluj",
+            "confirmBtn": "Zatwierdź",
+            "input": "Podaj swój adres"
+        },
         "auth": {
-            "registerPanel": {
-                "name": "Imię",
-                "surname": "Nazwisko",
-                "email": "Adres e-mail"
+            "login": "Zaloguj się",
+            "loginEpic": {
+                "error": "Błąd logowania, spróbuj ponownie!",
+                "errorCritical": "Błąd logowania odśwież stronę!",
+                "success": "Logowanie pomyślne!"
             },
             "loginPanel": {
                 "email": "Adres e-mail",
                 "password": "Hasło"
             },
+            "logoutSuccess": "Wylogowano!",
             "passwordInput": {
-                "password": "Hasło",
                 "confirmPassword": "Potwierdź hasło",
+                "password": "Hasło",
                 "passwordsMismatch": "Hasła się nie zgadzają",
                 "passwordTooWeak": "Hasło jest za słabe",
                 "rules": {
                     "length": "dłuższe niż 7 znaków",
-                    "uppercase": "wielka litera",
                     "lowercase": "mała litera",
                     "numbers": "cyfra",
-                    "special": "znak specjalny"
+                    "special": "znak specjalny",
+                    "uppercase": "wielka litera"
                 }
             },
-            "userProfile": {
-                "delete": "Usuń konto",
-                "save": "Zapisz",
-                "settings": "Ustawienia",
-                "changePassword": "Zmień hasło",
-                "currentPassword": "Aktualne hasło",
-                "deleteConfirm": "Czy usunąć konto?"
-            },
-            "submit": "Wyślij",
             "register": "Zarejestruj się",
             "registerEpic": {
-                "success": "Rejestracja pomyślna!",
                 "error": "Błąd rejestracji, spróbuj ponownie!",
-                "errorCritical": "Błąd rejestracji odśwież stronę!"
+                "errorCritical": "Błąd rejestracji odśwież stronę!",
+                "success": "Rejestracja pomyślna!"
             },
-            "loginEpic": {
-                "success": "Logowanie pomyślne!",
-                "error": "Błąd logowania, spróbuj ponownie!",
-                "errorCritical": "Błąd logowania odśwież stronę!"
+            "registerPanel": {
+                "email": "Adres e-mail",
+                "name": "Imię",
+                "surname": "Nazwisko"
             },
-            "login": "Zaloguj się",
             "rememberLogin": "Pamiętaj logowanie",
-            "logoutSuccess": "Wylogowano!"
+            "submit": "Wyślij",
+            "userProfile": {
+                "changePassword": "Zmień hasło",
+                "currentPassword": "Aktualne hasło",
+                "delete": "Usuń konto",
+                "deleteConfirm": "Czy usunąć konto?",
+                "save": "Zapisz",
+                "settings": "Ustawienia"
+            }
         },
         "autocomplete": {
             "wrapper": {
                 "nooptions": "Brak wyników"
             }
         },
-        "groups": {
-            "get": {
-                "error": "Błąd pobierania grup. Odśwież stronę!",
-                "errorCritical": "Błąd pobierania grup. Odśwież stronę!"
+        "common": {
+            "all": "Codziennie",
+            "driver": "Kierowca",
+            "friday": "Piątek",
+            "groups": "Grupy",
+            "joinRide": "Dołącz",
+            "label": {
+                "cancel": "Anuluj",
+                "clear": "Wyczyść",
+                "ok": "Ok",
+                "search": "Szukaj",
+                "getPlaceNameError": "Błąd pobierania nazwy lokalizacji"
             },
-            "addGroupForm": {
-                "code": "Kod grupy",
-                "groupName": "Nazwa grupy",
-                "address": "Adres",
-                "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie",
-                "email": "Adres e-mail",
-                "emailComment": "Na ten adres zostanie wysłane zaproszenie",
-                "createBtn": "Utwórz",
-                "name": "Imię",
-                "surname": "Nazwisko",
-                "basicInfo": "Podstawowe informacje",
-                "basicInfo2": "Zaproś użytkowników",
-                "confirmBtn": "Wyślij",
-                "listLabel": "Lista użytkowników do których zostaną wysłane zaproszenia."
-            },
-            "list": {
-                "leaveGroup": "Opuść grupę",
-                "editGroup": "Edytuj grupę",
-                "ridesInGroup": "Przejazdy",
-                "inviteToGroup": "Zaproś do grupy",
-                "leaveConfirm": "Czy na pewno opuśćić grupę?",
-                "report": "Raport"
-            },
-            "addGroupBtn": "Dodaj grupę",
-            "ridesBtn": "Przejazdy",
-            "invitesBtn": "Zaproszenia",
-            "editGroupForm": {
-                "deleteBtn": "Usuń grupę",
-                "deleteConfirm": "Czy usunąć grupę?",
-                "basicInfo": "Edytuj grupę",
-                "btnUsers": "Edytuj użytkowników grupy",
-                "deleteUserConfirm": "Czy usunąć użytkownika: "
-            },
-            "report": {
-                "label": "Podsumowanie działalności grupy: ",
-                "fromDate": "Od: ",
-                "toDate": "Do: ",
-                "driversLabel": "Ranking przejazdów jako kierowca.",
-                "passengersLabel": "Ranking przejazdów jako pasażer.",
-                "sumText": "Średnia emisja CO2 wynosi 120g na kilometr przejechany samochodem.",
-                "sumText2": " W wybranym okresie czasu, w grupie zostało wykonanych łącznie ",
-                "sumText3": " przejazdów, i zostało przewiezionych ",
-                "sumText4": " pasażerów. Dzięki wspólnym przejazdom, twoja grupa ocaliła ",
-                "sumText5": " drzew!"
-            }
+            "monday": "Poniedziałek",
+            "passenger": "Pasażer",
+            "saturday": "Sobota",
+            "sunday": "Niedziela",
+            "thursday": "Czwartek",
+            "tuesday": "Wtorek",
+            "wednesday": "Środa"
+        },
+        "createBtn": "Utwórz",
+        "error": {
+            "DuplicateUserName": "Wybrany e-mail jest już zajęty!",
+            "loginGeneric": "Błąd logowania. Spróbuj ponownie!",
+            "loginInvalid": "Błędny e-mail lub hasło.",
+            "registerGeneric": "Nieznany błąd rejestracji.",
+            "unknownGeneric": "Nieznany błąd serwera. Spróbuj ponownie!"
+        },
+        "footer": {
+            "about": "O nas",
+            "credits": "Grafiki",
+            "environment": "Środowisko",
+            "help": "Zgłoś błąd",
+            "idea": "Idea",
+            "services": "Usługi"
         },
         "group": {
             "add": {
                 "error": "Błąd dodawania grupy: ",
-                "errorGeneric": "Błąd dodawania grupy, spróbuj ponownie!",
                 "errorCritical": "Błąd dodawania grupy. Odśwież stronę!",
+                "errorGeneric": "Błąd dodawania grupy, spróbuj ponownie!",
                 "success": "Pomyślnie dodano grupę!"
             },
-            "edit": {
-                "success": "Pomyślnie zapisano zmiany.",
-                "error": "Błąd edycji grupy. Spróbuj ponownie!",
-                "errorCritical": "Błąd edycji grupy. Odśwież stronę!"
-            },
-            "detailsGet": {
-                "error": "Błąd pobierania grupy, odśwież stronę.",
-                "errorCritical": "Błąd pobierania grupy, odśwież stronę."
-            },
-            "leave": {
-                "success": "Opuszczono grupę!",
-                "error": "Błąd opuszczania grupy, spróbuj ponownie!",
-                "errorCritical": "Błąd  opuszczania grupy, odśwież stronę!"
+            "delete": {
+                "error": "Błąd usuwania grupy, spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania grupy, odśwież stronę!",
+                "success": "Usunięto grupę!"
             },
             "deleteUser": {
                 "error": "Błąd usuwania użytkownika, spróbuj ponownie!",
                 "errorCritical": "Błąd usuwania użytkownika, odśwież stronę!",
                 "success": "Usunięto użytkownika!"
             },
-            "delete": {
-                "error": "Błąd usuwania grupy, spróbuj ponownie!",
-                "errorCritical": "Błąd usuwania grupy, odśwież stronę!",
-                "success": "Usunięto grupę!"
+            "detailsGet": {
+                "error": "Błąd pobierania grupy, odśwież stronę.",
+                "errorCritical": "Błąd pobierania grupy, odśwież stronę."
+            },
+            "edit": {
+                "error": "Błąd edycji grupy. Spróbuj ponownie!",
+                "errorCritical": "Błąd edycji grupy. Odśwież stronę!",
+                "success": "Pomyślnie zapisano zmiany."
+            },
+            "leave": {
+                "error": "Błąd opuszczania grupy, spróbuj ponownie!",
+                "errorCritical": "Błąd  opuszczania grupy, odśwież stronę!",
+                "success": "Opuszczono grupę!"
             },
             "report": {
                 "get": {
@@ -142,34 +134,195 @@
                 "noRankingDataLabel": "Brak danych"
             }
         },
+        "groups": {
+            "addGroupBtn": "Dodaj grupę",
+            "addGroupForm": {
+                "address": "Adres",
+                "basicInfo": "Podstawowe informacje",
+                "basicInfo2": "Zaproś użytkowników",
+                "code": "Kod grupy",
+                "codeInputComment": "Jeśli kod nie zostanie podany, zostanie wygenerowany automatycznie",
+                "confirmBtn": "Wyślij",
+                "createBtn": "Utwórz",
+                "email": "Adres e-mail",
+                "emailComment": "Na ten adres zostanie wysłane zaproszenie",
+                "groupName": "Nazwa grupy",
+                "listLabel": "Lista użytkowników do których zostaną wysłane zaproszenia.",
+                "name": "Imię",
+                "surname": "Nazwisko"
+            },
+            "editGroupForm": {
+                "basicInfo": "Edytuj grupę",
+                "btnUsers": "Edytuj użytkowników grupy",
+                "deleteBtn": "Usuń grupę",
+                "deleteConfirm": "Czy usunąć grupę?",
+                "deleteUserConfirm": "Czy usunąć użytkownika: "
+            },
+            "get": {
+                "error": "Błąd pobierania grup. Odśwież stronę!",
+                "errorCritical": "Błąd pobierania grup. Odśwież stronę!"
+            },
+            "invitesBtn": "Zaproszenia",
+            "list": {
+                "editGroup": "Edytuj grupę",
+                "inviteToGroup": "Zaproś do grupy",
+                "leaveConfirm": "Czy na pewno opuśćić grupę?",
+                "leaveGroup": "Opuść grupę",
+                "report": "Raport",
+                "ridesInGroup": "Przejazdy"
+            },
+            "report": {
+                "driversLabel": "Ranking przejazdów jako kierowca.",
+                "fromDate": "Od: ",
+                "label": "Podsumowanie działalności grupy: ",
+                "passengersLabel": "Ranking przejazdów jako pasażer.",
+                "sumText": "Średnia emisja CO2 wynosi 120g na kilometr przejechany samochodem.",
+                "sumText2": " W wybranym okresie czasu, w grupie zostało wykonanych łącznie ",
+                "sumText3": " przejazdów, i zostało przewiezionych ",
+                "sumText4": " pasażerów. Dzięki wspólnym przejazdom, twoja grupa ocaliła ",
+                "sumText5": " drzew!",
+                "toDate": "Do: "
+            },
+            "ridesBtn": "Przejazdy"
+        },
         "groupUsers": {
             "get": {
                 "error": "Błąd pobierania użytkowników grup, odśwież stronę!",
                 "errorCritical": "Błąd pobierania użytkowników grup, odśwież stronę!"
             }
         },
+        "helpForm": {
+            "application": "Typ aplikacji",
+            "bodyInput": "Treść zgłoszenia",
+            "helpLabel": "Pomóż nam udoskonalić naszą platformę!",
+            "helpToast": "Dziękujemy za zgłoszenie.",
+            "send": "Wyślij",
+            "titleInput": "Tytuł zgłoszenia",
+            "validateMsg": "Pole wymagane."
+        },
+        "homeScreen": {
+            "btnGroups": "Dowiedz się więcej o grupach",
+            "btnReports": "Dowiedz się więcej o raportach",
+            "btnRides": "Dowiedz się więcej o przejazdach",
+            "groups": "Grupy",
+            "help": "Jeżeli natrafiłeś na błąd, lub masz jakieś sugestie do działania aplikacji, jako zespół Carpool będziemy bardzo wdzięczni jeżeli opiszesz nam problem korzystając z naszego formularza.",
+            "helpBtn": "Dodaj zgłoszenie",
+            "helpGroups": "Stwórz grupę lub dołącz do już istniejącej w celu znalezienia kompanów podróży.",
+            "helpReports": "Rywalizuj w obrębie swich grup o najwięcej kilometrów przejachych razem.",
+            "helpRides": "Wspólne przejazdy pomagają zmniejszyć ilośc samochodów na drogach i ograniczyć ilość emitowanych zanieczyszczeń.",
+            "join": "Dołącz do grupy",
+            "quote": "Nie jedź\n sam!",
+            "reports": "Raporty",
+            "rides": "Przejazdy"
+        },
+        "input": {
+            "validation": {
+                "address": "Niepoprawny adres, proszę wybrać adres z podpowiedzi",
+                "emailInvalid": "Nieprawidłowy adres e-mail",
+                "fieldRequired": "Pole wymagane",
+                "numeric": "Niepoprawna liczba"
+            }
+        },
+        "invites": {
+            "add": {
+                "error": "Błąd dodawania zaproszenia. Spróbuj ponownie!",
+                "errorCritical": "Błąd dodawania zaproszenia. Odśwież stronę!",
+                "success": "Pomyślnie dodano zaproszenie!"
+            },
+            "answer": {
+                "error": "Bład odpowiadania na zaproszenie. Spróbuj ponownie!",
+                "errorCritical": "Bład odpowiadania na zaproszenie. Odśwież stronę!"
+            },
+            "get": {
+                "error": "Błąd pobierania zaproszeń. Odśwież stronę!",
+                "errorCritical": "Błąd pobierania zaproszeń. Odśwież stronę!"
+            }
+        },
+        "loadingScreen": {
+            "join": "Grupy",
+            "quote": "Share a ride"
+        },
+        "mapbox": {
+            "fromLabel": "Lokalizacja początkowa",
+            "toLabel": "Lokalizacja końcowa"
+        },
+        "navBar": {
+            "login": "Zaloguj się",
+            "logout": "Wyloguj się",
+            "profile": "Profil",
+            "register": "Zarejestruj się"
+        },
+        "nextBtn": "Dalej",
+        "no": "Nie",
+        "prevBtn": "Wstecz",
+        "requests": {
+            "accepted": "Zaakceptowane",
+            "declined": "Odrzucone",
+            "myRequests": "Moje prośby o przejazd.",
+            "pending": "Oczekujące",
+            "requestFrom": "Prośba od: ",
+            "status": "Status: "
+        },
+        "ride": {
+            "add": {
+                "error": "Błąd dodawania przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd dodawania przejazdu. Odśwież stronę!",
+                "success": "Pomyślnie dodano przejazd!"
+            },
+            "delete": {
+                "error": "Błąd usuwania przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania przejazdu. Odśwież stronę!",
+                "success": "Usunięto przejazd!"
+            },
+            "deletePassenger": {
+                "error": "Błąd usuwania pasażera. Spróbuj ponownie!",
+                "errorCritical": "Błąd usuwania pasażera. Odśwież stronę!",
+                "success": "Usunięto pasażera!"
+            },
+            "leave": {
+                "error": "Błąd opuszczania przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd opuszczania przejazdu. Odśwież stronę!",
+                "success": "Opuszczono przejazd!"
+            },
+            "matching": {
+                "perfect": "Perfekcyjne dopasowanie!",
+                "great": "Świetne dopasowanie",
+                "good": "Dobre dopasowanie",
+                "mediocre": "Średnie dopasowanie",
+                "bad": "Złe dopasowanie",
+                "terrible": "Bardzo złe dopasowanie"
+            },
+            "participate": {
+                "error": "Błąd dołączania do przejazdu. Spróbuj ponownie!",
+                "errorCritical": "Błąd dołączania do przejazdu. Odśwież stronę!",
+                "success": "Wysłano prośbę o dołączenie do przejazdu!"
+            }
+        },
+        "rideRequests": {
+            "answer": {
+                "error": "Błąd odpowiadania na żądanie, spróbuj ponownie!",
+                "errorCritical": "Błąd odpowiadania na żądanie, odśwież stronę!"
+            },
+            "get": {
+                "error": "Błąd pobierania żądań przejazdów, odśwież stronę!",
+                "errorCritical": "Błąd pobierania żądań przejazdów, odśwież stronę!"
+            }
+        },
         "rides": {
-            "cyclicBtn": "Cykliczny",
-            "disposableBtn": "Jednorazowy",
-            "addRideLabel": "Dodaj przejazd do grupy",
-            "fromOrTo": "Lokalizacja grupy jako punkt: ",
-            "from": "początkowy",
-            "to": "końcowy",
-            "seats": "Ilość miejsc w samochodzie",
-            "date": "Wybierz datę przejazdu.",
-            "time": "Wybierz godzinę przejazdu.",
-            "invalidDate": "Niewłaściwa data przejazdu",
-            "invalidTime": "Niewłaściwa godzina przejazdu",
-            "addRide": "Dodaj przejazd",
             "addBtn": "Utwórz",
-            "pastBtn": "Przeszłe",
+            "addRide": "Dodaj przejazd",
+            "addRideLabel": "Dodaj przejazd do grupy",
+            "button": {
+                "clearFilters": "Wyczyść filtry",
+                "filter": "Filtruj"
+            },
+            "cyclicBtn": "Cykliczny",
+            "date": "Wybierz datę przejazdu.",
+            "disposableBtn": "Jednorazowy",
+            "driverLabel": "Kierowca: ",
+            "from": "początkowy",
+            "fromOrTo": "Lokalizacja grupy jako punkt: ",
             "futureBtn": "Przyszłe",
-            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd.",
-            "myRides": "Moje przejazdy",
-            "requestsBtn": "Prośby o przejazd",
-            "noParticipants": "Brak pasażerów",
-            "participantsLabel": "Pasażerowie:",
-            "rangeWeeks": "Ilość tygodni przez które przejazd będzie się odbywał:",
             "get": {
                 "error": "Bład pobierania przejazdów. Odśwież stronę!",
                 "errorCritical": "Błąd pobierania przejazdów. Odśwież stronę!"
@@ -177,173 +330,43 @@
             "getAvailable": {
                 "error": "Bład pobierania dostępnych przejazdów. Odśwież stronę!",
                 "errorCritical": "Błąd pobierania dostępnych przejazdów. Odśwież stronę!"
-            }
-        },
-        "invites": {
-            "get": {
-                "error": "Błąd pobierania zaproszeń. Odśwież stronę!",
-                "errorCritical": "Błąd pobierania zaproszeń. Odśwież stronę!"
             },
-            "answer": {
-                "error": "Bład odpowiadania na zaproszenie. Spróbuj ponownie!",
-                "errorCritical": "Bład odpowiadania na zaproszenie. Odśwież stronę!"
-            },
-            "add": {
-                "errorCritical": "Błąd dodawania zaproszenia. Odśwież stronę!",
-                "error": "Błąd dodawania zaproszenia. Spróbuj ponownie!",
-                "success": "Pomyślnie dodano zaproszenie!"
-            }
-        },
-        "ride": {
-            "participate": {
-                "success": "Dołączono do przejazdu!",
-                "error": "Błąd dołączania do przejazdu. Spróbuj ponownie!",
-                "errorCritical": "Błąd dołączania do przejazdu. Odśwież stronę!"
-            },
-            "add": {
-                "error": "Błąd dodawania przejazdu. Spróbuj ponownie!",
-                "errorCritical": "Błąd dodawania przejazdu. Odśwież stronę!",
-                "success": "Pomyślnie dodano przejazd!"
-            },
-            "leave":{
-                "error": "Błąd opuszczania przejazdu. Spróbuj ponownie!",
-                "errorCritical": "Błąd opuszczania przejazdu. Odśwież stronę!",
-                "success": "Opuszczono przejazd!"
-            },
-            "delete":{
-                "error": "Błąd usuwania przejazdu. Spróbuj ponownie!",
-                "errorCritical": "Błąd usuwania przejazdu. Odśwież stronę!",
-                "success": "Usunięto przejazd!"
-            },
-            "deletePassenger":{
-                "error": "Błąd usuwania pasażera. Spróbuj ponownie!",
-                "errorCritical": "Błąd usuwania pasażera. Odśwież stronę!",
-                "success": "Usunięto pasażera!"
-            }
-        },
-        "requests": {
-            "accepted": "Zaakceptowane",
-            "pending": "Oczekujące",
-            "declined": "Odrzucone",
-            "status": "Status: ",
-            "requestFrom": "Prośba od: ",
-            "myRequests": "Moje prośby o przejazd."
-        },
-        "rideRequests": {
-            "get": {
-                "error": "Błąd pobierania żądań przejazdów, odśwież stronę!",
-                "errorCritical": "Błąd pobierania żądań przejazdów, odśwież stronę!"
-            },
-            "answer": {
-                "error": "Błąd odpowiadania na żądanie, spróbuj ponownie!",
-                "errorCritical": "Błąd odpowiadania na żądanie, odśwież stronę!"
-            }
-        },
-        "footer": {
-            "services": "Usługi",
-            "environment": "Środowisko",
-            "about": "O nas",
-            "idea": "Idea",
-            "credits": "Grafiki"
-        },
-        "navBar": {
-            "register": "Zarejestruj się",
-            "login": "Zaloguj się",
-            "logout": "Wyloguj się",
-            "profile": "Profil"
-        },
-        "helpForm": {
-            "titleInput": "Tytuł zgłoszenia",
-            "bodyInput": "Treść zgłoszenia",
-            "application": "Typ aplikacji",
-            "send": "Wyślij",
-            "helpLabel": "Pomóż nam udoskonalić naszą platformę!",
-            "validateMsg": "Pole wymagane.",
-            "helpToast": "Dziękujemy za zgłoszenie."
-        },
-        "homeScreen": {
-            "quote": "Nie jedź\n sam!",
-            "join": "Dołącz do grupy",
-            "helpRides": "Wspólne przejazdy pomagają zmniejszyć ilośc samochodów na drogach i ograniczyć ilość emitowanych zanieczyszczeń.",
-            "helpGroups": "Stwórz grupę lub dołącz do już istniejącej w celu znalezienia kompanów podróży.",
-            "helpReports": "Rywalizuj w obrębie swich grup o najwięcej kilometrów przejachych razem.",
-            "btnRides": "Dowiedz się więcej o przejazdach",
-            "btnReports": "Dowiedz się więcej o raportach",
-            "btnGroups": "Dowiedz się więcej o grupach",
-            "groups": "Grupy",
-            "reports": "Raporty",
-            "rides": "Przejazdy",
-            "help": "Jeżeli natrafiłeś na błąd, lub masz jakieś sugestie do działania aplikacji, jako zespół Carpool będziemy bardzo wdzięczni jeżeli opiszesz nam problem korzystając z naszego formularza.",
-            "helpBtn": "Dodaj zgłoszenie"
-        },
-        "common": {
-            "groups": "Grupy",
-            "passenger": "Pasażer",
-            "driver": "Kierowca",
-            "monday": "Poniedziałek",
-            "tuesday": "Wtorek",
-            "wednesday": "Środa",
-            "thursday": "Czwartek",
-            "friday": "Piątek",
-            "saturday": "Sobota",
-            "sunday": "Niedziela",
-            "all": "Codziennie",
-            "joinRide": "Dołącz"
+            "invalidDate": "Niewłaściwa data przejazdu",
+            "invalidTime": "Niewłaściwa godzina przejazdu",
+            "myRides": "Moje przejazdy",
+            "noParticipants": "Brak pasażerów",
+            "noSeatsInfoLabel": "Brak informacji o dostępnych miejscach",
+            "participantsLabel": "Pasażerowie:",
+            "pastBtn": "Przeszłe",
+            "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd.",
+            "rangeWeeks": "Ilość tygodni przez które przejazd będzie się odbywał:",
+            "requestsBtn": "Prośby o przejazd",
+            "seats": "Ilość miejsc w samochodzie",
+            "seatsLabel": "Zajęte miejsca: ",
+            "time": "Wybierz godzinę przejazdu.",
+            "to": "końcowy"
         },
         "userProfile": {
-            "updateData": {
-                "error": "Błąd aktualizowania danych. Spróbuj ponownie!",
-                "errorCritical": "Błąd aktualizowania danych. Odśwież stronę!",
-                "success": "Zaktualizowano dane!"
-            },
-            "getData": {
-                "error": "Błąd pobierania danych. Spróbuj ponownie!",
-                "errorCritical": "Błąd pobierania danych. Odśwież stronę!"
+            "changePassword": {
+                "error": "Błąd zmiany hasła. Spróbuj ponownie!",
+                "errorCritical": "Błąd zmiany hasła. Odśwież stronę!",
+                "success": "Zmieniono hasło!"
             },
             "deleteUser": {
                 "error": "Błąd usuwania użytkownika. Spróbuj ponownie!",
                 "errorCritical": "Błąd usuwania użytkownika. Odśwież stronę!",
                 "success": "Usunięto użytkownika!"
             },
-            "changePassword": {
-                "error": "Błąd zmiany hasła. Spróbuj ponownie!",
-                "errorCritical": "Błąd zmiany hasła. Odśwież stronę!",
-                "success": "Zmieniono hasło!"
+            "getData": {
+                "error": "Błąd pobierania danych. Spróbuj ponownie!",
+                "errorCritical": "Błąd pobierania danych. Odśwież stronę!"
+            },
+            "updateData": {
+                "error": "Błąd aktualizowania danych. Spróbuj ponownie!",
+                "errorCritical": "Błąd aktualizowania danych. Odśwież stronę!",
+                "success": "Zaktualizowano dane!"
             }
         },
-        "prevBtn": "Wstecz",
-        "createBtn": "Utwórz",
-        "addBtn": "Dodaj",
-        "nextBtn": "Dalej",
-        "yes": "Tak",
-        "no": "Nie",
-        "loadingScreen": {
-            "quote": "Share a ride",
-            "join": "Grupy"
-        },
-        "input": {
-            "validation": {
-                "emailInvalid": "Nieprawidłowy adres e-mail",
-                "fieldRequired": "Pole wymagane",
-                "address": "Niepoprawny adres, proszę wybrać adres z podpowiedzi",
-                "numeric": "Niepoprawna liczba"
-            }
-        },
-        "error": {
-            "DuplicateUserName": "Wybrany e-mail jest już zajęty!",
-            "unknownGeneric": "Nieznany błąd serwera. Spróbuj ponownie!",
-            "loginGeneric": "Błąd logowania. Spróbuj ponownie!",
-            "registerGeneric": "Nieznany błąd rejestracji.",
-            "loginInvalid": "Błędny e-mail lub hasło."
-        },
-        "mapbox": {
-            "fromLabel": "Lokalizacja początkowa",
-            "toLabel": "Lokalizacja końcowa"
-        },
-        "addressModal": {
-            "input": "Podaj swój adres",
-            "confirmBtn": "Zatwierdź",
-            "cancelBtn": "Anuluj"
-        }
+        "yes": "Tak"
     }
 }

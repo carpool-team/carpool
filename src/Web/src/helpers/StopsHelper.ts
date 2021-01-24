@@ -1,11 +1,17 @@
-import { point, featureCollection } from '@turf/helpers';
-import nearestPoint from '@turf/nearest';
-import { parseCoords } from './UniversalHelper';
+import { point, featureCollection } from "@turf/helpers";
+import nearestPoint from "@turf/nearest";
+import { ILocation } from "../components/groups/interfaces/ILocation";
+import { IRideStop } from "../components/groups/interfaces/IRideStop";
+import { parseCoords } from "./UniversalHelper";
+import { Position } from "geojson";
 
-export const equalCoordinates = (point1, point2) =>
+export const equalCoordinates = (point1: Position, point2: Position) =>
 	JSON.stringify(point1) === JSON.stringify(point2);
 
-export const sortStops = (start, finish, stops) => {
+export const sortStops: (start: ILocation, finish: ILocation, stops: IRideStop[]) => {
+	sortedStops: ILocation[],
+	sortedWaypoints: IRideStop[],
+} = (start, finish, stops) => {
 	// Copy original array
 	let stopsCp = [...stops];
 

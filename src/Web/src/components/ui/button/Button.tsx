@@ -31,7 +31,7 @@ const Button: FunctionComponent<IButtonLinkProps> = (props) => {
 	};
 
 	const baseCssClass: string = "button";
-	const dissabledCssClass: string = "button__disabled"
+	const dissabledCssClass: string = "button__disabled";
 	const cssClasses: string[] = [
 		baseCssClass,
 		props.className,
@@ -43,7 +43,7 @@ const Button: FunctionComponent<IButtonLinkProps> = (props) => {
 		cssClasses.push(props.additionalCssClass);
 	}
 	if (props.disabled) {
-		cssClasses.push(dissabledCssClass)
+		cssClasses.push(dissabledCssClass);
 	}
 
 	return (
