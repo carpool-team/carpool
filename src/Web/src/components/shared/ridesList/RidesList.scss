@@ -301,6 +301,18 @@
 		margin-left: 50px;
 		padding-bottom: 10px;
 	}
+	&--pickUp {
+		font-size: 15px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-decoration: none;
+		margin-left: 50px;
+		padding-bottom: 10px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		margin-right: 40px;
+	}
 	&--participantLabel{
 		font-size: 17px;
 		font-weight: $semi-bold;

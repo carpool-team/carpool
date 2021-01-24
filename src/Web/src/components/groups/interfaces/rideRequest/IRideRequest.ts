@@ -1,3 +1,4 @@
+import { ILocation } from "../ILocation";
 import { IRideRequestRide } from "./IRideRequestRide";
 
 export interface IRideRequest {
@@ -7,6 +8,7 @@ export interface IRideRequest {
 		appUserId: string;
 		firstName: string;
 		lastName: string;
+		location: ILocation;
 	};
 	ride: IRideRequestRide;
 	rideOwner: {
