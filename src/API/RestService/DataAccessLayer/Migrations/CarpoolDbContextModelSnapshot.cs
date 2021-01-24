@@ -102,6 +102,11 @@ namespace DataAccessLayer.Migrations
                     b.Property<bool>("IsPending")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsSoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
@@ -120,6 +125,11 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<long>("AppUserId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("GroupId", "AppUserId");
 
@@ -153,6 +163,11 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<long>("GroupId")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<long>("OwnerId")
                         .HasColumnType("bigint");
@@ -193,6 +208,11 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<bool>("IsPending")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsSoftDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<long>("RequestingUserId")
                         .HasColumnType("bigint");

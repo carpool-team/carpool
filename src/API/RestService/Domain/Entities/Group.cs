@@ -61,6 +61,21 @@ namespace Domain.Entities
 			return true;
 		}
 
+		public void RemoveAllRides()
+		{
+			Rides.ForEach(x => x.IsSoftDeleted = true);
+		}		
+		
+		public void RemoveAllUsers()
+		{
+			UserGroups.ForEach(x => x.IsSoftDeleted = true);
+		}		
+		
+		public void RemoveAllInvites()
+		{
+			GroupInvites.ForEach(x => x.IsSoftDeleted = true);
+		}
+
 		public bool IsSoftDeleted { get; set; }
 	}
 }

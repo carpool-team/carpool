@@ -74,7 +74,7 @@ namespace DataAccessLayer.Repositories
 			                             .ToListAsync(cancellationToken)
 			                             .ConfigureAwait(false);
 
-			var groups = await _context.Groups.Where(x => groupIds.Contains(x.Id))
+			var groups = await _context.Groups.Where(x => groupIds.Contains(x.Id) && !x.IsSoftDeleted)
 			                           .Include(x => x.UserGroups)
 			                           .Include(x => x.Rides)
 			                           .Include(x => x.Owner)
@@ -106,8 +106,13 @@ namespace DataAccessLayer.Repositories
 			=> await _context.Set<Group>().AddAsync(@group, cancellationToken);
 
 		public void Delete(Group group)
-			=> group.IsSoftDeleted = true;
-			// => _context.Set<Group>().Remove(group);
+		{
+			@group.RemoveAllUsers();
+			@group.RemoveAllInvites();
+			@group.RemoveAllRides();
+			@group.IsSoftDeleted = true;
+		}
+		// => _context.Set<Group>().Remove(group);
 
 		public async Task<ICollection<Ride>> GetGroupRides(GroupId groupId,
 		                                                   CancellationToken cancellationToken = default)

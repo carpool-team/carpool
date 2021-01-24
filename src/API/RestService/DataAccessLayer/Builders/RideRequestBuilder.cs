@@ -16,6 +16,7 @@ namespace DataAccessLayer.Builders
 			builder.Property(x => x.IsAccepted).IsRequired();
 			builder.Property(x => x.IsPending).IsRequired();
 			builder.Property(x => x.DateAdded).IsRequired();
+			builder.Property(x => x.IsSoftDeleted).IsRequired().HasDefaultValue(false);
 
 			builder.HasOne(x => x.RequestingUser)
 				.WithMany()

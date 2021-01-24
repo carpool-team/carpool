@@ -1,5 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Application.Commands.RideCommands;
+using Application.Commands.RideCommands.AddRecurringRide;
+using Application.Commands.RideCommands.DeleteRecurringRide;
+using Application.Commands.RideCommands.RemoveUserFromRide;
+using Application.Queries.GroupQueries;
+using Application.Queries.RideQueries;
 using AutoWrapper.Wrappers;
 using DataAccessLayer.DatabaseContexts;
 using DataTransferObjects.Ride;
@@ -9,13 +15,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RestApi.Commands.RideCommands;
-using RestApi.Commands.RideCommands.AddRecurringRide;
-using RestApi.Commands.RideCommands.DeleteRecurringRide;
-using RestApi.Commands.RideCommands.RemoveUserFromRide;
 using RestApi.Extensions;
-using RestApi.Queries.GroupQueries;
-using RestApi.Queries.RideQueries;
 
 namespace RestApi.Controllers
 {

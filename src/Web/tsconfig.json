@@ -5,17 +5,10 @@
         "jsx": "react",
         "noImplicitAny": false,
         "module": "esnext",
-        "typeRoots": [
-            "node_modules/@types",
-            "src/types"
-        ],
+        "typeRoots": ["node_modules/@types", "src/types"],
         "paths": {
-            "assets_path": [
-                "./assets"
-            ],
-            "scss_path": [
-                "./scss"
-            ]
+            "assets_path": ["./assets"],
+            "scss_path": ["./scss"]
         },
         "noEmitOnError": true,
         "allowJs": false,
@@ -28,20 +21,12 @@
         "sourceMap": true,
         "forceConsistentCasingInFileNames": false,
         "target": "ES6",
-        "lib": [
-            "ES6",
-            "DOM"
-        ],
+        "lib": ["ES6", "DOM"],
         "esModuleInterop": true,
-        "skipLibCheck": true,
+        "skipLibCheck": true
     },
-    "exclude": [
-        "./__tests__/**/*",
-        "./__mocks__/**/*",
-    ],
-    "include": [
-        "./**/*"
-    ],
+    "exclude": ["./__tests__/**/*", "./__mocks__/**/*"],
+    "include": ["./**/*"],
     "plugins": [
         {
             "name": "typescript-tslint-plugin"

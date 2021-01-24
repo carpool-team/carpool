@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Application.Commands.RideRequestCommands;
+using Application.Queries.RideRequestQueries;
 using AutoWrapper.Wrappers;
 using DataTransferObjects.RideRequest;
 using Domain.ValueObjects;
@@ -8,9 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
-using RestApi.Commands.RideRequestCommands;
 using RestApi.Extensions;
-using RestApi.Queries.RideRequestQueries;
 
 namespace RestApi.Controllers
 {
