@@ -7,9 +7,9 @@ import { AddRideResponse } from "./AddRideResponse";
 /** Ride direction enum */
 export enum RideDirection {
 	/** From point to group */
-	From = 0,
+	To = 0,
 	/** From group to point */
-	To = 1,
+	From = 1,
 	/** Both directions */
 	Both = 2,
 }

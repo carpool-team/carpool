@@ -20,6 +20,12 @@ import {
 	KeyboardDatePicker,
 	KeyboardTimePicker,
 } from "@material-ui/pickers";
+import Checkbox from "../../../../ui/checkbox/Checkbox";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import { RideDirection } from "../../../../groups/api/addRide/AddRideRequest";
 
 import "./SearchRideModal.scss";
 
@@ -38,6 +44,8 @@ const SearchRideModal: React.FC<ISearchRideModalProps> = props => {
 	const [validate, setValidate] = useState(false);
 	const [addressCoordinates, setAddressCoordinates] = useState<ILocation>(null);
 	const [date, setDate] = useState<Date>(null);
+	const [to, setTo] = useState(false);
+	const [from, setFrom] = useState(false);
 
 	const { t } = props;
 
@@ -46,6 +54,7 @@ const SearchRideModal: React.FC<ISearchRideModalProps> = props => {
 		buttonContainer: "inputs__buttonContainer",
 		popoverContainer: "container",
 		datePicker: "ridesList__datePicker",
+		checkboxContainer: "ridesList__checkboxContainer",
 	};
 
 	const resources = {
@@ -59,13 +68,25 @@ const SearchRideModal: React.FC<ISearchRideModalProps> = props => {
 		cancel: "common.label.cancel",
 		time: "rides.time",
 		invalidTime: "rides.invalidTime",
+		toCheckboxLabel: "rides.toCheckboxLabel",
+		fromCheckboxLabel: "rides.fromCheckboxLabel",
+		checkboxesLabel: "rides.checkboxesLabel",
 	};
 
 	const confirmBtnClick = () => {
-		if (each(inputsValid, i => i)) {
+		if (each(inputsValid, i => i) || addressCoordinates === null) {
+			let direction: RideDirection = null;
+			if (to === true && from === true) {
+				direction = RideDirection.Both;
+			} else if (to === true) {
+				direction = RideDirection.To;
+			} else if (from === true) {
+				direction = RideDirection.From;
+			}
 			props.onConfirm({
 				location: addressCoordinates,
 				date: date,
+				direction,
 			});
 			setValidate(false);
 		} else {
@@ -156,6 +177,35 @@ const SearchRideModal: React.FC<ISearchRideModalProps> = props => {
 						addressAutocompletedInit: inputsValid.location,
 					}}
 				/>
+				<FormControl component="fieldset">
+					<FormLabel component="legend">
+						{t(resources.checkboxesLabel)}
+					</FormLabel>
+					<FormGroup aria-label="position" className={cssClasses.checkboxContainer}>
+						<FormControlLabel
+							control={
+								<Checkbox
+									onChange={(_evt, checked) => setFrom(checked)}
+									checked={from}
+									color={"primary"}
+								/>
+							}
+							label={t(resources.fromCheckboxLabel)}
+							labelPlacement="end"
+						/>
+						<FormControlLabel
+							control={
+								<Checkbox
+									onChange={(_evt, checked) => setTo(checked)}
+									checked={to}
+									color={"primary"}
+								/>
+							}
+							label={t(resources.toCheckboxLabel)}
+							labelPlacement="end"
+						/>
+					</FormGroup>
+				</FormControl>
 				<div className={cssClasses.buttonContainer}>
 					<Button
 						additionalCssClass={cssClasses.button}

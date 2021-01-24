@@ -1,6 +1,7 @@
 import { RequestEndpoint } from "../../../../api/enum/RequestEndpoint";
 import { RequestType } from "../../../../api/enum/RequestType";
 import RequestCore from "../../../../api/requests/RequestCore";
+import { RideDirection } from "../addRide/AddRideRequest";
 import { GetRidesResponse } from "./GetRidesResponse";
 
 export class GetRidesRequest extends RequestCore {
@@ -11,8 +12,10 @@ export class GetRidesRequest extends RequestCore {
 		past?: boolean;
 		groupId?: string;
 		dateTime?: string;
+		direction?: RideDirection;
 	}) {
 		if (init.groupId) {
+			console.log(init);
 			super({
 				properties: {
 					method: RequestType.Get,
@@ -20,6 +23,7 @@ export class GetRidesRequest extends RequestCore {
 					queries: {
 						groupId: init.groupId,
 						dateTime: init.dateTime,
+						rideDirection: (init.direction === RideDirection.From || init.direction === RideDirection.To) ? String(init.direction) : null,
 					},
 				}
 			});
@@ -33,6 +37,7 @@ export class GetRidesRequest extends RequestCore {
 						owned: init.owned,
 						past: init.past,
 						participated: init.participated,
+						rideDirection: (init.direction === RideDirection.From || init.direction === RideDirection.To) ? String(init.direction) : null,
 					},
 				}
 			});
