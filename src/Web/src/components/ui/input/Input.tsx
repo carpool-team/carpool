@@ -96,7 +96,6 @@ const Input = (props: IInputProps) => {
 	};
 
 	useEffect(() => {
-		console.log("INIT ISAUTO", isAutoCompleted);
 		validate();
 	}, []);
 
@@ -109,7 +108,6 @@ const Input = (props: IInputProps) => {
 			props.addressCords(null);
 			props.changeHandler("");
 			setAutocompleteList(null);
-			console.log("HERE");
 			setIsAutoCompleted(false);
 		}
 	}, [props.value]);
@@ -182,8 +180,6 @@ const Input = (props: IInputProps) => {
 
 	const addressChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		props.changeHandler(event.target.value);
-
-		console.log("HERE");
 		setIsAutoCompleted(false);
 		if (event.target.value.length > 3) {
 			onAutocompleteName(event.target.value);

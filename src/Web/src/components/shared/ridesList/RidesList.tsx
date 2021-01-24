@@ -106,4 +106,4 @@ const RidesList = (props: IListProps) => {
 	);
 };
 
-export default withTranslation()(RidesList);;
+export default withTranslation()(RidesList);

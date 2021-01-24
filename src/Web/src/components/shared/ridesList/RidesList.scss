@@ -80,6 +80,18 @@
 		justify-content: center;
 		align-items: center;
 	}
+	&__filterButtons {
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		margin-bottom: 15px;
+	}
+	&__filterButton {
+		width: max-content;
+		margin: 0 10px 0 10px;
+		min-width: 160px;
+	}
 	&::-webkit-scrollbar {
 		width: 0px;
 		background: transparent; /* Chrome/Safari/Webkit */
@@ -334,8 +346,6 @@
 			font-size: 17px;
 			font-weight: $medium;
 			color: $grayDark;
-		}
-		&--button {
 		}
 		&--noParticipants {
 			margin-left: 60px;

@@ -360,7 +360,7 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 					ownedPast: responsePastOwned.result,
 					participatedPast: responsePastParticipated.result,
 					refreshAvailable,
-					date: action.date,
+					filters: action.filters,
 				};
 			} catch (err) {
 				return {
@@ -390,7 +390,7 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 						<IGetRidesAvailableAction>{
 							type: RidesActionTypes.GetRidesAvailable,
 							groupId: response.refreshAvailable.groupId,
-							date: response.date,
+							date: response.filters,
 						}
 					);
 				}
@@ -414,7 +414,7 @@ const getRidesAvailableEpic: Epic<GroupsAction | RideAction> = (action$, state$)
 			const request: GetRidesRequest = new GetRidesRequest({
 				userId: uid,
 				groupId: action.groupId,
-				dateTime: action.date ? moment(action.date).toISOString() : null,
+				dateTime: action.filters?.date ? moment(action.filters.date).toISOString() : null,
 			});
 			try {
 				const response: GetRidesResponse = await request.send();
@@ -487,7 +487,7 @@ const participateInRideEpic: Epic<RideAction> = (action$) =>
 					id: action.ride.rideId,
 					groupId: action.ride.group.groupId,
 					isError: response.isError ?? false,
-					date: action.date,
+					date: action.filters?.date,
 				};
 			} catch (err) {
 				return undefined;

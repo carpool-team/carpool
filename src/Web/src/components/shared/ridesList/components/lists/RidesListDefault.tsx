@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { colorList } from "../../../../../scss/colorList";
 import { withTranslation } from "react-i18next";
 import { IRide } from "components/groups/interfaces/IRide";
@@ -8,19 +8,17 @@ import ActiveItemDefault from "../items/ActiveItemDefault";
 import DefaultItem from "../items/DefaultItem";
 import { RidesListType } from "../../enums/RidesListType";
 import SearchBar from "../../../../ui/searchBar/SearchBar";
-import DateFnsUtils from "@date-io/date-fns";
-import "date-fns";
-import {
-	MuiPickersUtilsProvider,
-	KeyboardDatePicker,
-} from "@material-ui/pickers";
 import { IGetRidesAvailableAction } from "../../../../groups/store/Types";
 import { getRidesAvailable } from "../../../../groups/store/Actions";
 import { connect } from "react-redux";
 import { RideDirection } from "../../../../groups/api/addRide/AddRideRequest";
+import Button from "../../../../ui/button/Button";
+import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
+import SearchRideModal from "../searchRideModal/SearchRideModal";
+import { IRideFilters } from "../../../../groups/interfaces/IRideFilters";
 
 interface IDispatchPropsType {
-	getRidesAvailable: (groupId: string, date?: Date, direction?: RideDirection) => IGetRidesAvailableAction;
+	getRidesAvailable: (groupId: string, filters?: IRideFilters) => IGetRidesAvailableAction;
 }
 
 const mapDispatchToProps: IDispatchPropsType = {
@@ -34,27 +32,26 @@ interface IRidesListDefaultProps extends IRidesListProps, DispatchProps {
 }
 
 const RidesListDefault = (props: IRidesListDefaultProps) => {
-	const [selectedDate, setSelectedDate] = useState<Date>(null);
+	const [modalOpen, setModalOpen] = useState(false);
+	const [filters, setFilters] = useState<IRideFilters>(null);
 
-	const handleDateChange = (date: Date) => {
-		setSelectedDate(date);
-		props.getRidesAvailable(props.selectedGroupId, date);
-	};
+	useEffect(() => {
+		props.getRidesAvailable(props.selectedGroupId, filters);
+	}, [filters]);
 
 	const cssClasses = {
 		list: "ridesList",
 		day: "day",
 		dayLabel: "day__label",
 		inputs: "ridesList__inputs",
-		datePicker: "ridesList__datePicker",
+		filterButtons: "ridesList__filterButtons",
+		filterButton: "ridesList__filterButton",
 	};
 
 	const resources = {
-		date: "rides.date",
-		invalidDate: "rides.invalidDate",
-		clear: "common.label.clear",
-		ok: "common.label.ok",
-		cancel: "common.label.cancel",
+		buttonFilter: "rides.button.filter",
+		buttonClearFilters: "rides.button.clearFilters",
+		searchBar: "common.label.search",
 	};
 
 	const { t } = props;
@@ -65,7 +62,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 			return (
 				<React.Fragment key={ride.rideId}>
 					<ActiveItemJoin
-						joinRideCallback={(ride, location) => props.joinRideCallback(ride, location, selectedDate)}
+						joinRideCallback={(ride, location) => props.joinRideCallback(ride, location, filters)}
 						ride={ride}
 						color={color}
 						t={t}
@@ -149,6 +146,43 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 		}
 	};
 
+	const renderSearchItems = () => {
+		if (props.listType === RidesListType.Join) {
+			return (
+				<>
+					<div className={cssClasses.filterButtons}>
+						<Button
+							background={ButtonBackground.Blue}
+							onClick={() => setModalOpen(true)}
+							additionalCssClass={cssClasses.filterButton}
+						>
+							{t(resources.buttonFilter)}
+						</Button>
+						<Button
+							background={ButtonBackground.Gray}
+							onClick={() => setFilters(null)}
+							additionalCssClass={cssClasses.filterButton}
+						>
+							{t(resources.buttonClearFilters)}
+						</Button>
+					</div>
+					<SearchRideModal
+						open={modalOpen}
+						onConfirm={newFilters => {
+							setModalOpen(false);
+							setFilters(newFilters);
+						}}
+						onCancel={() => {
+							setModalOpen(false);
+						}}
+					/>
+				</>
+			);
+		} else {
+			return null;
+		}
+	};
+
 	return (
 		<ul className={cssClasses.list}>
 			<div className={cssClasses.inputs}>
@@ -157,30 +191,9 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 					setKeyword={(nv) => {
 						setSearchKey(nv);
 					}}
+					placeholder={t(resources.searchBar)}
 				/>
-				{props.listType === RidesListType.Join ? <MuiPickersUtilsProvider utils={DateFnsUtils}>
-					<KeyboardDatePicker
-						className={cssClasses.datePicker}
-						disableToolbar={true}
-						variant="dialog"
-						format="dd/MM/yyyy"
-						margin="dense"
-						id="date-picker-inlie"
-						label={t(resources.date)}
-						value={selectedDate}
-						onChange={(date: Date) => {
-							handleDateChange(date);
-						}}
-						invalidDateMessage={t(resources.invalidDate)}
-						KeyboardButtonProps={{
-							"aria-label": "change date",
-						}}
-						cancelLabel={t(resources.cancel)}
-						okLabel={t(resources.ok)}
-						clearable={true}
-						clearLabel={t(resources.clear)}
-					/>
-				</MuiPickersUtilsProvider> : null}
+				{renderSearchItems()}
 			</div>
 			{renderItems()}
 		</ul>
