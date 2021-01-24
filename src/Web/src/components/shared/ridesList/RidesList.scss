@@ -218,6 +218,20 @@
 			padding-right: 7px;
 			content: "\f073";
 		}
+		&__rideExtension {
+			font-size: 15px;
+			font-weight: $medium;
+			color: $grayDark;
+			text-decoration: none;
+			margin-left: 10px;
+		}
+		&__rideExtension::before {
+			align-items: center;
+			font-family: FontAwesome;
+			font-size: 15px;
+			padding-right: 7px;
+			content: "\f140";
+		}
 		&__status {
 			font-size: 15px;
 			font-weight: $medium;
@@ -306,6 +320,21 @@
 		font-size: 15px;
 		padding-right: 7px;
 		content: "\f0c0";
+	}
+	&--rideExtension {
+		font-size: 15px;
+		font-weight: $medium;
+		color: $grayDark;
+		text-decoration: none;
+		margin-left: 50px;
+		padding-bottom: 10px;
+	}
+	&--rideExtension::before {
+		align-items: center;
+		font-family: FontAwesome;
+		font-size: 15px;
+		padding-right: 7px;
+		content: "\f140";
 	}
 	&--joinButton {
 		margin-left: auto;

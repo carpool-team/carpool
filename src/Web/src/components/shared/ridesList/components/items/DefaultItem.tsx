@@ -3,6 +3,7 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
+import { getRideMatchLabel } from "../../../../../helpers/RidesHelper";
 
 const geocodingClient = getGeocodingClient();
 
@@ -17,6 +18,7 @@ const DefaultItem = (props: IListItemProps) => {
 		toLabel: "ridesList--mainRow__to",
 		fromLabel: "ridesList--mainRow__from",
 		driver: "ridesList--bottomRow__driver",
+		rideExt: "ridesList--bottomRow__rideExtension",
 	};
 
 	const resources = {
@@ -110,8 +112,12 @@ const DefaultItem = (props: IListItemProps) => {
 						<div className={cssClasses.driver}>
 							{convertDate(props.ride.rideDate.toString())}
 						</div>
+						{props.rideExtension &&
+							<div className={cssClasses.rideExt}>
+								{getRideMatchLabel(props.rideExtension)}
+							</div>
+						}
 					</div>
-					{props.rideExtension && "Wydłużenie przejazdu: " + props.rideExtension}
 				</button>
 			</li>
 		);

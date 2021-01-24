@@ -7,6 +7,7 @@ import { IRide } from "../components/groups/interfaces/IRide";
 import { ILocation } from "../components/groups/interfaces/ILocation";
 import { IRideStop } from "../components/groups/interfaces/IRideStop";
 import { IRideExtended } from "../components/groups/interfaces/IRideExtended";
+import i18n from "../i18n";
 
 /**
  *
@@ -104,4 +105,23 @@ export const byExtension = (a: IRideExtended, b: IRideExtended) => {
 		return 1;
 	}
 	return 0;
+};
+
+export const getRideMatchLabel = (matching: number) => {
+	if (matching < 15) {
+		return i18n.t("ride.matching.perfect");
+	}
+	if (matching < 30) {
+		return i18n.t("ride.matching.great");
+	}
+	if (matching < 50) {
+		return i18n.t("ride.matching.good");
+	}
+	if (matching < 75) {
+		return i18n.t("ride.matching.mediocre");
+	}
+	if (matching < 100) {
+		return i18n.t("ride.matching.bad");
+	}
+	return i18n.t("ride.matching.terrible");
 };

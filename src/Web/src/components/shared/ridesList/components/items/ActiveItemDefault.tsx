@@ -3,6 +3,7 @@ import { parseCoords } from "../../../../../helpers/UniversalHelper";
 import IListItemProps from "../../interfaces/IRidesItemProps";
 import { convertDate } from "../../../../../helpers/UniversalHelper";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
+import { getRideMatchLabel } from "../../../../../helpers/RidesHelper";
 
 const geocodingClient = getGeocodingClient();
 
@@ -21,12 +22,15 @@ const ActiveItemDefault = (props: IListItemProps) => {
 		activeDriver: "ridesListActive--driver",
 		activeDate: "ridesListActive--date",
 		activeSeats: "ridesListActive--seats",
+		activeRideExt: "ridesListActive--rideExtension",
 		activeCar: "ridesListActive--car",
 	};
 
 	const resources = {
 		placeNameGetErrorLabel: "common.label.placeNameGetError",
 		driver: "rides.driverLabel",
+		seats: "rides.seatsLabel",
+		noSeatsInfo: "rides.noSeatsInfoLabel",
 	};
 
 	const [loading, setLoading] = useState<boolean>(null);
@@ -122,9 +126,15 @@ const ActiveItemDefault = (props: IListItemProps) => {
 						<div className={cssClasses.activeCar}>
 							{props.ride.owner.vehicle}
 						</div>
-						<div className={cssClasses.activeSeats}>Wolne miejsca: {"2"}</div>
+						<div className={cssClasses.activeSeats}>
+							{props.ride.seatsLimit ? `${props.t(resources.seats)}${props.ride.seatsLimit}` : props.t(resources.noSeatsInfo)}
+						</div>
 					</div>
-					{props.rideExtension && "Wydłużenie przejazdu: " + props.rideExtension}
+					{props.rideExtension &&
+						<div className={cssClasses.activeRideExt}>
+							{getRideMatchLabel(props.rideExtension)}
+						</div>
+					}
 				</div>
 			</li>
 		);

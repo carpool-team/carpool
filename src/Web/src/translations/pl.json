@@ -284,6 +284,14 @@
                 "errorCritical": "Błąd opuszczania przejazdu. Odśwież stronę!",
                 "success": "Opuszczono przejazd!"
             },
+            "matching": {
+                "perfect": "Perfekcyjne dopasowanie!",
+                "great": "Świetne dopasowanie",
+                "good": "Dobre dopasowanie",
+                "mediocre": "Średnie dopasowanie",
+                "bad": "Złe dopasowanie",
+                "terrible": "Bardzo złe dopasowanie"
+            },
             "participate": {
                 "error": "Błąd dołączania do przejazdu. Spróbuj ponownie!",
                 "errorCritical": "Błąd dołączania do przejazdu. Odśwież stronę!",
@@ -327,6 +335,7 @@
             "invalidTime": "Niewłaściwa godzina przejazdu",
             "myRides": "Moje przejazdy",
             "noParticipants": "Brak pasażerów",
+            "noSeatsInfoLabel": "Brak informacji",
             "participantsLabel": "Pasażerowie:",
             "pastBtn": "Przeszłe",
             "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd.",

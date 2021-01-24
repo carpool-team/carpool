@@ -6,6 +6,7 @@ import Button from "../../../../ui/button/Button";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
 import { getGeocodingClient } from "../../../../map/MapBoxHelper";
 import AddressModal from "../../../addressModal/AddressModal";
+import { getRideMatchLabel } from "../../../../../helpers/RidesHelper";
 const geocodingClient = getGeocodingClient();
 
 const ActiveItemJoin = (props: IListItemProps) => {
@@ -24,6 +25,7 @@ const ActiveItemJoin = (props: IListItemProps) => {
 		activeDate: "ridesListActive--date",
 		activeSeats: "ridesListActive--seats",
 		activeCar: "ridesListActive--car",
+		activeRideExt: "ridesListActive--rideExtension",
 	};
 
 	const resources = {
@@ -127,7 +129,11 @@ const ActiveItemJoin = (props: IListItemProps) => {
 						{/* <div className={cssClasses.activeCar}>
 						{props.ride.owner.vehicle}
 						</div> */}
-						{props.rideExtension && "Wydłużenie przejazdu: " + props.rideExtension}
+						{props.rideExtension &&
+							<div className={cssClasses.activeRideExt}>
+								{getRideMatchLabel(props.rideExtension)}
+							</div>
+						}
 						<div className={cssClasses.activeSeats}>
 							{`${props.t(resources.seats)}${props.ride.seatsLimit}`}
 						</div>
