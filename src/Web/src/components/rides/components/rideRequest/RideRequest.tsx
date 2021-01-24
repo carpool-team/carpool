@@ -172,7 +172,7 @@ const RideRequest = (props: IRideRequestProps) => {
 			</div>
 			<MediaQuery query="(min-width: 900px)">
 				<div className={cssClasses.rightPanel}>
-					<MapBoxRides ride={getRideFromRequest(selectedRequest)} />
+					<MapBoxRides ride={getRideFromRequest(selectedRequest)} requestingUser={selectedRequest?.requestingUser} />
 				</div>
 			</MediaQuery>
 		</div>
