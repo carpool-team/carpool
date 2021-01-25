@@ -52,28 +52,28 @@ class Footer extends React.Component<IFooterProps> {
 					</div>
 					{/* <ButtonLink
 						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
+						background={ButtonLinkBackground.Tansparent}
 						to={`/${mainRoutes.help}`}
 					>
 						{t(this.resources.help)}
 					</ButtonLink> */}
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
+						background={ButtonLinkBackground.Tansparent}
 						to={`/${mainRoutes.groups}`}
 					>
 						{t(this.resources.groups)}
 					</ButtonLink>
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
+						background={ButtonLinkBackground.Tansparent}
 						to={`/${mainRoutes.rides}`}
 					>
 						{t(this.resources.rides)}
 					</ButtonLink>
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
+						background={ButtonLinkBackground.Tansparent}
 						to={`/${mainRoutes.rides + rideRoutes.requests}`}
 					>
 						{t(this.resources.requests)}
@@ -104,20 +104,20 @@ class Footer extends React.Component<IFooterProps> {
 					</div>
 					{/* <ButtonLink
 						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
+						background={ButtonLinkBackground.Tansparent}
 						onClick={() => { }}
 					>
 						{t(this.resources.idea)}
 					</ButtonLink>
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
+						background={ButtonLinkBackground.Tansparent}
 					>
 						{t(this.resources.environment)}
 					</ButtonLink> */}
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
-						background={ButtonLinkBackground.Gray}
+						background={ButtonLinkBackground.Tansparent}
 						to={`/${mainRoutes.help}`}
 					>
 						{t(this.resources.report)}

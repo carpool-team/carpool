@@ -2,19 +2,20 @@
 @import "~scss_path/fonts";
 
 .buttonLink {
-  font-weight: $medium;
-  font-size: 16px;
-  text-decoration: none;
-  color: $grayDark;
-  padding: 10px 0 0 0;
-  z-index: inherit;
-  cursor: pointer;
+	font-weight: $medium;
+	font-size: 16px;
+	text-decoration: none;
+	color: $grayDark;
+	padding: 10px 0 0 0;
+	z-index: inherit;
+	min-height: 30px;
+	cursor: pointer;
 	&__text {
 		&--green {
 			color: $green !important;
 		}
 		&--blue {
-			color: $blue !important; 
+			color: $blue !important;
 		}
 		&--gray {
 			color: $grayDark !important;
@@ -26,9 +27,10 @@
 			color: $white !important;
 		}
 	}
-	&__background{
-		&--transparent{
+	&__background {
+		&--transparent {
 			background-color: transparent;
+			min-height: auto;
 		}
 		&--gray {
 			background-color: $background;
@@ -47,10 +49,10 @@
 		}
 	}
 	&__icon {
-		&--user:before{
+		&--user:before {
 			font-family: FontAwesome;
 			font-size: 15px;
-			content:"\f007";
+			content: "\f007";
 			padding-right: 10px;
 		}
 	}
