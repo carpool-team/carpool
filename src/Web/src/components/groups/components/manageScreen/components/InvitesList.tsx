@@ -39,7 +39,7 @@ const InvitesList = (props: IInvitesListProps) => {
 				return <LabelBlock text={props.t(resources.getError)} />;
 			case LoadingStatus.Success:
 			default:
-				if (invites.length > 0) {
+				if (invites && invites.length > 0) {
 					return (
 						invites.map((invite) => {
 							++colorIndex;

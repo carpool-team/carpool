@@ -7,8 +7,8 @@ import ActiveItemDefault from "../items/ActiveItemDefault";
 import DefaultItem from "../items/DefaultItem";
 import { RidesListType } from "../../enums/RidesListType";
 import SearchBar from "../../../../ui/searchBar/SearchBar";
-import { IGetRidesAvailableAction } from "../../../../groups/store/Types";
-import { getRidesAvailable } from "../../../../groups/store/Actions";
+import { IGetRidesAvailableAction, ISetLoadingStatusAction } from "../../../../groups/store/Types";
+import { getRidesAvailable, setLoadingStatus } from "../../../../groups/store/Actions";
 import { connect } from "react-redux";
 import Button from "../../../../ui/button/Button";
 import { ButtonBackground } from "../../../../ui/button/enums/ButtonBackground";
@@ -18,13 +18,18 @@ import { IRideExtended } from "../../../../groups/interfaces/IRideExtended";
 import { byDateAndExtension, byExtension, sortRides } from "../../../../../helpers/RidesHelper";
 import { useImmer } from "use-immer";
 import { ButtonColor } from "../../../../ui/button/enums/ButtonColor";
+import { LoadingStatus } from "../../../enum/LoadingStatus";
+import LoaderBlock from "../../../../ui/loaderBlock/LoaderBlock";
+import LabelBlock from "../../../../ui/labelBlock/LabelBlock";
 
 interface IDispatchPropsType {
 	getRidesAvailable: (groupId: string, filters?: IRideFilters) => IGetRidesAvailableAction;
+	setLoadingStatus: (loadingStatus: LoadingStatus) => ISetLoadingStatusAction;
 }
 
 const mapDispatchToProps: IDispatchPropsType = {
 	getRidesAvailable,
+	setLoadingStatus,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;
@@ -51,6 +56,7 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 	});
 
 	useEffect(() => {
+		props.setLoadingStatus(LoadingStatus.Loading);
 		props.getRidesAvailable(props.selectedGroupId, state.filters);
 	}, [state.filters]);
 
@@ -92,6 +98,9 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 		buttonFilter: "rides.button.filter",
 		buttonClearFilters: "rides.button.clearFilters",
 		searchBar: "common.label.search",
+		getError: "ridesList.getErrorLabel",
+		noRides: "ridesList.noRidesLabel",
+		noRidesFiltered: "ridesList.noRidesFilteredLabel",
 	};
 
 	const { t } = props;
@@ -177,15 +186,23 @@ const RidesListDefault = (props: IRidesListDefaultProps) => {
 	};
 
 	const renderItems = () => {
-		if (state.rides) {
-			let colorIndex: number = 0;
-			return state.rides.map((r) => {
-				++colorIndex;
-				const color = colorList[colorIndex % colorList.length];
-				return renderItem(color, r);
-			});
-		} else {
-			return null;
+		switch (props.loadingStatus) {
+			case LoadingStatus.Loading:
+				return <LoaderBlock />;
+			case LoadingStatus.Error:
+				return <LabelBlock text={props.t(resources.getError)} />;
+			case LoadingStatus.Success:
+			default:
+				if (state.rides && state.rides.length > 0) {
+					let colorIndex: number = 0;
+					return state.rides.map((r) => {
+						++colorIndex;
+						const color = colorList[colorIndex % colorList.length];
+						return renderItem(color, r);
+					});
+				} else {
+					return <LabelBlock text={props.t(state.filters ? resources.noRidesFiltered : resources.noRides)} />;
+				}
 		}
 	};
 

@@ -358,6 +358,11 @@
             "to": "końcowy",
             "toCheckboxLabel": "Lokalizacja grupy jako punkt końcowy"
         },
+        "ridesList": {
+            "noRidesLabel": "Brak przejazdów",
+            "noRidesFilteredLabel": "Brak przejazdów dla wybranych filtrów",
+            "getErrorLabel": "Błąd pobierania przejazdów"
+        },
         "userProfile": {
             "changePassword": {
                 "error": "Błąd zmiany hasła. Spróbuj ponownie!",

@@ -13,9 +13,10 @@ export interface IGroupDetailedViewProps {
 }
 
 const GroupDetailedView: React.FunctionComponent<IGroupDetailedViewProps> = props => {
-	const detailedViewContainer = "detailedViewContainer";
+	const containerCssClass = "detailedViewContainer";
+
 	return (
-		<div className={detailedViewContainer}>
+		<div className={containerCssClass}>
 			{props.children}
 		</div>
 	);

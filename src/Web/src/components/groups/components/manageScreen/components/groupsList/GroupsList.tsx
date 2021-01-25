@@ -28,50 +28,59 @@ const GroupsList = (props: IGroupsListProps) => {
 
 	let colorIndex: number = 0;
 
+	const renderGroupsItems = () => {
+		if (groups && groups.length > 0) {
+			return (
+				groups.map((group) => {
+					++colorIndex;
+					const color = colorList[colorIndex % colorList.length];
+					return (
+						<React.Fragment key={group.groupId}>
+							{(() => {
+								if (
+									props.groupSelected &&
+									props.groupSelected.groupId === group.groupId
+								) {
+									return (
+										<ActiveItem
+											group={group}
+											color={color}
+											setGroupSelected={() => props.setGroupSelected(null)}
+										/>
+									);
+								} else {
+									return (
+										<DefaultItem
+											group={group}
+											color={color}
+											setGroupSelected={() => props.setGroupSelected(group.groupId)}
+										/>
+									);
+								}
+							})()}
+						</React.Fragment>
+					);
+				})
+			);
+		} else {
+			return <LabelBlock text={props.t(resources.noGroups)} />;
+		}
+	};
+
 	const renderItems = () => {
 		switch (props.loadingStatus) {
 			case LoadingStatus.Loading:
-				return <LoaderBlock />;
+				// also loading additional group data
+				if (groups.length > 0) {
+					return renderGroupsItems();
+				} else {
+					return <LoaderBlock />;
+				}
 			case LoadingStatus.Error:
 				return <LabelBlock text={props.t(resources.getError)} />;
 			default:
 			case LoadingStatus.Success:
-				if (groups.length > 0) {
-					return (
-						groups.map((group) => {
-							++colorIndex;
-							const color = colorList[colorIndex % colorList.length];
-							return (
-								<React.Fragment key={group.groupId}>
-									{(() => {
-										if (
-											props.groupSelected &&
-											props.groupSelected.groupId === group.groupId
-										) {
-											return (
-												<ActiveItem
-													group={group}
-													color={color}
-													setGroupSelected={() => props.setGroupSelected(null)}
-												/>
-											);
-										} else {
-											return (
-												<DefaultItem
-													group={group}
-													color={color}
-													setGroupSelected={() => props.setGroupSelected(group.groupId)}
-												/>
-											);
-										}
-									})()}
-								</React.Fragment>
-							);
-						})
-					);
-				} else {
-					return <LabelBlock text={props.t(resources.noGroups)} />;
-				}
+				return renderGroupsItems();
 		}
 	};
 

@@ -8,11 +8,19 @@ import DefaultItemRequestParticipant from "../items/DefaultItemRequestParticipan
 import DefaultItemRequestOwner from "../items/DefaultItemRequestOwner";
 import ActiveItemRequestParticipant from "../items/ActiveItemRequestParticipant";
 import ActiveItemRequestOwner from "../items/ActiveItemRequestOwner";
+import { LoadingStatus } from "../../../enum/LoadingStatus";
+import LoaderBlock from "../../../../ui/loaderBlock/LoaderBlock";
+import LabelBlock from "../../../../ui/labelBlock/LabelBlock";
 
 const RequestsListDefault = (props: IRequestsListProps) => {
 
 	const cssClasses = {
 		list: "ridesList",
+	};
+
+	const resources = {
+		getError: "requestsList.getErrorLabel",
+		noRequests: "requestsList.noRequestsLabel",
 	};
 
 	const { t } = props;
@@ -91,17 +99,33 @@ const RequestsListDefault = (props: IRequestsListProps) => {
 	};
 
 	let colorIndex: number = 0;
-	const rides: IRideRequest[] = props.requests;
+	const reqs: IRideRequest[] = props.requests;
+
+	const renderItems = () => {
+		switch (props.loadingStatus) {
+			case LoadingStatus.Loading:
+				return <LoaderBlock />;
+			case LoadingStatus.Error:
+				return <LabelBlock text={t(resources.getError)} />;
+			case LoadingStatus.Success:
+			default:
+				if (reqs && reqs.length > 0) {
+					return reqs.map((req) => {
+						++colorIndex;
+						const color = colorList[colorIndex % colorList.length];
+						return (
+							renderItem(color, req)
+						);
+					});
+				} else {
+					return <LabelBlock text={t(resources.noRequests)} />;
+				}
+		}
+	};
 
 	return (
 		<ul className={cssClasses.list}>
-			{rides && rides.map((ride) => {
-				++colorIndex;
-				const color = colorList[colorIndex % colorList.length];
-				return (
-					renderItem(color, ride)
-				);
-			})}
+			{renderItems()}
 		</ul>
 	);
 };
