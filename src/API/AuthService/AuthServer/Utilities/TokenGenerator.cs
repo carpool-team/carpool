@@ -12,6 +12,9 @@ namespace AuthServer.Utilities
 {
 	public class TokenGenerator : ITokenGenerator
 	{
+		private const int TOKEN_LIFETIME = 5;
+		private const string PROVIDER_SUB = "790688245242396672";
+		
 		private readonly JwtOptions _jwtOptions;
 		
 		public TokenGenerator(JwtOptions jwtOptions) 
@@ -31,7 +34,7 @@ namespace AuthServer.Utilities
 
 			var token = new JwtSecurityToken(_jwtOptions.Issuer,
 				_jwtOptions.Audience,
-				expires: DateTime.Now.AddDays(30),
+				expires: DateTime.Now.AddMinutes(TOKEN_LIFETIME),
 				claims: authClaims,
 				signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
 
@@ -43,7 +46,7 @@ namespace AuthServer.Utilities
 			var authClaims = new[]
 			{
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-				new Claim(JwtRegisteredClaimNames.Sub, "790688245242396672"),
+				new Claim(JwtRegisteredClaimNames.Sub, PROVIDER_SUB),
 				new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
 				new Claim("scope", "carpool_rest_api")
 			};
