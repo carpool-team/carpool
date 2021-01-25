@@ -20,11 +20,13 @@ import {
 	IDeleteRideSuccessAction,
 	IDeletePassengerAction,
 	IDeletePassengerErrorAction,
-	IDeletePassengerSuccessAction
+	IDeletePassengerSuccessAction,
+	IRidesSetLoadingStatusAction,
+	GenericActionTypes,
+	GenericAction
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetRideRequestsRequest } from "../api/getRide/GetRideRequestsRequest";
-import { ISetLoaderVisibleAction, LayoutAction, LayoutActionTypes } from "../../layout/store/Types";
 import { UpdateRideRequestResponse } from "../api/updateRide/UpdateRideRequestResponse";
 import { UpdateRideRequestRequest } from "../api/updateRide/UpdateRideRequestRequest";
 import { LeaveRideRequest } from "../api/leaveRide/LeaveRideRequest";
@@ -33,8 +35,9 @@ import { IGetRidesAction, RidesActionTypes, RideAction as GroupRideAction } from
 import { DeleteRideRequest } from "../api/deleteRide/DeleteRideRequest";
 import { DeletePassengerRequest } from "../api/deletePassenger/DeletePassengerRequest";
 import i18n from "../../../i18n";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 
-const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =>
+const getRideRequestsEpic: Epic<RideRequestsAction | GenericAction> = (action$) =>
 	action$.pipe(
 		ofType(RideRequestsActionTypes.GetRideRequests),
 		switchMap(async (_action: IGetRideRequestsAction) => {
@@ -65,9 +68,9 @@ const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =
 						requestsParticipant: result.requestsParticipant,
 						requestsOwner: result.requestsOwner
 					},
-					<ISetLoaderVisibleAction>{
-						type: LayoutActionTypes.SetLoaderVisible,
-						visible: false,
+					<IRidesSetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Success,
 					}
 				];
 			} else {
@@ -77,9 +80,9 @@ const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =
 						type: RideRequestsActionTypes.GetRideRequestsError,
 						error: result.error,
 					},
-					<ISetLoaderVisibleAction>{
-						type: LayoutActionTypes.SetLoaderVisible,
-						visible: false,
+					<IRidesSetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Error,
 					}
 				];
 			}
@@ -93,7 +96,7 @@ const getRideRequestsEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =
 		})
 	);
 
-const answerRideRequestEpic: Epic<RideRequestsAction | LayoutAction> = (action$) =>
+const answerRideRequestEpic: Epic<RideRequestsAction | GenericAction> = (action$) =>
 	action$.pipe(
 		ofType(RideRequestsActionTypes.AnswerRideRequest),
 		switchMap(async (action: IAnswerRideRequestAction) => {
@@ -125,10 +128,6 @@ const answerRideRequestEpic: Epic<RideRequestsAction | LayoutAction> = (action$)
 					},
 					<IAnswerRideRequestSuccessAction>{
 						type: RideRequestsActionTypes.AnswerRideRequestSuccess
-					},
-					<ISetLoaderVisibleAction>{
-						type: LayoutActionTypes.SetLoaderVisible,
-						visible: false,
 					}
 				];
 			} else {
@@ -137,10 +136,6 @@ const answerRideRequestEpic: Epic<RideRequestsAction | LayoutAction> = (action$)
 					<IAnswerRideRequestErrorAction>{
 						type: RideRequestsActionTypes.AnswerRideRequestError,
 						error: result.error
-					},
-					<ISetLoaderVisibleAction>{
-						type: LayoutActionTypes.SetLoaderVisible,
-						visible: false,
 					}
 				];
 			}
@@ -180,7 +175,6 @@ const leaveRideEpic: Epic<RideAction | GroupRideAction> = (action$) =>
 						},
 						<IGetRidesAction>{
 							type: RidesActionTypes.GetRides,
-
 						}
 					];
 				}

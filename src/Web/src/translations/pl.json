@@ -272,6 +272,10 @@
             "requestFrom": "Prośba od: ",
             "status": "Status: "
         },
+        "requestsList": {
+            "getErrorLabel": "Błąd pobierania próśb o przejazd",
+            "noRequestsLabel": "Brak próśb o przejazd"
+        },
         "ride": {
             "add": {
                 "error": "Błąd dodawania przejazdu. Spróbuj ponownie!",

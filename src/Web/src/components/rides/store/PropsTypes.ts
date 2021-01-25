@@ -1,8 +1,8 @@
-import { IAnswerRideRequestAction, IGetRideRequestsAction } from "./Types";
+import { IAnswerRideRequestAction, IGetRideRequestsAction, IRidesSetLoadingStatusAction } from "./Types";
 import { IRidesState } from "./State";
 import { IAuthState } from "../../auth/store/State";
 import { IRideRequest } from "../../groups/interfaces/rideRequest/IRideRequest";
-import { answerRideRequest, getRideRequests } from "./Actions";
+import { answerRideRequest, getRideRequests, setLoadingStatus } from "./Actions";
 import { ISetLoaderVisibleAction } from "../../layout/store/Types";
 import { setLoaderVisible } from "../../layout/store/Actions";
 import { LoadingStatus } from "../../shared/enum/LoadingStatus";
@@ -29,12 +29,14 @@ interface IDispatchPropsType {
 	getRideRequests: () => IGetRideRequestsAction;
 	answerRideRequest: (id: string, isAccepted: boolean, owned: boolean) => IAnswerRideRequestAction;
 	setLoaderVisible: (visible: boolean) => ISetLoaderVisibleAction;
+	setLoadingStatus: (status: LoadingStatus) => IRidesSetLoadingStatusAction;
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
 	getRideRequests,
 	answerRideRequest,
 	setLoaderVisible,
+	setLoadingStatus,
 };
 
 export type DispatchProps = typeof mapDispatchToProps;

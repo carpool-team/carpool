@@ -30,6 +30,9 @@ const reducer: Reducer<IRidesState> = (
 					draft[key] = initialState[key];
 				});
 				break;
+			case GenericActionTypes.SetLoadingStatus:
+				draft.loadingStatus = action.status;
+				break;
 			default:
 				break;
 		}
