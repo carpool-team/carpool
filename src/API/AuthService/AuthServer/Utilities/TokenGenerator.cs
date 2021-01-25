@@ -12,7 +12,7 @@ namespace AuthServer.Utilities
 {
 	public class TokenGenerator : ITokenGenerator
 	{
-		private const int TOKEN_LIFETIME = 5;
+		private const int TOKEN_LIFETIME = 1;
 		private const string PROVIDER_SUB = "790688245242396672";
 		
 		private readonly JwtOptions _jwtOptions;
@@ -34,7 +34,7 @@ namespace AuthServer.Utilities
 
 			var token = new JwtSecurityToken(_jwtOptions.Issuer,
 				_jwtOptions.Audience,
-				expires: DateTime.Now.AddMinutes(TOKEN_LIFETIME),
+				expires: DateTime.Now.AddDays(TOKEN_LIFETIME),
 				claims: authClaims,
 				signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
 
