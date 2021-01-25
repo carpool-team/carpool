@@ -100,6 +100,7 @@ const RideRequest = (props: IRideRequestProps) => {
 			requestSelected={selectedRequest}
 			setRequest={setRequest}
 			answerRequestCallback={(id, accepted) => answerRequestCallback(id, accepted, true)}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 	const renderParticipantList = () => (
@@ -109,6 +110,7 @@ const RideRequest = (props: IRideRequestProps) => {
 			requestSelected={selectedRequest}
 			setRequest={setRequest}
 			answerRequestCallback={(id, accepted) => answerRequestCallback(id, accepted, false)}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 

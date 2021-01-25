@@ -79,7 +79,6 @@ class Footer extends React.Component<IFooterProps> {
 						{t(this.resources.requests)}
 					</ButtonLink>
 				</div>
-
 			);
 		}
 	}

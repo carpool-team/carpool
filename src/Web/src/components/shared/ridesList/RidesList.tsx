@@ -16,6 +16,7 @@ const RidesList = (props: IListProps) => {
 			firstDay={props.firstDay}
 			lastDay={props.lastDay}
 			setRide={props.setRide}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 
@@ -27,6 +28,7 @@ const RidesList = (props: IListProps) => {
 			firstDay={props.firstDay}
 			lastDay={props.lastDay}
 			setRide={props.setRide}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 
@@ -38,6 +40,7 @@ const RidesList = (props: IListProps) => {
 			setRide={props.setRide}
 			joinRideCallback={props.joinRideCallback}
 			selectedGroupId={props.selectedGroupId}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 
@@ -49,20 +52,29 @@ const RidesList = (props: IListProps) => {
 			setRide={props.setRide}
 			joinRideCallback={props.joinRideCallback}
 			selectedGroupId={props.selectedGroupId}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 
 	const renderRequestParticipantList = () => (
 		<RequestsListDefault
-			answerCallback={props.answerRequestCallback} listType={props.listType}
-			requestSelected={props.requestSelected} requests={props.requests} setRequest={props.setRequest}
+			answerCallback={props.answerRequestCallback}
+			listType={props.listType}
+			requestSelected={props.requestSelected}
+			requests={props.requests}
+			setRequest={props.setRequest}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 
 	const renderRequestOwnerList = () => (
 		<RequestsListDefault
-			answerCallback={props.answerRequestCallback} listType={props.listType}
-			requestSelected={props.requestSelected} requests={props.requests} setRequest={props.setRequest}
+			answerCallback={props.answerRequestCallback}
+			listType={props.listType}
+			requestSelected={props.requestSelected}
+			requests={props.requests}
+			setRequest={props.setRequest}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 

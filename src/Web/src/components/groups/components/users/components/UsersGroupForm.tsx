@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import MediaQuery from "react-responsive";
+import { LoadingStatus } from "../../../../shared/enum/LoadingStatus";
 import { IGroup } from "../../../interfaces/IGroup";
 import { deleteUserFromGroup, getGroupUsers } from "../../../store/Actions";
 import { IDeleteUserFromGroupAction, IGetGroupUsersAction } from "../../../store/Types";
@@ -19,6 +20,7 @@ const mapDispatchToProps: IDispatchPropsType = {
 type DispatchProps = typeof mapDispatchToProps;
 interface IUsersGroupProps extends DispatchProps {
 	group: IGroup;
+	loadingStatus: LoadingStatus;
 }
 
 const UsersGroupForm: (props: IUsersGroupProps) => JSX.Element = props => {

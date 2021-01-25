@@ -30,6 +30,7 @@ const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
 	};
 
 	const baseCssClass: string = "buttonLink";
+
 	const cssClasses: string[] = [
 		baseCssClass,
 		getColorClass(props.color),
@@ -37,7 +38,8 @@ const ButtonLink: FunctionComponent<IButtonLinkProps> = (props) => {
 		getIconClass(props.icon),
 		getUnderlineClass(props.undeline),
 		getStyleClass(props.style)
-	]
+	];
+
 	if (props.additionalCssClass) {
 		cssClasses.push(props.additionalCssClass);
 	}

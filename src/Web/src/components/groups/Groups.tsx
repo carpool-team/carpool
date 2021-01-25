@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import GroupsRouter from "./components/GroupsRouter";
 import { withRouter, RouteComponentProps } from "react-router";
 import { IGroupCallbacks } from "./interfaces/IGroupCallbacks";
-import { IGroup } from "./interfaces/IGroup";
 
 import {
 	StateProps,
@@ -14,6 +13,7 @@ import {
 import produce from "immer";
 
 import "./Groups.scss";
+import { LoadingStatus } from "../shared/enum/LoadingStatus";
 
 interface IGroupsProps extends RouteComponentProps, StateProps, DispatchProps { }
 
@@ -31,6 +31,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 		this.state = {
 			selectedGroupId: null,
 		};
+		this.props.setLoadingStatus(LoadingStatus.Loading);
 		this.props.getGroups();
 		this.props.getInvites(true);
 		this.props.getRides(false);
@@ -48,6 +49,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 
 	setSelectedGroupHandler = (id: string) => {
 		if (id) {
+			this.props.setLoadingStatus(LoadingStatus.Loading);
 			this.props.getRidesAvailable(id);
 		}
 		this.setState(produce((draft: IGroupsState) => {
@@ -81,6 +83,7 @@ class Groups extends Component<IGroupsProps, IGroupsState> {
 					callbacks={callbacks}
 					selectedGroup={this.state.selectedGroupId ? this.props.groups.find(g => g.groupId === this.state.selectedGroupId) : null}
 					authId={this.props.authId}
+					loadingStatus={this.props.loadingStatus}
 				/>
 			</section>
 		);

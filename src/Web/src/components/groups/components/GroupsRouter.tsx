@@ -12,11 +12,13 @@ import { IRide } from "../interfaces/IRide";
 import FallbackRoute from "../../system/FallbackRoute";
 import GroupUsers from "./users/GroupUsers";
 import GroupReport from "./reports/GroupReports";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 
 interface IGroupsRouterProps extends RouteComponentProps {
 	callbacks: IGroupCallbacks;
 	selectedGroup: IGroup;
 	authId: string;
+	loadingStatus: LoadingStatus;
 }
 
 class GroupsRouter extends Component<IGroupsRouterProps> {
@@ -51,24 +53,26 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 						<ManageScreen
 							callbacks={this.props.callbacks}
 							selectedGroup={this.props.selectedGroup}
+							loadingStatus={this.props.loadingStatus}
 						/>
 					</Route>
 					<Route path={path + GroupsRouter.routes.addGroup}>
 						<AddGroupForm
 							callbacks={this.props.callbacks}
 							userId={this.props.authId}
+							loadingStatus={this.props.loadingStatus}
 						/>
 					</Route>
 					{this.props.selectedGroup ? (
 						<>
 							<Route path={path + GroupsRouter.routes.users}>
-								<GroupUsers group={this.props.selectedGroup} rides={rides} />
+								<GroupUsers group={this.props.selectedGroup} rides={rides} loadingStatus={this.props.loadingStatus} />
 							</Route>
 							<Route path={path + GroupsRouter.routes.report}>
-								<GroupReport group={this.props.selectedGroup} rides={rides} />
+								<GroupReport group={this.props.selectedGroup} rides={rides} loadingStatus={this.props.loadingStatus} />
 							</Route>
 							<Route path={path + GroupsRouter.routes.edit}>
-								<GroupEdit group={this.props.selectedGroup} rides={rides} />
+								<GroupEdit group={this.props.selectedGroup} rides={rides} loadingStatus={this.props.loadingStatus} />
 							</Route>
 							<Route path={path + GroupsRouter.routes.invite}>
 								<GroupInvite
@@ -76,6 +80,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 									rides={rides}
 									addInvitesCallback={(groupId, userIds) => this.props.callbacks.addInvites(groupId, userIds)}
 									currentAppUserId={this.props.authId}
+									loadingStatus={this.props.loadingStatus}
 								/>
 							</Route>
 							<Route exact path={path + GroupsRouter.routes.rides}>
@@ -83,6 +88,7 @@ class GroupsRouter extends Component<IGroupsRouterProps> {
 									group={this.props.selectedGroup}
 									rides={ridesAvailable}
 									joinRideCallback={this.props.callbacks.participateInRide}
+									loadingStatus={this.props.loadingStatus}
 								/>
 							</Route>
 						</>

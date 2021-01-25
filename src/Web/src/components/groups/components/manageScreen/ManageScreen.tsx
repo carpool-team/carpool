@@ -19,6 +19,7 @@ import GroupsList from "./components/groupsList/GroupsList";
 import InvitesList from "./components/InvitesList";
 import { IGroup } from "../../interfaces/IGroup";
 import { IInvite } from "../../interfaces/IInvite";
+import { LoadingStatus } from "../../../shared/enum/LoadingStatus";
 
 enum Lists {
 	Invites = "INVITES",
@@ -28,6 +29,7 @@ enum Lists {
 interface IManageScreenProps extends IReactI18nProps, RouteComponentProps {
 	callbacks: IGroupCallbacks;
 	selectedGroup: IGroup;
+	loadingStatus: LoadingStatus;
 }
 
 interface IManageScreenState {
@@ -100,6 +102,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			answerInviteCallback={this.props.callbacks.answerInvite}
 			getInvitesCallback={this.props.callbacks.getInvites}
 			setInviteSelected={this.setCurrentInvite}
+			loadingStatus={this.props.loadingStatus}
 		/>
 	)
 
@@ -108,6 +111,7 @@ class ManageScreen extends Component<IManageScreenProps, IManageScreenState> {
 			getGroupsCallback={this.props.callbacks.getGroups}
 			setGroupSelected={this.props.callbacks.setGroupSelected}
 			groupSelected={this.props.selectedGroup}
+			loadingStatus={this.props.loadingStatus}
 		/>
 	)
 

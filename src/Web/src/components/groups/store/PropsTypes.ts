@@ -10,9 +10,10 @@ import {
 	IAddInvitesAction,
 	ISetSelectedGroupAction,
 	IGetRidesAvailableAction,
-	IGetGroupUsersAction
+	IGetGroupUsersAction,
+	ISetLoadingStatusAction
 } from "./Types";
-import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, addRide, addInvites, setSelectedGroup, getRidesAvailable, getGroupUsers } from "./Actions";
+import { addGroup, getGroups, getInvites, answerInvite, getRides, participateInRide, addRide, addInvites, setSelectedGroup, getRidesAvailable, getGroupUsers, setLoadingStatus } from "./Actions";
 import { IGroupsState } from "./State";
 import { IInvite } from "../interfaces/IInvite";
 import { IRide } from "../interfaces/IRide";
@@ -22,6 +23,7 @@ import { ILocation } from "../interfaces/ILocation";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
 import { RideDirection } from "../api/addRide/AddRideRequest";
 import { IRideFilters } from "../interfaces/IRideFilters";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 interface IStatePropsType {
 	groups: IGroupsState;
 	auth: IAuthState;
@@ -36,6 +38,7 @@ interface IStateFromProps {
 	ridesParticipatedPast: IRide[];
 	ridesAvailable: IRide[];
 	authId: string;
+	loadingStatus: LoadingStatus;
 }
 
 export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (state) => ({
@@ -47,9 +50,11 @@ export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (sta
 	ridesParticipatedPast: state.groups.ridesParticipatedPast,
 	ridesAvailable: state.groups.ridesAvailable,
 	authId: state.auth.tokenInfo?.payload?.sub,
+	loadingStatus: state.groups.loadingStatus,
 });
 
 interface IDispatchPropsType {
+	setLoadingStatus: (loadingStatus: LoadingStatus) => ISetLoadingStatusAction;
 	addGroup: (group: IAddGroupData) => IAddGroupAction;
 	addRide: (input: IAddRideInput) => IAddRideAction;
 	addInvites: (groupId: string, userIds: string[]) => IAddInvitesAction;
@@ -64,6 +69,7 @@ interface IDispatchPropsType {
 }
 
 export const mapDispatchToProps: IDispatchPropsType = {
+	setLoadingStatus,
 	addGroup,
 	getGroups,
 	getInvites,

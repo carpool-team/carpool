@@ -8,7 +8,11 @@ interface IGroupEditProps extends IGroupDetailedViewProps { }
 
 const GroupEdit = (props: IGroupEditProps) => {
 	return (
-		<GroupDetailedView group={props.group} rides={props.rides}>
+		<GroupDetailedView
+			group={props.group}
+			rides={props.rides}
+			loadingStatus={props.loadingStatus}
+		>
 			<EditGroupForm
 				group={props.group}
 			/>

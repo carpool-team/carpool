@@ -2,10 +2,12 @@ import { IRidesState } from "./State";
 import { Reducer } from "redux";
 import { produce } from "immer";
 import { RideRequestsActionTypes, RideRequestsAction, GenericActionTypes, GenericAction } from "./Types";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 
 const initialState: IRidesState = {
 	requestsOwner: [],
 	requestsParticipant: [],
+	loadingStatus: LoadingStatus.Loading,
 };
 
 /**

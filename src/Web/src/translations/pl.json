@@ -186,6 +186,10 @@
             },
             "ridesBtn": "Przejazdy"
         },
+        "groupsList": {
+            "noGroupsLabel": "Brak grup",
+            "getErrorLabel": "Błąd pobierania grup"
+        },
         "groupUsers": {
             "get": {
                 "error": "Błąd pobierania użytkowników grup, odśwież stronę!",
@@ -238,6 +242,10 @@
                 "error": "Błąd pobierania zaproszeń. Odśwież stronę!",
                 "errorCritical": "Błąd pobierania zaproszeń. Odśwież stronę!"
             }
+        },
+        "invitesList": {
+            "noInvitesLabel": "Brak zaproszeń",
+            "getErrorLabel": "Błąd pobierania zaproszeń"
         },
         "loadingScreen": {
             "join": "Grupy",

@@ -1,3 +1,4 @@
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 import { IGroup } from "../interfaces/IGroup";
 import { IInvite } from "../interfaces/IInvite";
 import { IReport } from "../interfaces/IReport";
@@ -21,4 +22,6 @@ export interface IGroupsState {
 	ridesAvailable: IRide[];
 	/** Report */
 	report: IReport;
+	/** LoadingStatus */
+	loadingStatus: LoadingStatus;
 }

@@ -5,6 +5,7 @@ import { IRideRequest } from "../../groups/interfaces/rideRequest/IRideRequest";
 import { answerRideRequest, getRideRequests } from "./Actions";
 import { ISetLoaderVisibleAction } from "../../layout/store/Types";
 import { setLoaderVisible } from "../../layout/store/Actions";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 
 interface IStatePropsType {
 	rides: IRidesState;
@@ -14,12 +15,14 @@ interface IStatePropsType {
 interface IStateFromProps {
 	requestsOwner: IRideRequest[];
 	requestsParticipant: IRideRequest[];
+	loadingStatus: LoadingStatus;
 }
 
 export const mapStateToProps: (state: IStatePropsType) => IStateFromProps = (state) => ({
 	requestsOwner: state.rides.requestsOwner,
 	requestsParticipant: state.rides.requestsParticipant,
 	authId: state.auth.tokenInfo?.payload?.sub,
+	loadingStatus: state.rides.loadingStatus,
 });
 
 interface IDispatchPropsType {
