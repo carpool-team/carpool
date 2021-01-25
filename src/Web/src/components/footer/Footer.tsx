@@ -7,6 +7,7 @@ import { ButtonLinkColor } from "../ui/buttonLink/enums/ButtonLinkColor";
 import { ButtonLinkBackground } from "../ui/buttonLink/enums/ButtonLinkBackground";
 import "./Footer.scss";
 import { isAuthorized } from "../../helpers/UniversalHelper";
+import { rideRoutes } from "../rides/RidesRouter";
 
 interface IFooterProps extends IReactI18nProps { }
 
@@ -33,6 +34,7 @@ class Footer extends React.Component<IFooterProps> {
 		rides: "homeScreen.rides",
 		credits: "footer.credits",
 		help: "footer.help",
+		requests: "rides.requestsBtn",
 	};
 	private ids = {
 		container: "footerContainer",
@@ -48,13 +50,13 @@ class Footer extends React.Component<IFooterProps> {
 					<div className={this.cssClasses.footerTitle}>
 						{t(this.resources.services)}
 					</div>
-					<ButtonLink
+					{/* <ButtonLink
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
 						to={`/${mainRoutes.help}`}
 					>
 						{t(this.resources.help)}
-					</ButtonLink>
+					</ButtonLink> */}
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
@@ -65,15 +67,16 @@ class Footer extends React.Component<IFooterProps> {
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
+						to={`/${mainRoutes.rides}`}
 					>
 						{t(this.resources.rides)}
 					</ButtonLink>
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
-						onClick={() => { }}
+						to={`/${mainRoutes.rides + rideRoutes.requests}`}
 					>
-						{t(this.resources.reports)}
+						{t(this.resources.requests)}
 					</ButtonLink>
 				</div>
 
@@ -86,20 +89,20 @@ class Footer extends React.Component<IFooterProps> {
 		return (
 			<div id={this.ids.container} className={this.cssClasses.footerContainer}>
 				<div className={this.cssClasses.footerSubContainer}>
-					<a href="link to google play download">
+					<a href="https://play.google.com/store/apps/details?id=com.carpool.wmi">
 						<div className={this.cssClasses.footerGoogle}></div>
 					</a>
 					<div className={this.cssClasses.footerSocials}>
-						<div className={this.cssClasses.footerFacebook}></div>
+						{/* <div className={this.cssClasses.footerFacebook}></div>
 						<div className={this.cssClasses.footerTwitter}></div>
-						<div className={this.cssClasses.footerInstagram}></div>
+						<div className={this.cssClasses.footerInstagram}></div> */}
 					</div>
 				</div>
 				<div className={this.cssClasses.footerSubContainer}>
 					<div className={this.cssClasses.footerTitle}>
 						{t(this.resources.about)}
 					</div>
-					<ButtonLink
+					{/* <ButtonLink
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}
 						onClick={() => { }}
@@ -111,7 +114,7 @@ class Footer extends React.Component<IFooterProps> {
 						background={ButtonLinkBackground.Gray}
 					>
 						{t(this.resources.environment)}
-					</ButtonLink>
+					</ButtonLink> */}
 					<ButtonLink
 						color={ButtonLinkColor.Gray}
 						background={ButtonLinkBackground.Gray}

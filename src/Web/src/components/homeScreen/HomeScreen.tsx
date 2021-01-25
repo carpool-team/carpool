@@ -61,7 +61,7 @@ class HomeScreen extends Component<IReactI18nProps> {
 							{t(this.resources.helpGroups)}
 						</div>
 						<div className={this.cssClasses.homeScreenGroupsBtn}>
-							<ButtonLink
+							{/* <ButtonLink
 								color={ButtonLinkColor.Gray}
 								background={ButtonLinkBackground.Tansparent}
 								undeline={ButtonLinkUnderline.Solid}
@@ -69,7 +69,7 @@ class HomeScreen extends Component<IReactI18nProps> {
 								onClick={() => { }}
 							>
 								{t(this.resources.btnGroups)}
-							</ButtonLink>
+							</ButtonLink> */}
 						</div>
 					</div>
 					<div className={this.cssClasses.homeScreenGroupsRectangle}>
@@ -81,13 +81,13 @@ class HomeScreen extends Component<IReactI18nProps> {
 							{t(this.resources.helpRides)}
 						</div>
 						<div className={this.cssClasses.homeScreenGroupsBtn}>
-							<ButtonLink
+							{/* <ButtonLink
 								color={ButtonLinkColor.Gray}
 								background={ButtonLinkBackground.Tansparent}
 								undeline={ButtonLinkUnderline.Solid}
 							>
 								{t(this.resources.btnRides)}
-							</ButtonLink>
+							</ButtonLink> */}
 						</div>
 					</div>
 					<div className={this.cssClasses.homeScreenGroupsRectangle}>
@@ -99,13 +99,13 @@ class HomeScreen extends Component<IReactI18nProps> {
 							{t(this.resources.helpRaports)}
 						</div>
 						<div className={this.cssClasses.homeScreenGroupsBtn}>
-							<ButtonLink
+							{/* <ButtonLink
 								color={ButtonLinkColor.Gray}
 								background={ButtonLinkBackground.Tansparent}
 								undeline={ButtonLinkUnderline.Solid}
 							>
 								{t(this.resources.btnRaports)}
-							</ButtonLink>
+							</ButtonLink> */}
 						</div>
 					</div>
 				</div>
