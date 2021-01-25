@@ -1,4 +1,5 @@
 import React from "react";
+import { LoadingStatus } from "../../../shared/enum/LoadingStatus";
 import { IGroup } from "../../interfaces/IGroup";
 import { ILocation } from "../../interfaces/ILocation";
 import { IRide } from "../../interfaces/IRide";
@@ -8,12 +9,14 @@ export interface IGroupDetailedViewProps {
 	group: IGroup;
 	rides: IRide[];
 	joinRideCallback?: (ride: IRide, location: ILocation, filters?: IRideFilters) => void;
+	loadingStatus: LoadingStatus;
 }
 
 const GroupDetailedView: React.FunctionComponent<IGroupDetailedViewProps> = props => {
-	const detailedViewContainer = "detailedViewContainer";
+	const containerCssClass = "detailedViewContainer";
+
 	return (
-		<div className={detailedViewContainer}>
+		<div className={containerCssClass}>
 			{props.children}
 		</div>
 	);

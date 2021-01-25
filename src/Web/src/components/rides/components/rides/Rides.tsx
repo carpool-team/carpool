@@ -22,13 +22,10 @@ import { connect } from "react-redux";
 import { IGroupsState } from "../../../groups/store/State";
 import { IGetRidesAction } from "../../../groups/store/Types";
 import { getRides } from "../../../groups/store/Actions";
-import Button from "../../../ui/button/Button";
-import { ButtonColor } from "../../../ui/button/enums/ButtonColor";
-import { ButtonBackground } from "../../../ui/button/enums/ButtonBackground";
-import { ButtonIcon } from "../../../ui/button/enums/ButtonIcon";
 import RidesList from "../../../shared/ridesList/RidesList";
 import { RidesListType } from "../../../shared/ridesList/enums/RidesListType";
 import { rideRoutes } from "../../RidesRouter";
+import { LoadingStatus } from "../../../shared/enum/LoadingStatus";
 
 interface IStatePropsType {
 	groups: IGroupsState;
@@ -39,13 +36,15 @@ interface IStateToProps {
 	ridesParticipated: IRide[];
 	ridesPastOwner: IRide[];
 	ridesPastParticipated: IRide[];
+	loadingStatus: LoadingStatus;
 }
 
 const mapStateToProps = (state: IStatePropsType): IStateToProps => ({
 	ridesOwned: state.groups.ridesOwned,
 	ridesParticipated: state.groups.ridesParticipated,
 	ridesPastParticipated: state.groups.ridesParticipatedPast,
-	ridesPastOwner: state.groups.ridesOwnedPast
+	ridesPastOwner: state.groups.ridesOwnedPast,
+	loadingStatus: state.groups.loadingStatus,
 });
 
 interface IDispatchPropsType {
@@ -198,16 +197,44 @@ const Rides = (props: IRidesProps) => {
 	})(Switch);
 
 	const renderOwnerList = () => (
-		<RidesList listType={RidesListType.Owner} rides={props.ridesOwned ?? []} rideSelected={selectedRide} firstDay={date.firstDay} lastDay={date.lastDay} setRide={setRide} />
+		<RidesList
+			listType={RidesListType.Owner}
+			rides={props.ridesOwned ?? []}
+			rideSelected={selectedRide}
+			firstDay={date.firstDay}
+			lastDay={date.lastDay}
+			setRide={setRide}
+			loadingStatus={props.loadingStatus}
+		/>
 	);
 	const renderParticipantList = () => (
-		<RidesList listType={RidesListType.Participant} rides={props.ridesParticipated ?? []} rideSelected={selectedRide} firstDay={date.firstDay} lastDay={date.lastDay} setRide={setRide} />
+		<RidesList
+			listType={RidesListType.Participant}
+			rides={props.ridesParticipated ?? []}
+			rideSelected={selectedRide}
+			firstDay={date.firstDay}
+			lastDay={date.lastDay}
+			setRide={setRide}
+			loadingStatus={props.loadingStatus}
+		/>
 	);
 	const renderPastParticipantList = () => (
-		<RidesList listType={RidesListType.Default} rides={props.ridesPastParticipated ?? []} rideSelected={selectedRide} setRide={setRide} />
+		<RidesList
+			listType={RidesListType.Default}
+			rides={props.ridesPastParticipated ?? []}
+			rideSelected={selectedRide}
+			setRide={setRide}
+			loadingStatus={props.loadingStatus}
+		/>
 	);
 	const renderPastOwnerList = () => (
-		<RidesList listType={RidesListType.Default} rides={props.ridesPastOwner ?? []} rideSelected={selectedRide} setRide={setRide} />
+		<RidesList
+			listType={RidesListType.Default}
+			rides={props.ridesPastOwner ?? []}
+			rideSelected={selectedRide}
+			setRide={setRide}
+			loadingStatus={props.loadingStatus}
+		/>
 	);
 
 	const renderList = () => {

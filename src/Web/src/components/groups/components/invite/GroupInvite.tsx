@@ -22,7 +22,11 @@ const GroupInvite = (props: IGroupInviteProps) => {
 	};
 
 	return (
-		<GroupDetailedView group={props.group} rides={props.rides}>
+		<GroupDetailedView
+			group={props.group}
+			rides={props.rides}
+			loadingStatus={props.loadingStatus}
+		>
 			<AddInviteForm
 				users={users}
 				addUserToInvite={addUserCallback}

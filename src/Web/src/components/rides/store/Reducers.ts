@@ -2,10 +2,12 @@ import { IRidesState } from "./State";
 import { Reducer } from "redux";
 import { produce } from "immer";
 import { RideRequestsActionTypes, RideRequestsAction, GenericActionTypes, GenericAction } from "./Types";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 
 const initialState: IRidesState = {
 	requestsOwner: [],
 	requestsParticipant: [],
+	loadingStatus: LoadingStatus.Loading,
 };
 
 /**
@@ -27,6 +29,9 @@ const reducer: Reducer<IRidesState> = (
 				Object.keys(draft).forEach(key => {
 					draft[key] = initialState[key];
 				});
+				break;
+			case GenericActionTypes.SetLoadingStatus:
+				draft.loadingStatus = action.status;
 				break;
 			default:
 				break;

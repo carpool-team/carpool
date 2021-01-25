@@ -1,9 +1,11 @@
 import { Action } from "redux";
 import { IRideRequest } from "../../groups/interfaces/rideRequest/IRideRequest";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 
 export enum GenericActionTypes {
 	ApiError = "RIDES_STORE_API_ERROR",
 	ClearStore = "RIDES_CLEAR_STORE",
+	SetLoadingStatus = "RIDES_SET_LOADING_STATUS",
 }
 
 /** Enum of ride requests actions */
@@ -36,6 +38,10 @@ export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 
 export interface IRidesClearStoreAction extends Action<GenericActionTypes.ClearStore> {
 
+}
+
+export interface IRidesSetLoadingStatusAction extends Action<GenericActionTypes.SetLoadingStatus> {
+	status: LoadingStatus;
 }
 //#endregion
 
@@ -111,7 +117,8 @@ export interface IDeletePassengerErrorAction extends Action<RideActionTypes.Dele
 
 export type GenericAction =
 	IApiErrorAction
-	| IRidesClearStoreAction;
+	| IRidesClearStoreAction
+	| IRidesSetLoadingStatusAction;
 
 /** Type of ride req action */
 export type RideRequestsAction =

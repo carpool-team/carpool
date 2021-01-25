@@ -56,7 +56,8 @@ import {
 	IGetReportActionError,
 	IGetReportActionSuccess,
 	IAddRideErrorAction,
-	IAddRideSuccessAction
+	IAddRideSuccessAction,
+	ISetLoadingStatusAction
 } from "./Types";
 import { toast } from "react-toastify";
 import { GetGroupsRequest } from "../api/getGroups/GetGroupsRequest";
@@ -89,6 +90,7 @@ import { GetReportRequest } from "../api/getReport/GetReportRequest";
 import moment from "moment";
 import { IRideDays } from "../../rides/components/addRide/interfaces/IRideDays";
 import { date } from "faker";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 
 const getMappedDays = (weekDays: IRideDays) => {
 	let weekDaysBinary: number = 0;
@@ -200,6 +202,10 @@ const getGroupsEpic: Epic<GroupsAction> = (action$, state$) =>
 				return [
 					<IGetGroupsActionError>{
 						type: GroupsActionTypes.GetGroupsError,
+					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Error,
 					}
 				];
 			} else {
@@ -208,6 +214,10 @@ const getGroupsEpic: Epic<GroupsAction> = (action$, state$) =>
 						type: GroupsActionTypes.GetGroupsSuccess,
 						groups: response.result.result,
 					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Success,
+					}
 				];
 			}
 		}),
@@ -243,6 +253,10 @@ const getInvitesEpic: Epic<InviteAction> = (action$, state$) =>
 						type: InvitesActionTypes.GetInvitesSuccess,
 						invites: response.result,
 					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Success,
+					}
 				];
 			} else {
 				toast.error(i18n.t("invites.get.error"));
@@ -250,6 +264,10 @@ const getInvitesEpic: Epic<InviteAction> = (action$, state$) =>
 					<IGetInvitesActionError>{
 						type: InvitesActionTypes.GetInvitesError,
 						error: null,
+					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Error,
 					}
 				];
 			}
@@ -371,12 +389,18 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 		mergeMap((response) => {
 			if (response.err) {
 				toast.error(i18n.t("rides.get.error"));
-				return [<IGetRidesActionError>{
-					type: RidesActionTypes.GetRidesError,
-					error: response.err,
-				}];
+				return [
+					<IGetRidesActionError>{
+						type: RidesActionTypes.GetRidesError,
+						error: response.err,
+					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Error,
+					}
+				];
 			} else {
-				const result: RideAction[] = [
+				const result: Array<RideAction | GenericAction> = [
 					<IGetRidesActionSuccess>{
 						type: RidesActionTypes.GetRidesSuccess,
 						ridesOwned: response.owned,
@@ -384,6 +408,10 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 						ridesOwnedPast: response.ownedPast,
 						ridesParticipatedPast: response.participatedPast
 					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Success,
+					}
 				];
 				if (response.refreshAvailable?.refresh) {
 					result.push(
@@ -406,7 +434,7 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 		})
 	);
 
-const getRidesAvailableEpic: Epic<GroupsAction | RideAction> = (action$, state$) => action$.pipe(
+const getRidesAvailableEpic: Epic<GroupsAction | RideAction | GenericAction> = (action$, state$) => action$.pipe(
 	ofType(RidesActionTypes.GetRidesAvailable),
 	switchMap(async (action: IGetRidesAvailableAction) => {
 		const uid: string = (state$.value.auth as IAuthState).tokenInfo?.payload?.sub;
@@ -450,6 +478,10 @@ const getRidesAvailableEpic: Epic<GroupsAction | RideAction> = (action$, state$)
 				<IGetRidesAvailableActionError>{
 					type: RidesActionTypes.GetRidesAvailableError,
 					error: null,
+				},
+				<ISetLoadingStatusAction>{
+					type: GenericActionTypes.SetLoadingStatus,
+					status: LoadingStatus.Error,
 				}
 			];
 		} else {
@@ -458,6 +490,10 @@ const getRidesAvailableEpic: Epic<GroupsAction | RideAction> = (action$, state$)
 					type: RidesActionTypes.GetRidesAvailableSuccess,
 					rides: response.rides,
 				},
+				<ISetLoadingStatusAction>{
+					type: GenericActionTypes.SetLoadingStatus,
+					status: LoadingStatus.Success,
+				}
 			];
 		}
 	}),
@@ -659,7 +695,7 @@ const addInviteEpic: Epic<InviteAction | GenericAction | LayoutAction> = (action
 	})
 );
 
-const getGroupUsersEpic: Epic<GroupsAction> = (action$) => action$.pipe(
+const getGroupUsersEpic: Epic<GroupsAction | GenericAction> = (action$) => action$.pipe(
 	ofType(GroupsActionTypes.GetGroupUsers),
 	switchMap(async (action: IGetGroupUsersAction) => {
 		try {
@@ -672,6 +708,10 @@ const getGroupUsersEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 						type: GroupsActionTypes.GetGroupUsersError,
 						error: null,
 					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Error,
+					}
 				];
 			} else {
 				return [
@@ -679,6 +719,10 @@ const getGroupUsersEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 						type: GroupsActionTypes.GetGroupUsersSuccess,
 						users: res.result,
 						groupId: action.groupId,
+					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Success,
 					}
 				];
 			}
@@ -689,6 +733,10 @@ const getGroupUsersEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 					type: GroupsActionTypes.GetGroupUsersError,
 					error: err,
 				},
+				<ISetLoadingStatusAction>{
+					type: GenericActionTypes.SetLoadingStatus,
+					status: LoadingStatus.Error,
+				}
 			];
 		}
 	}),
@@ -702,7 +750,7 @@ const getGroupUsersEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 	})
 );
 
-const updateGroupDetailsEpic: Epic<GroupsAction> = (action$, state$) => action$.pipe(
+const updateGroupDetailsEpic: Epic<GroupsAction | GenericAction> = (action$, state$) => action$.pipe(
 	ofType(GroupsActionTypes.UpdateGroupDetails, GroupsActionTypes.SetSelectedGroup),
 	filter((action: IUpdateGroupDetailsAction | ISetSelectedGroupAction) => {
 		if (action.type === GroupsActionTypes.UpdateGroupDetails) {
@@ -725,6 +773,10 @@ const updateGroupDetailsEpic: Epic<GroupsAction> = (action$, state$) => action$.
 						type: GroupsActionTypes.GetSelectedGroupDetailsError,
 						error: null,
 					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Error,
+					}
 				];
 			} else {
 				return [
@@ -734,6 +786,10 @@ const updateGroupDetailsEpic: Epic<GroupsAction> = (action$, state$) => action$.
 							...res.result,
 							users: resUsers.result,
 						},
+					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Success,
 					}
 				];
 			}
@@ -744,6 +800,10 @@ const updateGroupDetailsEpic: Epic<GroupsAction> = (action$, state$) => action$.
 					type: GroupsActionTypes.GetSelectedGroupDetailsError,
 					error: err,
 				},
+				<ISetLoadingStatusAction>{
+					type: GenericActionTypes.SetLoadingStatus,
+					status: LoadingStatus.Error,
+				}
 			];
 		}
 	}),
@@ -955,7 +1015,7 @@ const editGroupEpic: Epic<GroupsAction> = (action$) => action$.pipe(
 	})
 );
 
-const getGroupReportEpic: Epic<GroupsAction | LayoutAction> = (action$) => action$.pipe(
+const getGroupReportEpic: Epic<GroupsAction | LayoutAction | GenericAction> = (action$) => action$.pipe(
 	ofType(GroupsActionTypes.GetReport),
 	switchMap(async (action: IGetReportAction) => {
 		try {
@@ -979,6 +1039,10 @@ const getGroupReportEpic: Epic<GroupsAction | LayoutAction> = (action$) => actio
 					<ISetLoaderVisibleAction>{
 						type: LayoutActionTypes.SetLoaderVisible,
 						visible: false,
+					},
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Error,
 					}
 				];
 			} else {
@@ -990,6 +1054,11 @@ const getGroupReportEpic: Epic<GroupsAction | LayoutAction> = (action$) => actio
 					<ISetLoaderVisibleAction>{
 						type: LayoutActionTypes.SetLoaderVisible,
 						visible: false,
+					},
+
+					<ISetLoadingStatusAction>{
+						type: GenericActionTypes.SetLoadingStatus,
+						status: LoadingStatus.Success,
 					}
 				];
 			}
@@ -1003,6 +1072,10 @@ const getGroupReportEpic: Epic<GroupsAction | LayoutAction> = (action$) => actio
 				<ISetLoaderVisibleAction>{
 					type: LayoutActionTypes.SetLoaderVisible,
 					visible: false,
+				},
+				<ISetLoadingStatusAction>{
+					type: GenericActionTypes.SetLoadingStatus,
+					status: LoadingStatus.Error,
 				}
 			];
 		}

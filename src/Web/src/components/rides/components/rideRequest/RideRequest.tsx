@@ -13,6 +13,7 @@ import { RidesListType } from "../../../shared/ridesList/enums/RidesListType";
 import { IRideRequest } from "../../../groups/interfaces/rideRequest/IRideRequest";
 import { connect } from "react-redux";
 import { mapDispatchToProps, mapStateToProps, StateProps, DispatchProps } from "../../store/PropsTypes";
+import { LoadingStatus } from "../../../shared/enum/LoadingStatus";
 
 interface IRideRequestProps extends RouteComponentProps, IReactI18nProps, StateProps, DispatchProps {
 
@@ -51,8 +52,8 @@ const RideRequest = (props: IRideRequestProps) => {
 	const [switchCssClass, setSwitchCssClass] = useState({ from: cssClasses.switchActive, to: null });
 
 	useEffect(() => {
+		props.setLoadingStatus(LoadingStatus.Loading);
 		props.getRideRequests();
-		props.setLoaderVisible(true);
 	}, []);
 
 	const setRequest = (request: IRideRequest) => {
@@ -89,7 +90,7 @@ const RideRequest = (props: IRideRequestProps) => {
 	})(Switch);
 
 	const answerRequestCallback: (id: string, accepted: boolean, owned: boolean) => void = (id, accepted, owned) => {
-		props.setLoaderVisible(true);
+		props.setLoadingStatus(LoadingStatus.Loading);
 		props.answerRideRequest(id, accepted, owned);
 	};
 
@@ -100,6 +101,7 @@ const RideRequest = (props: IRideRequestProps) => {
 			requestSelected={selectedRequest}
 			setRequest={setRequest}
 			answerRequestCallback={(id, accepted) => answerRequestCallback(id, accepted, true)}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 	const renderParticipantList = () => (
@@ -109,6 +111,7 @@ const RideRequest = (props: IRideRequestProps) => {
 			requestSelected={selectedRequest}
 			setRequest={setRequest}
 			answerRequestCallback={(id, accepted) => answerRequestCallback(id, accepted, false)}
+			loadingStatus={props.loadingStatus}
 		/>
 	);
 

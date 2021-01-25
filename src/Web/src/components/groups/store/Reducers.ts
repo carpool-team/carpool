@@ -2,6 +2,7 @@ import { IGroupsState } from "./State";
 import { Reducer } from "redux";
 import { produce } from "immer";
 import { GenericAction, GenericActionTypes, GroupsAction, GroupsActionTypes, InviteAction, InvitesActionTypes, RideAction, RidesActionTypes } from "./Types";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 
 const initialState: IGroupsState = {
 	groups: [],
@@ -12,6 +13,7 @@ const initialState: IGroupsState = {
 	ridesParticipatedPast: [],
 	ridesAvailable: [],
 	report: null,
+	loadingStatus: LoadingStatus.Loading,
 };
 
 /**
@@ -70,6 +72,9 @@ const reducer: Reducer<IGroupsState> = (
 				Object.keys(draft).forEach(key => {
 					draft[key] = initialState[key];
 				});
+				break;
+			case GenericActionTypes.SetLoadingStatus:
+				draft.loadingStatus = action.status;
 				break;
 			case GroupsActionTypes.GetReportSuccess:
 				draft.report = action.report;

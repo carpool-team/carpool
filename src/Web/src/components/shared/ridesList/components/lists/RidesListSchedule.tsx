@@ -12,6 +12,8 @@ import { IReactI18nProps } from "../../../../system/resources/IReactI18nProps";
 import { ILeaveRideAction, IDeleteRideAction, IDeletePassengerAction } from "../../../../rides/store/Types";
 import { leaveRide, deleteRide, deletePassenger } from "../../../../rides/store/Actions";
 import { connect } from "react-redux";
+import { LoadingStatus } from "../../../enum/LoadingStatus";
+import LoaderBlock from "../../../../ui/loaderBlock/LoaderBlock";
 
 interface IDispatchPropsType {
 	leaveRide: (rideId: string) => ILeaveRideAction;
@@ -120,31 +122,40 @@ const RidesListSchedule = (props: IRidesListScheduleProps) => {
 
 	let colorIndex: number = 0;
 	const rides: IRide[] = props.rides;
-	const days = [];
+	const days: string[] = [];
 
 	for (let m = moment(props.firstDay); m.diff(props.lastDay, "days") <= 0; m.add(1, "days")) {
 		days.push(m.format());
 	}
 
+	const renderItems = () => {
+		switch (props.loadingStatus) {
+			case LoadingStatus.Loading:
+				return <LoaderBlock />;
+			default:
+				return days.map((day) => {
+					return (
+						<div className={cssClasses.day} key={day}>
+							<div className={cssClasses.dayLabel}>{moment(day).format("DD.MM")}</div>
+							<ul className={cssClasses.list}>
+								{rides && rides.map((ride) => {
+									++colorIndex;
+									const color = colorList[colorIndex % colorList.length];
+									return (
+										renderItem(color, ride, day)
+									);
+								}
+								)}
+							</ul>
+						</div>
+					);
+				});
+		}
+	};
+
 	return (
 		<ul className={cssClasses.listContainer}>
-			{days.map((day) => {
-				return (
-					<div className={cssClasses.day} key={day}>
-						<div className={cssClasses.dayLabel}>{moment(day).format("DD.MM")}</div>
-						<ul className={cssClasses.list}>
-							{rides && rides.map((ride) => {
-								++colorIndex;
-								const color = colorList[colorIndex % colorList.length];
-								return (
-									renderItem(color, ride, day)
-								);
-							}
-							)}
-						</ul>
-					</div>
-				);
-			})}
+			{renderItems()}
 		</ul>
 	);
 };

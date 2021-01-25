@@ -1,5 +1,6 @@
 import { Action } from "redux";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 import { RideDirection } from "../api/addRide/AddRideRequest";
 import { IEditGroupFormData } from "../components/edit/interfaces/IEditGroupFormData";
 import { IAddGroupData } from "../interfaces/IAddGroupData";
@@ -14,6 +15,7 @@ import { IRideFilters } from "../interfaces/IRideFilters";
 export enum GenericActionTypes {
 	ApiError = "GROUPS_STORE_API_ERROR",
 	ClearStore = "GROUPS_STORE_CLEAR",
+	SetLoadingStatus = "GROUPS_STORE_SET_LOADING_STATUS",
 }
 
 /** Enum of groups actions */
@@ -82,6 +84,10 @@ export interface IApiErrorAction extends Action<GenericActionTypes.ApiError> {
 }
 
 export interface IGroupsClearStoreAction extends Action<GenericActionTypes.ClearStore> {
+}
+
+export interface ISetLoadingStatusAction extends Action<GenericActionTypes.SetLoadingStatus> {
+	status: LoadingStatus;
 }
 //#endregion
 
@@ -331,7 +337,8 @@ export interface IAddRideSuccessAction extends Action<RidesActionTypes.AddRideSu
 
 export type GenericAction =
 	IApiErrorAction
-	| IGroupsClearStoreAction;
+	| IGroupsClearStoreAction
+	| ISetLoadingStatusAction;
 
 /** Type of group action */
 export type GroupsAction =

@@ -21,6 +21,8 @@ import {
 	IEditGroupAction,
 	IGetReportAction,
 	IClearReportAction,
+	GenericActionTypes,
+	ISetLoadingStatusAction,
 } from "./Types";
 import { IRide } from "../interfaces/IRide";
 import { IAddRideInput } from "../../rides/components/addRide/interfaces/IAddRideInput";
@@ -30,6 +32,7 @@ import { IGroup } from "../interfaces/IGroup";
 import { IEditGroupFormData } from "../components/edit/interfaces/IEditGroupFormData";
 import { RideDirection } from "../api/addRide/AddRideRequest";
 import { IRideFilters } from "../interfaces/IRideFilters";
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 
 //#region GROUPS
 export function addGroup(group: IAddGroupData): IAddGroupAction {
@@ -161,6 +164,15 @@ export function addRide(input: IAddRideInput): IAddRideAction {
 	return {
 		type: RidesActionTypes.AddRide,
 		input,
+	};
+}
+//#endregion
+
+//#region GENERIC
+export function setLoadingStatus(status: LoadingStatus): ISetLoadingStatusAction {
+	return {
+		type: GenericActionTypes.SetLoadingStatus,
+		status,
 	};
 }
 //#endregion

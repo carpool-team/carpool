@@ -15,6 +15,7 @@ import { IGroupsState } from "../../../store/State";
 import LoaderSpinner from "../../../../ui/loaderSpinner/LoaderSpinner";
 import { ISetLoaderVisibleAction } from "../../../../layout/store/Types";
 import { setLoaderVisible } from "../../../../layout/store/Actions";
+import { LoadingStatus } from "../../../../shared/enum/LoadingStatus";
 
 interface IDispatchPropsType {
 	getReport: (id: string, startDate: Date, endDate: Date) => IGetReportAction;
@@ -45,6 +46,7 @@ export type DispatchProps = typeof mapDispatchToProps;
 
 interface IReportGroupForm extends IReactI18nProps, DispatchProps, StateProps {
 	group: IGroup;
+	loadingStatus: LoadingStatus;
 }
 
 const ReportGroupForm: (props: IReportGroupForm) => JSX.Element = props => {

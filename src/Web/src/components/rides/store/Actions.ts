@@ -1,3 +1,4 @@
+import { LoadingStatus } from "../../shared/enum/LoadingStatus";
 import {
 	IAnswerRideRequestAction,
 	IDeleteRideAction,
@@ -5,7 +6,9 @@ import {
 	RideActionTypes,
 	RideRequestsActionTypes,
 	ILeaveRideAction,
-	IDeletePassengerAction
+	IDeletePassengerAction,
+	IRidesSetLoadingStatusAction,
+	GenericActionTypes
 } from "./Types";
 
 //#region RIDE REQS
@@ -40,5 +43,12 @@ export const deletePassenger: (rideId: string, userId: string) => IDeletePasseng
 	type: RideActionTypes.DeletePassenger,
 	rideId,
 	userId,
+});
+//#endregion
+
+//#region GENERIC
+export const setLoadingStatus: (status: LoadingStatus) => IRidesSetLoadingStatusAction = status => ({
+	type: GenericActionTypes.SetLoadingStatus,
+	status,
 });
 //#endregion

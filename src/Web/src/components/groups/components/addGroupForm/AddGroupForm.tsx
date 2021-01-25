@@ -8,10 +8,12 @@ import { IGroupCallbacks } from "../../interfaces/IGroupCallbacks";
 import { IFormData } from "./interfaces/IFormData";
 import { mainRoutes } from "../../../layout/components/LayoutRouter";
 import { IAddGroupData } from "../../interfaces/IAddGroupData";
+import { LoadingStatus } from "../../../shared/enum/LoadingStatus";
 
 interface IAddGroupFormScreenProps extends IReactI18nProps {
 	callbacks: IGroupCallbacks;
 	userId: string;
+	loadingStatus: LoadingStatus;
 }
 
 interface IAddGroupFormScreenState {

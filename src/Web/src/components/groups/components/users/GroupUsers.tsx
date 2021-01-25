@@ -8,9 +8,10 @@ interface IGroupUsersProps extends IGroupDetailedViewProps { }
 
 const GroupUsers = (props: IGroupUsersProps) => {
 	return (
-		<GroupDetailedView group={props.group} rides={props.rides}>
+		<GroupDetailedView group={props.group} rides={props.rides} loadingStatus={props.loadingStatus}>
 			<UsersGroupForm
 				group={props.group}
+				loadingStatus={props.loadingStatus}
 			/>
 		</GroupDetailedView>
 	);

@@ -58,6 +58,7 @@ const GroupRides = (props: IGroupRidesProps) => {
 		<GroupDetailedView
 			group={props.group}
 			rides={props.rides}
+			loadingStatus={props.loadingStatus}
 		>
 			<div className={cssClasses.leftPanel}>
 				<div className={cssClasses.leftLabelsText}> {props.group.name}</div>
@@ -80,6 +81,7 @@ const GroupRides = (props: IGroupRidesProps) => {
 						rideSelected={selectedRide}
 						setRide={setRide}
 						rides={props.rides ?? []}
+						loadingStatus={props.loadingStatus}
 					/>
 				</div>
 			</div>

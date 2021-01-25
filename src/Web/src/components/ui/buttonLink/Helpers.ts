@@ -23,8 +23,6 @@ export const getColorClass: (type?: ButtonLinkColor) => string = (color) => {
 
 export const getBackgroundClass: (type?: ButtonLinkBackground) => string = (background) => {
 	switch (background) {
-		case ButtonLinkBackground.Tansparent:
-			return "buttonLink__background--white";
 		case ButtonLinkBackground.Gray:
 			return "buttonLink__background--gray";
 		case ButtonLinkBackground.Blue:
@@ -35,6 +33,7 @@ export const getBackgroundClass: (type?: ButtonLinkBackground) => string = (back
 			return "buttonLink__background--grayDark";
 		case ButtonLinkBackground.White:
 			return "buttonLink__background--white";
+		case ButtonLinkBackground.Tansparent:
 		default:
 			return "buttonLink__background--transparent";
 	}
