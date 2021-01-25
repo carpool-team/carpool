@@ -88,7 +88,7 @@
             "unknownGeneric": "Nieznany błąd serwera. Spróbuj ponownie!"
         },
         "footer": {
-            "about": "O nas",
+            "about": "Pomoc",
             "credits": "Grafiki",
             "environment": "Środowisko",
             "help": "Zgłoś błąd",
@@ -208,7 +208,7 @@
             "help": "Jeżeli natrafiłeś na błąd, lub masz jakieś sugestie do działania aplikacji, jako zespół Carpool będziemy bardzo wdzięczni jeżeli opiszesz nam problem korzystając z naszego formularza.",
             "helpBtn": "Dodaj zgłoszenie",
             "helpGroups": "Stwórz grupę lub dołącz do już istniejącej w celu znalezienia kompanów podróży.",
-            "helpReports": "Rywalizuj w obrębie swich grup o najwięcej kilometrów przejachych razem.",
+            "helpReports": "Rywalizuj w obrębie swoich grup o największą liczbę kilometrów przejachych razem.",
             "helpRides": "Wspólne przejazdy pomagają zmniejszyć ilośc samochodów na drogach i ograniczyć ilość emitowanych zanieczyszczeń.",
             "join": "Dołącz do grupy",
             "quote": "Nie jedź\n sam!",
@@ -342,7 +342,7 @@
             "pastBtn": "Przeszłe",
             "pickGroupLabel": "Wybierz grupę do której chcesz dodać przejazd.",
             "rangeWeeks": "Ilość tygodni przez które przejazd będzie się odbywał:",
-            "requestsBtn": "Prośby o przejazd",
+            "requestsBtn": "Prośby o dołączenie",
             "seats": "Ilość miejsc w samochodzie",
             "seatsLabel": "Zajęte miejsca: ",
             "time": "Wybierz godzinę przejazdu.",
