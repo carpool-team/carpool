@@ -128,33 +128,34 @@ const RidesListSchedule = (props: IRidesListScheduleProps) => {
 		days.push(m.format());
 	}
 
-	const renderItems = (day: string) => {
+	const renderItems = () => {
 		switch (props.loadingStatus) {
 			case LoadingStatus.Loading:
 				return <LoaderBlock />;
 			default:
-				if (rides) {
-					return rides.map((ride) => {
-						++colorIndex;
-						const color = colorList[colorIndex % colorList.length];
-						return renderItem(color, ride, day);
-					});
-				}
+				return days.map((day) => {
+					return (
+						<div className={cssClasses.day} key={day}>
+							<div className={cssClasses.dayLabel}>{moment(day).format("DD.MM")}</div>
+							<ul className={cssClasses.list}>
+								{rides && rides.map((ride) => {
+									++colorIndex;
+									const color = colorList[colorIndex % colorList.length];
+									return (
+										renderItem(color, ride, day)
+									);
+								}
+								)}
+							</ul>
+						</div>
+					);
+				});
 		}
 	};
 
 	return (
 		<ul className={cssClasses.listContainer}>
-			{days.map((day) => {
-				return (
-					<div className={cssClasses.day} key={day}>
-						<div className={cssClasses.dayLabel}>{moment(day).format("DD.MM")}</div>
-						<ul className={cssClasses.list}>
-							{renderItems(day)}
-						</ul>
-					</div>
-				);
-			})}
+			{renderItems()}
 		</ul>
 	);
 };
