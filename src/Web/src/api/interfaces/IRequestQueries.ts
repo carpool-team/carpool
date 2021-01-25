@@ -13,4 +13,5 @@ export interface IRequestQueries {
 	startDate?: string;
 	endDate?: string;
 	dateTime?: string;
+	rideDirection?: string;
 }

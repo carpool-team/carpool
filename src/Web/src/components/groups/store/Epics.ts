@@ -390,7 +390,7 @@ const getRidesEpic: Epic<RideAction> = (action$, state$) =>
 						<IGetRidesAvailableAction>{
 							type: RidesActionTypes.GetRidesAvailable,
 							groupId: response.refreshAvailable.groupId,
-							date: response.filters,
+							filters: response.filters,
 						}
 					);
 				}
@@ -415,6 +415,7 @@ const getRidesAvailableEpic: Epic<GroupsAction | RideAction> = (action$, state$)
 				userId: uid,
 				groupId: action.groupId,
 				dateTime: action.filters?.date ? moment(action.filters.date).toISOString() : null,
+				direction: action.filters?.direction,
 			});
 			try {
 				const response: GetRidesResponse = await request.send();

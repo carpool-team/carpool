@@ -316,11 +316,13 @@
                 "clearFilters": "Wyczyść filtry",
                 "filter": "Filtruj"
             },
+            "checkboxesLabel": "Kierunek przejazdu",
             "cyclicBtn": "Cykliczny",
             "date": "Wybierz datę przejazdu.",
             "disposableBtn": "Jednorazowy",
             "driverLabel": "Kierowca: ",
             "from": "początkowy",
+            "fromCheckboxLabel": "Lokalizacja grupy jako punkt początkowy",
             "fromOrTo": "Lokalizacja grupy jako punkt: ",
             "futureBtn": "Przyszłe",
             "get": {
@@ -344,7 +346,8 @@
             "seats": "Ilość miejsc w samochodzie",
             "seatsLabel": "Zajęte miejsca: ",
             "time": "Wybierz godzinę przejazdu.",
-            "to": "końcowy"
+            "to": "końcowy",
+            "toCheckboxLabel": "Lokalizacja grupy jako punkt końcowy"
         },
         "userProfile": {
             "changePassword": {

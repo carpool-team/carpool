@@ -87,6 +87,9 @@
 		display: flex;
 		margin-bottom: 15px;
 	}
+	&__checkboxContainer {
+		margin: 10px 0 0 24px;
+	}
 	&__filterButton {
 		width: max-content;
 		margin: 0 10px 0 10px;
