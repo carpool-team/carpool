@@ -27,13 +27,13 @@ class Footer extends React.Component<IFooterProps> {
 	private resources = {
 		services: "footer.services",
 		environment: "footer.environment",
-		about: "footer.about",
+		help: "footer.help",
 		idea: "footer.idea",
 		groups: "homeScreen.groups",
 		reports: "homeScreen.reports",
 		rides: "homeScreen.rides",
 		credits: "footer.credits",
-		help: "footer.help",
+		report: "footer.reportIssueLabel",
 		requests: "rides.requestsBtn",
 	};
 	private ids = {
@@ -89,7 +89,7 @@ class Footer extends React.Component<IFooterProps> {
 		return (
 			<div id={this.ids.container} className={this.cssClasses.footerContainer}>
 				<div className={this.cssClasses.footerSubContainer}>
-					<a href="https://play.google.com/store/apps/details?id=com.carpool.wmi">
+					<a href="https://play.google.com/store/apps/details?id=com.carpool.wmi" target="_blank" rel="noopener noreferrer">
 						<div className={this.cssClasses.footerGoogle}></div>
 					</a>
 					<div className={this.cssClasses.footerSocials}>
@@ -100,7 +100,7 @@ class Footer extends React.Component<IFooterProps> {
 				</div>
 				<div className={this.cssClasses.footerSubContainer}>
 					<div className={this.cssClasses.footerTitle}>
-						{t(this.resources.about)}
+						{t(this.resources.help)}
 					</div>
 					{/* <ButtonLink
 						color={ButtonLinkColor.Gray}
@@ -120,7 +120,7 @@ class Footer extends React.Component<IFooterProps> {
 						background={ButtonLinkBackground.Gray}
 						to={`/${mainRoutes.help}`}
 					>
-						{t(this.resources.help)}
+						{t(this.resources.report)}
 					</ButtonLink>
 				</div>
 				{this.renderAuthorizedContainer()}
@@ -129,7 +129,7 @@ class Footer extends React.Component<IFooterProps> {
 						{t(this.resources.credits)}
 					</div>
 					<a className={this.cssClasses.footerLink} href="https://www.freepik.com/vectors" target="_blank" rel="noopener noreferrer">
-						Freepic
+						Freepik
 					</a>
 					<a className={this.cssClasses.footerLink} href="https://www.flaticon.com/packs/social-media-87" target="_blank" rel="noopener noreferrer">
 						Flaticon
